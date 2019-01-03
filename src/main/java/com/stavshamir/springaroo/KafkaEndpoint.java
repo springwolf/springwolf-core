@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Data
 @Builder
-public class KafkaEndpoint {
+class KafkaEndpoint {
 
     private String methodName;
     private String[] topics;
