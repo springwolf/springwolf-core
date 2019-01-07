@@ -1,5 +1,6 @@
 package com.stavshamir.springaroo;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.util.StringValueResolver;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
 
+@Slf4j
 class KafkaListenersScanner implements EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
@@ -21,6 +23,8 @@ class KafkaListenersScanner implements EmbeddedValueResolverAware {
     }
 
     Set<KafkaEndpoint> getKafkaEndpoints(Class<?> type) {
+        log.debug("Scanning {}", type.getName());
+
         return Arrays.stream(type.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(KafkaListener.class))
                 .map(this::createKafkaEndpoint)
