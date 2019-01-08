@@ -36,9 +36,9 @@ public class KafkaEndpointsServiceTest {
         KafkaEndpoint endpoint = KafkaEndpoint.builder()
                 .methodName("listenerMethod")
                 .payloadType(String.class)
-                .topics(new String[] { TOPIC })
+                .topic(TOPIC)
                 .build();
-        when(kafkaListenersScanner.getKafkaEndpoints(KafkaConsumerClass.class))
+        when(kafkaListenersScanner.getKafkaEndpointsFromClass(KafkaConsumerClass.class))
                 .thenReturn(Sets.newHashSet(endpoint));
 
         // When getEndpoints is called

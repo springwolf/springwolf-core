@@ -29,8 +29,8 @@ public class KafkaListenersScannerTest {
     @Test
     public void getKafkaEndpoints_noAnnotatedMethods() {
         // Given a class without methods annotated with KafkaListener
-        // When getKafkaEndpoints is called
-        Set<KafkaEndpoint> consumersDetails = kafkaListenersScanner.getKafkaEndpoints(ClassWithoutKafkaListenerAnnotations.class);
+        // When getKafkaEndpointsFromClass is called
+        Set<KafkaEndpoint> consumersDetails = kafkaListenersScanner.getKafkaEndpointsFromClass(ClassWithoutKafkaListenerAnnotations.class);
 
         // Then the returned collection is empty
         assertThat(consumersDetails).isEmpty();
@@ -39,13 +39,13 @@ public class KafkaListenersScannerTest {
     @Test
     public void getKafkaEndpoints_hasAnnotatedMethods_hardCodedTopic() {
         // Given a class with methods annotated with KafkaListener, whose topics attribute is hard coded
-        // When getKafkaEndpoints is called
-        Set<KafkaEndpoint> consumersDetails = kafkaListenersScanner.getKafkaEndpoints(ClassWithKafkaListenerAnnotationsHardCodedTopics.class);
+        // When getKafkaEndpointsFromClass is called
+        Set<KafkaEndpoint> consumersDetails = kafkaListenersScanner.getKafkaEndpointsFromClass(ClassWithKafkaListenerAnnotationsHardCodedTopics.class);
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint("methodWithAnnotation1", new String[]{TOPIC}, String.class),
-                new KafkaEndpoint("methodWithAnnotation2", new String[]{TOPIC}, String.class)
+                new KafkaEndpoint("methodWithAnnotation1", TOPIC, String.class),
+                new KafkaEndpoint("methodWithAnnotation2", TOPIC, String.class)
         );
     }
 
@@ -54,16 +54,28 @@ public class KafkaListenersScannerTest {
         assertThat(topicFromProperties).isEqualTo(TOPIC);
 
         // Given a class with methods annotated with KafkaListener, whose topics attribute is an embedded value
-        // When getKafkaEndpoints is called
-        Set<KafkaEndpoint> consumersDetails = kafkaListenersScanner.getKafkaEndpoints(ClassWithKafkaListenerAnnotationsEmbeddedValueTopic.class);
+        // When getKafkaEndpointsFromClass is called
+        Set<KafkaEndpoint> consumersDetails = kafkaListenersScanner.getKafkaEndpointsFromClass(ClassWithKafkaListenerAnnotationsEmbeddedValueTopic.class);
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint("methodWithAnnotation1", new String[]{TOPIC}, String.class),
-                new KafkaEndpoint("methodWithAnnotation2", new String[]{TOPIC}, String.class)
+                new KafkaEndpoint("methodWithAnnotation1", TOPIC, String.class),
+                new KafkaEndpoint("methodWithAnnotation2", TOPIC, String.class)
         );
     }
 
+    @Test
+    public void getKafkaEndpoints_hasAnnotatedMethods_multipleTopic() {
+        // Given a class with methods annotated with KafkaListener, whose topics contain multiple topics
+        // When getKafkaEndpointsFromClass is called
+        Set<KafkaEndpoint> consumersDetails = kafkaListenersScanner.getKafkaEndpointsFromClass(ClassWithKafkaListenerAnnotationsMultipleTopics.class);
+
+        // Then the returned collection contains the methods' details
+        assertThat(consumersDetails).containsExactlyInAnyOrder(
+                new KafkaEndpoint("methodWithAnnotation1", TOPIC + "1", String.class),
+                new KafkaEndpoint("methodWithAnnotation1", TOPIC + "2", String.class)
+        );
+    }
     private static class ClassWithoutKafkaListenerAnnotations {
 
         @Deprecated
@@ -94,6 +106,13 @@ public class KafkaListenersScannerTest {
 
         @KafkaListener(topics = "${missing-property:" + TOPIC + "}")
         private void methodWithAnnotation2(String payload) {}
+
+    }
+
+    private static class ClassWithKafkaListenerAnnotationsMultipleTopics {
+
+        @KafkaListener(topics = { TOPIC + "1", TOPIC + "2" })
+        private void methodWithAnnotation1(String payload) {}
 
     }
 

@@ -7,8 +7,8 @@ import lombok.Data;
 @Builder
 public class KafkaEndpoint {
 
-    private String methodName;
-    private String[] topics;
-    private Class<?> payloadType;
+    private final String methodName;
+    private final String topic;
+    private final Class<?> payloadType;
 
 }

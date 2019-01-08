@@ -6,9 +6,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -22,35 +21,40 @@ class KafkaListenersScanner implements EmbeddedValueResolverAware {
         this.resolver = resolver;
     }
 
-    Set<KafkaEndpoint> getKafkaEndpoints(Class<?> type) {
+    Set<KafkaEndpoint> getKafkaEndpointsFromClass(Class<?> type) {
         log.debug("Scanning {}", type.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(KafkaListener.class))
-                .map(this::createKafkaEndpoint)
+                .map(this::createKafkaEndpoints)
+                .flatMap(Collection::stream)
                 .collect(toSet());
     }
 
-    private KafkaEndpoint createKafkaEndpoint(Method method) {
+    private Set<KafkaEndpoint> createKafkaEndpoints(Method method) {
         KafkaListener annotation = Optional.of(method.getAnnotation(KafkaListener.class))
                 .orElseThrow(() -> new IllegalArgumentException("Method must be annotated with @KafkaListener"));
 
-        return KafkaEndpoint.builder()
+        Function<String, KafkaEndpoint> topicToEndpoint = topic -> KafkaEndpoint.builder()
                 .methodName(method.getName())
-                .topics(getTopics(annotation))
+                .topic(topic)
                 .payloadType(getPayloadType(method))
                 .build();
+
+        return getTopics(annotation).stream()
+                .map(topicToEndpoint)
+                .collect(toSet());
     }
 
-    private String[] getTopics(KafkaListener kafkaListener) {
+    private List<String> getTopics(KafkaListener kafkaListener) {
         String[] topics = kafkaListener.topics();
 
         if (topics.length == 1) {
             String s = resolver.resolveStringValue(topics[0]);
-            return new String[]{s};
+            return Collections.singletonList(s);
         }
 
-        return topics;
+        return Arrays.asList(topics);
     }
 
     private static Class<?> getPayloadType(Method method) {

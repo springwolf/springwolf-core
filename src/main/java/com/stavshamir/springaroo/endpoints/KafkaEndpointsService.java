@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
@@ -46,7 +45,7 @@ public class KafkaEndpointsService {
         }
 
         return getClassesAnnotatedWithComponent().stream()
-                    .map(scanner::getKafkaEndpoints)
+                    .map(scanner::getKafkaEndpointsFromClass)
                     .flatMap(Collection::stream)
                     .peek(endpoint -> log.debug("Registered endpoint: {}", endpoint))
                     .collect(toSet());
