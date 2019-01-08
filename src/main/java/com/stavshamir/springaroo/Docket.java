@@ -8,5 +8,6 @@ import lombok.Getter;
 public class Docket {
 
     private final String basePackage;
+    private final String bootstrapServers;
 
 }
