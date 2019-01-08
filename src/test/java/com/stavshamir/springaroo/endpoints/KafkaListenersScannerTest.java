@@ -1,4 +1,4 @@
-package com.stavshamir.springaroo;
+package com.stavshamir.springaroo.endpoints;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

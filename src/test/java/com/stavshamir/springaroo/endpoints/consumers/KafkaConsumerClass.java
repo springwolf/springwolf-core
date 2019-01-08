@@ -1,4 +1,4 @@
-package com.stavshamir.springaroo.kafka.consumers;
+package com.stavshamir.springaroo.endpoints.consumers;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

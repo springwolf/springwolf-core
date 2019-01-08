@@ -1,12 +1,12 @@
-package com.stavshamir.springaroo;
+package com.stavshamir.springaroo.endpoints;
 
 import com.google.common.collect.Sets;
-import com.stavshamir.springaroo.kafka.consumers.KafkaConsumerClass;
+import com.stavshamir.springaroo.Docket;
+import com.stavshamir.springaroo.endpoints.consumers.KafkaConsumerClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -22,7 +22,7 @@ public class KafkaEndpointsServiceTest {
     private KafkaListenersScanner kafkaListenersScanner;
 
     @Spy
-    private Docket docket = Docket.builder().basePackage("com.stavshamir.springaroo.kafka.consumers").build();
+    private Docket docket = Docket.builder().basePackage("com.stavshamir.springaroo.endpoints.consumers").build();
 
     @InjectMocks
     private KafkaEndpointsService endpointsService;
