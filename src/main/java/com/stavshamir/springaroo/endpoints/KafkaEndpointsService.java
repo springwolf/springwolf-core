@@ -29,14 +29,20 @@ public class KafkaEndpointsService {
 
     @Autowired
     public KafkaEndpointsService(Docket docket, KafkaListenersScanner kafkaListenersScanner) {
-        this.basePackage = docket.getBasePackage();
+        this.basePackage = Optional.of(docket)
+                .map(Docket::getBasePackage)
+                .orElse(null);
+
         this.scanner = kafkaListenersScanner;
     }
 
     private Set<KafkaEndpoint> scanPackageForKafkaEndpoints() {
         if (scanner == null) {
-            log.error("Called before injection of KafkaListenerScanner");
-            return Collections.emptySet();
+            throw new RuntimeException("This method must not be accessed before the object is fully constructed");
+        }
+
+        if (basePackage == null) {
+            throw new RuntimeException("Base package not provided - please provide a Docket bean with basePackage defined");
         }
 
         return getClassesAnnotatedWithComponent().stream()
