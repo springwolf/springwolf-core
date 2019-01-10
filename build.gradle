@@ -23,6 +23,9 @@ repositories {
 }
 
 dependencies {
+    compile group: 'io.swagger', name: 'swagger-core', version: '1.5.21'
+    compile group: 'io.swagger', name: 'swagger-inflector', version: '1.0.16'
+
     implementation('org.springframework.boot:spring-boot-starter')
     implementation('org.springframework.kafka:spring-kafka')
     implementation('org.springframework.boot:spring-boot-starter-web')
