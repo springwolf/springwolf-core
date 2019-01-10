@@ -4,6 +4,7 @@ import com.stavshamir.springaroo.endpoints.KafkaEndpoint;
 import com.stavshamir.springaroo.endpoints.KafkaEndpointsService;
 import com.stavshamir.springaroo.producer.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -22,7 +23,7 @@ public class KafkaController {
         this.kafkaProducer = kafkaProducer;
     }
 
-    @GetMapping("/endpoints")
+    @GetMapping(value = "/endpoints", produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<KafkaEndpoint> endpoints() {
         return endpointsService.getEndpoints();
     }

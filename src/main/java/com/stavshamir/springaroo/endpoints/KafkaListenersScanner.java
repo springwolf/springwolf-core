@@ -1,5 +1,6 @@
 package com.stavshamir.springaroo.endpoints;
 
+import com.stavshamir.springaroo.model.Models;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -7,7 +8,6 @@ import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.function.Function;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -15,6 +15,11 @@ import static java.util.stream.Collectors.toSet;
 class KafkaListenersScanner implements EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
+    private final Models models;
+
+    KafkaListenersScanner(Models models) {
+        this.models = models;
+    }
 
     @Override
     public void setEmbeddedValueResolver(StringValueResolver resolver) {
@@ -35,14 +40,8 @@ class KafkaListenersScanner implements EmbeddedValueResolverAware {
         KafkaListener annotation = Optional.of(method.getAnnotation(KafkaListener.class))
                 .orElseThrow(() -> new IllegalArgumentException("Method must be annotated with @KafkaListener"));
 
-        Function<String, KafkaEndpoint> topicToEndpoint = topic -> KafkaEndpoint.builder()
-                .methodName(method.getName())
-                .topic(topic)
-                .payloadType(getPayloadType(method))
-                .build();
-
         return getTopics(annotation).stream()
-                .map(topicToEndpoint)
+                .map(topic -> topicToEndpoint(topic, method))
                 .collect(toSet());
     }
 
@@ -55,6 +54,17 @@ class KafkaListenersScanner implements EmbeddedValueResolverAware {
         }
 
         return Arrays.asList(topics);
+    }
+
+    private KafkaEndpoint topicToEndpoint(String topic, Method method) {
+        Class<?> payloadType = getPayloadType(method);
+
+        return KafkaEndpoint.builder()
+                .methodName(method.getName())
+                .topic(topic)
+                .payloadType(payloadType)
+                .payloadExample(models.getExample(payloadType))
+                .build();
     }
 
     private static Class<?> getPayloadType(Method method) {
