@@ -9,7 +9,10 @@ import io.swagger.inflector.processors.JsonNodeExampleSerializer;
 import io.swagger.models.Model;
 import io.swagger.util.Json;
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.*;
+
+import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 public class Models {
@@ -22,7 +25,7 @@ public class Models {
         Json.mapper().registerModule(simpleModule);
     }
 
-    private void registerModel(Class<?> type) {
+    public void registerModel(Class<?> type) {
         log.debug("Registering model for {}", type.getSimpleName());
 
         Map<String, Model> models = converter.readAll(type);
@@ -44,6 +47,14 @@ public class Models {
 
         Example example = ExampleBuilder.fromModel(modelName, model, models, new HashSet<>());
         return Json.pretty(example);
+    }
+
+    public Set<String> getModelsAsJson() {
+        return models.entrySet()
+                .stream()
+                .map(Json::pretty)
+                .map(s -> s.replaceAll("\\s+", ""))
+                .collect(toSet());
     }
 
     private String getModelName(Class<?> type) {

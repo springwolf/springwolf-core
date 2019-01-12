@@ -1,0 +1,14 @@
+{
+  "FooWithEnum" : {
+    "type" : "object",
+    "properties" : {
+      "s" : {
+        "type" : "string"
+      },
+      "b" : {
+        "type" : "string",
+        "enum" : [ "BAR1", "BAR2" ]
+      }
+    }
+  }
+}

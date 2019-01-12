@@ -1,0 +1,13 @@
+{
+  "SimpleFoo": {
+    "type": "object",
+    "properties": {
+      "s": {
+        "type": "string"
+      },
+      "b": {
+        "type": "boolean"
+      }
+    }
+  }
+}
