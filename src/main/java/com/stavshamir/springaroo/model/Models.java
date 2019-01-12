@@ -34,19 +34,15 @@ public class Models {
 
     public String getExample(Class<?> type) {
         String modelName = getModelName(type);
-
-        if (!models.containsKey(modelName)) {
-            registerModel(type);
-        }
-
         Model model = models.get(modelName);
+
         if (null == model) {
             log.error("Model for {} was not found", type.getSimpleName());
-            return "";
+            return null;
         }
 
         Example example = ExampleBuilder.fromModel(modelName, model, models, new HashSet<>());
-        return Json.pretty(example);
+        return Json.pretty(example).replaceAll("\\s+", "");
     }
 
     public Set<String> getModelsAsJson() {

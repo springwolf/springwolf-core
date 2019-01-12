@@ -19,39 +19,49 @@ public class ModelsTest {
 
     private Models models = new Models();
 
+    private static final String EXAMPLES_PATH = "/models/examples";
     private static final String MODELS_PATH = "/models/models";
 
     @Test
     public void getExample_simpleObject() {
+        // Given a registered simple object
+        models.registerModel(SimpleFoo.class);
+
+        // When getExample is called
         String example = models.getExample(SimpleFoo.class);
+        String expectedExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/simple-foo.json");
+
+        // Then it returns the correct example object as json
         assertThat(example)
-                .isEqualTo("{\n" +
-                        "  \"s\" : \"string\",\n" +
-                        "  \"b\" : true\n" +
-                        "}");
+                .isEqualTo(expectedExample);
     }
 
     @Test
     public void getExample_compositeObject() {
+        // Given a registered composite object
+        models.registerModel(CompositeFoo.class);
+
+        // When getExample is called
         String example = models.getExample(CompositeFoo.class);
+        String expectedExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/composite-foo.json");
+
+        // Then it returns the correct example object as json
         assertThat(example)
-                .isEqualTo("{\n" +
-                        "  \"s\" : \"string\",\n" +
-                        "  \"f\" : {\n" +
-                        "    \"s\" : \"string\",\n" +
-                        "    \"b\" : true\n" +
-                        "  }\n" +
-                        "}");
+                .isEqualTo(expectedExample);
     }
 
     @Test
     public void getExample_annotatedObject() {
+        // Given a registered simple object annotated with @ApiModel
+        models.registerModel(AnnotatedFoo.class);
+
+        // When getExample is called
         String example = models.getExample(AnnotatedFoo.class);
+        String expectedExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/simple-foo.json");
+
+        // Then it returns the correct example object as json
         assertThat(example)
-                .isEqualTo("{\n" +
-                        "  \"s\" : \"string\",\n" +
-                        "  \"b\" : true\n" +
-                        "}");
+                .isEqualTo(expectedExample);
     }
 
     @Test
