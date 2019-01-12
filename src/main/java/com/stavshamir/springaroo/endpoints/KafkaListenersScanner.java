@@ -2,6 +2,7 @@ package com.stavshamir.springaroo.endpoints;
 
 import com.stavshamir.springaroo.model.Models;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.util.StringValueResolver;
@@ -17,6 +18,7 @@ class KafkaListenersScanner implements EmbeddedValueResolverAware {
     private StringValueResolver resolver;
     private final Models models;
 
+    @Autowired
     KafkaListenersScanner(Models models) {
         this.models = models;
     }
@@ -58,6 +60,7 @@ class KafkaListenersScanner implements EmbeddedValueResolverAware {
 
     private KafkaEndpoint topicToEndpoint(String topic, Method method) {
         Class<?> payloadType = getPayloadType(method);
+        models.registerModel(payloadType);
 
         return KafkaEndpoint.builder()
                 .methodName(method.getName())

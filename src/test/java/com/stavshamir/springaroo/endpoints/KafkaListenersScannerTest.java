@@ -2,6 +2,7 @@ package com.stavshamir.springaroo.endpoints;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = { Config.class })
@@ -27,10 +31,9 @@ public class KafkaListenersScannerTest {
     private String topicFromProperties;
 
     private final static String TOPIC = "test-topic";
-    private final static String SIMPLE_FOO_EXAMPLE = "{\n" +
-            "  \"s\" : \"string\",\n" +
-            "  \"b\" : true\n" +
-            "}";
+
+    private static final String EXAMPLES_PATH = "/models/examples";
+    private String simpleFooExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/simple-foo.json");
 
     @Test
     public void getKafkaEndpoints_noAnnotatedMethods() {
@@ -50,8 +53,8 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint("methodWithAnnotation1", TOPIC, SimpleFoo.class, SIMPLE_FOO_EXAMPLE),
-                new KafkaEndpoint("methodWithAnnotation2", TOPIC, SimpleFoo.class, SIMPLE_FOO_EXAMPLE)
+                new KafkaEndpoint("methodWithAnnotation1", TOPIC, SimpleFoo.class, simpleFooExample),
+                new KafkaEndpoint("methodWithAnnotation2", TOPIC, SimpleFoo.class, simpleFooExample)
         );
     }
 
@@ -65,8 +68,8 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint("methodWithAnnotation1", TOPIC, SimpleFoo.class, SIMPLE_FOO_EXAMPLE),
-                new KafkaEndpoint("methodWithAnnotation2", TOPIC, SimpleFoo.class, SIMPLE_FOO_EXAMPLE)
+                new KafkaEndpoint("methodWithAnnotation1", TOPIC, SimpleFoo.class, simpleFooExample),
+                new KafkaEndpoint("methodWithAnnotation2", TOPIC, SimpleFoo.class, simpleFooExample)
         );
     }
 
@@ -78,8 +81,8 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint("methodWithAnnotation1", TOPIC + "1", SimpleFoo.class, SIMPLE_FOO_EXAMPLE),
-                new KafkaEndpoint("methodWithAnnotation1", TOPIC + "2", SimpleFoo.class, SIMPLE_FOO_EXAMPLE)
+                new KafkaEndpoint("methodWithAnnotation1", TOPIC + "1", SimpleFoo.class, simpleFooExample),
+                new KafkaEndpoint("methodWithAnnotation1", TOPIC + "2", SimpleFoo.class, simpleFooExample)
         );
     }
     private static class ClassWithoutKafkaListenerAnnotations {
@@ -127,6 +130,16 @@ public class KafkaListenersScannerTest {
     private static class SimpleFoo {
         private String s;
         private boolean b;
+    }
+
+    private String jsonResourceAsWhitespaceStrippedString(String path) {
+        InputStream s = this.getClass().getResourceAsStream(path);
+        try {
+            return IOUtils.toString(s, "UTF-8").replaceAll("\\s+", "");
+        } catch (IOException e) {
+            fail("Failed to read resource stream");
+            return null;
+        }
     }
 
 }
