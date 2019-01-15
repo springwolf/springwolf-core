@@ -26,6 +26,27 @@ public class ModelsTest {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
+    @Test
+    public void simpleObject() {
+        // Given a registered simple object
+        // When register is called
+        String modelName = models.register(SimpleFoo.class);
+
+        // Then the returned value is the @ApiModel value
+        assertThat(modelName)
+                .isEqualTo("SimpleFoo");
+    }
+
+    @Test
+    public void register_annotatedObject() {
+        // Given a registered simple object annotated with @ApiModel
+        // When register is called
+        String modelName = models.register(AnnotatedFoo.class);
+
+        // Then the returned value is the @ApiModel value
+        assertThat(modelName)
+                .isEqualTo("ApiModelFoo");
+    }
 
     @Test
     public void getExample_simpleObject() {

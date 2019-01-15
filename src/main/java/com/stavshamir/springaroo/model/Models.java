@@ -26,11 +26,13 @@ public class Models {
         Json.mapper().registerModule(simpleModule);
     }
 
-    public void register(Class<?> type) {
+    public String register(Class<?> type) {
         log.debug("Registering model for {}", type.getSimpleName());
 
         Map<String, Model> models = converter.readAll(type);
         this.definitions.putAll(models);
+
+        return getModelName(type);
     }
 
     public String getExample(Class<?> type) {

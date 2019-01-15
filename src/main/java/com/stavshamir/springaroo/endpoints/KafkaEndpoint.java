@@ -9,7 +9,7 @@ public class KafkaEndpoint {
 
     private final String methodName;
     private final String topic;
-    private final Class<?> payloadType;
+    private final String payloadModelName;
     private final String payloadExample;
 
 }
