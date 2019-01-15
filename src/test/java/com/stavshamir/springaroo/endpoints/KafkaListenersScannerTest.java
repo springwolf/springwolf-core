@@ -59,8 +59,7 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint("methodWithAnnotation1", TOPIC, "SimpleFoo", simpleFooExample),
-                new KafkaEndpoint("methodWithAnnotation2", TOPIC, "SimpleFoo", simpleFooExample)
+                new KafkaEndpoint(TOPIC, "SimpleFoo", simpleFooExample)
         );
     }
 
@@ -74,8 +73,7 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint("methodWithAnnotation1", TOPIC, "SimpleFoo", simpleFooExample),
-                new KafkaEndpoint("methodWithAnnotation2", TOPIC, "SimpleFoo", simpleFooExample)
+                new KafkaEndpoint(TOPIC, "SimpleFoo", simpleFooExample)
         );
     }
 
@@ -87,8 +85,8 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint("methodWithAnnotation1", TOPIC + "1", "SimpleFoo", simpleFooExample),
-                new KafkaEndpoint("methodWithAnnotation1", TOPIC + "2", "SimpleFoo", simpleFooExample)
+                new KafkaEndpoint(TOPIC + "1", "SimpleFoo", simpleFooExample),
+                new KafkaEndpoint(TOPIC + "2", "SimpleFoo", simpleFooExample)
         );
     }
     private static class ClassWithoutKafkaListenerAnnotations {
@@ -105,9 +103,6 @@ public class KafkaListenersScannerTest {
         @KafkaListener(topics = TOPIC)
         private void methodWithAnnotation1(SimpleFoo payload) {}
 
-        @KafkaListener(topics = TOPIC)
-        private void methodWithAnnotation2(SimpleFoo payload) {}
-
         private void methodWithoutAnnotation1() {}
 
         private void methodWithoutAnnotation2() {}
@@ -118,9 +113,6 @@ public class KafkaListenersScannerTest {
 
         @KafkaListener(topics = "${kafka.topics.test}")
         private void methodWithAnnotation1(SimpleFoo payload) {}
-
-        @KafkaListener(topics = "${missing-property:" + TOPIC + "}")
-        private void methodWithAnnotation2(SimpleFoo payload) {}
 
     }
 

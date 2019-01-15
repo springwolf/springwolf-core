@@ -34,7 +34,6 @@ public class KafkaEndpointsServiceTest {
 
         // Given a A class annotated with @Component and contains a method annotated with @KafkaListener
         KafkaEndpoint endpoint = KafkaEndpoint.builder()
-                .methodName("listenerMethod")
                 .topic(TOPIC)
                 .build();
         when(kafkaListenersScanner.getKafkaEndpointsFromClass(KafkaConsumerClass.class))

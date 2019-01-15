@@ -9,7 +9,6 @@ import java.util.Map;
 @Builder
 public class KafkaEndpoint {
 
-    private final String methodName;
     private final String topic;
     private final String payloadModelName;
     private final Map<String, Object> payloadExample;
