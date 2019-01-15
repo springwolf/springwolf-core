@@ -51,10 +51,10 @@ public class ModelsTest {
     @Test
     public void getExample_simpleObject() {
         // Given a registered simple object
-        models.register(SimpleFoo.class);
+        String modelName = models.register(SimpleFoo.class);
 
         // When getExample is called
-        String example = models.getExample(SimpleFoo.class);
+        String example = models.getExample(modelName);
         String expectedExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/simple-foo.json");
 
         // Then it returns the correct example object as json
@@ -65,10 +65,10 @@ public class ModelsTest {
     @Test
     public void getExample_compositeObject() {
         // Given a registered composite object
-        models.register(CompositeFoo.class);
+        String modelName = models.register(CompositeFoo.class);
 
         // When getExample is called
-        String example = models.getExample(CompositeFoo.class);
+        String example = models.getExample(modelName);
         String expectedExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/composite-foo.json");
 
         // Then it returns the correct example object as json
@@ -79,10 +79,10 @@ public class ModelsTest {
     @Test
     public void getExample_annotatedObject() {
         // Given a registered simple object annotated with @ApiModel
-        models.register(AnnotatedFoo.class);
+        String modelName = models.register(AnnotatedFoo.class);
 
         // When getExample is called
-        String example = models.getExample(AnnotatedFoo.class);
+        String example = models.getExample(modelName);
         String expectedExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/simple-foo.json");
 
         // Then it returns the correct example object as json

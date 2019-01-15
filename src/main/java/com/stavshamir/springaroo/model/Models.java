@@ -35,12 +35,11 @@ public class Models {
         return getModelName(type);
     }
 
-    public String getExample(Class<?> type) {
-        String modelName = getModelName(type);
+    public String getExample(String modelName) {
         Model model = definitions.get(modelName);
 
         if (null == model) {
-            log.error("Model for {} was not found", type.getSimpleName());
+            log.error("Model for {} was not found", modelName);
             return null;
         }
 
