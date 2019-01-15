@@ -1,6 +1,6 @@
 package com.stavshamir.springaroo.endpoints;
 
-import com.stavshamir.springaroo.Config;
+import com.stavshamir.springaroo.model.Models;
 import com.stavshamir.springaroo.test.Utils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = { Config.class })
+@ContextConfiguration(classes = { KafkaListenersScanner.class, Models.class })
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
 public class KafkaListenersScannerTest {
 

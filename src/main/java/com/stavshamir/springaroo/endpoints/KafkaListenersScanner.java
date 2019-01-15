@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -13,6 +14,7 @@ import java.util.*;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
+@Component
 public class KafkaListenersScanner implements EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
