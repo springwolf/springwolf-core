@@ -1,0 +1,40 @@
+{
+  "CompositeFoo": {
+    "type": "object",
+    "properties": {
+      "s": {
+        "type": "string"
+      },
+      "f": {
+        "$ref": "#/definitions/SimpleFoo",
+        "originalRef": "SimpleFoo"
+      }
+    }
+  },
+  "SimpleFoo": {
+    "type": "object",
+    "properties": {
+      "s": {
+        "type": "string"
+      },
+      "b": {
+        "type": "boolean"
+      }
+    }
+  },
+  "FooWithEnum": {
+    "type": "object",
+    "properties": {
+      "s": {
+        "type": "string"
+      },
+      "b": {
+        "type": "string",
+        "enum": [
+          "BAR1",
+          "BAR2"
+        ]
+      }
+    }
+  }
+}

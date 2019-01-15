@@ -60,7 +60,7 @@ class KafkaListenersScanner implements EmbeddedValueResolverAware {
 
     private KafkaEndpoint topicToEndpoint(String topic, Method method) {
         Class<?> payloadType = getPayloadType(method);
-        models.registerModel(payloadType);
+        models.register(payloadType);
 
         return KafkaEndpoint.builder()
                 .methodName(method.getName())

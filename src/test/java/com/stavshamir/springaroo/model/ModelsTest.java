@@ -1,6 +1,7 @@
 package com.stavshamir.springaroo.model;
 
-import com.google.common.collect.ImmutableSet;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Set;
+import java.util.Map;
 
-import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -20,12 +20,17 @@ public class ModelsTest {
     private Models models = new Models();
 
     private static final String EXAMPLES_PATH = "/models/examples";
-    private static final String MODELS_PATH = "/models/models";
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    static {
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
 
     @Test
     public void getExample_simpleObject() {
         // Given a registered simple object
-        models.registerModel(SimpleFoo.class);
+        models.register(SimpleFoo.class);
 
         // When getExample is called
         String example = models.getExample(SimpleFoo.class);
@@ -39,7 +44,7 @@ public class ModelsTest {
     @Test
     public void getExample_compositeObject() {
         // Given a registered composite object
-        models.registerModel(CompositeFoo.class);
+        models.register(CompositeFoo.class);
 
         // When getExample is called
         String example = models.getExample(CompositeFoo.class);
@@ -53,7 +58,7 @@ public class ModelsTest {
     @Test
     public void getExample_annotatedObject() {
         // Given a registered simple object annotated with @ApiModel
-        models.registerModel(AnnotatedFoo.class);
+        models.register(AnnotatedFoo.class);
 
         // When getExample is called
         String example = models.getExample(AnnotatedFoo.class);
@@ -65,22 +70,20 @@ public class ModelsTest {
     }
 
     @Test
-    public void getModelAsJson() {
-        Set<String> expectedModels = ImmutableSet
-                .of("composite-foo.json", "simple-foo.json", "foo-with-enum.json").stream()
-                .map(name -> jsonResourceAsWhitespaceStrippedString(MODELS_PATH + "/" + name))
-                .collect(toSet());
+    public void getDefinitions() throws IOException {
+        Map expectedDefinitions = jsonResourceAsMap("/models/definitions.json");
 
         // Given registered classes
-        models.registerModel(CompositeFoo.class);
-        models.registerModel(FooWithEnum.class);
+        models.register(CompositeFoo.class);
+        models.register(FooWithEnum.class);
 
         // When getModelsAsJson is called
-        Set<String> modelsAsJson = models.getModelsAsJson();
+        String actualDefinitionsJson = objectMapper.writeValueAsString(models.getDefinitions());
+        Map actualDefinitions = objectMapper.readValue(actualDefinitionsJson, Map.class);
 
         // Then it contains the correctly serialized models
-        assertThat(modelsAsJson)
-                .isEqualTo(expectedModels);
+        assertThat(actualDefinitions)
+                .isEqualTo(expectedDefinitions);
     }
 
     private String jsonResourceAsWhitespaceStrippedString(String path) {
@@ -91,6 +94,12 @@ public class ModelsTest {
             fail("Failed to read resource stream");
             return null;
         }
+    }
+
+    private Map jsonResourceAsMap(String path) throws IOException {
+        InputStream s = this.getClass().getResourceAsStream(path);
+        String json = IOUtils.toString(s, "UTF-8");
+        return objectMapper.readValue(json, Map.class);
     }
 
     @Data
