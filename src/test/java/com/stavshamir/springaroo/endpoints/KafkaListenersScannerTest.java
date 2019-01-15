@@ -1,5 +1,6 @@
 package com.stavshamir.springaroo.endpoints;
 
+import com.stavshamir.springaroo.Config;
 import com.stavshamir.springaroo.test.Utils;
 import lombok.Data;
 import lombok.NoArgsConstructor;

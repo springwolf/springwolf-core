@@ -13,13 +13,13 @@ import java.util.*;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
-class KafkaListenersScanner implements EmbeddedValueResolverAware {
+public class KafkaListenersScanner implements EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
     private final Models models;
 
     @Autowired
-    KafkaListenersScanner(Models models) {
+    public KafkaListenersScanner(Models models) {
         this.models = models;
     }
 
