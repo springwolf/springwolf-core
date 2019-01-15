@@ -2,18 +2,14 @@ package com.stavshamir.springaroo.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stavshamir.springaroo.test.Utils;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class ModelsTest {
 
@@ -49,13 +45,13 @@ public class ModelsTest {
     }
 
     @Test
-    public void getExample_simpleObject() {
+    public void getExample_simpleObject() throws IOException {
         // Given a registered simple object
         String modelName = models.register(SimpleFoo.class);
 
         // When getExample is called
-        String example = models.getExample(modelName);
-        String expectedExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/simple-foo.json");
+        Map<String, Object> example = models.getExample(modelName);
+        Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/simple-foo.json");
 
         // Then it returns the correct example object as json
         assertThat(example)
@@ -63,13 +59,13 @@ public class ModelsTest {
     }
 
     @Test
-    public void getExample_compositeObject() {
+    public void getExample_compositeObject() throws IOException {
         // Given a registered composite object
         String modelName = models.register(CompositeFoo.class);
 
         // When getExample is called
-        String example = models.getExample(modelName);
-        String expectedExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/composite-foo.json");
+        Map<String, Object> example = models.getExample(modelName);
+        Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/composite-foo.json");
 
         // Then it returns the correct example object as json
         assertThat(example)
@@ -77,13 +73,13 @@ public class ModelsTest {
     }
 
     @Test
-    public void getExample_annotatedObject() {
+    public void getExample_annotatedObject() throws IOException {
         // Given a registered simple object annotated with @ApiModel
         String modelName = models.register(AnnotatedFoo.class);
 
         // When getExample is called
-        String example = models.getExample(modelName);
-        String expectedExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/simple-foo.json");
+        Map<String, Object> example = models.getExample(modelName);
+        Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/simple-foo.json");
 
         // Then it returns the correct example object as json
         assertThat(example)
@@ -107,20 +103,8 @@ public class ModelsTest {
                 .isEqualTo(expectedDefinitions);
     }
 
-    private String jsonResourceAsWhitespaceStrippedString(String path) {
-        InputStream s = this.getClass().getResourceAsStream(path);
-        try {
-            return IOUtils.toString(s, "UTF-8").replaceAll("\\s+", "");
-        } catch (IOException e) {
-            fail("Failed to read resource stream");
-            return null;
-        }
-    }
-
     private Map jsonResourceAsMap(String path) throws IOException {
-        InputStream s = this.getClass().getResourceAsStream(path);
-        String json = IOUtils.toString(s, "UTF-8");
-        return objectMapper.readValue(json, Map.class);
+        return Utils.jsonResourceAsMap(this.getClass(), path);
     }
 
     @Data

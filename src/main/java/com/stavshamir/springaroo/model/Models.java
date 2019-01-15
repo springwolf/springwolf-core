@@ -1,5 +1,7 @@
 package com.stavshamir.springaroo.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.swagger.annotations.ApiModel;
 import io.swagger.converter.ModelConverters;
@@ -11,17 +13,21 @@ import io.swagger.util.Json;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.*;
 
 @Slf4j
 public class Models {
 
     private final ModelConverters converter = ModelConverters.getInstance();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Getter
     private final Map<String, Model> definitions = new HashMap<>();
 
     public Models() {
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
         SimpleModule simpleModule = new SimpleModule().addSerializer(new JsonNodeExampleSerializer());
         Json.mapper().registerModule(simpleModule);
     }
@@ -35,7 +41,7 @@ public class Models {
         return getModelName(type);
     }
 
-    public String getExample(String modelName) {
+    public Map<String, Object> getExample(String modelName) {
         Model model = definitions.get(modelName);
 
         if (null == model) {
@@ -44,7 +50,14 @@ public class Models {
         }
 
         Example example = ExampleBuilder.fromModel(modelName, model, definitions, new HashSet<>());
-        return Json.pretty(example).replaceAll("\\s+", "");
+        String exampleAsJson = Json.pretty(example);
+
+        try {
+            return objectMapper.readValue(exampleAsJson, Map.class);
+        } catch (IOException e) {
+            log.error("Failed to convert example object of {} to map", modelName);
+            return null;
+        }
     }
 
     private String getModelName(Class<?> type) {

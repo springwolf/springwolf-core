@@ -1,5 +1,6 @@
 package com.stavshamir.springaroo.endpoints;
 
+import com.stavshamir.springaroo.test.Utils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +35,10 @@ public class KafkaListenersScannerTest {
     private final static String TOPIC = "test-topic";
 
     private static final String EXAMPLES_PATH = "/models/examples";
-    private String simpleFooExample = jsonResourceAsWhitespaceStrippedString(EXAMPLES_PATH + "/simple-foo.json");
+    private Map simpleFooExample = Utils.jsonResourceAsMap(this.getClass(),EXAMPLES_PATH + "/simple-foo.json");
+
+    public KafkaListenersScannerTest() throws IOException {
+    }
 
     @Test
     public void getKafkaEndpoints_noAnnotatedMethods() {
