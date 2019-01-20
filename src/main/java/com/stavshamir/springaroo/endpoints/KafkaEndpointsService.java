@@ -1,6 +1,6 @@
 package com.stavshamir.springaroo.endpoints;
 
-import com.stavshamir.springaroo.Docket;
+import com.stavshamir.springaroo.configuration.Docket;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

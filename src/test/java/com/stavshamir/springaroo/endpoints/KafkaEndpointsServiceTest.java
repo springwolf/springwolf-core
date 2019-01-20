@@ -1,7 +1,7 @@
 package com.stavshamir.springaroo.endpoints;
 
 import com.google.common.collect.Sets;
-import com.stavshamir.springaroo.Docket;
+import com.stavshamir.springaroo.configuration.Docket;
 import com.stavshamir.springaroo.endpoints.consumers.KafkaConsumerClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

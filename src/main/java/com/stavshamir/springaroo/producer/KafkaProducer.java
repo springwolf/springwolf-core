@@ -1,7 +1,7 @@
 package com.stavshamir.springaroo.producer;
 
 import com.google.common.collect.ImmutableMap;
-import com.stavshamir.springaroo.Docket;
+import com.stavshamir.springaroo.configuration.Docket;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;

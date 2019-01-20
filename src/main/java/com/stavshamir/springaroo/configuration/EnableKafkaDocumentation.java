@@ -1,4 +1,4 @@
-package com.stavshamir.springaroo;
+package com.stavshamir.springaroo.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 

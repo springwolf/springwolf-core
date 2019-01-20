@@ -1,6 +1,7 @@
 package com.stavshamir.springaroo;
 
-import com.google.common.collect.ImmutableMap;
+import com.stavshamir.springaroo.configuration.Docket;
+import com.stavshamir.springaroo.configuration.Info;
 import com.stavshamir.springaroo.endpoints.KafkaEndpoint;
 import com.stavshamir.springaroo.endpoints.KafkaEndpointsService;
 import com.stavshamir.springaroo.model.Models;
@@ -18,15 +19,25 @@ import java.util.Set;
 @CrossOrigin
 public class KafkaController {
 
+    private final Docket docket;
     private final KafkaEndpointsService endpointsService;
     private final KafkaProducer kafkaProducer;
     private final Models models;
 
     @Autowired
-    public KafkaController(KafkaEndpointsService endpointsService, KafkaProducer kafkaProducer, Models models) {
+    public KafkaController(Docket docket, KafkaEndpointsService endpointsService, KafkaProducer kafkaProducer, Models models) {
+        this.docket = docket;
         this.endpointsService = endpointsService;
         this.kafkaProducer = kafkaProducer;
         this.models = models;
+    }
+
+    @GetMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Info info() {
+        return Info.builder()
+                .serviceName(docket.getServiceName())
+                .bootstrapServers(docket.getBootstrapServers())
+                .build();
     }
 
     @GetMapping(value = "/endpoints", produces = MediaType.APPLICATION_JSON_VALUE)
