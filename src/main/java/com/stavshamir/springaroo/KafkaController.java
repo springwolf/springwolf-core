@@ -1,17 +1,21 @@
 package com.stavshamir.springaroo;
 
 import com.google.common.collect.ImmutableMap;
+import com.stavshamir.springaroo.endpoints.KafkaEndpoint;
 import com.stavshamir.springaroo.endpoints.KafkaEndpointsService;
 import com.stavshamir.springaroo.model.Models;
 import com.stavshamir.springaroo.producer.KafkaProducer;
+import io.swagger.models.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/kafka-api")
+@CrossOrigin
 public class KafkaController {
 
     private final KafkaEndpointsService endpointsService;
@@ -25,12 +29,14 @@ public class KafkaController {
         this.models = models;
     }
 
-    @GetMapping(value = "/documentation", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> documentation() {
-        return ImmutableMap.<String, Object>builder()
-                .put("endpoints", endpointsService.getEndpoints())
-                .put("definitions", models.getDefinitions())
-                .build();
+    @GetMapping(value = "/endpoints", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Set<KafkaEndpoint> endpoints() {
+        return endpointsService.getEndpoints();
+    }
+
+    @GetMapping(value = "/models", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Model> models() {
+        return models.getDefinitions();
     }
 
     @PostMapping("/publish")
@@ -39,3 +45,4 @@ public class KafkaController {
     }
 
 }
+
