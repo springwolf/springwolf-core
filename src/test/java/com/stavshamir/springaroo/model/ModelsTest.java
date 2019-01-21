@@ -1,9 +1,11 @@
 package com.stavshamir.springaroo.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stavshamir.springaroo.test.Utils;
 import io.swagger.annotations.ApiModel;
+import io.swagger.models.properties.StringProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.Test;
@@ -28,7 +30,7 @@ public class ModelsTest {
         // When register is called
         String modelName = models.register(SimpleFoo.class);
 
-        // Then the returned value is the @ApiModel value
+        // Then the returned value is the class name
         assertThat(modelName)
                 .isEqualTo("SimpleFoo");
     }
@@ -87,6 +89,22 @@ public class ModelsTest {
     }
 
     @Test
+    public void testEnumWithJsonValue() {
+        // Given an class with an enum property containing a @JsonValue method
+        // When the class is registered
+        String modelName = models.register(FooWithEnumWithValues.class);
+
+        StringProperty enumProperty = (StringProperty) models.getDefinitions()
+                .get(modelName)
+                .getProperties()
+                .get("e");
+
+        // Then its enum values are correctly serialized
+        assertThat(enumProperty.getEnum())
+                .containsExactlyInAnyOrder("foo 1", "foo 2");
+    }
+
+    @Test
     public void getDefinitions() throws IOException {
         Map expectedDefinitions = jsonResourceAsMap("/models/definitions.json");
 
@@ -138,6 +156,31 @@ public class ModelsTest {
         private enum Bar {
             BAR1, BAR2
         }
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class FooWithEnumWithValues {
+        private String s;
+        private EnumWithJsonValue e;
+    }
+
+    public enum EnumWithJsonValue {
+
+        FOO1 ("foo 1"),
+        FOO2 ("foo 2");
+
+        private final String id;
+
+        EnumWithJsonValue(String id) {
+            this.id = id;
+        }
+
+        @JsonValue
+        public String getValue() {
+            return id;
+        }
+
     }
 
 }
