@@ -10,6 +10,7 @@ import java.util.Map;
 public class KafkaEndpoint {
 
     private final String topic;
+    private final String payloadClassName;
     private final String payloadModelName;
     private final Map<String, Object> payloadExample;
 

@@ -59,7 +59,7 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint(TOPIC, "SimpleFoo", simpleFooExample)
+                new KafkaEndpoint(TOPIC, SimpleFoo.class.getName(), "SimpleFoo", simpleFooExample)
         );
     }
 
@@ -73,7 +73,7 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint(TOPIC, "SimpleFoo", simpleFooExample)
+                new KafkaEndpoint(TOPIC, SimpleFoo.class.getName(), "SimpleFoo", simpleFooExample)
         );
     }
 
@@ -85,8 +85,8 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint(TOPIC + "1", "SimpleFoo", simpleFooExample),
-                new KafkaEndpoint(TOPIC + "2", "SimpleFoo", simpleFooExample)
+                new KafkaEndpoint(TOPIC + "1", SimpleFoo.class.getName(), "SimpleFoo", simpleFooExample),
+                new KafkaEndpoint(TOPIC + "2", SimpleFoo.class.getName(), "SimpleFoo", simpleFooExample)
         );
     }
     private static class ClassWithoutKafkaListenerAnnotations {

@@ -66,6 +66,7 @@ public class KafkaListenersScanner implements EmbeddedValueResolverAware {
 
         return KafkaEndpoint.builder()
                 .topic(topic)
+                .payloadClassName(payloadType.getName())
                 .payloadModelName(modelName)
                 .payloadExample(models.getExample(modelName))
                 .build();

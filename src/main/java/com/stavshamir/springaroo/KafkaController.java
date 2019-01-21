@@ -1,12 +1,16 @@
 package com.stavshamir.springaroo;
 
+import com.google.common.collect.ImmutableMap;
 import com.stavshamir.springaroo.configuration.Docket;
 import com.stavshamir.springaroo.configuration.Info;
 import com.stavshamir.springaroo.endpoints.KafkaEndpoint;
 import com.stavshamir.springaroo.endpoints.KafkaEndpointsService;
 import com.stavshamir.springaroo.model.Models;
+import com.stavshamir.springaroo.model.PayloadValidator;
 import com.stavshamir.springaroo.producer.KafkaProducer;
 import io.swagger.models.Model;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -50,9 +54,28 @@ public class KafkaController {
         return models.getDefinitions();
     }
 
+    @PostMapping("/validate")
+    public Map<String, String> validate(@RequestBody Payload payload) throws ClassNotFoundException {
+        try {
+            PayloadValidator.validate(payload.getObject(), payload.getClassName());
+        } catch (IllegalArgumentException ex) {
+            return ImmutableMap.of("message", ex.getMessage());
+        }
+
+        return ImmutableMap.of("message", "valid");
+    }
+
     @PostMapping("/publish")
-    public void send(@RequestParam String topic, @RequestBody Map<String, Object> payload) {
-        kafkaProducer.send(topic, payload);
+    public void send(@RequestParam String topic, @RequestBody Payload payload) throws ClassNotFoundException {
+        PayloadValidator.validate(payload.getObject(), payload.getClassName());
+        kafkaProducer.send(topic, payload.getObject());
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class Payload {
+        private String className;
+        private Map<String, Object> object;
     }
 
 }
