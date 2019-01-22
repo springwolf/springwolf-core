@@ -1,7 +1,7 @@
-package com.stavshamir.springaroo.model;
+package com.stavshamir.swagger4kafka.model;
 
 import com.google.common.collect.ImmutableMap;
-import com.stavshamir.springaroo.test.Utils;
+import com.stavshamir.swagger4kafka.test.Utils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.stavshamir.springaroo.test;
+package com.stavshamir.swagger4kafka.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;

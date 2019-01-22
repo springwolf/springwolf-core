@@ -1,4 +1,4 @@
-package com.stavshamir.springaroo.configuration;
+package com.stavshamir.swagger4kafka.configuration;
 
 import lombok.Builder;
 import lombok.Data;

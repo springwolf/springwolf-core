@@ -1,4 +1,4 @@
-package com.stavshamir.springaroo.configuration;
+package com.stavshamir.swagger4kafka.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 
@@ -16,5 +16,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(value=RUNTIME)
 @Target(value=TYPE)
-@ComponentScan(basePackages={"com/stavshamir/springaroo"})
+@ComponentScan(basePackages={"com/stavshamir/swagger4kafka"})
 public @interface EnableKafkaDocumentation { }

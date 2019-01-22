@@ -1,8 +1,8 @@
-package com.stavshamir.springaroo.endpoints;
+package com.stavshamir.swagger4kafka.endpoints;
 
 import com.google.common.collect.Sets;
-import com.stavshamir.springaroo.configuration.Docket;
-import com.stavshamir.springaroo.endpoints.consumers.KafkaConsumerClass;
+import com.stavshamir.swagger4kafka.configuration.Docket;
+import com.stavshamir.swagger4kafka.endpoints.consumers.KafkaConsumerClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -28,7 +28,7 @@ public class KafkaEndpointsServiceTest {
         // Given docket is set and basePackage is set
         MockitoAnnotations.initMocks(this);
         Docket docket = Docket.builder()
-                .basePackage("com.stavshamir.springaroo.endpoints.consumers")
+                .basePackage("com.stavshamir.swagger4kafka.endpoints.consumers")
                 .build();
         KafkaEndpointsService endpointsService = new KafkaEndpointsService(docket, kafkaListenersScanner);
 

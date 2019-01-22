@@ -1,6 +1,6 @@
-package com.stavshamir.springaroo.endpoints;
+package com.stavshamir.swagger4kafka.endpoints;
 
-import com.stavshamir.springaroo.model.Models;
+import com.stavshamir.swagger4kafka.model.Models;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.EmbeddedValueResolverAware;

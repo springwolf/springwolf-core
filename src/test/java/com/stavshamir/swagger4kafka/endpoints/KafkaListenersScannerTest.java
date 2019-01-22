@@ -1,7 +1,7 @@
-package com.stavshamir.springaroo.endpoints;
+package com.stavshamir.swagger4kafka.endpoints;
 
-import com.stavshamir.springaroo.model.Models;
-import com.stavshamir.springaroo.test.Utils;
+import com.stavshamir.swagger4kafka.model.Models;
+import com.stavshamir.swagger4kafka.test.Utils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.IOUtils;

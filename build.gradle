@@ -23,16 +23,15 @@ repositories {
 }
 
 dependencies {
-    compile group: 'io.swagger', name: 'swagger-core', version: '1.5.21'
-    compile group: 'io.swagger', name: 'swagger-inflector', version: '1.0.16'
-    compile('io.springfox:springfox-swagger2:2.9.2')
+    implementation 'io.swagger:swagger-inflector:1.0.16'
+    implementation 'io.springfox:springfox-core:2.9.2'
     
-    implementation('org.springframework.boot:spring-boot-starter')
-    implementation('org.springframework.kafka:spring-kafka')
-    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.kafka:spring-kafka'
 
-    compile 'com.google.guava:guava:27.0.1-jre'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
+    implementation 'com.google.guava:guava:27.0.1-jre'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
     
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.4'

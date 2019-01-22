@@ -1,13 +1,13 @@
-package com.stavshamir.springaroo;
+package com.stavshamir.swagger4kafka;
 
 import com.google.common.collect.ImmutableMap;
-import com.stavshamir.springaroo.configuration.Docket;
-import com.stavshamir.springaroo.configuration.Info;
-import com.stavshamir.springaroo.endpoints.KafkaEndpoint;
-import com.stavshamir.springaroo.endpoints.KafkaEndpointsService;
-import com.stavshamir.springaroo.model.Models;
-import com.stavshamir.springaroo.model.PayloadValidator;
-import com.stavshamir.springaroo.producer.KafkaProducer;
+import com.stavshamir.swagger4kafka.configuration.Docket;
+import com.stavshamir.swagger4kafka.configuration.Info;
+import com.stavshamir.swagger4kafka.endpoints.KafkaEndpoint;
+import com.stavshamir.swagger4kafka.endpoints.KafkaEndpointsService;
+import com.stavshamir.swagger4kafka.model.Models;
+import com.stavshamir.swagger4kafka.model.PayloadValidator;
+import com.stavshamir.swagger4kafka.producer.KafkaProducer;
 import io.swagger.models.Model;
 import lombok.Data;
 import lombok.NoArgsConstructor;

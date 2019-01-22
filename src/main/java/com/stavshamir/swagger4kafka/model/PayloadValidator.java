@@ -1,4 +1,4 @@
-package com.stavshamir.springaroo.model;
+package com.stavshamir.swagger4kafka.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

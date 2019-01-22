@@ -1,9 +1,9 @@
-package com.stavshamir.springaroo.model;
+package com.stavshamir.swagger4kafka.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stavshamir.springaroo.test.Utils;
+import com.stavshamir.swagger4kafka.test.Utils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.models.properties.StringProperty;
 import lombok.Data;
