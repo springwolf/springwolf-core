@@ -1,12 +1,12 @@
-package com.stavshamir.swagger4kafka;
+package com.stavshamir.swagger4kafka.web;
 
 import com.google.common.collect.ImmutableMap;
 import com.stavshamir.swagger4kafka.configuration.Docket;
-import com.stavshamir.swagger4kafka.configuration.Info;
-import com.stavshamir.swagger4kafka.endpoints.KafkaEndpoint;
-import com.stavshamir.swagger4kafka.endpoints.KafkaEndpointsService;
-import com.stavshamir.swagger4kafka.model.Models;
-import com.stavshamir.swagger4kafka.model.PayloadValidator;
+import com.stavshamir.swagger4kafka.dtos.Info;
+import com.stavshamir.swagger4kafka.dtos.KafkaEndpoint;
+import com.stavshamir.swagger4kafka.services.KafkaEndpointsService;
+import com.stavshamir.swagger4kafka.services.ModelsService;
+import com.stavshamir.swagger4kafka.validation.PayloadValidator;
 import com.stavshamir.swagger4kafka.producer.KafkaProducer;
 import io.swagger.models.Model;
 import lombok.Data;
@@ -26,14 +26,14 @@ public class KafkaController {
     private final Docket docket;
     private final KafkaEndpointsService endpointsService;
     private final KafkaProducer kafkaProducer;
-    private final Models models;
+    private final ModelsService modelsService;
 
     @Autowired
-    public KafkaController(Docket docket, KafkaEndpointsService endpointsService, KafkaProducer kafkaProducer, Models models) {
+    public KafkaController(Docket docket, KafkaEndpointsService endpointsService, KafkaProducer kafkaProducer, ModelsService modelsService) {
         this.docket = docket;
         this.endpointsService = endpointsService;
         this.kafkaProducer = kafkaProducer;
-        this.models = models;
+        this.modelsService = modelsService;
     }
 
     @GetMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,7 +51,7 @@ public class KafkaController {
 
     @GetMapping(value = "/models", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Model> models() {
-        return models.getDefinitions();
+        return modelsService.getDefinitions();
     }
 
     @PostMapping("/validate")

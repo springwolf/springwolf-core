@@ -1,4 +1,4 @@
-package com.stavshamir.swagger4kafka.model;
+package com.stavshamir.swagger4kafka.validation;
 
 import com.google.common.collect.ImmutableMap;
 import com.stavshamir.swagger4kafka.test.Utils;
@@ -9,7 +9,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PayloadValidatorTest {

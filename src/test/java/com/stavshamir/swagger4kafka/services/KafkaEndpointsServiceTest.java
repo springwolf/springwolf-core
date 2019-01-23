@@ -1,7 +1,8 @@
-package com.stavshamir.swagger4kafka.endpoints;
+package com.stavshamir.swagger4kafka.services;
 
 import com.google.common.collect.Sets;
 import com.stavshamir.swagger4kafka.configuration.Docket;
+import com.stavshamir.swagger4kafka.dtos.KafkaEndpoint;
 import com.stavshamir.swagger4kafka.endpoints.consumers.KafkaConsumerClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

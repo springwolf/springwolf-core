@@ -1,6 +1,6 @@
-package com.stavshamir.swagger4kafka.endpoints;
+package com.stavshamir.swagger4kafka.services;
 
-import com.stavshamir.swagger4kafka.model.Models;
+import com.stavshamir.swagger4kafka.dtos.KafkaEndpoint;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.EmbeddedValueResolverAware;
@@ -18,11 +18,11 @@ import static java.util.stream.Collectors.toSet;
 public class KafkaListenersScanner implements EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
-    private final Models models;
+    private final ModelsService modelsService;
 
     @Autowired
-    public KafkaListenersScanner(Models models) {
-        this.models = models;
+    public KafkaListenersScanner(ModelsService modelsService) {
+        this.modelsService = modelsService;
     }
 
     @Override
@@ -62,13 +62,13 @@ public class KafkaListenersScanner implements EmbeddedValueResolverAware {
 
     private KafkaEndpoint topicToEndpoint(String topic, Method method) {
         Class<?> payloadType = getPayloadType(method);
-        String modelName = models.register(payloadType);
+        String modelName = modelsService.register(payloadType);
 
         return KafkaEndpoint.builder()
                 .topic(topic)
                 .payloadClassName(payloadType.getName())
                 .payloadModelName(modelName)
-                .payloadExample(models.getExample(modelName))
+                .payloadExample(modelsService.getExample(modelName))
                 .build();
     }
 

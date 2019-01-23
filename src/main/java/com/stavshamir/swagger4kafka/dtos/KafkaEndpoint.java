@@ -1,4 +1,4 @@
-package com.stavshamir.swagger4kafka.endpoints;
+package com.stavshamir.swagger4kafka.dtos;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.stavshamir.swagger4kafka.model;
+package com.stavshamir.swagger4kafka.validation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

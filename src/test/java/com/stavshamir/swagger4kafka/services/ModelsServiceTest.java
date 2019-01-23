@@ -1,4 +1,4 @@
-package com.stavshamir.swagger4kafka.model;
+package com.stavshamir.swagger4kafka.services;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ModelsTest {
+public class ModelsServiceTest {
 
-    private Models models = new Models();
+    private ModelsService modelsService = new ModelsService();
 
     private static final String EXAMPLES_PATH = "/models/examples";
 
@@ -28,7 +28,7 @@ public class ModelsTest {
     public void simpleObject() {
         // Given a registered simple object
         // When register is called
-        String modelName = models.register(SimpleFoo.class);
+        String modelName = modelsService.register(SimpleFoo.class);
 
         // Then the returned value is the class name
         assertThat(modelName)
@@ -39,7 +39,7 @@ public class ModelsTest {
     public void register_annotatedObject() {
         // Given a registered simple object annotated with @ApiModel
         // When register is called
-        String modelName = models.register(AnnotatedFoo.class);
+        String modelName = modelsService.register(AnnotatedFoo.class);
 
         // Then the returned value is the @ApiModel value
         assertThat(modelName)
@@ -49,10 +49,10 @@ public class ModelsTest {
     @Test
     public void getExample_simpleObject() throws IOException {
         // Given a registered simple object
-        String modelName = models.register(SimpleFoo.class);
+        String modelName = modelsService.register(SimpleFoo.class);
 
         // When getExample is called
-        Map<String, Object> example = models.getExample(modelName);
+        Map<String, Object> example = modelsService.getExample(modelName);
         Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/simple-foo.json");
 
         // Then it returns the correct example object as json
@@ -63,10 +63,10 @@ public class ModelsTest {
     @Test
     public void getExample_compositeObject() throws IOException {
         // Given a registered composite object
-        String modelName = models.register(CompositeFoo.class);
+        String modelName = modelsService.register(CompositeFoo.class);
 
         // When getExample is called
-        Map<String, Object> example = models.getExample(modelName);
+        Map<String, Object> example = modelsService.getExample(modelName);
         Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/composite-foo.json");
 
         // Then it returns the correct example object as json
@@ -77,10 +77,10 @@ public class ModelsTest {
     @Test
     public void getExample_annotatedObject() throws IOException {
         // Given a registered simple object annotated with @ApiModel
-        String modelName = models.register(AnnotatedFoo.class);
+        String modelName = modelsService.register(AnnotatedFoo.class);
 
         // When getExample is called
-        Map<String, Object> example = models.getExample(modelName);
+        Map<String, Object> example = modelsService.getExample(modelName);
         Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/simple-foo.json");
 
         // Then it returns the correct example object as json
@@ -92,9 +92,9 @@ public class ModelsTest {
     public void testEnumWithJsonValue() {
         // Given an class with an enum property containing a @JsonValue method
         // When the class is registered
-        String modelName = models.register(FooWithEnumWithValues.class);
+        String modelName = modelsService.register(FooWithEnumWithValues.class);
 
-        StringProperty enumProperty = (StringProperty) models.getDefinitions()
+        StringProperty enumProperty = (StringProperty) modelsService.getDefinitions()
                 .get(modelName)
                 .getProperties()
                 .get("e");
@@ -109,14 +109,14 @@ public class ModelsTest {
         Map expectedDefinitions = jsonResourceAsMap("/models/definitions.json");
 
         // Given registered classes
-        models.register(CompositeFoo.class);
-        models.register(FooWithEnum.class);
+        modelsService.register(CompositeFoo.class);
+        modelsService.register(FooWithEnum.class);
 
         // When getModelsAsJson is called
-        String actualDefinitionsJson = objectMapper.writeValueAsString(models.getDefinitions());
+        String actualDefinitionsJson = objectMapper.writeValueAsString(modelsService.getDefinitions());
         Map actualDefinitions = objectMapper.readValue(actualDefinitionsJson, Map.class);
 
-        // Then it contains the correctly serialized models
+        // Then it contains the correctly serialized modelsService
         assertThat(actualDefinitions)
                 .isEqualTo(expectedDefinitions);
     }

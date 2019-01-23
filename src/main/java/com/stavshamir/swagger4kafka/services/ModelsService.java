@@ -1,4 +1,4 @@
-package com.stavshamir.swagger4kafka.model;
+package com.stavshamir.swagger4kafka.services;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,11 +13,12 @@ import io.swagger.models.properties.StringProperty;
 import io.swagger.util.Json;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+
+import org.springframework.stereotype.Service;
 import springfox.documentation.schema.Enums;
 import springfox.documentation.service.AllowableListValues;
 import springfox.documentation.service.AllowableValues;
@@ -25,8 +26,8 @@ import springfox.documentation.service.AllowableValues;
 import static java.util.stream.Collectors.toMap;
 
 @Slf4j
-@Component
-public class Models {
+@Service
+public class ModelsService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -34,7 +35,7 @@ public class Models {
     @Getter
     private final Map<String, Model> definitions = new HashMap<>();
 
-    public Models() {
+    public ModelsService() {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         SimpleModule simpleModule = new SimpleModule().addSerializer(new JsonNodeExampleSerializer());

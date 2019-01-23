@@ -1,6 +1,6 @@
-package com.stavshamir.swagger4kafka.endpoints;
+package com.stavshamir.swagger4kafka.services;
 
-import com.stavshamir.swagger4kafka.model.Models;
+import com.stavshamir.swagger4kafka.dtos.KafkaEndpoint;
 import com.stavshamir.swagger4kafka.test.Utils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = { KafkaListenersScanner.class, Models.class })
+@ContextConfiguration(classes = { KafkaListenersScanner.class, ModelsService.class })
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
 public class KafkaListenersScannerTest {
 
@@ -59,7 +59,7 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint(TOPIC, SimpleFoo.class.getName(), "SimpleFoo", simpleFooExample)
+                KafkaEndpoint.builder().topic(TOPIC).payloadClassName(SimpleFoo.class.getName()).payloadModelName("SimpleFoo").payloadExample(simpleFooExample).build()
         );
     }
 
@@ -73,7 +73,7 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint(TOPIC, SimpleFoo.class.getName(), "SimpleFoo", simpleFooExample)
+                KafkaEndpoint.builder().topic(TOPIC).payloadClassName(SimpleFoo.class.getName()).payloadModelName("SimpleFoo").payloadExample(simpleFooExample).build()
         );
     }
 
@@ -85,8 +85,8 @@ public class KafkaListenersScannerTest {
 
         // Then the returned collection contains the methods' details
         assertThat(consumersDetails).containsExactlyInAnyOrder(
-                new KafkaEndpoint(TOPIC + "1", SimpleFoo.class.getName(), "SimpleFoo", simpleFooExample),
-                new KafkaEndpoint(TOPIC + "2", SimpleFoo.class.getName(), "SimpleFoo", simpleFooExample)
+                KafkaEndpoint.builder().topic(TOPIC + "1").payloadClassName(SimpleFoo.class.getName()).payloadModelName("SimpleFoo").payloadExample(simpleFooExample).build(),
+                KafkaEndpoint.builder().topic(TOPIC + "2").payloadClassName(SimpleFoo.class.getName()).payloadModelName("SimpleFoo").payloadExample(simpleFooExample).build()
         );
     }
     private static class ClassWithoutKafkaListenerAnnotations {
