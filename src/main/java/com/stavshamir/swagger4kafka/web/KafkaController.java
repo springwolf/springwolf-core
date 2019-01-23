@@ -1,16 +1,15 @@
 package com.stavshamir.swagger4kafka.web;
 
-import com.google.common.collect.ImmutableMap;
 import com.stavshamir.swagger4kafka.configuration.Docket;
 import com.stavshamir.swagger4kafka.dtos.Info;
 import com.stavshamir.swagger4kafka.dtos.KafkaEndpoint;
+import com.stavshamir.swagger4kafka.dtos.Payload;
+import com.stavshamir.swagger4kafka.dtos.ValidationMessage;
 import com.stavshamir.swagger4kafka.services.KafkaEndpointsService;
 import com.stavshamir.swagger4kafka.services.ModelsService;
 import com.stavshamir.swagger4kafka.validation.PayloadValidator;
 import com.stavshamir.swagger4kafka.producer.KafkaProducer;
 import io.swagger.models.Model;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -55,27 +54,15 @@ public class KafkaController {
     }
 
     @PostMapping("/validate")
-    public Map<String, String> validate(@RequestBody Payload payload) throws ClassNotFoundException {
-        try {
-            PayloadValidator.validate(payload.getObject(), payload.getClassName());
-        } catch (IllegalArgumentException ex) {
-            return ImmutableMap.of("message", ex.getMessage());
-        }
-
-        return ImmutableMap.of("message", "valid");
+    public ValidationMessage validate(@RequestBody Payload payload) {
+        return PayloadValidator.validate(payload.getObject(), payload.getClassName());
     }
 
     @PostMapping("/publish")
-    public void send(@RequestParam String topic, @RequestBody Payload payload) throws ClassNotFoundException {
-        PayloadValidator.validate(payload.getObject(), payload.getClassName());
+    public ValidationMessage send(@RequestParam String topic, @RequestBody Payload payload) {
+        ValidationMessage validation = PayloadValidator.validate(payload.getObject(), payload.getClassName());
         kafkaProducer.send(topic, payload.getObject());
-    }
-
-    @Data
-    @NoArgsConstructor
-    private static class Payload {
-        private String className;
-        private Map<String, Object> object;
+        return validation;
     }
 
 }
