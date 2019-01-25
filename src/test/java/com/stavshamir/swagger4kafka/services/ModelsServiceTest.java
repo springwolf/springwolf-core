@@ -90,7 +90,7 @@ public class ModelsServiceTest {
 
     @Test
     public void testEnumWithJsonValue() {
-        // Given an class with an enum property containing a @JsonValue method
+        // Given a class with an enum property containing a @JsonValue method
         // When the class is registered
         String modelName = modelsService.register(FooWithEnumWithValues.class);
 
@@ -100,6 +100,23 @@ public class ModelsServiceTest {
                 .get("e");
 
         // Then its enum values are correctly serialized
+        assertThat(enumProperty.getEnum())
+                .containsExactlyInAnyOrder("foo 1", "foo 2");
+    }
+
+
+    @Test
+    public void testCompositeFooWithEnumWithValues() {
+        // Given a composite class with a property which is a class with an enum property containing a @JsonValue method
+        // When the class is registered
+        modelsService.register(CompositeFooWithEnumWithValues.class);
+
+        StringProperty enumProperty = (StringProperty) modelsService.getDefinitions()
+                .get(FooWithEnumWithValues.class.getSimpleName())
+                .getProperties()
+                .get("e");
+
+        // Then the enum values of the inner class are correctly serialized
         assertThat(enumProperty.getEnum())
                 .containsExactlyInAnyOrder("foo 1", "foo 2");
     }
@@ -163,6 +180,13 @@ public class ModelsServiceTest {
     private static class FooWithEnumWithValues {
         private String s;
         private EnumWithJsonValue e;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class CompositeFooWithEnumWithValues {
+        private String s;
+        private FooWithEnumWithValues f;
     }
 
     public enum EnumWithJsonValue {

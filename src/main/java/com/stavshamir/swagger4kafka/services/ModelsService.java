@@ -46,26 +46,46 @@ public class ModelsService {
         log.debug("Registering model for {}", type.getSimpleName());
 
         Map<String, Model> models = converter.readAll(type);
+        setDeserializableEnumValues(type, models);
         this.definitions.putAll(models);
 
-        String modelName = getModelName(type);
-        setDeserializableEnumValues(type, models.get(modelName));
+        return getModelName(type);
+    }
 
-        return modelName;
+    private void setDeserializableEnumValues(Class<?> type, Map<String, Model> models) {
+        Model model = models.get(getModelName(type));
+        if (model == null) {
+            return;
+        }
+
+        setDeserializableEnumValues(type, model);
+
+        for (Field field : type.getDeclaredFields()) {
+            setDeserializableEnumValues(field.getType(), models);
+        }
     }
 
     private void setDeserializableEnumValues(Class<?> type, Model model) {
-        Map<String, List<String>> enumFieldsValues = Arrays
-                .stream(type.getDeclaredFields())
-                .filter(field -> field.getType().isEnum())
-                .collect(toMap(Field::getName,field -> getEnumValues(field.getType())));
+        Map<String, List<String>> enumFieldsValues = mapEnumFieldsNameToTheirEnumValues(type);
+        if (enumFieldsValues.isEmpty()) {
+            return;
+        }
 
-        Map<String, StringProperty> enumProperties = model.getProperties().entrySet().stream()
+        Map<String, StringProperty> enumProperties = getEnumProperties(model);
+        enumProperties.forEach((fieldName, property) -> property.setEnum(enumFieldsValues.get(fieldName)));
+    }
+
+    private Map<String, StringProperty> getEnumProperties(Model model) {
+        return model.getProperties().entrySet().stream()
                 .filter(e -> e.getValue() instanceof StringProperty)
                 .filter(e -> ((StringProperty) e.getValue()).getEnum() != null)
                 .collect(toMap(Map.Entry::getKey, e -> (StringProperty)e.getValue()));
+    }
 
-        enumProperties.forEach((fieldName, property) -> property.setEnum(enumFieldsValues.get(fieldName)));
+    private Map<String, List<String>> mapEnumFieldsNameToTheirEnumValues(Class<?> type) {
+        return Arrays.stream(type.getDeclaredFields())
+                .filter(field -> field.getType().isEnum())
+                .collect(toMap(Field::getName, field -> getEnumValues(field.getType())));
     }
 
     private List<String> getEnumValues(Class<?> type) {
