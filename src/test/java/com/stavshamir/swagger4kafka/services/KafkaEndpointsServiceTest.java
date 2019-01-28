@@ -31,7 +31,6 @@ public class KafkaEndpointsServiceTest {
         Docket docket = Docket.builder()
                 .basePackage("com.stavshamir.swagger4kafka.endpoints.consumers")
                 .build();
-        KafkaEndpointsService endpointsService = new KafkaEndpointsService(docket, kafkaListenersScanner);
 
         // Given a A class annotated with @Component and contains a method annotated with @KafkaListener
         KafkaEndpoint endpoint = KafkaEndpoint.builder()
@@ -39,6 +38,7 @@ public class KafkaEndpointsServiceTest {
                 .build();
         when(kafkaListenersScanner.getKafkaEndpointsFromClass(KafkaConsumerClass.class))
                 .thenReturn(Sets.newHashSet(endpoint));
+        KafkaEndpointsService endpointsService = new KafkaEndpointsService(docket, kafkaListenersScanner);
 
         // When getEndpoints is called
         Set<KafkaEndpoint> endpoints = endpointsService.getEndpoints();
@@ -53,11 +53,10 @@ public class KafkaEndpointsServiceTest {
         // Given docket is set but basePackage is not
         MockitoAnnotations.initMocks(this);
         Docket docket = Docket.builder().build();
-        KafkaEndpointsService endpointsService = new KafkaEndpointsService(docket, kafkaListenersScanner);
 
         // When KafkaEndpointsService's constructor is called
         // Then an exception is raised
-        assertThatThrownBy(endpointsService::getEndpoints)
+        assertThatThrownBy(() -> new KafkaEndpointsService(docket, kafkaListenersScanner))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Base package not provided - please provide a Docket bean with basePackage defined");
     }

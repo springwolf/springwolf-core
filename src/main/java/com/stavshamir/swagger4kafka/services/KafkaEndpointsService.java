@@ -24,8 +24,8 @@ public class KafkaEndpointsService {
     private final String basePackage;
     private final KafkaListenersScanner scanner;
 
-    @Getter(lazy = true)
-    private final Set<KafkaEndpoint> endpoints = scanPackageForKafkaEndpoints();
+    @Getter
+    private final Set<KafkaEndpoint> endpoints;
 
     @Autowired
     public KafkaEndpointsService(Docket docket, KafkaListenersScanner kafkaListenersScanner) {
@@ -34,6 +34,7 @@ public class KafkaEndpointsService {
                 .orElse(null);
 
         this.scanner = kafkaListenersScanner;
+        this.endpoints = scanPackageForKafkaEndpoints();
     }
 
     private Set<KafkaEndpoint> scanPackageForKafkaEndpoints() {
