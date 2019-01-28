@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 
 import org.springframework.stereotype.Service;
@@ -60,8 +62,16 @@ public class ModelsService {
 
         setDeserializableEnumValues(type, model);
 
-        for (Field field : type.getDeclaredFields()) {
-            setDeserializableEnumValues(field.getType(), models);
+        for (Field field : (type).getDeclaredFields()) {
+            Type fieldType = field.getGenericType();
+
+            if (fieldType instanceof ParameterizedType) {
+                fieldType = ((ParameterizedType) fieldType).getActualTypeArguments()[0];
+            }
+
+            if(fieldType instanceof Class<?>) {
+                setDeserializableEnumValues((Class<?>) fieldType, models);
+            }
         }
     }
 

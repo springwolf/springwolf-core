@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.Test;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -104,12 +105,27 @@ public class ModelsServiceTest {
                 .containsExactlyInAnyOrder("foo 1", "foo 2");
     }
 
-
     @Test
     public void testCompositeFooWithEnumWithValues() {
         // Given a composite class with a property which is a class with an enum property containing a @JsonValue method
         // When the class is registered
         modelsService.register(CompositeFooWithEnumWithValues.class);
+
+        StringProperty enumProperty = (StringProperty) modelsService.getDefinitions()
+                .get(FooWithEnumWithValues.class.getSimpleName())
+                .getProperties()
+                .get("e");
+
+        // Then the enum values of the inner class are correctly serialized
+        assertThat(enumProperty.getEnum())
+                .containsExactlyInAnyOrder("foo 1", "foo 2");
+    }
+
+    @Test
+    public void testCompositeFooWithEnumWithValuesInList() {
+        // Given a composite class with a property which is a class with an enum property containing a @JsonValue method
+        // When the class is registered
+        modelsService.register(CompositeFooWithEnumWithValuesInList.class);
 
         StringProperty enumProperty = (StringProperty) modelsService.getDefinitions()
                 .get(FooWithEnumWithValues.class.getSimpleName())
@@ -187,6 +203,13 @@ public class ModelsServiceTest {
     private static class CompositeFooWithEnumWithValues {
         private String s;
         private FooWithEnumWithValues f;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class CompositeFooWithEnumWithValuesInList {
+        private String s;
+        private List<FooWithEnumWithValues> f;
     }
 
     public enum EnumWithJsonValue {
