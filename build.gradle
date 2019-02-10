@@ -18,7 +18,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'com.stavshamir'
 archivesBaseName = 'swagger4kafka'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 sourceCompatibility = 1.8
 
 repositories {
@@ -70,13 +70,34 @@ signing {
 uploadArchives {
     repositories {
         mavenDeployer {
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
             pom.project {
                 name 'swagger4kafka'
                 packaging 'jar'
+                url 'https://github.com/stavshamir/swagger4kafka'
+                description 'Automated JSON API documentation for Kafka Listeners built with Spring'
+
+                scm {
+                    url 'https://github.com/stavshamir/swagger4kafka'
+                    connection 'scm:git:git://github.com/stavshamir/swagger4kafka.git'
+                    developerConnection 'scm:git:https//github.com/stavshamir/swagger4kafka.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
 
                 developers {
                     developer {
