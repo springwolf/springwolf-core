@@ -11,10 +11,13 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.stavshamir'
+archivesBaseName = 'swagger4kafka'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
@@ -24,7 +27,7 @@ repositories {
 
 dependencies {
     implementation 'io.swagger:swagger-inflector:1.0.16'
-    implementation 'io.springfox:springfox-core:2.9.2'
+    implementation 'io.springfox:springfox-core:2.8.0'
     
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -42,4 +45,47 @@ dependencies {
     testCompile('org.assertj:assertj-core:3.11.1')
 }
 
-jar.enabled = true
+jar {
+    enabled = true
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'swagger4kafka'
+                packaging 'jar'
+
+                developers {
+                    developer {
+                        id 'stavshamir'
+                        name 'Stav Shamir'
+                        email 'shamir.stav@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
