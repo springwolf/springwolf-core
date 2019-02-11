@@ -11,6 +11,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class KafkaProducer {
@@ -19,14 +20,18 @@ public class KafkaProducer {
 
     @Autowired
     public KafkaProducer(Docket docket) {
-        String bootstrapServers = docket.getBootstrapServers();
-        Map<String, Object> config = config(bootstrapServers);
-        DefaultKafkaProducerFactory<String, Map<String, Object>> factory = new DefaultKafkaProducerFactory<>(config);
+        Map<String, Object> config = config(docket);
 
+        DefaultKafkaProducerFactory<String, Map<String, Object>> factory = new DefaultKafkaProducerFactory<>(config);
         this.kafkaTemplate = new KafkaTemplate<>(factory);
     }
 
-    private Map<String, Object> config(String bootstrapServers) {
+    private Map<String, Object> config(Docket docket) {
+        return Optional.ofNullable(docket.getProducerConfiguration())
+                .orElseGet(() -> defaultConfig(docket.getBootstrapServers()));
+    }
+
+    private Map<String, Object> defaultConfig(String bootstrapServers) {
         return ImmutableMap.<String, Object>builder()
                 .put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
                 .put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class)
