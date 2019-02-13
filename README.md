@@ -22,6 +22,8 @@ and allows you to publish it to the correct topic with a single click.
 It is not another generic REST API for Kafka. 
 
 ### Usage
+_Note for  springfox users - using swagger4kafka with springfox versions before 2.9.2 might raise an exception._
+
 By applying the following instructions, methods annotated with ```@KafkaListener``` inside ```@Component``` and 
 ```@Service``` annotated classes will be scanned once in runtime. Of course, it is a requirement that the project is a
 Spring Boot project with the ```spring-kafka``` library and its relevant configurations. 
