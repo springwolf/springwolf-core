@@ -17,4 +17,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(value=RUNTIME)
 @Target(value=TYPE)
 @ComponentScan(basePackages={"com/stavshamir/swagger4kafka"})
-public @interface EnableKafkaDocumentation { }
+public @interface EnableSwagger4Kafka { }

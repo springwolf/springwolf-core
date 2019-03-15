@@ -11,11 +11,14 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.stavshamir'
-version = '0.0.1-SNAPSHOT'
+archivesBaseName = 'swagger4kafka'
+version = '1.1.0'
 sourceCompatibility = 1.8
 
 repositories {
@@ -24,7 +27,7 @@ repositories {
 
 dependencies {
     implementation 'io.swagger:swagger-inflector:1.0.16'
-    implementation 'io.springfox:springfox-core:2.9.2'
+    implementation 'io.springfox:springfox-core:2.8.0'
     
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -42,4 +45,68 @@ dependencies {
     testCompile('org.assertj:assertj-core:3.11.1')
 }
 
-jar.enabled = true
+jar {
+    enabled = true
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'swagger4kafka'
+                packaging 'jar'
+                url 'https://github.com/stavshamir/swagger4kafka'
+                description 'Automated JSON API documentation for Kafka Listeners built with Spring'
+
+                scm {
+                    url 'https://github.com/stavshamir/swagger4kafka'
+                    connection 'scm:git:git://github.com/stavshamir/swagger4kafka.git'
+                    developerConnection 'scm:git:https//github.com/stavshamir/swagger4kafka.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'stavshamir'
+                        name 'Stav Shamir'
+                        email 'shamir.stav@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
