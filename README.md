@@ -1,3 +1,6 @@
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+
 # swagger4kafka - like swagger, for Kafka!
 ##### Automated documentation for Kafka consumers built with Spring (with @KafkaListener). 
 
