@@ -2,3 +2,7 @@ language: java
 jdk: oraclejdk8
 before_install:
  - chmod +x gradlew
+env:
+ global:
+  - ossrhUsername=placeholder
+  - ossrhPassword=placeholder
