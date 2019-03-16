@@ -72,8 +72,8 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            def username = ossrhUsername ?: System.getenv('ossrhUsername')
-            def password = ossrhPassword ?: System.getenv('ossrhPassword')
+            def username = ossrhUsername ?: 'ossrhUsername'
+            def password = ossrhPassword ?: 'ossrhPassword'
 
             repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
                 authentication(userName: username, password: password)
