@@ -42,6 +42,9 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.springframework.kafka:spring-kafka-test')
 
+    testCompile 'org.projectlombok:lombok:1.18.4'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
+
     testCompile('org.assertj:assertj-core:3.11.1')
 }
 
