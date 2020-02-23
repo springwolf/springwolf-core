@@ -1,7 +1,7 @@
 dist: trusty
 
 language: java
-install: true
+install: skip
 jdk: oraclejdk8
 
 before_install:
@@ -13,4 +13,4 @@ stages:
 jobs:
   include:
     - stage: build
-      script: ./gradlew build
+      script: ./gradlew test
