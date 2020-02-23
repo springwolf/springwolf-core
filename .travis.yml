@@ -1,6 +1,7 @@
 dist: trusty
 
 language: java
+install: true
 jdk: oraclejdk8
 
 before_install:
