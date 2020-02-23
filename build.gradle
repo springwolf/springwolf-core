@@ -49,9 +49,8 @@ dependencies {
     testCompile('org.assertj:assertj-core:3.11.1')
 }
 
-jar {
-    enabled = true
-}
+jar.enabled = true
+bootJar.enabled = false
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
