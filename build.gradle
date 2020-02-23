@@ -35,7 +35,8 @@ dependencies {
 
     implementation 'com.google.guava:guava:27.0.1-jre'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
-    
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
+
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.4'
 
