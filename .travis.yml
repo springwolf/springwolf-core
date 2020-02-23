@@ -1,9 +1,7 @@
-language: java
+dist: trusty
 
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
+language: java
+jdk: oraclejdk8
 
 before_install:
   - chmod +x gradlew
