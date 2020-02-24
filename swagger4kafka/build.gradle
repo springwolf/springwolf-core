@@ -1,0 +1,128 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'java'
+    id 'maven'
+
+    id 'com.jfrog.bintray' version '1.8.4'
+    id 'maven-publish'
+
+    id 'org.springframework.boot' version '2.1.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+}
+
+version = '0.0.1'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.swagger:swagger-inflector:1.0.16'
+    implementation 'io.springfox:springfox-core:2.8.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    implementation 'com.google.guava:guava:27.0.1-jre'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.kafka:spring-kafka-test')
+
+    testCompile 'org.projectlombok:lombok:1.18.4'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
+
+    testCompile('org.assertj:assertj-core:3.11.1')
+}
+
+jar.enabled = true
+bootJar.enabled = false
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+        }
+    }
+
+    developers {
+        developer {
+            id 'stavshamir'
+            name 'Stav Shamir'
+            email 'shamir.stav@gmail.com'
+        }
+    }
+
+    scm {
+        url 'https://github.com/stavshamir/swagger4kafka'
+    }
+}
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            groupId 'io.github.stavshamir'
+            artifactId 'swagger4kafka'
+            version project.version
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Automated JSON API documentation for Kafka Listeners built with Spring')
+                root.appendNode('name', 'swagger4kafka')
+                root.appendNode('url', 'https://github.com/stavshamir/swagger4kafka')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getProperty('bintray.user')
+    key = System.getProperty('bintray.key')
+    publications = ['mavenPublication']
+
+    pkg {
+        repo = 'swagger4kafka'
+        name = 'swagger4kafka'
+        userOrg = 'stavshamir'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/stavshamir/swagger4kafka.git'
+        version {
+            name = project.version
+            desc = 'Automated JSON API documentation for Kafka Listeners built with Spring'
+            released = new Date()
+        }
+    }
+}
