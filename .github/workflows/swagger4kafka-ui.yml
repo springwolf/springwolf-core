@@ -1,9 +1,9 @@
-name: swagger4kafka
+name: swagger4kafka-ui
 
 on:
   push:
     paths:
-      - 'swagger4kafka/*'
+      - 'swagger4kafka-ui/*'
 
 jobs:
   build:
@@ -22,4 +22,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew -p swagger4kafka test
+        run: ./gradlew -p swagger4kafka-ui build

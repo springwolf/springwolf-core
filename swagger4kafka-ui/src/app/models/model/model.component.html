@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-12">
+    <div class="border rounded p-2" style="background-color: lightgrey">
+      <h5 style="cursor: pointer;" (click)="isOpen =! isOpen">
+        {{ modelName }}
+      </h5>
+      <div *ngIf="isOpen">
+        <div class="row" *ngFor="let item of model.properties | keyvalue">
+          <div class="col-5">
+            {{ item.key }}
+          </div>
+          <div class="col-7" *ngIf="item.value.type">
+            <div class="row">
+              <div class="col-12">
+                {{ item.value.type }}
+                <span class="font-italic" *ngIf="item.value.format"> {{ item.value.format }}</span>
+              </div>
+            </div>
+            <div class="row" *ngIf="item.value.type === 'string' && item.value.enum">
+              <div class="col-12">
+                Enum: [ {{ item.value.enum.join(', ') }} ]
+              </div>
+            </div>
+          </div>
+          <div class="col-7" *ngIf="item.value.$ref">
+            <div class="row">
+              <div class="col-12">
+                {{ item.value.$ref }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

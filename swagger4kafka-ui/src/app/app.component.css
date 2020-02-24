@@ -1,0 +1,8 @@
+.header {
+  padding-bottom: 0.5rem !important;
+  padding-top: 0.5rem !important;
+  padding-left: 0.5rem !important;
+  border-bottom: 1px solid #dee2e6 !important;
+  margin-bottom: 1.5rem !important;
+  background-color: lightblue;
+}
