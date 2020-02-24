@@ -14,6 +14,8 @@ A web-based UI can be added as a [separate dependency](https://github.com/stavsh
 
 Both the library and the UI are designed to be mostly familiar to Swagger users.
 
+![](s4k-example.jpg)
+
 ### Why should you use it
 In projects using Kafka, you may often find yourself needing to manually send a message to some topic, whether if you
 are manually testing a new feature, debugging or trying to understand some flow. This requires serializing your payload
