@@ -1,0 +1,80 @@
+plugins {
+  id 'java'
+  id 'com.moowork.node' version '1.2.0'
+
+  id 'com.jfrog.bintray' version '1.8.4'
+  id 'maven-publish'
+}
+
+version = '0.0.1'
+
+node {
+  version = '9.2.0'
+  npmVersion = '6.4.1'
+  download = true
+}
+
+jar {
+  dependsOn 'npm_run_build'
+  metaInf { from 'dist/swagger4kafka-ui' into 'resources' }
+}
+
+
+def pomConfig = {
+  licenses {
+    license {
+      name 'The Apache License, Version 2.0'
+      url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    }
+  }
+
+  developers {
+    developer {
+      id 'stavshamir'
+      name 'Stav Shamir'
+      email 'shamir.stav@gmail.com'
+    }
+  }
+
+  scm {
+    url 'https://github.com/stavshamir/swagger4kafka'
+  }
+}
+
+publishing {
+  publications {
+    mavenPublication(MavenPublication) {
+      artifact jar
+
+      groupId 'io.github.stavshamir'
+      artifactId 'swagger4kafka-ui'
+      version project.version
+      pom.withXml {
+        def root = asNode()
+        root.appendNode('description', 'Automated JSON API documentation for Kafka Listeners built with Spring')
+        root.appendNode('name', 'swagger4kafka-ui')
+        root.appendNode('url', 'https://github.com/stavshamir/swagger4kafka')
+        root.children().last() + pomConfig
+      }
+    }
+  }
+}
+
+bintray {
+  user = System.getProperty('bintray.user')
+  key = System.getProperty('bintray.key')
+  publications = ['mavenPublication']
+
+  pkg {
+    repo = 'swagger4kafka'
+    name = 'swagger4kafka-ui'
+    userOrg = 'stavshamir'
+    licenses = ['Apache-2.0']
+    vcsUrl = 'https://github.com/stavshamir/swagger4kafka.git'
+    version {
+      name = project.version
+      desc = 'Frontend for swagger4kafka - An automated JSON API documentation for Kafka Listeners built with Spring'
+      released = new Date()
+    }
+  }
+}

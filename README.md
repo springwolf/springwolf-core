@@ -1,5 +1,6 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
+![swagger4kafka](https://github.com/stavshamir/swagger4kafka/workflows/swagger4kafka/badge.svg)
+![swagger4kafka-ui](https://github.com/stavshamir/swagger4kafka/workflows/swagger4kafka-ui/badge.svg)
 
 # swagger4kafka - like swagger, for Kafka!
 ##### Automated documentation for Kafka consumers built with Spring (with @KafkaListener). 
@@ -27,14 +28,14 @@ and allows you to publish it to the correct topic with a single click.
 It is not another generic REST API for Kafka. 
 
 ### Usage
-_Note for  springfox users - using swagger4kafka with springfox versions before 2.9.2 might raise an exception._
+_Note for springfox users - using swagger4kafka with springfox versions before 2.9.2 might raise an exception._
 
 By applying the following instructions, methods annotated with ```@KafkaListener``` inside ```@Component``` and 
 ```@Service``` annotated classes will be scanned once in runtime. Of course, it is a requirement that the project is a
 Spring Boot project with the ```spring-kafka``` library and its relevant configurations. 
 
 #### Dependencies
-swagger4kafka is hosted on maven central.
+swagger4kafka is hosted on jcenter.
 ##### Gradle
 ```groovy
 repositories {
@@ -43,7 +44,7 @@ repositories {
 
 dependencies {
     // Provides the documentation API    
-    implementation 'com.stavshamir:swagger4kafka:1.1.0'
+    implementation 'io.github.stavshamir:swagger4kafka:0.0.1'
     
     // Provides the UI - optional (recommended)
     implementation 'com.stavshamir:swagger4kafka-ui:1.0.0'
@@ -53,9 +54,9 @@ dependencies {
 ```xml
 <dependencies>
     <dependency>
-      <groupId>com.stavshamir</groupId>
+      <groupId>io.github.stavshamir</groupId>
       <artifactId>swagger4kafka</artifactId>
-      <version>1.1.0</version>
+      <version>0.0.1</version>
     </dependency>
     <dependency>
       <groupId>com.stavshamir</groupId>
@@ -75,7 +76,7 @@ public class Swagger4KafkaConfiguration {
     public Docket docket() {
         return Docket.builder()
                 .serviceName("Swagger4Kafka Example Project")
-                .basePackage("com.stavshamir.swagger4kafka.example.consumers")
+                .basePackage("io.github.stavshamir.swagger4kafka.example.consumers")
                 .bootstrapServers("localhost:9092")
                 .build();
     }
@@ -98,7 +99,7 @@ A default Kafka producer implementation is provided, but a custom producer with 
 public Docket docket() {
     return Docket.builder()
             .serviceName("Swagger4Kafka Example Project")
-            .basePackage("com.stavshamir.swagger4kafka.example.consumers")
+            .basePackage("io.github.stavshamir.swagger4kafka.example.consumers")
             .producerConfiguration(producerConfiguration())
             .build();
 }
