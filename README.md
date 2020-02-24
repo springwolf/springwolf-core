@@ -1,5 +1,6 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Build Status](https://travis-ci.com/stavshamir/swagger4kafka.svg?branch=master)](https://travis-ci.com/stavshamir/swagger4kafka)
+![swagger4kafka](https://github.com/stavshamir/swagger4kafka/workflows/swagger4kafka/badge.svg)
+![swagger4kafka-ui](https://github.com/stavshamir/swagger4kafka/workflows/swagger4kafka-ui/badge.svg)
 
 # swagger4kafka - like swagger, for Kafka!
 ##### Automated documentation for Kafka consumers built with Spring (with @KafkaListener). 
