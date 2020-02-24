@@ -10,7 +10,7 @@ it documents Spring Kafka consumers.
 
 It works by scanning the application once at runtime for methods annotated with ```@KafkaListener``` inside 
 ```@Component``` and ```@Service``` annotated classes, and providing a REST API to access the collected information.
-A web-based UI can be added as a [separate dependency](https://github.com/stavshamir/swagger4kafka-ui).    
+A web-based UI can be added as a separate dependency.    
 
 Both the library and the UI are designed to be mostly familiar to Swagger users.
 
@@ -37,6 +37,10 @@ Spring Boot project with the ```spring-kafka``` library and its relevant configu
 swagger4kafka is hosted on maven central.
 ##### Gradle
 ```groovy
+repositories {
+    jcenter()
+}
+
 dependencies {
     // Provides the documentation API    
     implementation 'com.stavshamir:swagger4kafka:1.1.0'
