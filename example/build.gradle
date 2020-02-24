@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+}
+
+group = 'io.github.stavshamir'
+version = '0.0.1'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    implementation 'io.github.stavshamir:swagger4kafka:0.0.1'
+    implementation 'com.stavshamir:swagger4kafka-ui:1.0.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+}
