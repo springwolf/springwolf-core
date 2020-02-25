@@ -1,8 +1,8 @@
 package io.github.stavshamir.swagger4kafka.example.configuration;
 
 import com.google.common.collect.ImmutableMap;
-import com.stavshamir.swagger4kafka.configuration.Docket;
-import com.stavshamir.swagger4kafka.configuration.EnableSwagger4Kafka;
+import io.github.stavshamir.swagger4kafka.configuration.Docket;
+import io.github.stavshamir.swagger4kafka.configuration.EnableSwagger4Kafka;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

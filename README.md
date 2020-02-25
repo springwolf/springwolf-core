@@ -47,7 +47,7 @@ dependencies {
     implementation 'io.github.stavshamir:swagger4kafka:0.0.1'
     
     // Provides the UI - optional (recommended)
-    implementation 'com.stavshamir:swagger4kafka-ui:1.0.0'
+    implementation 'io.github.stavshamir:swagger4kafka-ui:0.0.1'
 }
 ```
 ##### Maven
@@ -59,9 +59,9 @@ dependencies {
       <version>0.0.1</version>
     </dependency>
     <dependency>
-      <groupId>com.stavshamir</groupId>
+      <groupId>io.github.stavshamir</groupId>
       <artifactId>swagger4kafka-ui</artifactId>
-      <version>1.0.0</version>
+      <version>0.0.1</version>
     </dependency>
 </dependencies>
 ```
