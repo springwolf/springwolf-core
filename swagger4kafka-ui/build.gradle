@@ -20,6 +20,16 @@ jar {
 }
 
 
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+artifacts {
+  archives sourcesJar
+}
+
+
 def pomConfig = {
   licenses {
     license {
@@ -45,6 +55,10 @@ publishing {
   publications {
     mavenPublication(MavenPublication) {
       artifact jar
+
+      artifact sourcesJar {
+        classifier "sources"
+      }
 
       groupId 'io.github.stavshamir'
       artifactId 'swagger4kafka-ui'
