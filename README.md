@@ -115,4 +115,4 @@ private Map<String, Object> producerConfiguration() {
 ``` 
 
 ### Example Project
- An example project can be found [here](https://github.com/stavshamir/swagger4kafka-example).
+ An example project can be found [here](https://github.com/stavshamir/swagger4kafka/tree/master/example).
