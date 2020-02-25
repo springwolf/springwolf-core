@@ -3,7 +3,7 @@ name: swagger4kafka
 on:
   push:
     paths:
-      - 'swagger4kafka/*'
+      - 'swagger4kafka/**'
 
 jobs:
   build:
