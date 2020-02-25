@@ -25,7 +25,7 @@ public class Swagger4KafkaConfiguration {
     @Bean
     public Docket docket() {
         return Docket.builder()
-                .serviceName("Swagger4Kafka Example Project")
+                .serviceName("swagger4kafka Example Project")
                 .basePackage("io.github.stavshamir.swagger4kafka.example.consumers")
                 .producerConfiguration(producerConfiguration())
                 .build();
