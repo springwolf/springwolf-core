@@ -18,7 +18,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
 
     implementation 'io.github.stavshamir:swagger4kafka:0.0.1'
-    implementation 'com.stavshamir:swagger4kafka-ui:1.0.0'
+    implementation 'io.github.stavshamir:swagger4kafka-ui:0.0.1'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
