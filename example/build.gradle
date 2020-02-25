@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.1.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'com.bmuschko.docker-spring-boot-application' version '6.1.4'
 }
 
 group = 'io.github.stavshamir'
@@ -23,4 +24,18 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
+}
+
+docker {
+    springBootApplication {
+        maintainer = 'shamir.stav@gmail.com'
+        baseImage = 'openjdk:8-alpine'
+        ports = [8080]
+        images = ['stavshamir/swagger4kafka-example:' + project.version]
+    }
+
+    registryCredentials {
+        username = System.getProperty('dockerhub.username')
+        password = System.getProperty('dockerhub.password')
+    }
 }
