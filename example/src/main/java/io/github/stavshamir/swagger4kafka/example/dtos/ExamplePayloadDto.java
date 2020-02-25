@@ -34,4 +34,13 @@ public class ExamplePayloadDto {
         FOO1, FOO2, FOO3
     }
 
+    @Override
+    public String toString() {
+        return "ExamplePayloadDto{" +
+                "someString='" + someString + '\'' +
+                ", someLong=" + someLong +
+                ", someEnum=" + someEnum +
+                '}';
+    }
+
 }
