@@ -2,14 +2,15 @@ plugins {
     id 'java'
     id 'maven'
 
-    id 'com.jfrog.bintray' version '1.8.4'
     id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.8.4'
+    id 'com.jfrog.artifactory' version '4.13.0'
 
     id 'org.springframework.boot' version '2.1.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
-version = '0.0.1'
+version = '0.0.1' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
 sourceCompatibility = 1.8
 
 repositories {
@@ -119,4 +120,24 @@ bintray {
             released = new Date()
         }
     }
+}
+
+artifactory {
+    contextUrl = 'http://oss.jfrog.org'
+    publish {
+        repository {
+            repoKey = 'oss-snapshot-local'
+            username = System.getProperty('bintray.user')
+            password = System.getProperty('bintray.key')
+        }
+        defaults {
+            publications('mavenPublication')
+            publishArtifacts = true
+            publishPom = true
+        }
+    }
+    resolve {
+        repoKey = 'jcenter'
+    }
+    clientConfig.info.setBuildNumber(System.getProperty('build.number'))
 }
