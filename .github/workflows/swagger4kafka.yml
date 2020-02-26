@@ -23,3 +23,10 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew -p swagger4kafka build
+
+      - name: Publish snapshot
+        run: ./gradlew -p swagger4kafka artifactoryPublish -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dsnapshot=true -Dbuild.number=$GITHUB_RUN_NUMBER
+        env:
+          - BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          - BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+
