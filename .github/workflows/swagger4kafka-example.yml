@@ -2,7 +2,8 @@ name: Example Project
 
 on:
   push:
-    paths: 
+    paths:
+      - '.github/workflows/swagger4kafka-example.yml'
       - 'swagger4kafka-example/**'
 
 jobs:
@@ -22,4 +23,4 @@ jobs:
       run: chmod +x gradlew
     
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew -p swagger4kafka-example build
