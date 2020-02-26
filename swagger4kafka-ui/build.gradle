@@ -6,7 +6,7 @@ plugins {
   id 'maven-publish'
 }
 
-version = '0.0.1'
+version = rootProject.uiVersion
 
 node {
   version = '9.2.0'
@@ -60,7 +60,7 @@ publishing {
         classifier "sources"
       }
 
-      groupId 'io.github.stavshamir'
+      groupId project.group
       artifactId 'swagger4kafka-ui'
       version project.version
       pom.withXml {

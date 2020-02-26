@@ -1,3 +1,9 @@
 allprojects {
     group = 'io.github.stavshamir'
 }
+
+ext {
+    coreVersion = '0.0.1'
+    uiVersion = '0.0.1'
+    exampleVersion = '0.1.0'
+}

@@ -10,7 +10,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
-version = '0.0.1' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
+version = rootProject.coreVersion + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
 sourceCompatibility = 1.8
 
 repositories {
@@ -89,7 +89,7 @@ publishing {
             artifact javadocJar {
                 classifier "javadoc"
             }
-            groupId 'io.github.stavshamir'
+            groupId project.group
             artifactId 'swagger4kafka'
             version project.version
             pom.withXml {
