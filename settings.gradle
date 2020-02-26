@@ -1,2 +1,4 @@
 rootProject.name = 'swagger4kafka'
 
+include 'swagger4kafka-core', 'swagger4kafka-ui', 'swagger4kafka-example'
+

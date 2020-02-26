@@ -3,8 +3,8 @@ name: swagger4kafka
 on:
   push:
     paths:
-      - '.github/workflows/swagger4kafka.yml'
-      - 'swagger4kafka/**'
+      - '.github/workflows/swagger4kafka-core.yml'
+      - 'swagger4kafka-core/**'
 
 jobs:
   build:

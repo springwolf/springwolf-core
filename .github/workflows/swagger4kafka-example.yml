@@ -3,7 +3,7 @@ name: Example Project
 on:
   push:
     paths: 
-      - 'example/**'
+      - 'swagger4kafka-example/**'
 
 jobs:
   build:
