@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![swagger4kafka](https://github.com/stavshamir/swagger4kafka/workflows/swagger4kafka/badge.svg)
+![swagger4kafka](https://github.com/stavshamir/swagger4kafka/workflows/swagger4kafka-core/badge.svg)
 ![swagger4kafka-ui](https://github.com/stavshamir/swagger4kafka/workflows/swagger4kafka-ui/badge.svg)
 
 # swagger4kafka - like swagger, for Kafka!
@@ -115,4 +115,4 @@ private Map<String, Object> producerConfiguration() {
 ``` 
 
 ### Example Project
- An example project can be found [here](https://github.com/stavshamir/swagger4kafka/tree/master/example).
+ An example project can be found [here](https://github.com/stavshamir/swagger4kafka/tree/master/swagger4kafka-example).
