@@ -1,4 +1,4 @@
-name: swagger4kafka
+name: swagger4kafka-core
 
 on:
   push:
