@@ -23,7 +23,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew -p swagger4kafka build
+        run: ./gradlew -p swagger4kafka-core build
 
       - name: Publish snapshot
         run: ./gradlew -p swagger4kafka-core artifactoryPublish -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dsnapshot=true -Dbuild.number=$GITHUB_RUN_NUMBER
