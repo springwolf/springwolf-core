@@ -31,3 +31,5 @@ jobs:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
 
+      - name: Run integration tests
+        run: ./gradlew -p swagger4kafka-example test

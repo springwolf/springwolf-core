@@ -1,4 +1,4 @@
-name: Example Project
+name: swagger4kafka-example
 
 on:
   push:
@@ -22,5 +22,5 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     
-    - name: Build with Gradle
-      run: ./gradlew -p swagger4kafka-example build
+    - name: Run integration tests
+      run: ./gradlew -p swagger4kafka-example test
