@@ -2,6 +2,8 @@ name: swagger4kafka-core
 
 on:
   push:
+    branches: 
+      - master
     paths:
       - '.github/workflows/swagger4kafka-core.yml'
       - 'swagger4kafka-core/**'
