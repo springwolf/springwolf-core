@@ -21,7 +21,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'com.google.guava:guava:27.0.1-jre'
 
-    implementation "io.github.stavshamir:swagger4kafka:${rootProject.coreVersion}-SNAPSHOT"
+    implementation "io.github.stavshamir:swagger4kafka:${rootProject.coreVersion}"
     implementation "io.github.stavshamir:swagger4kafka-ui:${rootProject.uiVersion}"
 
     testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
