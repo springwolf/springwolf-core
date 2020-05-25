@@ -3,7 +3,7 @@ allprojects {
 }
 
 ext {
-    coreVersion = '0.0.1'
+    coreVersion = '0.0.2'
     uiVersion = '0.0.1'
     exampleVersion = '0.1.0'
     integrationTestsVersion = '0.0.1'
