@@ -28,8 +28,6 @@ and allows you to publish it to the correct topic with a single click.
 It is not another generic REST API for Kafka. 
 
 ### Usage
-_Note for springfox users - using swagger4kafka with springfox versions before 2.9.2 might raise an exception._
-
 By applying the following instructions, methods annotated with ```@KafkaListener``` inside ```@Component``` and 
 ```@Service``` annotated classes will be scanned once in runtime. Of course, it is a requirement that the project is a
 Spring Boot project with the ```spring-kafka``` library and its relevant configurations. 
@@ -44,7 +42,7 @@ repositories {
 
 dependencies {
     // Provides the documentation API    
-    implementation 'io.github.stavshamir:swagger4kafka:0.0.1'
+    implementation 'io.github.stavshamir:swagger4kafka:0.0.2'
     
     // Provides the UI - optional (recommended)
     implementation 'io.github.stavshamir:swagger4kafka-ui:0.0.1'
@@ -56,7 +54,7 @@ dependencies {
     <dependency>
       <groupId>io.github.stavshamir</groupId>
       <artifactId>swagger4kafka</artifactId>
-      <version>0.0.1</version>
+      <version>0.0.2</version>
     </dependency>
     <dependency>
       <groupId>io.github.stavshamir</groupId>
