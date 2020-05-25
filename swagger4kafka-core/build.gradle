@@ -19,7 +19,6 @@ repositories {
 
 dependencies {
     implementation 'io.swagger:swagger-inflector:1.0.16'
-    implementation 'io.springfox:springfox-core:2.8.0'
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
