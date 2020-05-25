@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/swagger4kafka-example.yml'
       - 'swagger4kafka-example/**'
+      - 'build.gradle'
 
 jobs:
   build:
