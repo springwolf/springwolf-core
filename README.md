@@ -42,7 +42,7 @@ repositories {
 
 dependencies {
     // Provides the documentation API    
-    implementation 'io.github.stavshamir:swagger4kafka:0.0.2'
+    implementation 'io.github.stavshamir:swagger4kafka:0.0.3'
     
     // Provides the UI - optional (recommended)
     implementation 'io.github.stavshamir:swagger4kafka-ui:0.0.1'
@@ -54,7 +54,7 @@ dependencies {
     <dependency>
       <groupId>io.github.stavshamir</groupId>
       <artifactId>swagger4kafka</artifactId>
-      <version>0.0.2</version>
+      <version>0.0.3</version>
     </dependency>
     <dependency>
       <groupId>io.github.stavshamir</groupId>
