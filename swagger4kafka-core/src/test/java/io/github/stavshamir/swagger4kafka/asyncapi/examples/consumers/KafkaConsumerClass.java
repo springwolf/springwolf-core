@@ -1,18 +1,21 @@
-package io.github.stavshamir.swagger4kafka.endpoints.consumers;
+package io.github.stavshamir.swagger4kafka.asyncapi.examples.consumers;
 
+import lombok.Data;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-/**
- * This class is used by KafkaEndpointServiceTest.
- * Do not change or move.
- */
 @Component
 public class KafkaConsumerClass {
 
     public final static String TOPIC = "test-topic";
 
     @KafkaListener(topics = TOPIC)
-    private void listenerMethod(String payload) {}
+    private void listenerMethod(ExamplePayload payload) {
+    }
+
+    @Data
+    public static class ExamplePayload {
+        String s;
+    }
 
 }

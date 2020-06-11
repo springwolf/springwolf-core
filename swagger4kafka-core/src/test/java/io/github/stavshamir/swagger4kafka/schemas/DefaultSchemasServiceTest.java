@@ -1,4 +1,4 @@
-package io.github.stavshamir.swagger4kafka.services;
+package io.github.stavshamir.swagger4kafka.schemas;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,12 +12,11 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ModelsServiceTest {
+public class DefaultSchemasServiceTest {
 
-    private ModelsService modelsService = new ModelsService();
+    private SchemasService schemasService = new DefaultSchemasService();
 
     private static final String EXAMPLES_PATH = "/models/examples";
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
@@ -28,7 +27,7 @@ public class ModelsServiceTest {
     public void simpleObject() {
         // Given a registered simple object
         // When register is called
-        String modelName = modelsService.register(SimpleFoo.class);
+        String modelName = schemasService.register(SimpleFoo.class);
 
         // Then the returned value is the class name
         assertThat(modelName)
@@ -38,10 +37,10 @@ public class ModelsServiceTest {
     @Test
     public void getExample_simpleObject() throws IOException {
         // Given a registered simple object
-        String modelName = modelsService.register(SimpleFoo.class);
+        String modelName = schemasService.register(SimpleFoo.class);
 
         // When getExample is called
-        Map<String, Object> example = modelsService.getExample(modelName);
+        Map<String, Object> example = schemasService.getExample(modelName);
         Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/simple-foo.json");
 
         // Then it returns the correct example object as json
@@ -52,10 +51,10 @@ public class ModelsServiceTest {
     @Test
     public void getExample_compositeObject() throws IOException {
         // Given a registered composite object
-        String modelName = modelsService.register(CompositeFoo.class);
+        String modelName = schemasService.register(CompositeFoo.class);
 
         // When getExample is called
-        Map<String, Object> example = modelsService.getExample(modelName);
+        Map<String, Object> example = schemasService.getExample(modelName);
         Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/composite-foo.json");
 
         // Then it returns the correct example object as json
@@ -68,14 +67,14 @@ public class ModelsServiceTest {
         Map expectedDefinitions = jsonResourceAsMap("/models/definitions.json");
 
         // Given registered classes
-        modelsService.register(CompositeFoo.class);
-        modelsService.register(FooWithEnum.class);
+        schemasService.register(CompositeFoo.class);
+        schemasService.register(FooWithEnum.class);
 
         // When getModelsAsJson is called
-        String actualDefinitionsJson = objectMapper.writeValueAsString(modelsService.getDefinitions());
+        String actualDefinitionsJson = objectMapper.writeValueAsString(schemasService.getDefinitions());
         Map actualDefinitions = objectMapper.readValue(actualDefinitionsJson, Map.class);
 
-        // Then it contains the correctly serialized modelsService
+        // Then it contains the correctly serialized schemasService
         assertThat(actualDefinitions)
                 .isEqualTo(expectedDefinitions);
     }
