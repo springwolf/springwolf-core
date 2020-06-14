@@ -1,13 +1,12 @@
 package io.github.stavshamir.swagger4kafka.asyncapi;
 
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.Channel;
-import io.github.stavshamir.swagger4kafka.configuration.Docket;
+import io.github.stavshamir.swagger4kafka.configuration.AsyncApiDocket;
 import io.github.stavshamir.swagger4kafka.configuration.protocol.AsyncApiProtocolConfiguration;
 import io.github.stavshamir.swagger4kafka.configuration.protocol.KafkaProtocolConfiguration;
 import io.github.stavshamir.swagger4kafka.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.swagger4kafka.scanners.channels.ScannerBeanNames;
 import io.github.stavshamir.swagger4kafka.scanners.components.ComponentsScanner;
-import io.github.stavshamir.swagger4kafka.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ import static java.util.stream.Collectors.toMap;
 @RequiredArgsConstructor
 public class DefaultChannelsService implements ChannelsService {
 
-    private final Docket docket;
+    private final AsyncApiDocket docket;
     private final ComponentsScanner componentsScanner;
     private final Map<String, ChannelsScanner> channelsScanners;
 

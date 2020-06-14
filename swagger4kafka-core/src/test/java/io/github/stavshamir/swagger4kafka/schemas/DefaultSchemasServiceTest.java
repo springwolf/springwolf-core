@@ -2,21 +2,26 @@ package io.github.stavshamir.swagger4kafka.schemas;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.stavshamir.swagger4kafka.test.Utils;
+import io.swagger.v3.oas.models.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.io.IOException;
-import java.util.Map;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefaultSchemasServiceTest {
 
-    private SchemasService schemasService = new DefaultSchemasService();
+    private final SchemasService schemasService = new DefaultSchemasService();
 
-    private static final String EXAMPLES_PATH = "/models/examples";
+    private static final String EXAMPLES_PATH = "/schemas/examples";
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
@@ -24,63 +29,47 @@ public class DefaultSchemasServiceTest {
     }
 
     @Test
-    public void simpleObject() {
-        // Given a registered simple object
-        // When register is called
+    public void simpleObject() throws IOException, JSONException {
         String modelName = schemasService.register(SimpleFoo.class);
 
-        // Then the returned value is the class name
         assertThat(modelName)
                 .isEqualTo("SimpleFoo");
+
+        Schema schema = schemasService.getDefinitions().get(modelName);
+        String example = objectMapper.writeValueAsString(schema.getExample());
+
+        String expectedExample = jsonResource(EXAMPLES_PATH + "/simple-foo.json");
+
+        JSONAssert.assertEquals(expectedExample, example, JSONCompareMode.NON_EXTENSIBLE);
     }
 
     @Test
-    public void getExample_simpleObject() throws IOException {
-        // Given a registered simple object
-        String modelName = schemasService.register(SimpleFoo.class);
-
-        // When getExample is called
-        Map<String, Object> example = schemasService.getExample(modelName);
-        Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/simple-foo.json");
-
-        // Then it returns the correct example object as json
-        assertThat(example)
-                .isEqualTo(expectedExample);
-    }
-
-    @Test
-    public void getExample_compositeObject() throws IOException {
-        // Given a registered composite object
+    public void compositeObject() throws IOException, JSONException {
         String modelName = schemasService.register(CompositeFoo.class);
 
-        // When getExample is called
-        Map<String, Object> example = schemasService.getExample(modelName);
-        Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/composite-foo.json");
+        Schema schema = schemasService.getDefinitions().get(modelName);
+        String example = objectMapper.writeValueAsString(schema.getExample());
+
+        String expectedExample = jsonResource(EXAMPLES_PATH + "/composite-foo.json");
 
         // Then it returns the correct example object as json
-        assertThat(example)
-                .isEqualTo(expectedExample);
+        JSONAssert.assertEquals(expectedExample, example, JSONCompareMode.NON_EXTENSIBLE);
     }
 
     @Test
-    public void getDefinitions() throws IOException {
-        Map expectedDefinitions = jsonResourceAsMap("/models/definitions.json");
-
-        // Given registered classes
+    public void getDefinitions() throws IOException, JSONException {
         schemasService.register(CompositeFoo.class);
         schemasService.register(FooWithEnum.class);
 
-        // When getModelsAsJson is called
-        String actualDefinitionsJson = objectMapper.writeValueAsString(schemasService.getDefinitions());
-        Map actualDefinitions = objectMapper.readValue(actualDefinitionsJson, Map.class);
+        String actualDefinitions = objectMapper.writeValueAsString(schemasService.getDefinitions());
+        String expected = jsonResource("/schemas/definitions.json");
 
-        // Then it contains the correctly serialized schemasService
-        assertThat(actualDefinitions)
-                .isEqualTo(expectedDefinitions);
+        JSONAssert.assertEquals(expected, actualDefinitions, JSONCompareMode.NON_EXTENSIBLE);
     }
 
-    private Map jsonResourceAsMap(String path) throws IOException {
-        return Utils.jsonResourceAsMap(this.getClass(), path);
+    private String jsonResource(String path) throws IOException {
+        InputStream s = this.getClass().getResourceAsStream(path);
+        return IOUtils.toString(s, StandardCharsets.UTF_8);
     }
 
     @Data

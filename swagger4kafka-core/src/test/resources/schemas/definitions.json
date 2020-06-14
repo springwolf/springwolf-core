@@ -1,0 +1,54 @@
+{
+  "CompositeFoo": {
+    "type": "object",
+    "properties": {
+      "s": {
+        "type": "string"
+      },
+      "f": {
+        "$ref": "#/components/schemas/SimpleFoo"
+      }
+    },
+    "example": {
+      "s": "string",
+      "f": {
+        "s": "string",
+        "b": true
+      }
+    }
+  },
+  "SimpleFoo": {
+    "type": "object",
+    "properties": {
+      "s": {
+        "type": "string"
+      },
+      "b": {
+        "type": "boolean"
+      }
+    },
+    "example": {
+      "s": "string",
+      "b": true
+    }
+  },
+  "FooWithEnum": {
+    "type": "object",
+    "properties": {
+      "s": {
+        "type": "string"
+      },
+      "b": {
+        "type": "string",
+        "enum": [
+          "BAR1",
+          "BAR2"
+        ]
+      }
+    },
+    "example": {
+      "s": "string",
+      "b": "BAR1"
+    }
+  }
+}

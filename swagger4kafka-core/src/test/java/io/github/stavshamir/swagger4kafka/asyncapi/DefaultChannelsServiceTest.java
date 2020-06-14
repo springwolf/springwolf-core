@@ -6,7 +6,7 @@ import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.Opera
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.info.Info;
-import io.github.stavshamir.swagger4kafka.configuration.Docket;
+import io.github.stavshamir.swagger4kafka.configuration.AsyncApiDocket;
 import io.github.stavshamir.swagger4kafka.configuration.protocol.AsyncApiProtocolConfiguration;
 import io.github.stavshamir.swagger4kafka.configuration.protocol.KafkaProtocolConfiguration;
 import io.github.stavshamir.swagger4kafka.scanners.channels.KafkaChannelsScanner;
@@ -41,7 +41,7 @@ public class DefaultChannelsServiceTest {
     public static class DefaultChannelsServiceTestConfiguration {
 
         @Bean
-        public Docket docket() {
+        public AsyncApiDocket docket() {
             Info info = Info.builder()
                     .title("Test")
                     .version("1.0.0")
@@ -51,7 +51,7 @@ public class DefaultChannelsServiceTest {
                     .basePackage(KafkaConsumerClass.class.getPackage().getName())
                     .build();
 
-            return Docket.builder()
+            return AsyncApiDocket.builder()
                     .info(info)
                     .protocol(kafkaProtocol)
                     .build();

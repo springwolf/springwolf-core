@@ -24,7 +24,6 @@ public class DefaultSchemasService implements SchemasService {
     private final ModelConverters converter = ModelConverters.getInstance();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Getter
     private final Map<String, Schema> definitions = new HashMap<>();
 
     public DefaultSchemasService() {
@@ -32,6 +31,12 @@ public class DefaultSchemasService implements SchemasService {
 
         SimpleModule simpleModule = new SimpleModule().addSerializer(new JsonNodeExampleSerializer());
         Json.mapper().registerModule(simpleModule);
+    }
+
+    @Override
+    public Map<String, Schema> getDefinitions() {
+        definitions.forEach((k, schema) -> setExample(schema));
+        return definitions;
     }
 
     @Override
@@ -44,23 +49,16 @@ public class DefaultSchemasService implements SchemasService {
         return type.getSimpleName();
     }
 
-    @Override
-    public Map<String, Object> getExample(String modelName) {
-        Schema<?> schema = definitions.get(modelName);
-
-        if (null == schema) {
-            log.error("Model for {} was not found", modelName);
-            return null;
-        }
+    private void setExample(Schema schema) {
+        log.debug("Setting example for {}", schema.getName());
 
         Example example = ExampleBuilder.fromSchema(schema, definitions);
         String exampleAsJson = Json.pretty(example);
 
         try {
-            return objectMapper.readValue(exampleAsJson, Map.class);
+            schema.setExample(objectMapper.readValue(exampleAsJson, Map.class));
         } catch (IOException e) {
-            log.error("Failed to convert example object of {} to map", modelName);
-            return null;
+            log.error("Failed to convert example object of {} to map", schema.getName());
         }
     }
 

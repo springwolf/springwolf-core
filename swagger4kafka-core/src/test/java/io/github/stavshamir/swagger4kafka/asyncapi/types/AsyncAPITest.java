@@ -1,5 +1,6 @@
 package io.github.stavshamir.swagger4kafka.asyncapi.types;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.Channel;
@@ -27,7 +28,11 @@ import java.util.Map;
 
 public class AsyncAPITest {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    static {
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
 
     @Test
     public void AsyncAPI_should_map_to_a_valid_asyncapi_json() throws IOException, JSONException {
@@ -83,7 +88,7 @@ public class AsyncAPITest {
         String actual = objectMapper.writeValueAsString(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.LENIENT);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
     }
 
     @Data

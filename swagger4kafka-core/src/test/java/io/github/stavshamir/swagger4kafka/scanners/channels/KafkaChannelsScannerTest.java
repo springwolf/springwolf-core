@@ -5,6 +5,7 @@ import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.Channel;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.Operation;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.message.PayloadReference;
+import io.github.stavshamir.swagger4kafka.schemas.DefaultSchemasService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.Test;
@@ -23,7 +24,7 @@ import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = KafkaChannelsScanner.class)
+@ContextConfiguration(classes = {KafkaChannelsScanner.class, DefaultSchemasService.class})
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
 public class KafkaChannelsScannerTest {
 

@@ -10,6 +10,4 @@ public interface SchemasService {
 
     String register(Class<?> type);
 
-    Map<String, Object> getExample(String modelName);
-
 }
