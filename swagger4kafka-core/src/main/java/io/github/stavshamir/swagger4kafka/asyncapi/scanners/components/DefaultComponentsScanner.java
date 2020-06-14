@@ -1,4 +1,4 @@
-package io.github.stavshamir.swagger4kafka.scanners.components;
+package io.github.stavshamir.swagger4kafka.asyncapi.scanners.components;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;

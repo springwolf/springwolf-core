@@ -1,4 +1,4 @@
-package io.github.stavshamir.swagger4kafka.scanners.channels;
+package io.github.stavshamir.swagger4kafka.asyncapi.scanners.channels;
 
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.Channel;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.Operation;

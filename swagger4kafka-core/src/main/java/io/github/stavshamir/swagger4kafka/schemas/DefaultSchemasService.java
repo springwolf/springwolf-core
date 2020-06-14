@@ -9,7 +9,6 @@ import io.swagger.oas.inflector.processors.JsonNodeExampleSerializer;
 import io.swagger.util.Json;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

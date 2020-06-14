@@ -1,4 +1,4 @@
-package io.github.stavshamir.swagger4kafka.scanners.components;
+package io.github.stavshamir.swagger4kafka.asyncapi.scanners.components;
 
 import org.junit.Test;
 

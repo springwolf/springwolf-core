@@ -1,4 +1,4 @@
-package io.github.stavshamir.swagger4kafka.scanners.channels;
+package io.github.stavshamir.swagger4kafka.asyncapi.scanners.channels;
 
 import com.google.common.collect.Maps;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.Channel;
