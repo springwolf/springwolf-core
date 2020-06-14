@@ -4,19 +4,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.swagger.annotations.ApiModel;
-import io.swagger.converter.ModelConverters;
-import io.swagger.inflector.examples.ExampleBuilder;
-import io.swagger.inflector.examples.models.Example;
-import io.swagger.inflector.processors.JsonNodeExampleSerializer;
-import io.swagger.models.Model;
+import io.swagger.oas.inflector.examples.ExampleBuilder;
+import io.swagger.oas.inflector.examples.models.Example;
+import io.swagger.oas.inflector.processors.JsonNodeExampleSerializer;
 import io.swagger.util.Json;
+import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.oas.models.media.Schema;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class ModelsService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Getter
-    private final Map<String, Model> definitions = new HashMap<>();
+    private final Map<String, Schema> definitions = new HashMap<>();
 
     public ModelsService() {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -40,21 +39,21 @@ public class ModelsService {
     public String register(Class<?> type) {
         log.debug("Registering model for {}", type.getSimpleName());
 
-        Map<String, Model> models = converter.readAll(type);
-        this.definitions.putAll(models);
+        Map<String, Schema> schemas = converter.readAll(type);
+        this.definitions.putAll(schemas);
 
         return getModelName(type);
     }
 
     public Map<String, Object> getExample(String modelName) {
-        Model model = definitions.get(modelName);
+        Schema model = definitions.get(modelName);
 
         if (null == model) {
             log.error("Model for {} was not found", modelName);
             return null;
         }
 
-        Example example = ExampleBuilder.fromModel(modelName, model, definitions, new HashSet<>());
+        Example example = ExampleBuilder.fromSchema(model, definitions);
         String exampleAsJson = Json.pretty(example);
 
         try {

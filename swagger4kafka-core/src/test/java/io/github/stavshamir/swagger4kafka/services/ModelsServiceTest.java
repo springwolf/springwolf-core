@@ -3,7 +3,6 @@ package io.github.stavshamir.swagger4kafka.services;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.swagger4kafka.test.Utils;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.Test;
@@ -20,6 +19,7 @@ public class ModelsServiceTest {
     private static final String EXAMPLES_PATH = "/models/examples";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
     static {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
@@ -33,17 +33,6 @@ public class ModelsServiceTest {
         // Then the returned value is the class name
         assertThat(modelName)
                 .isEqualTo("SimpleFoo");
-    }
-
-    @Test
-    public void register_annotatedObject() {
-        // Given a registered simple object annotated with @ApiModel
-        // When register is called
-        String modelName = modelsService.register(AnnotatedFoo.class);
-
-        // Then the returned value is the @ApiModel value
-        assertThat(modelName)
-                .isEqualTo("ApiModelFoo");
     }
 
     @Test
@@ -75,20 +64,6 @@ public class ModelsServiceTest {
     }
 
     @Test
-    public void getExample_annotatedObject() throws IOException {
-        // Given a registered simple object annotated with @ApiModel
-        String modelName = modelsService.register(AnnotatedFoo.class);
-
-        // When getExample is called
-        Map<String, Object> example = modelsService.getExample(modelName);
-        Map expectedExample = jsonResourceAsMap(EXAMPLES_PATH + "/simple-foo.json");
-
-        // Then it returns the correct example object as json
-        assertThat(example)
-                .isEqualTo(expectedExample);
-    }
-
-    @Test
     public void getDefinitions() throws IOException {
         Map expectedDefinitions = jsonResourceAsMap("/models/definitions.json");
 
@@ -107,14 +82,6 @@ public class ModelsServiceTest {
 
     private Map jsonResourceAsMap(String path) throws IOException {
         return Utils.jsonResourceAsMap(this.getClass(), path);
-    }
-
-    @Data
-    @NoArgsConstructor
-    @ApiModel("ApiModelFoo")
-    private static class AnnotatedFoo {
-        private String s;
-        private boolean b;
     }
 
     @Data

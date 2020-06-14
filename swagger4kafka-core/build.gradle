@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.swagger:swagger-inflector:1.0.16'
+    implementation 'io.swagger:swagger-inflector:2.0.5'
 
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework.kafka:spring-kafka'

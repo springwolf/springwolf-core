@@ -5,11 +5,11 @@ import io.github.stavshamir.swagger4kafka.dtos.Info;
 import io.github.stavshamir.swagger4kafka.dtos.KafkaEndpoint;
 import io.github.stavshamir.swagger4kafka.dtos.Payload;
 import io.github.stavshamir.swagger4kafka.dtos.ValidationMessage;
+import io.github.stavshamir.swagger4kafka.producer.KafkaProducer;
 import io.github.stavshamir.swagger4kafka.services.KafkaEndpointsService;
 import io.github.stavshamir.swagger4kafka.services.ModelsService;
 import io.github.stavshamir.swagger4kafka.validation.PayloadValidator;
-import io.github.stavshamir.swagger4kafka.producer.KafkaProducer;
-import io.swagger.models.Model;
+import io.swagger.v3.oas.models.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +49,7 @@ public class KafkaController {
     }
 
     @GetMapping(value = "/models", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Model> models() {
+    public Map<String, Schema> models() {
         return modelsService.getDefinitions();
     }
 

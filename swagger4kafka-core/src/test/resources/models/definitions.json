@@ -6,8 +6,7 @@
         "type": "string"
       },
       "f": {
-        "$ref": "#/definitions/SimpleFoo",
-        "originalRef": "SimpleFoo"
+        "$ref": "#/components/schemas/SimpleFoo"
       }
     }
   },
