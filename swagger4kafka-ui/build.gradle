@@ -7,6 +7,7 @@ plugins {
 }
 
 version = rootProject.uiVersion
+sourceCompatibility = '1.8'
 
 node {
   version = '9.2.0'

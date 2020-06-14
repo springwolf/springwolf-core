@@ -17,12 +17,12 @@ repositories {
 }
 
 dependencies {
+    implementation project(":swagger4kafka-core")
+    implementation project(":swagger4kafka-ui")
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'com.google.guava:guava:27.0.1-jre'
-
-    implementation "io.github.stavshamir:swagger4kafka:${rootProject.coreVersion}"
-    implementation "io.github.stavshamir:swagger4kafka-ui:${rootProject.uiVersion}"
 
     testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     testImplementation 'org.jetbrains.kotlin:kotlin-reflect'
