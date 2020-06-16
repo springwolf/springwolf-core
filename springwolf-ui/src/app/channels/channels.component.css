@@ -5,3 +5,13 @@
     padding: 8px;
     font-size: small;
 }
+
+mat-divider {
+    height: 20px;
+}
+
+.payload-name {
+    background-color: #E0E0E0;
+    border-radius: 4px;
+    padding: 6px;
+}

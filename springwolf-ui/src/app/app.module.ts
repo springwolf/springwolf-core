@@ -16,7 +16,7 @@ import { ChannelsComponent } from './channels/channels.component';
     HeaderComponent,
     InfoComponent,
     ServersComponent,
-    ChannelsComponent
+    ChannelsComponent,
   ],
   imports: [
     BrowserModule,
