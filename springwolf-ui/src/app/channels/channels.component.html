@@ -10,13 +10,6 @@
                 <div class="payload-name">{{ channel.value.operation.message.name }}</div>
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <section>
-            <mat-tab-group>
-                <mat-tab label="Example">
-                    <!-- <textarea [value]="defaultExample.value"></textarea> -->
-                </mat-tab>
-                <mat-tab label="Schema">Content 2</mat-tab>
-            </mat-tab-group>
-        </section>
+        <app-channel-main [payload]="channel.value.operation.message.title"></app-channel-main>
     </mat-expansion-panel>
 </mat-accordion>

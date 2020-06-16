@@ -9,6 +9,7 @@ import { InfoComponent } from './info/info.component';
 import { AsyncApiService } from './shared/asyncapi.service';
 import { ServersComponent } from './servers/servers.component';
 import { ChannelsComponent } from './channels/channels.component';
+import { ChannelMainComponent } from './channels/channel-main/channel-main.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ChannelsComponent } from './channels/channels.component';
     InfoComponent,
     ServersComponent,
     ChannelsComponent,
+    ChannelMainComponent,
   ],
   imports: [
     BrowserModule,
