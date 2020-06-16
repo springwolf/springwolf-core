@@ -5,11 +5,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { HeaderComponent } from './header/header.component';
+import { InfoComponent } from './info/info.component';
+import { AsyncApiService } from './shared/asyncapi.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    InfoComponent
   ],
   imports: [
     BrowserModule,
@@ -17,7 +20,7 @@ import { HeaderComponent } from './header/header.component';
     MaterialModule,
     FlexLayoutModule
   ],
-  providers: [],
+  providers: [AsyncApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
