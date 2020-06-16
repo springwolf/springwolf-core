@@ -1,5 +1,6 @@
 import { AsyncApi } from './models/asyncapi.model';
 import { Server } from './models/server.model';
+import { Channel } from './models/channel.model';
 
 export class AsyncApiService {
 
@@ -12,6 +13,20 @@ export class AsyncApiService {
             },
             servers: new Map<String, Server>([
                 ["kafka", { url: "kafka:9092", protocol: "kafka" }]
+            ]),
+            channels: new Map<String, Channel>([
+                [
+                    "example-topic", {
+                        operation: {
+                            type: "SUBSCRIBE",
+                            message: {
+                                payloadReference: "#/components/schemas/Foo",
+                                name: "io.github.stavshamir.swagger4kafka.services.AsyncApiDocServiceTest$Foo",
+                                title: "Foo"
+                            }
+                        }
+                    }
+                ]
             ])
         }
     }

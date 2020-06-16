@@ -8,13 +8,15 @@ import { HeaderComponent } from './header/header.component';
 import { InfoComponent } from './info/info.component';
 import { AsyncApiService } from './shared/asyncapi.service';
 import { ServersComponent } from './servers/servers.component';
+import { ChannelsComponent } from './channels/channels.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     InfoComponent,
-    ServersComponent
+    ServersComponent,
+    ChannelsComponent
   ],
   imports: [
     BrowserModule,

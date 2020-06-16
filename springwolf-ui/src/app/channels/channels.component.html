@@ -1,0 +1,9 @@
+<h1>Channels</h1>
+<mat-card *ngFor="let channel of channels | keyvalue">
+    <mat-card-title fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="16px">
+        <div class="operation-badge">{{ channel.value.operation.type }}</div>
+        <div>{{ channel.key }}</div>
+    </mat-card-title>
+    <mat-card-content>
+    </mat-card-content>
+</mat-card>
