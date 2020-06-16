@@ -7,12 +7,14 @@ import { MaterialModule } from './material.module';
 import { HeaderComponent } from './header/header.component';
 import { InfoComponent } from './info/info.component';
 import { AsyncApiService } from './shared/asyncapi.service';
+import { ServersComponent } from './servers/servers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    InfoComponent
+    InfoComponent,
+    ServersComponent
   ],
   imports: [
     BrowserModule,

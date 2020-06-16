@@ -1,0 +1,7 @@
+<h1>Servers</h1>
+<mat-card *ngFor="let server of servers | keyvalue">
+    <mat-card-title>{{ server.key }}</mat-card-title>
+    <mat-card-content>
+        {{ server.value.url }}
+    </mat-card-content>
+</mat-card>
