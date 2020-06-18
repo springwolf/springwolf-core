@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
-
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 const modules = [
     MatButtonModule,
@@ -16,7 +16,8 @@ const modules = [
     MatCardModule,
     MatExpansionModule,
     MatTabsModule,
-    MatDividerModule
+    MatDividerModule,
+    ClipboardModule
 ]
 
 @NgModule({
