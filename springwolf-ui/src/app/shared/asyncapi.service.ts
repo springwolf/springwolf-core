@@ -33,9 +33,16 @@ export class AsyncApiService {
                 [
                     "Foo", {
                         type: "object",
-                        properties: null,
+                        properties: {
+                            "example": {
+                                "type": "string"
+                            },
+                            "isExample": {
+                                "type": "boolean"
+                            }
+                        },
                         example: new Example({
-                            "s": "stringstringstringstringstringstringstringstringstring",
+                            "s": "stringstrings",
                             "b": true
                         })
                     }

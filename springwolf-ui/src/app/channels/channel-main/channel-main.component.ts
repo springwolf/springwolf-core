@@ -11,16 +11,13 @@ export class ChannelMainComponent implements OnInit {
 
   @Input() payload: String;
   defaultExample: Example;
+  schema: any;
 
   constructor(private asyncApiService: AsyncApiService) { }
 
   ngOnInit(): void {
-    const schema = this.asyncApiService.getAsyncApi().schemas.get(this.payload);
-    console.log(schema);
-
-    this.defaultExample = schema.example;
-
-    console.log(this.defaultExample);
+    this.schema = this.asyncApiService.getAsyncApi().schemas.get(this.payload);
+    this.defaultExample = this.schema.example;
   }
 
 }

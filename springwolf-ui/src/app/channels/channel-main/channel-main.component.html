@@ -1,13 +1,10 @@
 <section>
-    <mat-tab-group>
-        <mat-tab label="Example">
-            <textarea 
-                rows="{{ defaultExample.lineCount }}"
-                [value]="defaultExample.value">
-            </textarea>
-        </mat-tab>
+    <mat-tab-group animationDuration="0ms">
         <mat-tab label="Schema">
-            
+            <app-schema [schema]="schema"></app-schema>
+        </mat-tab>
+        <mat-tab label="Example">
+            <textarea rows="{{ defaultExample.lineCount }}" [value]="defaultExample.value"></textarea>
         </mat-tab>
     </mat-tab-group>
 </section>
