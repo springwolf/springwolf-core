@@ -1,9 +1,9 @@
 .operation-badge {
-    background-color: #3F51B5;
-    color: white;
+    background-color: #CDDC39;
     border-radius: 4px;
     padding: 8px;
     font-size: small;
+    font-weight: bold;
 }
 
 mat-divider {
