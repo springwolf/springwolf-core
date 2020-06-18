@@ -1,6 +1,7 @@
 import { AsyncApi } from './models/asyncapi.model';
 import { Server } from './models/server.model';
 import { Channel } from './models/channel.model';
+import { Schema } from './models/schema.model';
 import { Example } from './models/example.model';
 
 export class AsyncApiService {
@@ -29,7 +30,7 @@ export class AsyncApiService {
                     }
                 ]
             ]),
-            schemas: new Map<String, { type: String, properties: any, example: Example }>([
+            schemas: new Map<String, Schema>([
                 [
                     "Foo", {
                         type: "object",
