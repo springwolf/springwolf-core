@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AsyncApiService } from '../shared/asyncapi.service';
 import { Channel } from '../shared/models/channel.model';
+import { subscribeOn } from 'rxjs/operators';
 
 @Component({
   selector: 'app-channels',
@@ -14,7 +15,9 @@ export class ChannelsComponent implements OnInit {
   constructor(private asyncApiService: AsyncApiService) { }
 
   ngOnInit(): void {
-    this.channels = this.asyncApiService.getAsyncApi().channels;
+    this.asyncApiService.getAsyncApi().subscribe(
+      asyncapi => this.channels = asyncapi.channels
+    );
   }
 
 }

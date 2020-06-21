@@ -13,6 +13,7 @@ import { ChannelMainComponent } from './channels/channel-main/channel-main.compo
 import { SchemasComponent } from './schemas/schemas.component';
 import { SchemaComponent } from './schemas/schema/schema.component';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
     BrowserAnimationsModule,
     MaterialModule,
     FlexLayoutModule,
-    HighlightModule
+    HighlightModule,
+    HttpClientModule
   ],
   providers: [
     AsyncApiService,

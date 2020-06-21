@@ -5,7 +5,7 @@ import { Schema } from './schema.model';
 
 export interface AsyncApi {
     info: Info;
-    servers: Map<String, Server>;
-    channels: Map<String, Channel>;
-    schemas: Map<String, Schema>;
+    servers: Map<string, Server>;
+    channels: Map<string, Channel>;
+    components: { schemas: Map<string, Schema> }
 }

@@ -9,7 +9,7 @@ import { Example } from 'src/app/shared/models/example.model';
 })
 export class ChannelMainComponent implements OnInit {
 
-  @Input() payload: String;
+  @Input() payload: string;
   defaultExample: Example;
   exampleTextAreaLineCount: number;
   schema: any;
@@ -17,9 +17,13 @@ export class ChannelMainComponent implements OnInit {
   constructor(private asyncApiService: AsyncApiService) { }
 
   ngOnInit(): void {
-    this.schema = this.asyncApiService.getAsyncApi().schemas.get(this.payload);
-    this.defaultExample = this.schema.example;
-    this.exampleTextAreaLineCount = this.defaultExample.lineCount;
+    this.asyncApiService.getAsyncApi().subscribe(
+      asyncapi => {
+        this.schema = asyncapi.components.schemas.get(this.payload);
+        this.defaultExample = this.schema.example;
+        this.exampleTextAreaLineCount = this.defaultExample.lineCount;
+      }
+    );
   }
 
   recalculateLineCount(text): void {

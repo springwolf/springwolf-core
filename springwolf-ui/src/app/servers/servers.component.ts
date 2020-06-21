@@ -14,7 +14,9 @@ export class ServersComponent implements OnInit {
   constructor(private asyncApiService: AsyncApiService) { }
 
   ngOnInit(): void {
-    this.servers = this.asyncApiService.getAsyncApi().servers;
+    this.asyncApiService.getAsyncApi().subscribe(
+      asyncapi => this.servers = asyncapi.servers
+    );
   }
 
 }

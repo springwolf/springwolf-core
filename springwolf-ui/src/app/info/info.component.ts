@@ -14,7 +14,9 @@ export class InfoComponent implements OnInit {
   constructor(private asyncApiService: AsyncApiService) { }
 
   ngOnInit(): void {
-    this.info = this.asyncApiService.getAsyncApi().info;
+    this.asyncApiService.getAsyncApi().subscribe(
+      asyncapi => this.info = asyncapi.info
+    );
   }
 
 }

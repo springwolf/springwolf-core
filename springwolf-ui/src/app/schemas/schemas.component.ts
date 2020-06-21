@@ -9,12 +9,14 @@ import { Schema } from '../shared/models/schema.model';
 })
 export class SchemasComponent implements OnInit {
   
-  schemas: Map<String, Schema>;
+  schemas: Map<string, Schema>;
 
   constructor(private asyncApiService: AsyncApiService) { }
 
   ngOnInit(): void {
-    this.schemas = this.asyncApiService.getAsyncApi().schemas;
+    this.asyncApiService.getAsyncApi().subscribe(
+      asyncapi => this.schemas = asyncapi.components.schemas
+    );
   }
 
 }

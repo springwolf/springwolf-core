@@ -1,5 +1,5 @@
 export interface Channel {
-    description?: String;
+    description?: string;
     operation: Operation;
 }
 
@@ -10,7 +10,7 @@ export interface Operation {
 }
 
 export interface Message {
-    name: String;
-    title: String;
-    payloadReference: String;
+    name: string;
+    title: string;
+    payload: { $ref: string};
 }
