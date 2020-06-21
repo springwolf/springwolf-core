@@ -4,11 +4,13 @@
             <app-schema [schema]="schema"></app-schema>
         </mat-tab>
         <mat-tab label="Example">
-            <textarea rows="{{ defaultExample.lineCount }}" [value]="defaultExample.value"></textarea>
+            <textarea #exampleTextArea [rows]="exampleTextAreaLineCount" [value]="defaultExample.value"
+                (keyup)="recalculateLineCount(exampleTextArea.value)"></textarea>
             <div fxLayout fxLayoutGap="8px">
                 <button mat-raised-button color="primary">Publish</button>
-                <button mat-raised-button color="primary">Default</button>
-                <button mat-raised-button color="primary" [cdkCopyToClipboard]="defaultExample.value">Copy</button>
+                <button mat-raised-button color="primary"
+                    (click)="exampleTextArea.value = defaultExample.value; exampleTextAreaLineCount=defaultExample.lineCount">Default</button>
+                <button mat-raised-button color="primary" [cdkCopyToClipboard]="exampleTextArea.value">Copy</button>
             </div>
         </mat-tab>
     </mat-tab-group>
