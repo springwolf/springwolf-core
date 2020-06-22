@@ -15,8 +15,6 @@ A web-based UI can be added as a separate dependency.
 
 Both the library and the UI are designed to be mostly familiar to Swagger users.
 
-![](s4k-example.jpg)
-
 ### Why should you use it
 In projects using Kafka, you may often find yourself needing to manually send a message to some topic, whether if you
 are manually testing a new feature, debugging or trying to understand some flow. This requires serializing your payload
@@ -65,52 +63,32 @@ dependencies {
 ```
 
 ### Integrating swagger4kafka into a Spring Boot project
-Add a configuration class and provide a ```Docket``` bean:
+Add a configuration class and provide a ```AsyncApiDocket``` bean:
 ```java
-@Configuration
-@EnableSwagger4Kafka
-public class Swagger4KafkaConfiguration {
-    @Bean
-    public Docket docket() {
-        return Docket.builder()
-                .serviceName("Swagger4Kafka Example Project")
-                .basePackage("io.github.stavshamir.swagger4kafka.example.consumers")
-                .bootstrapServers("localhost:9092")
-                .build();
-    }
+@Bean
+public AsyncApiDocket asyncApiDocket() {
+    Info info = Info.builder()
+            .version("1.0.0")
+            .title("swagger4kafka example project")
+            .build();
+
+    KafkaProtocolConfiguration kafka = KafkaProtocolConfiguration.builder()
+            .basePackage("io.github.stavshamir.swagger4kafka.example.consumers")
+            .build();
+
+    return AsyncApiDocket.builder()
+            .info(info)
+            .server("kafka", Server.kafka().url(BOOTSTRAP_SERVERS).build())
+            .protocol(kafka)
+            .build();
 }
 ```
 The basePackage field must be set with the name of the package containing the classes to be scanned for ```@KafkaListener```
 annotated methods.
 
-Other fields are optional, and for some sensible defaults are provided. For more info, see the ```Docket``` Javadoc. 
-
 #### Verify
 If you have included the UI dependency, access it with the following url: ```localhost:8080/swagger4kafka-ui.html```.
-If not, try the following endpoint: ```localhost:8080/kafka-api/endpoints```.
-
-#### Configuring a custom producer
-A default Kafka producer implementation is provided, but a custom producer with your own properties can be set in the
-```Docket``` bean like this:
-```java
-@Bean
-public Docket docket() {
-    return Docket.builder()
-            .serviceName("Swagger4Kafka Example Project")
-            .basePackage("io.github.stavshamir.swagger4kafka.example.consumers")
-            .producerConfiguration(producerConfiguration())
-            .build();
-}
-
-private Map<String, Object> producerConfiguration() {
-    return ImmutableMap.<String, Object>builder()
-            .put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS)
-            .put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class)
-            .put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class)
-            .put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false)
-            .build();
-}
-``` 
+If not, try the following endpoint: ```localhost:8080/asyncapi-docs``.
 
 ### Example Project
  An example project can be found [here](https://github.com/stavshamir/swagger4kafka/tree/master/swagger4kafka-example).
