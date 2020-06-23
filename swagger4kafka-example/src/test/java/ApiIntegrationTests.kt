@@ -1,11 +1,14 @@
-import io.github.stavshamir.swagger4kafka.example.dtos.ExamplePayloadDto
-import junit.framework.TestCase.assertEquals
+import org.apache.commons.io.IOUtils
 import org.junit.ClassRule
 import org.junit.Test
-import org.springframework.core.ParameterizedTypeReference
+import org.skyscreamer.jsonassert.JSONAssert
+import org.skyscreamer.jsonassert.JSONCompareMode
 import org.springframework.web.client.RestTemplate
 import org.testcontainers.containers.DockerComposeContainer
 import java.io.File
+import java.io.InputStream
+import java.nio.charset.StandardCharsets
+
 
 class ApiIntegrationTests {
 
@@ -21,43 +24,21 @@ class ApiIntegrationTests {
                 .withExposedService(APP_NAME, APP_PORT)
     }
 
-    inline fun <reified T : Any> typeRef(): ParameterizedTypeReference<T> = object : ParameterizedTypeReference<T>() {}
-
     private fun baseUrl(): String {
         val host = environment.getServiceHost(APP_NAME, APP_PORT)
         val port = environment.getServicePort(APP_NAME, APP_PORT)
         return "http://$host:$port"
     }
 
-    data class Info(val bootstrapServers: String, val serviceName: String)
-
     @Test
-    fun `info endpoint should return the correct response`() {
-        val infoEndpoint = "/kafka-api/info"
+    fun `asyncapi-docs shold return the correct json response`() {
+        val url = "${baseUrl()}/asyncapi-docs"
+        val actual = restTemplate.getForObject(url, String::class.java)
 
-        val actual = restTemplate.getForObject(baseUrl() + infoEndpoint, Info::class.java)
-        val expected = Info(bootstrapServers = "localhost:9092", serviceName = "swagger4kafka Example Project")
+        val s: InputStream = this.javaClass.getResourceAsStream("asyncapi.json")
+        val expected: String = IOUtils.toString(s, StandardCharsets.UTF_8)
 
-        assertEquals(expected, actual)
-    }
-
-    data class KafkaEndpoint(val topic: String, val payloadClassName: String, val payloadModelName: String, val payloadExample: Map<String, Any>)
-
-    @Test
-    fun `endpoints endpoint should return the correct response`() {
-        val infoEndpoint = "/kafka-api/endpoints"
-
-        val actual = restTemplate.getForObject(baseUrl() + infoEndpoint, Array<KafkaEndpoint>::class.java)?.toList()
-        val expected = listOf(
-                KafkaEndpoint(
-                        topic = "example-topic",
-                        payloadClassName = ExamplePayloadDto::class.java.name,
-                        payloadModelName = "ExamplePayloadDto",
-                        payloadExample = mapOf("someString" to "string", "someLong" to 0, "someEnum" to "FOO1")
-                )
-        )
-
-        assertEquals(expected, actual)
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE)
     }
 
 }
