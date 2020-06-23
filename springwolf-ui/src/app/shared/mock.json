@@ -1,0 +1,56 @@
+{
+    "asyncapi": "2.0.0",
+    "info": {
+        "title": "swagger4kafka example project",
+        "description": "This is a mock description.",
+        "version": "1.0.0"
+    },
+    "servers": {
+        "kafka": {
+            "url": "kafka:29092",
+            "protocol": "kafka"
+        }
+    },
+    "channels": {
+        "example-topic": {
+            "subscribe": {
+                "message": {
+                    "name": "io.github.stavshamir.swagger4kafka.example.dtos.ExamplePayloadDto",
+                    "title": "ExamplePayloadDto",
+                    "payload": {
+                        "$ref": "#/components/schemas/ExamplePayloadDto"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ExamplePayloadDto": {
+                "type": "object",
+                "properties": {
+                    "someString": {
+                        "type": "string"
+                    },
+                    "someLong": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "someEnum": {
+                        "type": "string",
+                        "enum": [
+                            "FOO1",
+                            "FOO2",
+                            "FOO3"
+                        ]
+                    }
+                },
+                "example": {
+                    "someString": "string",
+                    "someLong": 0,
+                    "someEnum": "FOO1"
+                }
+            }
+        }
+    }
+}

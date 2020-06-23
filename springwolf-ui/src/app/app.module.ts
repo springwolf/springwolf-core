@@ -1,19 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material.module';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
+import { environment } from './../environments/environment';
+import { AppComponent } from './app.component';
+import { ChannelMainComponent } from './channels/channel-main/channel-main.component';
+import { ChannelsComponent } from './channels/channels.component';
 import { HeaderComponent } from './header/header.component';
 import { InfoComponent } from './info/info.component';
-import { AsyncApiService } from './shared/asyncapi.service';
-import { ServersComponent } from './servers/servers.component';
-import { ChannelsComponent } from './channels/channels.component';
-import { ChannelMainComponent } from './channels/channel-main/channel-main.component';
-import { SchemasComponent } from './schemas/schemas.component';
+import { MaterialModule } from './material.module';
 import { SchemaComponent } from './schemas/schema/schema.component';
-import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SchemasComponent } from './schemas/schemas.component';
+import { ServersComponent } from './servers/servers.component';
+import { AsyncApiService } from './shared/asyncapi.service';
+import { MockServer } from './shared/mock-server';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     MaterialModule,
     FlexLayoutModule,
     HighlightModule,
-    HttpClientModule
+    HttpClientModule,
+    environment.production ? [] : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 })
   ],
   providers: [
     AsyncApiService,

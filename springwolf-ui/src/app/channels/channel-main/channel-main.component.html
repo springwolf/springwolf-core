@@ -4,7 +4,7 @@
             <app-schema *ngIf="schema" [schema]="schema"></app-schema>
         </mat-tab>
         <mat-tab label="Example">
-            <textarea #exampleTextArea [rows]="exampleTextAreaLineCount" [value]="defaultExample?.value"
+            <textarea spellcheck="false" #exampleTextArea [rows]="exampleTextAreaLineCount" [value]="defaultExample?.value"
                 (keyup)="recalculateLineCount(exampleTextArea.value)"></textarea>
             <div fxLayout fxLayoutGap="8px">
                 <button mat-raised-button color="primary">Publish</button>

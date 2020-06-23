@@ -6,7 +6,7 @@ import { Example } from './models/example.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map, delay } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Info } from './models/info.model';
 
 interface ServerAsyncApi {
@@ -48,12 +48,9 @@ export class AsyncApiService {
     constructor(private http: HttpClient) { }
 
     public getAsyncApi(): Observable<AsyncApi> {
-        // return this.http
-        //     .get<ServerAsyncApi>('/asyncapi-docs?format=json')
-
-        return of({"asyncapi":"2.0.0","info":{"title":"swagger4kafka example project","version":"1.0.0"},"servers":{"kafka":{"url":"kafka:29092","protocol":"kafka"}},"channels":{"example-topic":{"subscribe":{"message":{"name":"io.github.stavshamir.swagger4kafka.example.dtos.ExamplePayloadDto","title":"ExamplePayloadDto","payload":{"$ref":"#/components/schemas/ExamplePayloadDto"}}}}},"components":{"schemas":{"ExamplePayloadDto":{"type":"object","properties":{"someString":{"type":"string"},"someLong":{"type":"integer","format":"int64"},"someEnum":{"type":"string","enum":["FOO1","FOO2","FOO3"]}},"example":{"someString":"string","someLong":0,"someEnum":"FOO1"}}}}})
-            .pipe(delay(1000)).pipe(map(item => this.toAsyncApi(item)));
-
+        return this.http
+            .get<ServerAsyncApi>('/asyncapi-docs?format=json')
+            .pipe(map(item => this.toAsyncApi(item)));
     }
 
     toAsyncApi(item: ServerAsyncApi): AsyncApi {
