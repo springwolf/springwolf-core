@@ -10,14 +10,23 @@ version = rootProject.uiVersion
 sourceCompatibility = '1.8'
 
 node {
-  version = '9.2.0'
-  npmVersion = '6.4.1'
+  version = '12.18.1'
+  npmVersion = '6.14.5'
   download = true
+}
+
+npm_run_build {
+  inputs.files fileTree("src")
+  inputs.file 'angular.json'
+  inputs.file 'package.json'
+  inputs.file 'package-lock.json'
+
+  outputs.dir 'build'
 }
 
 jar {
   dependsOn 'npm_run_build'
-  metaInf { from 'dist/swagger4kafka-ui' into 'resources' }
+  metaInf { from 'dist/springwolf-ui' into 'resources' }
 }
 
 
