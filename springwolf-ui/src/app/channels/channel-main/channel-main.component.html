@@ -4,12 +4,16 @@
             <app-schema *ngIf="schema" [schema]="schema"></app-schema>
         </mat-tab>
         <mat-tab label="Example">
-            <textarea spellcheck="false" #exampleTextArea [rows]="exampleTextAreaLineCount" [value]="defaultExample?.value"
-                (keyup)="recalculateLineCount(exampleTextArea.value)"></textarea>
+            <textarea spellcheck="false" #exampleTextArea [rows]="exampleTextAreaLineCount"
+                [value]="defaultExample?.value" (keyup)="recalculateLineCount(exampleTextArea.value)"></textarea>
             <div fxLayout fxLayoutGap="8px">
-                <button mat-raised-button color="primary">Publish</button>
+                <button mat-raised-button color="primary" (click)="publish(exampleTextArea.value)">
+                    Publish
+                </button>
                 <button mat-raised-button color="primary"
-                    (click)="exampleTextArea.value = defaultExample.value; exampleTextAreaLineCount=defaultExample.lineCount">Default</button>
+                    (click)="exampleTextArea.value = defaultExample.value; exampleTextAreaLineCount=defaultExample.lineCount">
+                    Default
+                </button>
                 <button mat-raised-button color="primary" [cdkCopyToClipboard]="exampleTextArea.value">Copy</button>
             </div>
         </mat-tab>

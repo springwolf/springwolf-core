@@ -3,19 +3,20 @@ import mockAsyncApi from './mock.json';
 
 export class MockServer implements InMemoryDbService {
   createDb() {
-    return {};
+    return {kafka: []};
   }
 
   get(reqInfo: RequestInfo) {
     console.log("Returning mock data")
-    if (reqInfo.req.url === '/asyncapi-docs?format=json') {
+    if (reqInfo.req.url === '/asyncapi/docs') {
       return reqInfo.utils.createResponse$(() => {
         return {
           status: STATUS.OK,
           body: mockAsyncApi
         }
       });
-    }
+    } 
+    
     return undefined;
   }
 }

@@ -17,6 +17,7 @@ import { SchemasComponent } from './schemas/schemas.component';
 import { ServersComponent } from './servers/servers.component';
 import { AsyncApiService } from './shared/asyncapi.service';
 import { MockServer } from './shared/mock-server';
+import { PublisherService } from './shared/publisher.service';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { MockServer } from './shared/mock-server';
   ],
   providers: [
     AsyncApiService,
+    PublisherService,
     {
       provide: HIGHLIGHT_OPTIONS,
       useValue: {

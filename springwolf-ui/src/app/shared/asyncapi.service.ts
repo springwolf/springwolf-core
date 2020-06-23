@@ -49,7 +49,7 @@ export class AsyncApiService {
 
     public getAsyncApi(): Observable<AsyncApi> {
         return this.http
-            .get<ServerAsyncApi>('/asyncapi-docs?format=json')
+            .get<ServerAsyncApi>('/asyncapi/docs')
             .pipe(map(item => this.toAsyncApi(item)));
     }
 

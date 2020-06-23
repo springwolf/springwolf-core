@@ -10,6 +10,6 @@
                 <div class="payload-name">{{ channel.value.operation.message.name }}</div>
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <app-channel-main [payload]="channel.value.operation.message.title"></app-channel-main>
+        <app-channel-main [channelName]="channel.key" [payload]="channel.value.operation.message.title"></app-channel-main>
     </mat-expansion-panel>
 </mat-accordion>

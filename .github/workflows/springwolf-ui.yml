@@ -3,7 +3,7 @@ name: swagger4kafka-ui
 on:
   push:
     paths:
-      - 'swagger4kafka-ui/**'
+      - 'springwolf-ui/**'
 
 jobs:
   build:
