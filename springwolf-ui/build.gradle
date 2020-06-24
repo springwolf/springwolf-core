@@ -2,8 +2,8 @@ plugins {
   id 'java'
   id 'com.moowork.node' version '1.2.0'
 
-  id 'com.jfrog.bintray' version '1.8.4'
   id 'maven-publish'
+  id 'com.jfrog.bintray' version '1.8.4'
 }
 
 version = rootProject.uiVersion
@@ -28,7 +28,6 @@ jar {
   dependsOn 'npm_run_build'
   metaInf { from 'dist/springwolf-ui' into 'resources' }
 }
-
 
 task sourcesJar(type: Jar) {
   classifier = 'sources'
@@ -57,7 +56,7 @@ def pomConfig = {
   }
 
   scm {
-    url 'https://github.com/stavshamir/swagger4kafka'
+    url 'https://github.com/stavshamir/springwolf'
   }
 }
 
@@ -71,13 +70,13 @@ publishing {
       }
 
       groupId project.group
-      artifactId 'swagger4kafka-ui'
+      artifactId 'springwolf-ui'
       version project.version
       pom.withXml {
         def root = asNode()
         root.appendNode('description', 'Automated JSON API documentation for Kafka Listeners built with Spring')
-        root.appendNode('name', 'swagger4kafka-ui')
-        root.appendNode('url', 'https://github.com/stavshamir/swagger4kafka')
+        root.appendNode('name', 'springwolf-ui')
+        root.appendNode('url', 'https://github.com/stavshamir/springwolf')
         root.children().last() + pomConfig
       }
     }
@@ -90,14 +89,14 @@ bintray {
   publications = ['mavenPublication']
 
   pkg {
-    repo = 'swagger4kafka'
-    name = 'swagger4kafka-ui'
+    repo = 'springwolf'
+    name = 'springwolf-ui'
     userOrg = 'stavshamir'
     licenses = ['Apache-2.0']
-    vcsUrl = 'https://github.com/stavshamir/swagger4kafka.git'
+    vcsUrl = 'https://github.com/stavshamir/springwolf.git'
     version {
       name = project.version
-      desc = 'Frontend for swagger4kafka - An automated JSON API documentation for Kafka Listeners built with Spring'
+      desc = 'Frontend for springwolf - An automated JSON API documentation for Kafka Listeners built with Spring'
       released = new Date()
     }
   }

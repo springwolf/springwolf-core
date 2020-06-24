@@ -1,6 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.types.server;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 /**
  * An object representing a message broker, a server or any other kind of computer program capable of sending and/or receiving data.
@@ -9,7 +12,6 @@ import lombok.*;
  * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#serverObject">Server specification</a>
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Server {
@@ -48,4 +50,45 @@ public class Server {
         return Server.builder().protocol("kafka");
     }
 
+    public static ServerBuilder builder() {
+        return new ServerBuilder();
+    }
+
+    public static class ServerBuilder {
+        private @NonNull String url;
+        private @NonNull String protocol;
+        private String protocolVersion;
+        private String description;
+
+        ServerBuilder() {
+        }
+
+        public ServerBuilder url(@NonNull String url) {
+            this.url = url;
+            return this;
+        }
+
+        public ServerBuilder protocol(@NonNull String protocol) {
+            this.protocol = protocol;
+            return this;
+        }
+
+        public ServerBuilder protocolVersion(String protocolVersion) {
+            this.protocolVersion = protocolVersion;
+            return this;
+        }
+
+        public ServerBuilder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Server build() {
+            return new Server(url, protocol, protocolVersion, description);
+        }
+
+        public String toString() {
+            return "Server.ServerBuilder(url=" + this.url + ", protocol=" + this.protocol + ", protocolVersion=" + this.protocolVersion + ", description=" + this.description + ")";
+        }
+    }
 }

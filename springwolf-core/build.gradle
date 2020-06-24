@@ -73,7 +73,7 @@ def pomConfig = {
     }
 
     scm {
-        url 'https://github.com/stavshamir/swagger4kafka'
+        url 'https://github.com/stavshamir/springwolf'
     }
 }
 
@@ -93,8 +93,8 @@ publishing {
             pom.withXml {
                 def root = asNode()
                 root.appendNode('description', 'Automated JSON API documentation for Kafka Listeners built with Spring')
-                root.appendNode('name', 'springwolf')
-                root.appendNode('url', 'https://github.com/stavshamir/swagger4kafka')
+                root.appendNode('name', 'springwolf-core')
+                root.appendNode('url', 'https://github.com/stavshamir/springwolf')
                 root.children().last() + pomConfig
             }
         }
@@ -108,10 +108,10 @@ bintray {
 
     pkg {
         repo = 'springwolf'
-        name = 'springwolf'
+        name = 'springwolf-core'
         userOrg = 'stavshamir'
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/stavshamir/swagger4kafka.git'
+        vcsUrl = 'https://github.com/stavshamir/springwolf.git'
         version {
             name = project.version
             desc = 'Automated JSON API documentation for Kafka Listeners built with Spring'

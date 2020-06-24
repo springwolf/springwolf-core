@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![springwolf-core](https://github.com/stavshamir/swagger4kafka/workflows/springwolf-core/badge.svg)
-![springwolf-ui](https://github.com/stavshamir/swagger4kafka/workflows/springwolf-ui/badge.svg)
+![springwolf-core](https://github.com/stavshamir/springwolf/workflows/springwolf-core/badge.svg)
+![springwolf-ui](https://github.com/stavshamir/springwolf/workflows/springwolf-ui/badge.svg)
 
 # Springwolf (previously swagger4kafka)
 ##### Automated documentation for async APIs build with Spring Boot
@@ -115,5 +115,5 @@ If you have included the UI dependency, access it with the following url: ```loc
 If not, try the following endpoint: ```localhost:8080/asyncapi/docs``.
 
 ### Example Project
-An example project can be found [here](https://github.com/stavshamir/swagger4kafka/tree/master/springwolf-example).
+An example project can be found [here](https://github.com/stavshamir/springwolf/tree/master/springwolf-example).
 You can also run the provided [docker-compose]() file and check ```localhost:8080/asyncapi-ui.html```.
