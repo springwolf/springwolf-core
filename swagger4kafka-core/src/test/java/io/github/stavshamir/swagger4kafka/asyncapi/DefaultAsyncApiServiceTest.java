@@ -13,6 +13,7 @@ import io.github.stavshamir.swagger4kafka.configuration.protocol.AsyncApiProtoco
 import io.github.stavshamir.swagger4kafka.configuration.protocol.KafkaProtocolConfiguration;
 import io.github.stavshamir.swagger4kafka.asyncapi.scanners.channels.KafkaChannelsScanner;
 import io.github.stavshamir.swagger4kafka.asyncapi.scanners.components.DefaultComponentsScanner;
+import io.github.stavshamir.swagger4kafka.configuration.protocol.Protocols;
 import io.github.stavshamir.swagger4kafka.schemas.DefaultSchemasService;
 import io.github.stavshamir.swagger4kafka.schemas.SchemasService;
 import org.junit.Test;
@@ -50,13 +51,13 @@ public class DefaultAsyncApiServiceTest {
                     .version("1.0.0")
                     .build();
 
-            AsyncApiProtocolConfiguration kafkaProtocol = KafkaProtocolConfiguration.builder()
+            KafkaProtocolConfiguration kafkaProtocol = KafkaProtocolConfiguration.builder()
                     .basePackage(KafkaConsumerClass.class.getPackage().getName())
                     .build();
 
             return AsyncApiDocket.builder()
                     .info(info)
-                    .protocol(kafkaProtocol)
+                    .protocols(Protocols.builder().kafka(kafkaProtocol).build())
                     .server("kafka", Server.kafka().url("kafka:9092").build())
                     .build();
         }

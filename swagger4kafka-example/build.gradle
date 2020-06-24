@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     implementation project(":swagger4kafka-core")
+    runtimeOnly project(":springwolf-ui")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'

@@ -2,14 +2,13 @@ package io.github.stavshamir.swagger4kafka.configuration;
 
 import io.github.stavshamir.swagger4kafka.asyncapi.types.info.Info;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.server.Server;
-import io.github.stavshamir.swagger4kafka.configuration.protocol.AsyncApiProtocolConfiguration;
+import io.github.stavshamir.swagger4kafka.configuration.protocol.Protocols;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.Singular;
 
 import java.util.Map;
-import java.util.Set;
 
 @Data
 @Builder
@@ -30,7 +29,7 @@ public class AsyncApiDocket {
     @Singular
     private final Map<String, Server> servers;
 
-    @Singular
-    private final Set<? extends AsyncApiProtocolConfiguration> protocols;
+    @NonNull
+    private final Protocols protocols;
 
 }

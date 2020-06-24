@@ -32,7 +32,7 @@ public class DefaultChannelsService implements ChannelsService {
 
     @PostConstruct
     void findChannels() {
-        Set<? extends AsyncApiProtocolConfiguration> protocols = docket.getProtocols();
+        Set<? extends AsyncApiProtocolConfiguration> protocols = docket.getProtocols().getAll();
 
         if (protocols.size() == 0) {
             log.warn("No asyncapi protocol configured - no channels will be found. Please define and set a protocol in the Docket");

@@ -1,4 +1,4 @@
-name: swagger4kafka-ui
+name: springwolf-ui
 
 on:
   push:

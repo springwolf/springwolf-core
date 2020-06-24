@@ -1,16 +1,16 @@
 package io.github.stavshamir.swagger4kafka.asyncapi;
 
 import io.github.stavshamir.swagger4kafka.asyncapi.examples.consumers.KafkaConsumerClass;
+import io.github.stavshamir.swagger4kafka.asyncapi.scanners.channels.KafkaChannelsScanner;
+import io.github.stavshamir.swagger4kafka.asyncapi.scanners.components.DefaultComponentsScanner;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.Channel;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.Operation;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.swagger4kafka.asyncapi.types.info.Info;
 import io.github.stavshamir.swagger4kafka.configuration.AsyncApiDocket;
-import io.github.stavshamir.swagger4kafka.configuration.protocol.AsyncApiProtocolConfiguration;
 import io.github.stavshamir.swagger4kafka.configuration.protocol.KafkaProtocolConfiguration;
-import io.github.stavshamir.swagger4kafka.asyncapi.scanners.channels.KafkaChannelsScanner;
-import io.github.stavshamir.swagger4kafka.asyncapi.scanners.components.DefaultComponentsScanner;
+import io.github.stavshamir.swagger4kafka.configuration.protocol.Protocols;
 import io.github.stavshamir.swagger4kafka.schemas.DefaultSchemasService;
 import io.github.stavshamir.swagger4kafka.schemas.SchemasService;
 import org.junit.Test;
@@ -47,13 +47,13 @@ public class DefaultChannelsServiceTest {
                     .version("1.0.0")
                     .build();
 
-            AsyncApiProtocolConfiguration kafkaProtocol = KafkaProtocolConfiguration.builder()
+            KafkaProtocolConfiguration kafkaProtocol = KafkaProtocolConfiguration.builder()
                     .basePackage(KafkaConsumerClass.class.getPackage().getName())
                     .build();
 
             return AsyncApiDocket.builder()
                     .info(info)
-                    .protocol(kafkaProtocol)
+                    .protocols(Protocols.builder().kafka(kafkaProtocol).build())
                     .build();
         }
 
