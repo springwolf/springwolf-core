@@ -32,7 +32,7 @@ class ApiIntegrationTests {
 
     @Test
     fun `asyncapi-docs shold return the correct json response`() {
-        val url = "${baseUrl()}/asyncapi-docs"
+        val url = "${baseUrl()}/asyncapi/docs"
         val actual = restTemplate.getForObject(url, String::class.java)
 
         val s: InputStream = this.javaClass.getResourceAsStream("asyncapi.json")
