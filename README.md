@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![swagger4kafka](https://github.com/stavshamir/swagger4kafka/workflows/swagger4kafka-core/badge.svg)
-![swagger4kafka-ui](https://github.com/stavshamir/swagger4kafka/workflows/springwolf-ui/badge.svg)
+![springwolf-core](https://github.com/stavshamir/swagger4kafka/workflows/springwolf-core/badge.svg)
+![springwolf-ui](https://github.com/stavshamir/swagger4kafka/workflows/springwolf-ui/badge.svg)
 
 # Springwolf (previously swagger4kafka)
 ##### Automated documentation for async APIs build with Spring Boot
@@ -33,7 +33,7 @@ By applying the following instructions, methods annotated with ```@KafkaListener
  project with the ```spring-kafka``` library and its relevant configurations. 
 
 #### Dependencies
-swagger4kafka is hosted on jcenter.
+springwolf is hosted on jcenter.
 ##### Gradle
 ```groovy
 repositories {

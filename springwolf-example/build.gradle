@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'com.bmuschko.docker-spring-boot-application' version '6.1.4'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
+}
+
+sourceCompatibility = '1.8'
+version = rootProject.exampleVersion
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url 'https://oss.jfrog.org/artifactory/oss-snapshot-local' }
+}
+
+dependencies {
+    implementation project(":springwolf-core")
+    runtimeOnly project(":springwolf-ui")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'com.google.guava:guava:27.0.1-jre'
+
+    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    testImplementation 'org.jetbrains.kotlin:kotlin-reflect'
+    testImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.10.2'
+    testImplementation 'org.testcontainers:testcontainers:1.12.5'
+    testImplementation 'org.skyscreamer:jsonassert:1.5.0'
+    testImplementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+}
+
+docker {
+    springBootApplication {
+        maintainer = 'shamir.stav@gmail.com'
+        baseImage = 'openjdk:8-alpine'
+        ports = [8080]
+        images = ["stavshamir/springwolf-example:${project.version}"]
+    }
+
+    registryCredentials {
+        username = System.getProperty('dockerhub.username')
+        password = System.getProperty('dockerhub.password')
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+test.dependsOn dockerBuildImage

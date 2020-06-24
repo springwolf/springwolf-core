@@ -1,4 +1,4 @@
-rootProject.name = 'swagger4kafka'
+rootProject.name = 'springwolf'
 
-include 'swagger4kafka-core', 'swagger4kafka-example', 'springwolf-ui'
+include 'springwolf-core', 'springwolf-example', 'springwolf-ui'
 
