@@ -1,6 +1,7 @@
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+![version](https://img.shields.io/github/v/release/stavshamir/springwolf)
 ![springwolf-core](https://github.com/stavshamir/springwolf/workflows/springwolf-core/badge.svg)
 ![springwolf-ui](https://github.com/stavshamir/springwolf/workflows/springwolf-ui/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # Springwolf (previously swagger4kafka)
 ##### Automated documentation for async APIs build with Spring Boot
