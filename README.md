@@ -116,4 +116,4 @@ If not, try the following endpoint: ```localhost:8080/asyncapi/docs``.
 
 ### Example Project
 An example project can be found [here](https://github.com/stavshamir/springwolf/tree/master/springwolf-example).
-You can also run the provided [docker-compose]() file and check ```localhost:8080/asyncapi-ui.html```.
+You can also run the provided [docker-compose](./docker-compose.yml) file and check ```localhost:8080/asyncapi-ui.html```.
