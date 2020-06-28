@@ -108,13 +108,13 @@ public class AsyncApiConfiguration {
 
 }
 ```
-The basePackage field must be set with the name of the package containing the classes to be scanned for ```@KafkaListener```
+The basePackage field must be set with the name of the package containing the classes to be scanned for `@KafkaListener`
 annotated methods.
 
 #### Verify
-If you have included the UI dependency, access it with the following url: ```localhost:8080/asyncapi-ui.html```.
-If not, try the following endpoint: ```localhost:8080/asyncapi/docs``.
+If you have included the UI dependency, access it with the following url: `localhost:8080/asyncapi-ui.html`.
+If not, try the following endpoint: `localhost:8080/asyncapi/docs`.
 
 ### Example Project
 An example project can be found [here](https://github.com/stavshamir/springwolf/tree/master/springwolf-example).
-You can also run the provided [docker-compose](./docker-compose.yml) file and check ```localhost:8080/asyncapi-ui.html```.
+You can also run the provided [docker-compose](./docker-compose.yml) file and check `localhost:8080/asyncapi-ui.html`.
