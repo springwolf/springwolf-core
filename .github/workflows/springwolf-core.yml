@@ -27,11 +27,5 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew -p springwolf-core build
 
-      - name: Publish snapshot
-        run: ./gradlew -p springwolf-core artifactoryPublish -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dsnapshot=true -Dbuild.number=$GITHUB_RUN_NUMBER
-        env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-
       - name: Run integration tests
         run: ./gradlew -p springwolf-example test
