@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # Springwolf (previously swagger4kafka)
-##### Automated documentation for async APIs build with Spring Boot
+##### Automated documentation for async APIs built with Spring Boot
 
 ![](screenshot.png)
 
