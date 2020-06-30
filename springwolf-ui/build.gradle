@@ -2,7 +2,7 @@ plugins {
   id 'java'
   id 'com.github.node-gradle.node' version '2.2.4'
   id 'maven-publish'
-  id 'com.jfrog.bintray' version '1.8.4'
+  id 'com.jfrog.bintray'
 }
 
 version = rootProject.uiVersion

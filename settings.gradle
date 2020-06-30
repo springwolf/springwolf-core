@@ -1,4 +1,9 @@
-rootProject.name = 'springwolf'
+pluginManagement {
+    plugins {
+        id 'com.jfrog.bintray' version '1.8.5'
+    }
+}
 
 include 'springwolf-core', 'springwolf-example', 'springwolf-ui'
 
+rootProject.name = 'springwolf'
