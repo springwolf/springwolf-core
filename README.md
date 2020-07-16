@@ -6,6 +6,17 @@
 # Springwolf (previously swagger4kafka)
 ##### Automated documentation for async APIs built with Spring Boot
 
+### Table Of Contents
+- [About](#about)
+- [Why you should use it](#why-you-should-use-it)
+- [Usage](#usage)
+  - [Dependencies](#dependencies)
+    - [Gradle](#gradle)
+    - [Maven](#maven)
+  - [Integrating Springwolf into a Spring Boot project](#integrating-springwolf-into-a-spring-boot-project)
+  - [Verify](#verify)
+- [Example Project](#example-project)
+
 ![](screenshot.png)
 
 ### About
@@ -116,5 +127,5 @@ If you have included the UI dependency, access it with the following url: `local
 If not, try the following endpoint: `localhost:8080/asyncapi/docs`.
 
 ### Example Project
-An example project can be found [here](https://github.com/stavshamir/springwolf/tree/master/springwolf-example).
-You can also run the provided [docker-compose](./docker-compose.yml) file and check `localhost:8080/asyncapi-ui.html`.
+You can run the provided [docker-compose](./docker-compose.yml) file and check `localhost:8080/asyncapi-ui.html`.
+The source can be found [here](https://github.com/stavshamir/springwolf/tree/master/springwolf-example).
