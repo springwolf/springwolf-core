@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.github.stavshamir.springwolf.producer.KafkaProducer;
+import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class AsyncApiController {
 
     private final AsyncApiService asyncApiService;
-    private final KafkaProducer kafkaProducer;
+    private final SpringwolfKafkaProducer springwolfKafkaProducer;
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
     @PostConstruct
@@ -37,7 +37,7 @@ public class AsyncApiController {
     @PostMapping("/kafka/publish")
     public void publish(@RequestParam String topic, @RequestBody Map<String, Object> payload) {
         log.info("Publishing to kafka topic {}: {}", topic, payload);
-        kafkaProducer.send(topic, payload);
+        springwolfKafkaProducer.send(topic, payload);
     }
 
 }

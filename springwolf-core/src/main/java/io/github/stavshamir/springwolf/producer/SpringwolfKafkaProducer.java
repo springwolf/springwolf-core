@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class KafkaProducer {
+public class SpringwolfKafkaProducer {
 
     private final KafkaTemplate<String, Map<String, Object>> kafkaTemplate;
 
-    public KafkaProducer(@Autowired AsyncApiDocket docket) {
+    public SpringwolfKafkaProducer(@Autowired AsyncApiDocket docket) {
         Map<String, Object> config = docket.getProtocols().getKafka().getProducerConfiguration();
         DefaultKafkaProducerFactory<String, Map<String, Object>> factory = new DefaultKafkaProducerFactory<>(config);
         this.kafkaTemplate = new KafkaTemplate<>(factory);
