@@ -1,9 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.examples.consumers.KafkaConsumerClass;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.info.Info;
@@ -117,7 +119,10 @@ public class DefaultAsyncApiServiceTest {
                 .title(KafkaConsumerClass.ExamplePayload.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(KafkaConsumerClass.ExamplePayload.class.getSimpleName()))
                 .build();
-        Operation operation = Operation.builder().message(message).build();
+        Operation operation = Operation.builder()
+                .bindings(ImmutableMap.of("kafka", KafkaOperationBinding.withGroupId("")))
+                .message(message)
+                .build();
         Channel channel = Channel.builder().subscribe(operation).build();
         return Collections.singletonMap(KafkaConsumerClass.TOPIC, channel);
     }

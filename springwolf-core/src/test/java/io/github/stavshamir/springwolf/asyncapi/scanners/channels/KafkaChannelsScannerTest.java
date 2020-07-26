@@ -1,8 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -17,6 +20,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,7 +63,12 @@ public class KafkaChannelsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .build();
-        Operation operation = Operation.builder().message(message).build();
+
+        Operation operation = Operation.builder()
+                .bindings(ImmutableMap.of("kafka", KafkaOperationBinding.withGroupId("")))
+                .message(message)
+                .build();
+
         Channel expectedChannel = Channel.builder().subscribe(operation).build();
 
         assertThat(actualChannels)
@@ -78,7 +88,12 @@ public class KafkaChannelsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .build();
-        Operation operation = Operation.builder().message(message).build();
+
+        Operation operation = Operation.builder()
+                .bindings(ImmutableMap.of("kafka", KafkaOperationBinding.withGroupId("")))
+                .message(message)
+                .build();
+
         Channel expectedChannel = Channel.builder().subscribe(operation).build();
 
         assertThat(actualChannels)
@@ -99,11 +114,39 @@ public class KafkaChannelsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .build();
-        Operation operation = Operation.builder().message(message).build();
+
+        Operation operation = Operation.builder()
+                .bindings(ImmutableMap.of("kafka", KafkaOperationBinding.withGroupId("")))
+                .message(message)
+                .build();
+
         Channel expectedChannel = Channel.builder().subscribe(operation).build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+    }
+
+    @Test
+    public void scanForChannels_componentHasKafkaListenerMethods_withGroupId() {
+        // Given a class with methods annotated with KafkaListener, with a group id
+        // When scanForChannels is called
+        Set<Class<?>> classesToScan = singleton(ClassWithKafkaListenerAnnotationWithGroupId.class);
+        Map<String, Channel> actualChannels = kafkaChannelsScanner.scanForChannels(classesToScan);
+
+        // Then the returned collection contains a correct binding
+        Map<String, ? extends OperationBinding> actualBindings = actualChannels.get(TOPIC)
+                .getSubscribe()
+                .getBindings();
+
+        List<String> expectedBinding = KafkaOperationBinding
+                .withGroupId(ClassWithKafkaListenerAnnotationWithGroupId.GROUP_ID)
+                .getGroupId()
+                .get_enum();
+
+        assertThat(actualBindings).isNotNull();
+        assertThat(actualBindings.get("kafka")).isNotNull();
+        assertThat(expectedBinding)
+                .isEqualTo(Collections.singletonList(ClassWithKafkaListenerAnnotationWithGroupId.GROUP_ID));
     }
 
     private static class ClassWithoutKafkaListenerAnnotations {
@@ -136,6 +179,19 @@ public class KafkaChannelsScannerTest {
 
         @KafkaListener(topics = {TOPIC + "1", TOPIC + "2"})
         private void methodWithAnnotation1(SimpleFoo payload) {
+        }
+
+    }
+
+    private static class ClassWithKafkaListenerAnnotationWithGroupId {
+
+        private static final String GROUP_ID = "test-group-id";
+
+        @KafkaListener(topics = TOPIC, groupId = GROUP_ID)
+        private void methodWithAnnotation(SimpleFoo payload) {
+        }
+
+        private void methodWithoutAnnotation() {
         }
 
     }

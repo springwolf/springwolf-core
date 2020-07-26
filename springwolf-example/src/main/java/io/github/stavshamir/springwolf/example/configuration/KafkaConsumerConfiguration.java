@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.example.configuration;
 
 import com.google.common.collect.ImmutableMap;
+import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -44,6 +45,17 @@ public class KafkaConsumerConfiguration {
 
         DefaultKafkaConsumerFactory<String, ExamplePayloadDto> consumerFactory =
                 new DefaultKafkaConsumerFactory<>(consumerConfiguration(), new StringDeserializer(), new JsonDeserializer<>(ExamplePayloadDto.class));
+        containerFactory.setConsumerFactory(consumerFactory);
+
+        return containerFactory;
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, AnotherPayloadDto> anotherKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, AnotherPayloadDto> containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
+
+        DefaultKafkaConsumerFactory<String, AnotherPayloadDto> consumerFactory =
+                new DefaultKafkaConsumerFactory<>(consumerConfiguration(), new StringDeserializer(), new JsonDeserializer<>(AnotherPayloadDto.class));
         containerFactory.setConsumerFactory(consumerFactory);
 
         return containerFactory;

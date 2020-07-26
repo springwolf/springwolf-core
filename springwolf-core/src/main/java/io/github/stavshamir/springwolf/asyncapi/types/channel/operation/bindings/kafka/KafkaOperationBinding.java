@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class KafkaOperationBinding implements OperationBinding {
 
+    public static final String KAFKA_BINDING_KEY = "kafka";
+
     private GroupId groupId;
 
     public static KafkaOperationBinding withGroupId(String groupId) {

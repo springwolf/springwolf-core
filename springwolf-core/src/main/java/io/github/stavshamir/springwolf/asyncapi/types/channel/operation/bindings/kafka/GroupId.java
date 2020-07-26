@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.kafka;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor
+@EqualsAndHashCode
 public class GroupId {
 
     public GroupId(List<String> _enum) {

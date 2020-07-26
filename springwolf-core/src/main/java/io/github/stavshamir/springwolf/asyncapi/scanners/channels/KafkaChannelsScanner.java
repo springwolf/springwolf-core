@@ -1,7 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -78,11 +80,25 @@ public class KafkaChannelsScanner implements ChannelsScanner, EmbeddedValueResol
 
         Operation operation = Operation.builder()
                 .message(message)
+                .bindings(buildKafkaBinding(method))
                 .build();
 
         return Channel.builder()
                 .subscribe(operation)
                 .build();
+    }
+
+    private Map<String, KafkaOperationBinding> buildKafkaBinding(Method method) {
+        String groupId = method.getAnnotation(KafkaListener.class).groupId();
+
+        if (groupId.isEmpty()) {
+            log.debug("No group ID found for this listener");
+        } else {
+            log.debug("Found group id: {}", groupId);
+        }
+
+        KafkaOperationBinding binding = KafkaOperationBinding.withGroupId(groupId);
+        return ImmutableMap.of(KafkaOperationBinding.KAFKA_BINDING_KEY, binding);
     }
 
     private Class<?> getPayloadType(Method method) {
