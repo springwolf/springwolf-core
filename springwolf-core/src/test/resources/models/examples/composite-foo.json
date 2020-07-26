@@ -1,7 +1,0 @@
-{
-  "s" : "string",
-  "f" : {
-    "s" : "string",
-    "b" : true
-  }
-}
