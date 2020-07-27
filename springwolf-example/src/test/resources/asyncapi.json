@@ -86,10 +86,18 @@
         "properties": {
           "foo": {
             "type": "string"
+          },
+          "example": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
           }
         },
         "example": {
-          "foo": "string"
+          "foo": "string",
+          "example": {
+            "someString": "string",
+            "someLong": 0,
+            "someEnum": "FOO1"
+          }
         }
       }
     }
