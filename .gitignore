@@ -1,0 +1,6 @@
+springwolf-core/build/
+springwolf-ui/build/
+springwolf-example/build/
+
+.gradle/
+.idea/
