@@ -1,4 +1,10 @@
 <section>
+    <mat-divider></mat-divider>
+    <div fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="12px">
+        <div class="property-badge">Payload</div>
+        <h4>{{ operation.message.title }}</h4>
+        <div class="payload-name">{{ operation.message.name }}</div>
+    </div>
     <div *ngIf="kafkaBinding.groupId" fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="12px">
         <div class="property-badge">Group ID</div>
         <h4>{{ kafkaBinding.groupId }}</h4>

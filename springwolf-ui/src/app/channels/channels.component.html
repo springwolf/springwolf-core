@@ -5,9 +5,6 @@
             <mat-panel-title fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="16px">
                 <div class="operation-badge">{{ channel.value.operation.type === "SUBSCRIBE" ? "CONSUMER" : "PRODUCER" }}</div>
                 <h3>{{ channel.key }}</h3>
-                <mat-divider vertical></mat-divider>
-                <h4>{{ channel.value.operation.message.title }}</h4>
-                <div class="payload-name">{{ channel.value.operation.message.name }}</div>
             </mat-panel-title>
         </mat-expansion-panel-header>
         <app-channel-main [channelName]="channel.key" [operation]="channel.value.operation"></app-channel-main>

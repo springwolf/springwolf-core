@@ -20,3 +20,9 @@ button {
     font-size: small;
     font-weight: bold;
 }
+
+.payload-name {
+    background-color: #E0E0E0;
+    border-radius: 4px;
+    padding: 6px;
+}
