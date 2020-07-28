@@ -1,4 +1,8 @@
 <section>
+    <div *ngIf="kafkaBinding.groupId" fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="12px">
+        <div class="property-badge">Group ID</div>
+        <h4>{{ kafkaBinding.groupId }}</h4>
+    </div>
     <mat-tab-group animationDuration="0ms">
         <mat-tab label="Schema">
             <app-schema *ngIf="schema" [schema]="schema"></app-schema>

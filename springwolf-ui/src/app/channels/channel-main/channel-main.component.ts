@@ -3,6 +3,7 @@ import { AsyncApiService } from 'src/app/shared/asyncapi.service';
 import { Example } from 'src/app/shared/models/example.model';
 import { PublisherService } from 'src/app/shared/publisher.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Operation } from 'src/app/shared/models/channel.model';
 
 @Component({
   selector: 'app-channel-main',
@@ -12,10 +13,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ChannelMainComponent implements OnInit {
 
   @Input() channelName: string;
-  @Input() payload: string;
+  @Input() operation: Operation;
   defaultExample: Example;
   exampleTextAreaLineCount: number;
   schema: any;
+
+  kafkaBinding?: { groupId?: string }
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -26,11 +29,15 @@ export class ChannelMainComponent implements OnInit {
   ngOnInit(): void {
     this.asyncApiService.getAsyncApi().subscribe(
       asyncapi => {
-        this.schema = asyncapi.components.schemas.get(this.payload);
+        this.schema = asyncapi.components.schemas.get(this.operation.message.title);
         this.defaultExample = this.schema.example;
         this.exampleTextAreaLineCount = this.defaultExample.lineCount;
       }
     );
+
+    if ("kafka" in this.operation.bindings) {
+      this.kafkaBinding = { groupId: this.operation.bindings.kafka.groupId.enum[0] } 
+    }
   }
 
   recalculateLineCount(text): void {

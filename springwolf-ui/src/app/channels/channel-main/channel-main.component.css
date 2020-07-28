@@ -12,3 +12,11 @@ textarea {
 button {
     margin-top: 8px;
 }
+
+.property-badge {
+    background-color: #C5CAE9;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: small;
+    font-weight: bold;
+}

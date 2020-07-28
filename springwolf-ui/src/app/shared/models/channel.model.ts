@@ -6,11 +6,11 @@ export interface Channel {
 export interface Operation {
     type: "SUBSCRIBE" | "PUBLISH";
     message: Message;
-    bindings?: any;
+    bindings?: { [type: string]: any };
 }
 
 export interface Message {
     name: string;
     title: string;
-    payload: { $ref: string};
+    payload: { $ref: string };
 }
