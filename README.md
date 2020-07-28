@@ -54,10 +54,10 @@ repositories {
 
 dependencies {
     // Provides the documentation API    
-    implementation 'io.github.stavshamir:springwolf-core:0.0.1'
+    implementation 'io.github.stavshamir:springwolf-core:0.0.2'
     
     // Provides the UI - optional (recommended)
-    runtimeOnly 'io.github.stavshamir:springwolf-ui:0.0.1'
+    runtimeOnly 'io.github.stavshamir:springwolf-ui:0.0.2'
 }
 ```
 ##### Maven
@@ -66,12 +66,12 @@ dependencies {
     <dependency>
       <groupId>io.github.stavshamir</groupId>
       <artifactId>springwolf-core</artifactId>
-      <version>0.0.1</version>
+      <version>0.0.2</version>
     </dependency>
     <dependency>
       <groupId>io.github.stavshamir</groupId>
       <artifactId>springwolf-ui</artifactId>
-      <version>0.0.1</version>
+      <version>0.0.2</version>
     </dependency>
 </dependencies>
 ```

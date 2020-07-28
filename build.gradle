@@ -7,7 +7,7 @@ allprojects {
 }
 
 ext {
-    coreVersion = '0.0.1'
-    uiVersion = '0.0.1'
-    exampleVersion = '0.0.1'
+    coreVersion = '0.0.2'
+    uiVersion = '0.0.2'
+    exampleVersion = '0.0.2'
 }
