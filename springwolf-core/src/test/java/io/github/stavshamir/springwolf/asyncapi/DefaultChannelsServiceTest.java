@@ -12,7 +12,6 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.info.Info;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.protocol.KafkaProtocolConfiguration;
-import io.github.stavshamir.springwolf.configuration.protocol.Protocols;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.junit.Test;
@@ -55,7 +54,7 @@ public class DefaultChannelsServiceTest {
 
             return AsyncApiDocket.builder()
                     .info(info)
-                    .protocols(Protocols.builder().kafka(kafkaProtocol).build())
+                    .protocolConfiguration(kafkaProtocol)
                     .build();
         }
 

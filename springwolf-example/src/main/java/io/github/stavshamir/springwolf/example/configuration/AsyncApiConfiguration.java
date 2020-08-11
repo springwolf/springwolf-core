@@ -6,7 +6,6 @@ import io.github.stavshamir.springwolf.asyncapi.types.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
 import io.github.stavshamir.springwolf.configuration.protocol.KafkaProtocolConfiguration;
-import io.github.stavshamir.springwolf.configuration.protocol.Protocols;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +40,7 @@ public class AsyncApiConfiguration {
         return AsyncApiDocket.builder()
                 .info(info)
                 .server("kafka", Server.kafka().url(BOOTSTRAP_SERVERS).build())
-                .protocols(Protocols.builder().kafka(kafka).build())
+                .protocolConfiguration(kafka)
                 .build();
     }
 

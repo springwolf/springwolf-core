@@ -20,7 +20,7 @@ import java.util.*;
 import static java.util.stream.Collectors.*;
 
 @Slf4j
-@Service(ScannerBeanNames.KAFKA_SCANNER)
+@Service
 @RequiredArgsConstructor
 public class KafkaChannelsScanner implements ChannelsScanner, EmbeddedValueResolverAware {
 

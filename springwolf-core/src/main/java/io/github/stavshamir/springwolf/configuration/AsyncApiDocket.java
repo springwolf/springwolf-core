@@ -2,7 +2,7 @@ package io.github.stavshamir.springwolf.configuration;
 
 import io.github.stavshamir.springwolf.asyncapi.types.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.types.server.Server;
-import io.github.stavshamir.springwolf.configuration.protocol.Protocols;
+import io.github.stavshamir.springwolf.configuration.protocol.AsyncApiProtocolConfiguration;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -30,6 +30,6 @@ public class AsyncApiDocket {
     private final Map<String, Server> servers;
 
     @NonNull
-    private final Protocols protocols;
+    private final AsyncApiProtocolConfiguration protocolConfiguration;
 
 }

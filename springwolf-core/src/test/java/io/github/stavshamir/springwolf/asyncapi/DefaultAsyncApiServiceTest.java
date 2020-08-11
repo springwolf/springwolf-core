@@ -2,6 +2,8 @@ package io.github.stavshamir.springwolf.asyncapi;
 
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.examples.consumers.KafkaConsumerClass;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.KafkaChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.components.DefaultComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.Operation;
@@ -12,9 +14,6 @@ import io.github.stavshamir.springwolf.asyncapi.types.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.types.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.protocol.KafkaProtocolConfiguration;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.KafkaChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.components.DefaultComponentsScanner;
-import io.github.stavshamir.springwolf.configuration.protocol.Protocols;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.junit.Test;
@@ -58,7 +57,7 @@ public class DefaultAsyncApiServiceTest {
 
             return AsyncApiDocket.builder()
                     .info(info)
-                    .protocols(Protocols.builder().kafka(kafkaProtocol).build())
+                    .protocolConfiguration(kafkaProtocol)
                     .server("kafka", Server.kafka().url("kafka:9092").build())
                     .build();
         }
