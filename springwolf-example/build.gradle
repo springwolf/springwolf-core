@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     implementation project(":springwolf-core")
-    runtimeOnly project(":springwolf-ui")
+    runtimeOnly 'io.github.stavshamir.springwolf:springwolf-ui:0.0.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'

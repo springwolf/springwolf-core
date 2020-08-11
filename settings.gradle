@@ -4,6 +4,6 @@ pluginManagement {
     }
 }
 
-include 'springwolf-core', 'springwolf-example', 'springwolf-ui'
+include 'springwolf-core', 'springwolf-example'
 
 rootProject.name = 'springwolf'
