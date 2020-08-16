@@ -25,4 +25,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew -p springwolf-core build
+        run: ./gradlew build
