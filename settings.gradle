@@ -1,9 +1,1 @@
-pluginManagement {
-    plugins {
-        id 'com.jfrog.bintray' version '1.8.5'
-    }
-}
-
-include 'springwolf-core', 'springwolf-example'
-
-rootProject.name = 'springwolf'
+rootProject.name = 'springwolf-core'

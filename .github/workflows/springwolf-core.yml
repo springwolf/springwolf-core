@@ -26,6 +26,3 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew -p springwolf-core build
-
-      - name: Run integration tests
-        run: ./gradlew -p springwolf-example test
