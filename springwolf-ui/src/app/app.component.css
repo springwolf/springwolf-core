@@ -1,0 +1,10 @@
+app-header {
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+}
+
+main {
+    margin: 0 64px;
+    padding: 64px 0;
+}

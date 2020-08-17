@@ -1,0 +1,103 @@
+plugins {
+  id 'java'
+  id 'com.github.node-gradle.node' version '2.2.4'
+  id 'maven-publish'
+  id 'com.jfrog.bintray' version '1.8.5'
+}
+
+group = 'io.github.stavshamir'
+version = '0.0.2'
+sourceCompatibility = '1.8'
+
+node {
+  version = '12.18.1'
+  npmVersion = '6.14.5'
+  download = true
+}
+
+npm_run_build {
+  inputs.files fileTree("src")
+  inputs.file 'angular.json'
+  inputs.file 'package.json'
+  inputs.file 'package-lock.json'
+
+  outputs.dir 'build'
+}
+
+jar {
+  dependsOn 'npm_run_build'
+  metaInf { from 'dist/springwolf-ui' into 'resources' }
+}
+
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+artifacts {
+  archives sourcesJar
+}
+
+
+def pomConfig = {
+  licenses {
+    license {
+      name 'The Apache License, Version 2.0'
+      url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    }
+  }
+
+  developers {
+    developer {
+      id 'stavshamir'
+      name 'Stav Shamir'
+      email 'shamir.stav@gmail.com'
+    }
+  }
+
+  scm {
+    url 'https://github.com/springwolf/springwolf-ui'
+  }
+}
+
+publishing {
+  publications {
+    mavenPublication(MavenPublication) {
+      artifact jar
+
+      artifact sourcesJar {
+        classifier "sources"
+      }
+
+      groupId project.group
+      artifactId 'springwolf-ui'
+      version project.version
+      pom.withXml {
+        def root = asNode()
+        root.appendNode('description', 'Web UI for Springwolf')
+        root.appendNode('name', 'springwolf-ui')
+        root.appendNode('url', 'https://github.com/springwolf/springwolf-ui')
+        root.children().last() + pomConfig
+      }
+    }
+  }
+}
+
+bintray {
+  user = System.getProperty('bintray.user')
+  key = System.getProperty('bintray.key')
+  publications = ['mavenPublication']
+
+  pkg {
+    repo = 'springwolf'
+    name = 'springwolf-ui'
+    userOrg = 'stavshamir'
+    licenses = ['Apache-2.0']
+    vcsUrl = 'https://github.com/springwolf/springwolf-ui.git'
+    version {
+      name = project.version
+      desc = 'Web UI for Springwolf'
+      released = new Date()
+    }
+  }
+}
