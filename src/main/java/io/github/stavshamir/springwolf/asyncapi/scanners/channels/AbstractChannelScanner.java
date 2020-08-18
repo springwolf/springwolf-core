@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import com.google.common.collect.Maps;
+import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.OperationBinding;
@@ -21,20 +22,25 @@ import static java.util.stream.Collectors.toSet;
 public abstract class AbstractChannelScanner<T extends Annotation> implements ChannelsScanner {
 
     @Autowired
+    private ComponentsScanner componentsScanner;
+
+    @Autowired
     private SchemasService schemasService;
 
     @Override
     public Map<String, Channel> scan() {
-        return getClassesToScan().stream()
+        String basePackage = getBasePackage();
+
+        return componentsScanner.scanForComponents(basePackage).stream()
                 .map(this::getAnnotatedMethods).flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
-     * @return The @Component classes to scan for listener annotations.
+     * @return The base package containing @Component classes with listener annotations.
      */
-    protected abstract Set<Class<?>> getClassesToScan();
+    protected abstract String getBasePackage();
 
     /**
      * @return The class object of the listener annotation.
