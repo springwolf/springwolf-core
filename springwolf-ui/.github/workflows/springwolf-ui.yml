@@ -42,7 +42,7 @@ jobs:
         run: mv dist/springwolf-ui/asyncapi-ui.html dist/springwolf-ui/index.html
       
       - name: Fix asyncapi image location
-        run: find . -name '*.js' -exec sed -i -e 's~../../assets/asyncapi-logo.png~https://springwolf.github.io/springwolf-ui/assets/asyncapi-logo.png~g' {} \;
+        run: find . -name 'dist/springwolf-ui/*.js' -exec sed -i -e 's~../../assets/asyncapi-logo.png~https://springwolf.github.io/springwolf-ui/assets/asyncapi-logo.png~g' {} \;
 
       - name: Deploy to gh-pages
-        run: ng deploy --no-build
+        run: ng deploy --no-build --no-silent
