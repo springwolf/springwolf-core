@@ -29,8 +29,8 @@ jobs:
         with:
           node-version: 12.18.x
       
-      - name: Install
-        run: npm install
+      - name: Install angular cli
+        run: npm install -g @angular/cli
       
       - name: Build
         run: ng build --base-href=https://springwolf.github.io/springwolf-ui/
