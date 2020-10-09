@@ -1,8 +1,8 @@
 {
   "asyncapi": "2.0.0",
   "info": {
-    "title": "Springwolf example project",
-    "description": "Mock data",
+    "title": "Springwolf Demo",
+    "description": "This is a demo project for springwolf that shows how the UI looks like and functions.",
     "version": "1.0.0"
   },
   "servers": {
