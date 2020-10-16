@@ -1,4 +1,4 @@
-name: springwolf-ui
+name: deploy-demo
 
 on: 
   push:
@@ -19,7 +19,6 @@ jobs:
         run: |
           npm install -g @angular/cli
           ng add @angular/material
-
       
       - name: Build
         run: ng build --base-href=https://springwolf.github.io/springwolf-ui/
@@ -31,4 +30,9 @@ jobs:
         run: find . -name 'dist/springwolf-ui/*.js' -exec sed -i -e 's~../../assets/asyncapi-logo.png~https://springwolf.github.io/springwolf-ui/assets/asyncapi-logo.png~g' {} \;
 
       - name: Deploy to gh-pages
-        run: ng deploy --no-build --no-silent
+        run: |
+          git config --local user.name "springwolf-ui deploy-demo workflow"
+          git checkout gh-pages
+          git add dist/springwolf-ui
+          git commit dist/springwolf-ui -m "Update springwolf-ui demo"
+          git subtree push --prefix dist/springwolf-ui origin gh-pages
