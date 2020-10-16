@@ -35,4 +35,4 @@ jobs:
           git checkout gh-pages
           git add dist/springwolf-ui
           git commit dist/springwolf-ui -m "Update springwolf-ui demo"
-          git subtree push --prefix dist/springwolf-ui origin gh-pages
+          git subtree push --prefix=dist/springwolf-ui origin gh-pages
