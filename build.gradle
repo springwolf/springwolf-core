@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'io.github.stavshamir'
-version = '0.1.0' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
+version = '0.1.1' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
 sourceCompatibility = 1.8
 
 repositories {
