@@ -1,16 +1,12 @@
 <section>
     <mat-divider></mat-divider>
-    <div fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="12px">
-        <div class="property-badge">Payload</div>
-        <h4>{{ operation.message.title }}</h4>
-        <div class="payload-name">{{ operation.message.name }}</div>
-    </div>
     <div *ngIf="kafkaBinding.groupId" fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="12px">
         <div class="property-badge">Group ID</div>
         <h4>{{ kafkaBinding.groupId }}</h4>
     </div>
     <mat-tab-group animationDuration="0ms">
         <mat-tab label="Schema">
+            <h4>{{ operation.message.title }} <span class="payload-name">{{ operation.message.name }}</span></h4>
             <app-schema *ngIf="schema" [schema]="schema"></app-schema>
         </mat-tab>
         <mat-tab label="Example">
