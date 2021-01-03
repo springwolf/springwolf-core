@@ -93,19 +93,25 @@ export class AsyncApiService {
 
     private mapOperation(subscribe: { message: Message; bindings?: any; }, publish: { message: Message; bindings?: any; }): Operation {
         const isSubscribe = subscribe !== null;
+
         if (isSubscribe) {
             return {
-                type: "SUBSCRIBE",
+                type: this.getProtocol(subscribe) + " Consumer",
                 message: subscribe.message,
                 bindings: subscribe.bindings
             }
         } else {
             return {
-                type: "PUBLISH",
+                type: this.getProtocol(publish) + " Producer",
                 message: publish.message,
                 bindings: publish.bindings
             }
         }
+    }
+
+    private getProtocol(operation: { message: Message; bindings?: any; }): string {
+        const protocol = Object.keys(operation.bindings)[0];
+        return protocol.charAt(0).toUpperCase() + protocol.slice(1);
     }
 
     mapSchemas(schemas: { [key: string]: { type: string; properties: object; example: object; } }): Map<string, Schema> {
