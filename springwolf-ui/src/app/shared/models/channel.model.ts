@@ -4,7 +4,7 @@ export interface Channel {
 }
 
 export interface Operation {
-    type: "SUBSCRIBE" | "PUBLISH";
+    type: string;
     message: Message;
     bindings?: { [type: string]: any };
 }

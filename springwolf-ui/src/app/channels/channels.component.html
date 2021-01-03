@@ -3,7 +3,7 @@
     <mat-expansion-panel *ngFor="let channel of channels | keyvalue">
         <mat-expansion-panel-header>
             <mat-panel-title fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="16px">
-                <div class="operation-badge">{{ channel.value.operation.type === "SUBSCRIBE" ? "CONSUMER" : "PRODUCER" }}</div>
+                <div class="operation-badge">{{ channel.value.operation.type }}</div>
                 <h3>{{ channel.key }}</h3>
             </mat-panel-title>
         </mat-expansion-panel-header>
