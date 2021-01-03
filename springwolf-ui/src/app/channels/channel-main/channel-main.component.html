@@ -2,7 +2,8 @@
     <mat-divider></mat-divider>
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="Schema">
-        <h4>{{ operation.message.title }} <span class="payload-name">{{ operation.message.name }}</span></h4>
+        <h4>{{ operation.message.title }} </h4>
+        <div class="payload-name">{{ operation.message.name }}</div>
         <app-schema *ngIf="schema" [schema]="schema" [root]="schemaRoot"></app-schema>
       </mat-tab>
       <mat-tab label="Example">
