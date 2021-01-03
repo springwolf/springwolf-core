@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-schema',
-  template: '<pre><code [highlight]="schemaProperties"></code></pre>',
+  template: '<pre><code [highlight]="json"></code></pre>',
   styles: [`code {
     margin-top: 16px;
     padding: 8px;
@@ -11,13 +11,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SchemaComponent implements OnInit {
 
+  @Input() root: string;
   @Input() schema: any;
-  schemaProperties: string;
+  json: string;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.schemaProperties = JSON.stringify(this.schema.properties, null, 2);
+    this.json = JSON.stringify(this.schema[this.root], null, 2);
   }
 
 }

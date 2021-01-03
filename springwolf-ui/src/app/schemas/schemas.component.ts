@@ -8,8 +8,9 @@ import { Schema } from '../shared/models/schema.model';
   styleUrls: ['./schemas.component.css']
 })
 export class SchemasComponent implements OnInit {
-  
+
   schemas: Map<string, Schema>;
+  schemaRoot = "properties";
 
   constructor(private asyncApiService: AsyncApiService) { }
 

@@ -6,6 +6,6 @@
                 <h3>{{ schema.key }}</h3>
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <app-schema [schema]="schema?.value"></app-schema>
+        <app-schema [schema]="schema?.value" [root]="schemaRoot"></app-schema>
     </mat-expansion-panel>
 </mat-accordion>

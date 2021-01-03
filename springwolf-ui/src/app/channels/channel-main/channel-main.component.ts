@@ -17,8 +17,8 @@ export class ChannelMainComponent implements OnInit {
   defaultExample: Example;
   exampleTextAreaLineCount: number;
   schema: any;
-
-  kafkaBinding?: { groupId?: string }
+  schemaRoot = "properties";
+  bindingsRoot: string;
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -35,9 +35,7 @@ export class ChannelMainComponent implements OnInit {
       }
     );
 
-    if ("kafka" in this.operation.bindings) {
-      this.kafkaBinding = { groupId: this.operation.bindings.kafka.groupId.enum[0] } 
-    }
+    this.bindingsRoot = Object.keys(this.operation.bindings)[0];
   }
 
   recalculateLineCount(text): void {
