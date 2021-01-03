@@ -18,7 +18,7 @@ export class ChannelMainComponent implements OnInit {
   exampleTextAreaLineCount: number;
   schema: any;
   schemaRoot = "properties";
-  bindingsRoot: string;
+  protocolName: string;
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -35,7 +35,7 @@ export class ChannelMainComponent implements OnInit {
       }
     );
 
-    this.bindingsRoot = Object.keys(this.operation.bindings)[0];
+    this.protocolName = Object.keys(this.operation.bindings)[0];
   }
 
   recalculateLineCount(text): void {
@@ -46,7 +46,7 @@ export class ChannelMainComponent implements OnInit {
     try {
       const json = JSON.parse(example);
 
-      this.publisherService.publishToKafka(this.channelName, json).subscribe(
+      this.publisherService.publish(this.protocolName, this.channelName, json).subscribe(
         _ => this.snackBar.open('Example payload sent to: ' + this.channelName, 'PUBLISHED', {
           duration: 3000
         })

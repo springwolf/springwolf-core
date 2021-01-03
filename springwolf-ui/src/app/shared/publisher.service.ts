@@ -1,4 +1,4 @@
- 
+
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,9 +8,11 @@ export class PublisherService {
 
   constructor(private http: HttpClient) { }
 
-  publishToKafka(topic: string, payload: object): Observable<unknown> {
+  publish(protocol: string, topic: string, payload: object): Observable<unknown> {
+    const url = `/asyncapi/${protocol}/publish`;
     const params = new HttpParams().set('topic', topic);
-    return this.http.post('/asyncapi/kafka/publish', payload, { params });
+    console.log(`Publishing to ${url}`);
+    return this.http.post(url, payload, { params });
   }
 
 }
