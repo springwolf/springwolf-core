@@ -12,6 +12,7 @@
 - [Why you should use it](#why-you-should-use-it)
 - [Usage](#usage)
 - [Example Project](#example-project)
+- [Development](#development)
 
 ![](screenshot.png)
 
@@ -48,3 +49,8 @@ You should not be using this dependency in your application. Instead, use one of
 ### Example Project
 You can run the provided [docker-compose](./docker-compose.yml) file and check `localhost:8080/asyncapi-ui.html`.
 The source can be found [here](https://github.com/springwolf/springwolf-kafka/tree/master/springwolf-kafka-example).
+
+
+### Development
+#### Local Snapshots
+To work with local snapshots, run the `publishToMavenLocal` task with `-Dsnapshot=true`.
