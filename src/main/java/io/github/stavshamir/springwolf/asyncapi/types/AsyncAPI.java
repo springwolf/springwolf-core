@@ -54,7 +54,7 @@ public class AsyncAPI {
     /**
      * <b>Required.</b>
      * The available channels and messages for the API.
-     * Channels are also known as “topics”, “routing keys”, “event types” or “paths”.
+     * Channels are also known as "topics", "routing keys", "event types" or "paths".
      */
     @NonNull
     private Map<String, Channel> channels;
