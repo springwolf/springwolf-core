@@ -1,17 +1,15 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
 import com.google.common.collect.ImmutableMap;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ProducerChannelScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.DefaultComponentsScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.Components;
+import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.kafka.KafkaOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.types.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Collections;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
         DefaultAsyncApiService.class,
         DefaultChannelsService.class,
         DefaultComponentsScanner.class,
-        DefaultSchemasService.class
+        DefaultSchemasService.class,
+        ProducerChannelScanner.class
 })
 @Import(DefaultAsyncApiServiceTest.DefaultAsyncApiServiceTestConfiguration.class)
 public class DefaultAsyncApiServiceTest {
@@ -46,10 +44,17 @@ public class DefaultAsyncApiServiceTest {
                     .version("1.0.0")
                     .build();
 
+            ProducerData kafkaProducerData =
+                    ProducerData.builder()
+                                .channelName("producer-topic")
+                                .payloadType(String.class)
+                                .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                                .build();
 
             return AsyncApiDocket.builder()
                     .info(info)
                     .server("kafka", Server.kafka().url("kafka:9092").build())
+                    .producer(kafkaProducerData)
                     .build();
         }
 
@@ -75,6 +80,15 @@ public class DefaultAsyncApiServiceTest {
 
         assertThat(actualServers).
                 isEqualTo(docket.getServers());
+    }
+
+    @Test
+    public void getAsyncAPI_producers_should_be_correct() {
+        Map<String, Channel> actualChannels = asyncApiService.getAsyncAPI().getChannels();
+
+        assertThat(actualChannels)
+                .isNotEmpty()
+                .containsKey("producer-topic");
     }
 
 }

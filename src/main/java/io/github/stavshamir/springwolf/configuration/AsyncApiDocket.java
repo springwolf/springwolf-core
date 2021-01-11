@@ -1,7 +1,9 @@
 package io.github.stavshamir.springwolf.configuration;
 
+import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.types.server.Server;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -27,5 +29,11 @@ public class AsyncApiDocket {
      */
     @Singular
     private final Map<String, Server> servers;
+
+    /**
+     * Provides information about the producers.
+     */
+    @Singular
+    private final List<ProducerData> producers;
 
 }
