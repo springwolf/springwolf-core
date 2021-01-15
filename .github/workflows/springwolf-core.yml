@@ -7,6 +7,8 @@ on:
     paths:
       - '.github/workflows/springwolf-core.yml'
       - 'springwolf-core/**'
+  pull_request:
+    types: [ opened, synchronize, ready_for_review ]
 
 jobs:
   build:
