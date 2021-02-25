@@ -92,7 +92,7 @@ export class AsyncApiService {
     }
 
     private mapOperation(subscribe: { message: Message; bindings?: any; }, publish: { message: Message; bindings?: any; }): Operation {
-        const isSubscribe = subscribe !== null;
+        const isSubscribe = !!subscribe;
 
         if (isSubscribe) {
             return {
