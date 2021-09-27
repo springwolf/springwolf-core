@@ -9,11 +9,8 @@
 Add the following dependencies and configuration class to enable this plugin.
 
 ```groovy
-repositories {
-    jcenter()
-}
 dependencies {
-    runtimeOnly 'io.github.stavshamir:springwolf-ui:0.0.2'
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.1.1'
 }
 ```
 
