@@ -4,3 +4,5 @@ springwolf-example/build/
 
 .gradle/
 .idea/
+/gradle.properties
+

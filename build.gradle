@@ -1,15 +1,14 @@
 plugins {
     id 'java'
     id 'maven'
-
+    id 'signing'
     id 'maven-publish'
-    id 'com.jfrog.bintray' version '1.8.5'
 
     id 'org.springframework.boot' version '2.1.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
-group = 'io.github.stavshamir'
+group = 'io.github.springwolf'
 version = '0.1.1' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
 sourceCompatibility = 1.8
 
@@ -55,6 +54,10 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
+signing {
+    sign configurations.archives
+}
+
 def pomConfig = {
     licenses {
         license {
@@ -78,43 +81,66 @@ def pomConfig = {
 
 publishing {
     publications {
-        mavenPublication(MavenPublication) {
+        mavenJava(MavenPublication) {
             from components.java
+
             artifact sourcesJar {
                 classifier "sources"
             }
+
             artifact javadocJar {
                 classifier "javadoc"
             }
+
             groupId project.group
             artifactId 'springwolf-core'
             version project.version
             pom.withXml {
                 def root = asNode()
-                root.appendNode('description', 'Automated JSON API documentation for Kafka Listeners built with Spring')
+                root.appendNode('description', 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring')
                 root.appendNode('name', 'springwolf-core')
                 root.appendNode('url', 'https://github.com/stavshamir/springwolf')
                 root.children().last() + pomConfig
+
+                def pomFile = file("${project.buildDir}/generated-pom.xml")
+                writeTo(pomFile)
+                def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+                artifact(pomAscFile) {
+                    classifier = null
+                    extension = 'pom.asc'
+                }
+            }
+
+            project.tasks.signArchives.signatureFiles.each {
+                artifact(it) {
+                    def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+                    if (matcher.find()) {
+                        classifier = matcher.group(1)
+                    } else {
+                        classifier = null
+                    }
+                    extension = 'jar.asc'
+                }
             }
         }
     }
-}
 
-bintray {
-    user = System.getProperty('bintray.user')
-    key = System.getProperty('bintray.key')
-    publications = ['mavenPublication']
+    repositories {
+        maven {
+            url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
+            }
+        }
+    }
 
-    pkg {
-        repo = 'springwolf'
-        name = 'springwolf-core'
-        userOrg = 'stavshamir'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/stavshamir/springwolf.git'
-        version {
-            name = project.version
-            desc = 'Automated JSON API documentation for Kafka Listeners built with Spring'
-            released = new Date()
+    model {
+        tasks.publishMavenJavaPublicationToMavenLocal {
+            dependsOn project.tasks.signArchives
+        }
+        tasks.publishMavenJavaPublicationToMavenRepository {
+            dependsOn project.tasks.signArchives
         }
     }
 }
