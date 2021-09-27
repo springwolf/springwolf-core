@@ -1,12 +1,12 @@
 plugins {
   id 'java'
   id 'com.github.node-gradle.node' version '2.2.4'
+  id 'signing'
   id 'maven-publish'
-  id 'com.jfrog.bintray' version '1.8.5'
 }
 
-group = 'io.github.stavshamir'
-version = '0.0.2'
+group = 'io.github.springwolf'
+version = '0.1.1' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
 sourceCompatibility = '1.8'
 
 node {
@@ -38,6 +38,9 @@ artifacts {
   archives sourcesJar
 }
 
+signing {
+  sign configurations.archives
+}
 
 def pomConfig = {
   licenses {
@@ -62,7 +65,7 @@ def pomConfig = {
 
 publishing {
   publications {
-    mavenPublication(MavenPublication) {
+    mavenJava(MavenPublication) {
       artifact jar
 
       artifact sourcesJar {
@@ -78,26 +81,46 @@ publishing {
         root.appendNode('name', 'springwolf-ui')
         root.appendNode('url', 'https://github.com/springwolf/springwolf-ui')
         root.children().last() + pomConfig
+
+        def pomFile = file("${project.buildDir}/generated-pom.xml")
+        writeTo(pomFile)
+        def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+        artifact(pomAscFile) {
+          classifier = null
+          extension = 'pom.asc'
+        }
+      }
+
+      project.tasks.signArchives.signatureFiles.each {
+        artifact(it) {
+          def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+          if (matcher.find()) {
+            classifier = matcher.group(1)
+          } else {
+            classifier = null
+          }
+          extension = 'jar.asc'
+        }
       }
     }
   }
-}
 
-bintray {
-  user = System.getProperty('bintray.user')
-  key = System.getProperty('bintray.key')
-  publications = ['mavenPublication']
+  repositories {
+    maven {
+      url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+      credentials {
+        username = ossrhUsername
+        password = ossrhPassword
+      }
+    }
+  }
 
-  pkg {
-    repo = 'springwolf'
-    name = 'springwolf-ui'
-    userOrg = 'stavshamir'
-    licenses = ['Apache-2.0']
-    vcsUrl = 'https://github.com/springwolf/springwolf-ui.git'
-    version {
-      name = project.version
-      desc = 'Web UI for Springwolf'
-      released = new Date()
+  model {
+    tasks.publishMavenJavaPublicationToMavenLocal {
+      dependsOn project.tasks.signArchives
+    }
+    tasks.publishMavenJavaPublicationToMavenRepository {
+      dependsOn project.tasks.signArchives
     }
   }
 }
