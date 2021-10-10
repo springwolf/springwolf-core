@@ -6,7 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings
 
 import java.util.Map;
 
-public class DefaultChannelScanner extends AbstractChannelScanner<AbstractChannelScannerTest.TestChannelListener> {
+public class TestChannelScanner extends AbstractChannelScanner<AbstractChannelScannerTest.TestChannelListener> {
 
     @Override
     protected String getBasePackage() {

@@ -31,11 +31,11 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {DefaultChannelScanner.class, DefaultSchemasService.class})
+@ContextConfiguration(classes = {TestChannelScanner.class, DefaultSchemasService.class})
 public class AbstractChannelScannerTest {
 
     @Autowired
-    private DefaultChannelScanner channelScanner;
+    private TestChannelScanner channelScanner;
 
     @MockBean
     private ComponentsScanner componentsScanner;
