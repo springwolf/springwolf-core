@@ -43,7 +43,7 @@ public class ProducerChannelScanner implements ChannelsScanner {
                                        .build();
 
         return Channel.builder()
-                      .publish(operation)
+                      .subscribe(operation)
                       .build();
     }
 }
