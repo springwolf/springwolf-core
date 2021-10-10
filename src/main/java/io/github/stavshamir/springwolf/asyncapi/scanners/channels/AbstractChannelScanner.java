@@ -110,7 +110,7 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
                 .build();
 
         return Channel.builder()
-                .subscribe(operation)
+                .publish(operation)
                 .build();
     }
 
