@@ -89,6 +89,9 @@ public class DefaultAsyncApiServiceTest {
         assertThat(actualChannels)
                 .isNotEmpty()
                 .containsKey("producer-topic");
+
+        final Channel channel = actualChannels.get("producer-topic");
+        assertThat(channel.getSubscribe()).isNotNull();
     }
 
 }
