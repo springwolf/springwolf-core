@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AsyncApiService } from 'src/app/shared/asyncapi.service';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  documents: string[];
+  selectedDocument: string;
+
+  constructor(private asyncApiService: AsyncApiService) { }
 
   ngOnInit(): void {
+    this.asyncApiService.getAsyncApis().subscribe(docsMap => {
+      this.documents = [...docsMap.keys()];
+      this.selectedDocument = this.documents[0]
+      this.asyncApiService.setCurrentAsyncApiName(this.selectedDocument);
+    });
+  }
+
+  get selectedDocumentMod() {
+    return this.selectedDocument;
+  }
+
+  set selectedDocumentMod(value) {
+    this.selectedDocument = value;
+    this.asyncApiService.setCurrentAsyncApiName(this.selectedDocument);
   }
 
 }

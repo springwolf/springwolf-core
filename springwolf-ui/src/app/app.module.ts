@@ -18,6 +18,7 @@ import { ServersComponent } from './servers/servers.component';
 import { AsyncApiService } from './shared/asyncapi.service';
 import { MockServer } from './shared/mock-server';
 import { PublisherService } from './shared/publisher.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { PublisherService } from './shared/publisher.service';
     FlexLayoutModule,
     HighlightModule,
     HttpClientModule,
+    FormsModule,
     environment.production ? [] : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 })
   ],
   providers: [

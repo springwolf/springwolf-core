@@ -11,3 +11,9 @@ a {
 a:hover {
     color: lightgray;
 }
+
+.select-doc {
+    width: 200px;
+    height: 24px;
+    display:block;
+}

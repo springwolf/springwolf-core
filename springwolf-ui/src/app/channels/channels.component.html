@@ -7,6 +7,10 @@
                 <h3>{{ channel.key }}</h3>
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <app-channel-main [channelName]="channel.key" [operation]="channel.value.operation"></app-channel-main>
+        <app-channel-main 
+            [channelName]="channel.key" 
+            [operation]="channel.value.operation"
+            [docName]="docName">
+        </app-channel-main>
     </mat-expansion-panel>
 </mat-accordion>
