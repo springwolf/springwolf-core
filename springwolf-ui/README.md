@@ -15,3 +15,7 @@ dependencies {
 ```
 
 After starting the application, visit: `localhost:8080/asyncapi-ui.html`.
+
+### Development
+1. Run `npm i`
+2. Run `ng serve`

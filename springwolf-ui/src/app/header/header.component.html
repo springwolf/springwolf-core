@@ -4,6 +4,10 @@
             <img class="logo" src="../../assets/asyncapi-logo.png" alt="AsyncAPI logo">
         </a>
         <h2>springwolf</h2>
+        <select [(ngModel)]="selectedDocumentMod">
+            <option disabled>Choose a doc</option>
+            <option *ngFor="let doc of documents" [ngValue]="doc">{{ doc }}</option>
+        </select>
     </div>
     <a href="https://github.com/stavshamir/springwolf">
         <i class="fa fa-github fa-2x"></i>
