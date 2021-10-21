@@ -1,6 +1,6 @@
 name: deploy-demo
 
-on: 
+on:
   push:
     branches: [ master ]
 
@@ -9,23 +9,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.2
         with:
           node-version: 12.18.x
-      
+
       - name: Install angular cli
         run: |
-          npm install -g @angular/cli
+          npm install -g @angular/cli --skip-confirmation
           ng add @angular/material
-      
+
       - name: Build
         run: ng build --base-href=https://springwolf.github.io/springwolf-ui/
-        
+
       - name: Rename asyncapi-ui.html to index html
         run: mv dist/springwolf-ui/asyncapi-ui.html dist/springwolf-ui/index.html
-      
+
       - name: Fix asyncapi image location
         run: find . -name 'dist/springwolf-ui/*.js' -exec sed -i -e 's~../../assets/asyncapi-logo.png~https://springwolf.github.io/springwolf-ui/assets/asyncapi-logo.png~g' {} \;
 
