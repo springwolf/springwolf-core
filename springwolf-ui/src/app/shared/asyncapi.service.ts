@@ -48,7 +48,7 @@ export class AsyncApiService {
     private nameSubject: Subject<string>;
     private docs: Map<string, AsyncApi>;
 
-    constructor(private http: HttpClient) { 
+    constructor(private http: HttpClient) {
         this.nameSubject = new Subject<string>();
     }
 
@@ -65,8 +65,8 @@ export class AsyncApiService {
             return of(this.docs);
         }
 
-        return this.http.get<Map<string, ServerAsyncApi>>('/asyncapi/docs').pipe(map(item => { 
-            this.docs = this.toAsyncApiMap(item); 
+        return this.http.get<Map<string, ServerAsyncApi>>('/asyncapi/docs').pipe(map(item => {
+            this.docs = this.toAsyncApiMap(item);
             return this.docs;
         }));
     }
@@ -120,13 +120,13 @@ export class AsyncApiService {
 
         if (isSubscribe) {
             return {
-                type: this.getProtocol(subscribe) + " Consumer",
+                type: this.getProtocol(subscribe) + " producer",
                 message: subscribe.message,
                 bindings: subscribe.bindings
             }
         } else {
             return {
-                type: this.getProtocol(publish) + " Producer",
+                type: this.getProtocol(publish) + " consumer",
                 message: publish.message,
                 bindings: publish.bindings
             }
@@ -134,8 +134,7 @@ export class AsyncApiService {
     }
 
     private getProtocol(operation: { message: Message; bindings?: any; }): string {
-        const protocol = Object.keys(operation.bindings)[0];
-        return protocol.charAt(0).toUpperCase() + protocol.slice(1);
+        return Object.keys(operation.bindings)[0];
     }
 
     mapSchemas(schemas: { [key: string]: { type: string; properties: object; example: object; } }): Map<string, Schema> {
