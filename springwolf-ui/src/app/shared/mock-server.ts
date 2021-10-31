@@ -8,15 +8,15 @@ export class MockServer implements InMemoryDbService {
 
   get(reqInfo: RequestInfo) {
     console.log("Returning mock data")
-    if (reqInfo.req.url === '/asyncapi/docs') {
+    if (reqInfo.req.url.endsWith('/docs')) {
       return reqInfo.utils.createResponse$(() => {
         return {
           status: STATUS.OK,
           body: mockAsyncApi
         }
       });
-    } 
-    
+    }
+
     return undefined;
   }
 }
