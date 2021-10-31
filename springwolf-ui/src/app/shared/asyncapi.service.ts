@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Info } from './models/info.model';
+import { Endpoints } from './endpoints';
 
 interface ServerAsyncApi {
     asyncapi: string;
@@ -65,7 +66,7 @@ export class AsyncApiService {
             return of(this.docs);
         }
 
-        return this.http.get<Map<string, ServerAsyncApi>>('/asyncapi/docs').pipe(map(item => {
+        return this.http.get<Map<string, ServerAsyncApi>>(Endpoints.docs).pipe(map(item => {
             this.docs = this.toAsyncApiMap(item);
             return this.docs;
         }));
