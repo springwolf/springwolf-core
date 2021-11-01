@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 
 @Slf4j
 @RestController
-@RequestMapping("/asyncapi")
+@RequestMapping("/springwolf")
 @RequiredArgsConstructor
 public class AsyncApiController {
 
