@@ -26,7 +26,7 @@ npm_run_build {
 
 jar {
   dependsOn 'npm_run_build'
-  metaInf { from 'dist/springwolf-ui' into 'resources' }
+  metaInf { from 'dist/springwolf-ui' into 'resources/springwolf' }
 }
 
 task sourcesJar(type: Jar) {
