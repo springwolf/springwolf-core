@@ -6,15 +6,15 @@
 ##### Web UI for Springwolf
 
 ### Usage
-Add the following dependencies and configuration class to enable this plugin.
+Add the following dependencies:
 
 ```groovy
 dependencies {
-    runtimeOnly 'io.github.springwolf:springwolf-ui:0.1.1'
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.2.2'
 }
 ```
 
-After starting the application, visit: `localhost:8080/asyncapi-ui.html`.
+After starting the application, visit: `localhost:8080/springwolf/asyncapi-ui.html`.
 
 ### Development
 1. Run `npm i`
