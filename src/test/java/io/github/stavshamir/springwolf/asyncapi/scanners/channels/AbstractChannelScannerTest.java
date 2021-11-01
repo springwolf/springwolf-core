@@ -56,7 +56,7 @@ public class AbstractChannelScannerTest {
 
     @Test
     public void scan_componentHasListenerMethod() {
-        // Given a class with methods annotated with KafkaListener, whose topics attribute is hard coded
+        // Given a class with methods annotated with TestChannelListener, whose topics attribute is hard coded
         setClassToScan(ClassWithListenerAnnotation.class);
 
         // When scan is called
@@ -70,7 +70,7 @@ public class AbstractChannelScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .bindings(ImmutableMap.of("kafka", KafkaOperationBinding.withGroupId("test-group")))
+                .bindings(ImmutableMap.of("test", new TestChannelScanner.TestBinding()))
                 .message(message)
                 .build();
 
@@ -108,5 +108,6 @@ public class AbstractChannelScannerTest {
     @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE })
     @Retention(RetentionPolicy.RUNTIME)
     public @interface TestChannelListener { }
+
 }
 
