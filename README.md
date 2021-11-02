@@ -47,7 +47,7 @@ You should not be using this dependency in your application. Instead, use one of
 
 
 ### Example Project
-You can run the provided [docker-compose](./docker-compose.yml) file and check `localhost:8080/asyncapi-ui.html`.
+You can run the provided [docker-compose](./docker-compose.yml) file and check `localhost:8080/springwolf/asyncapi-ui.html`.
 The source can be found [here](https://github.com/springwolf/springwolf-kafka/tree/master/springwolf-kafka-example).
 
 
