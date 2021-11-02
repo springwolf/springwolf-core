@@ -59,6 +59,12 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
      */
     protected abstract Map<String, ? extends OperationBinding> buildOperationBinding(T annotation);
 
+    /**
+     * @param method The listener method.
+     * @return The class object of the payload received by the listener.
+     */
+    protected abstract Class<?> getPayloadType(Method method);
+
     private Set<Method> getAnnotatedMethods(Class<?> type) {
         Class<T> annotationClass = getListenerAnnotationClass();
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
@@ -82,17 +88,6 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
         Channel channel = buildChannel(payload, operationBinding);
 
         return Maps.immutableEntry(channelName, channel);
-    }
-
-    private Class<?> getPayloadType(Method method) {
-        log.debug("Finding payload type for {}", method.getName());
-
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        if (parameterTypes.length != 1) {
-            throw new IllegalArgumentException("Only single parameter KafkaListener methods are supported");
-        }
-
-        return parameterTypes[0];
     }
 
     private Channel buildChannel(Class<?> payloadType, Map<String, ? extends OperationBinding> operationBinding) {

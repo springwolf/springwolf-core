@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.OperationBinding;
 import lombok.EqualsAndHashCode;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 public class TestChannelScanner extends AbstractChannelScanner<AbstractChannelScannerTest.TestChannelListener> {
@@ -27,6 +28,17 @@ public class TestChannelScanner extends AbstractChannelScanner<AbstractChannelSc
     protected Map<String, ? extends OperationBinding> buildOperationBinding(AbstractChannelScannerTest.TestChannelListener annotation) {
         return ImmutableMap.of("test", new TestBinding());
     }
+
+    @Override
+    protected Class<?> getPayloadType(Method method) {
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        if (parameterTypes.length != 1) {
+            throw new IllegalArgumentException("Only single parameter listener methods are supported");
+        }
+
+        return parameterTypes[0];
+    }
+
 
     @EqualsAndHashCode
     public static class TestBinding implements OperationBinding {
