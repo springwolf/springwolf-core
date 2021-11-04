@@ -1,9 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
-import java.util.Map;
-
 @Slf4j
 @RestController
 @RequestMapping("/springwolf")
@@ -22,22 +16,12 @@ import java.util.Map;
 public class AsyncApiController {
 
     private final AsyncApiService asyncApiService;
-    private final ObjectMapper jsonMapper = new ObjectMapper();
-
-    @PostConstruct
-    void postConstruct() {
-        jsonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
+    private final AsyncApiSerializerService serializer;
 
     @GetMapping(value = "/docs", produces = MediaType.APPLICATION_JSON_VALUE)
     public String asyncApi() throws JsonProcessingException {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
-        return jsonMapper.writeValueAsString(asTitleToDocMap(asyncAPI));
-    }
-
-    private Map<String, AsyncAPI> asTitleToDocMap(AsyncAPI asyncAPI) {
-        String title = asyncAPI.getInfo().getTitle();
-        return ImmutableMap.of(title, asyncAPI);
+        return serializer.toJsonString(asyncAPI);
     }
 
 }

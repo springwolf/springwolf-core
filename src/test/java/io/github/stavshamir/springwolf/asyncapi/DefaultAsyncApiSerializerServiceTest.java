@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.types;
+package io.github.stavshamir.springwolf.asyncapi;
 
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
@@ -8,9 +8,9 @@ import com.asyncapi.v2.model.info.Contact;
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.info.License;
 import com.asyncapi.v2.model.server.Server;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
+import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -19,21 +19,24 @@ import lombok.Data;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-public class AsyncAPITest {
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = {DefaultAsyncApiSerializerService.class})
+public class DefaultAsyncApiSerializerServiceTest {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    static {
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
+    @Autowired
+    private DefaultAsyncApiSerializerService serializer;
 
     @Test
     public void AsyncAPI_should_map_to_a_valid_asyncapi_json() throws IOException, JSONException {
@@ -78,7 +81,7 @@ public class AsyncAPITest {
                 .subscribe(newUserOperation)
                 .build();
 
-        Map<String, Schema> schemas = ModelConverters.getInstance().read(ExamplePayload.class);
+        Map<String, Schema> schemas = ModelConverters.getInstance().read(DefaultAsyncApiSerializerServiceTest.ExamplePayload.class);
 
         AsyncAPI asyncapi = AsyncAPI.builder()
                 .info(info)
@@ -88,7 +91,7 @@ public class AsyncAPITest {
                 .components(Components.builder().schemas(schemas).build())
                 .build();
 
-        String actual = objectMapper.writeValueAsString(asyncapi);
+        String actual = serializer.toJsonString(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
