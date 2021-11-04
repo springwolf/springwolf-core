@@ -17,6 +17,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.asyncapi:asyncapi-core:1.0.0-EAP'
+    
     implementation 'io.swagger:swagger-inflector:2.0.5'
 
     implementation 'org.springframework:spring-web'

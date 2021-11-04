@@ -1,11 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
+import com.asyncapi.v2.model.channel.ChannelItem;
 
 import java.util.Map;
 
 public interface ChannelsService {
 
-    Map<String, Channel> getChannels();
+    Map<String, ChannelItem> getChannels();
 
 }

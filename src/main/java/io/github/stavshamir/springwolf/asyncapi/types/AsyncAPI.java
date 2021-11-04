@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
-import io.github.stavshamir.springwolf.asyncapi.types.info.Info;
-import io.github.stavshamir.springwolf.asyncapi.types.server.Server;
+import com.asyncapi.v2.model.channel.ChannelItem;
+import com.asyncapi.v2.model.info.Info;
+import com.asyncapi.v2.model.server.Server;
 import lombok.*;
 
 import java.util.Map;
@@ -57,7 +57,7 @@ public class AsyncAPI {
      * Channels are also known as "topics", "routing keys", "event types" or "paths".
      */
     @NonNull
-    private Map<String, Channel> channels;
+    private Map<String, ChannelItem> channels;
 
     /**
      * Holds a set of reusable objects for different aspects of the AsyncAPI specification.

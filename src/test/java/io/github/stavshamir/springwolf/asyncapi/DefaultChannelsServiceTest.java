@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.asyncapi.v2.model.channel.ChannelItem;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class DefaultChannelsServiceTest {
 
     @Test
     public void getChannels() {
-        Map<String, Channel> actualChannels = defaultChannelsService.getChannels();
+        Map<String, ChannelItem> actualChannels = defaultChannelsService.getChannels();
 
         assertThat(actualChannels)
                 .containsAllEntriesOf(fooChannelScanner.scan())
@@ -43,16 +43,16 @@ public class DefaultChannelsServiceTest {
     @Component
     static class FooChannelScanner implements ChannelsScanner {
         @Override
-        public Map<String, Channel> scan() {
-            return ImmutableMap.of("foo", new Channel());
+        public Map<String, ChannelItem> scan() {
+            return ImmutableMap.of("foo", new ChannelItem());
         }
     }
 
     @Component
     static class BarChannelScanner implements ChannelsScanner {
         @Override
-        public Map<String, Channel> scan() {
-            return ImmutableMap.of("bar", new Channel());
+        public Map<String, ChannelItem> scan() {
+            return ImmutableMap.of("bar", new ChannelItem());
         }
     }
 

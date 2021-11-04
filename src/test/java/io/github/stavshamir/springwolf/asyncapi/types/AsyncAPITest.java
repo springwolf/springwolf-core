@@ -1,17 +1,18 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
+import com.asyncapi.v2.binding.OperationBinding;
+import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
+import com.asyncapi.v2.model.channel.ChannelItem;
+import com.asyncapi.v2.model.channel.operation.Operation;
+import com.asyncapi.v2.model.info.Contact;
+import com.asyncapi.v2.model.info.Info;
+import com.asyncapi.v2.model.info.License;
+import com.asyncapi.v2.model.server.Server;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.Operation;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
-import io.github.stavshamir.springwolf.asyncapi.types.info.Contact;
-import io.github.stavshamir.springwolf.asyncapi.types.info.Info;
-import io.github.stavshamir.springwolf.asyncapi.types.info.License;
-import io.github.stavshamir.springwolf.asyncapi.types.server.Server;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.Data;
@@ -65,12 +66,14 @@ public class AsyncAPITest {
                 .payload(PayloadReference.fromModelName("ExamplePayload"))
                 .build();
 
+        OperationBinding operationBinding = KafkaOperationBinding.builder().groupId("myGroupId").build();
+
         Operation newUserOperation = Operation.builder()
                 .message(message)
-                .bindings(ImmutableMap.of("kafka", KafkaOperationBinding.withGroupId("myGroupId")))
+                .bindings(ImmutableMap.of("kafka", operationBinding))
                 .build();
 
-        Channel newUserChannel = Channel.builder()
+        ChannelItem newUserChannel = ChannelItem.builder()
                 .description("This channel is used to exchange messages about users signing up")
                 .subscribe(newUserOperation)
                 .build();

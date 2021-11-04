@@ -1,10 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.asyncapi.v2.binding.OperationBinding;
+import com.asyncapi.v2.model.channel.ChannelItem;
+import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.Operation;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -28,7 +28,7 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
     private SchemasService schemasService;
 
     @Override
-    public Map<String, Channel> scan() {
+    public Map<String, ChannelItem> scan() {
         String basePackage = getBasePackage();
 
         return componentsScanner.scanForComponents(basePackage).stream()
@@ -74,7 +74,7 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
                 .collect(toSet());
     }
 
-    private Map.Entry<String, Channel> mapMethodToChannel(Method method) {
+    private Map.Entry<String, ChannelItem> mapMethodToChannel(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
         Class<T> listenerAnnotationClass = getListenerAnnotationClass();
@@ -85,12 +85,12 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
 
         Map<String, ? extends OperationBinding> operationBinding = buildOperationBinding(annotation);
         Class<?> payload = getPayloadType(method);
-        Channel channel = buildChannel(payload, operationBinding);
+        ChannelItem channel = buildChannel(payload, operationBinding);
 
         return Maps.immutableEntry(channelName, channel);
     }
 
-    private Channel buildChannel(Class<?> payloadType, Map<String, ? extends OperationBinding> operationBinding) {
+    private ChannelItem buildChannel(Class<?> payloadType, Map<String, ? extends OperationBinding> operationBinding) {
         String modelName = schemasService.register(payloadType);
 
         Message message = Message.builder()
@@ -104,7 +104,7 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
                 .bindings(operationBinding)
                 .build();
 
-        return Channel.builder()
+        return ChannelItem.builder()
                 .publish(operation)
                 .build();
     }

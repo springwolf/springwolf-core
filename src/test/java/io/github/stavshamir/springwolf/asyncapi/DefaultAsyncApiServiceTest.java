@@ -1,13 +1,13 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
+import com.asyncapi.v2.model.channel.ChannelItem;
+import com.asyncapi.v2.model.info.Info;
+import com.asyncapi.v2.model.server.Server;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ProducerChannelScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.DefaultComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.kafka.KafkaOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.info.Info;
-import io.github.stavshamir.springwolf.asyncapi.types.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import org.junit.Test;
@@ -44,16 +44,15 @@ public class DefaultAsyncApiServiceTest {
                     .version("1.0.0")
                     .build();
 
-            ProducerData kafkaProducerData =
-                    ProducerData.builder()
-                                .channelName("producer-topic")
-                                .payloadType(String.class)
-                                .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                                .build();
+            ProducerData kafkaProducerData = ProducerData.builder()
+                    .channelName("producer-topic")
+                    .payloadType(String.class)
+                    .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                    .build();
 
             return AsyncApiDocket.builder()
                     .info(info)
-                    .server("kafka", Server.kafka().url("kafka:9092").build())
+                    .server("kafka", Server.builder().protocol("kafka").url("kafka:9092").build())
                     .producer(kafkaProducerData)
                     .build();
         }
@@ -84,13 +83,13 @@ public class DefaultAsyncApiServiceTest {
 
     @Test
     public void getAsyncAPI_producers_should_be_correct() {
-        Map<String, Channel> actualChannels = asyncApiService.getAsyncAPI().getChannels();
+        Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
 
         assertThat(actualChannels)
                 .isNotEmpty()
                 .containsKey("producer-topic");
 
-        final Channel channel = actualChannels.get("producer-topic");
+        final ChannelItem channel = actualChannels.get("producer-topic");
         assertThat(channel.getSubscribe()).isNotNull();
     }
 

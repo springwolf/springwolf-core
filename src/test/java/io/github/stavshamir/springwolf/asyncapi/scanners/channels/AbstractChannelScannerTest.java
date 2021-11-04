@@ -1,10 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.asyncapi.v2.model.channel.ChannelItem;
+import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -48,7 +48,7 @@ public class AbstractChannelScannerTest {
     public void scan_componentHasNoListenerMethods() {
         setClassToScan(ClassWithoutListenerAnnotation.class);
 
-        Map<String, Channel> channels = channelScanner.scan();
+        Map<String, ChannelItem> channels = channelScanner.scan();
 
         assertThat(channels).isEmpty();
     }
@@ -59,7 +59,7 @@ public class AbstractChannelScannerTest {
         setClassToScan(ClassWithListenerAnnotation.class);
 
         // When scan is called
-        Map<String, Channel> actualChannels = channelScanner.scan();
+        Map<String, ChannelItem> actualChannels = channelScanner.scan();
 
         // Then the returned collection contains the channel
         Message message = Message.builder()
@@ -73,7 +73,7 @@ public class AbstractChannelScannerTest {
                 .message(message)
                 .build();
 
-        Channel expectedChannel = Channel.builder().publish(operation).build();
+        ChannelItem expectedChannel = ChannelItem.builder().publish(operation).build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry("test-channel", expectedChannel));
@@ -104,9 +104,10 @@ public class AbstractChannelScannerTest {
         private boolean b;
     }
 
-    @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+    @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface TestChannelListener { }
+    public @interface TestChannelListener {
+    }
 
 }
 

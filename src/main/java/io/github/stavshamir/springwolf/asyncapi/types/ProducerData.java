@@ -1,12 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.OperationBinding;
+import com.asyncapi.v2.binding.OperationBinding;
+import lombok.*;
+
 import java.util.Map;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 /**
  * Holds information about the Producers.

@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.asyncapi.v2.model.channel.ChannelItem;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.Channel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.toMap;
 public class DefaultChannelsService implements ChannelsService {
 
     private final Set<? extends ChannelsScanner> channelsScanners;
-    private Map<String, Channel> channels;
+    private Map<String, ChannelItem> channels;
 
     @PostConstruct
     void findChannels() {
@@ -30,7 +30,7 @@ public class DefaultChannelsService implements ChannelsService {
     }
 
     @Override
-    public Map<String, Channel> getChannels() {
+    public Map<String, ChannelItem> getChannels() {
         return channels;
     }
 
