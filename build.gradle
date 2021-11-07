@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     implementation 'com.asyncapi:asyncapi-core:1.0.0-EAP'
-    
+
     implementation 'io.swagger:swagger-inflector:2.0.5'
 
     implementation 'org.springframework:spring-web'
@@ -28,15 +28,17 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.4'
-    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
 
-    testCompile 'org.projectlombok:lombok:1.18.4'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-    testCompile('org.assertj:assertj-core:3.11.1')
+    testImplementation 'org.assertj:assertj-core:3.21.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.amqp:spring-rabbit'
 }
 
 jar.enabled = true
