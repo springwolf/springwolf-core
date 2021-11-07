@@ -16,6 +16,12 @@ import java.util.Map;
 public class AsyncApiDocket {
 
     /**
+     * The base package to scan for listeners.
+     */
+    @NonNull
+    private String basePackage;
+
+    /**
      * <b>Required.</b>
      * Provide metadata about the API. The metadata can be used by the clients if needed.
      *
