@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -67,35 +66,15 @@ public class MethodLevelKafkaListenerScanner extends AbstractMethodLevelListener
     }
 
     private String[] getTopics(Annotation annotation) {
-        try {
-            Object queues = annotation.annotationType()
-                    .getDeclaredMethod(KafkaListenerMethodsNames.TOPICS)
-                    .invoke(annotation, (Object[]) null);
-
-            if (queues instanceof String[]) {
-                return (String[]) queues;
-            }
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            log.error("Failed to read topics value", e);
-        }
-
-        return null;
+        return ReflectionUtils
+                .getValueOfAnnotationProperty(annotation, KafkaListenerMethodsNames.TOPICS, String[].class)
+                .orElse(null);
     }
 
     private String getGroupId(Annotation annotation) {
-        try {
-            Object groupId = annotation.annotationType()
-                    .getDeclaredMethod(KafkaListenerMethodsNames.GROUP_ID)
-                    .invoke(annotation, (Object[]) null);
-
-            if (groupId instanceof String) {
-                return (String) groupId;
-            }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            log.error("Failed to read group id value", e);
-        }
-
-        return "";
+        return ReflectionUtils
+                .getValueOfAnnotationProperty(annotation, KafkaListenerMethodsNames.GROUP_ID, String.class)
+                .orElse("");
     }
 
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,10 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
+
+    private static class RabbitListenerMethodsNames {
+        public static final String QUEUES = "queues";
+    }
 
     @Override
     public void setEmbeddedValueResolver(StringValueResolver resolver) {
@@ -37,12 +40,10 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
     @Override
     protected String getChannelName(Annotation annotation) {
         String[] queues = getQueues(annotation);
-        List<String> resolvedTopics = Arrays.stream(queues)
-                .map(resolver::resolveStringValue)
-                .collect(toList());
+        List<String> resolvedQueues = resolveQueues(queues);
 
-        log.debug("Found queues: {}", String.join(", ", resolvedTopics));
-        return resolvedTopics.get(0);
+        log.debug("Found queues: {}", String.join(", ", resolvedQueues));
+        return resolvedQueues.get(0);
     }
 
     @Override
@@ -51,19 +52,15 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
     }
 
     private String[] getQueues(Annotation annotation) {
-        try {
-            Object queues = annotation.annotationType()
-                    .getDeclaredMethod("queues")
-                    .invoke(annotation, (Object[]) null);
+        return ReflectionUtils
+                .getValueOfAnnotationProperty(annotation, RabbitListenerMethodsNames.QUEUES, String[].class)
+                .orElse(null);
+    }
 
-            if (queues instanceof String[]) {
-                return (String[]) queues;
-            }
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            log.error("Failed to read queues value", e);
-        }
-
-        return null;
+    private List<String> resolveQueues(String[] queues) {
+        return Arrays.stream(queues)
+                .map(resolver::resolveStringValue)
+                .collect(toList());
     }
 
 }
