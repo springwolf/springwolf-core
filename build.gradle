@@ -39,6 +39,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.amqp:spring-rabbit'
+    testImplementation 'org.springframework.kafka:spring-kafka'
 }
 
 jar.enabled = true
