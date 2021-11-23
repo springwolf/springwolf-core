@@ -4,6 +4,7 @@ import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
@@ -17,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
+@ConditionalOnClass(name = MethodLevelRabbitListenerScanner.RABBIT_LISTENER_CLASS_NAME)
 public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListenerScanner
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
@@ -26,15 +28,16 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
         public static final String QUEUES = "queues";
     }
 
+    protected static final String RABBIT_LISTENER_CLASS_NAME = "org.springframework.amqp.rabbit.annotation.RabbitListener";
+
     @Override
     public void setEmbeddedValueResolver(StringValueResolver resolver) {
         this.resolver = resolver;
     }
 
-
     @Override
     protected String getListenerClassName() {
-        return "org.springframework.amqp.rabbit.annotation.RabbitListener";
+        return RABBIT_LISTENER_CLASS_NAME;
     }
 
     @Override

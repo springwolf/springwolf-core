@@ -4,6 +4,7 @@ import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
@@ -17,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
+@ConditionalOnClass(name = MethodLevelKafkaListenerScanner.KAFKA_LISTENER_CLASS_NAME)
 public class MethodLevelKafkaListenerScanner extends AbstractMethodLevelListenerScanner
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
@@ -27,6 +29,8 @@ public class MethodLevelKafkaListenerScanner extends AbstractMethodLevelListener
         public static final String GROUP_ID = "groupId";
     }
 
+    protected static final String KAFKA_LISTENER_CLASS_NAME = "org.springframework.kafka.annotation.KafkaListener";
+
     @Override
     public void setEmbeddedValueResolver(StringValueResolver resolver) {
         this.resolver = resolver;
@@ -34,7 +38,7 @@ public class MethodLevelKafkaListenerScanner extends AbstractMethodLevelListener
 
     @Override
     protected String getListenerClassName() {
-        return "org.springframework.kafka.annotation.KafkaListener";
+        return KAFKA_LISTENER_CLASS_NAME;
     }
 
     @Override
