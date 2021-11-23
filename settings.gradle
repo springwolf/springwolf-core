@@ -1,1 +1,3 @@
 rootProject.name = 'springwolf-core'
+
+include 'springwolf-core'

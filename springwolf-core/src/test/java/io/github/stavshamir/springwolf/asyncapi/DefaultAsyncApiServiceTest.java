@@ -52,6 +52,7 @@ public class DefaultAsyncApiServiceTest {
 
             return AsyncApiDocket.builder()
                     .info(info)
+                    .basePackage("package")
                     .server("kafka", Server.builder().protocol("kafka").url("kafka:9092").build())
                     .producer(kafkaProducerData)
                     .build();
