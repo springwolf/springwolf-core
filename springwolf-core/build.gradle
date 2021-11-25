@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'java-library'
     id 'maven'
     id 'signing'
     id 'maven-publish'
@@ -17,12 +18,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.asyncapi:asyncapi-core:1.0.0-EAP'
+    api 'com.asyncapi:asyncapi-core:1.0.0-EAP'
 
     implementation 'io.swagger:swagger-inflector:2.0.5'
 
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
 
     implementation 'com.google.guava:guava:27.0.1-jre'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
