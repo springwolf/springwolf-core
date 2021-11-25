@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/springwolf")
+@RequestMapping("${springwolf.paths.docs:/springwolf/docs}")
 @RequiredArgsConstructor
 public class AsyncApiController {
 
     private final AsyncApiService asyncApiService;
     private final AsyncApiSerializerService serializer;
 
-    @GetMapping(value = "/docs", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public String asyncApi() throws JsonProcessingException {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
         return serializer.toJsonString(asyncAPI);
