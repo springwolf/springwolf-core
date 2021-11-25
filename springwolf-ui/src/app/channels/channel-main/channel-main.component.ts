@@ -6,6 +6,7 @@ import { PublisherService } from 'src/app/shared/publisher.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Operation } from 'src/app/shared/models/channel.model';
 import { Subscription } from 'rxjs';
+import { STATUS } from 'angular-in-memory-web-api';
 
 @Component({
   selector: 'app-channel-main',
@@ -53,15 +54,31 @@ export class ChannelMainComponent implements OnInit {
       const json = JSON.parse(example);
 
       this.publisherService.publish(this.protocolName, this.channelName, json).subscribe(
-        _ => this.snackBar.open('Example payload sent to: ' + this.channelName, 'PUBLISHED', {
-          duration: 3000
-        })
+        _ => this.handlePublishSuccess(),
+        err => this.handlePublishError(err)
       );
     } catch(error) {
       this.snackBar.open('Example payload is not valid', 'ERROR', {
         duration: 3000
       })
     }
+  }
+
+  private handlePublishSuccess() {
+    return this.snackBar.open('Example payload sent to: ' + this.channelName, 'PUBLISHED', {
+      duration: 3000
+    });
+  }
+
+  private handlePublishError(err: {status?: number}) {
+    let msg = 'Publish failed';
+    if (err?.status === STATUS.NOT_FOUND) {
+      msg += ': no publisher was provided for ' + this.protocolName;
+    }
+
+    return this.snackBar.open(msg, 'ERROR', {
+      duration: 4000
+    });
   }
 
 }

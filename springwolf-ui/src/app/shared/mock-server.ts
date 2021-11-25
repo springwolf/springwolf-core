@@ -19,4 +19,17 @@ export class MockServer implements InMemoryDbService {
 
     return undefined;
   }
+
+  post(reqInfo: RequestInfo) {
+    if (reqInfo.req.url.endsWith('/publish')) {
+      return reqInfo.utils.createResponse$(() => {
+        return {
+          status: STATUS.OK
+        }
+      })
+    }
+
+    return undefined;
+  }
+
 }
