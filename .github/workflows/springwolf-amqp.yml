@@ -1,4 +1,4 @@
-name: springwolf-kafka
+name: springwolf-amqp
 
 on:
   push:
