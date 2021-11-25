@@ -1,3 +1,3 @@
 rootProject.name = 'springwolf-core'
 
-include 'springwolf-core'
+include 'springwolf-core', 'springwolf-examples:springwolf-kafka-example', 'springwolf-examples:springwolf-amqp-example'

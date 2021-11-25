@@ -1,0 +1,32 @@
+name: springwolf-kafka
+
+on:
+  push:
+    branches: 
+      - master
+    paths:
+      - '.github/workflows/springwolf-kafka.yml'
+      - 'springwolf-core/**'
+      - 'springwolf-examples/springwolf-kafka-example/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew -p springwolf-kafka-plugin build -x signArchives
+
+      - name: Run integration tests
+        run: ./gradlew -p springwolf-examples/springwolf-kafka-example test
