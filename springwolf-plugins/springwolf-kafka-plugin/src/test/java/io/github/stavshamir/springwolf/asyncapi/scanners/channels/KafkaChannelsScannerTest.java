@@ -35,12 +35,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {MethodLevelKafkaListenerScanner.class, DefaultSchemasService.class})
+@ContextConfiguration(classes = {KafkaChannelsScanner.class, DefaultSchemasService.class})
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
-public class MethodLevelKafkaListenerScannerTest {
+public class KafkaChannelsScannerTest {
 
     @Autowired
-    private MethodLevelKafkaListenerScanner kafkaChannelsScanner;
+    private KafkaChannelsScanner kafkaChannelsScanner;
 
     @MockBean
     private ComponentsScanner componentsScanner;

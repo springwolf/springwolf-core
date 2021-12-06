@@ -1,0 +1,153 @@
+plugins {
+    id 'java-library'
+    id 'maven'
+    id 'signing'
+    id 'maven-publish'
+
+    id 'org.springframework.boot' version '2.1.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+}
+
+group 'io.github.springwolf'
+version '0.2.0'
+sourceCompatibility = 1.8
+
+repositories {
+    // For local development with snapshots
+    mavenLocal() {
+        content {
+            includeGroup "io.github.springwolf"
+        }
+    }
+
+    mavenCentral()
+}
+
+dependencies {
+    api project(':springwolf-core')
+
+    implementation 'org.springframework:spring-web'
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    implementation 'com.google.guava:guava:27.0.1-jre'
+
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.kafka:spring-kafka-test')
+
+    testCompile 'org.projectlombok:lombok:1.18.4'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
+
+    testCompile('org.assertj:assertj-core:3.11.1')
+}
+
+jar.enabled = true
+bootJar.enabled = false
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+        }
+    }
+
+    developers {
+        developer {
+            id 'stavshamir'
+            name 'Stav Shamir'
+            email 'shamir.stav@gmail.com'
+        }
+    }
+
+    scm {
+        url 'https://github.com/springwolf/springwolf-kafka'
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar {
+                classifier "sources"
+            }
+
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+
+            groupId project.group
+            artifactId 'springwolf-kafka'
+            version project.version
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Automated JSON API documentation for Kafka Listeners built with Spring')
+                root.appendNode('name', 'springwolf-kafka')
+                root.appendNode('url', 'https://github.com/springwolf/springwolf-kafka')
+                root.children().last() + pomConfig
+
+                def pomFile = file("${project.buildDir}/generated-pom.xml")
+                writeTo(pomFile)
+                def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+                artifact(pomAscFile) {
+                    classifier = null
+                    extension = 'pom.asc'
+                }
+            }
+
+            project.tasks.signArchives.signatureFiles.each {
+                artifact(it) {
+                    def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+                    if (matcher.find()) {
+                        classifier = matcher.group(1)
+                    } else {
+                        classifier = null
+                    }
+                    extension = 'jar.asc'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username = project.findProperty('ossrhUsername') ?: ''
+                password = project.findProperty('ossrhPassword') ?: ''
+            }
+        }
+    }
+
+    model {
+        tasks.publishMavenJavaPublicationToMavenLocal {
+            dependsOn project.tasks.signArchives
+        }
+        tasks.publishMavenJavaPublicationToMavenRepository {
+            dependsOn project.tasks.signArchives
+        }
+    }
+}

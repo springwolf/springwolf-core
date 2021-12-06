@@ -1,7 +1,8 @@
 package io.github.stavshamir.springwolf.example.configuration;
 
 import com.google.common.collect.ImmutableMap;
-import io.github.stavshamir.springwolf.example.dtos.*;
+import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
+import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -14,7 +15,6 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
@@ -72,18 +72,6 @@ public class KafkaConfiguration {
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS,
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class
-        );
-
-        return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(configuration));
-    }
-
-    @Bean
-    public KafkaTemplate<String, Map<String, Object>> objectKafkaTemplate() {
-        Map<String, Object> configuration = ImmutableMap.of(
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS,
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class,
-                JsonSerializer.ADD_TYPE_INFO_HEADERS, false
         );
 
         return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(configuration));

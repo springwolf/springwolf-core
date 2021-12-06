@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import static java.util.stream.Collectors.toSet;
 public abstract class AbstractChannelScanner<T extends Annotation> implements ChannelsScanner {
 
     @Autowired
+    private AsyncApiDocket docket;
+
+    @Autowired
     private ComponentsScanner componentsScanner;
 
     @Autowired
@@ -29,18 +33,11 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
 
     @Override
     public Map<String, ChannelItem> scan() {
-        String basePackage = getBasePackage();
-
-        return componentsScanner.scanForComponents(basePackage).stream()
+        return componentsScanner.scanForComponents(docket.getBasePackage()).stream()
                 .map(this::getAnnotatedMethods).flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
-
-    /**
-     * @return The base package containing @Component classes with listener annotations.
-     */
-    protected abstract String getBasePackage();
 
     /**
      * @return The class object of the listener annotation.
