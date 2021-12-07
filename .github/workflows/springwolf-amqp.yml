@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/springwolf-amqp.yml'
       - 'springwolf-core/**'
+      - 'springwolf-plugins/springwolf-amqp-plugin/**'
       - 'springwolf-examples/springwolf-amqp-example/**'
 
 jobs:
@@ -24,6 +25,9 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Run unit tests
+        run: ./gradlew -p springwolf-plugins/springwolf-amqp-plugin test
 
       - name: Run integration tests
         run: ./gradlew -p springwolf-examples/springwolf-amqp-example test

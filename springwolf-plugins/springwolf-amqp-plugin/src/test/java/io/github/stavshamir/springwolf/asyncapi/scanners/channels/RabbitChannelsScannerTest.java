@@ -35,13 +35,13 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {MethodLevelRabbitListenerScanner.class, DefaultSchemasService.class})
+@ContextConfiguration(classes = {RabbitChannelsScanner.class, DefaultSchemasService.class})
 @TestPropertySource(properties = "amqp.queues.test=test-queue")
-public class MethodLevelRabbitListenerScannerTest {
+public class RabbitChannelsScannerTest {
 
 
     @Autowired
-    private MethodLevelRabbitListenerScanner rabbitListenerScanner;
+    private RabbitChannelsScanner rabbitListenerScanner;
 
     @MockBean
     private ComponentsScanner componentsScanner;

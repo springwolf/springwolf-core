@@ -2,6 +2,7 @@ rootProject.name = 'springwolf-core'
 
 include (
         'springwolf-core',
+        'springwolf-plugins:springwolf-amqp-plugin',
         'springwolf-plugins:springwolf-kafka-plugin',
         'springwolf-examples:springwolf-kafka-example',
         'springwolf-examples:springwolf-amqp-example'
