@@ -9,17 +9,10 @@ plugins {
 }
 
 group 'io.github.springwolf'
-version '0.2.0'
+version '0.3.0'
 sourceCompatibility = 1.8
 
 repositories {
-    // For local development with snapshots
-    mavenLocal() {
-        content {
-            includeGroup "io.github.springwolf"
-        }
-    }
-
     mavenCentral()
 }
 
@@ -35,7 +28,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.4'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('org.springframework.kafka:spring-kafka-test')
 
     testCompile 'org.projectlombok:lombok:1.18.4'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
@@ -81,7 +73,7 @@ def pomConfig = {
     }
 
     scm {
-        url 'https://github.com/springwolf/springwolf-kafka'
+        url 'https://github.com/springwolf/springwolf-core'
     }
 }
 
@@ -106,7 +98,7 @@ publishing {
                 def root = asNode()
                 root.appendNode('description', 'Automated JSON API documentation for Kafka Listeners built with Spring')
                 root.appendNode('name', 'springwolf-kafka')
-                root.appendNode('url', 'https://github.com/springwolf/springwolf-kafka')
+                root.appendNode('url', 'https://github.com/springwolf/springwolf-core')
                 root.children().last() + pomConfig
 
                 def pomFile = file("${project.buildDir}/generated-pom.xml")
