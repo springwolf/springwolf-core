@@ -25,5 +25,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Run unit tests
+        run: ./gradlew -p springwolf-plugins/springwolf-kafka-plugin test
+
       - name: Run integration tests
         run: ./gradlew -p springwolf-examples/springwolf-kafka-example test
