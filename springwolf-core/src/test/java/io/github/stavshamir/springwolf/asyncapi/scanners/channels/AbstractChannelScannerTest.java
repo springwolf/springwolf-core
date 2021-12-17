@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,8 +40,12 @@ public class AbstractChannelScannerTest {
     @MockBean
     private ComponentsScanner componentsScanner;
 
+    @MockBean
+    private AsyncApiDocket docket;
+
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
+        when(docket.getBasePackage()).thenReturn("io.github.stavshamir.springwolf.asyncapi.scanners.channels");
         when(componentsScanner.scanForComponents(anyString())).thenReturn(classesToScan);
     }
 

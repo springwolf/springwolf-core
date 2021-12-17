@@ -10,11 +10,6 @@ import java.util.Map;
 public class TestChannelScanner extends AbstractChannelScanner<AbstractChannelScannerTest.TestChannelListener> {
 
     @Override
-    protected String getBasePackage() {
-        return "io.github.stavshamir.springwolf.asyncapi.scanners.channels";
-    }
-
-    @Override
     protected Class<AbstractChannelScannerTest.TestChannelListener> getListenerAnnotationClass() {
         return AbstractChannelScannerTest.TestChannelListener.class;
     }
