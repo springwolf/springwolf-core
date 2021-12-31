@@ -6,7 +6,8 @@ import lombok.*;
 import java.util.Map;
 
 /**
- * Holds information about the Producers.
+ * Holds information about a producer channel.
+ * All fields must be set and not null.
  */
 @Data
 @Builder
@@ -14,12 +15,24 @@ import java.util.Map;
 @AllArgsConstructor
 public class ProducerData {
 
-    @NonNull
+    /**
+     * The name of the channel (topic, queue etc.).
+     */
     private String channelName;
 
-    @NonNull
+    /**
+     * The class object of the payload published by this producer.
+     */
     private Class<?> payloadType;
 
-    @NonNull
+    /**
+     * The binding of the producer.
+     * <br>
+     * For example:
+     * <code>
+     *     ImmutableMap.of("kafka", new KafkaOperationBinding())
+     * </code>
+     */
     private Map<String, ? extends OperationBinding> binding;
+
 }
