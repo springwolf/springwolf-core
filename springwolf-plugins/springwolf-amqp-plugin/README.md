@@ -13,7 +13,7 @@
 
 ### About
 
-This plugin generates an [AsyncAPI document](https://www.asyncapi.com/) from `@KafkaListener` methods.
+This plugin generates an [AsyncAPI document](https://www.asyncapi.com/) from `@RabbitListener` methods.
 
 ### Usage
 
