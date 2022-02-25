@@ -35,12 +35,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {KafkaChannelsScanner.class, DefaultSchemasService.class})
+@ContextConfiguration(classes = {MethodLevelKafkaListenerScanner.class, DefaultSchemasService.class})
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
-public class KafkaChannelsScannerTest {
+public class MethodLevelKafkaListenerScannerTest {
 
     @Autowired
-    private KafkaChannelsScanner kafkaChannelsScanner;
+    private MethodLevelKafkaListenerScanner methodLevelKafkaListenerScanner;
 
     @MockBean
     private ComponentsScanner componentsScanner;
@@ -68,7 +68,7 @@ public class KafkaChannelsScannerTest {
     public void scan_componentHasNoKafkaListenerMethods() {
         setClassToScan(ClassWithoutKafkaListenerAnnotations.class);
 
-        Map<String, ChannelItem> channels = kafkaChannelsScanner.scan();
+        Map<String, ChannelItem> channels = methodLevelKafkaListenerScanner.scan();
 
         assertThat(channels)
                 .isEmpty();
@@ -80,7 +80,7 @@ public class KafkaChannelsScannerTest {
         setClassToScan(ClassWithKafkaListenerAnnotationHardCodedTopic.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = kafkaChannelsScanner.scan();
+        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel
         Message message = Message.builder()
@@ -106,7 +106,7 @@ public class KafkaChannelsScannerTest {
         setClassToScan(ClassWithKafkaListenerAnnotationsEmbeddedValueTopic.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = kafkaChannelsScanner.scan();
+        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel
         Message message = Message.builder()
@@ -132,7 +132,7 @@ public class KafkaChannelsScannerTest {
         setClassToScan(ClassWithKafkaListenerAnnotationWithGroupId.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = kafkaChannelsScanner.scan();
+        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains a correct binding
         Map<String, ? extends OperationBinding> actualBindings = actualChannels.get(TOPIC)
@@ -154,7 +154,7 @@ public class KafkaChannelsScannerTest {
         setClassToScan(ClassWithKafkaListenerAnnotationMultipleParamsWithoutPayloadAnnotation.class);
 
         // Then an exception is thrown when scan is called
-        assertThatThrownBy(() -> kafkaChannelsScanner.scan())
+        assertThatThrownBy(() -> methodLevelKafkaListenerScanner.scan())
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -167,7 +167,7 @@ public class KafkaChannelsScannerTest {
         setClassToScan(ClassWithKafkaListenerAnnotationMultipleParamsWithPayloadAnnotation.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = kafkaChannelsScanner.scan();
+        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel, and the payload is of the parameter annotated with @Payload
         Message message = Message.builder()
