@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class ChannelsComponent implements OnInit {
 
-  channels: Map<String, Channel>;
+  channels: Channel[];
   nameSubscription: Subscription;
   docName: string;
 
