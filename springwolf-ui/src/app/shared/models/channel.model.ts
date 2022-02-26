@@ -1,4 +1,5 @@
 export interface Channel {
+    name: string;
     description?: string;
     operation: Operation;
 }

@@ -1,15 +1,15 @@
 <h1>Channels</h1>
 <mat-accordion>
-    <mat-expansion-panel *ngFor="let channel of channels | keyvalue">
+    <mat-expansion-panel *ngFor="let channel of channels">
         <mat-expansion-panel-header>
             <mat-panel-title fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="16px">
-                <div class="operation-badge">{{ channel.value.operation.type }}</div>
-                <h3>{{ channel.key }}</h3>
+                <div class="operation-badge">{{ channel.operation.type }}</div>
+                <h3>{{ channel.name }}</h3>
             </mat-panel-title>
         </mat-expansion-panel-header>
         <app-channel-main 
-            [channelName]="channel.key" 
-            [operation]="channel.value.operation"
+            [channelName]="channel.name" 
+            [operation]="channel.operation"
             [docName]="docName">
         </app-channel-main>
     </mat-expansion-panel>

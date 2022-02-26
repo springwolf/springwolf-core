@@ -107,9 +107,10 @@ export class AsyncApiService {
                 bindings?: any;
             };
         }
-    }): Map<string, Channel> {
-        const s = new Map<string, Channel>();
-        Object.entries(channels).forEach(([k, v]) => s.set(k, {
+    }): Channel[] {
+        const s = new Array<Channel>();
+        Object.entries(channels).forEach(([k, v]) => s.push({
+            name: k,
             description: v.description,
             operation: this.mapOperation(v.subscribe, v.publish)
         }));
