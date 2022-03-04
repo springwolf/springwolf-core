@@ -15,6 +15,9 @@ import lombok.NoArgsConstructor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -127,6 +130,29 @@ public class RabbitChannelsScannerTest {
                 .containsExactly(Maps.immutableEntry(QUEUE, expectedChannelItem));
     }
 
+    @Test
+    public void scan_componentHasRabbitListenerMethods_bindingsAnnotation(){
+        setClassToScan(ClassWithRabbitListenerAnnotationUsingBindings.class);
+
+        Map<String, ChannelItem> actualChannelItems = rabbitListenerScanner.scan();
+
+        Message message = Message.builder()
+                .name(SimpleFoo.class.getName())
+                .title(SimpleFoo.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .build();
+
+        Operation operation = Operation.builder()
+                .bindings(ImmutableMap.of("amqp", new AMQPOperationBinding()))
+                .message(message)
+                .build();
+
+        ChannelItem expectedChannelItem = ChannelItem.builder().publish(operation).build();
+
+        assertThat(actualChannelItems)
+                .containsExactly(Maps.immutableEntry(QUEUE, expectedChannelItem));
+    }
+
 
     @Test
     public void scan_componentHasRabbitListenerMethods_multipleParamsWithoutPayloadAnnotation() {
@@ -185,6 +211,19 @@ public class RabbitChannelsScannerTest {
         }
 
     }
+
+    private static class ClassWithRabbitListenerAnnotationUsingBindings {
+
+        @RabbitListener(bindings = {
+                @QueueBinding(
+                        exchange = @Exchange(name = "name", type = "topic"),
+                        key = "key",
+                        value = @Queue(name = "test-queue"))
+        })
+        private void methodWithAnnotation1(SimpleFoo payload) {
+        }
+    }
+
 
     private static class ClassWithRabbitListenerAnnotationsEmbeddedValueTopic {
 
