@@ -40,7 +40,9 @@ public class RabbitChannelsScanner extends AbstractChannelScanner<RabbitListener
         List<String> resolvedQueues = Arrays.stream(annotation.queues())
                 .map(resolver::resolveStringValue)
                 .collect(toList());
-
+        resolvedQueues.addAll(Arrays.stream(annotation.bindings())
+                .map(bind -> bind.value().name())
+                .collect(toList()));
         log.debug("Found queues: {}", String.join(", ", resolvedQueues));
         return resolvedQueues.get(0);
     }
