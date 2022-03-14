@@ -6,6 +6,8 @@
 # Springwolf Core
 ##### Automated documentation for async APIs built with Spring Boot
 
+*NEW: A discord server has been opened for any question, discussion, request etc. - you are welcome to join https://discord.gg/PU9MGcBJ*
+
 ### Table Of Contents
 - [About](#about)
 - [Demo](#demo)
