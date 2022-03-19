@@ -26,4 +26,9 @@ public class RabbitConfiguration {
         return new Queue("another-queue", false);
     }
 
+    @Bean
+    public Queue exampleBindingsQueue() {
+        return new Queue("example-bindings-queue", false);
+    }
+
 }

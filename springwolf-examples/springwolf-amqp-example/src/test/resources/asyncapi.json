@@ -12,6 +12,27 @@
       }
     },
     "channels": {
+      "example-bindings-queue": {
+        "publish": {
+          "bindings": {
+            "amqp": {
+              "expiration": 0,
+              "priority": 0,
+              "deliveryMode": 0,
+              "mandatory": false,
+              "timestamp": false,
+              "ack": false
+            }
+          },
+          "message": {
+            "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "title": "AnotherPayloadDto",
+            "payload": {
+              "$ref": "#/components/schemas/AnotherPayloadDto"
+            }
+          }
+        }
+      },
       "another-queue": {
         "publish": {
           "bindings": {
@@ -57,6 +78,25 @@
     },
     "components": {
       "schemas": {
+        "AnotherPayloadDto": {
+          "type": "object",
+          "properties": {
+            "foo": {
+              "type": "string"
+            },
+            "example": {
+              "$ref": "#/components/schemas/ExamplePayloadDto"
+            }
+          },
+          "example": {
+            "foo": "string",
+            "example": {
+              "someString": "string",
+              "someLong": 0,
+              "someEnum": "FOO1"
+            }
+          }
+        },
         "ExamplePayloadDto": {
           "type": "object",
           "properties": {
@@ -80,25 +120,6 @@
             "someString": "string",
             "someLong": 0,
             "someEnum": "FOO1"
-          }
-        },
-        "AnotherPayloadDto": {
-          "type": "object",
-          "properties": {
-            "foo": {
-              "type": "string"
-            },
-            "example": {
-              "$ref": "#/components/schemas/ExamplePayloadDto"
-            }
-          },
-          "example": {
-            "foo": "string",
-            "example": {
-              "someString": "string",
-              "someLong": 0,
-              "someEnum": "FOO1"
-            }
           }
         }
       }
