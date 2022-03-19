@@ -13,10 +13,7 @@ import org.springframework.util.StringValueResolver;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -37,14 +34,28 @@ public class RabbitChannelsScanner extends AbstractChannelScanner<RabbitListener
 
     @Override
     protected String getChannelName(RabbitListener annotation) {
-        List<String> resolvedQueues = Arrays.stream(annotation.queues())
+        if (annotation.queues().length > 0) {
+            return getChannelNameFromQueues(annotation);
+        }
+
+        return getChannelNameFromBindings(annotation);
+    }
+
+    private String getChannelNameFromQueues(RabbitListener annotation) {
+        return Arrays.stream(annotation.queues())
                 .map(resolver::resolveStringValue)
-                .collect(toList());
-        resolvedQueues.addAll(Arrays.stream(annotation.bindings())
-                .map(bind -> bind.value().name())
-                .collect(toList()));
-        log.debug("Found queues: {}", String.join(", ", resolvedQueues));
-        return resolvedQueues.get(0);
+                .peek(queue -> log.debug("Resolved queue name: {}", queue))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No queue name was found in @RabbitListener annotation"));
+    }
+
+    private String getChannelNameFromBindings(RabbitListener annotation) {
+        return Arrays.stream(annotation.bindings())
+                .map(binding -> binding.value().name())
+                .map(resolver::resolveStringValue)
+                .peek(queue -> log.debug("Resolved queue name: {}", queue))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No queue name was found in @RabbitListener annotation"));
     }
 
     @Override
