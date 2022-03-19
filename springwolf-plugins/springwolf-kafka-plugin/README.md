@@ -61,7 +61,7 @@ public class AsyncApiConfiguration {
         return AsyncApiDocket.builder()
                 .basePackage("io.github.stavshamir.springwolf.example.consumers") // Change to your actual base package of listeners
                 .info(info)
-                .server("kafka", Server.kafka().url(BOOTSTRAP_SERVERS).build())
+                .server("kafka", Server.builder().protocol("kafka").url(BOOTSTRAP_SERVERS).build())
                 .producer(exampleProducerData)
                 .build();
     }
