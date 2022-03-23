@@ -18,7 +18,7 @@ export class ChannelMainComponent implements OnInit {
   @Input() docName: string;
   @Input() channelName: string;
   @Input() operation: Operation;
-  
+
   schema: Schema;
   defaultExample: Example;
   exampleTextAreaLineCount: number;
@@ -34,7 +34,7 @@ export class ChannelMainComponent implements OnInit {
 
   ngOnInit(): void {
     this.asyncApiService.getAsyncApis().subscribe(
-      asyncapi => {      
+      asyncapi => {
         let schemas: Map<string, Schema> = asyncapi.get(this.docName).components.schemas;
         this.schema = schemas.get(this.operation.message.title);
         this.defaultExample = this.schema.example;

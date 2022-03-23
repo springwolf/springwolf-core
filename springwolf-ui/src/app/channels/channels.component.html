@@ -5,6 +5,7 @@
             <mat-panel-title fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="16px">
                 <div class="operation-badge">{{ channel.operation.type }}</div>
                 <h3>{{ channel.name }}</h3>
+                <div class="payload-name">{{ channel.operation.message.title }}</div>
             </mat-panel-title>
         </mat-expansion-panel-header>
         <app-channel-main 
