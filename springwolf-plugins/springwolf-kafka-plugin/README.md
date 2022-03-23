@@ -13,7 +13,9 @@
 
 ### About
 
-This plugin generates an [AsyncAPI document](https://www.asyncapi.com/) from `@KafkaListener` methods.
+This plugin generates an [AsyncAPI document](https://www.asyncapi.com/) from:
+- `@KafkaListener` methods
+- `@KafkaHandler` methods in classes annotated with `@KafkaListener`
 
 ### Usage
 
@@ -24,10 +26,10 @@ Add the following dependencies and configuration class to enable this plugin.
 ```groovy
 dependencies {
     // Provides the documentation API    
-    implementation 'io.github.springwolf:springwolf-kafka:0.3.0'
+    implementation 'io.github.springwolf:springwolf-kafka:0.4.0'
 
     // Provides the UI - optional (recommended)
-    runtimeOnly 'io.github.springwolf:springwolf-ui:0.3.1'
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.4.0'
 }
 ```
 
