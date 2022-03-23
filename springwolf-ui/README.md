@@ -10,7 +10,7 @@ Add the following dependencies:
 
 ```groovy
 dependencies {
-    runtimeOnly 'io.github.springwolf:springwolf-ui:0.3.1'
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.4.0'
 }
 ```
 
