@@ -103,40 +103,36 @@ export class AsyncApiService {
                 bindings?: any;
             };
             publish?: {
-                message: Message;
+                message: Message | { oneOf: Message[] };
                 bindings?: any;
             };
         }
     }): Channel[] {
         const s = new Array<Channel>();
-        Object.entries(channels).forEach(([k, v]) => s.push({
-            name: k,
-            description: v.description,
-            operation: this.mapOperation(v.subscribe, v.publish)
-        }));
+        Object.entries(channels).forEach(([k, v]) => {
+            let operation = v.publish ? v.publish : v.subscribe;
+            let isSubscribe = !!v.subscribe;
+
+            let messages: Message[] = 'oneOf' in operation.message ? operation.message.oneOf : [operation.message];
+            messages.forEach(message => s.push({
+                name: k,
+                description: v.description,
+                operation: this.mapOperation(isSubscribe, message, operation.bindings)
+            }))
+        });
         return s;
     }
 
-    private mapOperation(subscribe: { message: Message; bindings?: any; }, publish: { message: Message; bindings?: any; }): Operation {
-        const isSubscribe = !!subscribe;
-
-        if (isSubscribe) {
-            return {
-                type: this.getProtocol(subscribe) + " producer",
-                message: subscribe.message,
-                bindings: subscribe.bindings
-            }
-        } else {
-            return {
-                type: this.getProtocol(publish) + " consumer",
-                message: publish.message,
-                bindings: publish.bindings
-            }
+    private mapOperation(isSubscribe: boolean, message: Message, bindings?: any): Operation {
+        return {
+            type: this.getProtocol(bindings) + (isSubscribe ? " producer" : " consumer"),
+            message: message,
+            bindings: bindings
         }
     }
 
-    private getProtocol(operation: { message: Message; bindings?: any; }): string {
-        return Object.keys(operation.bindings)[0];
+    private getProtocol(bindings?: any): string {
+        return Object.keys(bindings)[0];
     }
 
     mapSchemas(schemas: { [key: string]: { type: string; properties: object; example: object; } }): Map<string, Schema> {
