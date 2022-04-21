@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,10 +24,15 @@ public class DefaultChannelsService implements ChannelsService {
 
     @PostConstruct
     void findChannels() {
-        channels = channelsScanners.stream()
-                .map(ChannelsScanner::scan)
-                .map(Map::entrySet).flatMap(Collection::stream)
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+        try {
+            channels = channelsScanners.stream()
+                    .map(ChannelsScanner::scan)
+                    .map(Map::entrySet).flatMap(Collection::stream)
+                    .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+        } catch (Exception e) {
+            log.error("An error was encountered during channel scanning: {}", e.getMessage());
+            channels = Collections.emptyMap();
+        }
     }
 
     @Override
