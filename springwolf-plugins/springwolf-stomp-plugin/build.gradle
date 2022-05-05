@@ -1,5 +1,4 @@
 plugins {
-    id 'java'
     id 'java-library'
     id 'maven'
     id 'signing'
@@ -9,8 +8,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
-group = 'io.github.springwolf'
-version = '0.4.0' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
+group 'io.github.springwolf'
+version '0.4.0'
 sourceCompatibility = 1.8
 
 repositories {
@@ -18,31 +17,22 @@ repositories {
 }
 
 dependencies {
-    api 'com.asyncapi:asyncapi-core:1.0.0-EAP'
-
-    implementation 'io.swagger:swagger-inflector:2.0.5'
+    api project(':springwolf-core')
 
     implementation 'org.springframework:spring-web'
-    implementation 'org.springframework:spring-context'
-    implementation 'org.springframework:spring-messaging'
-    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework:spring-messaging:5.3.14'
 
     implementation 'com.google.guava:guava:27.0.1-jre'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
 
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 
-    testImplementation 'org.projectlombok:lombok:1.18.22'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testCompile 'org.projectlombok:lombok:1.18.4'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
 
-    testImplementation 'org.assertj:assertj-core:3.21.0'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.amqp:spring-rabbit'
-    testImplementation 'org.springframework.kafka:spring-kafka'
+    testCompile('org.assertj:assertj-core:3.11.1')
 }
 
 jar.enabled = true
@@ -83,7 +73,7 @@ def pomConfig = {
     }
 
     scm {
-        url 'https://github.com/stavshamir/springwolf'
+        url 'https://github.com/springwolf/springwolf-core'
     }
 }
 
@@ -101,13 +91,14 @@ publishing {
             }
 
             groupId project.group
-            artifactId 'springwolf-core'
+            artifactId 'springwolf-stomp'
             version project.version
+
             pom.withXml {
                 def root = asNode()
-                root.appendNode('description', 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring')
-                root.appendNode('name', 'springwolf-core')
-                root.appendNode('url', 'https://github.com/stavshamir/springwolf')
+                root.appendNode('description', 'Automated JSON API documentation for default STOMP Listeners built with Spring')
+                root.appendNode('name', 'springwolf-stomp')
+                root.appendNode('url', 'https://github.com/springwolf/springwolf-core')
                 root.children().last() + pomConfig
 
                 def pomFile = file("${project.buildDir}/generated-pom.xml")
