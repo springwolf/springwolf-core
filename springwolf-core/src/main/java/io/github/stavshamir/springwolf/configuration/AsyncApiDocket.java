@@ -20,6 +20,9 @@ public class AsyncApiDocket {
      */
     private String basePackage;
 
+    /**
+     * The base package to scan for configurations that contain beans that contain listeners.
+     */
     private String configurationBasePackage;
 
     /**
