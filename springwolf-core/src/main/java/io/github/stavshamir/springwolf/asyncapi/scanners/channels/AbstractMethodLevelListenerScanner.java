@@ -53,9 +53,8 @@ public abstract class AbstractMethodLevelListenerScanner implements ChannelsScan
     @Override
     public Map<String, ChannelItem> scan() {
         annotationClass = loadAnnotationClass();
-        String basePackage = docket.getBasePackage();
 
-        return componentsScanner.scanForComponents(basePackage).stream()
+        return componentsScanner.scanForComponents(docket.getBasePackage(), docket.getConfigurationBasePackage()).stream()
                 .map(this::getAnnotatedMethods).flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));

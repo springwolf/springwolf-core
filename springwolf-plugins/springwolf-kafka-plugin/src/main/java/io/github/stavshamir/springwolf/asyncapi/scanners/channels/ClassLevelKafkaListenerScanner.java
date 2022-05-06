@@ -52,7 +52,7 @@ public class ClassLevelKafkaListenerScanner
     }
 
     public Map<String, ChannelItem> scan() {
-        return componentsScanner.scanForComponents(docket.getBasePackage()).stream()
+        return componentsScanner.scanForComponents(docket.getBasePackage(), docket.getConfigurationBasePackage()).stream()
                 .filter(this::isAnnotatedWithKafkaListener)
                 .map(this::mapClassToChannel)
                 .filter(Optional::isPresent).map(Optional::get)

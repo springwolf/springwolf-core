@@ -18,8 +18,9 @@ public class AsyncApiDocket {
     /**
      * The base package to scan for listeners.
      */
-    @NonNull
     private String basePackage;
+
+    private String configurationBasePackage;
 
     /**
      * <b>Required.</b>

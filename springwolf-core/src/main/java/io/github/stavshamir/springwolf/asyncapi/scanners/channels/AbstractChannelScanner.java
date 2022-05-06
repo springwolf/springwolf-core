@@ -33,7 +33,7 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
 
     @Override
     public Map<String, ChannelItem> scan() {
-        return componentsScanner.scanForComponents(docket.getBasePackage()).stream()
+        return componentsScanner.scanForComponents(docket.getBasePackage(), docket.getConfigurationBasePackage()).stream()
                 .map(this::getAnnotatedMethods).flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
