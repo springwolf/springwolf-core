@@ -56,4 +56,11 @@ compileTestKotlin {
     }
 }
 
-test.dependsOn dockerBuildImage
+
+test {
+    dependsOn dockerBuildImage
+
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
