@@ -38,7 +38,7 @@ public class DefaultComponentsScanner implements ComponentsScanner {
             components.addAll(this.scanForComponentsInConfiguration(basePackage, configurationBasePackage));
 
         } else if (StringUtils.isNotBlank(configurationBasePackage)) {
-            log.debug("Scanning for component classes in configuration package {}", basePackage);
+            log.debug("Scanning for component classes in configuration package {}", configurationBasePackage);
             components = this.scanForComponentsInConfiguration(null, configurationBasePackage);
 
         } else if (StringUtils.isNotBlank(basePackage)) {
