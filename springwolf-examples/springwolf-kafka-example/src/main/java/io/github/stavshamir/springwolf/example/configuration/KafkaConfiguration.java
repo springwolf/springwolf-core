@@ -24,6 +24,7 @@ import java.util.Map;
 @EnableKafka
 public class KafkaConfiguration {
 
+    public final static String PRODUCER_TOPIC = "example-producer-topic";
     private final String BOOTSTRAP_SERVERS;
 
     public KafkaConfiguration(@Value("${kafka.bootstrap.servers}") String bootstrapServers) {
@@ -66,15 +67,22 @@ public class KafkaConfiguration {
         return containerFactory;
     }
 
+    private Map<String, Object> producerConfiguration() {
+       return ImmutableMap.of(
+               ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS,
+               ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
+               ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class
+       );
+    }
+
     @Bean
     public KafkaTemplate<String, ExamplePayloadDto> examplePayloadKafkaTemplate() {
-        Map<String, Object> configuration = ImmutableMap.of(
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS,
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class
-        );
+        return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(producerConfiguration()));
+    }
 
-        return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(configuration));
+    @Bean
+    public KafkaTemplate<String, AnotherPayloadDto> anotherPayloadKafkaTemplate() {
+        return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(producerConfiguration()));
     }
 
 }

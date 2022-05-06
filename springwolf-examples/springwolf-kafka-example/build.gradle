@@ -7,7 +7,7 @@ plugins {
 }
 
 sourceCompatibility = '1.8'
-version '0.4.0'
+version '0.5.0'
 
 
 repositories {
@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     implementation project(":springwolf-plugins:springwolf-kafka-plugin")
-    runtimeOnly 'io.github.springwolf:springwolf-ui:0.3.1'
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.4.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'

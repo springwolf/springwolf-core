@@ -5,12 +5,15 @@ import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
-import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
+import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
+import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static io.github.stavshamir.springwolf.example.configuration.KafkaConfiguration.PRODUCER_TOPIC;
 
 @Configuration
 @EnableAsyncApi
@@ -29,20 +32,24 @@ public class AsyncApiConfiguration {
                 .title("Springwolf example project")
                 .build();
 
-        ProducerData exampleProducerData = ProducerData.builder()
-                .channelName("example-producer-topic")
-                .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .payloadType(ExamplePayloadDto.class)
-                .build();
+        ProducerData exampleProducerData = buildKafkaProducerData(PRODUCER_TOPIC, ExamplePayloadDto.class);
+        ProducerData anotherProducerData = buildKafkaProducerData(PRODUCER_TOPIC, AnotherPayloadDto.class);
 
         return AsyncApiDocket.builder()
                 .basePackage("io.github.stavshamir.springwolf.example.consumers")
                 .info(info)
                 .server("kafka", Server.builder().protocol("kafka").url(BOOTSTRAP_SERVERS).build())
                 .producer(exampleProducerData)
+                .producer(anotherProducerData)
                 .build();
     }
 
-
+    private ProducerData buildKafkaProducerData(String topic, Class<?> payload) {
+        return ProducerData.builder()
+                .channelName(topic)
+                .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .payloadType(payload)
+                .build();
+    }
 
 }
