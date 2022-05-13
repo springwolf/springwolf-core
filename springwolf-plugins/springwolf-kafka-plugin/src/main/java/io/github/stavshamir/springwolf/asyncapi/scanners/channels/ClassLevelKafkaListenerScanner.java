@@ -9,7 +9,6 @@ import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +37,6 @@ public class ClassLevelKafkaListenerScanner
     private StringValueResolver resolver;
 
     @Autowired
-    private AsyncApiDocket docket;
-
-    @Autowired
     private ComponentsScanner componentsScanner;
 
     @Autowired
@@ -52,7 +48,7 @@ public class ClassLevelKafkaListenerScanner
     }
 
     public Map<String, ChannelItem> scan() {
-        return componentsScanner.scanForComponents(docket.getBasePackage(), docket.getConfigurationBasePackage()).stream()
+        return componentsScanner.scanForComponents().stream()
                 .filter(this::isAnnotatedWithKafkaListener)
                 .map(this::mapClassToChannel)
                 .filter(Optional::isPresent).map(Optional::get)

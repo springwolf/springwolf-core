@@ -20,7 +20,6 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,7 +32,6 @@ import java.util.Set;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -52,20 +50,17 @@ public class RabbitChannelsScannerTest {
     @MockBean
     private AsyncApiDocket asyncApiDocket;
 
-    @Value("${amqp.queues.test}")
-    private String queueFromProperties;
-
     private static final String QUEUE = "test-queue";
 
     @Before
     public void setUp() {
-        when(asyncApiDocket.getBasePackage())
-                .thenReturn("Does not matter - will be set by component scanner mock");
+        when(asyncApiDocket.getComponentsScanner())
+                .thenReturn(componentsScanner);
     }
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
-        when(componentsScanner.scanForComponents(anyString())).thenReturn(classesToScan);
+        when(componentsScanner.scanForComponents()).thenReturn(classesToScan);
     }
 
     @Test

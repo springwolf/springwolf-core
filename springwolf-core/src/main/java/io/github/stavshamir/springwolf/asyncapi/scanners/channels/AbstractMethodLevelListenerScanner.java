@@ -7,7 +7,6 @@ import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,6 @@ import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 public abstract class AbstractMethodLevelListenerScanner implements ChannelsScanner {
-
-    @Autowired
-    private AsyncApiDocket docket;
 
     @Autowired
     private ComponentsScanner componentsScanner;
@@ -54,7 +50,7 @@ public abstract class AbstractMethodLevelListenerScanner implements ChannelsScan
     public Map<String, ChannelItem> scan() {
         annotationClass = loadAnnotationClass();
 
-        return componentsScanner.scanForComponents(docket.getBasePackage(), docket.getConfigurationBasePackage()).stream()
+        return componentsScanner.scanForComponents().stream()
                 .map(this::getAnnotatedMethods).flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
