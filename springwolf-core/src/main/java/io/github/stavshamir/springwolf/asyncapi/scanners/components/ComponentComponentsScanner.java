@@ -12,23 +12,23 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ComponentComponentsScanner extends AbstractClassPathComponentsScanner {
 
-  private final String basePackage;
+    private final String basePackage;
 
-  public ComponentComponentsScanner(String basePackage) {
-    if (StringUtils.isEmpty(basePackage)) {
-      throw new IllegalArgumentException("There must be a non-empty basePackage given");
+    public ComponentComponentsScanner(String basePackage) {
+        if (StringUtils.isEmpty(basePackage)) {
+            throw new IllegalArgumentException("There must be a non-empty basePackage given");
+        }
+
+        this.basePackage = basePackage;
     }
 
-    this.basePackage = basePackage;
-  }
+    @Override
+    public Set<Class<?>> scanForComponents() {
+        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        provider.addIncludeFilter(new AnnotationTypeFilter(Component.class));
 
-  @Override
-  public Set<Class<?>> scanForComponents() {
-    ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-    provider.addIncludeFilter(new AnnotationTypeFilter(Component.class));
-
-    log.debug("Scanning for component classes in {}", basePackage);
-    return this.filterBeanDefinitionsToClasses(provider.findCandidateComponents(basePackage))
-        .collect(toSet());
-  }
+        log.debug("Scanning for component classes in {}", basePackage);
+        return this.filterBeanDefinitionsToClasses(provider.findCandidateComponents(basePackage))
+            .collect(toSet());
+    }
 }

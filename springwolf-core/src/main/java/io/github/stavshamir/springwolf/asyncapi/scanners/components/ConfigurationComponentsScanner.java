@@ -16,45 +16,45 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 @Slf4j
 public class ConfigurationComponentsScanner extends AbstractClassPathComponentsScanner {
 
-  private final String basePackage;
-  private final Predicate<Class<?>> classPredicate;
+    private final String basePackage;
+    private final Predicate<Class<?>> classPredicate;
 
-  public ConfigurationComponentsScanner(String basePackage) {
-    this(basePackage, it -> true);
-  }
-
-  public ConfigurationComponentsScanner(String basePackage, Predicate<Class<?>> classPredicate) {
-    if (StringUtils.isEmpty(basePackage)) {
-      throw new IllegalArgumentException("There must be a non-empty basePackage given");
+    public ConfigurationComponentsScanner(String basePackage) {
+      this(basePackage, it -> true);
     }
 
-    this.basePackage = basePackage;
-    this.classPredicate = classPredicate;
-  }
+    public ConfigurationComponentsScanner(String basePackage, Predicate<Class<?>> classPredicate) {
+      if (StringUtils.isEmpty(basePackage)) {
+          throw new IllegalArgumentException("There must be a non-empty basePackage given");
+      }
 
-  @Override
-  public Set<Class<?>> scanForComponents() {
-    final ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-    provider.addIncludeFilter(new AnnotationTypeFilter(Configuration.class));
+      this.basePackage = basePackage;
+      this.classPredicate = classPredicate;
+    }
 
-    log.debug("Scanning for component classes in configuration package {}", basePackage);
-    return this.filterBeanDefinitionsToClasses(provider.findCandidateComponents(basePackage))
-        .map(configurationClass -> {
+    @Override
+    public Set<Class<?>> scanForComponents() {
+        final ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        provider.addIncludeFilter(new AnnotationTypeFilter(Configuration.class));
 
-          Set<Class<?>> beans = new LinkedHashSet<>();
-          for (final Method method : configurationClass.getDeclaredMethods()) {
-            final Bean bean = AnnotationUtils.getAnnotation(method, Bean.class);
-            if (bean != null) {
-              final Class<?> returnType = method.getReturnType();
-              if (this.classPredicate.test(returnType) && this.isSuitableComponent(returnType)) {
-                beans.add(returnType);
-              }
-            }
-          }
+        log.debug("Scanning for component classes in configuration package {}", basePackage);
+        return this.filterBeanDefinitionsToClasses(provider.findCandidateComponents(basePackage))
+            .map(configurationClass -> {
 
-          return beans;
-        })
-        .flatMap(Set::stream)
-        .collect(Collectors.toSet());
-  }
+                Set<Class<?>> beans = new LinkedHashSet<>();
+                for (final Method method : configurationClass.getDeclaredMethods()) {
+                    final Bean bean = AnnotationUtils.getAnnotation(method, Bean.class);
+                    if (bean != null) {
+                        final Class<?> returnType = method.getReturnType();
+                        if (this.classPredicate.test(returnType) && this.isSuitableComponent(returnType)) {
+                            beans.add(returnType);
+                        }
+                    }
+                }
+
+                return beans;
+            })
+            .flatMap(Set::stream)
+            .collect(Collectors.toSet());
+    }
 }

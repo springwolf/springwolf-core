@@ -10,39 +10,39 @@ import org.springframework.beans.factory.config.BeanDefinition;
 @Slf4j
 public abstract class AbstractClassPathComponentsScanner implements ComponentsScanner {
 
-  protected Stream<Class<?>> filterBeanDefinitionsToClasses(Set<BeanDefinition> beanDefinitions) {
-    return beanDefinitions.stream()
-        .map(BeanDefinition::getBeanClassName)
-        .map(this::getClass)
-        .filter(Optional::isPresent)
-        .filter(it -> this.isSuitableComponent(it.get()))
-        .map(Optional::get);
-  }
+    protected Stream<Class<?>> filterBeanDefinitionsToClasses(Set<BeanDefinition> beanDefinitions) {
+        return beanDefinitions.stream()
+            .map(BeanDefinition::getBeanClassName)
+            .map(this::getClass)
+            .filter(Optional::isPresent)
+            .filter(it -> this.isSuitableComponent(it.get()))
+            .map(Optional::get);
+    }
 
   protected boolean isSuitableComponent(Class<?> clazz) {
 
-    if (FactoryBean.class.isAssignableFrom(clazz)) {
+      if (FactoryBean.class.isAssignableFrom(clazz)) {
 
-      log.debug("Skipping FactoryBean '{}'. If needed, instead use ApplicationContextComponentsScanner", clazz);
-      return false;
-    }
+          log.debug("Skipping FactoryBean '{}'. If needed, instead use ApplicationContextComponentsScanner", clazz);
+          return false;
+      }
 
-    if (clazz.isInterface()) {
+      if (clazz.isInterface()) {
 
-      // Skipping interface. This is possible if a @Configuration gives back a @Bean with interface return type.
-      return false;
-    }
+          // Skipping interface. This is possible if a @Configuration gives back a @Bean with interface return type.
+          return false;
+      }
 
-    return true;
+      return true;
   }
 
   private Optional<Class<?>> getClass(String className) {
-    try {
-      log.debug("Found candidate class: {}", className);
-      return Optional.of(Class.forName(className));
-    } catch (ClassNotFoundException e) {
-      log.warn("Class {} not found", className);
-      return Optional.empty();
-    }
+      try {
+          log.debug("Found candidate class: {}", className);
+          return Optional.of(Class.forName(className));
+      } catch (ClassNotFoundException e) {
+          log.warn("Class {} not found", className);
+          return Optional.empty();
+      }
   }
 }

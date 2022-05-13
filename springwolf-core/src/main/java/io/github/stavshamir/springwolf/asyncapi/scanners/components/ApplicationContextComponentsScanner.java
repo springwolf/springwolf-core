@@ -26,41 +26,41 @@ import org.springframework.stereotype.Component;
  */
 public class ApplicationContextComponentsScanner implements ComponentsScanner, ApplicationContextAware, InitializingBean {
 
-  private final Predicate<Class<?>> predicate;
-  private ListableBeanFactory listableBeanFactory;
+    private final Predicate<Class<?>> predicate;
+    private ListableBeanFactory listableBeanFactory;
 
-  public ApplicationContextComponentsScanner(Predicate<Class<?>> predicate) {
-    this.predicate = predicate;
-  }
-
-  public ApplicationContextComponentsScanner(String basePackage) {
-    this(clazz -> {
-      String clazzName = clazz.getName();
-      return clazzName.equals(basePackage) || clazzName.startsWith(basePackage + ".");
-    });
-  }
-
-  @Override
-  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    this.listableBeanFactory = applicationContext;
-  }
-
-  @Override
-  public void afterPropertiesSet() throws Exception {
-    Assert.notNull(this.listableBeanFactory, "The application context must be set");
-  }
-
-  @Override
-  public Set<Class<?>> scanForComponents() {
-
-    Set<Class<?>> components = new LinkedHashSet<>();
-    for (String beanName : this.listableBeanFactory.getBeanDefinitionNames()) {
-      Class<?> beanType = this.listableBeanFactory.getType(beanName);
-      if (this.predicate == null || this.predicate.test(beanType)) {
-        components.add(beanType);
-      }
+    public ApplicationContextComponentsScanner(Predicate<Class<?>> predicate) {
+        this.predicate = predicate;
     }
 
-    return components;
-  }
+    public ApplicationContextComponentsScanner(String basePackage) {
+        this(clazz -> {
+            String clazzName = clazz.getName();
+            return clazzName.equals(basePackage) || clazzName.startsWith(basePackage + ".");
+        });
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.listableBeanFactory = applicationContext;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(this.listableBeanFactory, "The application context must be set");
+    }
+
+    @Override
+    public Set<Class<?>> scanForComponents() {
+
+        Set<Class<?>> components = new LinkedHashSet<>();
+        for (String beanName : this.listableBeanFactory.getBeanDefinitionNames()) {
+            Class<?> beanType = this.listableBeanFactory.getType(beanName);
+            if (this.predicate == null || this.predicate.test(beanType)) {
+                components.add(beanType);
+            }
+        }
+
+        return components;
+    }
 }
