@@ -6,15 +6,15 @@ import org.junit.Test;
 
 public class ManualComponentsScannerTest {
 
-  @Test
-  public void scanForComponents_should_give_back_given_classes() {
+    @Test
+    public void scanForComponents_should_give_back_given_classes() {
 
-    ComponentsScanner scanner = new ManualComponentsScanner(
-        TestBean.class
-    );
+        ComponentsScanner scanner = new ManualComponentsScanner(
+            TestBean.class
+        );
 
-    assertThat(scanner.scanForComponents())
-        .hasSize(1)
-        .contains(TestBean.class);
-  }
+        assertThat(scanner.scanForComponents())
+            .hasSize(1)
+            .contains(TestBean.class);
+    }
 }

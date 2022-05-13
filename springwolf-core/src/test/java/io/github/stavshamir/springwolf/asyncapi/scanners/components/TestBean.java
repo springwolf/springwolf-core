@@ -6,5 +6,5 @@ import lombok.Value;
 @Value
 public class TestBean {
 
-  String value;
+    String value;
 }

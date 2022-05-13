@@ -22,51 +22,51 @@ import org.springframework.test.context.junit4.SpringRunner;
 })
 public class ApplicationContextComponentsScannerTest {
 
-  @TestConfiguration
-  @Import(TestBeanConfiguration.class)
-  public static class CustomConfiguration {
+    @TestConfiguration
+    @Import(TestBeanConfiguration.class)
+    public static class CustomConfiguration {
 
-    @Bean
-    public ComponentsScanner beansScanner() {
-      return new ApplicationContextComponentsScanner(it -> true);
+        @Bean
+        public ComponentsScanner beansScanner() {
+            return new ApplicationContextComponentsScanner(it -> true);
+        }
+
+        @Bean
+        public ClassCreationFactory classCreationFactory() {
+            return new ClassCreationFactory();
+        }
+
+        public static class ClassCreationFactory extends AbstractFactoryBean<ClassCreatedFromFactory> {
+
+            @Override
+            public Class<?> getObjectType() {
+                return ClassCreatedFromFactory.class;
+            }
+
+            @Override
+            protected ClassCreatedFromFactory createInstance() {
+                return new ClassCreatedFromFactory("abc");
+            }
+        }
+
+        @Value
+        public static class ClassCreatedFromFactory {
+            String value;
+        }
     }
 
-    @Bean
-    public ClassCreationFactory classCreationFactory() {
-      return new ClassCreationFactory();
+    @Autowired
+    private ComponentsScanner componentsScanner;
+
+    @Test
+    public void scanForComponents_should_find_component_configuration_beanfactory() {
+
+        Set<Class<?>> classes = this.componentsScanner.scanForComponents();
+
+        assertThat(classes)
+            .contains(ApplicationContextComponentsScanner.class)
+            .contains(TestBean.class)
+            .contains(ClassCreatedFromFactory.class)
+            .doesNotContain(ClassCreationFactory.class);
     }
-
-    public static class ClassCreationFactory extends AbstractFactoryBean<ClassCreatedFromFactory> {
-
-      @Override
-      public Class<?> getObjectType() {
-        return ClassCreatedFromFactory.class;
-      }
-
-      @Override
-      protected ClassCreatedFromFactory createInstance() {
-        return new ClassCreatedFromFactory("abc");
-      }
-    }
-
-    @Value
-    public static class ClassCreatedFromFactory {
-      String value;
-    }
-  }
-
-  @Autowired
-  private ComponentsScanner componentsScanner;
-
-  @Test
-  public void scanForComponents_should_find_component_configuration_beanfactory() {
-
-    Set<Class<?>> classes = this.componentsScanner.scanForComponents();
-
-    assertThat(classes)
-        .contains(ApplicationContextComponentsScanner.class)
-        .contains(TestBean.class)
-        .contains(ClassCreatedFromFactory.class)
-        .doesNotContain(ClassCreationFactory.class);
-  }
 }
