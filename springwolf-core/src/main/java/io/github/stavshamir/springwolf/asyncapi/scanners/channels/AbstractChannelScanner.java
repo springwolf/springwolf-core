@@ -4,7 +4,6 @@ import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.Maps;
-import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
@@ -23,14 +22,14 @@ import static java.util.stream.Collectors.toSet;
 public abstract class AbstractChannelScanner<T extends Annotation> implements ChannelsScanner {
 
     @Autowired
-    private ComponentsScanner componentsScanner;
+    private AsyncApiDocket docket;
 
     @Autowired
     private SchemasService schemasService;
 
     @Override
     public Map<String, ChannelItem> scan() {
-        return componentsScanner.scanForComponents().stream()
+        return docket.getComponentsScanner().scanForComponents().stream()
                 .map(this::getAnnotatedMethods).flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));

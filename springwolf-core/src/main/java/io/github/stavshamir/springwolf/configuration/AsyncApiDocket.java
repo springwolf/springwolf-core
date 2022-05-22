@@ -55,8 +55,6 @@ public class AsyncApiDocket {
 
         /**
          * The base package to scan for listeners which are declared inside a class annotated with @Component or @Service.
-         *
-         * @see AsyncApiDocketBuilder#componentsScanner(ComponentsScanner)
          */
         public AsyncApiDocketBuilder basePackage(String value) {
             this.componentsScanner = new DefaultClassPathComponentsScanner(value, value);
