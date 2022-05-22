@@ -18,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -32,7 +31,6 @@ import java.util.Set;
 import static io.github.stavshamir.springwolf.asyncapi.Constants.ONE_OF;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -49,20 +47,17 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
     @MockBean
     private AsyncApiDocket asyncApiDocket;
 
-    @Value("${kafka.topics.test}")
-    private String topicFromProperties;
-
     private static final String TOPIC = "test-topic";
 
     @Before
     public void setUp() {
-        when(asyncApiDocket.getBasePackage())
-                .thenReturn("Does not matter - will be set by component scanner mock");
+        when(asyncApiDocket.getComponentsScanner())
+                .thenReturn(componentsScanner);
     }
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
-        when(componentsScanner.scanForComponents(anyString())).thenReturn(classesToScan);
+        when(componentsScanner.scanForComponents()).thenReturn(classesToScan);
     }
 
     @Test

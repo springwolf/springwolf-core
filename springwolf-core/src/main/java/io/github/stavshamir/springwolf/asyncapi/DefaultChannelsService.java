@@ -2,6 +2,7 @@ package io.github.stavshamir.springwolf.asyncapi;
 
 import com.asyncapi.v2.model.channel.ChannelItem;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,18 +21,17 @@ import static java.util.stream.Collectors.toMap;
 public class DefaultChannelsService implements ChannelsService {
 
     private final Set<? extends ChannelsScanner> channelsScanners;
-    private Map<String, ChannelItem> channels;
+    private final Map<String, ChannelItem> channels = new HashMap<>();
 
     @PostConstruct
     void findChannels() {
-        try {
-            channels = channelsScanners.stream()
-                    .map(ChannelsScanner::scan)
-                    .map(Map::entrySet).flatMap(Collection::stream)
-                    .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-        } catch (Exception e) {
-            log.error("An error was encountered during channel scanning: {}", e.getMessage());
-            channels = Collections.emptyMap();
+
+        for (ChannelsScanner scanner : channelsScanners) {
+            try {
+                channels.putAll(scanner.scan());
+            } catch (Exception e) {
+                log.error("An error was encountered during channel scanning with {}: {}", scanner, e.getMessage());
+            }
         }
     }
 
