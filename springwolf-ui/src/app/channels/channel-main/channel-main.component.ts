@@ -22,7 +22,6 @@ export class ChannelMainComponent implements OnInit {
   schema: Schema;
   defaultExample: Example;
   exampleTextAreaLineCount: number;
-  schemaRoot = "properties";
   protocolName: string;
   nameSubscription: Subscription;
 
@@ -36,8 +35,8 @@ export class ChannelMainComponent implements OnInit {
     this.asyncApiService.getAsyncApis().subscribe(
       asyncapi => {
         let schemas: Map<string, Schema> = asyncapi.get(this.docName).components.schemas;
-        this.schema = schemas.get(this.operation.message.title);
-        this.defaultExample = this.schema.example;
+        this.schema = schemas[this.operation.message.title];
+        this.defaultExample = new Example(this.schema.example);
         this.exampleTextAreaLineCount = this.defaultExample.lineCount;
       }
     );
