@@ -2,26 +2,32 @@
     <mat-divider></mat-divider>
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="Example">
-            <textarea spellcheck="false" #exampleTextArea [rows]="exampleTextAreaLineCount"
-                      [value]="defaultExample?.value" (keyup)="recalculateLineCount(exampleTextArea.value)"></textarea>
-        <div fxLayout fxLayoutGap="8px">
-          <button mat-raised-button color="primary" (click)="publish(exampleTextArea.value)">
-            Publish
-          </button>
-          <button mat-raised-button color="primary"
-                  (click)="exampleTextArea.value = defaultExample.value; exampleTextAreaLineCount=defaultExample.lineCount">
-            Default
-          </button>
-          <button mat-raised-button color="primary" [cdkCopyToClipboard]="exampleTextArea.value">Copy</button>
+        <div fxLayout="column">
+          <textarea spellcheck="false"
+                    #exampleTextArea
+                    [rows]="exampleTextAreaLineCount"
+                    [value]="defaultExample?.value"
+                    (keyup)="recalculateLineCount(exampleTextArea.value)"
+          ></textarea>
+          <div fxLayout fxLayoutGap="8px">
+            <button mat-raised-button color="primary" (click)="publish(exampleTextArea.value)">
+              Publish
+            </button>
+            <button mat-raised-button color="primary"
+                    (click)="exampleTextArea.value = defaultExample.value; exampleTextAreaLineCount=defaultExample.lineCount">
+              Default
+            </button>
+            <button mat-raised-button color="primary" [cdkCopyToClipboard]="exampleTextArea.value">Copy</button>
+          </div>
         </div>
       </mat-tab>
       <mat-tab label="Schema">
         <h4>{{ operation.message.title }} </h4>
         <div class="payload-name">{{ operation.message.name }}</div>
-        <app-schema *ngIf="schema" [schema]="schema" [root]="schemaRoot"></app-schema>
+        <app-schema *ngIf="schema" [schema]="schema"></app-schema>
       </mat-tab>
       <mat-tab label="Bindings">
-        <app-schema [schema]="operation.bindings" [root]="protocolName"></app-schema>
+        <app-json [data]="operation.bindings[protocolName]"></app-json>
       </mat-tab>
     </mat-tab-group>
 </section>

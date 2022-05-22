@@ -12,7 +12,6 @@ export class SchemasComponent implements OnInit {
 
 
   schemas: Map<string, Schema>;
-  schemaRoot = "properties";
   nameSubscription: Subscription;
 
   constructor(private asyncApiService: AsyncApiService) { }

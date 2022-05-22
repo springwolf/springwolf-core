@@ -19,6 +19,7 @@ import { AsyncApiService } from './shared/asyncapi.service';
 import { MockServer } from './shared/mock-server';
 import { PublisherService } from './shared/publisher.service';
 import { FormsModule } from '@angular/forms';
+import { JsonComponent } from './shared/components/json/json.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { FormsModule } from '@angular/forms';
     ChannelMainComponent,
     SchemasComponent,
     SchemaComponent,
+    JsonComponent,
   ],
   imports: [
     BrowserModule,

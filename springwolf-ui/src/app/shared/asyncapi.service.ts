@@ -2,7 +2,6 @@ import { AsyncApi } from './models/asyncapi.model';
 import { Server } from './models/server.model';
 import { Channel, Message, Operation } from './models/channel.model';
 import { Schema } from './models/schema.model';
-import { Example } from './models/example.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
@@ -33,13 +32,7 @@ interface ServerAsyncApi {
         };
     };
     components: {
-        schemas: {
-            [key: string]: {
-                type: string;
-                properties: object;
-                example: object;
-            };
-        };
+        schemas: Map<string, Schema>;
     };
 }
 
@@ -84,7 +77,7 @@ export class AsyncApiService {
             servers: this.mapServers(item.servers),
             channels: this.mapChannels(item.channels),
             components: {
-                schemas: this.mapSchemas(item.components.schemas)
+                schemas: item.components.schemas
             }
         };
     }
@@ -133,16 +126,6 @@ export class AsyncApiService {
 
     private getProtocol(bindings?: any): string {
         return Object.keys(bindings)[0];
-    }
-
-    mapSchemas(schemas: { [key: string]: { type: string; properties: object; example: object; } }): Map<string, Schema> {
-        const s = new Map<string, Schema>();
-        Object.entries(schemas).forEach(([k, v]) => s.set(k, {
-            type: v.type,
-            properties: v.properties,
-            example: new Example(v.example)
-        }));
-        return s;
     }
 
 }

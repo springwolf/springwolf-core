@@ -77,37 +77,44 @@
     "components": {
       "schemas": {
         "ExamplePayloadDto": {
+          "description": "Example payload model",
           "type": "object",
           "properties": {
             "someString": {
-              "type": "string"
+              "description": "some string field",
+              "type": "string",
+              "example": "string"
             },
             "someLong": {
+              "description": "some long field",
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "example": 0
             },
             "someEnum": {
+              "description": "some enum field",
               "type": "string",
-              "enum": [
-                "FOO1",
-                "FOO2",
-                "FOO3"
-              ]
+              "enum": ["FOO1", "FOO2", "FOO3"],
+              "example": "FOO1"
             }
           },
           "example": {
             "someString": "string",
             "someLong": 0,
             "someEnum": "FOO1"
-          }
+          },
+          "required": ["someString", "someEnum"]
         },
         "AnotherPayloadDto": {
+          "description": "Another payload model",
           "type": "object",
           "properties": {
             "foo": {
+              "description": "foo field",
               "type": "string"
             },
             "example": {
+              "description": "example field",
               "$ref": "#/components/schemas/ExamplePayloadDto"
             }
           },
