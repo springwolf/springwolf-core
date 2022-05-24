@@ -2,13 +2,15 @@ name: springwolf-kafka
 
 on:
   push:
-    branches: 
+    branches:
       - master
     paths:
       - '.github/workflows/springwolf-kafka.yml'
       - 'springwolf-core/**'
       - 'springwolf-plugins/springwolf-kafka-plugin/**'
       - 'springwolf-examples/springwolf-kafka-example/**'
+  pull_request:
+    types: [ opened, synchronize, ready_for_review ]
 
 jobs:
   build:
