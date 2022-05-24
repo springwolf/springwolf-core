@@ -1,8 +1,14 @@
 package io.github.stavshamir.springwolf.example.dtos;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Another payload model")
 public class AnotherPayloadDto {
 
+    @Schema(description = "Foo field", example = "bar")
     private String foo;
+
+    @Schema(description = "Example field", required = true)
     private ExamplePayloadDto example;
 
     public String getFoo() {

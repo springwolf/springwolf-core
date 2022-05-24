@@ -67,6 +67,16 @@ public class DefaultSchemasServiceTest {
         JSONAssert.assertEquals(expected, actualDefinitions, JSONCompareMode.NON_EXTENSIBLE);
     }
 
+    @Test
+    public void getDocumentedDefinitions() throws IOException, JSONException {
+        schemasService.register(DocumentedSimpleFoo.class);
+
+        String actualDefinitions = objectMapper.writeValueAsString(schemasService.getDefinitions());
+        String expected = jsonResource("/schemas/documented-definitions.json");
+
+        JSONAssert.assertEquals(expected, actualDefinitions, JSONCompareMode.NON_EXTENSIBLE);
+    }
+
     private String jsonResource(String path) throws IOException {
         InputStream s = this.getClass().getResourceAsStream(path);
         return IOUtils.toString(s, StandardCharsets.UTF_8);
@@ -77,6 +87,14 @@ public class DefaultSchemasServiceTest {
     private static class SimpleFoo {
         private String s;
         private boolean b;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @io.swagger.v3.oas.annotations.media.Schema(description = "foo model")
+    private static class DocumentedSimpleFoo {
+        @io.swagger.v3.oas.annotations.media.Schema(description = "s field", example = "s value", required = true)
+        private String s;
     }
 
     @Data

@@ -1,9 +1,16 @@
 package io.github.stavshamir.springwolf.example.dtos;
 
-public class ExamplePayloadDto {
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Example payload model")
+public class ExamplePayloadDto {
+    @Schema(description = "Some string field", example = "some string value", required = true)
     private String someString;
+
+    @Schema(description = "Some long field", example = "5")
     private long someLong;
+
+    @Schema(description = "Some enum field", example = "FOO2", required = true)
     private ExampleEnum someEnum;
 
     public String getSomeString() {

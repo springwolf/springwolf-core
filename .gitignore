@@ -1,6 +1,9 @@
 springwolf-core/build/
 springwolf-ui/build/
-springwolf-example/build/
+springwolf-examples/springwolf-amqp-example/build/
+springwolf-examples/springwolf-kafka-example/build/
+springwolf-plugins/springwolf-amqp-plugin/build/
+springwolf-plugins/springwolf-kafka-plugin/build/
 
 .gradle/
 .idea/
