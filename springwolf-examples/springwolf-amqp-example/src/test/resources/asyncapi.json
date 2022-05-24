@@ -79,36 +79,58 @@
     "components": {
       "schemas": {
         "AnotherPayloadDto": {
+          "required": [
+            "example"
+          ],
           "type": "object",
           "properties": {
             "foo": {
-              "type": "string"
+              "type": "string",
+              "description": "Foo field",
+              "example": "bar",
+              "exampleSetFlag": true
             },
             "example": {
-              "$ref": "#/components/schemas/ExamplePayloadDto"
+              "$ref": "#/components/schemas/ExamplePayloadDto",
+              "exampleSetFlag": false
             }
           },
+          "description": "Another payload model",
           "example": {
-            "foo": "string",
+            "foo": "bar",
             "example": {
-              "someString": "string",
-              "someLong": 0,
-              "someEnum": "FOO1"
+              "someString": "some string value",
+              "someLong": 5,
+              "someEnum": "FOO2"
             }
-          }
+          },
+          "exampleSetFlag": true
         },
         "ExamplePayloadDto": {
+          "required": [
+            "someEnum",
+            "someString"
+          ],
           "type": "object",
           "properties": {
             "someString": {
-              "type": "string"
+              "type": "string",
+              "description": "Some string field",
+              "example": "some string value",
+              "exampleSetFlag": true
             },
             "someLong": {
               "type": "integer",
-              "format": "int64"
+              "description": "Some long field",
+              "format": "int64",
+              "example": 5,
+              "exampleSetFlag": true
             },
             "someEnum": {
               "type": "string",
+              "description": "Some enum field",
+              "example": "FOO2",
+              "exampleSetFlag": true,
               "enum": [
                 "FOO1",
                 "FOO2",
@@ -116,11 +138,13 @@
               ]
             }
           },
+          "description": "Example payload model",
           "example": {
-            "someString": "string",
-            "someLong": 0,
-            "someEnum": "FOO1"
-          }
+            "someString": "some string value",
+            "someLong": 5,
+            "someEnum": "FOO2"
+          },
+          "exampleSetFlag": true
         }
       }
     }
