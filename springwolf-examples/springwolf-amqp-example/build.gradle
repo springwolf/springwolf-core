@@ -22,11 +22,12 @@ repositories {
 
 dependencies {
     implementation project(":springwolf-plugins:springwolf-amqp-plugin")
-    runtimeOnly 'io.github.springwolf:springwolf-ui:0.3.1'
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.4.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.amqp:spring-rabbit'
     implementation 'com.google.guava:guava:27.0.1-jre'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.0'
 
     testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     testImplementation 'org.jetbrains.kotlin:kotlin-reflect'
