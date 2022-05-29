@@ -79,11 +79,14 @@ public class AbstractChannelScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .bindings(ImmutableMap.of("test", new TestChannelScanner.TestBinding()))
+                .bindings(ImmutableMap.of("test-operation-binding", new TestChannelScanner.TestOperationBinding()))
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder().publish(operation).build();
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("test-channel-binding", new TestChannelScanner.TestChannelBinding()))
+                .publish(operation)
+                .build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry("test-channel", expectedChannel));

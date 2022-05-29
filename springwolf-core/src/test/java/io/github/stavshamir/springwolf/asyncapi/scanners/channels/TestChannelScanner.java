@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
@@ -20,8 +21,13 @@ public class TestChannelScanner extends AbstractChannelScanner<AbstractChannelSc
     }
 
     @Override
+    protected Map<String, ? extends ChannelBinding> buildChannelBinding(AbstractChannelScannerTest.TestChannelListener annotation) {
+        return ImmutableMap.of("test-channel-binding", new TestChannelBinding());
+    }
+
+    @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(AbstractChannelScannerTest.TestChannelListener annotation) {
-        return ImmutableMap.of("test", new TestBinding());
+        return ImmutableMap.of("test-operation-binding", new TestOperationBinding());
     }
 
     @Override
@@ -34,9 +40,13 @@ public class TestChannelScanner extends AbstractChannelScanner<AbstractChannelSc
         return parameterTypes[0];
     }
 
+    @EqualsAndHashCode(callSuper = true)
+    public static class TestChannelBinding extends ChannelBinding {
+    }
+
 
     @EqualsAndHashCode(callSuper = true)
-    public static class TestBinding extends OperationBinding {
+    public static class TestOperationBinding extends OperationBinding {
     }
 
 }

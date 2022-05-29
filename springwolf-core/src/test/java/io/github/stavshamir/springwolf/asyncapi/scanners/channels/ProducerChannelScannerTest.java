@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -41,7 +42,8 @@ public class ProducerChannelScannerTest {
         String channelName = "example-producer-topic-foo1";
         ProducerData producerData = ProducerData.builder()
                 .channelName(channelName)
-                .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 
@@ -64,6 +66,7 @@ public class ProducerChannelScannerTest {
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .subscribe(operation)
                 .build();
 
@@ -95,13 +98,15 @@ public class ProducerChannelScannerTest {
 
         ProducerData producerData1 = ProducerData.builder()
                 .channelName(channelName)
-                .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 
         ProducerData producerData2 = ProducerData.builder()
                 .channelName(channelName)
-                .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .payloadType(AnotherExamplePayloadDto.class)
                 .build();
 
@@ -134,6 +139,7 @@ public class ProducerChannelScannerTest {
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .subscribe(operation)
                 .build();
 

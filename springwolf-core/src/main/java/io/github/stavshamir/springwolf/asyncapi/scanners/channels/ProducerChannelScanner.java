@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -41,7 +42,7 @@ public class ProducerChannelScanner implements ChannelsScanner {
     private boolean allFieldsAreNonNull(ProducerData producerData) {
         boolean allNonNull = producerData.getChannelName() != null
                 && producerData.getPayloadType() != null
-                && producerData.getBinding() != null;
+                && producerData.getOperationBinding() != null;
 
         if (!allNonNull) {
             log.warn("Some producer data fields are null - this producer will not be documented: {}", producerData);
@@ -53,14 +54,16 @@ public class ProducerChannelScanner implements ChannelsScanner {
     private ChannelItem buildChannel(List<ProducerData> producerDataList) {
         // All bindings in the group are assumed to be the same
         // AsyncApi does not support multiple bindings on a single channel
-        Map<String, ? extends OperationBinding> binding = producerDataList.get(0).getBinding();
+        Map<String, ? extends ChannelBinding> channelBinding = producerDataList.get(0).getChannelBinding();
+        Map<String, ? extends OperationBinding> operationBinding = producerDataList.get(0).getOperationBinding();
 
         Operation operation = Operation.builder()
                 .message(getMessageObject(producerDataList))
-                .bindings(binding)
+                .bindings(operationBinding)
                 .build();
 
         return ChannelItem.builder()
+                .bindings(channelBinding)
                 .subscribe(operation)
                 .build();
     }

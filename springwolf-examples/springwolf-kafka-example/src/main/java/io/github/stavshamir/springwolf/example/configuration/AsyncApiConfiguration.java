@@ -47,7 +47,7 @@ public class AsyncApiConfiguration {
     private ProducerData buildKafkaProducerData(String topic, Class<?> payload) {
         return ProducerData.builder()
                 .channelName(topic)
-                .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .payloadType(payload)
                 .build();
     }
