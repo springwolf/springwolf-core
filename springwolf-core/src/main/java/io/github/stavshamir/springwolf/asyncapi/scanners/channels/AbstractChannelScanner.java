@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -48,7 +49,13 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
 
     /**
      * @param annotation An instance of a listener annotation.
-     * @return A map containing an operation binding pointed to by the the protocol binding name.
+     * @return A map containing the channel binding pointed to by the protocol binding name.
+     */
+    protected abstract Map<String, ? extends ChannelBinding> buildChannelBinding(T annotation);
+
+    /**
+     * @param annotation An instance of a listener annotation.
+     * @return A map containing an operation binding pointed to by the protocol binding name.
      */
     protected abstract Map<String, ? extends OperationBinding> buildOperationBinding(T annotation);
 
@@ -76,14 +83,17 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
 
         String channelName = getChannelName(annotation);
 
+        Map<String, ? extends ChannelBinding> channelBinding = buildChannelBinding(annotation);
         Map<String, ? extends OperationBinding> operationBinding = buildOperationBinding(annotation);
         Class<?> payload = getPayloadType(method);
-        ChannelItem channel = buildChannel(payload, operationBinding);
+        ChannelItem channel = buildChannel(channelBinding, payload, operationBinding);
 
         return Maps.immutableEntry(channelName, channel);
     }
 
-    private ChannelItem buildChannel(Class<?> payloadType, Map<String, ? extends OperationBinding> operationBinding) {
+    private ChannelItem buildChannel(Map<String, ? extends ChannelBinding> channelBinding,
+                                     Class<?> payloadType,
+                                     Map<String, ? extends OperationBinding> operationBinding) {
         String modelName = schemasService.register(payloadType);
 
         Message message = Message.builder()
@@ -98,6 +108,7 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
                 .build();
 
         return ChannelItem.builder()
+                .bindings(channelBinding)
                 .publish(operation)
                 .build();
     }

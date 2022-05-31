@@ -13,9 +13,54 @@
     },
     "channels": {
       "example-bindings-queue": {
+        "bindings": {
+          "amqp": {
+            "is": "routingKey",
+            "exchange": {
+              "name": "name",
+              "autoDelete": false
+            }
+          }
+        },
         "publish": {
           "bindings": {
             "amqp": {
+              "cc": [
+                ""
+              ],
+              "expiration": 0,
+              "priority": 0,
+              "deliveryMode": 0,
+              "mandatory": false,
+              "timestamp": false,
+              "ack": false
+            }
+          },
+          "message": {
+            "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "title": "AnotherPayloadDto",
+            "payload": {
+              "$ref": "#/components/schemas/AnotherPayloadDto"
+            }
+          }
+        }
+      },
+      "example-topic-queue": {
+        "bindings": {
+          "amqp": {
+            "is": "routingKey",
+            "exchange": {
+              "name": "example-topic-exchange",
+              "autoDelete": false
+            }
+          }
+        },
+        "publish": {
+          "bindings": {
+            "amqp": {
+              "cc": [
+                "example-topic-routing-key"
+              ],
               "expiration": 0,
               "priority": 0,
               "deliveryMode": 0,
@@ -34,9 +79,21 @@
         }
       },
       "another-queue": {
+        "bindings": {
+          "amqp": {
+            "is": "routingKey",
+            "exchange": {
+              "name": "",
+              "autoDelete": false
+            }
+          }
+        },
         "publish": {
           "bindings": {
             "amqp": {
+              "cc": [
+                "another-queue"
+              ],
               "expiration": 0,
               "priority": 0,
               "deliveryMode": 0,
@@ -55,9 +112,21 @@
         }
       },
       "example-queue": {
+        "bindings": {
+          "amqp": {
+            "is": "routingKey",
+            "exchange": {
+              "name": "",
+              "autoDelete": false
+            }
+          }
+        },
         "publish": {
           "bindings": {
             "amqp": {
+              "cc": [
+                "example-queue"
+              ],
               "expiration": 0,
               "priority": 0,
               "deliveryMode": 0,
@@ -71,6 +140,39 @@
             "title": "ExamplePayloadDto",
             "payload": {
               "$ref": "#/components/schemas/ExamplePayloadDto"
+            }
+          }
+        }
+      },
+      "example-producer-channel": {
+        "bindings": {
+          "amqp": {
+            "is": "routingKey",
+            "exchange": {
+              "name": "example-topic-exchange",
+              "autoDelete": false
+            }
+          }
+        },
+        "subscribe": {
+          "bindings": {
+            "amqp": {
+              "cc": [
+                "example-topic-routing-key"
+              ],
+              "expiration": 0,
+              "priority": 0,
+              "deliveryMode": 0,
+              "mandatory": false,
+              "timestamp": false,
+              "ack": false
+            }
+          },
+          "message": {
+            "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "title": "AnotherPayloadDto",
+            "payload": {
+              "$ref": "#/components/schemas/AnotherPayloadDto"
             }
           }
         }

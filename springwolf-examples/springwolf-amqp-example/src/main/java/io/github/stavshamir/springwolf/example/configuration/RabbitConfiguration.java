@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.example.configuration;
 
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +29,24 @@ public class RabbitConfiguration {
     @Bean
     public Queue exampleBindingsQueue() {
         return new Queue("example-bindings-queue", false);
+    }
+
+    @Bean
+    public Exchange exampleTopicExchange() {
+        return new TopicExchange("example-topic-exchange");
+    }
+
+    @Bean
+    public Queue exampleTopicQueue() {
+        return new Queue("example-topic-queue");
+    }
+
+    @Bean
+    public Binding exampleTopicBinding(Queue exampleTopicQueue, Exchange exampleTopicExchange) {
+        return BindingBuilder.bind(exampleTopicQueue)
+                .to(exampleTopicExchange)
+                .with("example-topic-routing-key")
+                .noargs();
     }
 
 }

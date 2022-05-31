@@ -13,6 +13,9 @@
     },
     "channels": {
       "another-topic": {
+        "bindings": {
+          "kafka": {}
+        },
         "publish": {
           "bindings": {
             "kafka": {
@@ -34,6 +37,9 @@
         }
       },
       "example-topic": {
+        "bindings": {
+          "kafka": {}
+        },
         "publish": {
           "bindings": {
             "kafka": {}
@@ -48,6 +54,9 @@
         }
       },
       "multi-payload-topic": {
+        "bindings": {
+          "kafka": {}
+        },
         "publish": {
           "bindings": {
             "kafka": {}

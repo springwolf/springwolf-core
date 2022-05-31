@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import com.asyncapi.v2.binding.OperationBinding;
+import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -89,7 +90,10 @@ public class MethodLevelKafkaListenerScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder().publish(operation).build();
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .publish(operation)
+                .build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
@@ -115,7 +119,10 @@ public class MethodLevelKafkaListenerScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder().publish(operation).build();
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .publish(operation)
+                .build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
@@ -176,7 +183,10 @@ public class MethodLevelKafkaListenerScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder().publish(operation).build();
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .publish(operation)
+                .build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));

@@ -1,6 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
+import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,11 @@ public class MethodLevelKafkaListenerScanner extends AbstractChannelScanner<Kafk
 
         log.debug("Found topics: {}", String.join(", ", resolvedTopics));
         return resolvedTopics.get(0);
+    }
+
+    @Override
+    protected Map<String, ? extends ChannelBinding> buildChannelBinding(KafkaListener annotation) {
+        return ImmutableMap.of("kafka", new KafkaChannelBinding());
     }
 
     @Override
