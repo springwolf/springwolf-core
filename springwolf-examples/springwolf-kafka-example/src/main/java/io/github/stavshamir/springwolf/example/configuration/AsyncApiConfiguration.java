@@ -1,10 +1,8 @@
 package io.github.stavshamir.springwolf.example.configuration;
 
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
-import com.google.common.collect.ImmutableMap;
-import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
+import io.github.stavshamir.springwolf.asyncapi.types.KafkaProducerData;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
 import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
@@ -32,8 +30,15 @@ public class AsyncApiConfiguration {
                 .title("Springwolf example project")
                 .build();
 
-        ProducerData exampleProducerData = buildKafkaProducerData(PRODUCER_TOPIC, ExamplePayloadDto.class);
-        ProducerData anotherProducerData = buildKafkaProducerData(PRODUCER_TOPIC, AnotherPayloadDto.class);
+        KafkaProducerData exampleProducerData = KafkaProducerData.kafkaProducerDataBuilder()
+                .topicName(PRODUCER_TOPIC)
+                .payloadType(ExamplePayloadDto.class)
+                .build();
+
+        KafkaProducerData anotherProducerData = KafkaProducerData.kafkaProducerDataBuilder()
+                .topicName(PRODUCER_TOPIC)
+                .payloadType(AnotherPayloadDto.class)
+                .build();
 
         return AsyncApiDocket.builder()
                 .basePackage("io.github.stavshamir.springwolf.example.consumers")
@@ -41,14 +46,6 @@ public class AsyncApiConfiguration {
                 .server("kafka", Server.builder().protocol("kafka").url(BOOTSTRAP_SERVERS).build())
                 .producer(exampleProducerData)
                 .producer(anotherProducerData)
-                .build();
-    }
-
-    private ProducerData buildKafkaProducerData(String topic, Class<?> payload) {
-        return ProducerData.builder()
-                .channelName(topic)
-                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .payloadType(payload)
                 .build();
     }
 

@@ -19,7 +19,7 @@ public class ProducerData {
     /**
      * The name of the channel (topic, queue etc.).
      */
-    private String channelName;
+    protected String channelName;
 
     /**
      * The channel binding of the producer.
@@ -29,12 +29,12 @@ public class ProducerData {
      *     ImmutableMap.of("kafka", new KafkaChannelBinding())
      * </code>
      */
-    private Map<String, ? extends ChannelBinding> channelBinding;
+    protected Map<String, ? extends ChannelBinding> channelBinding;
 
     /**
      * The class object of the payload published by this producer.
      */
-    private Class<?> payloadType;
+    protected Class<?> payloadType;
 
     /**
      * The operation binding of the producer.
@@ -44,6 +44,6 @@ public class ProducerData {
      *     ImmutableMap.of("kafka", new KafkaOperationBinding())
      * </code>
      */
-    private Map<String, ? extends OperationBinding> operationBinding;
+    protected Map<String, ? extends OperationBinding> operationBinding;
 
 }
