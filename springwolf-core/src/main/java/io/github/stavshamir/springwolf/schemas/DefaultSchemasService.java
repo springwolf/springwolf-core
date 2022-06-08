@@ -26,6 +26,7 @@ public class DefaultSchemasService implements SchemasService {
     private final Map<String, Schema> definitions = new HashMap<>();
 
     public DefaultSchemasService() {
+        converter.addConverter(new MonetaryAmountConverter());
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         SimpleModule simpleModule = new SimpleModule().addSerializer(new JsonNodeExampleSerializer());
         objectMapper.registerModule(simpleModule);
