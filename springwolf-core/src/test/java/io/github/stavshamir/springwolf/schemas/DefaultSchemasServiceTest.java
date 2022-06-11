@@ -14,12 +14,13 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefaultSchemasServiceTest {
 
-    private final SchemasService schemasService = new DefaultSchemasService();
+    private final SchemasService schemasService = new DefaultSchemasService(Optional.empty());
 
     private static final String EXAMPLES_PATH = "/schemas/examples";
     private static final ObjectMapper objectMapper = new ObjectMapper();
