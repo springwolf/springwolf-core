@@ -1,7 +1,6 @@
-package io.github.stavshamir.springwolf.common_converters.converters;
+package io.github.stavshamir.springwolf.common_converters.converters.monetaryamount;
 
 import com.fasterxml.jackson.databind.JavaType;
-import io.github.stavshamir.springwolf.common_converters.models.MonetaryAmount;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;

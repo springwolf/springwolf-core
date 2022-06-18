@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.common_converters.converters;
 
+import io.github.stavshamir.springwolf.common_converters.converters.monetaryamount.MonetaryAmountConverter;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
@@ -7,18 +8,16 @@ import org.junit.jupiter.api.Test;
 
 import javax.money.MonetaryAmount;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MonetaryAmountConverterTest {
 
     private MonetaryAmountConverter modelsConverter = new MonetaryAmountConverter();
 
-    private  ModelConverters converters = new ModelConverters();
+    private ModelConverters converters = new ModelConverters();
 
     @Test
-    void testMonetaryAmountConverter(){
+    void testMonetaryAmountConverter() {
 
         converters.addConverter(modelsConverter);
 

@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'io.github.springwolf'
-version '0.1.0'
+version '0.1.1'
 sourceCompatibility = 1.8
 
 repositories {
@@ -92,7 +92,7 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('description', 'Common model converters beans for SpringWolf')
+                root.appendNode('description', 'Common model converters beans for Springwolf')
                 root.appendNode('name', 'springwolf-common-model-converters')
                 root.appendNode('url', 'https://github.com/springwolf/springwolf-core')
                 root.children().last() + pomConfig
