@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.common_converters.configuration;
 
-import io.github.stavshamir.springwolf.common_converters.converters.MonetaryAmountConverter;
+import io.github.stavshamir.springwolf.common_converters.converters.monetaryamount.MonetaryAmountConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class CommonModelConvertersConfiguration {
 
     @Bean
-    public MonetaryAmountConverter monetaryAmountConverter(){
+    public MonetaryAmountConverter monetaryAmountConverter() {
         return new MonetaryAmountConverter();
     }
 }
