@@ -101,6 +101,13 @@
                 "payload": {
                   "$ref": "#/components/schemas/AnotherPayloadDto"
                 }
+              },
+              {
+                "name": "javax.money.MonetaryAmount",
+                "title": "MonetaryAmount",
+                "payload": {
+                  "$ref": "#/components/schemas/MonetaryAmount"
+                }
               }
             ]
           }
@@ -112,18 +119,41 @@
     },
     "components": {
       "schemas": {
+        "MonetaryAmount": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number",
+              "example": 99.99,
+              "exampleSetFlag": true
+            },
+            "currency": {
+              "type": "string",
+              "example": "USD",
+              "exampleSetFlag": true
+            }
+          },
+          "example": {
+            "amount": 99.99,
+            "currency": "USD"
+          },
+          "exampleSetFlag": true
+        },
         "ExamplePayloadDto": {
           "type": "object",
           "properties": {
             "someString": {
-              "type": "string"
+              "type": "string",
+              "exampleSetFlag": false
             },
             "someLong": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "exampleSetFlag": false
             },
             "someEnum": {
               "type": "string",
+              "exampleSetFlag": false,
               "enum": [
                 "FOO1",
                 "FOO2",
@@ -135,16 +165,19 @@
             "someString": "string",
             "someLong": 0,
             "someEnum": "FOO1"
-          }
+          },
+          "exampleSetFlag": true
         },
         "AnotherPayloadDto": {
           "type": "object",
           "properties": {
             "foo": {
-              "type": "string"
+              "type": "string",
+              "exampleSetFlag": false
             },
             "example": {
-              "$ref": "#/components/schemas/ExamplePayloadDto"
+              "$ref": "#/components/schemas/ExamplePayloadDto",
+              "exampleSetFlag": false
             }
           },
           "example": {
@@ -154,7 +187,8 @@
               "someLong": 0,
               "someEnum": "FOO1"
             }
-          }
+          },
+          "exampleSetFlag": true
         }
       }
     }

@@ -8,6 +8,9 @@ import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import javax.money.MonetaryAmount;
+
+
 @Service
 @KafkaListener(topics = "multi-payload-topic", containerFactory = "exampleKafkaListenerContainerFactory")
 public class ExampleClassLevelKafkaListener {
@@ -16,12 +19,17 @@ public class ExampleClassLevelKafkaListener {
 
     @KafkaHandler
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        logger.info("Received new message in example-topic: {}", payload.toString());
+        logger.info("Received new message in multi-payload-topic: {}", payload.toString());
     }
 
     @KafkaHandler
     public void receiveAnotherPayload(AnotherPayloadDto payload) {
-        logger.info("Received new message in another-topic: {}", payload.toString());
+        logger.info("Received new message in multi-payload-topic: {}", payload.toString());
+    }
+
+    @KafkaHandler
+    public void receiveMonetaryAmount(MonetaryAmount payload) {
+        logger.info("Received new message in multi-payload-topic: {}", payload.toString());
     }
 
 }
