@@ -2,13 +2,15 @@ name: springwolf-amqp
 
 on:
   push:
-    branches: 
+    branches:
       - master
     paths:
       - '.github/workflows/springwolf-amqp.yml'
       - 'springwolf-core/**'
       - 'springwolf-plugins/springwolf-amqp-plugin/**'
       - 'springwolf-examples/springwolf-amqp-example/**'
+  pull_request:
+    types: [ opened, synchronize, ready_for_review ]
 
 jobs:
   build:

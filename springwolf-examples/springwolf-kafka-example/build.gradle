@@ -7,7 +7,7 @@ plugins {
 }
 
 sourceCompatibility = '1.8'
-version '0.4.0'
+version '0.7.0'
 
 
 repositories {
@@ -23,11 +23,13 @@ repositories {
 
 dependencies {
     implementation project(":springwolf-plugins:springwolf-kafka-plugin")
-    runtimeOnly 'io.github.springwolf:springwolf-ui:0.3.1'
+    implementation project(":springwolf-add-ons:springwolf-common-model-converters")
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.4.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'com.google.guava:guava:27.0.1-jre'
+    implementation 'org.javamoney:moneta:1.4.2'
 
     testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     testImplementation 'org.jetbrains.kotlin:kotlin-reflect'
@@ -57,4 +59,10 @@ compileTestKotlin {
     }
 }
 
-test.dependsOn dockerBuildImage
+test {
+    dependsOn dockerBuildImage
+
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}

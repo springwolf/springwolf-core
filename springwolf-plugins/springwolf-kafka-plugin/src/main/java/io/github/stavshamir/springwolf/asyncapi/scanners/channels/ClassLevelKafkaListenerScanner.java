@@ -1,12 +1,12 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import com.asyncapi.v2.binding.OperationBinding;
+import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
@@ -41,9 +41,6 @@ public class ClassLevelKafkaListenerScanner
     private AsyncApiDocket docket;
 
     @Autowired
-    private ComponentsScanner componentsScanner;
-
-    @Autowired
     private SchemasService schemasService;
 
     @Override
@@ -52,7 +49,7 @@ public class ClassLevelKafkaListenerScanner
     }
 
     public Map<String, ChannelItem> scan() {
-        return componentsScanner.scanForComponents(docket.getBasePackage()).stream()
+        return docket.getComponentsScanner().scanForComponents().stream()
                 .filter(this::isAnnotatedWithKafkaListener)
                 .map(this::mapClassToChannel)
                 .filter(Optional::isPresent).map(Optional::get)
@@ -162,6 +159,7 @@ public class ClassLevelKafkaListenerScanner
                 .build();
 
         return ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();
     }

@@ -35,4 +35,8 @@ public class ExampleConsumer {
         logger.info("Received new message in example-bindings-queue: {}", payload.toString());
     }
 
+    @RabbitListener(queues = "example-topic-queue")
+    public void bindingsBeanExample(AnotherPayloadDto payload) {
+        logger.info("Received new message in example-topic-queue: {}", payload.toString());
+    }
 }

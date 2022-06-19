@@ -11,6 +11,7 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ import java.util.Set;
 
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -43,10 +43,15 @@ public class AbstractChannelScannerTest {
     @MockBean
     private AsyncApiDocket docket;
 
+    @Before
+    public void setUp() throws Exception {
+        when(docket.getComponentsScanner())
+                .thenReturn(componentsScanner);
+    }
+
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
-        when(docket.getBasePackage()).thenReturn("io.github.stavshamir.springwolf.asyncapi.scanners.channels");
-        when(componentsScanner.scanForComponents(anyString())).thenReturn(classesToScan);
+        when(componentsScanner.scanForComponents()).thenReturn(classesToScan);
     }
 
     @Test
@@ -74,11 +79,14 @@ public class AbstractChannelScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .bindings(ImmutableMap.of("test", new TestChannelScanner.TestBinding()))
+                .bindings(ImmutableMap.of("test-operation-binding", new TestChannelScanner.TestOperationBinding()))
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder().publish(operation).build();
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("test-channel-binding", new TestChannelScanner.TestChannelBinding()))
+                .publish(operation)
+                .build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry("test-channel", expectedChannel));

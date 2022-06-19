@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -18,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -32,7 +32,6 @@ import java.util.Set;
 import static io.github.stavshamir.springwolf.asyncapi.Constants.ONE_OF;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -49,20 +48,17 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
     @MockBean
     private AsyncApiDocket asyncApiDocket;
 
-    @Value("${kafka.topics.test}")
-    private String topicFromProperties;
-
     private static final String TOPIC = "test-topic";
 
     @Before
     public void setUp() {
-        when(asyncApiDocket.getBasePackage())
-                .thenReturn("Does not matter - will be set by component scanner mock");
+        when(asyncApiDocket.getComponentsScanner())
+                .thenReturn(componentsScanner);
     }
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
-        when(componentsScanner.scanForComponents(anyString())).thenReturn(classesToScan);
+        when(componentsScanner.scanForComponents()).thenReturn(classesToScan);
     }
 
     @Test
@@ -108,7 +104,10 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder().publish(operation).build();
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .publish(operation)
+                .build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
@@ -140,7 +139,10 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
                 .message(ImmutableMap.of(ONE_OF, ImmutableSet.of(fooMessage, barMessage)))
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder().publish(operation).build();
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .publish(operation)
+                .build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));

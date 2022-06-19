@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import static io.github.stavshamir.springwolf.example.configuration.KafkaConfiguration.PRODUCER_TOPIC;
+
 @Component
 public class ExampleProducer {
 
@@ -12,7 +14,7 @@ public class ExampleProducer {
     private KafkaTemplate<String, ExamplePayloadDto> kafkaTemplate;
 
     public void sendMessage(ExamplePayloadDto msg) {
-        kafkaTemplate.send("example-producer-topic", msg);
+        kafkaTemplate.send(PRODUCER_TOPIC, msg);
     }
 
 }

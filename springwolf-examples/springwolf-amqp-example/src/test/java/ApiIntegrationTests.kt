@@ -38,6 +38,8 @@ class ApiIntegrationTests {
         val s: InputStream = this.javaClass.getResourceAsStream("asyncapi.json")
         val expected: String = IOUtils.toString(s, StandardCharsets.UTF_8)
 
+        print(actual)
+
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE)
     }
 

@@ -2,8 +2,10 @@ package io.github.stavshamir.springwolf.example.configuration;
 
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
+import io.github.stavshamir.springwolf.asyncapi.types.AmqpProducerData;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
+import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,10 +36,18 @@ public class AsyncApiConfiguration {
                 .url(String.format("%s:%s", amqpHost, amqpPort))
                 .build();
 
+        AmqpProducerData exampleProducer = AmqpProducerData.amqpProducerDataBuilder()
+                .queueName("example-producer-channel")
+                .exchangeName("example-topic-exchange")
+                .routingKey("example-topic-routing-key")
+                .payloadType(AnotherPayloadDto.class)
+                .build();
+
         return AsyncApiDocket.builder()
                 .basePackage("io.github.stavshamir.springwolf.example.consumers")
                 .info(info)
                 .server("amqp", amqp)
+                .producer(exampleProducer)
                 .build();
     }
 

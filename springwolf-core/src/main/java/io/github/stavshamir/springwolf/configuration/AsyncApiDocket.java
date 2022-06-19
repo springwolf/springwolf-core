@@ -2,6 +2,7 @@ package io.github.stavshamir.springwolf.configuration;
 
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
+import io.github.stavshamir.springwolf.asyncapi.scanners.components.*;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +17,15 @@ import java.util.Map;
 public class AsyncApiDocket {
 
     /**
-     * The base package to scan for listeners.
+     * The {@link ComponentsScanner} used for finding the components that contain the asynchronous consumer endpoints.
+     *
+     * @see ApplicationContextComponentsScanner
+     * @see DefaultClassPathComponentsScanner
+     * @see ComponentComponentsScanner
+     * @see ConfigurationComponentsScanner
+     * @see CompositeComponentsScanner
      */
-    @NonNull
-    private String basePackage;
+    private ComponentsScanner componentsScanner;
 
     /**
      * <b>Required.</b>
@@ -42,4 +48,17 @@ public class AsyncApiDocket {
     @Singular
     private final List<ProducerData> producers;
 
+    @SuppressWarnings("unused")
+    public static class AsyncApiDocketBuilder {
+        @SuppressWarnings("FieldCanBeLocal")
+        private ComponentsScanner componentsScanner;
+
+        /**
+         * The base package to scan for listeners which are declared inside a class annotated with @Component or @Service.
+         */
+        public AsyncApiDocketBuilder basePackage(String value) {
+            this.componentsScanner = new DefaultClassPathComponentsScanner(value, value);
+            return this;
+        }
+    }
 }

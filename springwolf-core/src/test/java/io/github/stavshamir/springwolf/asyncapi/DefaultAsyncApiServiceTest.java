@@ -6,7 +6,6 @@ import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ProducerChannelScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.components.DefaultComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -27,7 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = {
         DefaultAsyncApiService.class,
         DefaultChannelsService.class,
-        DefaultComponentsScanner.class,
         DefaultSchemasService.class,
         ProducerChannelScanner.class
 })
@@ -47,7 +45,7 @@ public class DefaultAsyncApiServiceTest {
             ProducerData kafkaProducerData = ProducerData.builder()
                     .channelName("producer-topic")
                     .payloadType(String.class)
-                    .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                    .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                     .build();
 
             return AsyncApiDocket.builder()
