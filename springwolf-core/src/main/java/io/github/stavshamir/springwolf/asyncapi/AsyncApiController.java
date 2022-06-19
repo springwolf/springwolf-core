@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +21,11 @@ public class AsyncApiController {
     private final AsyncApiSerializerService serializer;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public String asyncApi() throws JsonProcessingException {
+    public ResponseEntity<String> asyncApi() throws JsonProcessingException {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
-        return serializer.toJsonString(asyncAPI);
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Project-Title", asyncAPI.getInfo().getTitle())
+                .body(serializer.toJsonString(asyncAPI));
     }
 
 }
