@@ -2,6 +2,7 @@ package io.github.stavshamir.springwolf.example.configuration;
 
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
+import io.github.stavshamir.springwolf.asyncapi.types.KafkaConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.KafkaProducerData;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static io.github.stavshamir.springwolf.example.configuration.KafkaConfiguration.CONSUMER_TOPIC;
 import static io.github.stavshamir.springwolf.example.configuration.KafkaConfiguration.PRODUCER_TOPIC;
 
 @Configuration
@@ -40,12 +42,18 @@ public class AsyncApiConfiguration {
                 .payloadType(AnotherPayloadDto.class)
                 .build();
 
+        KafkaConsumerData manuallyConfiguredConsumer = KafkaConsumerData.kafkaConsumerDataBuilder()
+                .topicName(CONSUMER_TOPIC)
+                .payloadType(ExamplePayloadDto.class)
+                .build();
+
         return AsyncApiDocket.builder()
                 .basePackage("io.github.stavshamir.springwolf.example.consumers")
                 .info(info)
                 .server("kafka", Server.builder().protocol("kafka").url(BOOTSTRAP_SERVERS).build())
                 .producer(exampleProducerData)
                 .producer(anotherProducerData)
+                .consumer(manuallyConfiguredConsumer)
                 .build();
     }
 
