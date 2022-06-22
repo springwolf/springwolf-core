@@ -6,7 +6,6 @@ import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
-import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
@@ -32,11 +31,11 @@ public class ConsumerChannelScanner implements ChannelsScanner {
 
     @Override
     public Map<String, ChannelItem> scan() {
-        Map<String, List<ConsumerData>> producerDataGroupedByChannelName = docket.getConsumers().stream()
+        Map<String, List<ConsumerData>> consumerDataGroupedByChannelName = docket.getConsumers().stream()
                 .filter(this::allFieldsAreNonNull)
                 .collect(groupingBy(ConsumerData::getChannelName));
 
-        return producerDataGroupedByChannelName.entrySet().stream()
+        return consumerDataGroupedByChannelName.entrySet().stream()
                 .collect(toMap(Map.Entry::getKey, entry -> buildChannel(entry.getValue())));
     }
 

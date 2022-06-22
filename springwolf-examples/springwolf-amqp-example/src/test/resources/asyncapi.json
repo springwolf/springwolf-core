@@ -111,6 +111,39 @@
           }
         }
       },
+      "example-manual-consumer-channel": {
+        "publish": {
+          "bindings": {
+            "amqp": {
+              "expiration": 0,
+              "cc": [
+                "example-consumer-topic-routing-key"
+              ],
+              "priority": 0,
+              "deliveryMode": 0,
+              "mandatory": false,
+              "timestamp": false,
+              "ack": false
+            }
+          },
+          "message": {
+            "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "title": "AnotherPayloadDto",
+            "payload": {
+              "$ref": "#/components/schemas/AnotherPayloadDto"
+            }
+          }
+        },
+        "bindings": {
+          "amqp": {
+            "is": "routingKey",
+            "exchange": {
+              "name": "example-consumer-topic-exchange",
+              "autoDelete": false
+            }
+          }
+        }
+      },
       "example-queue": {
         "bindings": {
           "amqp": {
