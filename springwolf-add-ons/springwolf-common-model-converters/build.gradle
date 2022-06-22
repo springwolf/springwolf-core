@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.javamoney:moneta:1.4.2'
+    implementation 'org.javamoney.moneta:moneta-core:1.4.2'
     implementation 'io.swagger.core.v3:swagger-core:2.2.0'
 
     implementation 'org.springframework:spring-context'
