@@ -25,6 +25,7 @@ import java.util.Map;
 public class KafkaConfiguration {
 
     public final static String PRODUCER_TOPIC = "example-producer-topic";
+    public final static String CONSUMER_TOPIC = "example-consumer-topic";
     private final String BOOTSTRAP_SERVERS;
 
     public KafkaConfiguration(@Value("${kafka.bootstrap.servers}") String bootstrapServers) {

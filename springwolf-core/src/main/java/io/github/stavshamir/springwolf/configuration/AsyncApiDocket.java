@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.configuration;
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.*;
+import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import lombok.Builder;
 import lombok.Data;
@@ -47,6 +48,9 @@ public class AsyncApiDocket {
      */
     @Singular
     private final List<ProducerData> producers;
+
+    @Singular
+    private final List<ConsumerData> consumers;
 
     @SuppressWarnings("unused")
     public static class AsyncApiDocketBuilder {

@@ -2,6 +2,7 @@ package io.github.stavshamir.springwolf.example.configuration;
 
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
+import io.github.stavshamir.springwolf.asyncapi.types.AmqpConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.AmqpProducerData;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
@@ -43,11 +44,19 @@ public class AsyncApiConfiguration {
                 .payloadType(AnotherPayloadDto.class)
                 .build();
 
+        AmqpConsumerData exampleManuallyDefinedConsumer = AmqpConsumerData.amqpConsumerDataBuilder()
+                .queueName("example-manual-consumer-channel")
+                .exchangeName("example-consumer-topic-exchange")
+                .routingKey("example-consumer-topic-routing-key")
+                .payloadType(AnotherPayloadDto.class)
+                .build();
+
         return AsyncApiDocket.builder()
                 .basePackage("io.github.stavshamir.springwolf.example.consumers")
                 .info(info)
                 .server("amqp", amqp)
                 .producer(exampleProducer)
+                .consumer(exampleManuallyDefinedConsumer)
                 .build();
     }
 
