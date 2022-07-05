@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    image: stavshamir/springwolf-cloud-stream-rabbit-binder-example:0.3.1
+    image: stavshamir/springwolf-cloud-rabbit-binder-example:0.1.0
     links:
       - amqp
     ports:

@@ -24,7 +24,7 @@ Add the following dependencies and configuration class to enable this plugin.
 ```groovy
 dependencies {
     // Provides the documentation API    
-    implementation 'io.github.springwolf:springwolf-amqp:0.3.1'
+    implementation 'io.github.springwolf:springwolf-cloud-rabbit-binder-plugin:0.1.0'
 
     // Provides the UI - optional (recommended)
     runtimeOnly 'io.github.springwolf:springwolf-ui:0.4.0'
@@ -67,8 +67,8 @@ public class AsyncApiConfiguration {
 
 ```
 
-The basePackage field must be set with the name of the package containing the classes to be scanned for `@RabbitListener`
-annotated methods.
+The basePackage field must be set with the name of the package containing the classes to be scanned for `@Bean`
+annotated methods with return type Consumer<T> that are identified as spring cloud functions.  rabbit bindings must be specified in application.properties including exchange (dstination), queue (group), and routing key
 
 #### Verify
 
@@ -77,5 +77,5 @@ If not, try the following endpoint: `localhost:8080/springwolf/docs`.
 
 ### Example Project
 
-See [springwolf-amqp-example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-amqp-example)
+See [springwolf-amqp-example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-cloud-rabbit-binder-example)
 .

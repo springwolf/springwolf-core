@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.binder.rabbit.properties.RabbitBinderConfigurationProperties;
 import org.springframework.cloud.stream.binder.rabbit.properties.RabbitExtendedBindingProperties;
+import org.springframework.cloud.stream.config.BindingProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.context.annotation.Bean;
@@ -60,22 +61,28 @@ public class CloudStreamRabbitBinderChannelsScanner implements ChannelsScanner, 
     }
 
     private Map<String, Binding> makeBindingMap(RabbitExtendedBindingProperties rabbitExtendedBindingProperties, BindingServiceProperties bindingServiceProperties) {
-        Map<String, StreamRabbitBindingInfo> bindingInfoMap = new HashMap<>();
-        rabbitExtendedBindingProperties.getBindings().entrySet().stream().forEach(entry -> {
-            StreamRabbitBindingInfo binding = new StreamRabbitBindingInfo();
-            binding.routingKey = entry.getValue() != null && entry.getValue().getConsumer() != null ? entry.getValue().getConsumer().getBindingRoutingKey() : null;
-            bindingInfoMap.put(entry.getKey(), binding);
-        });
-        bindingServiceProperties.getBindings().entrySet().stream().forEach(entry -> {
-            StreamRabbitBindingInfo binding = bindingInfoMap.containsKey(entry.getKey()) ? bindingInfoMap.get(entry.getKey()) : new StreamRabbitBindingInfo();
-            binding.exchange = entry.getValue().getDestination();
-            binding.queue = entry.getValue().getGroup();
-            bindingInfoMap.put(entry.getKey(), binding);
-        });
         Map<String, Binding> returnMap = new HashMap<>();
-        bindingInfoMap.entrySet().forEach(entry -> {
-            returnMap.put(entry.getKey(), new Binding(entry.getValue().queue, Binding.DestinationType.QUEUE, entry.getValue().exchange, entry.getValue().routingKey, null));
-        });
+        try {
+            Map<String, StreamRabbitBindingInfo> bindingInfoMap = new HashMap<>();
+            rabbitExtendedBindingProperties.getBindings().entrySet().stream().forEach(entry -> {
+                StreamRabbitBindingInfo binding = new StreamRabbitBindingInfo();
+                binding.routingKey = entry.getValue() != null && entry.getValue().getConsumer() != null ? entry.getValue().getConsumer().getBindingRoutingKey() : null;
+                bindingInfoMap.put(entry.getKey(), binding);
+            });
+            bindingServiceProperties.getBindings().entrySet().stream().forEach(entry -> {
+                StreamRabbitBindingInfo binding = bindingInfoMap.containsKey(entry.getKey()) ? bindingInfoMap.get(entry.getKey()) : new StreamRabbitBindingInfo();
+                binding.exchange = Optional.ofNullable(entry.getValue()).map(BindingProperties::getDestination).orElse(null);
+                binding.queue = Optional.ofNullable(entry.getValue()).map(BindingProperties::getGroup).orElse(null);
+                bindingInfoMap.put(entry.getKey(), binding);
+            });
+            bindingInfoMap.entrySet().forEach(entry -> {
+                if (entry != null) {
+                    returnMap.put(entry.getKey(), new Binding(entry.getValue().queue, Binding.DestinationType.QUEUE, entry.getValue().exchange, entry.getValue().routingKey, null));
+                }
+            });
+        } catch(Exception e) {
+            log.warn("error creating binding map for spring cloud stream rabbit binder.  this will result in no consumers being automatically mapped", e);
+        }
         return returnMap;
     }
 
@@ -102,6 +109,12 @@ public class CloudStreamRabbitBinderChannelsScanner implements ChannelsScanner, 
             Map<String, ? extends OperationBinding> operationBindings = buildOperationBinding(channelName);
             ChannelItem channelItem = this.buildChannel(channelBindings, returnType, operationBindings);
             return Maps.immutableEntry(channelName, channelItem);
+        }
+        if(returnType == null) {
+            log.warn("method "+methodName+ " not mapped because its return type could not be determined.");
+        }
+        if(!channelNameOptional.isPresent()) {
+            log.warn("method "+methodName+ " not mapped because its channel name could not be determined/located from application.properties");
         }
         return null;
     }

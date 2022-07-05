@@ -32,22 +32,8 @@ public class SpringwolfAmqpController {
             log.warn("AMQP producer is not enabled - message will not be published");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "AMQP producer is not enabled");
         }
+        amqpProducer.send(topic, objectJson);
 
-        ChannelItem channelItem = channelsService.getChannels().get(topic);
-        if(channelItem == null) {
-            log.warn("Message channel is not known");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "channel "+topic+" is not a known channel.");
-        }
-        Message message = (Message) channelItem.getPublish().getMessage();
-        try {
-            Class<?> messageBodyClass = Class.forName(message.getName());
-            Object parsedObject = objectMapper.readValue(objectJson, messageBodyClass);
-            log.info("Publishing to amqp queue {}: {}", topic, objectJson);
-            amqpProducer.send(topic, objectJson);
-        } catch (Exception e) {
-            log.warn("Error mapping object json to type class before sending to ampq");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "message payload could not be mapped to "+message.getName());
-        }
     }
 
 }

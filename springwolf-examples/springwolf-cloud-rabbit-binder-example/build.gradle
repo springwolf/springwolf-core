@@ -7,7 +7,7 @@ plugins {
 }
 
 sourceCompatibility = '1.8'
-version '0.3.1'
+version '0.1.0'
 
 repositories {
     // For local development with snapshots
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(":springwolf-plugins:springwolf-spring-cloud-rabbit-binder-plugin")
+    implementation project(":springwolf-plugins:springwolf-cloud-rabbit-binder-plugin")
     runtimeOnly 'io.github.springwolf:springwolf-ui:0.4.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -42,7 +42,7 @@ docker {
         maintainer = 'shamir.stav@gmail.com'
         baseImage = 'openjdk:8-alpine'
         ports = [8080]
-        images = ["stavshamir/springwolf-cloud-stream-rabbit-binder-example:${project.version}"]
+        images = ["stavshamir/springwolf-cloud-rabbit-binder-example:${project.version}"]
     }
 
     registryCredentials {

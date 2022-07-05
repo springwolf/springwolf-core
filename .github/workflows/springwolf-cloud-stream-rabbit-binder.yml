@@ -8,7 +8,7 @@ on:
       - '.github/workflows/springwolf-cloud-stream-rabbit-binder.yml'
       - 'springwolf-core/**'
       - 'springwolf-plugins/springwolf-spring-cloud-rabbit-binder-plugin/**'
-      - 'springwolf-examples/springwolf-cloud-stream-rabbit-binder-example/**'
+      - 'springwolf-examples/springwolf-cloud-rabbit-binder-example/**'
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
 
