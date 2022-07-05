@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.6.2'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'com.bmuschko.docker-spring-boot-application' version '6.1.4'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
+}
+
+sourceCompatibility = '1.8'
+version '0.3.1'
+
+repositories {
+    // For local development with snapshots
+    mavenLocal() {
+        content {
+            includeGroup "io.github.springwolf"
+        }
+    }
+
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":springwolf-plugins:springwolf-spring-cloud-rabbit-binder-plugin")
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.4.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit:3.2.4'
+    implementation 'com.google.guava:guava:27.0.1-jre'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.0'
+
+    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    testImplementation 'org.jetbrains.kotlin:kotlin-reflect'
+    testImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.10.2'
+    testImplementation 'org.testcontainers:testcontainers:1.16.0'
+    testImplementation 'org.skyscreamer:jsonassert:1.5.0'
+    testImplementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+}
+
+docker {
+    springBootApplication {
+        maintainer = 'shamir.stav@gmail.com'
+        baseImage = 'openjdk:8-alpine'
+        ports = [8080]
+        images = ["stavshamir/springwolf-cloud-stream-rabbit-binder-example:${project.version}"]
+    }
+
+    registryCredentials {
+        username = project.findProperty('dockerhubUsername') ?: ''
+        password = project.findProperty('dockerhubPassword') ?: ''
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.11"
+    }
+}
+
+
+test {
+    dependsOn dockerBuildImage
+
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}

@@ -4,8 +4,10 @@ include(
         'springwolf-core',
         'springwolf-plugins:springwolf-amqp-plugin',
         'springwolf-plugins:springwolf-kafka-plugin',
+        'springwolf-plugins:springwolf-spring-cloud-rabbit-binder-plugin',
         'springwolf-examples:springwolf-kafka-example',
         'springwolf-examples:springwolf-amqp-example',
+        'springwolf-examples:springwolf-cloud-stream-rabbit-binder-example',
         'springwolf-add-ons:springwolf-common-model-converters'
 )
 

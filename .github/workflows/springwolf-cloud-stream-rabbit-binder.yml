@@ -1,0 +1,35 @@
+name: springwolf-cloud-stream-rabbit-binder
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/springwolf-cloud-stream-rabbit-binder.yml'
+      - 'springwolf-core/**'
+      - 'springwolf-plugins/springwolf-spring-cloud-rabbit-binder-plugin/**'
+      - 'springwolf-examples/springwolf-cloud-stream-rabbit-binder-example/**'
+  pull_request:
+    types: [ opened, synchronize, ready_for_review ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run unit tests
+        run: ./gradlew -p springwolf-plugins/springwolf-amqp-plugin test
+
+      - name: Run integration tests
+        run: ./gradlew -p springwolf-examples/springwolf-amqp-example test
