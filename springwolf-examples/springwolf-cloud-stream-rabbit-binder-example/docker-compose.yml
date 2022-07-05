@@ -1,15 +1,15 @@
 version: '3'
 services:
-#  app:
-#    image: stavshamir/springwolf-cloud-stream-rabbit-binder-example:0.3.1
-#    links:
-#      - rabbit
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - rabbit
+  app:
+    image: stavshamir/springwolf-cloud-stream-rabbit-binder-example:0.3.1
+    links:
+      - amqp
+    ports:
+      - "8080:8080"
+    depends_on:
+      - amqp
 
-  rabbit:
+  amqp:
     image: rabbitmq:3.8-management-alpine
     ports:
       # AMQP protocol port
