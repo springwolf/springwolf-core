@@ -12,6 +12,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -46,7 +47,8 @@ import static java.util.stream.Collectors.toSet;
 public class CloudStreamRabbitBinderChannelsScanner implements ChannelsScanner, EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
-    private final Map<String, Binding> bindingsMap;
+    @Getter
+    public final Map<String, Binding> bindingsMap;
     private RabbitExtendedBindingProperties rabbitExtendedBindingProperties;
     private BindingServiceProperties bindingServiceProperties;
     private SchemasService schemasService;

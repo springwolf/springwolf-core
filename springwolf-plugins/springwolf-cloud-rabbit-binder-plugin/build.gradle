@@ -27,7 +27,12 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.4'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.jupiter', module: 'junit-jupiter-engine'
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    testImplementation('junit:junit:4.12')
 
     testCompile 'org.projectlombok:lombok:1.18.4'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
