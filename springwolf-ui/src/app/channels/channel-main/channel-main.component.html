@@ -1,5 +1,9 @@
 <section>
     <mat-divider></mat-divider>
+    <div *ngIf="operation.message.description">
+      <h4>{{ operation.message.description }}</h4>
+      <mat-divider></mat-divider>
+    </div>
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="Example">
         <div fxLayout="column">

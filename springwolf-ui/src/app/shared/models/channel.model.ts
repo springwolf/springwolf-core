@@ -13,5 +13,6 @@ export interface Operation {
 export interface Message {
     name: string;
     title: string;
+    description?: string;
     payload: { $ref: string };
 }
