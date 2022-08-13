@@ -85,6 +85,7 @@ public class ConsumerChannelScanner implements ChannelsScanner {
         return Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
+                .description(consumerData.getDescription())
                 .payload(PayloadReference.fromModelName(modelName))
                 .build();
     }

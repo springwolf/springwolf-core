@@ -39,11 +39,13 @@ public class AsyncApiConfiguration {
 
         KafkaProducerData anotherProducerData = KafkaProducerData.kafkaProducerDataBuilder()
                 .topicName(PRODUCER_TOPIC)
+                .description("Custom, optional description for this produced to topic")
                 .payloadType(AnotherPayloadDto.class)
                 .build();
 
         KafkaConsumerData manuallyConfiguredConsumer = KafkaConsumerData.kafkaConsumerDataBuilder()
                 .topicName(CONSUMER_TOPIC)
+                .description("Custom, optional description for this consumed topic")
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 

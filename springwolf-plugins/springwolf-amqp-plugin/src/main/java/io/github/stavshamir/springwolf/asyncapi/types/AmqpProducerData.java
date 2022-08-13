@@ -10,8 +10,9 @@ import java.util.Collections;
 public class AmqpProducerData extends ProducerData {
 
     @Builder(builderMethodName = "amqpProducerDataBuilder")
-    public AmqpProducerData(String queueName, String exchangeName, String routingKey, Class<?> payloadType) {
+    public AmqpProducerData(String queueName, String exchangeName, String routingKey, Class<?> payloadType, String description) {
         this.channelName = queueName;
+        this.description = description;
 
         AMQPChannelBinding.ExchangeProperties exchangeProperties = new AMQPChannelBinding.ExchangeProperties();
         exchangeProperties.setName(exchangeName);

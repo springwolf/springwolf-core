@@ -25,6 +25,11 @@ public class ConsumerData {
     protected String channelName;
 
     /**
+     * Optional, additional information about the channel and/or its message
+     */
+    protected String description;
+
+    /**
      * The channel binding of the producer.
      * <br>
      * For example:
