@@ -22,11 +22,11 @@ interface ServerAsyncApi {
         [key: string]: {
             description?: string;
             subscribe?: {
-                message: Message;
+                message: Message | { oneOf: Message[] };
                 bindings?: any;
             };
             publish?: {
-                message: Message;
+                message: Message | { oneOf: Message[] };
                 bindings?: any;
             };
         };
@@ -82,43 +82,47 @@ export class AsyncApiService {
         };
     }
 
-    private mapServers(servers: { [key: string]: Server }): Map<string, Server> {
+    private mapServers(servers: ServerAsyncApi["servers"]): Map<string, Server> {
         const s = new Map<string, Server>();
         Object.entries(servers).forEach(([k, v]) => s.set(k, v));
         return s;
     }
 
-    private mapChannels(channels: {
-        [key: string]: {
-            description?: string;
-            subscribe?: {
-                message: Message;
-                bindings?: any;
-            };
-            publish?: {
-                message: Message | { oneOf: Message[] };
-                bindings?: any;
-            };
-        }
-    }): Channel[] {
+    private mapChannels(channels: ServerAsyncApi["channels"]): Channel[] {
         const s = new Array<Channel>();
         Object.entries(channels).forEach(([k, v]) => {
-            let operation = v.publish ? v.publish : v.subscribe;
-            let isSubscribe = !!v.subscribe;
+            const subscriberChannels = this.mapChannel(k, v.description, v.subscribe, " consumer")
+            subscriberChannels.forEach(channel => s.push(channel))
 
-            let messages: Message[] = 'oneOf' in operation.message ? operation.message.oneOf : [operation.message];
-            messages.forEach(message => s.push({
-                name: k,
-                description: v.description,
-                operation: this.mapOperation(isSubscribe, message, operation.bindings)
-            }))
+            const publisherChannels = this.mapChannel(k, v.description, v.publish, " producer")
+            publisherChannels.forEach(channel => s.push(channel))
         });
         return s;
     }
 
-    private mapOperation(isSubscribe: boolean, message: Message, bindings?: any): Operation {
+    private mapChannel(
+        topicName: string,
+        description: ServerAsyncApi["channels"][""]["description"],
+        operation: ServerAsyncApi["channels"][""]["subscribe"] | ServerAsyncApi["channels"][""]["publish"],
+        operationName: string): Channel[]
+    {
+        if(operation !== undefined) {
+            let messages: Message[] = 'oneOf' in operation.message ? operation.message.oneOf : [operation.message];
+
+            return messages.map(message => {
+                return {
+                    name: topicName,
+                    description: description,
+                    operation: this.mapOperation(operationName, message, operation.bindings)
+                }
+            })
+        }
+        return [];
+    }
+
+    private mapOperation(operationName: string, message: Message, bindings?: any): Operation {
         return {
-            type: this.getProtocol(bindings) + (isSubscribe ? " producer" : " consumer"),
+            type: this.getProtocol(bindings) + operationName,
             message: message,
             bindings: bindings
         }
