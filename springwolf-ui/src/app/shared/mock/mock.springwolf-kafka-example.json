@@ -29,6 +29,9 @@
             "title": "AnotherPayloadDto",
             "payload": {
               "$ref": "#/components/schemas/AnotherPayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/NoHeaders"
             }
           }
         },
@@ -46,6 +49,9 @@
             "title": "ExamplePayloadDto",
             "payload": {
               "$ref": "#/components/schemas/ExamplePayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/NoHeaders"
             }
           }
         },
@@ -65,6 +71,9 @@
                 "title": "ExamplePayloadDto",
                 "payload": {
                   "$ref": "#/components/schemas/ExamplePayloadDto"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/NoHeaders"
                 }
               },
               {
@@ -73,6 +82,9 @@
                 "description": "Custom, optional description for this produced to topic",
                 "payload": {
                   "$ref": "#/components/schemas/AnotherPayloadDto"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/NoHeaders"
                 }
               }
             ]
@@ -93,6 +105,9 @@
             "description": "Custom, optional description for this consumed topic",
             "payload": {
               "$ref": "#/components/schemas/ExamplePayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/NoHeaders"
             }
           }
         },
@@ -112,6 +127,9 @@
                 "title": "ExamplePayloadDto",
                 "payload": {
                   "$ref": "#/components/schemas/ExamplePayloadDto"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/NoHeaders"
                 }
               },
               {
@@ -119,6 +137,9 @@
                 "title": "AnotherPayloadDto",
                 "payload": {
                   "$ref": "#/components/schemas/AnotherPayloadDto"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/NoHeaders"
                 }
               },
               {
@@ -126,6 +147,9 @@
                 "title": "MonetaryAmount",
                 "payload": {
                   "$ref": "#/components/schemas/MonetaryAmount"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/NoHeaders"
                 }
               }
             ]
@@ -206,6 +230,28 @@
               "someLong": 0,
               "someEnum": "FOO1"
             }
+          },
+          "exampleSetFlag": true
+        },
+        "NoHeaders": {
+          "type": "object",
+          "exampleSetFlag": true
+        },
+        "SpringDefaultHeaders": {
+          "type": "object",
+          "properties": {
+            "__TypeId__": {
+              "type": "string",
+              "example": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+              "exampleSetFlag": true,
+              "enum": [
+                "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+                "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
+              ]
+            }
+          },
+          "example": {
+            "__TypeId__": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
           },
           "exampleSetFlag": true
         }
