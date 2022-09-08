@@ -1,6 +1,6 @@
 <table class="schema">
   <tbody>
-  <tr *ngFor="let property of schema.properties | keyvalue">
+  <tr *ngFor="let property of schema?.properties | keyvalue">
     <td class="key">
       {{ property.key }}
       <span class="required" *ngIf="schema.required?.includes(property.key)">*</span>

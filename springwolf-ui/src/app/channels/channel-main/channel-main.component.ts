@@ -20,8 +20,13 @@ export class ChannelMainComponent implements OnInit {
   @Input() operation: Operation;
 
   schema: Schema;
+  schemaName: string;
   defaultExample: Example;
   exampleTextAreaLineCount: number;
+  headers: Schema;
+  headersSchemaName: string;
+  headersExample: Example;
+  headersTextAreaLineCount: number;
   protocolName: string;
   nameSubscription: Subscription;
 
@@ -35,17 +40,31 @@ export class ChannelMainComponent implements OnInit {
     this.asyncApiService.getAsyncApis().subscribe(
       asyncapi => {
         let schemas: Map<string, Schema> = asyncapi.get(this.docName).components.schemas;
-        this.schema = schemas[this.operation.message.title];
+        this.schemaName = this.operation.message.payload.$ref.slice(this.operation.message.payload.$ref.lastIndexOf('/') + 1)
+        this.schema = schemas[this.schemaName];
+
         this.defaultExample = new Example(this.schema.example);
         this.exampleTextAreaLineCount = this.defaultExample.lineCount;
+
+        this.headersSchemaName = this.operation.message.headers.$ref.slice(this.operation.message.headers.$ref.lastIndexOf('/') + 1)
+        this.headers = schemas[this.headersSchemaName];
+        this.headersExample = new Example(this.headers.example);
+        this.headersTextAreaLineCount = this.headersExample.lineCount;
       }
     );
 
     this.protocolName = Object.keys(this.operation.bindings)[0];
   }
 
-  recalculateLineCount(text): void {
-    this.exampleTextAreaLineCount = text.split('\n').length;
+  recalculateLineCount(field: string, text: string): void {
+    switch (field) {
+      case 'example':
+        this.exampleTextAreaLineCount = text.split('\n').length;
+        break;
+      case 'headers':
+        this.headersTextAreaLineCount = text.split('\n').length
+        break;
+    }
   }
 
   publish(example: string): void {
