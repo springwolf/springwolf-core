@@ -64,6 +64,7 @@ public class KafkaConfiguration {
         DefaultKafkaConsumerFactory<String, AnotherPayloadDto> consumerFactory =
                 new DefaultKafkaConsumerFactory<>(consumerConfiguration(), new StringDeserializer(), new JsonDeserializer<>(AnotherPayloadDto.class));
         containerFactory.setConsumerFactory(consumerFactory);
+        containerFactory.setBatchListener(true);
 
         return containerFactory;
     }

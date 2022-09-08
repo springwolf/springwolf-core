@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExampleConsumer {
 
@@ -17,8 +19,8 @@ public class ExampleConsumer {
     }
 
     @KafkaListener(topics = "another-topic", containerFactory = "anotherKafkaListenerContainerFactory", groupId = "example-group-id")
-    public void receiveAnotherPayload(AnotherPayloadDto payload) {
-        logger.info("Received new message in another-topic: {}", payload.toString());
+    public void receiveAnotherPayloadBatched(List<AnotherPayloadDto> payloads) {
+        logger.info("Received new messages in another-topic: {}", payloads.toString());
     }
 
 }
