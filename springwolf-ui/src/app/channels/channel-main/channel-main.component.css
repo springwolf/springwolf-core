@@ -26,3 +26,10 @@ button {
     padding: 6px;
     font-weight: normal;
 }
+
+.header-name {
+  background-color: #E0E0E0;
+  border-radius: 4px;
+  padding: 6px;
+  font-weight: normal;
+}

@@ -15,4 +15,5 @@ export interface Message {
     title: string;
     description?: string;
     payload: { $ref: string };
+    headers: { $ref: string };
 }
