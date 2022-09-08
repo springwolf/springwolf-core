@@ -41,6 +41,9 @@
             "title": "AnotherPayloadDto",
             "payload": {
               "$ref": "#/components/schemas/AnotherPayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/NoHeaders"
             }
           }
         }
@@ -74,6 +77,9 @@
             "title": "AnotherPayloadDto",
             "payload": {
               "$ref": "#/components/schemas/AnotherPayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/NoHeaders"
             }
           }
         }
@@ -107,6 +113,9 @@
             "title": "AnotherPayloadDto",
             "payload": {
               "$ref": "#/components/schemas/AnotherPayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/NoHeaders"
             }
           }
         }
@@ -132,6 +141,9 @@
             "description": "example-manual-consumer-channel-description",
             "payload": {
               "$ref": "#/components/schemas/AnotherPayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/NoHeaders"
             }
           }
         },
@@ -174,6 +186,9 @@
             "title": "ExamplePayloadDto",
             "payload": {
               "$ref": "#/components/schemas/ExamplePayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/NoHeaders"
             }
           }
         }
@@ -208,6 +223,9 @@
             "description": "example-producer-channel-description",
             "payload": {
               "$ref": "#/components/schemas/AnotherPayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/NoHeaders"
             }
           }
         }
@@ -281,6 +299,10 @@
             "someLong": 5,
             "someEnum": "FOO2"
           },
+          "exampleSetFlag": true
+        },
+        "NoHeaders": {
+          "type": "object",
           "exampleSetFlag": true
         }
       }
