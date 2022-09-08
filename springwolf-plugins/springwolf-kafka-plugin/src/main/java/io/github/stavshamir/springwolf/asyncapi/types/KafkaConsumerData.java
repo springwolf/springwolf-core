@@ -7,11 +7,12 @@ import lombok.Builder;
 
 public class KafkaConsumerData extends ConsumerData {
     @Builder(builderMethodName = "kafkaConsumerDataBuilder")
-    public KafkaConsumerData(String topicName, Class<?> payloadType, String description) {
+    public KafkaConsumerData(String topicName, Class<?> payloadType, String description, AsyncHeaders headers) {
         this.channelName = topicName;
         this.description = description;
         this.channelBinding = ImmutableMap.of("kafka", new KafkaChannelBinding());
         this.payloadType = payloadType;
+        this.headers = headers != null ? headers : this.headers;
         this.operationBinding = ImmutableMap.of("kafka", new KafkaOperationBinding());
     }
 }

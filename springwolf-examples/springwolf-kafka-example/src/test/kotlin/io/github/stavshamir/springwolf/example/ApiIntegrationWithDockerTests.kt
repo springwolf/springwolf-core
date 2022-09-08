@@ -46,6 +46,7 @@ class ApiIntegrationWithDockerTests {
         val expected: String = IOUtils.toString(s, StandardCharsets.UTF_8)
 
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE)
+
     }
 
 }

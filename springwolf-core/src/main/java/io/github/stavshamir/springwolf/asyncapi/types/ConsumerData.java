@@ -40,12 +40,18 @@ public class ConsumerData {
     protected Map<String, ? extends ChannelBinding> channelBinding;
 
     /**
-     * The class object of the payload published by this producer.
+     * The class object of the payload published by this consumer.
      */
     protected Class<?> payloadType;
 
     /**
-     * The operation binding of the producer.
+     * The class object of the headers published by this consumer.
+     */
+    @Builder.Default
+    protected AsyncHeaders headers = AsyncHeaders.NOT_DOCUMENTED;
+
+    /**
+     * The operation binding of the consumer.
      * <br>
      * For example:
      * <code>

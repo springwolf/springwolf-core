@@ -7,7 +7,9 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import io.github.stavshamir.springwolf.asyncapi.types.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.HeaderReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
@@ -65,6 +67,7 @@ public class ProducerChannelScannerTest {
                         .description(description)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
+                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
                         .build())
                 .build();
 
@@ -115,6 +118,7 @@ public class ProducerChannelScannerTest {
                 .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .payloadType(AnotherExamplePayloadDto.class)
+                .headers(AsyncHeaders.NOT_USED)
                 .build();
 
         when(asyncApiDocket.getProducers()).thenReturn(ImmutableList.of(producerData1, producerData2));
@@ -133,12 +137,14 @@ public class ProducerChannelScannerTest {
                         .description(description1)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
+                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
                         .build(),
                 Message.builder()
                         .name(AnotherExamplePayloadDto.class.getName())
                         .description(description2)
                         .title(AnotherExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
+                        .headers(HeaderReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         .build()
         );
 

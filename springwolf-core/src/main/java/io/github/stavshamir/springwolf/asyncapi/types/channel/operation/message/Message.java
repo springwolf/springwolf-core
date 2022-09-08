@@ -33,4 +33,5 @@ public class Message {
 
     private PayloadReference payload;
 
+    private HeaderReference headers;
 }

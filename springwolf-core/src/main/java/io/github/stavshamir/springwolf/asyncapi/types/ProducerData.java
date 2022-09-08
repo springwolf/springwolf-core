@@ -42,6 +42,12 @@ public class ProducerData {
     protected Class<?> payloadType;
 
     /**
+     * The class object of the headers published by this producer.
+     */
+    @Builder.Default
+    protected AsyncHeaders headers = AsyncHeaders.NOT_DOCUMENTED;
+
+    /**
      * The operation binding of the producer.
      * <br>
      * For example:

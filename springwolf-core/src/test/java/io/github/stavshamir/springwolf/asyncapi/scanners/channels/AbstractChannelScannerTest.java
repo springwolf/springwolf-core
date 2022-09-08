@@ -5,6 +5,8 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
+import io.github.stavshamir.springwolf.asyncapi.types.AsyncHeaders;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.HeaderReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
@@ -76,6 +78,7 @@ public class AbstractChannelScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -123,4 +126,3 @@ public class AbstractChannelScannerTest {
     }
 
 }
-
