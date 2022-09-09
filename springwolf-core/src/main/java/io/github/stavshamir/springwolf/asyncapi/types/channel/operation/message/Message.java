@@ -26,6 +26,11 @@ public class Message {
      */
     private String title;
 
+    /**
+     * A human-friendly description for the message.
+     */
+    private String description;
+
     private PayloadReference payload;
 
 }

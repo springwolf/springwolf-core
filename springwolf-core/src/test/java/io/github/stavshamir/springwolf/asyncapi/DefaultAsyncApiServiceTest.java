@@ -9,6 +9,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ConsumerChanne
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ProducerChannelScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import org.junit.Test;
@@ -47,12 +48,14 @@ public class DefaultAsyncApiServiceTest {
 
             ProducerData kafkaProducerData = ProducerData.builder()
                     .channelName("producer-topic")
+                    .description("producer-topic-description")
                     .payloadType(String.class)
                     .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                     .build();
 
             ConsumerData kafkaConsumerData = ConsumerData.builder()
                     .channelName("consumer-topic")
+                    .description("consumer-topic-description")
                     .payloadType(String.class)
                     .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding())).build();
 
@@ -99,6 +102,8 @@ public class DefaultAsyncApiServiceTest {
 
         final ChannelItem channel = actualChannels.get("producer-topic");
         assertThat(channel.getSubscribe()).isNotNull();
+        final Message message = (Message) channel.getSubscribe().getMessage();
+        assertThat(message.getDescription()).isEqualTo("producer-topic-description");
     }
 
     @Test
@@ -111,6 +116,8 @@ public class DefaultAsyncApiServiceTest {
 
         final ChannelItem channel = actualChannels.get("consumer-topic");
         assertThat(channel.getPublish()).isNotNull();
+        final Message message = (Message) channel.getPublish().getMessage();
+        assertThat(message.getDescription()).isEqualTo("consumer-topic-description");
     }
 
 }

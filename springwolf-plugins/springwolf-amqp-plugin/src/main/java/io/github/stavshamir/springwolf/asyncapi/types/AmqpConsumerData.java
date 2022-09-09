@@ -10,8 +10,9 @@ import java.util.Collections;
 public class AmqpConsumerData extends ConsumerData {
 
     @Builder(builderMethodName = "amqpConsumerDataBuilder")
-    public AmqpConsumerData(String queueName, String exchangeName, String routingKey, Class<?> payloadType) {
+    public AmqpConsumerData(String queueName, String exchangeName, String routingKey, Class<?> payloadType, String description) {
         this.channelName = queueName;
+        this.description = description;
 
         AMQPChannelBinding.ExchangeProperties exchangeProperties = new AMQPChannelBinding.ExchangeProperties();
         exchangeProperties.setName(exchangeName);

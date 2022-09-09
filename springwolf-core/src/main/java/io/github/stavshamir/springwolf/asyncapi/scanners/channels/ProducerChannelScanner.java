@@ -85,6 +85,7 @@ public class ProducerChannelScanner implements ChannelsScanner {
         return Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
+                .description(producerData.getDescription())
                 .payload(PayloadReference.fromModelName(modelName))
                 .build();
     }

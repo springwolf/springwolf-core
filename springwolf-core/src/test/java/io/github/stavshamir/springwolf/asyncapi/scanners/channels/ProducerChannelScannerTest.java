@@ -40,8 +40,10 @@ public class ProducerChannelScannerTest {
     public void allFieldsProducerData() {
         // Given a producer data with all fields set
         String channelName = "example-producer-topic-foo1";
+        String description = channelName + "-description";
         ProducerData producerData = ProducerData.builder()
                 .channelName(channelName)
+                .description(description)
                 .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .payloadType(ExamplePayloadDto.class)
@@ -60,6 +62,7 @@ public class ProducerChannelScannerTest {
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(Message.builder()
                         .name(ExamplePayloadDto.class.getName())
+                        .description(description)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .build())
@@ -95,9 +98,12 @@ public class ProducerChannelScannerTest {
     public void multipleProducersForSameTopic() {
         // Given a multiple ProducerData objects for the same topic
         String channelName = "example-producer-topic";
+        String description1 = channelName + "-description1";
+        String description2 = channelName + "-description2";
 
         ProducerData producerData1 = ProducerData.builder()
                 .channelName(channelName)
+                .description(description1)
                 .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .payloadType(ExamplePayloadDto.class)
@@ -105,6 +111,7 @@ public class ProducerChannelScannerTest {
 
         ProducerData producerData2 = ProducerData.builder()
                 .channelName(channelName)
+                .description(description2)
                 .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .payloadType(AnotherExamplePayloadDto.class)
@@ -123,11 +130,13 @@ public class ProducerChannelScannerTest {
         Set<Message> messages = ImmutableSet.of(
                 Message.builder()
                         .name(ExamplePayloadDto.class.getName())
+                        .description(description1)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .build(),
                 Message.builder()
                         .name(AnotherExamplePayloadDto.class.getName())
+                        .description(description2)
                         .title(AnotherExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         .build()

@@ -39,6 +39,7 @@ public class AsyncApiConfiguration {
 
         AmqpProducerData exampleProducer = AmqpProducerData.amqpProducerDataBuilder()
                 .queueName("example-producer-channel")
+                .description("example-producer-channel-description")
                 .exchangeName("example-topic-exchange")
                 .routingKey("example-topic-routing-key")
                 .payloadType(AnotherPayloadDto.class)
@@ -46,6 +47,7 @@ public class AsyncApiConfiguration {
 
         AmqpConsumerData exampleManuallyDefinedConsumer = AmqpConsumerData.amqpConsumerDataBuilder()
                 .queueName("example-manual-consumer-channel")
+                .description("example-manual-consumer-channel-description")
                 .exchangeName("example-consumer-topic-exchange")
                 .routingKey("example-consumer-topic-routing-key")
                 .payloadType(AnotherPayloadDto.class)
