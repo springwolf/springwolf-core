@@ -7,7 +7,7 @@
     },
     "servers": {
       "kafka": {
-        "url": "kafka:29092",
+        "url": "localhost:29092",
         "protocol": "kafka"
       }
     },

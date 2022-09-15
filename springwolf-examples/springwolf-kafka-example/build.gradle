@@ -31,6 +31,8 @@ dependencies {
     implementation 'com.google.guava:guava:27.0.1-jre'
     implementation 'org.javamoney:moneta:1.4.2'
 
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.kafka:spring-kafka-test')
     testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     testImplementation 'org.jetbrains.kotlin:kotlin-reflect'
     testImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.10.2'
@@ -60,8 +62,6 @@ compileTestKotlin {
 }
 
 test {
-    dependsOn dockerBuildImage
-
     testLogging {
         exceptionFormat = 'full'
     }
