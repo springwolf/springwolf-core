@@ -1,5 +1,13 @@
 import { InMemoryDbService, RequestInfo, STATUS } from 'angular-in-memory-web-api';
-import mockAsyncApi from './mock.json';
+import mockSpringwolfApp from './mock.springwolf-app.json';
+import mockSpringwolfAmqp from './mock.springwolf-amqp-example.json';
+import mockSpringwolfKafka from './mock.springwolf-kafka-example.json';
+
+const mockAsyncApi = {
+  ...mockSpringwolfApp,
+  ...mockSpringwolfAmqp,
+  ...mockSpringwolfKafka,
+}
 
 export class MockServer implements InMemoryDbService {
   createDb() {
