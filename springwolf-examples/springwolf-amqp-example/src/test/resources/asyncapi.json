@@ -8,6 +8,9 @@
         "email": "example@example.com"
       },
       "description": "Springwolf example project to demonstrate springwolfs abilities",
+      "license": {
+        "name": "Apache License 2.0"
+      },
       "version": "1.0.0"
     },
     "servers": {
