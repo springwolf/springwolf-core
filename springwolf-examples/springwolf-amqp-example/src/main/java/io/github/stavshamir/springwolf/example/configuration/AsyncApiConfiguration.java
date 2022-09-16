@@ -32,6 +32,7 @@ public class AsyncApiConfiguration {
                 .version("1.0.0")
                 .title("Springwolf example project - AMQP")
                 .contact(new Contact("springwolf", "https://github.com/springwolf/springwolf-core", "example@example.com"))
+                .description("Springwolf example project to demonstrate springwolfs abilities")
                 .build();
 
         Server amqp = Server.builder()
