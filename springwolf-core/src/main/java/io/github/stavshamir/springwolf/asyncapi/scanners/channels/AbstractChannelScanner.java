@@ -88,14 +88,16 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
         Map<String, ? extends ChannelBinding> channelBinding = buildChannelBinding(annotation);
         Map<String, ? extends OperationBinding> operationBinding = buildOperationBinding(annotation);
         Class<?> payload = getPayloadType(method);
-        ChannelItem channel = buildChannel(channelBinding, payload, operationBinding);
+        String operationId = channelName + "-" + method.getName();
+        ChannelItem channel = buildChannel(channelBinding, payload, operationBinding, operationId);
 
         return Maps.immutableEntry(channelName, channel);
     }
 
     private ChannelItem buildChannel(Map<String, ? extends ChannelBinding> channelBinding,
                                      Class<?> payloadType,
-                                     Map<String, ? extends OperationBinding> operationBinding) {
+                                     Map<String, ? extends OperationBinding> operationBinding,
+                                     String operationId) {
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
@@ -107,6 +109,7 @@ public abstract class AbstractChannelScanner<T extends Annotation> implements Ch
                 .build();
 
         Operation operation = Operation.builder()
+                .operationId(operationId)
                 .message(message)
                 .bindings(operationBinding)
                 .build();

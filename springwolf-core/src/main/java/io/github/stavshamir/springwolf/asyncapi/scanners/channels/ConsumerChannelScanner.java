@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static io.github.stavshamir.springwolf.asyncapi.Constants.ONE_OF;
@@ -57,8 +58,10 @@ public class ConsumerChannelScanner implements ChannelsScanner {
         // AsyncApi does not support multiple bindings on a single channel
         Map<String, ? extends ChannelBinding> channelBinding = consumerDataList.get(0).getChannelBinding();
         Map<String, ? extends OperationBinding> operationBinding = consumerDataList.get(0).getOperationBinding();
+        String operationId = consumerDataList.get(0).getChannelName() + "-publish";
 
         Operation operation = Operation.builder()
+                .operationId(operationId)
                 .message(getMessageObject(consumerDataList))
                 .bindings(operationBinding)
                 .build();

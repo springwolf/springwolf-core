@@ -35,6 +35,7 @@
               "$ref": "#/components/schemas/ExamplePayload"
             }
           },
+          "operationId": "new-user",
           "bindings": {
             "kafka": {
               "groupId": {

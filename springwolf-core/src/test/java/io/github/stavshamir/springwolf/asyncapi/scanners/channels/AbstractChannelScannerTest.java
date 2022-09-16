@@ -82,6 +82,7 @@ public class AbstractChannelScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .operationId("test-channel-methodWithAnnotation")
                 .bindings(ImmutableMap.of("test-operation-binding", new TestChannelScanner.TestOperationBinding()))
                 .message(message)
                 .build();

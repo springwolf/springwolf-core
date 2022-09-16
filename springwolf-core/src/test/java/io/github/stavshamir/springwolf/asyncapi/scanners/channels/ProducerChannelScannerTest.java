@@ -61,6 +61,7 @@ public class ProducerChannelScannerTest {
                 .containsKey(channelName);
 
         Operation operation = Operation.builder()
+                .operationId("example-producer-topic-foo1-subscribe")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(Message.builder()
                         .name(ExamplePayloadDto.class.getName())
@@ -149,6 +150,7 @@ public class ProducerChannelScannerTest {
         );
 
         Operation operation = Operation.builder()
+                .operationId("example-producer-topic-subscribe")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(ImmutableMap.of(ONE_OF, messages))
                 .build();

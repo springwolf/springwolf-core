@@ -72,6 +72,7 @@ public class DefaultAsyncApiSerializerServiceTest {
         OperationBinding operationBinding = KafkaOperationBinding.builder().groupId("myGroupId").build();
 
         Operation newUserOperation = Operation.builder()
+                .operationId("new-user")
                 .message(message)
                 .bindings(ImmutableMap.of("kafka", operationBinding))
                 .build();
