@@ -29,7 +29,7 @@ public class AsyncApiConfiguration {
     public AsyncApiDocket asyncApiDocket() {
         Info info = Info.builder()
                 .version("1.0.0")
-                .title("Springwolf example project")
+                .title("Springwolf example project - Kafka")
                 .build();
 
         KafkaProducerData exampleProducerData = KafkaProducerData.kafkaProducerDataBuilder()
