@@ -2,6 +2,11 @@
     "asyncapi": "2.0.0",
     "info": {
       "title": "Springwolf example project - AMQP",
+      "contact": {
+        "name": "springwolf",
+        "url": "https://github.com/springwolf/springwolf-core",
+        "email": "example@example.com"
+      },
       "version": "1.0.0"
     },
     "servers": {

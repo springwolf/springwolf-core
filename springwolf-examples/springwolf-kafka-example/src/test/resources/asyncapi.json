@@ -2,6 +2,15 @@
     "asyncapi": "2.0.0",
     "info": {
       "title": "Springwolf example project - Kafka",
+      "contact": {
+        "name": "springwolf",
+        "url": "https://github.com/springwolf/springwolf-core",
+        "email": "example@example.com"
+      },
+      "description": "Springwolf example project to demonstrate springwolfs abilities",
+      "license": {
+        "name": "Apache License 2.0"
+      },
       "version": "1.0.0"
     },
     "servers": {

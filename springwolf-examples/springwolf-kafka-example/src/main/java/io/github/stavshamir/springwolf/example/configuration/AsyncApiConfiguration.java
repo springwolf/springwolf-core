@@ -1,6 +1,8 @@
 package io.github.stavshamir.springwolf.example.configuration;
 
+import com.asyncapi.v2.model.info.Contact;
 import com.asyncapi.v2.model.info.Info;
+import com.asyncapi.v2.model.info.License;
 import com.asyncapi.v2.model.server.Server;
 import io.github.stavshamir.springwolf.asyncapi.types.KafkaConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.KafkaProducerData;
@@ -35,6 +37,9 @@ public class AsyncApiConfiguration {
         Info info = Info.builder()
                 .version("1.0.0")
                 .title("Springwolf example project - Kafka")
+                .contact(Contact.builder().name("springwolf").url("https://github.com/springwolf/springwolf-core").email("example@example.com").build())
+                .description("Springwolf example project to demonstrate springwolfs abilities")
+                .license(License.builder().name("Apache License 2.0").build())
                 .build();
 
         KafkaProducerData exampleProducerData = KafkaProducerData.kafkaProducerDataBuilder()
