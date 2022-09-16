@@ -5,7 +5,7 @@
 # Springwolf UI
 ##### Web UI for Springwolf
 
-### Usage
+## Usage
 Add the following dependencies:
 
 ```groovy
@@ -16,6 +16,13 @@ dependencies {
 
 After starting the application, visit: `localhost:8080/springwolf/asyncapi-ui.html`.
 
-### Development
+## Development
 1. Run `npm i`
 2. Run `ng serve`
+
+### Mock Data
+
+The application renders content based on mock data in `src/app/shared/mock`.
+It contains multiple mocks - including the ones from the springwolf-core examples projects.
+
+To update the mock data, run `npm run update-mocks`.
