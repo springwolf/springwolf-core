@@ -2,7 +2,7 @@ name: springwolf-core
 
 on:
   push:
-    branches: 
+    branches:
       - master
     paths:
       - '.github/workflows/springwolf-core.yml'

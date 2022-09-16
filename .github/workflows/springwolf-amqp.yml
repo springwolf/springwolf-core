@@ -20,6 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup spectral
+        run: |
+          echo 'extends: ["spectral:asyncapi"]' > .spectral.yaml
+      - uses: stoplightio/spectral-action@latest
+        with:
+          file_glob: 'springwolf-examples/springwolf-amqp-example/src/test/resources/asyncapi.json'
+
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
