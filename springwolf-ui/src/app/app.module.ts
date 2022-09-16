@@ -16,7 +16,7 @@ import { SchemaComponent } from './schemas/schema/schema.component';
 import { SchemasComponent } from './schemas/schemas.component';
 import { ServersComponent } from './servers/servers.component';
 import { AsyncApiService } from './shared/asyncapi.service';
-import { MockServer } from './shared/mock-server';
+import { MockServer } from './shared/mock/mock-server';
 import { PublisherService } from './shared/publisher.service';
 import { FormsModule } from '@angular/forms';
 import { JsonComponent } from './shared/components/json/json.component';

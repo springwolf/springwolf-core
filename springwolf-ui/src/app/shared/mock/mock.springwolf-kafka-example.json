@@ -1,19 +1,18 @@
 {
-  "Springwolf Demo": {
+  "Springwolf example project - Kafka": {
     "asyncapi": "2.0.0",
     "info": {
-      "title": "Springwolf Demo",
-      "description": "This is a demo project for springwolf that shows how the UI looks like and functions.",
+      "title": "Springwolf example project - Kafka",
       "version": "1.0.0"
     },
     "servers": {
       "kafka": {
-        "url": "kafka:29092",
+        "url": "localhost:29092",
         "protocol": "kafka"
       }
     },
     "channels": {
-      "example-consumer-topic": {
+      "another-topic": {
         "publish": {
           "bindings": {
             "kafka": {
@@ -28,34 +27,17 @@
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
             "title": "AnotherPayloadDto",
-            "description": "Custom, optional description for this message",
             "payload": {
               "$ref": "#/components/schemas/AnotherPayloadDto"
             }
           }
+        },
+        "bindings": {
+          "kafka": {}
         }
       },
-      "example-producer-topic": {
+      "example-topic": {
         "publish": {
-          "bindings": {
-            "kafka": {
-              "groupId": {
-                "type": "string",
-                "enum": [
-                  "example-group-id"
-                ]
-              }
-            }
-          },
-          "message": {
-            "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-            "title": "ExamplePayloadDto",
-            "payload": {
-              "$ref": "#/components/schemas/ExamplePayloadDto"
-            }
-          }
-        },
-        "subscribe": {
           "bindings": {
             "kafka": {}
           },
@@ -66,6 +48,56 @@
               "$ref": "#/components/schemas/ExamplePayloadDto"
             }
           }
+        },
+        "bindings": {
+          "kafka": {}
+        }
+      },
+      "example-producer-topic": {
+        "subscribe": {
+          "bindings": {
+            "kafka": {}
+          },
+          "message": {
+            "oneOf": [
+              {
+                "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+                "title": "ExamplePayloadDto",
+                "payload": {
+                  "$ref": "#/components/schemas/ExamplePayloadDto"
+                }
+              },
+              {
+                "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+                "title": "AnotherPayloadDto",
+                "description": "Custom, optional description for this produced to topic",
+                "payload": {
+                  "$ref": "#/components/schemas/AnotherPayloadDto"
+                }
+              }
+            ]
+          }
+        },
+        "bindings": {
+          "kafka": {}
+        }
+      },
+      "example-consumer-topic": {
+        "publish": {
+          "bindings": {
+            "kafka": {}
+          },
+          "message": {
+            "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+            "title": "ExamplePayloadDto",
+            "description": "Custom, optional description for this consumed topic",
+            "payload": {
+              "$ref": "#/components/schemas/ExamplePayloadDto"
+            }
+          }
+        },
+        "bindings": {
+          "kafka": {}
         }
       },
       "multi-payload-topic": {
@@ -78,7 +110,6 @@
               {
                 "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
                 "title": "ExamplePayloadDto",
-                "description": "Custom, optional description for this message",
                 "payload": {
                   "$ref": "#/components/schemas/ExamplePayloadDto"
                 }
@@ -89,120 +120,63 @@
                 "payload": {
                   "$ref": "#/components/schemas/AnotherPayloadDto"
                 }
+              },
+              {
+                "name": "javax.money.MonetaryAmount",
+                "title": "MonetaryAmount",
+                "payload": {
+                  "$ref": "#/components/schemas/MonetaryAmount"
+                }
               }
             ]
           }
+        },
+        "bindings": {
+          "kafka": {}
         }
       }
     },
     "components": {
       "schemas": {
+        "MonetaryAmount": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number",
+              "example": 99.99,
+              "exampleSetFlag": true
+            },
+            "currency": {
+              "type": "string",
+              "example": "USD",
+              "exampleSetFlag": true
+            }
+          },
+          "example": {
+            "amount": 99.99,
+            "currency": "USD"
+          },
+          "exampleSetFlag": true
+        },
         "ExamplePayloadDto": {
-          "description": "Example payload model",
           "type": "object",
           "properties": {
             "someString": {
-              "description": "some string field",
               "type": "string",
-              "example": "string"
+              "exampleSetFlag": false
             },
             "someLong": {
-              "description": "some long field",
               "type": "integer",
               "format": "int64",
-              "example": 0
-            },
-            "someEnum": {
-              "description": "some enum field",
-              "type": "string",
-              "enum": ["FOO1", "FOO2", "FOO3"],
-              "example": "FOO1"
-            }
-          },
-          "example": {
-            "someString": "string",
-            "someLong": 0,
-            "someEnum": "FOO1"
-          },
-          "required": ["someString", "someEnum"]
-        },
-        "AnotherPayloadDto": {
-          "description": "Another payload model",
-          "type": "object",
-          "properties": {
-            "foo": {
-              "description": "foo field",
-              "type": "string"
-            },
-            "example": {
-              "description": "example field",
-              "$ref": "#/components/schemas/ExamplePayloadDto"
-            }
-          },
-          "example": {
-            "foo": "string",
-            "example": {
-              "someString": "string",
-              "someLong": 0,
-              "someEnum": "FOO1"
-            }
-          }
-        }
-      }
-    }
-  },
-  "Springwolf Demo Other App": {
-    "asyncapi": "2.0.0",
-    "info": {
-      "title": "Springwolf Demo Other App",
-      "description": "This is a different demo project for springwolf that shows how the UI looks like and functions with multiple docs.",
-      "version": "1.0.0"
-    },
-    "servers": {
-      "kafka": {
-        "url": "kafka:29092",
-        "protocol": "kafka"
-      }
-    },
-    "channels": {
-      "a-different-topic": {
-        "publish": {
-          "bindings": {
-            "kafka": {
-              "groupId": {
-                "type": "string",
-                "enum": [
-                  "example-group-id"
-                ]
-              }
-            }
-          },
-          "message": {
-            "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
-            "title": "AnotherPayloadDto",
-            "payload": {
-              "$ref": "#/components/schemas/AnotherPayloadDto"
-            }
-          }
-        }
-      }
-    },
-    "components": {
-      "schemas": {
-        "ExamplePayloadDto": {
-          "type": "object",
-          "properties": {
-            "someString": {
-              "type": "string"
-            },
-            "someLong": {
-              "type": "integer",
-              "format": "int64"
+              "exampleSetFlag": false
             },
             "someEnum": {
               "type": "string",
+              "exampleSetFlag": false,
               "enum": [
-                "FOO1"
+                "FOO1",
+                "FOO2",
+                "FOO3"
               ]
             }
           },
@@ -210,16 +184,19 @@
             "someString": "string",
             "someLong": 0,
             "someEnum": "FOO1"
-          }
+          },
+          "exampleSetFlag": true
         },
         "AnotherPayloadDto": {
           "type": "object",
           "properties": {
             "foo": {
-              "type": "string"
+              "type": "string",
+              "exampleSetFlag": false
             },
             "example": {
-              "$ref": "#/components/schemas/ExamplePayloadDto"
+              "$ref": "#/components/schemas/ExamplePayloadDto",
+              "exampleSetFlag": false
             }
           },
           "example": {
@@ -229,7 +206,8 @@
               "someLong": 0,
               "someEnum": "FOO1"
             }
-          }
+          },
+          "exampleSetFlag": true
         }
       }
     }
