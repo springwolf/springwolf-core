@@ -1,8 +1,7 @@
 {
-  "Springwolf example project": {
     "asyncapi": "2.0.0",
     "info": {
-      "title": "Springwolf example project",
+      "title": "Springwolf example project - Kafka",
       "version": "1.0.0"
     },
     "servers": {
@@ -211,5 +210,4 @@
         }
       }
     }
-  }
 }
