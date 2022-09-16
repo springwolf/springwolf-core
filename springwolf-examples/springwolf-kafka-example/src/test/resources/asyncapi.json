@@ -1,5 +1,4 @@
 {
-  "Springwolf example project - Kafka": {
     "asyncapi": "2.0.0",
     "info": {
       "title": "Springwolf example project - Kafka",
@@ -355,5 +354,4 @@
         }
       }
     }
-  }
 }

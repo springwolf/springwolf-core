@@ -1,5 +1,4 @@
 {
-  "Springwolf example project - AMQP": {
     "asyncapi": "2.0.0",
     "info": {
       "title": "Springwolf example project - AMQP",
@@ -309,5 +308,4 @@
         }
       }
     }
-  }
 }
