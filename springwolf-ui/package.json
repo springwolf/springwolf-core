@@ -7,7 +7,8 @@
     "build": "ng build --prod --base-href=./",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "update-mocks": "node ./script/update_mock_data.js"
   },
   "private": true,
   "dependencies": {
