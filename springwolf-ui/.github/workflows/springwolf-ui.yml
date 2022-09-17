@@ -1,6 +1,8 @@
 name: springwolf-ui
 
-on: push
+on:
+  - push
+  - workflow_dispatch
 
 permissions:
   contents: write
