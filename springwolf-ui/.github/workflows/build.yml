@@ -1,4 +1,4 @@
-name: springwolf-ui
+name: Build
 
 on:
   - push
