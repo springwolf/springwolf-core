@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'io.github.springwolf'
-version = '0.6.0' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
+version = '0.7.0' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
 sourceCompatibility = 1.8
 
 repositories {
