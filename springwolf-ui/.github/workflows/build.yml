@@ -5,7 +5,10 @@ on:
   - workflow_dispatch
 
 permissions:
+  # Allow to publish github pages
   contents: write
+  # Allow to publish maven packages
+  packages: write
 
 jobs:
   build:
@@ -23,6 +26,18 @@ jobs:
 
       - name: Build
         run: ./gradlew build -x signArchives
+
+      - name: Publish package to github
+        if: github.ref == 'refs/heads/master'
+        run: ./gradlew publishMavenJavaPublicationToGitHubPackagesRepository
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: true
+
+          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
+          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PACKAGES_URL: https://maven.pkg.github.com/${{ github.repository }}
 
       - name: Build gh-pages
         if: github.ref == 'refs/heads/master'
