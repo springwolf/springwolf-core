@@ -26,7 +26,7 @@ export class InfoComponent implements OnInit {
     });
   }
 
-  async download(): Promise<Boolean> {
+  download(): Boolean {
     var json = JSON.stringify(this.asyncApiData, null, 2);
     var bytes = new TextEncoder().encode(json);
     var blob = new Blob([bytes], { type: 'application/json' });
