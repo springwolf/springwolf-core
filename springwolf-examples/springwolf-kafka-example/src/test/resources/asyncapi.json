@@ -159,20 +159,30 @@
           "exampleSetFlag": true
         },
         "ExamplePayloadDto": {
+          "required": [
+            "someEnum",
+            "someString"
+          ],
           "type": "object",
           "properties": {
             "someString": {
               "type": "string",
-              "exampleSetFlag": false
+              "description": "Some string field",
+              "example": "some string value",
+              "exampleSetFlag": true
             },
             "someLong": {
               "type": "integer",
+              "description": "Some long field",
               "format": "int64",
-              "exampleSetFlag": false
+              "example": 5,
+              "exampleSetFlag": true
             },
             "someEnum": {
               "type": "string",
-              "exampleSetFlag": false,
+              "description": "Some enum field",
+              "example": "FOO2",
+              "exampleSetFlag": true,
               "enum": [
                 "FOO1",
                 "FOO2",
@@ -180,31 +190,38 @@
               ]
             }
           },
+          "description": "Example payload model",
           "example": {
-            "someString": "string",
-            "someLong": 0,
-            "someEnum": "FOO1"
+            "someString": "some string value",
+            "someLong": 5,
+            "someEnum": "FOO2"
           },
           "exampleSetFlag": true
         },
         "AnotherPayloadDto": {
+          "required": [
+            "example"
+          ],
           "type": "object",
           "properties": {
             "foo": {
               "type": "string",
-              "exampleSetFlag": false
+              "description": "Foo field",
+              "example": "bar",
+              "exampleSetFlag": true
             },
             "example": {
               "$ref": "#/components/schemas/ExamplePayloadDto",
               "exampleSetFlag": false
             }
           },
+          "description": "Another payload model",
           "example": {
-            "foo": "string",
+            "foo": "bar",
             "example": {
-              "someString": "string",
-              "someLong": 0,
-              "someEnum": "FOO1"
+              "someString": "some string value",
+              "someLong": 5,
+              "someEnum": "FOO2"
             }
           },
           "exampleSetFlag": true
