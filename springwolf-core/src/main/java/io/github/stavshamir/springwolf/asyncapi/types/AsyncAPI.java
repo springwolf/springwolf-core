@@ -4,12 +4,12 @@ import com.asyncapi.v2.model.Tag;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
-import com.google.common.collect.Lists;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This is the root document object for the API specification. It combines resource listing and API declaration together into one document.
@@ -72,10 +72,10 @@ public class AsyncAPI {
 
     /**
      * <b>Required.</b>
-     * A list of tags used by the specification with additional metadata. Each tag name in the list MUST be unique.
+     * A set of tags used by the specification with additional metadata. Each tag name in the set MUST be unique.
      */
     @NotNull
     @Builder.Default
-    private List<Tag> tags = Lists.newLinkedList();
+    private Set<Tag> tags = Collections.emptySet();
 
 }
