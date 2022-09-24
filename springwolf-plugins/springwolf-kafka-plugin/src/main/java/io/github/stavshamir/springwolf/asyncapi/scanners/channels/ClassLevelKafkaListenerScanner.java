@@ -155,7 +155,7 @@ public class ClassLevelKafkaListenerScanner
     }
 
     private ChannelItem buildChannel(Set<Method> methods, Map<String, ? extends OperationBinding> operationBinding) {
-        String operationId = methods.stream().findFirst().map(it->it.getName()+"-consumer").orElse("");
+        String operationId = methods.stream().findFirst().map(it->it.getName()+"-subscribe").orElse("");
 
         Operation operation = Operation.builder()
                 .operationId(operationId)
