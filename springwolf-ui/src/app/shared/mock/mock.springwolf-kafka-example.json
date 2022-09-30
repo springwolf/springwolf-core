@@ -7,7 +7,7 @@
     },
     "servers": {
       "kafka": {
-        "url": "localhost:29092",
+        "url": "kafka:29092",
         "protocol": "kafka"
       }
     },
@@ -31,7 +31,7 @@
               "$ref": "#/components/schemas/AnotherPayloadDto"
             },
             "headers": {
-              "$ref": "#/components/schemas/NoHeaders"
+              "$ref": "#/components/schemas/HeadersUnknown"
             }
           }
         },
@@ -51,7 +51,7 @@
               "$ref": "#/components/schemas/ExamplePayloadDto"
             },
             "headers": {
-              "$ref": "#/components/schemas/NoHeaders"
+              "$ref": "#/components/schemas/HeadersUnknown"
             }
           }
         },
@@ -73,7 +73,7 @@
                   "$ref": "#/components/schemas/ExamplePayloadDto"
                 },
                 "headers": {
-                  "$ref": "#/components/schemas/NoHeaders"
+                  "$ref": "#/components/schemas/SpringDefaultHeaders"
                 }
               },
               {
@@ -84,7 +84,7 @@
                   "$ref": "#/components/schemas/AnotherPayloadDto"
                 },
                 "headers": {
-                  "$ref": "#/components/schemas/NoHeaders"
+                  "$ref": "#/components/schemas/CloudEventHeadersForAnotherPayloadDtoEndpoint"
                 }
               }
             ]
@@ -107,7 +107,7 @@
               "$ref": "#/components/schemas/ExamplePayloadDto"
             },
             "headers": {
-              "$ref": "#/components/schemas/NoHeaders"
+              "$ref": "#/components/schemas/HeadersUnknown"
             }
           }
         },
@@ -129,7 +129,7 @@
                   "$ref": "#/components/schemas/ExamplePayloadDto"
                 },
                 "headers": {
-                  "$ref": "#/components/schemas/NoHeaders"
+                  "$ref": "#/components/schemas/HeadersUnknown"
                 }
               },
               {
@@ -139,7 +139,7 @@
                   "$ref": "#/components/schemas/AnotherPayloadDto"
                 },
                 "headers": {
-                  "$ref": "#/components/schemas/NoHeaders"
+                  "$ref": "#/components/schemas/HeadersUnknown"
                 }
               },
               {
@@ -149,7 +149,7 @@
                   "$ref": "#/components/schemas/MonetaryAmount"
                 },
                 "headers": {
-                  "$ref": "#/components/schemas/NoHeaders"
+                  "$ref": "#/components/schemas/HeadersUnknown"
                 }
               }
             ]
@@ -211,6 +211,62 @@
           },
           "exampleSetFlag": true
         },
+        "CloudEventHeadersForAnotherPayloadDtoEndpoint": {
+          "type": "object",
+          "properties": {
+            "ce_specversion": {
+              "type": "string",
+              "description": "Spec Version Header",
+              "example": "1.0",
+              "exampleSetFlag": true
+            },
+            "ce_time": {
+              "type": "string",
+              "description": "Time Header",
+              "example": "2015-07-20T15:49:04-07:00",
+              "exampleSetFlag": true
+            },
+            "content-type": {
+              "type": "string",
+              "description": "Content-Type Header",
+              "example": "application/json",
+              "exampleSetFlag": true
+            },
+            "ce_id": {
+              "type": "string",
+              "description": "Id Header",
+              "example": "1234-1234-1234",
+              "exampleSetFlag": true
+            },
+            "ce_type": {
+              "type": "string",
+              "description": "Payload Type Header",
+              "example": "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
+              "exampleSetFlag": true
+            },
+            "ce_source": {
+              "type": "string",
+              "description": "Source Header",
+              "example": "springwolf-kafka-example/anotherPayloadDtoEndpoint",
+              "exampleSetFlag": true
+            }
+          },
+          "example": {
+            "ce_specversion": "1.0",
+            "ce_time": "2015-07-20T15:49:04-07:00",
+            "content-type": "application/json",
+            "ce_id": "1234-1234-1234",
+            "ce_type": "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
+            "ce_source": "springwolf-kafka-example/anotherPayloadDtoEndpoint"
+          },
+          "exampleSetFlag": true
+        },
+        "HeadersUnknown": {
+          "type": "object",
+          "properties": {},
+          "example": {},
+          "exampleSetFlag": true
+        },
         "AnotherPayloadDto": {
           "type": "object",
           "properties": {
@@ -233,15 +289,12 @@
           },
           "exampleSetFlag": true
         },
-        "NoHeaders": {
-          "type": "object",
-          "exampleSetFlag": true
-        },
         "SpringDefaultHeaders": {
           "type": "object",
           "properties": {
             "__TypeId__": {
               "type": "string",
+              "description": "Spring Type Id Header",
               "example": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
               "exampleSetFlag": true,
               "enum": [
