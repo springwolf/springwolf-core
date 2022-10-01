@@ -1,4 +1,5 @@
-import io.github.stavshamir.springwolf.example.SpringwolfExampleApplication;
+package io.github.stavshamir.springwolf.example;
+
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 
@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {SpringwolfExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:29092", "port=29092" })
 public class ApiIntegrationTests {
 
     @Autowired
@@ -33,7 +32,7 @@ public class ApiIntegrationTests {
         String actual = restTemplate.getForObject(url, String.class);
         System.out.println("Got: " + actual);
 
-        InputStream s = this.getClass().getResourceAsStream("asyncapi.json");
+        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
 
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);

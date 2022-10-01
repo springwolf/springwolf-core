@@ -1,3 +1,5 @@
+package io.github.stavshamir.springwolf.example
+
 import org.apache.commons.io.IOUtils
 import org.junit.ClassRule
 import org.junit.Test
@@ -9,8 +11,12 @@ import java.io.File
 import java.io.InputStream
 import java.nio.charset.StandardCharsets
 
-
-class ApiIntegrationTests {
+/**
+ * While the assertion of this test is identical to ApiIntegrationTests,
+ * the setup uses a full docker-compose context with a real amqp instance.
+ */
+// @Ignore("Uncomment this line if you have issues running this test on your local machine.")
+class ApiIntegrationWithDockerTests {
 
     companion object {
         private val restTemplate = RestTemplate()
@@ -34,8 +40,9 @@ class ApiIntegrationTests {
     fun `asyncapi-docs shold return the correct json response`() {
         val url = "${baseUrl()}/springwolf/docs"
         val actual = restTemplate.getForObject(url, String::class.java)
+        println("Got: $actual")
 
-        val s: InputStream = this.javaClass.getResourceAsStream("asyncapi.json")
+        val s: InputStream = this.javaClass.getResourceAsStream("/asyncapi.json")
         val expected: String = IOUtils.toString(s, StandardCharsets.UTF_8)
 
         print(actual)
