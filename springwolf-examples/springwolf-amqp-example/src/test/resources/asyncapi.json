@@ -44,7 +44,7 @@
               "ack": false
             }
           },
-          "operationId": "example-bindings-queue-bindingsExample",
+          "operationId": "example-bindings-queue-bindingsExample-publish",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
             "title": "AnotherPayloadDto",
@@ -81,7 +81,7 @@
               "ack": false
             }
           },
-          "operationId": "example-topic-queue-bindingsBeanExample",
+          "operationId": "example-topic-queue-bindingsBeanExample-publish",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
             "title": "AnotherPayloadDto",
@@ -118,7 +118,7 @@
               "ack": false
             }
           },
-          "operationId": "another-queue-receiveAnotherPayload",
+          "operationId": "another-queue-receiveAnotherPayload-publish",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
             "title": "AnotherPayloadDto",
@@ -193,7 +193,7 @@
               "ack": false
             }
           },
-          "operationId": "example-queue-receiveExamplePayload",
+          "operationId": "example-queue-receiveExamplePayload-publish",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
             "title": "ExamplePayloadDto",
