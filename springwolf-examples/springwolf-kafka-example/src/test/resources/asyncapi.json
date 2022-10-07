@@ -227,39 +227,66 @@
           "properties": {
             "ce_specversion": {
               "type": "string",
-              "description": "Spec Version Header",
+              "description": "CloudEvent Spec Version Header",
               "example": "1.0",
-              "exampleSetFlag": true
+              "exampleSetFlag": true,
+              "enum": [
+                "1.0"
+              ]
             },
             "ce_time": {
               "type": "string",
-              "description": "Time Header",
+              "description": "CloudEvent Time Header",
               "example": "2015-07-20T15:49:04-07:00",
-              "exampleSetFlag": true
+              "exampleSetFlag": true,
+              "enum": [
+                "2015-07-20T15:49:04-07:00"
+              ]
             },
             "content-type": {
               "type": "string",
-              "description": "Content-Type Header",
+              "description": "CloudEvent Content-Type Header",
               "example": "application/json",
-              "exampleSetFlag": true
+              "exampleSetFlag": true,
+              "enum": [
+                "application/json"
+              ]
             },
             "ce_id": {
               "type": "string",
-              "description": "Id Header",
+              "description": "CloudEvent Id Header",
               "example": "1234-1234-1234",
-              "exampleSetFlag": true
+              "exampleSetFlag": true,
+              "enum": [
+                "1234-1234-1234"
+              ]
             },
             "ce_type": {
               "type": "string",
-              "description": "Payload Type Header",
+              "description": "CloudEvent Payload Type Header",
               "example": "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
-              "exampleSetFlag": true
+              "exampleSetFlag": true,
+              "enum": [
+                "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint"
+              ]
             },
             "ce_source": {
               "type": "string",
-              "description": "Source Header",
+              "description": "CloudEvent Source Header",
               "example": "springwolf-kafka-example/anotherPayloadDtoEndpoint",
-              "exampleSetFlag": true
+              "exampleSetFlag": true,
+              "enum": [
+                "springwolf-kafka-example/anotherPayloadDtoEndpoint"
+              ]
+            },
+            "ce_subject": {
+              "type": "string",
+              "description": "CloudEvent Subject Header",
+              "example": "Test Subject",
+              "exampleSetFlag": true,
+              "enum": [
+                "Test Subject"
+              ]
             }
           },
           "example": {
@@ -268,7 +295,8 @@
             "content-type": "application/json",
             "ce_id": "1234-1234-1234",
             "ce_type": "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
-            "ce_source": "springwolf-kafka-example/anotherPayloadDtoEndpoint"
+            "ce_source": "springwolf-kafka-example/anotherPayloadDtoEndpoint",
+            "ce_subject": "Test Subject"
           },
           "exampleSetFlag": true
         },

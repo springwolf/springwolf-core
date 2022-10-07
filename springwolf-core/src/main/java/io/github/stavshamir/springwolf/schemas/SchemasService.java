@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.schemas;
 
-import io.github.stavshamir.springwolf.asyncapi.types.AsyncHeaders;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.Map;

@@ -2,6 +2,7 @@ package io.github.stavshamir.springwolf.asyncapi.types;
 
 import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

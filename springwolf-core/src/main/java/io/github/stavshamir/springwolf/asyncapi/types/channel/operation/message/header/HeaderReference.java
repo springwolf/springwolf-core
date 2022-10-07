@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message;
+package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

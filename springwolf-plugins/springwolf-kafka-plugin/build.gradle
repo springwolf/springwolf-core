@@ -21,6 +21,7 @@ dependencies {
 
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'io.swagger.core.v3:swagger-models:2.2.0'
 
     implementation 'com.google.guava:guava:27.0.1-jre'
 

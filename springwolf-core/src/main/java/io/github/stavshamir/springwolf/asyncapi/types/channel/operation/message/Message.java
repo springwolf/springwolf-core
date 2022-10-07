@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message;
 
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

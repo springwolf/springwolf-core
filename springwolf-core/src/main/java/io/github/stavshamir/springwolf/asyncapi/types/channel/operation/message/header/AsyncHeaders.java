@@ -1,6 +1,7 @@
-package io.github.stavshamir.springwolf.asyncapi.types;
+package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header;
 
 import io.swagger.v3.oas.models.media.Schema;
+
 import java.util.HashMap;
 
 public class AsyncHeaders extends HashMap<String, Schema> {
