@@ -27,17 +27,19 @@ jobs:
       - name: Build
         run: ./gradlew build -x signArchives
 
-      - name: Publish package to github
+      - name: Publish package
         if: github.ref == 'refs/heads/master'
-        run: ./gradlew publishMavenJavaPublicationToGitHubPackagesRepository
+        run: ./gradlew publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true
 
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_PACKAGES_URL: https://maven.pkg.github.com/${{ github.repository }}
+          ORG_GRADLE_PROJECT_MAVEN_USE_OVERWRITE_URL: ${{ secrets.MAVEN_USE_OVERWRITE_URL || 'true' }}
+          ORG_GRADLE_PROJECT_MAVEN_OVERWRITE_URL: https://maven.pkg.github.com/${{ github.repository }}
+          ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD || secrets.GITHUB_TOKEN }}
 
       - name: Build gh-pages
         if: github.ref == 'refs/heads/master'

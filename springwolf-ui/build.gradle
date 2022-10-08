@@ -114,18 +114,12 @@ publishing {
     maven {
       def releasesRepoUrl  = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
       def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-      url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
+      def sonatypeUrl = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
+      def overwriteUrl = project.findProperty('MAVEN_OVERWRITE_URL') ?: ''
+      url = project.findProperty('MAVEN_USE_OVERWRITE_URL') == 'true' ? overwriteUrl : sonatypeUrl
       credentials {
-        username = project.findProperty('ossrhUsername') ?: ''
-        password = project.findProperty('ossrhPassword') ?: ''
-      }
-    }
-    maven {
-      name = "GitHubPackages"
-      url = System.getenv("GITHUB_PACKAGES_URL") ?: "https://maven.pkg.github.com/springwolf/springwolf-ui"
-      credentials {
-        username = ''
-        password = System.getenv("GITHUB_TOKEN") ?: ''
+        username = project.findProperty('MAVEN_USERNAME') ?: ''
+        password = project.findProperty('MAVEN_PASSWORD') ?: ''
       }
     }
   }
@@ -135,9 +129,6 @@ publishing {
       dependsOn project.tasks.signArchives
     }
     tasks.publishMavenJavaPublicationToMavenRepository {
-      dependsOn project.tasks.signArchives
-    }
-    tasks.publishMavenJavaPublicationToGitHubPackagesRepository {
       dependsOn project.tasks.signArchives
     }
   }
