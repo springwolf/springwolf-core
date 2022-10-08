@@ -9,8 +9,10 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
+def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
+
 group = 'io.github.springwolf'
-version = '0.8.0' + (Boolean.valueOf(System.getProperty('snapshot')) ? '-SNAPSHOT' : '')
+version = '0.8.0' + (isSnapshot ? '-SNAPSHOT' : '')
 sourceCompatibility = 1.8
 
 repositories {
@@ -63,6 +65,8 @@ artifacts {
 
 signing {
     sign configurations.archives
+
+    useInMemoryPgpKeys project.findProperty("SIGNINGKEY"), project.findProperty("SIGNINGPASSWORD")
 }
 
 def pomConfig = {
@@ -134,10 +138,12 @@ publishing {
 
     repositories {
         maven {
-            url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
             credentials {
-                username = project.findProperty('ossrhUsername') ?: ''
-                password = project.findProperty('ossrhPassword') ?: ''
+                username = project.findProperty('MAVEN_USERNAME') ?: ''
+                password = project.findProperty('MAVEN_PASSWORD') ?: ''
             }
         }
     }
