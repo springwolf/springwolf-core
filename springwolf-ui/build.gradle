@@ -114,9 +114,7 @@ publishing {
     maven {
       def releasesRepoUrl  = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
       def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-      def sonatypeUrl = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
-      def overwriteUrl = project.findProperty('MAVEN_OVERWRITE_URL') ?: ''
-      url = project.findProperty('MAVEN_USE_OVERWRITE_URL') == 'true' ? overwriteUrl : sonatypeUrl
+      url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
       credentials {
         username = project.findProperty('MAVEN_USERNAME') ?: ''
         password = project.findProperty('MAVEN_PASSWORD') ?: ''
