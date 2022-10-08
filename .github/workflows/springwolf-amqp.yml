@@ -36,7 +36,7 @@ jobs:
 
       - name: Publish package
         if: github.ref == 'refs/heads/master'
-        run: ./gradlew publish
+        run: ./gradlew -p springwolf-plugins/springwolf-amqp-plugin publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true
 

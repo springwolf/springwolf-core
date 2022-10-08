@@ -36,7 +36,7 @@ jobs:
 
       - name: Publish package
         if: github.ref == 'refs/heads/master'
-        run: ./gradlew publish
+        run: ./gradlew publish -p springwolf-plugins/springwolf-kafka-plugin
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true
 
