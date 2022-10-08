@@ -65,7 +65,6 @@ artifacts {
 
 signing {
     sign configurations.archives
-
     useInMemoryPgpKeys project.findProperty("SIGNINGKEY"), project.findProperty("SIGNINGPASSWORD")
 }
 
