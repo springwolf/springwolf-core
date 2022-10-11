@@ -29,7 +29,7 @@
         <h4>
           {{ schemaName }}
           <span class="payload-name">
-            <a [href]="basePath + '#' + operation.message.payload.$ref.split('/').pop()" >{{ operation.message.payload.$ref }}</a>
+            <a [href]="getSchemaUrl(operation.message.payload.$ref?.split('/')?.pop())" >{{ operation.message.payload.$ref }}</a>
           </span>
         </h4>
         <app-schema *ngIf="schema" [schema]="schema"></app-schema>
@@ -38,7 +38,7 @@
         <h4>
           {{ headersSchemaName }}
           <span class="header-name">
-            <a [href]="basePath + '#' + operation.message.headers.$ref.split('/').pop()">{{ operation.message.headers.$ref }}</a>
+            <a [href]="getSchemaUrl(operation.message.headers.$ref?.split('/')?.pop())">{{ operation.message.headers.$ref }}</a>
           </span>
         </h4>
         <app-schema *ngIf="headers" [schema]="headers"></app-schema>

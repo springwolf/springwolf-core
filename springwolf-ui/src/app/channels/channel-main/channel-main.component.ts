@@ -19,7 +19,6 @@ export class ChannelMainComponent implements OnInit {
   @Input() channelName: string;
   @Input() operation: Operation;
 
-  basePath: string;
   schema: Schema;
   schemaName: string;
   defaultExample: Example;
@@ -34,9 +33,7 @@ export class ChannelMainComponent implements OnInit {
     private asyncApiService: AsyncApiService,
     private publisherService: PublisherService,
     private snackBar: MatSnackBar
-  ) {
-    this.basePath = window.location.pathname;
-  }
+  ) {}
 
 
   ngOnInit(): void {
@@ -100,6 +97,10 @@ export class ChannelMainComponent implements OnInit {
     return this.snackBar.open(msg, 'ERROR', {
       duration: 4000
     });
+  }
+
+  public getSchemaUrl(fragment: string): string {
+    return window.location.pathname + window.location.search + "#" + fragment;
   }
 
 }
