@@ -10,4 +10,13 @@ export class SchemaComponent {
 
   @Input() schema: Schema;
 
+  public getSchemaUrl(fragment: string): string {
+    let baseUrl = window.location.href;
+    const lastHashPosition = baseUrl.lastIndexOf('#');
+    if(lastHashPosition >= 0) {
+      baseUrl = baseUrl.substring(0, lastHashPosition);
+    }
+    return baseUrl + '#' + fragment;
+  }
+
 }
