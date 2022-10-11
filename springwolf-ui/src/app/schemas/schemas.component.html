@@ -1,6 +1,6 @@
 <h1>Schemas</h1>
 <mat-accordion>
-    <mat-expansion-panel *ngFor="let schema of schemas | keyvalue" [id]="schema.key">
+    <mat-expansion-panel *ngFor="let schema of schemas | keyvalue;" [id]="schema.key" [expanded]="selectedSchema == schema.key" (closed)="this.resetSchemaSelection(schema.key)">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 <h3>{{ schema.key }}</h3>

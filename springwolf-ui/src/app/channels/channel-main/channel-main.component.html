@@ -26,13 +26,21 @@
         </div>
       </mat-tab>
       <mat-tab label="Schema">
-        <h4>{{ schemaName }} </h4>
-        <div class="payload-name">{{ operation.message.payload.$ref  }}</div>
+        <h4>
+          {{ schemaName }}
+          <span class="payload-name">
+            <a [href]="basePath + '#' + operation.message.payload.$ref.split('/').pop()" >{{ operation.message.payload.$ref }}</a>
+          </span>
+        </h4>
         <app-schema *ngIf="schema" [schema]="schema"></app-schema>
       </mat-tab>
       <mat-tab label="Headers">
-        <h4>{{ headersSchemaName }} </h4>
-        <div class="header-name">{{ operation.message.headers.$ref  }}</div>
+        <h4>
+          {{ headersSchemaName }}
+          <span class="header-name">
+            <a [href]="basePath + '#' + operation.message.headers.$ref.split('/').pop()">{{ operation.message.headers.$ref }}</a>
+          </span>
+        </h4>
         <app-schema *ngIf="headers" [schema]="headers"></app-schema>
         <div fxLayout="column">
           <textarea spellcheck="false"

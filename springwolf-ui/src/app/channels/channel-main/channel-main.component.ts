@@ -19,6 +19,7 @@ export class ChannelMainComponent implements OnInit {
   @Input() channelName: string;
   @Input() operation: Operation;
 
+  basePath: string;
   schema: Schema;
   schemaName: string;
   defaultExample: Example;
@@ -28,13 +29,15 @@ export class ChannelMainComponent implements OnInit {
   headersExample: Example;
   headersTextAreaLineCount: number;
   protocolName: string;
-  nameSubscription: Subscription;
 
   constructor(
     private asyncApiService: AsyncApiService,
     private publisherService: PublisherService,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+    this.basePath = window.location.pathname;
+  }
+
 
   ngOnInit(): void {
     this.asyncApiService.getAsyncApis().subscribe(
