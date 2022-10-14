@@ -1,9 +1,26 @@
-.operation-badge {
-    background-color: #CDDC39;
+
+.badge {
     border-radius: 4px;
     padding: 8px;
     font-size: small;
     font-weight: bold;
+}
+
+.subscribe-badge {
+    background-color: #FFD580;
+}
+
+.publish-badge {
+    background-color: #9BD279;
+}
+
+.protocol-badge {
+    background-color: #347AEB;
+    color: #fff
+}
+
+.fa {
+    padding-left: 2px;
 }
 
 mat-divider {

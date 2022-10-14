@@ -91,10 +91,10 @@ export class AsyncApiService {
     private mapChannels(channels: ServerAsyncApi["channels"]): Channel[] {
         const s = new Array<Channel>();
         Object.entries(channels).forEach(([k, v]) => {
-            const subscriberChannels = this.mapChannel(k, v.description, v.subscribe, " subscribe")
+            const subscriberChannels = this.mapChannel(k, v.description, v.subscribe, "subscribe")
             subscriberChannels.forEach(channel => s.push(channel))
 
-            const publisherChannels = this.mapChannel(k, v.description, v.publish, " publish")
+            const publisherChannels = this.mapChannel(k, v.description, v.publish, "publish")
             publisherChannels.forEach(channel => s.push(channel))
         });
         return s;
@@ -123,6 +123,8 @@ export class AsyncApiService {
     private mapOperation(operationName: string, message: Message, bindings?: any): Operation {
         return {
             type: this.getProtocol(bindings) + operationName,
+            protocol: this.getProtocol(bindings),
+            operation: operationName,
             message: message,
             bindings: bindings
         }

@@ -3,7 +3,13 @@
     <mat-expansion-panel *ngFor="let channel of channels">
         <mat-expansion-panel-header>
             <mat-panel-title fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="16px">
-                <div class="operation-badge">{{ channel.operation.type }}</div>
+                <div class="badge protocol-badge" >
+                    {{ channel.operation.protocol }}
+                </div>
+                <div class="badge" [ngClass]="{'publish-badge': channel.operation.operation === 'publish', 'subscribe-badge': channel.operation.operation === 'subscribe'}">
+                    {{ channel.operation.operation }}
+                    <i class="fa {{channel.operation.operation == 'publish' ? 'fa-arrow-circle-down' : 'fa-arrow-circle-up'}}"></i>
+                </div>
                 <h3>{{ channel.name }}</h3>
                 <div class="payload-name">{{ channel.operation.message.title }}</div>
             </mat-panel-title>
