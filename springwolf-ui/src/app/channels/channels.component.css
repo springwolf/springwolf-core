@@ -19,8 +19,8 @@
     color: #fff
 }
 
-.fa {
-    padding-left: 2px;
+.badge .fa {
+    padding-left: 2 px;
 }
 
 mat-divider {

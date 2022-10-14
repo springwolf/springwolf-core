@@ -22,7 +22,6 @@ export class ChannelsComponent implements OnInit {
       this.docName = name;
       this.asyncApiService.getAsyncApis().subscribe(asyncapi => {
         this.channels = this.sortChannels(asyncapi.get(name).channels);
-        console.log(this.channels);
       });
     });
   }
@@ -33,17 +32,12 @@ export class ChannelsComponent implements OnInit {
         if(a?.operation?.operation === b?.operation.operation) {
           return a.name?.localeCompare(b.name);
         } else {
-          return a?.operation?.operation?.localeCompare(b?.operation?.operation);
+          return a?.operation?.operation?.localeCompare(b?.operation?.operation); 
         }
       } else {
         return a?.operation?.protocol?.localeCompare(b?.operation?.protocol);
       }
     });
-  }
-
-
-  private sortByProperty(toSort: Array<any>, property: string) {
-    return toSort.sort((a,b) => (a[property] > b[property]) ? 1 : ((b[property] > a[property]) ? -1 : 0))
   }
 
 }
