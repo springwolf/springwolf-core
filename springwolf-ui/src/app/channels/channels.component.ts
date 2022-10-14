@@ -58,6 +58,6 @@ export class ChannelsComponent implements OnInit {
   }
 
   getChannelIdentifier(channel: Channel) {
-    return ChannelsComponent.CHANNEL_ANCHOR_PREFIX + channel.name + "-" + channel.operation.type.replace(' ', '-')
+    return ChannelsComponent.CHANNEL_ANCHOR_PREFIX + channel.name + "-" + channel.operation.protocol + "-" + channel.operation.operation;
   }
 }
