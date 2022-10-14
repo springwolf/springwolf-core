@@ -89,7 +89,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .operationId("test-topic-methodWithAnnotation")
+                .operationId("test-topic-methodWithAnnotation-publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
@@ -120,7 +120,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .operationId("test-topic-methodWithAnnotation1")
+                .operationId("test-topic-methodWithAnnotation1-publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
@@ -186,7 +186,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .operationId("test-topic-methodWithAnnotation")
+                .operationId("test-topic-methodWithAnnotation-publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
