@@ -82,6 +82,7 @@ public class AbstractListenerScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
                 .operationId("test-channel_publish_methodWithAnnotation")
                 .bindings(ImmutableMap.of("test-operation-binding", new TestListenerScanner.TestOperationBinding()))
                 .message(message)

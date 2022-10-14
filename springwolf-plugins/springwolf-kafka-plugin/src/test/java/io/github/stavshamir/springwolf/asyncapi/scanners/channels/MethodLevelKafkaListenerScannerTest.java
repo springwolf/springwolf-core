@@ -89,6 +89,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(message)
@@ -120,6 +121,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation1")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(message)
@@ -186,6 +188,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(message)

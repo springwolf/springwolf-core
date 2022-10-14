@@ -61,6 +61,7 @@ public class ConsumerChannelScanner implements ChannelsScanner {
         String operationId = consumerDataList.get(0).getChannelName() + "_publish";
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
                 .operationId(operationId)
                 .message(getMessageObject(consumerDataList))
                 .bindings(operationBinding)

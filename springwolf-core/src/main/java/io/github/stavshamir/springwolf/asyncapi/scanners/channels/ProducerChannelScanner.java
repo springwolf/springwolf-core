@@ -61,6 +61,7 @@ public class ProducerChannelScanner implements ChannelsScanner {
         String operationId = producerDataList.get(0).getChannelName() + "_subscribe";
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
                 .operationId(operationId)
                 .message(getMessageObject(producerDataList))
                 .bindings(operationBinding)

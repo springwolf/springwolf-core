@@ -61,6 +61,7 @@ public class ConsumerChannelScannerTest {
                 .containsKey(channelName);
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
                 .operationId("example-consumer-topic-foo1_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(Message.builder()
@@ -150,6 +151,7 @@ public class ConsumerChannelScannerTest {
         );
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
                 .operationId("example-consumer-topic_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(ImmutableMap.of(ONE_OF, messages))

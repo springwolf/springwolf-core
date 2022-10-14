@@ -44,6 +44,7 @@
               "ack": false
             }
           },
+          "description": "Auto-generated description",
           "operationId": "example-bindings-queue_publish_bindingsExample",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
@@ -81,6 +82,7 @@
               "ack": false
             }
           },
+          "description": "Auto-generated description",
           "operationId": "example-topic-queue_publish_bindingsBeanExample",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
@@ -118,6 +120,7 @@
               "ack": false
             }
           },
+          "description": "Auto-generated description",
           "operationId": "another-queue_publish_receiveAnotherPayload",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
@@ -146,6 +149,7 @@
               "ack": false
             }
           },
+          "description": "Auto-generated description",
           "operationId": "example-manual-consumer-channel_publish",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
@@ -193,6 +197,7 @@
               "ack": false
             }
           },
+          "description": "Auto-generated description",
           "operationId": "example-queue_publish_receiveExamplePayload",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -230,6 +235,7 @@
               "ack": false
             }
           },
+          "description": "Auto-generated description",
           "operationId": "example-producer-channel_subscribe",
           "message": {
             "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",

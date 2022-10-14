@@ -35,6 +35,7 @@
               "$ref": "#/components/schemas/ExamplePayload"
             }
           },
+          "description": "Auto-generated description",
           "operationId": "new-user_listenerMethod_subscribe",
           "bindings": {
             "kafka": {

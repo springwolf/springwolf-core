@@ -109,6 +109,7 @@ public abstract class AbstractListenerScanner<T extends Annotation> implements C
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
                 .operationId(operationId)
                 .message(message)
                 .bindings(operationBinding)
