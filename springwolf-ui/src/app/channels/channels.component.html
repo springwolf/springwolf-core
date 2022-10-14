@@ -1,6 +1,6 @@
 <h1>Channels</h1>
 <mat-accordion>
-    <mat-expansion-panel *ngFor="let channel of channels" [id]="this.getChannelIdentifier(channel)" [expanded]="selectedChannel == this.getChannelIdentifier(channel)" (opened)="this.setChannelSelection(channel)" (closed)="this.resetChannelSelection(channel)">
+    <mat-expansion-panel *ngFor="let channel of channels" [id]="this.getChannelIdentifier(channel)" [expanded]="selectedChannel == this.getChannelIdentifier(channel)" (opened)="this.setChannelSelection(channel)">
         <mat-expansion-panel-header>
             <mat-panel-title fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="16px">
                 <div class="badge protocol-badge" >
