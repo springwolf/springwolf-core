@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.swagger.oas.inflector.examples.ExampleBuilder;
 import io.swagger.oas.inflector.examples.models.Example;
 import io.swagger.oas.inflector.processors.JsonNodeExampleSerializer;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,18 @@ public class DefaultSchemasService implements SchemasService {
         // object mapper
         definitions.forEach(this::deserializeExampleToMap);
         return definitions;
+    }
+
+    @Override
+    public String register(AsyncHeaders headers) {
+        log.debug("Registering schema for {}", headers.getSchemaName());
+
+        MapSchema headerSchema = new MapSchema();
+        headerSchema.properties(headers);
+
+        this.definitions.put(headers.getSchemaName(), headerSchema);
+
+        return headers.getSchemaName();
     }
 
     @Override

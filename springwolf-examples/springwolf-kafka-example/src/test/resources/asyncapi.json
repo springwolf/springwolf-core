@@ -29,6 +29,9 @@
             "title": "AnotherPayloadDto",
             "payload": {
               "$ref": "#/components/schemas/AnotherPayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/HeadersNotDocumented"
             }
           }
         },
@@ -46,6 +49,9 @@
             "title": "ExamplePayloadDto",
             "payload": {
               "$ref": "#/components/schemas/ExamplePayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/HeadersNotDocumented"
             }
           }
         },
@@ -65,6 +71,9 @@
                 "title": "ExamplePayloadDto",
                 "payload": {
                   "$ref": "#/components/schemas/ExamplePayloadDto"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/SpringDefaultHeaders"
                 }
               },
               {
@@ -73,6 +82,9 @@
                 "description": "Custom, optional description for this produced to topic",
                 "payload": {
                   "$ref": "#/components/schemas/AnotherPayloadDto"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/CloudEventHeadersForAnotherPayloadDtoEndpoint"
                 }
               }
             ]
@@ -93,6 +105,9 @@
             "description": "Custom, optional description for this consumed topic",
             "payload": {
               "$ref": "#/components/schemas/ExamplePayloadDto"
+            },
+            "headers": {
+              "$ref": "#/components/schemas/HeadersNotDocumented"
             }
           }
         },
@@ -112,6 +127,9 @@
                 "title": "ExamplePayloadDto",
                 "payload": {
                   "$ref": "#/components/schemas/ExamplePayloadDto"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/HeadersNotDocumented"
                 }
               },
               {
@@ -119,6 +137,9 @@
                 "title": "AnotherPayloadDto",
                 "payload": {
                   "$ref": "#/components/schemas/AnotherPayloadDto"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/HeadersNotDocumented"
                 }
               },
               {
@@ -126,6 +147,9 @@
                 "title": "MonetaryAmount",
                 "payload": {
                   "$ref": "#/components/schemas/MonetaryAmount"
+                },
+                "headers": {
+                  "$ref": "#/components/schemas/HeadersNotDocumented"
                 }
               }
             ]
@@ -198,6 +222,90 @@
           },
           "exampleSetFlag": true
         },
+        "CloudEventHeadersForAnotherPayloadDtoEndpoint": {
+          "type": "object",
+          "properties": {
+            "ce_specversion": {
+              "type": "string",
+              "description": "CloudEvent Spec Version Header",
+              "example": "1.0",
+              "exampleSetFlag": true,
+              "enum": [
+                "1.0"
+              ]
+            },
+            "ce_time": {
+              "type": "string",
+              "description": "CloudEvent Time Header",
+              "example": "2015-07-20T15:49:04-07:00",
+              "exampleSetFlag": true,
+              "enum": [
+                "2015-07-20T15:49:04-07:00"
+              ]
+            },
+            "content-type": {
+              "type": "string",
+              "description": "CloudEvent Content-Type Header",
+              "example": "application/json",
+              "exampleSetFlag": true,
+              "enum": [
+                "application/json"
+              ]
+            },
+            "ce_id": {
+              "type": "string",
+              "description": "CloudEvent Id Header",
+              "example": "1234-1234-1234",
+              "exampleSetFlag": true,
+              "enum": [
+                "1234-1234-1234"
+              ]
+            },
+            "ce_type": {
+              "type": "string",
+              "description": "CloudEvent Payload Type Header",
+              "example": "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
+              "exampleSetFlag": true,
+              "enum": [
+                "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint"
+              ]
+            },
+            "ce_source": {
+              "type": "string",
+              "description": "CloudEvent Source Header",
+              "example": "springwolf-kafka-example/anotherPayloadDtoEndpoint",
+              "exampleSetFlag": true,
+              "enum": [
+                "springwolf-kafka-example/anotherPayloadDtoEndpoint"
+              ]
+            },
+            "ce_subject": {
+              "type": "string",
+              "description": "CloudEvent Subject Header",
+              "example": "Test Subject",
+              "exampleSetFlag": true,
+              "enum": [
+                "Test Subject"
+              ]
+            }
+          },
+          "example": {
+            "ce_specversion": "1.0",
+            "ce_time": "2015-07-20T15:49:04-07:00",
+            "content-type": "application/json",
+            "ce_id": "1234-1234-1234",
+            "ce_type": "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
+            "ce_source": "springwolf-kafka-example/anotherPayloadDtoEndpoint",
+            "ce_subject": "Test Subject"
+          },
+          "exampleSetFlag": true
+        },
+        "HeadersNotDocumented": {
+          "type": "object",
+          "properties": {},
+          "example": {},
+          "exampleSetFlag": true
+        },
         "AnotherPayloadDto": {
           "required": [
             "example"
@@ -223,6 +331,25 @@
               "someLong": 5,
               "someEnum": "FOO2"
             }
+          },
+          "exampleSetFlag": true
+        },
+        "SpringDefaultHeaders": {
+          "type": "object",
+          "properties": {
+            "__TypeId__": {
+              "type": "string",
+              "description": "Spring Type Id Header",
+              "example": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+              "exampleSetFlag": true,
+              "enum": [
+                "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+                "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
+              ]
+            }
+          },
+          "example": {
+            "__TypeId__": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
           },
           "exampleSetFlag": true
         }

@@ -7,6 +7,8 @@ import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import lombok.Data;
@@ -76,6 +78,7 @@ public class AbstractChannelScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -123,4 +126,3 @@ public class AbstractChannelScannerTest {
     }
 
 }
-

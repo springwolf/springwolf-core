@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
@@ -81,12 +82,14 @@ public class ProducerChannelScanner implements ChannelsScanner {
     private Message buildMessage(ProducerData producerData) {
         Class<?> payloadType = producerData.getPayloadType();
         String modelName = schemasService.register(payloadType);
+        String headerModelName = schemasService.register(producerData.getHeaders());
 
         return Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
                 .description(producerData.getDescription())
                 .payload(PayloadReference.fromModelName(modelName))
+                .headers(HeaderReference.fromModelName(headerModelName))
                 .build();
     }
 

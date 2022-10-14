@@ -9,6 +9,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
@@ -177,11 +179,13 @@ public class ClassLevelKafkaListenerScanner
     private Message buildMessage(Method method) {
         Class<?> payloadType = getPayloadType(method);
         String modelName = schemasService.register(payloadType);
+        String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
         return Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
                 .payload(PayloadReference.fromModelName(modelName))
+                .headers(HeaderReference.fromModelName(headerModelName))
                 .build();
     }
 
