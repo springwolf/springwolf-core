@@ -33,11 +33,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {TestChannelScanner.class, DefaultSchemasService.class})
-public class AbstractChannelScannerTest {
+@ContextConfiguration(classes = {TestListenerScanner.class, DefaultSchemasService.class})
+public class AbstractListenerScannerTest {
 
     @Autowired
-    private TestChannelScanner channelScanner;
+    private TestListenerScanner channelScanner;
 
     @MockBean
     private ComponentsScanner componentsScanner;
@@ -83,12 +83,12 @@ public class AbstractChannelScannerTest {
 
         Operation operation = Operation.builder()
                 .operationId("test-channel-methodWithAnnotation")
-                .bindings(ImmutableMap.of("test-operation-binding", new TestChannelScanner.TestOperationBinding()))
+                .bindings(ImmutableMap.of("test-operation-binding", new TestListenerScanner.TestOperationBinding()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("test-channel-binding", new TestChannelScanner.TestChannelBinding()))
+                .bindings(ImmutableMap.of("test-channel-binding", new TestListenerScanner.TestChannelBinding()))
                 .publish(operation)
                 .build();
 

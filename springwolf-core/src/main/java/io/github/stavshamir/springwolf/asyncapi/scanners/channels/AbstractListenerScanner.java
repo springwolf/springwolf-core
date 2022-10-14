@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
-public abstract class AbstractChannelScanner<T extends Annotation> implements ChannelsScanner {
+public abstract class AbstractListenerScanner<T extends Annotation> implements ChannelsScanner {
 
     @Autowired
     private AsyncApiDocket docket;
