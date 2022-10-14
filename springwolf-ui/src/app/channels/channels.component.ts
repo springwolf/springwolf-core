@@ -11,6 +11,7 @@ import {Location} from "@angular/common";
   styleUrls: ['./channels.component.css']
 })
 export class ChannelsComponent implements OnInit {
+  static CHANNEL_ANCHOR_PREFIX = "channel-"
 
   channels: Channel[];
   selectedChannel: string;
@@ -50,15 +51,13 @@ export class ChannelsComponent implements OnInit {
     window.location.hash = '#' + this.getChannelIdentifier(channel)
   }
   setChannelSelectionFromLocation(): void {
-    this.selectedChannel = window.location.hash.substr(1);
-  }
-  resetChannelSelection(channel: Channel): void {
-    if(this.selectedChannel == this.getChannelIdentifier(channel)) {
-      this.selectedChannel = undefined
+    const anchor = window.location.hash.substr(1);
+    if(anchor.startsWith(ChannelsComponent.CHANNEL_ANCHOR_PREFIX)) {
+      this.selectedChannel = anchor;
     }
   }
 
   getChannelIdentifier(channel: Channel) {
-    return channel.name + "-" + channel.operation.type.replace(' ', '-')
+    return ChannelsComponent.CHANNEL_ANCHOR_PREFIX + channel.name + "-" + channel.operation.type.replace(' ', '-')
   }
 }

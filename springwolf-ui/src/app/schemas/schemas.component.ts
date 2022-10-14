@@ -34,9 +34,4 @@ export class SchemasComponent implements OnInit {
   setSchemaSelectionFromLocation(): void {
     this.selectedSchema = window.location.hash.substr(1);
   }
-  resetSchemaSelection(currentSchema: string): void {
-    if(this.selectedSchema == currentSchema) {
-      this.selectedSchema = undefined
-    }
-  }
 }
