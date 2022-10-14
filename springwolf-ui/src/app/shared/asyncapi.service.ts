@@ -91,10 +91,10 @@ export class AsyncApiService {
     private mapChannels(channels: ServerAsyncApi["channels"]): Channel[] {
         const s = new Array<Channel>();
         Object.entries(channels).forEach(([k, v]) => {
-            const subscriberChannels = this.mapChannel(k, v.description, v.subscribe, " consumer")
+            const subscriberChannels = this.mapChannel(k, v.description, v.subscribe, " subscribe")
             subscriberChannels.forEach(channel => s.push(channel))
 
-            const publisherChannels = this.mapChannel(k, v.description, v.publish, " producer")
+            const publisherChannels = this.mapChannel(k, v.description, v.publish, " publish")
             publisherChannels.forEach(channel => s.push(channel))
         });
         return s;
