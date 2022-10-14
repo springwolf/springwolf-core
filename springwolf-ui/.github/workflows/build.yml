@@ -1,8 +1,12 @@
 name: Build
 
 on:
-  - push
-  - workflow_dispatch
+  push:
+    branches:
+      - master
+  workflow_dispatch: {}
+  pull_request:
+    types: [ opened, synchronize, ready_for_review ]
 
 permissions:
   # Allow to publish github pages
