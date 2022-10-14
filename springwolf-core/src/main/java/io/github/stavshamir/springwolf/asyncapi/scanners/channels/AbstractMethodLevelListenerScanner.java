@@ -85,7 +85,7 @@ public abstract class AbstractMethodLevelListenerScanner implements ChannelsScan
         String channelName = getChannelName(annotation);
         Map<String, ? extends OperationBinding> operationBinding = buildOperationBinding(annotation);
         Class<?> payload = getPayloadType(method);
-        String operationId = channelName + "-" + method.getName() + "-publish";
+        String operationId = channelName + "_publish_" + method.getName();
         ChannelItem channel = buildChannel(payload, operationBinding, operationId);
 
         return Maps.immutableEntry(channelName, channel);

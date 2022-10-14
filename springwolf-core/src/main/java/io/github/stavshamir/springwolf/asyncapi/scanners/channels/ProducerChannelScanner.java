@@ -58,7 +58,7 @@ public class ProducerChannelScanner implements ChannelsScanner {
         // AsyncApi does not support multiple bindings on a single channel
         Map<String, ? extends ChannelBinding> channelBinding = producerDataList.get(0).getChannelBinding();
         Map<String, ? extends OperationBinding> operationBinding = producerDataList.get(0).getOperationBinding();
-        String operationId = producerDataList.get(0).getChannelName() + "-subscribe";
+        String operationId = producerDataList.get(0).getChannelName() + "_subscribe";
 
         Operation operation = Operation.builder()
                 .operationId(operationId)

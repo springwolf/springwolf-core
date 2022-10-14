@@ -35,7 +35,7 @@
               "$ref": "#/components/schemas/ExamplePayload"
             }
           },
-          "operationId": "new-user-listenerMethod-subscribe",
+          "operationId": "new-user_listenerMethod_subscribe",
           "bindings": {
             "kafka": {
               "groupId": {
