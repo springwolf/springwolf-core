@@ -122,7 +122,6 @@ export class AsyncApiService {
 
     private mapOperation(operationName: string, message: Message, bindings?: any): Operation {
         return {
-            type: this.getProtocol(bindings) + operationName,
             protocol: this.getProtocol(bindings),
             operation: operationName,
             message: message,
