@@ -1,6 +1,6 @@
 import { AsyncApi } from './models/asyncapi.model';
 import { Server } from './models/server.model';
-import {Channel, Message, Operation, OperationType} from './models/channel.model';
+import {Channel, CHANNEL_ANCHOR_PREFIX, Message, Operation, OperationType} from './models/channel.model';
 import { Schema } from './models/schema.model';
 import { Injectable } from '@angular/core';
 import {Example} from "./models/example.model";
@@ -102,17 +102,19 @@ export class AsyncApiMapperService {
     private mapChannel(
         topicName: string,
         description: ServerAsyncApi["channels"][""]["description"],
-        operation: ServerAsyncApi["channels"][""]["subscribe"] | ServerAsyncApi["channels"][""]["publish"],
+        serverOperation: ServerAsyncApi["channels"][""]["subscribe"] | ServerAsyncApi["channels"][""]["publish"],
         operationType: OperationType): Channel[]
     {
-        if(operation !== undefined) {
-            let messages: Message[] = 'oneOf' in operation.message ? operation.message.oneOf : [operation.message];
+        if(serverOperation !== undefined) {
+            let messages: Message[] = 'oneOf' in serverOperation.message ? serverOperation.message.oneOf : [serverOperation.message];
 
             return messages.map(message => {
+                const operation = this.mapOperation(operationType, message, serverOperation.bindings)
                 return {
                     name: topicName,
+                    anchorIdentifier: CHANNEL_ANCHOR_PREFIX + topicName + "-" + operation.protocol + "-" + operationType,
                     description: description,
-                    operation: this.mapOperation(operationType, message, operation.bindings)
+                    operation: operation,
                 }
             })
         }
