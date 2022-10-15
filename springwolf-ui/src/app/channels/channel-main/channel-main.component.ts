@@ -5,7 +5,6 @@ import { Schema } from 'src/app/shared/models/schema.model';
 import { PublisherService } from 'src/app/shared/publisher.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Operation } from 'src/app/shared/models/channel.model';
-import { Subscription } from 'rxjs';
 import { STATUS } from 'angular-in-memory-web-api';
 
 @Component({
@@ -39,7 +38,7 @@ export class ChannelMainComponent implements OnInit {
   ngOnInit(): void {
     this.asyncApiService.getAsyncApis().subscribe(
       asyncapi => {
-        let schemas: Map<string, Schema> = asyncapi.get(this.docName).components.schemas;
+        let schemas: Map<string, Schema> = asyncapi.components.schemas;
         this.schemaName = this.operation.message.payload.$ref.slice(this.operation.message.payload.$ref.lastIndexOf('/') + 1)
         this.schema = schemas[this.schemaName];
 
