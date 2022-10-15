@@ -1,5 +1,5 @@
 export interface Info {
-    title: String;
-    version: String;
-    description?: String;
+    title: string;
+    version: string;
+    description?: string;
 }

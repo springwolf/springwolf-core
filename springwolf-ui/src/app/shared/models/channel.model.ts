@@ -4,11 +4,12 @@ export interface Channel {
     operation: Operation;
 }
 
+export type OperationType = "publish" | "subscribe";
 export interface Operation {
     message: Message;
     bindings?: { [type: string]: any };
     protocol: string;
-    operation: string;
+    operation: OperationType;
 }
 
 export interface Message {

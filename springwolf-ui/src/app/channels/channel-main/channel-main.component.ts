@@ -40,15 +40,15 @@ export class ChannelMainComponent implements OnInit {
       asyncapi => {
         let schemas: Map<string, Schema> = asyncapi.components.schemas;
         this.schemaName = this.operation.message.payload.$ref.slice(this.operation.message.payload.$ref.lastIndexOf('/') + 1)
-        this.schema = schemas[this.schemaName];
+        this.schema = schemas.get(this.schemaName);
 
-        this.defaultExample = new Example(this.schema.example);
-        this.exampleTextAreaLineCount = this.defaultExample.lineCount;
+        this.defaultExample = this.schema.example;
+        this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 0;
 
         this.headersSchemaName = this.operation.message.headers.$ref.slice(this.operation.message.headers.$ref.lastIndexOf('/') + 1)
-        this.headers = schemas[this.headersSchemaName];
-        this.headersExample = new Example(this.headers.example);
-        this.headersTextAreaLineCount = this.headersExample.lineCount;
+        this.headers = schemas.get(this.headersSchemaName);
+        this.headersExample = this.headers.example;
+        this.headersTextAreaLineCount = this.headersExample?.lineCount || 0;
       }
     );
 
