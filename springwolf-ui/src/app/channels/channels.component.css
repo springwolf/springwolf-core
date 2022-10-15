@@ -4,6 +4,7 @@
     padding: 8px;
     font-size: small;
     font-weight: bold;
+    display: inline-block;
 }
 
 .subscribe-badge {
