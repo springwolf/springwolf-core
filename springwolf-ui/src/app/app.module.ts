@@ -20,6 +20,7 @@ import { MockServer } from './shared/mock/mock-server';
 import { PublisherService } from './shared/publisher.service';
 import { FormsModule } from '@angular/forms';
 import { JsonComponent } from './shared/components/json/json.component';
+import {AsyncApiMapperService} from "./shared/asyncapi-mapper.service";
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { JsonComponent } from './shared/components/json/json.component';
   ],
   providers: [
     AsyncApiService,
+    AsyncApiMapperService,
     PublisherService,
     {
       provide: HIGHLIGHT_OPTIONS,

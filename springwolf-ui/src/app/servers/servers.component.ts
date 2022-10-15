@@ -9,7 +9,7 @@ import { Server } from '../shared/models/server.model';
 })
 export class ServersComponent implements OnInit {
 
-  servers: Map<String, Server>;
+  servers: Map<string, Server>;
 
   constructor(private asyncApiService: AsyncApiService) { }
 
