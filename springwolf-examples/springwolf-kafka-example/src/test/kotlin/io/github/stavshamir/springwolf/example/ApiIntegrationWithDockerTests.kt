@@ -45,7 +45,7 @@ class ApiIntegrationWithDockerTests {
         val s: InputStream = this.javaClass.getResourceAsStream("/asyncapi.json")
         val expected: String = IOUtils.toString(s, StandardCharsets.UTF_8)
 
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE)
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER)
 
     }
 

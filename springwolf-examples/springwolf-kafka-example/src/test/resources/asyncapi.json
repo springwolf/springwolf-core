@@ -1,377 +1,342 @@
 {
-    "asyncapi": "2.0.0",
-    "info": {
-      "title": "Springwolf example project - Kafka",
-      "contact": {
-        "name": "springwolf",
-        "url": "https://github.com/springwolf/springwolf-core",
-        "email": "example@example.com"
-      },
-      "description": "Springwolf example project to demonstrate springwolfs abilities",
-      "license": {
-        "name": "Apache License 2.0"
-      },
-      "version": "1.0.0"
+  "asyncapi" : "2.0.0",
+  "info" : {
+    "title" : "Springwolf example project - Kafka",
+    "version" : "1.0.0",
+    "description" : "Springwolf example project to demonstrate springwolfs abilities",
+    "contact" : {
+      "name" : "springwolf",
+      "url" : "https://github.com/springwolf/springwolf-core",
+      "email" : "example@example.com"
     },
-    "servers": {
-      "kafka": {
-        "url": "kafka:29092",
-        "protocol": "kafka"
+    "license" : {
+      "name" : "Apache License 2.0"
+    }
+  },
+  "servers" : {
+    "kafka" : {
+      "url" : "kafka:29092",
+      "protocol" : "kafka"
+    }
+  },
+  "channels" : {
+    "another-topic" : {
+      "publish" : {
+        "operationId" : "another-topic_publish_receiveAnotherPayload",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "kafka" : {
+            "groupId" : {
+              "type" : "string",
+              "enum" : [ "example-group-id" ]
+            }
+          }
+        },
+        "message" : {
+          "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+          "title" : "AnotherPayloadDto",
+          "payload" : {
+            "$ref" : "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          }
+        }
+      },
+      "bindings" : {
+        "kafka" : { }
       }
     },
-    "channels": {
-      "another-topic": {
-        "publish": {
-          "bindings": {
-            "kafka": {
-              "groupId": {
-                "type": "string",
-                "enum": [
-                  "example-group-id"
-                ]
-              }
-            }
-          },
-          "description": "Auto-generated description",
-          "operationId": "another-topic_publish_receiveAnotherPayload",
-          "message": {
-            "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
-            "title": "AnotherPayloadDto",
-            "payload": {
-              "$ref": "#/components/schemas/AnotherPayloadDto"
-            },
-            "headers": {
-              "$ref": "#/components/schemas/HeadersNotDocumented"
-            }
-          }
+    "example-consumer-topic" : {
+      "publish" : {
+        "operationId" : "example-consumer-topic_publish",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "kafka" : { }
         },
-        "bindings": {
-          "kafka": {}
+        "message" : {
+          "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+          "title" : "ExamplePayloadDto",
+          "description" : "Custom, optional description for this consumed topic",
+          "payload" : {
+            "$ref" : "#/components/schemas/ExamplePayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          }
         }
       },
-      "example-topic": {
-        "publish": {
-          "bindings": {
-            "kafka": {}
-          },
-          "description": "Auto-generated description",
-          "operationId": "example-topic_publish_receiveExamplePayload",
-          "message": {
-            "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-            "title": "ExamplePayloadDto",
-            "payload": {
-              "$ref": "#/components/schemas/ExamplePayloadDto"
-            },
-            "headers": {
-              "$ref": "#/components/schemas/HeadersNotDocumented"
-            }
-          }
-        },
-        "bindings": {
-          "kafka": {}
-        }
-      },
-      "example-producer-topic": {
-        "subscribe": {
-          "bindings": {
-            "kafka": {}
-          },
-          "description": "Auto-generated description",
-          "operationId": "example-producer-topic_subscribe",
-          "message": {
-            "oneOf": [
-              {
-                "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-                "title": "ExamplePayloadDto",
-                "payload": {
-                  "$ref": "#/components/schemas/ExamplePayloadDto"
-                },
-                "headers": {
-                  "$ref": "#/components/schemas/SpringDefaultHeaders"
-                }
-              },
-              {
-                "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
-                "title": "AnotherPayloadDto",
-                "description": "Custom, optional description for this produced to topic",
-                "payload": {
-                  "$ref": "#/components/schemas/AnotherPayloadDto"
-                },
-                "headers": {
-                  "$ref": "#/components/schemas/CloudEventHeadersForAnotherPayloadDtoEndpoint"
-                }
-              }
-            ]
-          }
-        },
-        "bindings": {
-          "kafka": {}
-        }
-      },
-      "example-consumer-topic": {
-        "publish": {
-          "bindings": {
-            "kafka": {}
-          },
-          "description": "Auto-generated description",
-          "operationId": "example-consumer-topic_publish",
-          "message": {
-            "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-            "title": "ExamplePayloadDto",
-            "description": "Custom, optional description for this consumed topic",
-            "payload": {
-              "$ref": "#/components/schemas/ExamplePayloadDto"
-            },
-            "headers": {
-              "$ref": "#/components/schemas/HeadersNotDocumented"
-            }
-          }
-        },
-        "bindings": {
-          "kafka": {}
-        }
-      },
-      "multi-payload-topic": {
-        "publish": {
-          "bindings": {
-            "kafka": {}
-          },
-          "description": "Auto-generated description",
-          "operationId": "receiveMonetaryAmount_publish",
-          "message": {
-            "oneOf": [
-              {
-                "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-                "title": "ExamplePayloadDto",
-                "payload": {
-                  "$ref": "#/components/schemas/ExamplePayloadDto"
-                },
-                "headers": {
-                  "$ref": "#/components/schemas/HeadersNotDocumented"
-                }
-              },
-              {
-                "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
-                "title": "AnotherPayloadDto",
-                "payload": {
-                  "$ref": "#/components/schemas/AnotherPayloadDto"
-                },
-                "headers": {
-                  "$ref": "#/components/schemas/HeadersNotDocumented"
-                }
-              },
-              {
-                "name": "javax.money.MonetaryAmount",
-                "title": "MonetaryAmount",
-                "payload": {
-                  "$ref": "#/components/schemas/MonetaryAmount"
-                },
-                "headers": {
-                  "$ref": "#/components/schemas/HeadersNotDocumented"
-                }
-              }
-            ]
-          }
-        },
-        "bindings": {
-          "kafka": {}
-        }
+      "bindings" : {
+        "kafka" : { }
       }
     },
-    "components": {
-      "schemas": {
-        "MonetaryAmount": {
-          "type": "object",
-          "properties": {
-            "amount": {
-              "type": "number",
-              "example": 99.99,
-              "exampleSetFlag": true
-            },
-            "currency": {
-              "type": "string",
-              "example": "USD",
-              "exampleSetFlag": true
-            }
-          },
-          "example": {
-            "amount": 99.99,
-            "currency": "USD"
-          },
-          "exampleSetFlag": true
+    "example-producer-topic" : {
+      "subscribe" : {
+        "operationId" : "example-producer-topic_subscribe",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "kafka" : { }
         },
-        "ExamplePayloadDto": {
-          "required": [
-            "someEnum",
-            "someString"
-          ],
-          "type": "object",
-          "properties": {
-            "someString": {
-              "type": "string",
-              "description": "Some string field",
-              "example": "some string value",
-              "exampleSetFlag": true
+        "message" : {
+          "oneOf" : [ {
+            "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+            "title" : "ExamplePayloadDto",
+            "payload" : {
+              "$ref" : "#/components/schemas/ExamplePayloadDto"
             },
-            "someLong": {
-              "type": "integer",
-              "description": "Some long field",
-              "format": "int64",
-              "example": 5,
-              "exampleSetFlag": true
-            },
-            "someEnum": {
-              "type": "string",
-              "description": "Some enum field",
-              "example": "FOO2",
-              "exampleSetFlag": true,
-              "enum": [
-                "FOO1",
-                "FOO2",
-                "FOO3"
-              ]
+            "headers" : {
+              "$ref" : "#/components/schemas/SpringDefaultHeaders"
             }
-          },
-          "description": "Example payload model",
-          "example": {
-            "someString": "some string value",
-            "someLong": 5,
-            "someEnum": "FOO2"
-          },
-          "exampleSetFlag": true
-        },
-        "CloudEventHeadersForAnotherPayloadDtoEndpoint": {
-          "type": "object",
-          "properties": {
-            "ce_specversion": {
-              "type": "string",
-              "description": "CloudEvent Spec Version Header",
-              "example": "1.0",
-              "exampleSetFlag": true,
-              "enum": [
-                "1.0"
-              ]
+          }, {
+            "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "title" : "AnotherPayloadDto",
+            "description" : "Custom, optional description for this produced to topic",
+            "payload" : {
+              "$ref" : "#/components/schemas/AnotherPayloadDto"
             },
-            "ce_time": {
-              "type": "string",
-              "description": "CloudEvent Time Header",
-              "example": "2015-07-20T15:49:04-07:00",
-              "exampleSetFlag": true,
-              "enum": [
-                "2015-07-20T15:49:04-07:00"
-              ]
-            },
-            "content-type": {
-              "type": "string",
-              "description": "CloudEvent Content-Type Header",
-              "example": "application/json",
-              "exampleSetFlag": true,
-              "enum": [
-                "application/json"
-              ]
-            },
-            "ce_id": {
-              "type": "string",
-              "description": "CloudEvent Id Header",
-              "example": "1234-1234-1234",
-              "exampleSetFlag": true,
-              "enum": [
-                "1234-1234-1234"
-              ]
-            },
-            "ce_type": {
-              "type": "string",
-              "description": "CloudEvent Payload Type Header",
-              "example": "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
-              "exampleSetFlag": true,
-              "enum": [
-                "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint"
-              ]
-            },
-            "ce_source": {
-              "type": "string",
-              "description": "CloudEvent Source Header",
-              "example": "springwolf-kafka-example/anotherPayloadDtoEndpoint",
-              "exampleSetFlag": true,
-              "enum": [
-                "springwolf-kafka-example/anotherPayloadDtoEndpoint"
-              ]
-            },
-            "ce_subject": {
-              "type": "string",
-              "description": "CloudEvent Subject Header",
-              "example": "Test Subject",
-              "exampleSetFlag": true,
-              "enum": [
-                "Test Subject"
-              ]
+            "headers" : {
+              "$ref" : "#/components/schemas/CloudEventHeadersForAnotherPayloadDtoEndpoint"
             }
-          },
-          "example": {
-            "ce_specversion": "1.0",
-            "ce_time": "2015-07-20T15:49:04-07:00",
-            "content-type": "application/json",
-            "ce_id": "1234-1234-1234",
-            "ce_type": "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
-            "ce_source": "springwolf-kafka-example/anotherPayloadDtoEndpoint",
-            "ce_subject": "Test Subject"
-          },
-          "exampleSetFlag": true
-        },
-        "HeadersNotDocumented": {
-          "type": "object",
-          "properties": {},
-          "example": {},
-          "exampleSetFlag": true
-        },
-        "AnotherPayloadDto": {
-          "required": [
-            "example"
-          ],
-          "type": "object",
-          "properties": {
-            "foo": {
-              "type": "string",
-              "description": "Foo field",
-              "example": "bar",
-              "exampleSetFlag": true
-            },
-            "example": {
-              "$ref": "#/components/schemas/ExamplePayloadDto",
-              "exampleSetFlag": false
-            }
-          },
-          "description": "Another payload model",
-          "example": {
-            "foo": "bar",
-            "example": {
-              "someString": "some string value",
-              "someLong": 5,
-              "someEnum": "FOO2"
-            }
-          },
-          "exampleSetFlag": true
-        },
-        "SpringDefaultHeaders": {
-          "type": "object",
-          "properties": {
-            "__TypeId__": {
-              "type": "string",
-              "description": "Spring Type Id Header",
-              "example": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
-              "exampleSetFlag": true,
-              "enum": [
-                "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-                "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
-              ]
-            }
-          },
-          "example": {
-            "__TypeId__": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
-          },
-          "exampleSetFlag": true
+          } ]
         }
+      },
+      "bindings" : {
+        "kafka" : { }
       }
     },
-    "tags": []
+    "example-topic" : {
+      "publish" : {
+        "operationId" : "example-topic_publish_receiveExamplePayload",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "kafka" : { }
+        },
+        "message" : {
+          "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+          "title" : "ExamplePayloadDto",
+          "payload" : {
+            "$ref" : "#/components/schemas/ExamplePayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          }
+        }
+      },
+      "bindings" : {
+        "kafka" : { }
+      }
+    },
+    "multi-payload-topic" : {
+      "publish" : {
+        "operationId" : "receiveMonetaryAmount_publish",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "kafka" : { }
+        },
+        "message" : {
+          "oneOf" : [ {
+            "name" : "javax.money.MonetaryAmount",
+            "title" : "MonetaryAmount",
+            "payload" : {
+              "$ref" : "#/components/schemas/MonetaryAmount"
+            },
+            "headers" : {
+              "$ref" : "#/components/schemas/HeadersNotDocumented"
+            }
+          }, {
+            "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+            "title" : "ExamplePayloadDto",
+            "payload" : {
+              "$ref" : "#/components/schemas/ExamplePayloadDto"
+            },
+            "headers" : {
+              "$ref" : "#/components/schemas/HeadersNotDocumented"
+            }
+          }, {
+            "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "title" : "AnotherPayloadDto",
+            "payload" : {
+              "$ref" : "#/components/schemas/AnotherPayloadDto"
+            },
+            "headers" : {
+              "$ref" : "#/components/schemas/HeadersNotDocumented"
+            }
+          } ]
+        }
+      },
+      "bindings" : {
+        "kafka" : { }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "AnotherPayloadDto" : {
+        "required" : [ "example" ],
+        "type" : "object",
+        "properties" : {
+          "foo" : {
+            "type" : "string",
+            "description" : "Foo field",
+            "example" : "bar",
+            "exampleSetFlag" : true
+          },
+          "example" : {
+            "$ref" : "#/components/schemas/ExamplePayloadDto",
+            "exampleSetFlag" : false
+          }
+        },
+        "description" : "Another payload model",
+        "example" : {
+          "foo" : "bar",
+          "example" : {
+            "someString" : "some string value",
+            "someLong" : 5,
+            "someEnum" : "FOO2"
+          }
+        },
+        "exampleSetFlag" : true
+      },
+      "CloudEventHeadersForAnotherPayloadDtoEndpoint" : {
+        "type" : "object",
+        "properties" : {
+          "ce_id" : {
+            "type" : "string",
+            "description" : "CloudEvent Id Header",
+            "example" : "1234-1234-1234",
+            "exampleSetFlag" : true,
+            "enum" : [ "1234-1234-1234" ]
+          },
+          "ce_source" : {
+            "type" : "string",
+            "description" : "CloudEvent Source Header",
+            "example" : "springwolf-kafka-example/anotherPayloadDtoEndpoint",
+            "exampleSetFlag" : true,
+            "enum" : [ "springwolf-kafka-example/anotherPayloadDtoEndpoint" ]
+          },
+          "ce_specversion" : {
+            "type" : "string",
+            "description" : "CloudEvent Spec Version Header",
+            "example" : "1.0",
+            "exampleSetFlag" : true,
+            "enum" : [ "1.0" ]
+          },
+          "ce_subject" : {
+            "type" : "string",
+            "description" : "CloudEvent Subject Header",
+            "example" : "Test Subject",
+            "exampleSetFlag" : true,
+            "enum" : [ "Test Subject" ]
+          },
+          "ce_time" : {
+            "type" : "string",
+            "description" : "CloudEvent Time Header",
+            "example" : "2015-07-20T15:49:04-07:00",
+            "exampleSetFlag" : true,
+            "enum" : [ "2015-07-20T15:49:04-07:00" ]
+          },
+          "ce_type" : {
+            "type" : "string",
+            "description" : "CloudEvent Payload Type Header",
+            "example" : "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
+            "exampleSetFlag" : true,
+            "enum" : [ "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint" ]
+          },
+          "content-type" : {
+            "type" : "string",
+            "description" : "CloudEvent Content-Type Header",
+            "example" : "application/json",
+            "exampleSetFlag" : true,
+            "enum" : [ "application/json" ]
+          }
+        },
+        "example" : {
+          "ce_id" : "1234-1234-1234",
+          "ce_source" : "springwolf-kafka-example/anotherPayloadDtoEndpoint",
+          "ce_specversion" : "1.0",
+          "ce_subject" : "Test Subject",
+          "ce_time" : "2015-07-20T15:49:04-07:00",
+          "ce_type" : "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
+          "content-type" : "application/json"
+        },
+        "exampleSetFlag" : true
+      },
+      "ExamplePayloadDto" : {
+        "required" : [ "someEnum", "someString" ],
+        "type" : "object",
+        "properties" : {
+          "someString" : {
+            "type" : "string",
+            "description" : "Some string field",
+            "example" : "some string value",
+            "exampleSetFlag" : true
+          },
+          "someLong" : {
+            "type" : "integer",
+            "description" : "Some long field",
+            "format" : "int64",
+            "example" : 5,
+            "exampleSetFlag" : true
+          },
+          "someEnum" : {
+            "type" : "string",
+            "description" : "Some enum field",
+            "example" : "FOO2",
+            "exampleSetFlag" : true,
+            "enum" : [ "FOO1", "FOO2", "FOO3" ]
+          }
+        },
+        "description" : "Example payload model",
+        "example" : {
+          "someString" : "some string value",
+          "someLong" : 5,
+          "someEnum" : "FOO2"
+        },
+        "exampleSetFlag" : true
+      },
+      "HeadersNotDocumented" : {
+        "type" : "object",
+        "properties" : { },
+        "example" : { },
+        "exampleSetFlag" : true
+      },
+      "MonetaryAmount" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "example" : 99.99,
+            "exampleSetFlag" : true
+          },
+          "currency" : {
+            "type" : "string",
+            "example" : "USD",
+            "exampleSetFlag" : true
+          }
+        },
+        "example" : {
+          "amount" : 99.99,
+          "currency" : "USD"
+        },
+        "exampleSetFlag" : true
+      },
+      "SpringDefaultHeaders" : {
+        "type" : "object",
+        "properties" : {
+          "__TypeId__" : {
+            "type" : "string",
+            "description" : "Spring Type Id Header",
+            "example" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "exampleSetFlag" : true,
+            "enum" : [ "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto", "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto" ]
+          }
+        },
+        "example" : {
+          "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
+        },
+        "exampleSetFlag" : true
+      }
+    }
+  },
+  "tags" : [ ]
 }

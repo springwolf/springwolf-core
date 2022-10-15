@@ -25,7 +25,7 @@ public class DefaultSchemasService implements SchemasService {
     private final ModelConverters converter = ModelConverters.getInstance();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final Map<String, Schema> definitions = new HashMap<>();
+    private final Map<String, Schema> definitions = new TreeMap<>();
 
     public DefaultSchemasService(Optional<List<ModelConverter>> externalModelConverters) {
         externalModelConverters.ifPresent(converters -> converters.forEach(converter::addConverter));

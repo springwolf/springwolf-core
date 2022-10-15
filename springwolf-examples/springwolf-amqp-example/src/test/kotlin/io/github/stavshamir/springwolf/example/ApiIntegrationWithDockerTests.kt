@@ -47,7 +47,7 @@ class ApiIntegrationWithDockerTests {
 
         print(actual)
 
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE)
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER)
     }
 
 }
