@@ -7,8 +7,8 @@
     </td>
     <td>
       <span class="type" *ngIf="property.value.type">{{ property.value.type }}</span>
-      <span class="type" *ngIf="property.value['$ref']">
-        <a [href]="getSchemaUrl(property.value['$ref']?.split('/')?.pop())">{{ property.value['$ref'] }}</a>
+      <span class="type" *ngIf="property.value.name">
+        <a [href]="property.value.anchorUrl">{{ property.value.name }}</a>
       </span>
       <span class="format" *ngIf="property.value.format">({{ property.value.format }})</span>
       <div class="description">{{ property.value.description }}</div>

@@ -15,6 +15,7 @@ interface ServerAsyncApiSchema {
     [key: string]: object;
   };
   required?: string[];
+  $ref?: string;
 }
 
 interface ServerAsyncApiMessage {
@@ -31,6 +32,7 @@ interface ServerAsyncApiInfo {
   description?: string;
 }
 
+export type ServerAsyncApiChannelMessage = ServerAsyncApiMessage | { oneOf: ServerAsyncApiMessage[] };
 export interface ServerAsyncApi {
     asyncapi: string;
     info: ServerAsyncApiInfo;
@@ -44,11 +46,11 @@ export interface ServerAsyncApi {
         [key: string]: {
             description?: string;
             subscribe?: {
-                message: ServerAsyncApiMessage | { oneOf: ServerAsyncApiMessage[] };
+                message: ServerAsyncApiChannelMessage;
                 bindings?: any;
             };
             publish?: {
-                message: ServerAsyncApiMessage | { oneOf: ServerAsyncApiMessage[] };
+                message: ServerAsyncApiChannelMessage;
                 bindings?: any;
             };
         };
@@ -60,6 +62,7 @@ export interface ServerAsyncApi {
 
 @Injectable()
 export class AsyncApiMapperService {
+    static BASE_URL = window.location.pathname + window.location.search + "#";
 
     constructor() {
     }
@@ -106,7 +109,7 @@ export class AsyncApiMapperService {
         operationType: OperationType): Channel[]
     {
         if(serverOperation !== undefined) {
-            let messages: Message[] = 'oneOf' in serverOperation.message ? serverOperation.message.oneOf : [serverOperation.message];
+            let messages: Message[] = this.mapMessages(serverOperation.message)
 
             return messages.map(message => {
                 const operation = this.mapOperation(operationType, message, serverOperation.bindings)
@@ -119,6 +122,31 @@ export class AsyncApiMapperService {
             })
         }
         return [];
+    }
+
+    private mapMessages(message: ServerAsyncApiChannelMessage): Message[] {
+      if('oneOf' in message) {
+        return this.mapServerAsyncApiMessage(message.oneOf)
+      }
+      return this.mapServerAsyncApiMessage([message]);
+    }
+
+    private mapServerAsyncApiMessage(messages: ServerAsyncApiMessage[]): Message[] {
+      return messages.map((v) => {
+        return {
+          name: v.name,
+          title: v.title,
+          description: v.description,
+          payload: {
+            name: v.payload.$ref,
+            anchorUrl: AsyncApiMapperService.BASE_URL  +v.payload.$ref?.split('/')?.pop()
+          },
+          headers: {
+            name: v.headers.$ref,
+            anchorUrl: AsyncApiMapperService.BASE_URL + v.headers.$ref?.split('/')?.pop()
+          }
+        }
+      })
     }
 
     private mapOperation(operationType: OperationType, message: Message, bindings?: any): Operation {
@@ -144,8 +172,10 @@ export class AsyncApiMapperService {
       const properties = schema.properties !== undefined ? this.mapSchemas(schema.properties) : undefined
       const example = schema.example !== undefined ? new Example(schema.example) : undefined
       return {
+        name: schema.$ref,
         description: schema.description,
         anchorIdentifier: '#' + schemaName,
+        anchorUrl: AsyncApiMapperService.BASE_URL + schema.$ref?.split('/')?.pop(),
         type: schema.type,
         format: schema.format,
         enum: schema.enum,
