@@ -24,9 +24,9 @@ export class SchemasComponent implements OnInit {
   }
 
   setSchemaSelection(schema: Schema): void {
-    window.location.hash = '#' + schema.anchorIdentifier
+    window.location.hash = schema.anchorIdentifier
   }
   setSchemaSelectionFromLocation(): void {
-    this.selectedSchema = window.location.hash.substr(1);
+    this.selectedSchema = window.location.hash;
   }
 }

@@ -145,7 +145,7 @@ export class AsyncApiMapperService {
       const example = schema.example !== undefined ? new Example(schema.example) : undefined
       return {
         description: schema.description,
-        anchorIdentifier: schemaName,
+        anchorIdentifier: '#' + schemaName,
         type: schema.type,
         format: schema.format,
         enum: schema.enum,

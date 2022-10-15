@@ -41,10 +41,10 @@ export class ChannelsComponent implements OnInit {
   }
 
   setChannelSelection(channel: Channel): void {
-    window.location.hash = '#' + channel.anchorIdentifier
+    window.location.hash = channel.anchorIdentifier
   }
   setChannelSelectionFromLocation(): void {
-    const anchor = window.location.hash.substr(1);
+    const anchor = window.location.hash;
     if (anchor.startsWith(CHANNEL_ANCHOR_PREFIX)) {
       this.selectedChannel = anchor;
     }
