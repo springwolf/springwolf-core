@@ -137,7 +137,7 @@
             "kafka": {}
           },
           "description": "Auto-generated description",
-          "operationId": "receiveMonetaryAmount_subscribe",
+          "operationId": "receiveMonetaryAmount_publish",
           "message": {
             "oneOf": [
               {
