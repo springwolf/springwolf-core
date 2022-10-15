@@ -23,8 +23,8 @@ export class SchemasComponent implements OnInit {
       this.asyncApiService.getAsyncApis().subscribe(asyncapi => this.schemas = asyncapi.components.schemas);
   }
 
-  setSchemaSelection(schema: string): void {
-    window.location.hash = '#' + schema
+  setSchemaSelection(schema: Schema): void {
+    window.location.hash = '#' + schema.anchorIdentifier
   }
   setSchemaSelectionFromLocation(): void {
     this.selectedSchema = window.location.hash.substr(1);
