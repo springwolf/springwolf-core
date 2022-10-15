@@ -16,10 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -66,6 +63,15 @@ public class DefaultSchemasService implements SchemasService {
 
         Map<String, Schema> schemas = converter.readAll(type);
         this.definitions.putAll(schemas);
+
+        if (schemas.size() == 1) {
+            return new ArrayList<>(schemas.keySet()).get(0);
+        }
+
+        Set<String> resolvedPayloadModelName = converter.read(type).keySet();
+        if (!resolvedPayloadModelName.isEmpty()) {
+            return new ArrayList<>(resolvedPayloadModelName).get(0);
+        }
 
         return type.getSimpleName();
     }

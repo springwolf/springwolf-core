@@ -78,6 +78,14 @@ public class DefaultSchemasServiceTest {
         JSONAssert.assertEquals(expected, actualDefinitions, JSONCompareMode.NON_EXTENSIBLE);
     }
 
+    @Test
+    public void classWithSchemaAnnotation() {
+        String modelName = schemasService.register(ClassWithSchemaAnnotation.class);
+
+        assertThat(modelName)
+                .isEqualTo("DifferentName");
+    }
+
     private String jsonResource(String path) throws IOException {
         InputStream s = this.getClass().getResourceAsStream(path);
         return IOUtils.toString(s, StandardCharsets.UTF_8);
@@ -114,6 +122,14 @@ public class DefaultSchemasServiceTest {
         private enum Bar {
             BAR1, BAR2
         }
+    }
+
+    @Data
+    @NoArgsConstructor
+    @io.swagger.v3.oas.annotations.media.Schema(name = "DifferentName")
+    private static class ClassWithSchemaAnnotation {
+        private String s;
+        private boolean b;
     }
 
 }
