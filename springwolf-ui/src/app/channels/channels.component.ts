@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AsyncApiService } from '../shared/asyncapi.service';
-import { Channel } from '../shared/models/channel.model';
+import {Channel, CHANNEL_ANCHOR_PREFIX} from '../shared/models/channel.model';
 import { Location } from "@angular/common";
 
 @Component({
@@ -9,7 +9,6 @@ import { Location } from "@angular/common";
   styleUrls: ['./channels.component.css']
 })
 export class ChannelsComponent implements OnInit {
-  static CHANNEL_ANCHOR_PREFIX = "channel-"
 
   channels: Channel[];
   selectedChannel: string;
@@ -42,16 +41,12 @@ export class ChannelsComponent implements OnInit {
   }
 
   setChannelSelection(channel: Channel): void {
-    window.location.hash = '#' + this.getChannelIdentifier(channel)
+    window.location.hash = '#' + channel.anchorIdentifier
   }
   setChannelSelectionFromLocation(): void {
     const anchor = window.location.hash.substr(1);
-    if (anchor.startsWith(ChannelsComponent.CHANNEL_ANCHOR_PREFIX)) {
+    if (anchor.startsWith(CHANNEL_ANCHOR_PREFIX)) {
       this.selectedChannel = anchor;
     }
-  }
-
-  getChannelIdentifier(channel: Channel) {
-    return ChannelsComponent.CHANNEL_ANCHOR_PREFIX + channel.name + "-" + channel.operation.protocol + "-" + channel.operation.operation;
   }
 }
