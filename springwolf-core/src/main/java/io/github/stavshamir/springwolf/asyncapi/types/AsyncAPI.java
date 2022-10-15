@@ -1,11 +1,15 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
+import com.asyncapi.v2.model.Tag;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This is the root document object for the API specification. It combines resource listing and API declaration together into one document.
@@ -65,5 +69,13 @@ public class AsyncAPI {
      * referenced from properties outside the components object.
      */
     private Components components;
+
+    /**
+     * <b>Required.</b>
+     * A set of tags used by the specification with additional metadata. Each tag name in the set MUST be unique.
+     */
+    @NotNull
+    @Builder.Default
+    private Set<Tag> tags = Collections.emptySet();
 
 }

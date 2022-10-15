@@ -1,5 +1,4 @@
 {
-  "AsyncAPI Sample App": {
     "asyncapi": "2.0.0",
     "info": {
       "title": "AsyncAPI Sample App",
@@ -36,6 +35,8 @@
               "$ref": "#/components/schemas/ExamplePayload"
             }
           },
+          "description": "Auto-generated description",
+          "operationId": "new-user_listenerMethod_subscribe",
           "bindings": {
             "kafka": {
               "groupId": {
@@ -60,6 +61,6 @@
           }
         }
       }
-    }
-  }
+    },
+    "tags": []
 }

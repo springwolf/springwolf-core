@@ -45,16 +45,16 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {
-        RabbitChannelsScanner.class,
+        MethodLevelRabbitListenerScanner.class,
         DefaultSchemasService.class,
-        RabbitChannelsScannerTest.ClassWithRabbitListenerAnnotationsBindingBean.class
+        MethodLevelRabbitListenerScannerTest.ClassWithRabbitListenerAnnotationsBindingBean.class
 })
 @TestPropertySource(properties = "amqp.queues.test=test-queue")
-public class RabbitChannelsScannerTest {
+public class MethodLevelRabbitListenerScannerTest {
 
 
     @Autowired
-    private RabbitChannelsScanner rabbitListenerScanner;
+    private MethodLevelRabbitListenerScanner rabbitListenerScanner;
 
     @MockBean
     private ComponentsScanner componentsScanner;
@@ -109,6 +109,8 @@ public class RabbitChannelsScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-queue_publish_methodWithAnnotation")
                 .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList(QUEUE))
                         .build()))
@@ -148,6 +150,8 @@ public class RabbitChannelsScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-queue_publish_methodWithAnnotation1")
                 .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList(QUEUE))
                         .build()))
@@ -184,6 +188,8 @@ public class RabbitChannelsScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-queue_publish_methodWithAnnotation1")
                 .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList("key"))
                         .build()))
@@ -220,6 +226,8 @@ public class RabbitChannelsScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("binding-bean-queue_publish_methodWithAnnotation1")
                 .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList("binding-bean-key"))
                         .build()))
@@ -273,6 +281,8 @@ public class RabbitChannelsScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-queue_publish_methodWithAnnotation")
                 .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList(QUEUE))
                         .build()))

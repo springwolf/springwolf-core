@@ -85,7 +85,8 @@ public abstract class AbstractMethodLevelListenerScanner implements ChannelsScan
         String channelName = getChannelName(annotation);
         Map<String, ? extends OperationBinding> operationBinding = buildOperationBinding(annotation);
         Class<?> payload = getPayloadType(method);
-        ChannelItem channel = buildChannel(payload, operationBinding);
+        String operationId = channelName + "_publish_" + method.getName();
+        ChannelItem channel = buildChannel(payload, operationBinding, operationId);
 
         return Maps.immutableEntry(channelName, channel);
     }
@@ -145,7 +146,7 @@ public abstract class AbstractMethodLevelListenerScanner implements ChannelsScan
         return -1;
     }
 
-    private ChannelItem buildChannel(Class<?> payloadType, Map<String, ? extends OperationBinding> operationBinding) {
+    private ChannelItem buildChannel(Class<?> payloadType, Map<String, ? extends OperationBinding> operationBinding, String operationId) {
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
@@ -157,6 +158,8 @@ public abstract class AbstractMethodLevelListenerScanner implements ChannelsScan
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId(operationId)
                 .message(message)
                 .bindings(operationBinding)
                 .build();

@@ -155,7 +155,11 @@ public class ClassLevelKafkaListenerScanner
     }
 
     private ChannelItem buildChannel(Set<Method> methods, Map<String, ? extends OperationBinding> operationBinding) {
+        String operationId = methods.stream().findFirst().map(it->it.getName() + "_publish").orElse("");
+
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId(operationId)
                 .message(getMessageObject(methods))
                 .bindings(operationBinding)
                 .build();

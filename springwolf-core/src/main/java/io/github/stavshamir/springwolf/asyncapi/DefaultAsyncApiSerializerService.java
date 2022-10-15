@@ -35,12 +35,7 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
 
     @Override
     public String toJsonString(AsyncAPI asyncAPI) throws JsonProcessingException {
-        return jsonMapper.writeValueAsString(asTitleToDocMap(asyncAPI));
-    }
-
-    private Map<String, AsyncAPI> asTitleToDocMap(AsyncAPI asyncAPI) {
-        String title = asyncAPI.getInfo().getTitle();
-        return ImmutableMap.of(title, asyncAPI);
+        return jsonMapper.writeValueAsString(asyncAPI);
     }
 
 }

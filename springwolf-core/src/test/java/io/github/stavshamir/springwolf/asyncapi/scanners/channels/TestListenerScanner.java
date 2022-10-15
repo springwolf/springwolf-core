@@ -8,25 +8,25 @@ import lombok.EqualsAndHashCode;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-public class TestChannelScanner extends AbstractChannelScanner<AbstractChannelScannerTest.TestChannelListener> {
+public class TestListenerScanner extends AbstractListenerScanner<AbstractListenerScannerTest.TestChannelListener> {
 
     @Override
-    protected Class<AbstractChannelScannerTest.TestChannelListener> getListenerAnnotationClass() {
-        return AbstractChannelScannerTest.TestChannelListener.class;
+    protected Class<AbstractListenerScannerTest.TestChannelListener> getListenerAnnotationClass() {
+        return AbstractListenerScannerTest.TestChannelListener.class;
     }
 
     @Override
-    protected String getChannelName(AbstractChannelScannerTest.TestChannelListener annotation) {
+    protected String getChannelName(AbstractListenerScannerTest.TestChannelListener annotation) {
         return "test-channel";
     }
 
     @Override
-    protected Map<String, ? extends ChannelBinding> buildChannelBinding(AbstractChannelScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends ChannelBinding> buildChannelBinding(AbstractListenerScannerTest.TestChannelListener annotation) {
         return ImmutableMap.of("test-channel-binding", new TestChannelBinding());
     }
 
     @Override
-    protected Map<String, ? extends OperationBinding> buildOperationBinding(AbstractChannelScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends OperationBinding> buildOperationBinding(AbstractListenerScannerTest.TestChannelListener annotation) {
         return ImmutableMap.of("test-operation-binding", new TestOperationBinding());
     }
 

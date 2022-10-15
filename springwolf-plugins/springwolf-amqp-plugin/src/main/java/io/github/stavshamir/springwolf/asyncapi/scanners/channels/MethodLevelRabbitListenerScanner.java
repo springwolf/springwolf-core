@@ -25,13 +25,13 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
-public class RabbitChannelsScanner extends AbstractChannelScanner<RabbitListener>
+public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<RabbitListener>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
     private final Map<String, Binding> bindingsMap;
     private StringValueResolver resolver;
 
-    public RabbitChannelsScanner(List<Binding> bindings) {
+    public MethodLevelRabbitListenerScanner(List<Binding> bindings) {
         bindingsMap = bindings.stream()
                 .filter(Binding::isDestinationQueue)
                 .collect(Collectors.toMap(Binding::getDestination, Function.identity()));
