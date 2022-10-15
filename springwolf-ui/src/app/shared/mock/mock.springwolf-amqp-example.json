@@ -2,6 +2,15 @@
   "asyncapi": "2.0.0",
   "info": {
     "title": "Springwolf example project - AMQP",
+    "contact": {
+      "name": "springwolf",
+      "url": "https://github.com/springwolf/springwolf-core",
+      "email": "example@example.com"
+    },
+    "description": "Springwolf example project to demonstrate springwolfs abilities",
+    "license": {
+      "name": "Apache License 2.0"
+    },
     "version": "1.0.0"
   },
   "servers": {
@@ -35,6 +44,8 @@
             "ack": false
           }
         },
+        "description": "Auto-generated description",
+        "operationId": "example-bindings-queue_publish_bindingsExample",
         "message": {
           "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
@@ -42,7 +53,7 @@
             "$ref": "#/components/schemas/AnotherPayloadDto"
           },
           "headers": {
-            "$ref": "#/components/schemas/NoHeaders"
+            "$ref": "#/components/schemas/HeadersNotDocumented"
           }
         }
       }
@@ -71,6 +82,8 @@
             "ack": false
           }
         },
+        "description": "Auto-generated description",
+        "operationId": "example-topic-queue_publish_bindingsBeanExample",
         "message": {
           "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
@@ -78,7 +91,7 @@
             "$ref": "#/components/schemas/AnotherPayloadDto"
           },
           "headers": {
-            "$ref": "#/components/schemas/NoHeaders"
+            "$ref": "#/components/schemas/HeadersNotDocumented"
           }
         }
       }
@@ -107,6 +120,8 @@
             "ack": false
           }
         },
+        "description": "Auto-generated description",
+        "operationId": "another-queue_publish_receiveAnotherPayload",
         "message": {
           "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
@@ -114,7 +129,7 @@
             "$ref": "#/components/schemas/AnotherPayloadDto"
           },
           "headers": {
-            "$ref": "#/components/schemas/NoHeaders"
+            "$ref": "#/components/schemas/HeadersNotDocumented"
           }
         }
       }
@@ -134,6 +149,8 @@
             "ack": false
           }
         },
+        "description": "Auto-generated description",
+        "operationId": "example-manual-consumer-channel_publish",
         "message": {
           "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
@@ -142,7 +159,7 @@
             "$ref": "#/components/schemas/AnotherPayloadDto"
           },
           "headers": {
-            "$ref": "#/components/schemas/NoHeaders"
+            "$ref": "#/components/schemas/HeadersNotDocumented"
           }
         }
       },
@@ -180,6 +197,8 @@
             "ack": false
           }
         },
+        "description": "Auto-generated description",
+        "operationId": "example-queue_publish_receiveExamplePayload",
         "message": {
           "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
           "title": "ExamplePayloadDto",
@@ -187,7 +206,7 @@
             "$ref": "#/components/schemas/ExamplePayloadDto"
           },
           "headers": {
-            "$ref": "#/components/schemas/NoHeaders"
+            "$ref": "#/components/schemas/HeadersNotDocumented"
           }
         }
       }
@@ -216,6 +235,8 @@
             "ack": false
           }
         },
+        "description": "Auto-generated description",
+        "operationId": "example-producer-channel_subscribe",
         "message": {
           "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
@@ -224,7 +245,7 @@
             "$ref": "#/components/schemas/AnotherPayloadDto"
           },
           "headers": {
-            "$ref": "#/components/schemas/NoHeaders"
+            "$ref": "#/components/schemas/HeadersNotDocumented"
           }
         }
       }
@@ -232,6 +253,12 @@
   },
   "components": {
     "schemas": {
+      "HeadersNotDocumented": {
+        "type": "object",
+        "properties": {},
+        "example": {},
+        "exampleSetFlag": true
+      },
       "AnotherPayloadDto": {
         "required": [
           "example"
@@ -299,11 +326,8 @@
           "someEnum": "FOO2"
         },
         "exampleSetFlag": true
-      },
-      "NoHeaders": {
-        "type": "object",
-        "exampleSetFlag": true
       }
     }
-  }
+  },
+  "tags": []
 }
