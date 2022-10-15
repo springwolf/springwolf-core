@@ -136,15 +136,16 @@ export class AsyncApiMapperService {
 
     private mapSchemas(schemas: Map<string, ServerAsyncApiSchema>): Map<string, Schema> {
       const s = new Map<string, Schema>();
-      Object.entries(schemas).forEach(([k, v]) => s.set(k, this.mapSchema(v)));
+      Object.entries(schemas).forEach(([k, v]) => s.set(k, this.mapSchema(k, v)));
       return s;
     }
 
-    private mapSchema(schema: ServerAsyncApiSchema): Schema {
+    private mapSchema(schemaName: string, schema: ServerAsyncApiSchema): Schema {
       const properties = schema.properties !== undefined ? this.mapSchemas(schema.properties) : undefined
       const example = schema.example !== undefined ? new Example(schema.example) : undefined
       return {
         description: schema.description,
+        anchorIdentifier: schemaName,
         type: schema.type,
         format: schema.format,
         enum: schema.enum,
