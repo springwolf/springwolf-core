@@ -10,7 +10,4 @@ export class SchemaComponent {
 
   @Input() schema: Schema;
 
-  public getSchemaUrl(fragment: string): string {
-    return window.location.pathname + window.location.search + "#" + fragment;
-  }
 }
