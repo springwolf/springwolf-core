@@ -67,13 +67,7 @@ export class AsyncApiMapperService {
     constructor() {
     }
 
-    public toAsyncApiMap(serverAsyncApi: Map<string, ServerAsyncApi>): Map<string, AsyncApi> {
-        const docs = new Map<string, AsyncApi>();
-        Object.entries(serverAsyncApi).forEach(([docName, doc]) => docs.set(docName, this.toAsyncApi(doc)));
-        return docs;
-    }
-
-    toAsyncApi(item: ServerAsyncApi): AsyncApi {
+    public toAsyncApi(item: ServerAsyncApi): AsyncApi {
         return {
             info: item.info,
             servers: this.mapServers(item.servers),
