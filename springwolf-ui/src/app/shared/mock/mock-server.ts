@@ -20,7 +20,7 @@ export class MockServer implements InMemoryDbService {
       return reqInfo.utils.createResponse$(() => {
         return {
           status: STATUS.OK,
-          body: mockAsyncApi
+          body: mockSpringwolfKafka
         }
       });
     }

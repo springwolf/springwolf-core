@@ -1,11 +1,5 @@
 <mat-toolbar color="primary" fxLayout fxLayoutAlign="space-between center">
-    <div fxLayout fxLayoutAlign="center center" fxLayoutGap="16px">
-        <h2>springwolf</h2>
-        <select [(ngModel)]="selectedDocumentMod">
-            <option disabled>Choose a doc</option>
-            <option *ngFor="let doc of documents" [ngValue]="doc">{{ doc }}</option>
-        </select>
-    </div>
+    <h2>springwolf</h2>
     <a href="https://github.com/stavshamir/springwolf">
         <i class="fa fa-github fa-2x"></i>
     </a>

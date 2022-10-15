@@ -4,7 +4,7 @@ import { Channel, Message, Operation } from './models/channel.model';
 import { Schema } from './models/schema.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Info } from './models/info.model';
 import { Endpoints } from './endpoints';
@@ -39,39 +39,23 @@ interface ServerAsyncApi {
 @Injectable()
 export class AsyncApiService {
 
-    private nameSubject: Subject<string>;
-    private docs: Map<string, AsyncApi>;
+    private docs: AsyncApi;
 
     constructor(private http: HttpClient) {
-        this.nameSubject = new Subject<string>();
     }
 
-    public setCurrentAsyncApiName(currnetAsyncApiName: string) {
-        this.nameSubject.next(currnetAsyncApiName);
-    }
-
-    public getCurrentAsyncApiName(): Observable<string> {
-        return this.nameSubject.asObservable();
-    }
-
-    public getAsyncApis(): Observable<Map<string, AsyncApi>> {
+    public getAsyncApis(): Observable<AsyncApi> {
         if (this.docs) {
             return of(this.docs);
         }
 
-        return this.http.get<Map<string, ServerAsyncApi>>(Endpoints.docs).pipe(map(item => {
-            this.docs = this.toAsyncApiMap(item);
+        return this.http.get<ServerAsyncApi>(Endpoints.docs).pipe(map(item => {
+            this.docs = this.toAsyncApi(item);
             return this.docs;
         }));
     }
 
-    toAsyncApiMap(response: Map<string, ServerAsyncApi>): Map<string, AsyncApi> {
-        const docs = new Map<string, AsyncApi>();
-        Object.entries(response).forEach(([docName, doc]) => docs.set(docName, this.toAsyncApi(doc)));
-        return docs;
-    }
-
-    toAsyncApi(item: ServerAsyncApi): AsyncApi {
+    private toAsyncApi(item: ServerAsyncApi): AsyncApi {
         return {
             info: item.info,
             servers: this.mapServers(item.servers),
@@ -104,9 +88,8 @@ export class AsyncApiService {
         topicName: string,
         description: ServerAsyncApi["channels"][""]["description"],
         operation: ServerAsyncApi["channels"][""]["subscribe"] | ServerAsyncApi["channels"][""]["publish"],
-        operationName: string): Channel[]
-    {
-        if(operation !== undefined) {
+        operationName: string): Channel[] {
+        if (operation !== undefined) {
             let messages: Message[] = 'oneOf' in operation.message ? operation.message.oneOf : [operation.message];
 
             return messages.map(message => {
