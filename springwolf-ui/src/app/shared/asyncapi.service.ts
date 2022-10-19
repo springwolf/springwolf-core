@@ -20,7 +20,8 @@ export class AsyncApiService {
         }
 
         return this.http.get<ServerAsyncApi>(Endpoints.docs).pipe(map(item => {
-            return this.asyncApiMapperService.toAsyncApi(item);
+            this.docs = this.asyncApiMapperService.toAsyncApi(item);
+            return this.docs;
         }));
     }
 }
