@@ -120,12 +120,12 @@ export class AsyncApiMapperService {
 
     private mapMessages(message: ServerAsyncApiChannelMessage): Message[] {
       if('oneOf' in message) {
-        return this.mapServerAsyncApiMessage(message.oneOf)
+        return this.mapServerAsyncApiMessages(message.oneOf)
       }
-      return this.mapServerAsyncApiMessage([message]);
+      return this.mapServerAsyncApiMessages([message]);
     }
 
-    private mapServerAsyncApiMessage(messages: ServerAsyncApiMessage[]): Message[] {
+    private mapServerAsyncApiMessages(messages: ServerAsyncApiMessage[]): Message[] {
       return messages.map((v) => {
         return {
           name: v.name,

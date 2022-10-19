@@ -20,7 +20,7 @@ export class SchemasComponent implements OnInit {
 
   ngOnInit(): void {
     this.location.subscribe(() : void => this.setSchemaSelectionFromLocation())
-      this.asyncApiService.getAsyncApis().subscribe(asyncapi => this.schemas = asyncapi.components.schemas);
+      this.asyncApiService.getAsyncApi().subscribe(asyncapi => this.schemas = asyncapi.components.schemas);
   }
 
   setSchemaSelection(schema: Schema): void {
