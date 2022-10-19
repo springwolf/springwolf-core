@@ -14,7 +14,7 @@ export class AsyncApiService {
     constructor(private http: HttpClient, private asyncApiMapperService: AsyncApiMapperService) {
     }
 
-    public getAsyncApis(): Observable<AsyncApi> {
+    public getAsyncApi(): Observable<AsyncApi> {
         if (this.docs) {
             return of(this.docs);
         }

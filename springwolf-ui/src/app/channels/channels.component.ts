@@ -21,7 +21,7 @@ export class ChannelsComponent implements OnInit {
   ngOnInit(): void {
     this.location.subscribe((): void => this.setChannelSelectionFromLocation())
 
-    this.asyncApiService.getAsyncApis().subscribe(asyncapi => {
+    this.asyncApiService.getAsyncApi().subscribe(asyncapi => {
       this.channels = this.sortChannels(asyncapi.channels);
     });
   }
