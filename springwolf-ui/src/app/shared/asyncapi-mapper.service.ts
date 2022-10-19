@@ -109,7 +109,7 @@ export class AsyncApiMapperService {
                 const operation = this.mapOperation(operationType, message, serverOperation.bindings)
                 return {
                     name: topicName,
-                    anchorIdentifier: CHANNEL_ANCHOR_PREFIX + [operation.protocol, topicName, operation.operation].join( "-"),
+                    anchorIdentifier: CHANNEL_ANCHOR_PREFIX + [operation.protocol, topicName, operation.operation, operation.message.title].join( "-"),
                     description: description,
                     operation: operation,
                 }

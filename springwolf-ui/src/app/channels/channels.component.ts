@@ -28,14 +28,18 @@ export class ChannelsComponent implements OnInit {
 
   private sortChannels(channels: Array<Channel>): Array<Channel> {
     return channels.sort((a, b) => {
-      if (a?.operation?.protocol === b?.operation?.protocol) {
-        if (a?.operation?.operation === b?.operation.operation) {
-          return a.name?.localeCompare(b.name);
+      if (a.operation.protocol === b.operation.protocol) {
+        if (a.operation.operation === b.operation.operation) {
+          if(a.name === b.name) {
+            return a.operation.message.name.localeCompare(b.operation.message.name)
+          } else {
+            return a.name.localeCompare(b.name);
+          }
         } else {
-          return a?.operation?.operation?.localeCompare(b?.operation?.operation);
+          return a.operation.operation.localeCompare(b.operation.operation);
         }
       } else {
-        return a?.operation?.protocol?.localeCompare(b?.operation?.protocol);
+        return a.operation.protocol.localeCompare(b.operation.protocol);
       }
     });
   }
