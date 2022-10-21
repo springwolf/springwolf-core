@@ -3,10 +3,15 @@
     "type": "object",
     "properties": {
       "s": {
-        "type": "string"
+        "type": "string",
+        "exampleSetFlag": false,
+        "types": [
+          "string"
+        ]
       },
       "f": {
-        "$ref": "#/components/schemas/SimpleFoo"
+        "$ref": "#/components/schemas/SimpleFoo",
+        "exampleSetFlag": false
       }
     },
     "example": {
@@ -15,31 +20,25 @@
         "s": "string",
         "b": true
       }
-    }
-  },
-  "SimpleFoo": {
-    "type": "object",
-    "properties": {
-      "s": {
-        "type": "string"
-      },
-      "b": {
-        "type": "boolean"
-      }
     },
-    "example": {
-      "s": "string",
-      "b": true
-    }
+    "exampleSetFlag": true
   },
   "FooWithEnum": {
     "type": "object",
     "properties": {
       "s": {
-        "type": "string"
+        "type": "string",
+        "exampleSetFlag": false,
+        "types": [
+          "string"
+        ]
       },
       "b": {
         "type": "string",
+        "exampleSetFlag": false,
+        "types": [
+          "string"
+        ],
         "enum": [
           "BAR1",
           "BAR2"
@@ -49,6 +48,31 @@
     "example": {
       "s": "string",
       "b": "BAR1"
-    }
+    },
+    "exampleSetFlag": true
+  },
+  "SimpleFoo": {
+    "type": "object",
+    "properties": {
+      "s": {
+        "type": "string",
+        "exampleSetFlag": false,
+        "types": [
+          "string"
+        ]
+      },
+      "b": {
+        "type": "boolean",
+        "exampleSetFlag": false,
+        "types": [
+          "boolean"
+        ]
+      }
+    },
+    "example": {
+      "s": "string",
+      "b": true
+    },
+    "exampleSetFlag": true
   }
 }
