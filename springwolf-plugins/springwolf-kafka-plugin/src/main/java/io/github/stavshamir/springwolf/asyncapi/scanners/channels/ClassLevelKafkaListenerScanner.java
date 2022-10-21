@@ -10,6 +10,7 @@ import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForSpringKafkaBuilder;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -155,7 +156,7 @@ public class ClassLevelKafkaListenerScanner
     }
 
     private ChannelItem buildChannel(Set<Method> methods, Map<String, ? extends OperationBinding> operationBinding) {
-        String operationId = methods.stream().findFirst().map(it->it.getName() + "_publish").orElse("");
+        String operationId = methods.stream().findFirst().map(it -> it.getName() + "_publish").orElse("");
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
@@ -183,7 +184,10 @@ public class ClassLevelKafkaListenerScanner
     private Message buildMessage(Method method) {
         Class<?> payloadType = getPayloadType(method);
         String modelName = schemasService.register(payloadType);
-        String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
+        AsyncHeaders headers = new AsyncHeadersForSpringKafkaBuilder("SpringDefaultHeaders-" + payloadType.getSimpleName())
+                .withTypeIdHeader(payloadType.getTypeName())
+                .build();
+        String headerModelName = schemasService.register(headers);
 
         return Message.builder()
                 .name(payloadType.getName())

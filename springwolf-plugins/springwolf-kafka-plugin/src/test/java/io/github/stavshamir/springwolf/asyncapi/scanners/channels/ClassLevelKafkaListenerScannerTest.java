@@ -10,7 +10,6 @@ import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -99,7 +98,7 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName("SpringDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -131,14 +130,14 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName("SpringDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .build();
 
         Message barMessage = Message.builder()
                 .name(SimpleBar.class.getName())
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName("SpringDefaultHeaders-" + SimpleBar.class.getSimpleName()))
                 .build();
 
         Operation operation = Operation.builder()

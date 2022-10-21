@@ -105,7 +105,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -146,7 +146,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -184,7 +184,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -222,7 +222,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -277,7 +277,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .build();
 
         Operation operation = Operation.builder()
