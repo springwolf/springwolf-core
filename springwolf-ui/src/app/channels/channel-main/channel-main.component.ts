@@ -66,11 +66,12 @@ export class ChannelMainComponent implements OnInit {
     }
   }
 
-  publish(example: string): void {
+  publish(example: string, headers: string): void {
     try {
-      const json = JSON.parse(example);
+      const payloadJson = JSON.parse(example);
+      const headersJson = JSON.parse(headers)
 
-      this.publisherService.publish(this.protocolName, this.channelName, json).subscribe(
+      this.publisherService.publish(this.protocolName, this.channelName, payloadJson, headersJson).subscribe(
         _ => this.handlePublishSuccess(),
         err => this.handlePublishError(err)
       );
