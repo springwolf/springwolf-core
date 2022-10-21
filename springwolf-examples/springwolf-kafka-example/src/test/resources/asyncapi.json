@@ -79,15 +79,6 @@
         },
         "message" : {
           "oneOf" : [ {
-            "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-            "title" : "ExamplePayloadDto",
-            "payload" : {
-              "$ref" : "#/components/schemas/ExamplePayloadDto"
-            },
-            "headers" : {
-              "$ref" : "#/components/schemas/SpringDefaultHeaders"
-            }
-          }, {
             "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
             "title" : "AnotherPayloadDto",
             "description" : "Custom, optional description for this produced to topic",
@@ -96,6 +87,15 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/CloudEventHeadersForAnotherPayloadDtoEndpoint"
+            }
+          }, {
+            "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+            "title" : "ExamplePayloadDto",
+            "payload" : {
+              "$ref" : "#/components/schemas/ExamplePayloadDto"
+            },
+            "headers" : {
+              "$ref" : "#/components/schemas/SpringDefaultHeaders"
             }
           } ]
         }
@@ -135,13 +135,13 @@
         },
         "message" : {
           "oneOf" : [ {
-            "name" : "javax.money.MonetaryAmount",
-            "title" : "MonetaryAmount",
+            "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "title" : "AnotherPayloadDto",
             "payload" : {
-              "$ref" : "#/components/schemas/MonetaryAmount"
+              "$ref" : "#/components/schemas/AnotherPayloadDto"
             },
             "headers" : {
-              "$ref" : "#/components/schemas/HeadersNotDocumented"
+              "$ref" : "#/components/schemas/SpringDefaultHeaders-AnotherPayloadDto"
             }
           }, {
             "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -150,16 +150,16 @@
               "$ref" : "#/components/schemas/ExamplePayloadDto"
             },
             "headers" : {
-              "$ref" : "#/components/schemas/HeadersNotDocumented"
+              "$ref" : "#/components/schemas/SpringDefaultHeaders-ExamplePayloadDto"
             }
           }, {
-            "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
-            "title" : "AnotherPayloadDto",
+            "name" : "javax.money.MonetaryAmount",
+            "title" : "MonetaryAmount",
             "payload" : {
-              "$ref" : "#/components/schemas/AnotherPayloadDto"
+              "$ref" : "#/components/schemas/MonetaryAmount"
             },
             "headers" : {
-              "$ref" : "#/components/schemas/HeadersNotDocumented"
+              "$ref" : "#/components/schemas/SpringDefaultHeaders-MonetaryAmount"
             }
           } ]
         }
@@ -333,6 +333,54 @@
         },
         "example" : {
           "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
+        },
+        "exampleSetFlag" : true
+      },
+      "SpringDefaultHeaders-AnotherPayloadDto" : {
+        "type" : "object",
+        "properties" : {
+          "__TypeId__" : {
+            "type" : "string",
+            "description" : "Spring Type Id Header",
+            "example" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "exampleSetFlag" : true,
+            "enum" : [ "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto" ]
+          }
+        },
+        "example" : {
+          "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
+        },
+        "exampleSetFlag" : true
+      },
+      "SpringDefaultHeaders-ExamplePayloadDto" : {
+        "type" : "object",
+        "properties" : {
+          "__TypeId__" : {
+            "type" : "string",
+            "description" : "Spring Type Id Header",
+            "example" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+            "exampleSetFlag" : true,
+            "enum" : [ "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto" ]
+          }
+        },
+        "example" : {
+          "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto"
+        },
+        "exampleSetFlag" : true
+      },
+      "SpringDefaultHeaders-MonetaryAmount" : {
+        "type" : "object",
+        "properties" : {
+          "__TypeId__" : {
+            "type" : "string",
+            "description" : "Spring Type Id Header",
+            "example" : "javax.money.MonetaryAmount",
+            "exampleSetFlag" : true,
+            "enum" : [ "javax.money.MonetaryAmount" ]
+          }
+        },
+        "example" : {
+          "__TypeId__" : "javax.money.MonetaryAmount"
         },
         "exampleSetFlag" : true
       }

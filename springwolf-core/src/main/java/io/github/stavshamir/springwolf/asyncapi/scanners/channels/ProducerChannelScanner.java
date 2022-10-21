@@ -4,7 +4,6 @@ import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
-import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -17,10 +16,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
-import static io.github.stavshamir.springwolf.asyncapi.Constants.ONE_OF;
+import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 import static java.util.stream.Collectors.*;
 
 @Slf4j
@@ -78,9 +76,7 @@ public class ProducerChannelScanner implements ChannelsScanner {
                 .map(this::buildMessage)
                 .collect(toSet());
 
-        return messages.size() == 1
-                ? messages.toArray()[0]
-                : ImmutableMap.of(ONE_OF, messages);
+        return toMessageObjectOrComposition(messages);
     }
 
     private Message buildMessage(ProducerData producerData) {
