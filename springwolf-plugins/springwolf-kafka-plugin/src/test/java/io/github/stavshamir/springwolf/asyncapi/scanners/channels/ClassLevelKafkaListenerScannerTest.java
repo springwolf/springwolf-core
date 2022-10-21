@@ -30,7 +30,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Map;
 import java.util.Set;
 
-import static io.github.stavshamir.springwolf.asyncapi.Constants.ONE_OF;
+import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -144,7 +144,7 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
                 .description("Auto-generated description")
                 .operationId("anotherMethodWithoutAnnotation_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .message(ImmutableMap.of(ONE_OF, ImmutableSet.of(fooMessage, barMessage)))
+                .message(toMessageObjectOrComposition(ImmutableSet.of(fooMessage, barMessage)))
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()

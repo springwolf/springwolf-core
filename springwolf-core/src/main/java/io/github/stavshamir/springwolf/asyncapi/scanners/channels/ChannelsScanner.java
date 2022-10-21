@@ -10,5 +10,4 @@ public interface ChannelsScanner {
      * @return A mapping of channel names to their respective channel object for a given protocol.
      */
     Map<String, ChannelItem> scan();
-
 }

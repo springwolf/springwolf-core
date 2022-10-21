@@ -28,7 +28,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static io.github.stavshamir.springwolf.asyncapi.Constants.ONE_OF;
+import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 import static java.util.stream.Collectors.*;
 
 @Slf4j
@@ -176,9 +176,7 @@ public class ClassLevelKafkaListenerScanner
                 .map(this::buildMessage)
                 .collect(toSet());
 
-        return methods.size() == 1
-                ? messages.toArray()[0]
-                : ImmutableMap.of(ONE_OF, messages);
+        return toMessageObjectOrComposition(messages);
     }
 
     private Message buildMessage(Method method) {
