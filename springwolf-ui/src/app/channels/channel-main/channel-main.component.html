@@ -14,7 +14,7 @@
                     (keyup)="recalculateLineCount('example', exampleTextArea.value)"
           ></textarea>
           <div fxLayout fxLayoutGap="8px">
-            <button mat-raised-button color="primary" (click)="publish(exampleTextArea.value)">
+            <button mat-raised-button color="primary" (click)="publish(exampleTextArea.value, headersTextArea.value)">
               Publish
             </button>
             <button mat-raised-button color="primary"
