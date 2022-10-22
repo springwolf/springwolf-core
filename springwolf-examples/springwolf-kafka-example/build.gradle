@@ -29,7 +29,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'com.google.guava:guava:27.0.1-jre'
+    implementation 'com.google.guava:guava:31.1-jre'
     implementation 'org.javamoney:moneta:1.4.2'
     implementation 'io.swagger.core.v3:swagger-core:2.2.0'
 

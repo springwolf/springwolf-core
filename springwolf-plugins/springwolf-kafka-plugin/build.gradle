@@ -25,7 +25,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'io.swagger.core.v3:swagger-models:2.2.0'
 
-    implementation 'com.google.guava:guava:27.0.1-jre'
+    implementation 'com.google.guava:guava:31.1-jre'
 
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.4'
