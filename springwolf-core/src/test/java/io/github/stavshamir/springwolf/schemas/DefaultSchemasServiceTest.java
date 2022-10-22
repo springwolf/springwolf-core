@@ -41,7 +41,7 @@ public class DefaultSchemasServiceTest {
 
         String expectedExample = jsonResource(EXAMPLES_PATH + "/simple-foo.json");
 
-        JSONAssert.assertEquals(expectedExample, example, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expectedExample, example, JSONCompareMode.STRICT_ORDER);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class DefaultSchemasServiceTest {
         String expectedExample = jsonResource(EXAMPLES_PATH + "/composite-foo.json");
 
         // Then it returns the correct example object as json
-        JSONAssert.assertEquals(expectedExample, example, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expectedExample, example, JSONCompareMode.STRICT_ORDER);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class DefaultSchemasServiceTest {
         String actualDefinitions = objectMapper.writeValueAsString(schemasService.getDefinitions());
         String expected = jsonResource("/schemas/definitions.json");
 
-        JSONAssert.assertEquals(expected, actualDefinitions, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actualDefinitions, JSONCompareMode.STRICT_ORDER);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class DefaultSchemasServiceTest {
         String actualDefinitions = objectMapper.writeValueAsString(schemasService.getDefinitions());
         String expected = jsonResource("/schemas/documented-definitions.json");
 
-        JSONAssert.assertEquals(expected, actualDefinitions, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actualDefinitions, JSONCompareMode.STRICT_ORDER);
     }
 
     @Test

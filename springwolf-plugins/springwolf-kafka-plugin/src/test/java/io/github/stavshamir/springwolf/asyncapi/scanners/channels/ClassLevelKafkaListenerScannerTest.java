@@ -10,7 +10,6 @@ import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -31,7 +30,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Map;
 import java.util.Set;
 
-import static io.github.stavshamir.springwolf.asyncapi.Constants.ONE_OF;
+import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -99,7 +98,7 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName("SpringDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -131,21 +130,21 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName("SpringDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .build();
 
         Message barMessage = Message.builder()
                 .name(SimpleBar.class.getName())
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                .headers(HeaderReference.fromModelName("SpringDefaultHeaders-" + SimpleBar.class.getSimpleName()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("anotherMethodWithoutAnnotation_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .message(ImmutableMap.of(ONE_OF, ImmutableSet.of(fooMessage, barMessage)))
+                .message(toMessageObjectOrComposition(ImmutableSet.of(fooMessage, barMessage)))
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()

@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Map;
 import java.util.Set;
 
-import static io.github.stavshamir.springwolf.asyncapi.Constants.ONE_OF;
+import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -69,7 +69,7 @@ public class ConsumerChannelScannerTest {
                         .description(description)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
-                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                         .build())
                 .build();
 
@@ -139,14 +139,14 @@ public class ConsumerChannelScannerTest {
                         .description(description1)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
-                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                         .build(),
                 Message.builder()
                         .name(AnotherExamplePayloadDto.class.getName())
                         .description(description2)
                         .title(AnotherExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
-                        .headers(HeaderReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
+                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
                         .build()
         );
 
@@ -154,7 +154,7 @@ public class ConsumerChannelScannerTest {
                 .description("Auto-generated description")
                 .operationId("example-consumer-topic_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .message(ImmutableMap.of(ONE_OF, messages))
+                .message(toMessageObjectOrComposition(messages))
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()

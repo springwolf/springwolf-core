@@ -22,14 +22,14 @@ repositories {
 dependencies {
     api 'com.asyncapi:asyncapi-core:1.0.0-EAP'
 
-    implementation 'io.swagger:swagger-inflector:2.0.5'
+    implementation 'io.swagger:swagger-inflector:2.0.8'
 
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework:spring-context'
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
 
     implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.10.8'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
