@@ -22,7 +22,7 @@
   "channels" : {
     "another-topic" : {
       "publish" : {
-        "operationId" : "another-topic_publish_receiveAnotherPayload",
+        "operationId" : "another-topic_publish_receiveAnotherPayloadBatched",
         "description" : "Auto-generated description",
         "bindings" : {
           "kafka" : {
