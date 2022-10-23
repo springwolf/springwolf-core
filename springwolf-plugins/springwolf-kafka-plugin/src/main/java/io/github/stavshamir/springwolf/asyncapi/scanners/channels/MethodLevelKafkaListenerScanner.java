@@ -5,6 +5,7 @@ import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.google.common.collect.ImmutableMap;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
@@ -70,6 +71,6 @@ public class MethodLevelKafkaListenerScanner extends AbstractListenerScanner<Kaf
 
     @Override
     protected Class<?> getPayloadType(Method method) {
-        return KafkaPayloadTypeExtractor.getPayloadType(method);
+        return SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
     }
 }

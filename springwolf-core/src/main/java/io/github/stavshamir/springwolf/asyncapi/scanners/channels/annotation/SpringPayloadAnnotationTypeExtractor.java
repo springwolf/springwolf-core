@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -11,11 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
-public class KafkaPayloadTypeExtractor {
-    public KafkaPayloadTypeExtractor() {
+public class SpringPayloadAnnotationTypeExtractor {
+    public SpringPayloadAnnotationTypeExtractor() {
     }
 
-    protected static Class<?> getPayloadType(Method method) {
+    public static Class<?> getPayloadType(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
         log.debug("Finding payload type for {}", methodName);
 
