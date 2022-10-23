@@ -29,11 +29,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ConsumerChannelScanner.class, DefaultSchemasService.class})
-public class ConsumerChannelScannerTest {
+@ContextConfiguration(classes = {ConsumerOperationDataScanner.class, DefaultSchemasService.class})
+public class ConsumerOperationDataScannerTest {
 
     @Autowired
-    private ConsumerChannelScanner scanner;
+    private ConsumerOperationDataScanner scanner;
 
     @MockBean
     private AsyncApiDocket asyncApiDocket;
