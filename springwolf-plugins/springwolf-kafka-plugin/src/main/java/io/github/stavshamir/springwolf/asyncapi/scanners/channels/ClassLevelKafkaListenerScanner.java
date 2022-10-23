@@ -7,6 +7,7 @@ import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -29,7 +30,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @Service
@@ -52,11 +54,43 @@ public class ClassLevelKafkaListenerScanner
     }
 
     public Map<String, ChannelItem> scan() {
-        return docket.getComponentsScanner().scanForComponents().stream()
+        Set<Class<?>> components = docket.getComponentsScanner().scanForComponents();
+        Set<Map.Entry<String, ChannelItem>> channels = mapToChannels(components);
+        return mergeChannels(channels);
+    }
+
+    private Set<Map.Entry<String, ChannelItem>> mapToChannels(Set<Class<?>> components) {
+        return components.stream()
                 .filter(this::isAnnotatedWithKafkaListener)
                 .map(this::mapClassToChannel)
                 .filter(Optional::isPresent).map(Optional::get)
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(toSet());
+    }
+
+    private Map<String, ChannelItem> mergeChannels(Set<Map.Entry<String, ChannelItem>> channelEntries) {
+        Map<String, ChannelItem> mergedChannels = new HashMap<>();
+
+        for (Map.Entry<String, ChannelItem> entry : channelEntries) {
+            if (!mergedChannels.containsKey(entry.getKey())) {
+                mergedChannels.put(entry.getKey(), entry.getValue());
+            } else {
+                ChannelItem channelItem = mergedChannels.get(entry.getKey());
+                Set<Message> mergedMessages = getChannelMessages(channelItem);
+                Set<Message> currentEntryMessages = getChannelMessages(entry.getValue());
+                mergedMessages.addAll(currentEntryMessages);
+                channelItem.getPublish().setMessage(toMessageObjectOrComposition(mergedMessages));
+            }
+        }
+
+        return mergedChannels;
+    }
+
+    private Set<Message> getChannelMessages(ChannelItem channelItem) {
+        return Optional
+                .ofNullable(channelItem.getPublish())
+                .map(Operation::getMessage)
+                .map(MessageHelper::messageObjectToSet)
+                .orElseGet(HashSet::new);
     }
 
     private boolean isAnnotatedWithKafkaListener(Class<?> component) {
@@ -75,7 +109,7 @@ public class ClassLevelKafkaListenerScanner
             return Optional.empty();
         }
 
-        ChannelItem channelItem = buildChannel(annotatedMethods, operationBinding);
+        ChannelItem channelItem = buildChannel(component.getSimpleName(), annotatedMethods, operationBinding);
         return Optional.of(Maps.immutableEntry(channelName, channelItem));
     }
 
@@ -155,8 +189,8 @@ public class ClassLevelKafkaListenerScanner
                 .collect(toSet());
     }
 
-    private ChannelItem buildChannel(Set<Method> methods, Map<String, ? extends OperationBinding> operationBinding) {
-        String operationId = methods.stream().findFirst().map(it -> it.getName() + "_publish").orElse("");
+    private ChannelItem buildChannel(String simpleName, Set<Method> methods, Map<String, ? extends OperationBinding> operationBinding) {
+        String operationId = simpleName + "_publish";
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")

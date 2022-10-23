@@ -60,5 +60,13 @@ See:
 
 
 ### Development
+#### Sonatype snapshots
+Add the following to the `repositories` closure:
+```groovy
+maven {
+    url "https://s01.oss.sonatype.org/content/repositories/snapshots"
+}
+```
+
 #### Local Snapshots
 To work with local snapshots, run the `publishToMavenLocal` task with `-Dsnapshot=true`.
