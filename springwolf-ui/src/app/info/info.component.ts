@@ -23,7 +23,7 @@ export class InfoComponent implements OnInit {
   }
 
   download(): Boolean {
-    var json = JSON.stringify(this.asyncApiData, null, 2);
+    var json = JSON.stringify(this.asyncApiData.info.asyncApiJson, null, 2);
     var bytes = new TextEncoder().encode(json);
     var blob = new Blob([bytes], { type: 'application/json' });
     var url = window.URL.createObjectURL(blob);

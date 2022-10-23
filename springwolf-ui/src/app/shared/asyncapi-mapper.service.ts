@@ -4,6 +4,7 @@ import {Channel, CHANNEL_ANCHOR_PREFIX, Message, Operation, OperationType} from 
 import { Schema } from './models/schema.model';
 import { Injectable } from '@angular/core';
 import {Example} from "./models/example.model";
+import {Info} from "./models/info.model";
 
 interface ServerAsyncApiSchema {
   description?: string;
@@ -69,13 +70,22 @@ export class AsyncApiMapperService {
 
     public toAsyncApi(item: ServerAsyncApi): AsyncApi {
         return {
-            info: item.info,
+            info: this.mapInfo(item),
             servers: this.mapServers(item.servers),
             channels: this.mapChannels(item.channels),
             components: {
                 schemas: this.mapSchemas(item.components.schemas)
             }
         };
+    }
+
+    private mapInfo(item: ServerAsyncApi): Info {
+      return {
+        title: item.info.title,
+        version: item.info.version,
+        description: item.info.description,
+        asyncApiJson: item,
+      };
     }
 
     private mapServers(servers: ServerAsyncApi["servers"]): Map<string, Server> {
