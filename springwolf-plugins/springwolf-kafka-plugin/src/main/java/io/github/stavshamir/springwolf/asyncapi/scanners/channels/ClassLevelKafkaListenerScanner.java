@@ -2,9 +2,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
-import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
-import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForSpringKafkaBuilder;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor.getPayloadType;
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -48,33 +42,17 @@ public class ClassLevelKafkaListenerScanner extends AbstractClassLevelListenerSc
 
     @Override
     protected String getChannelName(KafkaListener annotation) {
-        List<String> resolvedTopics = Arrays.stream(annotation.topics())
-                .map(resolver::resolveStringValue)
-                .collect(toList());
-
-        log.debug("Found topics: {}", String.join(", ", resolvedTopics));
-        return resolvedTopics.get(0);
+        return KafkaListenerUtil.getChannelName(annotation, resolver);
     }
 
     @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(KafkaListener annotation) {
-        String groupId = resolver.resolveStringValue(annotation.groupId());
-        if (groupId == null || groupId.isEmpty()) {
-            log.debug("No group ID found for this listener");
-            groupId = null;
-        } else {
-            log.debug("Found group id: {}", groupId);
-        }
-
-        KafkaOperationBinding binding = new KafkaOperationBinding();
-        binding.setGroupId(groupId);
-        return ImmutableMap.of("kafka", binding);
-
+        return KafkaListenerUtil.buildOperationBinding(annotation, resolver);
     }
 
     @Override
     protected Map<String, ? extends ChannelBinding> buildChannelBinding(KafkaListener annotation) {
-        return ImmutableMap.of("kafka", new KafkaChannelBinding());
+        return KafkaListenerUtil.buildChannelBinding();
     }
 
     @Override
