@@ -45,7 +45,7 @@ public class AsyncApiConfiguration {
         KafkaProducerData exampleProducerData = KafkaProducerData.kafkaProducerDataBuilder()
                 .topicName(PRODUCER_TOPIC)
                 .payloadType(ExamplePayloadDto.class)
-                .headers(createSpringDefaultHeaders())
+                .headers(createSpringKafkaDefaultHeaders())
                 .build();
 
         KafkaProducerData anotherProducerData = KafkaProducerData.kafkaProducerDataBuilder()
@@ -71,7 +71,7 @@ public class AsyncApiConfiguration {
                 .build();
     }
 
-    private static AsyncHeaders createSpringDefaultHeaders() {
+    private static AsyncHeaders createSpringKafkaDefaultHeaders() {
         return new AsyncHeadersForSpringKafkaBuilder()
                 .withTypeIdHeader(
                         "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",

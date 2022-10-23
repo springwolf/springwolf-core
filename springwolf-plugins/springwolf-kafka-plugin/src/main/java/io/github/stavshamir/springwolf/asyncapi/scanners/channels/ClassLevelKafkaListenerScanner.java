@@ -216,7 +216,7 @@ public class ClassLevelKafkaListenerScanner
     private Message buildMessage(Method method) {
         Class<?> payloadType = getPayloadType(method);
         String modelName = schemasService.register(payloadType);
-        AsyncHeaders headers = new AsyncHeadersForSpringKafkaBuilder("SpringDefaultHeaders-" + payloadType.getSimpleName())
+        AsyncHeaders headers = new AsyncHeadersForSpringKafkaBuilder("SpringKafkaDefaultHeaders-" + payloadType.getSimpleName())
                 .withTypeIdHeader(payloadType.getTypeName())
                 .build();
         String headerModelName = schemasService.register(headers);

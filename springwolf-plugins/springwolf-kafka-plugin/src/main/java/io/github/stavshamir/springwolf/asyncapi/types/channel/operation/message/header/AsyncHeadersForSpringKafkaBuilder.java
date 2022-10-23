@@ -10,7 +10,7 @@ public class AsyncHeadersForSpringKafkaBuilder {
     private final AsyncHeaders headers;
 
     public AsyncHeadersForSpringKafkaBuilder() {
-        this("SpringDefaultHeaders");
+        this("SpringKafkaDefaultHeaders");
     }
 
     public AsyncHeadersForSpringKafkaBuilder(String schemaName) {
