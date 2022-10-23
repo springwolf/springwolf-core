@@ -128,7 +128,7 @@
     },
     "multi-payload-topic" : {
       "publish" : {
-        "operationId" : "receiveMonetaryAmount_publish",
+        "operationId" : "ExampleClassLevelKafkaListener_publish",
         "description" : "Auto-generated description",
         "bindings" : {
           "kafka" : { }

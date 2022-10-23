@@ -62,6 +62,51 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
         when(componentsScanner.scanForComponents()).thenReturn(classesToScan);
     }
 
+    private void setClassesToScan(Set<Class<?>> classesToScan) {
+        when(componentsScanner.scanForComponents()).thenReturn(classesToScan);
+    }
+
+    @Test
+    public void scan_componentWithMultipleKafkaListenersAndHandlers() {
+        // Given multiple @KafkaListener annotated classes with method(s) annotated with @KafkaHandler
+        ImmutableSet<Class<?>> classesToScan = ImmutableSet.of(
+                KafkaListenerClassWithOneKafkaHandler.class,
+                KafkaListenerClassWithMultipleKafkaHandler.class
+        );
+        setClassesToScan(classesToScan);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
+
+        // Then the returned collection contains the channel with message set to oneOf
+        Message fooMessage = Message.builder()
+                .name(SimpleFoo.class.getName())
+                .title(SimpleFoo.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .build();
+
+        Message barMessage = Message.builder()
+                .name(SimpleBar.class.getName())
+                .title(SimpleBar.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
+                .build();
+
+        Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("KafkaListenerClassWithMultipleKafkaHandler_publish")
+                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .message(toMessageObjectOrComposition(ImmutableSet.of(fooMessage, barMessage)))
+                .build();
+
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .publish(operation)
+                .build();
+
+        assertThat(actualChannels)
+                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+    }
+
     @Test
     public void scan_componentHasNoClassLevelKafkaListenerAnnotation() {
         // Given a class with one @KafkaHandler method, but no class level @KafkaListener annotation
@@ -103,7 +148,7 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("methodWithAnnotation_publish")
+                .operationId("KafkaListenerClassWithOneKafkaHandler_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
@@ -142,7 +187,7 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("anotherMethodWithoutAnnotation_publish")
+                .operationId("KafkaListenerClassWithMultipleKafkaHandler_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(toMessageObjectOrComposition(ImmutableSet.of(fooMessage, barMessage)))
                 .build();
