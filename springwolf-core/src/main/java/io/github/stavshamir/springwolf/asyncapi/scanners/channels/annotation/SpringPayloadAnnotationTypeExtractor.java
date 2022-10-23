@@ -29,13 +29,13 @@ public class SpringPayloadAnnotationTypeExtractor {
         Class<?> parameterClass = parameterTypes[parameterPayloadIndex];
 
         try {
-            // Resolve generic type for kafka batch listeners
+            // Resolve generic type for batch listeners
             if (parameterClass == List.class) {
                 Type type = ((ParameterizedTypeImpl) method.getGenericParameterTypes()[parameterPayloadIndex]).getActualTypeArguments()[0];
-                parameterClass = Class.forName(type.getTypeName());
+                return Class.forName(type.getTypeName());
             }
-        } catch (ClassNotFoundException ex) {
-            log.debug("Found payload type List<?>, but was unable to extract generic data type", ex);
+        } catch (Exception ex) {
+            log.info("Found payload type List<?>, but was unable to extract generic data type", ex);
         }
 
         return parameterClass;
