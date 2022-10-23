@@ -27,7 +27,7 @@ public class SpringwolfKafkaController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Kafka producer is not enabled");
         }
 
-        log.info("Publishing to kafka topic {}: {}", topic, kafkaMessage);
+        log.debug("Publishing to kafka topic {}: {}", topic, kafkaMessage);
         kafkaProducer.send(topic, kafkaMessage.getHeaders(), kafkaMessage.getPayload());
     }
 
