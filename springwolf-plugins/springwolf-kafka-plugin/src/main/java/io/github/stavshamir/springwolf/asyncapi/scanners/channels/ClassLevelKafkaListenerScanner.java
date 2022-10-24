@@ -28,6 +28,8 @@ import org.springframework.util.StringValueResolver;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 import static java.util.stream.Collectors.toList;
@@ -48,6 +50,9 @@ public class ClassLevelKafkaListenerScanner
     @Autowired
     private SchemasService schemasService;
 
+    private static final Comparator<Map.Entry<String, ChannelItem>> byPublishOperationName = Comparator.comparing(it -> it.getValue().getPublish().getOperationId());
+    private static final Supplier<Set<Map.Entry<String, ChannelItem>>> channelItemSupplier = () -> new TreeSet<>(byPublishOperationName);
+
     @Override
     public void setEmbeddedValueResolver(StringValueResolver resolver) {
         this.resolver = resolver;
@@ -64,11 +69,11 @@ public class ClassLevelKafkaListenerScanner
                 .filter(this::isAnnotatedWithKafkaListener)
                 .map(this::mapClassToChannel)
                 .filter(Optional::isPresent).map(Optional::get)
-                .collect(toSet());
+                .collect(Collectors.toCollection(channelItemSupplier));
     }
 
     private Map<String, ChannelItem> mergeChannels(Set<Map.Entry<String, ChannelItem>> channelEntries) {
-        Map<String, ChannelItem> mergedChannels = new HashMap<>();
+        Map<String, ChannelItem> mergedChannels = new TreeMap<>();
 
         for (Map.Entry<String, ChannelItem> entry : channelEntries) {
             if (!mergedChannels.containsKey(entry.getKey())) {
@@ -216,7 +221,7 @@ public class ClassLevelKafkaListenerScanner
     private Message buildMessage(Method method) {
         Class<?> payloadType = getPayloadType(method);
         String modelName = schemasService.register(payloadType);
-        AsyncHeaders headers = new AsyncHeadersForSpringKafkaBuilder("SpringDefaultHeaders-" + payloadType.getSimpleName())
+        AsyncHeaders headers = new AsyncHeadersForSpringKafkaBuilder("SpringKafkaDefaultHeaders-" + payloadType.getSimpleName())
                 .withTypeIdHeader(payloadType.getTypeName())
                 .build();
         String headerModelName = schemasService.register(headers);

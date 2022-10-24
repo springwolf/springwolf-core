@@ -95,7 +95,7 @@
               "$ref" : "#/components/schemas/ExamplePayloadDto"
             },
             "headers" : {
-              "$ref" : "#/components/schemas/SpringDefaultHeaders"
+              "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders"
             }
           } ]
         }
@@ -141,7 +141,7 @@
               "$ref" : "#/components/schemas/AnotherPayloadDto"
             },
             "headers" : {
-              "$ref" : "#/components/schemas/SpringDefaultHeaders-AnotherPayloadDto"
+              "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders-AnotherPayloadDto"
             }
           }, {
             "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -150,7 +150,7 @@
               "$ref" : "#/components/schemas/ExamplePayloadDto"
             },
             "headers" : {
-              "$ref" : "#/components/schemas/SpringDefaultHeaders-ExamplePayloadDto"
+              "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto"
             }
           }, {
             "name" : "javax.money.MonetaryAmount",
@@ -159,7 +159,7 @@
               "$ref" : "#/components/schemas/MonetaryAmount"
             },
             "headers" : {
-              "$ref" : "#/components/schemas/SpringDefaultHeaders-MonetaryAmount"
+              "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders-MonetaryAmount"
             }
           } ]
         }
@@ -320,7 +320,7 @@
         },
         "exampleSetFlag" : true
       },
-      "SpringDefaultHeaders" : {
+      "SpringKafkaDefaultHeaders" : {
         "type" : "object",
         "properties" : {
           "__TypeId__" : {
@@ -336,7 +336,7 @@
         },
         "exampleSetFlag" : true
       },
-      "SpringDefaultHeaders-AnotherPayloadDto" : {
+      "SpringKafkaDefaultHeaders-AnotherPayloadDto" : {
         "type" : "object",
         "properties" : {
           "__TypeId__" : {
@@ -352,7 +352,7 @@
         },
         "exampleSetFlag" : true
       },
-      "SpringDefaultHeaders-ExamplePayloadDto" : {
+      "SpringKafkaDefaultHeaders-ExamplePayloadDto" : {
         "type" : "object",
         "properties" : {
           "__TypeId__" : {
@@ -368,7 +368,7 @@
         },
         "exampleSetFlag" : true
       },
-      "SpringDefaultHeaders-MonetaryAmount" : {
+      "SpringKafkaDefaultHeaders-MonetaryAmount" : {
         "type" : "object",
         "properties" : {
           "__TypeId__" : {
