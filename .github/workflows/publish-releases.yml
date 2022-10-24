@@ -42,7 +42,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Publish
-        run: ./gradlew -p springwolf-amqp publish
+        run: ./gradlew -p springwolf-plugins/springwolf-amqp-plugin publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
@@ -64,7 +64,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Publish
-        run: ./gradlew -p springwolf-kafka publish
+        run: ./gradlew -p springwolf-plugins/springwolf-kafka-plugin publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
