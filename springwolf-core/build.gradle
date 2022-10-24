@@ -66,6 +66,7 @@ publishing {
                 name = 'springwolf-core'
                 description = 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring'
                 url = 'https://github.com/stavshamir/springwolf'
+
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -78,6 +79,12 @@ publishing {
                         id = 'stavshamir'
                         name = 'Stav Shamir'
                         email = 'shamir.stav@gmail.com'
+                    }
+
+                    developer {
+                        id = 'timonback'
+                        name = 'Timon Back'
+                        email = 'timon.back@gmail.com'
                     }
                 }
 
@@ -102,6 +109,9 @@ publishing {
 }
 
 signing {
-    useInMemoryPgpKeys project.findProperty("SIGNINGKEY"), project.findProperty("SIGNINGPASSWORD")
+    def signingKey = project.findProperty("SIGNINGKEY")
+    def signingPassword = project.findProperty("SIGNINGPASSWORD")
+    useInMemoryPgpKeys (signingKey, signingPassword)
     sign publishing.publications.mavenJava
 }
+
