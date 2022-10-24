@@ -1,6 +1,5 @@
 plugins {
     id 'java-library'
-    id 'maven'
     id 'signing'
     id 'maven-publish'
 
@@ -32,10 +31,10 @@ dependencies {
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
-    testCompile 'org.projectlombok:lombok:1.18.4'
+    testImplementation 'org.projectlombok:lombok:1.18.4'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
 
-    testCompile('org.assertj:assertj-core:3.11.1')
+    testImplementation('org.assertj:assertj-core:3.11.1')
 }
 
 jar.enabled = true
