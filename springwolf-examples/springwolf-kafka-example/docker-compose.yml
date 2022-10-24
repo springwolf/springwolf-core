@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    image: stavshamir/springwolf-kafka-example:0.8.0
+    image: stavshamir/springwolf-kafka-example:0.9.0
     links:
       - kafka
     environment:
