@@ -68,21 +68,21 @@ publishing {
                 url = 'https://github.com/stavshamir/springwolf'
                 licenses {
                     license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
 
                 developers {
                     developer {
-                        id 'stavshamir'
-                        name 'Stav Shamir'
-                        email 'shamir.stav@gmail.com'
+                        id = 'stavshamir'
+                        name = 'Stav Shamir'
+                        email = 'shamir.stav@gmail.com'
                     }
                 }
 
                 scm {
-                    url 'https://github.com/stavshamir/springwolf'
+                    url = 'https://github.com/stavshamir/springwolf'
                 }
             }
         }
@@ -99,16 +99,9 @@ publishing {
             }
         }
     }
-
-    model {
-        tasks.publishMavenJavaPublicationToMavenRepository {
-            dependsOn project.tasks.signArchives
-        }
-    }
 }
 
 signing {
     useInMemoryPgpKeys project.findProperty("SIGNINGKEY"), project.findProperty("SIGNINGPASSWORD")
-    sign configurations.archives
     sign publishing.publications.mavenJava
 }
