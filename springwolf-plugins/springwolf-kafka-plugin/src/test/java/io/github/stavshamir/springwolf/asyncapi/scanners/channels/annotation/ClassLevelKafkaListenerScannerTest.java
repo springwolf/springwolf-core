@@ -216,7 +216,7 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName("SpringDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .build();
 
         Operation operation = Operation.builder()

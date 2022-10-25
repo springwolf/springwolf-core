@@ -96,7 +96,7 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
     }
 
     private Map<String, ChannelItem> mergeChannels(Set<Map.Entry<String, ChannelItem>> channelEntries) {
-        Map<String, ChannelItem> mergedChannels = new HashMap<>();
+        Map<String, ChannelItem> mergedChannels = new TreeMap<>();
 
         for (Map.Entry<String, ChannelItem> entry : channelEntries) {
             if (!mergedChannels.containsKey(entry.getKey())) {
@@ -118,7 +118,7 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
                 .ofNullable(channelItem.getPublish())
                 .map(Operation::getMessage)
                 .map(MessageHelper::messageObjectToSet)
-                .orElseGet(HashSet::new);
+                .orElseGet(TreeSet::new);
     }
 
     private Optional<Map.Entry<String, ChannelItem>> mapClassToChannel(Class<?> component) {
