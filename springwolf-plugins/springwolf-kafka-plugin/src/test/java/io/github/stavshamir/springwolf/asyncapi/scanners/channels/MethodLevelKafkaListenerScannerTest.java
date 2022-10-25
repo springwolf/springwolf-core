@@ -217,9 +217,12 @@ public class MethodLevelKafkaListenerScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .build();
 
         Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-topic_publish_methodWithAnnotation")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();

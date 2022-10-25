@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
-public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<RabbitListener>
+public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListenerScanner<RabbitListener>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
     private final Map<String, Binding> bindingsMap;
@@ -46,7 +46,6 @@ public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<Ra
         return RabbitListener.class;
     }
 
-    @Override
     protected String getChannelName(RabbitListener annotation) {
         if (annotation.queues().length > 0) {
             return getChannelNameFromQueues(annotation);
@@ -76,10 +75,12 @@ public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<Ra
     protected Map<String, ? extends ChannelBinding> buildChannelBinding(RabbitListener annotation) {
         AMQPChannelBinding.ExchangeProperties exchangeProperties = new AMQPChannelBinding.ExchangeProperties();
         exchangeProperties.setName(getExchangeName(annotation));
-        return ImmutableMap.of("amqp", AMQPChannelBinding.builder()
+
+        AMQPChannelBinding channelBinding = AMQPChannelBinding.builder()
                 .is("routingKey")
                 .exchange(exchangeProperties)
-                .build());
+                .build();
+        return ImmutableMap.of("amqp", channelBinding);
     }
 
     private String getExchangeName(RabbitListener annotation) {
@@ -100,9 +101,7 @@ public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<Ra
 
     @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(RabbitListener annotation) {
-        return ImmutableMap.of("amqp", AMQPOperationBinding.builder()
-                .cc(getRoutingKeys(annotation))
-                .build());
+        return ImmutableMap.of("amqp", AMQPOperationBinding.builder().cc(getRoutingKeys(annotation)).build());
     }
 
     private List<String> getRoutingKeys(RabbitListener annotation) {
