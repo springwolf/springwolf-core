@@ -72,7 +72,7 @@ publishing {
                     developer {
                         id = 'timonback'
                         name = 'Timon Back'
-                        email = 'timon.back@gmail.com'
+                        email = 'timon.back+springwolf@gmail.com'
                     }
                 }
 
