@@ -52,7 +52,7 @@ publishing {
             pom {
                 name = 'springwolf-amqp'
                 description = 'Automated JSON API documentation for AMQP (RabbitMQ) Listeners built with Spring'
-                url = 'https://github.com/stavshamir/springwolf'
+                url = 'https://springwolf.github.io'
 
                 licenses {
                     license {

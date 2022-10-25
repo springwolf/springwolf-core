@@ -57,7 +57,7 @@ publishing {
             pom {
                 name = 'springwolf-kafka'
                 description = 'Automated JSON API documentation for Kafka Listeners built with Spring'
-                url = 'https://github.com/stavshamir/springwolf'
+                url = 'https://springwolf.github.io'
 
                 licenses {
                     license {

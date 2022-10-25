@@ -53,7 +53,7 @@ publishing {
             pom {
                 name = 'springwolf-common-model-converters'
                 description = 'Common model converters beans for Springwolf'
-                url = 'https://github.com/springwolf/springwolf-core'
+                url = 'https://springwolf.github.io/'
 
                 licenses {
                     license {
