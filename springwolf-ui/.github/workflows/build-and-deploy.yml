@@ -27,7 +27,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build
-        run: ./gradlew build -x signArchives
+        run: ./gradlew build
 
       - name: Publish package
         if: github.ref == 'refs/heads/master'
