@@ -1,6 +1,5 @@
 plugins {
     id 'java-library'
-    id 'maven'
     id 'signing'
     id 'maven-publish'
 
@@ -31,98 +30,53 @@ dependencies {
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
-    testCompile 'org.projectlombok:lombok:1.18.4'
+    testImplementation 'org.projectlombok:lombok:1.18.4'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
 
-    testCompile('org.assertj:assertj-core:3.11.1')
+    testImplementation('org.assertj:assertj-core:3.11.1')
 }
 
 jar.enabled = true
 bootJar.enabled = false
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-signing {
-    sign configurations.archives
-
-    useInMemoryPgpKeys project.findProperty("SIGNINGKEY"), project.findProperty("SIGNINGPASSWORD")
-}
-
-def pomConfig = {
-    licenses {
-        license {
-            name 'The Apache License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-        }
-    }
-
-    developers {
-        developer {
-            id 'stavshamir'
-            name 'Stav Shamir'
-            email 'shamir.stav@gmail.com'
-        }
-    }
-
-    scm {
-        url 'https://github.com/springwolf/springwolf-core'
-    }
-}
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
 
-            artifact sourcesJar {
-                classifier "sources"
-            }
-
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-
-            groupId project.group
             artifactId 'springwolf-amqp'
+            groupId project.group
             version project.version
 
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', 'Automated JSON API documentation for AMQP (RabbitMQ) Listeners built with Spring')
-                root.appendNode('name', 'springwolf-amqp')
-                root.appendNode('url', 'https://github.com/springwolf/springwolf-core')
-                root.children().last() + pomConfig
+            pom {
+                name = 'springwolf-amqp'
+                description = 'Automated JSON API documentation for AMQP (RabbitMQ) Listeners built with Spring'
+                url = 'https://springwolf.github.io'
 
-                def pomFile = file("${project.buildDir}/generated-pom.xml")
-                writeTo(pomFile)
-                def pomAscFile = signing.sign(pomFile).signatureFiles[0]
-                artifact(pomAscFile) {
-                    classifier = null
-                    extension = 'pom.asc'
-                }
-            }
-
-            project.tasks.signArchives.signatureFiles.each {
-                artifact(it) {
-                    def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
-                    if (matcher.find()) {
-                        classifier = matcher.group(1)
-                    } else {
-                        classifier = null
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
-                    extension = 'jar.asc'
+                }
+
+                developers {
+                    developer {
+                        id = 'stavshamir'
+                        name = 'Stav Shamir'
+                        email = 'shamir.stav@gmail.com'
+                    }
+
+                    developer {
+                        id = 'timonback'
+                        name = 'Timon Back'
+                        email = 'timon.back+springwolf@gmail.com'
+                    }
+                }
+
+                scm {
+                    url = 'https://github.com/stavshamir/springwolf'
                 }
             }
         }
@@ -139,13 +93,12 @@ publishing {
             }
         }
     }
-
-    model {
-        tasks.publishMavenJavaPublicationToMavenLocal {
-            dependsOn project.tasks.signArchives
-        }
-        tasks.publishMavenJavaPublicationToMavenRepository {
-            dependsOn project.tasks.signArchives
-        }
-    }
 }
+
+signing {
+    def signingKey = project.findProperty("SIGNINGKEY")
+    def signingPassword = project.findProperty("SIGNINGPASSWORD")
+    useInMemoryPgpKeys (signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
