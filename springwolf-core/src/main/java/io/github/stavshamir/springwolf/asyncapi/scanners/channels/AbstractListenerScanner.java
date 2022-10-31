@@ -5,11 +5,11 @@ import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.Maps;
+import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,14 @@ import static java.util.stream.Collectors.toSet;
 public abstract class AbstractListenerScanner<T extends Annotation> implements ChannelsScanner {
 
     @Autowired
-    private AsyncApiDocket docket;
+    private ComponentClassScanner componentClassScanner;
 
     @Autowired
     private SchemasService schemasService;
 
     @Override
     public Map<String, ChannelItem> scan() {
-        return docket.getComponentsScanner().scanForComponents().stream()
+        return componentClassScanner.scanForComponents().stream()
                 .map(this::getAnnotatedMethods).flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));

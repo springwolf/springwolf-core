@@ -8,12 +8,12 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
+import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForSpringKafkaBuilder;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class ClassLevelKafkaListenerScanner
     private StringValueResolver resolver;
 
     @Autowired
-    private AsyncApiDocket docket;
+    private ComponentClassScanner componentClassScanner;
 
     @Autowired
     private SchemasService schemasService;
@@ -59,7 +59,7 @@ public class ClassLevelKafkaListenerScanner
     }
 
     public Map<String, ChannelItem> scan() {
-        Set<Class<?>> components = docket.getComponentsScanner().scanForComponents();
+        Set<Class<?>> components = componentClassScanner.scanForComponents();
         Set<Map.Entry<String, ChannelItem>> channels = mapToChannels(components);
         return mergeChannels(channels);
     }
