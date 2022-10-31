@@ -1,9 +1,9 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.components;
+package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
 import java.util.Set;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 
-public interface ComponentClassScanner {
+public interface ClassScanner {
 
     /**
      * Scan your project for components potentially containing asynchronous listeners,
@@ -11,5 +11,5 @@ public interface ComponentClassScanner {
      *
      * @return A set of found classes.
      */
-    Set<Class<?>> scanForComponents();
+    Set<Class<?>> scan();
 }

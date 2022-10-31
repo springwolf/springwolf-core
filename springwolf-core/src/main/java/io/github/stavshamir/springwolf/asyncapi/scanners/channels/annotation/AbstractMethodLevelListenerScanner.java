@@ -7,6 +7,7 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -33,7 +34,7 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
 
     @Override
     public Map<String, ChannelItem> scan() {
-        return componentClassScanner.scanForComponents().stream()
+        return componentClassScanner.scan().stream()
                 .map(this::getAnnotatedMethods).flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));

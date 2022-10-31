@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.components;
+package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,4 +10,5 @@ public class TestBeanConfiguration {
     public TestBean testBean() {
         return new TestBean("foo");
     }
+
 }

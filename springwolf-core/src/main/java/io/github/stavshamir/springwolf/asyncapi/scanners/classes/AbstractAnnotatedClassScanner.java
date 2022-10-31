@@ -1,38 +1,41 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.components;
+package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
+import java.lang.annotation.Annotation;
 import java.util.Optional;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
-@Service
-@RequiredArgsConstructor
-public class DefaultComponentClassScanner implements ComponentClassScanner {
+public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implements ClassScanner {
 
-    private final AsyncApiDocket docket;
+    @Autowired
+    private AsyncApiDocket docket;
+
+    /**
+     * @return The class object of the annotation to scan.
+     */
+    protected abstract Class<T> getAnnotationClass();
 
     @Override
-    public Set<Class<?>> scanForComponents() {
+    public Set<Class<?>> scan() {
         String basePackage = docket.getBasePackage();
         if (StringUtils.isBlank(basePackage)) {
             throw new IllegalArgumentException("Base package must not be blank");
         }
 
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AnnotationTypeFilter(Component.class));
+        provider.addIncludeFilter(new AnnotationTypeFilter(getAnnotationClass()));
 
-        log.debug("Scanning for @Component classes in {}", basePackage);
+        log.debug("Scanning for {} classes in {}", getAnnotationClass().getSimpleName(), basePackage);
         return provider.findCandidateComponents(basePackage).stream()
                 .map(BeanDefinition::getBeanClassName)
                 .map(this::getClass)

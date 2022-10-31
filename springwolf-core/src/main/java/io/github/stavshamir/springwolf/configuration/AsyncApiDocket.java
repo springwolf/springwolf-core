@@ -17,10 +17,9 @@ import java.util.Map;
 public class AsyncApiDocket {
 
     /**
-     * <b>Required.</b>
      * The base package containing the declarations of consumers and producer beans.
      */
-    private String basePackage;
+    private final String basePackage;
 
     /**
      * <b>Required.</b>

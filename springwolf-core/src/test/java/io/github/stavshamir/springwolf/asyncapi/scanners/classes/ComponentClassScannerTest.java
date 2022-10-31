@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.components;
+package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import org.junit.Test;
@@ -14,25 +14,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {DefaultComponentClassScanner.class})
-public class DefaultComponentClassScannerTest {
+@ContextConfiguration(classes = {ComponentClassScanner.class})
+public class ComponentClassScannerTest {
 
     @MockBean
     private AsyncApiDocket docket;
 
     @Autowired
-    private DefaultComponentClassScanner componentsScanner;
+    private ComponentClassScanner componentsScanner;
 
     @Test
     public void getComponents() {
         when(docket.getBasePackage())
                 .thenReturn(this.getClass().getPackage().getName());
 
-        Set<Class<?>> components = componentsScanner.scanForComponents();
+        Set<Class<?>> components = componentsScanner.scan();
 
         assertThat(components)
-                .contains(DefaultComponentClassScanner.class)
-                .doesNotContain(ComponentClassScanner.class);
+                .contains(ComponentClassScanner.class)
+                .contains(ConfigurationClassScanner.class)
+                .doesNotContain(ClassScanner.class);
     }
 
 }
