@@ -7,7 +7,7 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
-import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.components.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
@@ -16,7 +16,6 @@ import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import junit.framework.TestCase;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,18 +44,12 @@ public class ClassLevelKafkaListenerScannerTest extends TestCase {
     private ClassLevelKafkaListenerScanner methodLevelKafkaListenerScanner;
 
     @MockBean
-    private ComponentsScanner componentsScanner;
+    private ComponentClassScanner componentsScanner;
 
     @MockBean
     private AsyncApiDocket asyncApiDocket;
 
     private static final String TOPIC = "test-topic";
-
-    @Before
-    public void setUp() {
-        when(asyncApiDocket.getComponentsScanner())
-                .thenReturn(componentsScanner);
-    }
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
