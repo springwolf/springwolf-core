@@ -1,0 +1,111 @@
+plugins {
+    id 'java-library'
+    id 'signing'
+    id 'maven-publish'
+
+    id 'org.springframework.boot' version '2.2.13.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+}
+
+def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
+
+group 'io.github.springwolf'
+version '0.1.0' + (isSnapshot ? '-SNAPSHOT' : '')
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR8")
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
+}
+
+dependencies {
+    api project(':springwolf-core')
+
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+
+    implementation 'com.google.guava:guava:31.1-jre'
+
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
+    testImplementation 'org.projectlombok:lombok:1.18.4'
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.assertj:assertj-core:3.11.1')
+    testImplementation('org.apache.kafka:kafka-streams:3.3.1')
+}
+
+jar.enabled = true
+bootJar.enabled = false
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifactId 'springwolf-cloud-stream'
+            groupId project.group
+            version project.version
+
+            pom {
+                name = 'springwolf-cloud-stream'
+                description = 'Automated JSON API documentation for Spring Boot cloud stream functions'
+                url = 'https://springwolf.github.io'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'stavshamir'
+                        name = 'Stav Shamir'
+                        email = 'shamir.stav@gmail.com'
+                    }
+
+                    developer {
+                        id = 'timonback'
+                        name = 'Timon Back'
+                        email = 'timon.back+springwolf@gmail.com'
+                    }
+                }
+
+                scm {
+                    url = 'https://github.com/stavshamir/springwolf'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = project.findProperty('MAVEN_USERNAME') ?: ''
+                password = project.findProperty('MAVEN_PASSWORD') ?: ''
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = project.findProperty("SIGNINGKEY")
+    def signingPassword = project.findProperty("SIGNINGPASSWORD")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
