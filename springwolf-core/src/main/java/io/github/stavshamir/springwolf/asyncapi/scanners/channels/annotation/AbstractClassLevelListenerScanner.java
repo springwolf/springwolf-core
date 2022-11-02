@@ -1,29 +1,20 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
+import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
-import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForSpringKafkaBuilder;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.kafka.annotation.KafkaHandler;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -32,17 +23,11 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
-import static java.util.stream.Collectors.toList;
+import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor.getPayloadType;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
-@Service
-@RequiredArgsConstructor
-public class ClassLevelKafkaListenerScanner
-        implements ChannelsScanner, EmbeddedValueResolverAware {
-
-
-    private StringValueResolver resolver;
+public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends Annotation, MethodAnnotation extends Annotation> implements ChannelsScanner {
 
     @Autowired
     private AsyncApiDocket docket;
@@ -53,11 +38,45 @@ public class ClassLevelKafkaListenerScanner
     private static final Comparator<Map.Entry<String, ChannelItem>> byPublishOperationName = Comparator.comparing(it -> it.getValue().getPublish().getOperationId());
     private static final Supplier<Set<Map.Entry<String, ChannelItem>>> channelItemSupplier = () -> new TreeSet<>(byPublishOperationName);
 
-    @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.resolver = resolver;
+    /**
+     * This annotation is used on class level
+     * @return The class object of the listener annotation.
+     */
+    protected abstract Class<ClassAnnotation> getListenerAnnotationClass();
+    /**
+     * This annotation is used on the method level
+     * @return The class object of the handler annotation.
+     */
+    protected abstract Class<MethodAnnotation> getHandlerAnnotationClass();
+
+    /**
+     * @param annotation An instance of a listener annotation.
+     * @return The channel name associated with this instance of listener annotation.
+     */
+    protected abstract String getChannelName(ClassAnnotation annotation);
+
+    /**
+     * @param annotation An instance of a listener annotation.
+     * @return A map containing an operation binding pointed to by the protocol binding name.
+     */
+    protected abstract Map<String, ? extends OperationBinding> buildOperationBinding(ClassAnnotation annotation);
+
+    /**
+     * @param annotation An instance of a listener annotation.
+     * @return A map containing an channel binding pointed to by the protocol binding name.
+     */
+    protected abstract Map<String, ? extends ChannelBinding> buildChannelBinding(ClassAnnotation annotation);
+
+    /**
+     * Can be overriden by implementations
+     * @param method The specific method. Can be used to extract the payload type
+     * @return The AsyncHeaders
+     */
+    protected AsyncHeaders buildHeaders(Method method) {
+        return AsyncHeaders.NOT_DOCUMENTED;
     }
 
+    @Override
     public Map<String, ChannelItem> scan() {
         Set<Class<?>> components = docket.getComponentsScanner().scanForComponents();
         Set<Map.Entry<String, ChannelItem>> channels = mapToChannels(components);
@@ -66,10 +85,14 @@ public class ClassLevelKafkaListenerScanner
 
     private Set<Map.Entry<String, ChannelItem>> mapToChannels(Set<Class<?>> components) {
         return components.stream()
-                .filter(this::isAnnotatedWithKafkaListener)
+                .filter(this::isClassAnnotated)
                 .map(this::mapClassToChannel)
                 .filter(Optional::isPresent).map(Optional::get)
                 .collect(Collectors.toCollection(channelItemSupplier));
+    }
+
+    private boolean isClassAnnotated(Class<?> component) {
+        return component.isAnnotationPresent(getListenerAnnotationClass());
     }
 
     private Map<String, ChannelItem> mergeChannels(Set<Map.Entry<String, ChannelItem>> channelEntries) {
@@ -95,106 +118,36 @@ public class ClassLevelKafkaListenerScanner
                 .ofNullable(channelItem.getPublish())
                 .map(Operation::getMessage)
                 .map(MessageHelper::messageObjectToSet)
-                .orElseGet(HashSet::new);
-    }
-
-    private boolean isAnnotatedWithKafkaListener(Class<?> component) {
-        return component.isAnnotationPresent(KafkaListener.class);
+                .orElseGet(TreeSet::new);
     }
 
     private Optional<Map.Entry<String, ChannelItem>> mapClassToChannel(Class<?> component) {
         log.debug("Mapping class \"{}\" to channel", component.getName());
 
-        KafkaListener annotation = component.getAnnotation(KafkaListener.class);
+        ClassAnnotation annotation = component.getAnnotation(getListenerAnnotationClass());
         String channelName = getChannelName(annotation);
         Map<String, ? extends OperationBinding> operationBinding = buildOperationBinding(annotation);
+        Map<String, ? extends ChannelBinding> channelBinding = buildChannelBinding(annotation);
         Set<Method> annotatedMethods = getAnnotatedMethods(component);
 
         if (annotatedMethods.isEmpty()) {
             return Optional.empty();
         }
 
-        ChannelItem channelItem = buildChannel(component.getSimpleName(), annotatedMethods, operationBinding);
+        ChannelItem channelItem = buildChannel(component.getSimpleName(), annotatedMethods, channelBinding, operationBinding);
         return Optional.of(Maps.immutableEntry(channelName, channelItem));
     }
 
-    protected String getChannelName(KafkaListener annotation) {
-        List<String> resolvedTopics = Arrays.stream(annotation.topics())
-                .map(resolver::resolveStringValue)
-                .collect(toList());
-
-        log.debug("Found topics: {}", String.join(", ", resolvedTopics));
-        return resolvedTopics.get(0);
-    }
-
-    protected Map<String, ? extends OperationBinding> buildOperationBinding(KafkaListener annotation) {
-        String groupId = resolver.resolveStringValue(annotation.groupId());
-        if (groupId == null || groupId.isEmpty()) {
-            log.debug("No group ID found for this listener");
-            groupId = null;
-        } else {
-            log.debug("Found group id: {}", groupId);
-        }
-
-        KafkaOperationBinding binding = new KafkaOperationBinding();
-        binding.setGroupId(groupId);
-        return ImmutableMap.of("kafka", binding);
-
-    }
-
-    protected Class<?> getPayloadType(Method method) {
-        String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
-        log.debug("Finding payload type for {}", methodName);
-
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        switch (parameterTypes.length) {
-            case 0:
-                throw new IllegalArgumentException("Listener methods must not have 0 parameters: " + methodName);
-            case 1:
-                return parameterTypes[0];
-            default:
-                return getPayloadType(parameterTypes, method.getParameterAnnotations(), methodName);
-        }
-    }
-
-    private Class<?> getPayloadType(Class<?>[] parameterTypes, Annotation[][] parameterAnnotations, String methodName) {
-        int payloadAnnotatedParameterIndex = getPayloadAnnotatedParameterIndex(parameterAnnotations);
-
-        if (payloadAnnotatedParameterIndex == -1) {
-            String msg = "Multi-parameter methods must have one parameter annotated with @Payload, "
-                    + "but none was found: "
-                    + methodName;
-
-            throw new IllegalArgumentException(msg);
-        }
-
-        return parameterTypes[payloadAnnotatedParameterIndex];
-    }
-
-    private int getPayloadAnnotatedParameterIndex(Annotation[][] parameterAnnotations) {
-        for (int i = 0, length = parameterAnnotations.length; i < length; i++) {
-            Annotation[] annotations = parameterAnnotations[i];
-            boolean hasPayloadAnnotation = Arrays.stream(annotations)
-                    .anyMatch(annotation -> annotation instanceof Payload);
-
-            if (hasPayloadAnnotation) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
     private Set<Method> getAnnotatedMethods(Class<?> component) {
-        Class<KafkaHandler> annotationClass = KafkaHandler.class;
-        log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", component.getName(), annotationClass.getName());
+        Class<MethodAnnotation> methodAnnotation = getHandlerAnnotationClass();
+        log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", component.getName(), methodAnnotation.getName());
 
         return Arrays.stream(component.getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(annotationClass))
+                .filter(method -> method.isAnnotationPresent(methodAnnotation))
                 .collect(toSet());
     }
 
-    private ChannelItem buildChannel(String simpleName, Set<Method> methods, Map<String, ? extends OperationBinding> operationBinding) {
+    private ChannelItem buildChannel(String simpleName, Set<Method> methods, Map<String, ? extends ChannelBinding> channelBinding, Map<String, ? extends OperationBinding> operationBinding) {
         String operationId = simpleName + "_publish";
 
         Operation operation = Operation.builder()
@@ -205,7 +158,7 @@ public class ClassLevelKafkaListenerScanner
                 .build();
 
         return ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(channelBinding)
                 .publish(operation)
                 .build();
     }
@@ -221,10 +174,7 @@ public class ClassLevelKafkaListenerScanner
     private Message buildMessage(Method method) {
         Class<?> payloadType = getPayloadType(method);
         String modelName = schemasService.register(payloadType);
-        AsyncHeaders headers = new AsyncHeadersForSpringKafkaBuilder("SpringKafkaDefaultHeaders-" + payloadType.getSimpleName())
-                .withTypeIdHeader(payloadType.getTypeName())
-                .build();
-        String headerModelName = schemasService.register(headers);
+        String headerModelName = schemasService.register(this.buildHeaders(method));
 
         return Message.builder()
                 .name(payloadType.getName())

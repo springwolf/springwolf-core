@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
@@ -8,25 +8,25 @@ import lombok.EqualsAndHashCode;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-public class TestListenerScanner extends AbstractListenerScanner<AbstractListenerScannerTest.TestChannelListener> {
+public class TestMethodLevelListenerScanner extends AbstractMethodLevelListenerScanner<TestMethodLevelListenerScannerTest.TestChannelListener> {
 
     @Override
-    protected Class<AbstractListenerScannerTest.TestChannelListener> getListenerAnnotationClass() {
-        return AbstractListenerScannerTest.TestChannelListener.class;
+    protected Class<TestMethodLevelListenerScannerTest.TestChannelListener> getListenerAnnotationClass() {
+        return TestMethodLevelListenerScannerTest.TestChannelListener.class;
     }
 
     @Override
-    protected String getChannelName(AbstractListenerScannerTest.TestChannelListener annotation) {
+    protected String getChannelName(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
         return "test-channel";
     }
 
     @Override
-    protected Map<String, ? extends ChannelBinding> buildChannelBinding(AbstractListenerScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends ChannelBinding> buildChannelBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
         return ImmutableMap.of("test-channel-binding", new TestChannelBinding());
     }
 
     @Override
-    protected Map<String, ? extends OperationBinding> buildOperationBinding(AbstractListenerScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends OperationBinding> buildOperationBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
         return ImmutableMap.of("test-operation-binding", new TestOperationBinding());
     }
 

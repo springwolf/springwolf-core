@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -33,11 +33,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {TestListenerScanner.class, DefaultSchemasService.class})
-public class AbstractListenerScannerTest {
+@ContextConfiguration(classes = {TestMethodLevelListenerScanner.class, DefaultSchemasService.class})
+public class TestMethodLevelListenerScannerTest {
 
     @Autowired
-    private TestListenerScanner channelScanner;
+    private TestMethodLevelListenerScanner channelScanner;
 
     @MockBean
     private ComponentsScanner componentsScanner;
@@ -84,12 +84,12 @@ public class AbstractListenerScannerTest {
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-channel_publish_methodWithAnnotation")
-                .bindings(ImmutableMap.of("test-operation-binding", new TestListenerScanner.TestOperationBinding()))
+                .bindings(ImmutableMap.of("test-operation-binding", new TestMethodLevelListenerScanner.TestOperationBinding()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("test-channel-binding", new TestListenerScanner.TestChannelBinding()))
+                .bindings(ImmutableMap.of("test-channel-binding", new TestMethodLevelListenerScanner.TestChannelBinding()))
                 .publish(operation)
                 .build();
 

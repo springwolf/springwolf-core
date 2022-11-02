@@ -18,7 +18,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProducerData {
+public class ProducerData implements OperationData {
 
     /**
      * The name of the channel (topic, queue etc.).

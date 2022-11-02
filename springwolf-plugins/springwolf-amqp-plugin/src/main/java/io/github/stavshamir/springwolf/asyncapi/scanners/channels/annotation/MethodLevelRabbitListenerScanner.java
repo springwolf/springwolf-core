@@ -1,19 +1,18 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.binding.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import com.google.common.collect.ImmutableMap;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,7 +24,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
-public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<RabbitListener>
+public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListenerScanner<RabbitListener>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
     private final Map<String, Binding> bindingsMap;
@@ -47,7 +46,6 @@ public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<Ra
         return RabbitListener.class;
     }
 
-    @Override
     protected String getChannelName(RabbitListener annotation) {
         if (annotation.queues().length > 0) {
             return getChannelNameFromQueues(annotation);
@@ -77,10 +75,12 @@ public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<Ra
     protected Map<String, ? extends ChannelBinding> buildChannelBinding(RabbitListener annotation) {
         AMQPChannelBinding.ExchangeProperties exchangeProperties = new AMQPChannelBinding.ExchangeProperties();
         exchangeProperties.setName(getExchangeName(annotation));
-        return ImmutableMap.of("amqp", AMQPChannelBinding.builder()
+
+        AMQPChannelBinding channelBinding = AMQPChannelBinding.builder()
                 .is("routingKey")
                 .exchange(exchangeProperties)
-                .build());
+                .build();
+        return ImmutableMap.of("amqp", channelBinding);
     }
 
     private String getExchangeName(RabbitListener annotation) {
@@ -101,9 +101,7 @@ public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<Ra
 
     @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(RabbitListener annotation) {
-        return ImmutableMap.of("amqp", AMQPOperationBinding.builder()
-                .cc(getRoutingKeys(annotation))
-                .build());
+        return ImmutableMap.of("amqp", AMQPOperationBinding.builder().cc(getRoutingKeys(annotation)).build());
     }
 
     private List<String> getRoutingKeys(RabbitListener annotation) {
@@ -136,48 +134,7 @@ public class MethodLevelRabbitListenerScanner extends AbstractListenerScanner<Ra
         return routingKeys;
     }
 
-    @Override
     protected Class<?> getPayloadType(Method method) {
-        String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
-        log.debug("Finding payload type for {}", methodName);
-
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        switch (parameterTypes.length) {
-            case 0:
-                throw new IllegalArgumentException("Listener methods must not have 0 parameters: " + methodName);
-            case 1:
-                return parameterTypes[0];
-            default:
-                return getPayloadType(parameterTypes, method.getParameterAnnotations(), methodName);
-        }
+        return SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
     }
-
-    private Class<?> getPayloadType(Class<?>[] parameterTypes, Annotation[][] parameterAnnotations, String methodName) {
-        int payloadAnnotatedParameterIndex = getPayloadAnnotatedParameterIndex(parameterAnnotations);
-
-        if (payloadAnnotatedParameterIndex == -1) {
-            String msg = "Multi-parameter RabbitListener methods must have one parameter annotated with @Payload, "
-                    + "but none was found: "
-                    + methodName;
-
-            throw new IllegalArgumentException(msg);
-        }
-
-        return parameterTypes[payloadAnnotatedParameterIndex];
-    }
-
-    private int getPayloadAnnotatedParameterIndex(Annotation[][] parameterAnnotations) {
-        for (int i = 0, length = parameterAnnotations.length; i < length; i++) {
-            Annotation[] annotations = parameterAnnotations[i];
-            boolean hasPayloadAnnotation = Arrays.stream(annotations)
-                    .anyMatch(annotation -> annotation instanceof Payload);
-
-            if (hasPayloadAnnotation) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
 }

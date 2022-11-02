@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
@@ -27,6 +27,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -203,6 +204,38 @@ public class MethodLevelKafkaListenerScannerTest {
                 .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
     }
 
+    @Test
+    public void scan_componentHasKafkaListenerMethods_batchPayload() {
+        // Given a class with a method annotated with KafkaListener with a payload of type List<?>
+        setClassToScan(ClassWithKafkaListenerWithBatchPayload.class);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
+
+        // Then the returned collection contains the channel, and the payload is the generic type of the list
+        Message message = Message.builder()
+                .name(SimpleFoo.class.getName())
+                .title(SimpleFoo.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .build();
+
+        Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-topic_publish_methodWithAnnotation")
+                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .message(message)
+                .build();
+
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .publish(operation)
+                .build();
+
+        assertThat(actualChannels)
+                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+    }
+
     private static class ClassWithoutKafkaListenerAnnotations {
 
         private void methodWithoutAnnotation() {
@@ -254,6 +287,14 @@ public class MethodLevelKafkaListenerScannerTest {
 
         @KafkaListener(topics = TOPIC)
         private void methodWithAnnotation(String anotherParam, @Payload SimpleFoo payload) {
+        }
+
+    }
+
+    private static class ClassWithKafkaListenerWithBatchPayload {
+
+        @KafkaListener(topics = TOPIC)
+        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {
         }
 
     }
