@@ -1,9 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
+import org.apache.kafka.streams.kstream.KStream;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -68,6 +70,34 @@ public class FunctionalChannelBeanDataTest {
     @Bean
     private Function<String, Integer> functionBean() {
         return s -> 1;
+    }
+
+    @Test
+    public void testConsumerBeanWithGenericPayload() throws NoSuchMethodException {
+        String methodName = "consumerBeanWithGenericPayload";
+        Method method = getMethod(methodName);
+        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        assertThat(data)
+                .containsExactly(new FunctionalChannelBeanData(methodName, List.class, CONSUMER, methodName + "-in-0"));
+    }
+
+    @Bean
+    private Consumer<List<String>> consumerBeanWithGenericPayload() {
+        return System.out::println;
+    }
+
+    @Test
+    public void testKafkaStreamsConsumerBean() throws NoSuchMethodException {
+        String methodName = "kafkaStreamsConsumerBean";
+        Method method = getMethod(methodName);
+        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        assertThat(data)
+                .containsExactly(new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
+    }
+
+    @Bean
+    private Consumer<KStream<Void, String>> kafkaStreamsConsumerBean() {
+        return System.out::println;
     }
 
     private static Method getMethod(String methodName) throws NoSuchMethodException {
