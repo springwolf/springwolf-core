@@ -8,6 +8,8 @@ import com.asyncapi.v2.model.server.Server;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -91,12 +93,12 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     private ImmutableMap<String, ? extends OperationBinding> buildOperationBinding() {
         String protocolName = getProtocolName();
-        return ImmutableMap.of(protocolName, new OperationBinding());
+        return ImmutableMap.of(protocolName, new EmptyOperationBinding());
     }
 
     private ImmutableMap<String, ? extends ChannelBinding> buildChannelBinding() {
         String protocolName = getProtocolName();
-        return ImmutableMap.of(protocolName, new ChannelBinding());
+        return ImmutableMap.of(protocolName, new EmptyChannelBinding());
     }
 
     private String getProtocolName() {
