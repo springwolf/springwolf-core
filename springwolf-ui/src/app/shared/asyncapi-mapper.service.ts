@@ -12,6 +12,7 @@ interface ServerAsyncApiSchema {
   format: string;
   enum: string[];
   properties?: Map<string, ServerAsyncApiSchema>;
+  items?: ServerAsyncApiSchema,
   example?: {
     [key: string]: object;
   };
@@ -174,6 +175,7 @@ export class AsyncApiMapperService {
 
     private mapSchema(schemaName: string, schema: ServerAsyncApiSchema): Schema {
       const properties = schema.properties !== undefined ? this.mapSchemas(schema.properties) : undefined
+      const items = schema.items !== undefined ? this.mapSchema(schema.$ref+"[]", schema.items) : undefined;
       const example = schema.example !== undefined ? new Example(schema.example) : undefined
       return {
         name: schema.$ref,
@@ -181,6 +183,7 @@ export class AsyncApiMapperService {
         anchorIdentifier: '#' + schemaName,
         anchorUrl: AsyncApiMapperService.BASE_URL + schema.$ref?.split('/')?.pop(),
         type: schema.type,
+        items: items,
         format: schema.format,
         enum: schema.enum,
         properties: properties,
