@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -13,8 +14,12 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.Optional;
 
+import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX;
+import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPRING_WOLF_KAFKA_PUBLISHING_ENABLED;
+
 @Component
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = SPRINGWOLF_KAFKA_CONFIG_PREFIX, name = SPRING_WOLF_KAFKA_PUBLISHING_ENABLED)
 public class SpringwolfKafkaTemplateFactory {
 
     private final AsyncApiDocket docket;
