@@ -15,7 +15,7 @@
   },
   "servers" : {
     "kafka" : {
-      "url" : "localhost:29092",
+      "url" : "kafka:29092",
       "protocol" : "kafka"
     }
   },
@@ -344,6 +344,7 @@
         "properties" : {
           "__TypeId__" : {
             "type" : "string",
+            "description" : "Spring Type Id Header",
             "example" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
             "exampleSetFlag" : true,
             "types" : [ "string" ],

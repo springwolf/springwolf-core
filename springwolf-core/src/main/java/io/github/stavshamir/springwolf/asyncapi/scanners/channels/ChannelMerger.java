@@ -10,8 +10,22 @@ import java.util.function.Function;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 
+
+/**
+ * Util to merge multiple {@link ChannelItem}s
+ */
 public class ChannelMerger {
 
+    /**
+     * Merges multiple channelItems by channel name
+     * <p>
+     * Given two channelItems for the same channel name, the first seen ChannelItem is used
+     * If an operation is null, the next non-null operation is used
+     * Messages within operations are merged
+     *
+     * @param channelEntries Ordered pairs of channel name to ChannelItem
+     * @return A map of channelName to a single ChannelItem
+     */
     public static Map<String, ChannelItem> merge(List<Map.Entry<String, ChannelItem>> channelEntries) {
         Map<String, ChannelItem> mergedChannels = new TreeMap<>();
 

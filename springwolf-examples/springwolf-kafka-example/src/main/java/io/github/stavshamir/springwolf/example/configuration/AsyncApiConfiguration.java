@@ -8,7 +8,6 @@ import io.github.stavshamir.springwolf.asyncapi.types.KafkaConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.KafkaProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForCloudEventsBuilder;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForSpringKafkaBuilder;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
 import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
@@ -20,7 +19,6 @@ import org.springframework.http.MediaType;
 
 import static io.github.stavshamir.springwolf.example.configuration.KafkaConfiguration.CONSUMER_TOPIC;
 import static io.github.stavshamir.springwolf.example.configuration.KafkaConfiguration.PRODUCER_TOPIC;
-import static java.util.Arrays.asList;
 
 @Configuration
 @EnableAsyncApi
@@ -59,18 +57,8 @@ public class AsyncApiConfiguration {
                 .basePackage("io.github.stavshamir.springwolf.example")
                 .info(info)
                 .server("kafka", Server.builder().protocol("kafka").url(BOOTSTRAP_SERVERS).build())
-                .consumer(manuallyConfiguredConsumer)
                 .producer(anotherProducerData)
-                .build();
-    }
-
-    private static AsyncHeaders createSpringKafkaDefaultHeaders() {
-        return new AsyncHeadersForSpringKafkaBuilder()
-                .withTypeIdHeader(
-                        "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
-                        asList("io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-                                "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto")
-                )
+                .consumer(manuallyConfiguredConsumer)
                 .build();
     }
 

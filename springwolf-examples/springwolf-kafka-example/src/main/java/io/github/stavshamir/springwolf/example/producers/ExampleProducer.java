@@ -25,10 +25,12 @@ public class ExampleProducer {
                     values = {
                             @AsyncOperation.Headers.Header(
                                     name = DEFAULT_CLASSID_FIELD_NAME,
+                                    description = "Spring Type Id Header",
                                     value = "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto"
                             ),
                             @AsyncOperation.Headers.Header(
                                     name = DEFAULT_CLASSID_FIELD_NAME,
+                                    description = "Spring Type Id Header",
                                     value = "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
                             ),
                     }
