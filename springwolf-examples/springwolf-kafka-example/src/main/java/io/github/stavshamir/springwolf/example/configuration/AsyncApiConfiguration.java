@@ -14,7 +14,6 @@ import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
 import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 
@@ -32,7 +31,8 @@ public class AsyncApiConfiguration {
         this.BOOTSTRAP_SERVERS = bootstrapServers;
     }
 
-    @Bean
+    // TODO How do we test/demonstrate both options?
+    //@Bean
     public AsyncApiDocket asyncApiDocket() {
         Info info = Info.builder()
                 .version("1.0.0")
