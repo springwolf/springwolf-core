@@ -3,15 +3,23 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.OperationBindingProcessor;
+import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 
 @Component
-public class KafkaOperationBindingProcessor implements OperationBindingProcessor {
+public class KafkaOperationBindingProcessor implements OperationBindingProcessor, EmbeddedValueResolverAware {
+    private StringValueResolver resolver;
+
+    @Override
+    public void setEmbeddedValueResolver(StringValueResolver resolver) {
+        this.resolver = resolver;
+    }
 
     @Override
     public Optional<ProcessedOperationBinding> process(Method method) {
@@ -24,15 +32,15 @@ public class KafkaOperationBindingProcessor implements OperationBindingProcessor
 
     private ProcessedOperationBinding mapToOperationBinding(KafkaAsyncOperationBinding bindingAnnotation) {
         KafkaOperationBinding kafkaOperationBinding = KafkaOperationBinding.builder()
-                .bindingVersion(nullIfEmpty(bindingAnnotation.bindingVersion()))
-                .clientId(nullIfEmpty(bindingAnnotation.clientId()))
-                .groupId(nullIfEmpty(bindingAnnotation.groupId()))
+                .bindingVersion(resolveOrNull(bindingAnnotation.bindingVersion()))
+                .clientId(resolveOrNull(bindingAnnotation.clientId()))
+                .groupId(resolveOrNull(bindingAnnotation.groupId()))
                 .build();
 
         return new ProcessedOperationBinding(bindingAnnotation.type(), kafkaOperationBinding);
     }
 
-    private static String nullIfEmpty(String stringValue) {
-        return StringUtils.isEmpty(stringValue) ? null : stringValue;
+    private String resolveOrNull(String stringValue) {
+        return StringUtils.isEmpty(stringValue) ? null : resolver.resolveStringValue(stringValue);
     }
 }

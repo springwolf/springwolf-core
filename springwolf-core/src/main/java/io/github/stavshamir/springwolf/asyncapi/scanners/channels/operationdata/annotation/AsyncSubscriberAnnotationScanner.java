@@ -10,8 +10,10 @@ import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -23,12 +25,17 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor
 @Component
 @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-public class AsyncSubscriberAnnotationScanner extends AbstractOperationDataScanner {
-
+public class AsyncSubscriberAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
+    private StringValueResolver resolver;
     private final ComponentClassScanner componentClassScanner;
     private final SchemasService schemasService;
 
     private final List<OperationBindingProcessor> operationBindingProcessors;
+
+    @Override
+    public void setEmbeddedValueResolver(StringValueResolver resolver) {
+        this.resolver = resolver;
+    }
 
     @Override
     protected SchemasService getSchemaService() {
@@ -66,8 +73,8 @@ public class AsyncSubscriberAnnotationScanner extends AbstractOperationDataScann
         Class<?> payloadType = op.payloadType() != Object.class ? op.payloadType() :
                 SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
         return ConsumerData.builder()
-                .channelName(op.channelName())
-                .description(AsyncAnnotationScannerUtil.nullIfEmpty(op.description()))
+                .channelName(resolver.resolveStringValue(op.channelName()))
+                .description(resolver.resolveStringValue(op.description()))
                 .headers(AsyncAnnotationScannerUtil.getAsyncHeaders(op))
                 .payloadType(payloadType)
                 .operationBinding(operationBindings)

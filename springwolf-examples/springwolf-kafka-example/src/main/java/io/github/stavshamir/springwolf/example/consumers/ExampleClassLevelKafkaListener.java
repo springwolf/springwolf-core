@@ -35,7 +35,7 @@ public class ExampleClassLevelKafkaListener {
     @KafkaHandler
     @AsyncSubscriber(operation = @AsyncOperation(
             channelName = "multi-payload-topic",
-            description = "Override description in the AsyncSubscriber annotation",
+            description = "Override description in the AsyncSubscriber annotation with servers at ${kafka.bootstrap.servers}",
             headers = @AsyncOperation.Headers(
                     schemaName = "SpringKafkaDefaultHeaders-MonetaryAmount",
                     values = {
@@ -50,7 +50,7 @@ public class ExampleClassLevelKafkaListener {
     @KafkaAsyncOperationBinding(
             bindingVersion = "1",
             clientId = "foo-clientId",
-            groupId = "foo-groupId"
+            groupId = "#{'foo-groupId'}"
     )
     public void receiveMonetaryAmount(MonetaryAmount payload) {
         logger.info("Received new message in multi-payload-topic: {}", payload.toString());

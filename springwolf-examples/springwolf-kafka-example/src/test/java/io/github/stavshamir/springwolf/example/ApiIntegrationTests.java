@@ -39,7 +39,7 @@ public class ApiIntegrationTests {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expectedWithoutServersKafkaUrlPatch = IOUtils.toString(s, StandardCharsets.UTF_8);
         // When running with EmbeddedKafka, localhost is used as hostname
-        String expected = expectedWithoutServersKafkaUrlPatch.replace("\"kafka:29092\"", "\"localhost:29092\"");
+        String expected = expectedWithoutServersKafkaUrlPatch.replace("kafka:29092", "localhost:29092");
 
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER);
     }

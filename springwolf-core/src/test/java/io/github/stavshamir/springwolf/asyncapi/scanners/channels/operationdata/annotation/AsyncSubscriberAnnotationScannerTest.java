@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Map;
@@ -29,6 +30,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {AsyncSubscriberAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
+@TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
 public class AsyncSubscriberAnnotationScannerTest {
 
     @Autowired
@@ -141,8 +143,8 @@ public class AsyncSubscriberAnnotationScannerTest {
     private static class ClassWithListenerAnnotationWithAllAttributes {
 
         @AsyncSubscriber(operation = @AsyncOperation(
-                channelName = "test-channel",
-                description = "description",
+                channelName = "${test.property.test-channel}",
+                description = "${test.property.description}",
                 headers = @AsyncOperation.Headers(
                         schemaName = "TestSchema",
                         values = {@AsyncOperation.Headers.Header(name = "header", value = "value")}

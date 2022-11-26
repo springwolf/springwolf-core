@@ -161,7 +161,7 @@
           }, {
             "name" : "javax.money.MonetaryAmount",
             "title" : "MonetaryAmount",
-            "description" : "Override description in the AsyncSubscriber annotation",
+            "description" : "Override description in the AsyncSubscriber annotation with servers at kafka:29092",
             "payload" : {
               "$ref" : "#/components/schemas/MonetaryAmount"
             },

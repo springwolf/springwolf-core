@@ -3,14 +3,24 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AmqpAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.OperationBindingProcessor;
+import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
-public class AmqpOperationBindingProcessor implements OperationBindingProcessor {
+public class AmqpOperationBindingProcessor implements OperationBindingProcessor, EmbeddedValueResolverAware {
+    private StringValueResolver resolver;
+
+    @Override
+    public void setEmbeddedValueResolver(StringValueResolver resolver) {
+        this.resolver = resolver;
+    }
 
     @Override
     public Optional<ProcessedOperationBinding> process(Method method) {
@@ -22,9 +32,9 @@ public class AmqpOperationBindingProcessor implements OperationBindingProcessor 
     }
 
     private ProcessedOperationBinding mapToOperationBinding(AmqpAsyncOperationBinding bindingAnnotation) {
-        AMQPOperationBinding kafkaOperationBinding = AMQPOperationBinding.builder()
+        AMQPOperationBinding amqpOperationBinding = AMQPOperationBinding.builder()
                 .expiration(bindingAnnotation.expiration())
-                .cc(Arrays.asList(bindingAnnotation.cc()))
+                .cc(Arrays.stream(bindingAnnotation.cc()).map(this::resolveOrNull).collect(Collectors.toList()))
                 .priority(bindingAnnotation.priority())
                 .deliveryMode(bindingAnnotation.deliveryMode())
                 .mandatory(bindingAnnotation.mandatory())
@@ -32,6 +42,10 @@ public class AmqpOperationBindingProcessor implements OperationBindingProcessor 
                 .ack(bindingAnnotation.ack())
                 .build();
 
-        return new ProcessedOperationBinding(bindingAnnotation.type(), kafkaOperationBinding);
+        return new ProcessedOperationBinding(bindingAnnotation.type(), amqpOperationBinding);
+    }
+
+    private String resolveOrNull(String stringValue) {
+        return StringUtils.isEmpty(stringValue) ? null : resolver.resolveStringValue(stringValue);
     }
 }
