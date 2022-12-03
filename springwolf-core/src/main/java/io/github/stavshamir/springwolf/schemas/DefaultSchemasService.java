@@ -12,6 +12,7 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +64,11 @@ public class DefaultSchemasService implements SchemasService {
 
         Map<String, Schema> schemas = converter.readAll(type);
         this.definitions.putAll(schemas);
+
+        if (schemas.size() == 0 && type.equals(String.class)) {
+            this.definitions.put("String", new StringSchema());
+            return "String";
+        }
 
         if (schemas.size() == 1) {
             return new ArrayList<>(schemas.keySet()).get(0);
