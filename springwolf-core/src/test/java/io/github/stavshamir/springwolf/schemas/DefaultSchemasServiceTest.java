@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 
 public class DefaultSchemasServiceTest {
 
@@ -27,6 +28,16 @@ public class DefaultSchemasServiceTest {
 
     static {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
+    @Test
+    public void string() throws IOException, JSONException {
+        String modelName = schemasService.register(String.class);
+
+        assertThat(modelName)
+                .isEqualTo("String");
+
+        assertNotNull(schemasService.getDefinitions().get(modelName));
     }
 
     @Test
