@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
 import com.google.common.collect.ImmutableSet;
 import lombok.Data;

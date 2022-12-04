@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
 import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
@@ -55,14 +55,14 @@ public class CloudStreamFunctionChannelsScannerTest {
     private CloudStreamFunctionChannelsScanner scanner;
 
     @Test
-    public void noBindings() {
+    public void testNoBindings() {
         when(bindingServiceProperties.getBindings()).thenReturn(Collections.emptyMap());
         Map<String, ChannelItem> channels = scanner.scan();
         assertThat(channels).isEmpty();
     }
 
     @Test
-    public void consumerBinding() {
+    public void testConsumerBinding() {
         // Given a binding "spring.cloud.stream.bindings.testConsumer-in-0.destination=test-consumer-input-topic"
         BindingProperties testConsumerInBinding = new BindingProperties();
         String topicName = "test-consumer-input-topic";
@@ -100,7 +100,7 @@ public class CloudStreamFunctionChannelsScannerTest {
 
 
     @Test
-    public void supplierBinding() {
+    public void testSupplierBinding() {
         // Given a binding "spring.cloud.stream.bindings.testSupplier-out-0.destination=test-supplier-output-topic"
         BindingProperties testSupplierOutBinding = new BindingProperties();
         String topicName = "test-supplier-output-topic";
@@ -137,7 +137,7 @@ public class CloudStreamFunctionChannelsScannerTest {
     }
 
     @Test
-    public void functionBinding() {
+    public void testFunctionBinding() {
         // Given a binding "spring.cloud.stream.bindings.testFunction-in-0.destination=test-in-topic"
         // And a binding "spring.cloud.stream.bindings.testFunction-out-0.destination=test-output-topic"
         String inputTopicName = "test-in-topic";
@@ -203,7 +203,7 @@ public class CloudStreamFunctionChannelsScannerTest {
     }
 
     @Test
-    public void kStreamFunctionBinding() {
+    public void testKStreamFunctionBinding() {
         // Given a binding "spring.cloud.stream.bindings.kStreamTestFunction-in-0.destination=test-in-topic"
         // And a binding "spring.cloud.stream.bindings.kStreamTestFunction-out-0.destination=test-output-topic"
         String inputTopicName = "test-in-topic";
