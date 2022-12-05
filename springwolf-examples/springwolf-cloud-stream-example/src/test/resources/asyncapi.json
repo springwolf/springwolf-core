@@ -1,0 +1,188 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Springwolf example project - Kafka",
+    "version": "1.0.0",
+    "description": "Springwolf example project",
+    "contact": {
+      "name": "springwolf",
+      "url": "https://github.com/springwolf/springwolf-core",
+      "email": "example@example.com"
+    },
+    "license": {
+      "name": "Apache License 2.0"
+    }
+  },
+  "servers": {
+    "kafka": {
+      "url": "kafka:29092",
+      "protocol": "kafka"
+    }
+  },
+  "channels": {
+    "consumer-method-input-topic": {
+      "publish": {
+        "operationId": "consumer-method-input-topic_publish_consumerMethod",
+        "description": "Auto-generated description",
+        "bindings": {
+          "kafka": {}
+        },
+        "message": {
+          "name": "io.github.stavshamir.springwolf.example.payload.ConsumerPayload",
+          "title": "ConsumerPayload",
+          "payload": {
+            "$ref": "#/components/schemas/ConsumerPayload"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          }
+        }
+      },
+      "bindings": {
+        "kafka": {}
+      }
+    },
+    "input-topic": {
+      "publish": {
+        "operationId": "input-topic_publish_process",
+        "description": "Auto-generated description",
+        "bindings": {
+          "kafka": {}
+        },
+        "message": {
+          "name": "io.github.stavshamir.springwolf.example.payload.InputPayload",
+          "title": "InputPayload",
+          "payload": {
+            "$ref": "#/components/schemas/InputPayload"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          }
+        }
+      },
+      "bindings": {
+        "kafka": {}
+      }
+    },
+    "output-topic": {
+      "subscribe": {
+        "operationId": "output-topic_subscribe_process",
+        "description": "Auto-generated description",
+        "bindings": {
+          "kafka": {}
+        },
+        "message": {
+          "name": "io.github.stavshamir.springwolf.example.payload.OutputPayload",
+          "title": "OutputPayload",
+          "payload": {
+            "$ref": "#/components/schemas/OutputPayload"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          }
+        }
+      },
+      "bindings": {
+        "kafka": {}
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ConsumerPayload": {
+        "type": "object",
+        "properties": {
+          "payloadString": {
+            "type": "string",
+            "exampleSetFlag": false,
+            "types": [
+              "string"
+            ]
+          }
+        },
+        "example": {
+          "payloadString": "string"
+        },
+        "exampleSetFlag": true
+      },
+      "HeadersNotDocumented": {
+        "type": "object",
+        "properties": {},
+        "example": {},
+        "exampleSetFlag": true,
+        "types": [
+          "object"
+        ]
+      },
+      "InputPayload": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "array",
+            "exampleSetFlag": false,
+            "items": {
+              "type": "string",
+              "exampleSetFlag": false,
+              "types": [
+                "string"
+              ]
+            },
+            "types": [
+              "array"
+            ]
+          },
+          "bar": {
+            "type": "integer",
+            "format": "int32",
+            "exampleSetFlag": false,
+            "types": [
+              "integer"
+            ]
+          }
+        },
+        "description": "Input payload model",
+        "example": {
+          "foo": [
+            "string"
+          ],
+          "bar": 0
+        },
+        "exampleSetFlag": true
+      },
+      "OutputPayload": {
+        "required": [
+          "someString"
+        ],
+        "type": "object",
+        "properties": {
+          "someString": {
+            "type": "string",
+            "description": "Some string field",
+            "example": "some string value",
+            "exampleSetFlag": true,
+            "types": [
+              "string"
+            ]
+          },
+          "someLong": {
+            "type": "integer",
+            "description": "Some long field",
+            "format": "int64",
+            "example": 5,
+            "exampleSetFlag": true,
+            "types": [
+              "integer"
+            ]
+          }
+        },
+        "description": "Output payload model",
+        "example": {
+          "someString": "some string value",
+          "someLong": 5
+        },
+        "exampleSetFlag": true
+      }
+    }
+  },
+  "tags": []
+}

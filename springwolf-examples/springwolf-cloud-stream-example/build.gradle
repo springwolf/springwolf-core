@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.bmuschko.docker-spring-boot-application' version '6.1.4'
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR8")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+sourceCompatibility = '1.8'
+version '0.1.0'
+
+
+repositories {
+    // For local development with snapshots
+    mavenLocal() {
+        content {
+            includeGroup "io.github.springwolf"
+        }
+    }
+
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":springwolf-plugins:springwolf-kafka-plugin")
+    implementation project(":springwolf-plugins:springwolf-cloud-stream-plugin")
+    implementation 'io.swagger.core.v3:swagger-core:2.2.0'
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.6.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
+    implementation 'org.apache.kafka:kafka-streams:3.1.2'
+    implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.testcontainers:testcontainers:1.16.0'
+    testImplementation 'org.skyscreamer:jsonassert:1.5.0'
+    testImplementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+}
+
+docker {
+    springBootApplication {
+        maintainer = 'shamir.stav@gmail.com'
+        baseImage = 'openjdk:8-alpine'
+        ports = [8080]
+        images = ["stavshamir/springwolf-cloud-stream-example:${project.version}"]
+    }
+
+    registryCredentials {
+        username = project.findProperty('dockerhubUsername') ?: ''
+        password = project.findProperty('dockerhubPassword') ?: ''
+    }
+}
+
+test {
+    dependsOn dockerBuildImage
+
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}

@@ -7,6 +7,7 @@ include(
         'springwolf-plugins:springwolf-cloud-stream-plugin',
         'springwolf-examples:springwolf-kafka-example',
         'springwolf-examples:springwolf-amqp-example',
+        'springwolf-examples:springwolf-cloud-stream-example',
         'springwolf-add-ons:springwolf-common-model-converters'
 )
 
