@@ -7,11 +7,11 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import static java.util.stream.Collectors.toSet;
 public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends Annotation, MethodAnnotation extends Annotation> implements ChannelsScanner {
 
     @Autowired
-    private AsyncApiDocket docket;
+    private ComponentClassScanner componentClassScanner;
 
     @Autowired
     private SchemasService schemasService;
@@ -40,11 +40,14 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
 
     /**
      * This annotation is used on class level
+     *
      * @return The class object of the listener annotation.
      */
     protected abstract Class<ClassAnnotation> getListenerAnnotationClass();
+
     /**
      * This annotation is used on the method level
+     *
      * @return The class object of the handler annotation.
      */
     protected abstract Class<MethodAnnotation> getHandlerAnnotationClass();
@@ -69,6 +72,7 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
 
     /**
      * Can be overriden by implementations
+     *
      * @param method The specific method. Can be used to extract the payload type
      * @return The AsyncHeaders
      */
@@ -78,7 +82,7 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
 
     @Override
     public Map<String, ChannelItem> scan() {
-        Set<Class<?>> components = docket.getComponentsScanner().scanForComponents();
+        Set<Class<?>> components = componentClassScanner.scan();
         Set<Map.Entry<String, ChannelItem>> channels = mapToChannels(components);
         return mergeChannels(channels);
     }
