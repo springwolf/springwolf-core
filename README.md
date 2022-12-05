@@ -2,6 +2,7 @@
 ![springwolf-core](https://github.com/stavshamir/springwolf/workflows/springwolf-core/badge.svg)
 ![springwolf-kafka](https://github.com/stavshamir/springwolf/workflows/springwolf-kafka/badge.svg)
 ![springwolf-amqp](https://github.com/stavshamir/springwolf/workflows/springwolf-amqp/badge.svg)
+![springwolf-cloud-stream](https://github.com/stavshamir/springwolf/workflows/springwolf-cloud-stream/badge.svg)
 
 # Springwolf Core
 ##### Automated documentation for async APIs built with Spring Boot
@@ -17,8 +18,6 @@
 - [Usage](#usage)
 - [Example Projects](#example-projects)
 - [Development](#development)
-
-![](screenshot.png)
 
 ### About
 This project is inspired by [Springfox](https://github.com/springfox/springfox), but instead of documenting REST APIs,
