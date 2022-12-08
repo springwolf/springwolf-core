@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.configuration;
 
-
 import com.asyncapi.v2.model.server.Server;
 import org.junit.Test;
 import org.junit.runner.RunWith;

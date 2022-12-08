@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX;
-import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPRING_WOLF_KAFKA_PUBLISHING_ENABLED;
+import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPRINGWOLF_KAFKA_PLUGIN_PUBLISHING_ENABLED;
 
 @Slf4j
 @RestController
 @RequestMapping("/springwolf/kafka")
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = SPRINGWOLF_KAFKA_CONFIG_PREFIX, name = SPRING_WOLF_KAFKA_PUBLISHING_ENABLED)
+@ConditionalOnProperty(prefix = SPRINGWOLF_KAFKA_CONFIG_PREFIX, name = SPRINGWOLF_KAFKA_PLUGIN_PUBLISHING_ENABLED)
 public class SpringwolfKafkaController {
 
     private final SpringwolfKafkaProducer kafkaProducer;
