@@ -9,17 +9,16 @@ import io.github.stavshamir.springwolf.SpringWolfConfigProperties.ConfigDocket;
 import io.github.stavshamir.springwolf.SpringWolfConfigProperties.ConfigDocket.Info;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.util.Maps.newHashMap;
 
-public class AsyncApiDocketConfigurationTest {
-
-
-    private final AsyncApiDocketConfiguration docketConfiguration = new AsyncApiDocketConfiguration();
-
+public class AsyncApiDocketServiceTest {
 
     @Test
-    public void configurationShouldMapAllPropertiesToTheDocket() {
+    public void testConfigurationShouldMapAllPropertiesToTheDocket() {
         // given
         ConfigDocket configDocket = new ConfigDocket();
         configDocket.setBasePackage("test-base-package");
@@ -43,7 +42,8 @@ public class AsyncApiDocketConfigurationTest {
         properties.setDocket(configDocket);
 
         // when
-        AsyncApiDocket asyncApiDocket = docketConfiguration.asyncApiDocket(properties);
+        AsyncApiDocketService docketConfiguration = new AsyncApiDocketService(Optional.empty(), Optional.of(properties));
+        AsyncApiDocket asyncApiDocket = docketConfiguration.getAsyncApiDocket();
 
         // then
         assertThat(asyncApiDocket.getServers()).isEqualTo(configDocket.getServers());
@@ -52,5 +52,14 @@ public class AsyncApiDocketConfigurationTest {
         assertThat(asyncApiDocket.getInfo().getDescription()).isEqualTo(info.getDescription());
         assertThat(asyncApiDocket.getInfo().getLicense()).isEqualTo(info.getLicense());
         assertThat(asyncApiDocket.getInfo().getContact()).isEqualTo(info.getContact());
+    }
+
+    @Test
+    public void testNoConfigurationShouldThrowException() {
+        assertThatThrownBy(() -> {
+            AsyncApiDocketService docketConfiguration = new AsyncApiDocketService(Optional.empty(), Optional.empty());
+            docketConfiguration.getAsyncApiDocket();
+        })
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

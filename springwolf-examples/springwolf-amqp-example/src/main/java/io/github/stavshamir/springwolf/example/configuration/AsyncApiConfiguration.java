@@ -27,6 +27,13 @@ public class AsyncApiConfiguration {
         this.amqpPort = String.valueOf(amqpPort);
     }
 
+    /**
+     * This bean is only required if full control on the {@link AsyncApiDocket} is needed
+     * <p>
+     * By default, Springwolf uses the {@see Info} provided in the application.properties
+     * Consumers are detected when the @RabbitListener or @AsyncSubscriber annotation is used
+     * Producers are detected when the springwolf @AsyncPublisher annotation is used
+     */
     @Bean
     public AsyncApiDocket asyncApiDocket() {
         Info info = Info.builder()

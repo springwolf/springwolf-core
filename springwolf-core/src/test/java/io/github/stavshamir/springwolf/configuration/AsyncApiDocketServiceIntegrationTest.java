@@ -18,11 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Enclosed.class)
-public class AsyncApiDocketConfigurationIntegrationTest {
+public class AsyncApiDocketServiceIntegrationTest {
 
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
-            AsyncApiDocketConfiguration.class,
+            AsyncApiDocketService.class,
     })
     @EnableConfigurationProperties(SpringWolfConfigProperties.class)
     @TestPropertySource(properties = {
@@ -36,10 +36,11 @@ public class AsyncApiDocketConfigurationIntegrationTest {
     public static class DocketWillBeAutomaticallyCreateIfNoCustomDocketIsPresentTest {
 
         @Autowired
-        private AsyncApiDocket docket;
+        private AsyncApiDocketService asyncApiDocketService;
 
         @Test
-        public void docketContentShouldBeLoadedFromProperties() {
+        public void testDocketContentShouldBeLoadedFromProperties() {
+            AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
             assertThat(docket).isNotNull();
             assertThat(docket.getInfo().getTitle()).isEqualTo("Info title was loaded from spring properties");
         }
@@ -47,7 +48,7 @@ public class AsyncApiDocketConfigurationIntegrationTest {
 
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
-            AsyncApiDocketConfiguration.class,
+            AsyncApiDocketService.class,
     })
     @EnableConfigurationProperties(SpringWolfConfigProperties.class)
     @TestPropertySource(properties = {
@@ -58,11 +59,11 @@ public class AsyncApiDocketConfigurationIntegrationTest {
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.url=some-server:1234"
     })
-    @Import(DocketWillNotBeAutomaticallyCreateIfCustomDocketIsPresentTest.CustomAsnycApiDocketConfiguration.class)
+    @Import(DocketWillNotBeAutomaticallyCreateIfCustomDocketIsPresentTest.CustomAsyncApiDocketConfiguration.class)
     public static class DocketWillNotBeAutomaticallyCreateIfCustomDocketIsPresentTest {
 
         @TestConfiguration
-        public static class CustomAsnycApiDocketConfiguration {
+        public static class CustomAsyncApiDocketConfiguration {
             @Bean
             public AsyncApiDocket docket() {
                 Info info = Info.builder()
@@ -79,10 +80,12 @@ public class AsyncApiDocketConfigurationIntegrationTest {
         }
 
         @Autowired
-        private AsyncApiDocket docket;
+        private AsyncApiDocketService asyncApiDocketService;
 
         @Test
-        public void docketContentShouldNotBeLoadedFromProperties() {
+        public void testDocketContentShouldNotBeLoadedFromProperties() {
+            AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
+
             assertThat(docket).isNotNull();
             assertThat(docket.getInfo().getTitle()).isEqualTo("Custom docket was used");
         }

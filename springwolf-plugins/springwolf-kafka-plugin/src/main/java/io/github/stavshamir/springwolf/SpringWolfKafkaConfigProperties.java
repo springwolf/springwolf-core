@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Nullable;
+
 import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX;
 
 @Configuration
@@ -15,6 +17,7 @@ import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPR
 @Setter
 public class SpringWolfKafkaConfigProperties {
 
+    @Nullable
     private Publishing publishing;
 
     @Getter

@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.configuration;
 
+import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.server.Server;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,10 +20,16 @@ import static org.mockito.Mockito.when;
 public class SpringwolfKafkaTemplateFactoryTest {
 
     @InjectMocks
-    private  SpringwolfKafkaTemplateFactory springwolfKafkaTemplateFactory;
+    private SpringwolfKafkaTemplateFactory springwolfKafkaTemplateFactory;
 
     @Mock
-    private AsyncApiDocket asyncApiDocket;
+    private AsyncApiDocketService asyncApiDocketService;
+
+    private AsyncApiDocket.AsyncApiDocketBuilder builder = AsyncApiDocket.builder()
+            .info(Info.builder()
+                    .title("some-title")
+                    .version("some-version")
+                    .build());
 
     @Test
     public void testNoSpringwolfKafkaProducerCreatedIfNoKafkaInstanceConfigured() {
@@ -30,7 +37,7 @@ public class SpringwolfKafkaTemplateFactoryTest {
                 .url("some-url")
                 .protocol("not-kafka")
                 .build();
-        when(asyncApiDocket.getServers()).thenReturn(Collections.singletonMap("some-server", noKafkaServer));
+        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(builder.servers(Collections.singletonMap("some-server", noKafkaServer)).build());
 
         Optional<KafkaTemplate<Object, Map<String, ?>>> kafkaTemplate = springwolfKafkaTemplateFactory.buildKafkaTemplate();
 
@@ -39,7 +46,7 @@ public class SpringwolfKafkaTemplateFactoryTest {
 
     @Test
     public void testNoSpringwolfKafkaProducerCreatedIfNoServersConfigured() {
-        when(asyncApiDocket.getServers()).thenReturn(Collections.emptyMap());
+        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(builder.servers(Collections.emptyMap()).build());
 
         Optional<KafkaTemplate<Object, Map<String, ?>>> kafkaTemplate = springwolfKafkaTemplateFactory.buildKafkaTemplate();
 
@@ -52,7 +59,7 @@ public class SpringwolfKafkaTemplateFactoryTest {
                 .url("some-url")
                 .protocol("kafka")
                 .build();
-        when(asyncApiDocket.getServers()).thenReturn(Collections.singletonMap("some-server", noKafkaServer));
+        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(builder.servers(Collections.singletonMap("some-server", noKafkaServer)).build());
 
         Optional<KafkaTemplate<Object, Map<String, ?>>> kafkaTemplate = springwolfKafkaTemplateFactory.buildKafkaTemplate();
 

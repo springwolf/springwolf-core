@@ -19,10 +19,10 @@ import java.util.Optional;
 @ConditionalOnBean(value = SpringwolfKafkaProducerConfiguration.class)
 public class SpringwolfKafkaTemplateFactory {
 
-    private final AsyncApiDocket docket;
+    private final AsyncApiDocketService asyncApiDocketService;
 
     public Optional<KafkaTemplate<Object, Map<String, ?>>> buildKafkaTemplate() {
-        return getBootstrapServers(docket)
+        return getBootstrapServers(asyncApiDocketService.getAsyncApiDocket())
                 .map(this::buildProducerConfiguration)
                 .map(producerConfiguration -> new DefaultKafkaProducerFactory<Object, Map<String, ?>>(producerConfiguration))
                 .map(KafkaTemplate::new);
