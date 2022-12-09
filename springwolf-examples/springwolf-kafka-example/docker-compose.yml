@@ -1,16 +1,16 @@
 version: '3'
 services:
-  app:
-    image: stavshamir/springwolf-kafka-example:0.9.0
-    links:
-      - kafka
-    environment:
-      BOOTSTRAP_SERVER: kafka:29092
-    ports:
-      - "8080:8080"
-    depends_on:
-      - kafka
-      - zookeeper
+#  app:
+#    image: stavshamir/springwolf-kafka-example:0.9.0
+#    links:
+#      - kafka
+#    environment:
+#      BOOTSTRAP_SERVER: kafka:29092
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - kafka
+#      - zookeeper
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest

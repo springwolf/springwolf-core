@@ -15,7 +15,7 @@
   },
   "servers" : {
     "kafka" : {
-      "url" : "kafka:29092",
+      "url" : "localhost:29092",
       "protocol" : "kafka"
     }
   },
@@ -91,6 +91,7 @@
           }, {
             "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
             "title" : "ExamplePayloadDto",
+            "description" : "Custom, optional description defined in the AsyncPublisher annotation",
             "payload" : {
               "$ref" : "#/components/schemas/ExamplePayloadDto"
             },
@@ -128,10 +129,15 @@
     },
     "multi-payload-topic" : {
       "publish" : {
-        "operationId" : "ExampleClassLevelKafkaListener_publish",
+        "operationId" : "multi-payload-topic_publish",
         "description" : "Auto-generated description",
         "bindings" : {
-          "kafka" : { }
+          "kafka" : {
+            "groupId" : {
+              "type" : "string",
+              "enum" : [ "foo-groupId" ]
+            }
+          }
         },
         "message" : {
           "oneOf" : [ {
@@ -155,6 +161,7 @@
           }, {
             "name" : "javax.money.MonetaryAmount",
             "title" : "MonetaryAmount",
+            "description" : "Override description in the AsyncSubscriber annotation",
             "payload" : {
               "$ref" : "#/components/schemas/MonetaryAmount"
             },
@@ -163,9 +170,6 @@
             }
           } ]
         }
-      },
-      "bindings" : {
-        "kafka" : { }
       }
     }
   },
@@ -179,7 +183,8 @@
             "type" : "string",
             "description" : "Foo field",
             "example" : "bar",
-            "exampleSetFlag" : true
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
           },
           "example" : {
             "$ref" : "#/components/schemas/ExamplePayloadDto",
@@ -205,6 +210,7 @@
             "description" : "CloudEvent Id Header",
             "example" : "1234-1234-1234",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "1234-1234-1234" ]
           },
           "ce_source" : {
@@ -212,6 +218,7 @@
             "description" : "CloudEvent Source Header",
             "example" : "springwolf-kafka-example/anotherPayloadDtoEndpoint",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "springwolf-kafka-example/anotherPayloadDtoEndpoint" ]
           },
           "ce_specversion" : {
@@ -219,6 +226,7 @@
             "description" : "CloudEvent Spec Version Header",
             "example" : "1.0",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "1.0" ]
           },
           "ce_subject" : {
@@ -226,6 +234,7 @@
             "description" : "CloudEvent Subject Header",
             "example" : "Test Subject",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "Test Subject" ]
           },
           "ce_time" : {
@@ -233,6 +242,7 @@
             "description" : "CloudEvent Time Header",
             "example" : "2015-07-20T15:49:04-07:00",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "2015-07-20T15:49:04-07:00" ]
           },
           "ce_type" : {
@@ -240,6 +250,7 @@
             "description" : "CloudEvent Payload Type Header",
             "example" : "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint" ]
           },
           "content-type" : {
@@ -247,6 +258,7 @@
             "description" : "CloudEvent Content-Type Header",
             "example" : "application/json",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "application/json" ]
           }
         },
@@ -259,7 +271,8 @@
           "ce_type" : "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
           "content-type" : "application/json"
         },
-        "exampleSetFlag" : true
+        "exampleSetFlag" : true,
+        "types" : [ "object" ]
       },
       "ExamplePayloadDto" : {
         "required" : [ "someEnum", "someString" ],
@@ -269,20 +282,23 @@
             "type" : "string",
             "description" : "Some string field",
             "example" : "some string value",
-            "exampleSetFlag" : true
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
           },
           "someLong" : {
             "type" : "integer",
             "description" : "Some long field",
             "format" : "int64",
             "example" : 5,
-            "exampleSetFlag" : true
+            "exampleSetFlag" : true,
+            "types" : [ "integer" ]
           },
           "someEnum" : {
             "type" : "string",
             "description" : "Some enum field",
             "example" : "FOO2",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "FOO1", "FOO2", "FOO3" ]
           }
         },
@@ -298,7 +314,8 @@
         "type" : "object",
         "properties" : { },
         "example" : { },
-        "exampleSetFlag" : true
+        "exampleSetFlag" : true,
+        "types" : [ "object" ]
       },
       "MonetaryAmount" : {
         "type" : "object",
@@ -306,12 +323,14 @@
           "amount" : {
             "type" : "number",
             "example" : 99.99,
-            "exampleSetFlag" : true
+            "exampleSetFlag" : true,
+            "types" : [ "number" ]
           },
           "currency" : {
             "type" : "string",
             "example" : "USD",
-            "exampleSetFlag" : true
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
           }
         },
         "example" : {
@@ -325,16 +344,17 @@
         "properties" : {
           "__TypeId__" : {
             "type" : "string",
-            "description" : "Spring Type Id Header",
             "example" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
             "exampleSetFlag" : true,
-            "enum" : [ "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto", "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto" ]
+            "types" : [ "string" ],
+            "enum" : [ "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto", "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto" ]
           }
         },
         "example" : {
           "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
         },
-        "exampleSetFlag" : true
+        "exampleSetFlag" : true,
+        "types" : [ "object" ]
       },
       "SpringKafkaDefaultHeaders-AnotherPayloadDto" : {
         "type" : "object",
@@ -344,13 +364,15 @@
             "description" : "Spring Type Id Header",
             "example" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto" ]
           }
         },
         "example" : {
           "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
         },
-        "exampleSetFlag" : true
+        "exampleSetFlag" : true,
+        "types" : [ "object" ]
       },
       "SpringKafkaDefaultHeaders-ExamplePayloadDto" : {
         "type" : "object",
@@ -360,13 +382,15 @@
             "description" : "Spring Type Id Header",
             "example" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto" ]
           }
         },
         "example" : {
           "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto"
         },
-        "exampleSetFlag" : true
+        "exampleSetFlag" : true,
+        "types" : [ "object" ]
       },
       "SpringKafkaDefaultHeaders-MonetaryAmount" : {
         "type" : "object",
@@ -376,13 +400,15 @@
             "description" : "Spring Type Id Header",
             "example" : "javax.money.MonetaryAmount",
             "exampleSetFlag" : true,
+            "types" : [ "string" ],
             "enum" : [ "javax.money.MonetaryAmount" ]
           }
         },
         "example" : {
           "__TypeId__" : "javax.money.MonetaryAmount"
         },
-        "exampleSetFlag" : true
+        "exampleSetFlag" : true,
+        "types" : [ "object" ]
       }
     }
   },

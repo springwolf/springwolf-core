@@ -5,11 +5,13 @@ import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.binding.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import com.google.common.collect.ImmutableMap;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.EmbeddedValueResolverAware;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
 
@@ -24,6 +26,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
+@Order(value = ChannelPriority.AUTO_DISCOVERED)
 public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListenerScanner<RabbitListener>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 

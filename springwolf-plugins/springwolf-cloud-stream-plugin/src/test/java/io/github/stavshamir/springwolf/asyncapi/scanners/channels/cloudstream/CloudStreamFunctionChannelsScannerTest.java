@@ -1,7 +1,5 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import com.asyncapi.v2.binding.ChannelBinding;
-import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
 import com.asyncapi.v2.model.info.Info;
@@ -10,6 +8,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -83,14 +83,14 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .bindings(ImmutableMap.of("kafka", new OperationBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyOperationBinding()))
                 .description("Auto-generated description")
                 .operationId("test-consumer-input-topic_publish_testConsumer")
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new ChannelBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyChannelBinding()))
                 .publish(operation)
                 .build();
 
@@ -121,14 +121,14 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .bindings(ImmutableMap.of("kafka", new OperationBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyOperationBinding()))
                 .description("Auto-generated description")
                 .operationId("test-supplier-output-topic_subscribe_testSupplier")
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new ChannelBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyChannelBinding()))
                 .subscribe(operation)
                 .build();
 
@@ -165,14 +165,14 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .build();
 
         Operation subscribeOperation = Operation.builder()
-                .bindings(ImmutableMap.of("kafka", new OperationBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyOperationBinding()))
                 .description("Auto-generated description")
                 .operationId("test-out-topic_subscribe_testFunction")
                 .message(subscribeMessage)
                 .build();
 
         ChannelItem subscribeChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new ChannelBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyChannelBinding()))
                 .subscribe(subscribeOperation)
                 .build();
 
@@ -185,14 +185,14 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .build();
 
         Operation publishOperation = Operation.builder()
-                .bindings(ImmutableMap.of("kafka", new OperationBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyOperationBinding()))
                 .description("Auto-generated description")
                 .operationId("test-in-topic_publish_testFunction")
                 .message(publishMessage)
                 .build();
 
         ChannelItem publishChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new ChannelBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyChannelBinding()))
                 .publish(publishOperation)
                 .build();
 
@@ -231,14 +231,14 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .build();
 
         Operation subscribeOperation = Operation.builder()
-                .bindings(ImmutableMap.of("kafka", new OperationBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyOperationBinding()))
                 .description("Auto-generated description")
                 .operationId("test-out-topic_subscribe_kStreamTestFunction")
                 .message(subscribeMessage)
                 .build();
 
         ChannelItem subscribeChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new ChannelBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyChannelBinding()))
                 .subscribe(subscribeOperation)
                 .build();
 
@@ -251,14 +251,14 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .build();
 
         Operation publishOperation = Operation.builder()
-                .bindings(ImmutableMap.of("kafka", new OperationBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyOperationBinding()))
                 .description("Auto-generated description")
                 .operationId("test-in-topic_publish_kStreamTestFunction")
                 .message(publishMessage)
                 .build();
 
         ChannelItem publishChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new ChannelBinding()))
+                .bindings(ImmutableMap.of("kafka", new EmptyChannelBinding()))
                 .publish(publishOperation)
                 .build();
 

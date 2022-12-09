@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.example;
 
-import lombok.val;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +41,8 @@ public class ApiIntegrationTests {
         // When running with EmbeddedKafka, localhost is used as hostname
         String expected = expectedWithoutServersKafkaUrlPatch.replace("\"kafka:29092\"", "\"localhost:29092\"");
 
+
+        // STRICT
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER);
     }
 }

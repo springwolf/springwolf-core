@@ -11,6 +11,7 @@ public class AsyncHeaderSchema extends StringSchema {
     private final String headerName;
     
     public AsyncHeaderSchema(String headerName){
+        super();
         this.headerName = headerName;
     }
 

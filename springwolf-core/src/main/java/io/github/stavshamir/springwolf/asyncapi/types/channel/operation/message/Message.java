@@ -1,10 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message;
 
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Describes a message received on a given channel and operation.
@@ -13,9 +11,10 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @Builder
+@EqualsAndHashCode(of = {"name"})
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message {
+public class Message implements Comparable<Message> {
 
     /**
      * A machine-friendly name for the message.
@@ -35,4 +34,13 @@ public class Message {
     private PayloadReference payload;
 
     private HeaderReference headers;
+
+
+    @Override
+    public int compareTo(Message o) {
+        if (o == null) {
+            return 1;
+        }
+        return StringUtils.compare(this.name, o.name);
+    }
 }

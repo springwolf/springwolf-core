@@ -42,12 +42,6 @@ public class AsyncApiConfiguration {
                 .license(License.builder().name("Apache License 2.0").build())
                 .build();
 
-        KafkaProducerData exampleProducerData = KafkaProducerData.kafkaProducerDataBuilder()
-                .topicName(PRODUCER_TOPIC)
-                .payloadType(ExamplePayloadDto.class)
-                .headers(createSpringKafkaDefaultHeaders())
-                .build();
-
         KafkaProducerData anotherProducerData = KafkaProducerData.kafkaProducerDataBuilder()
                 .topicName(PRODUCER_TOPIC)
                 .description("Custom, optional description for this produced to topic")
@@ -62,12 +56,11 @@ public class AsyncApiConfiguration {
                 .build();
 
         return AsyncApiDocket.builder()
-                .basePackage("io.github.stavshamir.springwolf.example.consumers")
+                .basePackage("io.github.stavshamir.springwolf.example")
                 .info(info)
                 .server("kafka", Server.builder().protocol("kafka").url(BOOTSTRAP_SERVERS).build())
-                .producer(exampleProducerData)
-                .producer(anotherProducerData)
                 .consumer(manuallyConfiguredConsumer)
+                .producer(anotherProducerData)
                 .build();
     }
 
