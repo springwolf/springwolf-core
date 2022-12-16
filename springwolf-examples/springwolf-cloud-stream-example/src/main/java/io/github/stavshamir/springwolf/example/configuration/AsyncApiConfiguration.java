@@ -7,6 +7,7 @@ import com.asyncapi.v2.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,7 +21,15 @@ public class AsyncApiConfiguration {
         this.BOOTSTRAP_SERVERS = bootstrapServers;
     }
 
+    /**
+     * This bean is only required if full control on the {@link AsyncApiDocket} is needed
+     * <p>
+     * By default, Springwolf uses the {@see Info} provided in the application.properties
+     * Consumers are detected when the @KafkaListener or @AsyncSubscriber annotation is used
+     * Producers are detected when the springwolf @AsyncPublisher annotation is used
+     */
     @Bean
+    @ConditionalOnProperty(value = "customAsyncApiDocketBean", havingValue = "true", matchIfMissing = true)
     public AsyncApiDocket asyncApiDocket() {
         Info info = Info.builder()
                 .version("1.0.0")
