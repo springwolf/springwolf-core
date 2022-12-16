@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.5.0'
+    id 'org.springframework.boot' version '2.6.0'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'com.bmuschko.docker-spring-boot-application' version '6.1.4'
 }
@@ -31,8 +31,9 @@ repositories {
 }
 
 dependencies {
-    implementation project(":springwolf-plugins:springwolf-kafka-plugin")
     implementation project(":springwolf-plugins:springwolf-cloud-stream-plugin")
+    compileOnly project(":springwolf-plugins:springwolf-cloud-stream-plugin")
+    annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream-plugin")
     implementation 'io.swagger.core.v3:swagger-core:2.2.0'
     runtimeOnly 'io.github.springwolf:springwolf-ui:0.6.0'
 
@@ -41,6 +42,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
     implementation 'org.apache.kafka:kafka-streams:3.1.2'
     implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'org.slf4j:slf4j-api'
     implementation 'io.swagger.core.v3:swagger-core:2.2.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
