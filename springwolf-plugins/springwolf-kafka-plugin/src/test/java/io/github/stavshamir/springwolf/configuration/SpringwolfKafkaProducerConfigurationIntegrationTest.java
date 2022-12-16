@@ -22,7 +22,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
 
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
-            AsyncApiDocketService.class,
+            DefaultAsyncApiDocketService.class,
             SpringwolfKafkaProducerConfiguration.class,
             SpringwolfKafkaTemplateFactory.class,
             SpringwolfKafkaController.class
@@ -60,7 +60,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
 
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
-            AsyncApiDocketService.class,
+            DefaultAsyncApiDocketService.class,
             SpringwolfKafkaProducerConfiguration.class,
             SpringwolfKafkaTemplateFactory.class,
             SpringwolfKafkaController.class

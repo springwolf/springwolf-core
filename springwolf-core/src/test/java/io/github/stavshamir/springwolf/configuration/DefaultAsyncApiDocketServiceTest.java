@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.util.Maps.newHashMap;
 
-public class AsyncApiDocketServiceTest {
+public class DefaultAsyncApiDocketServiceTest {
 
     @Test
     public void testConfigurationShouldMapAllPropertiesToTheDocket() {
@@ -42,7 +42,7 @@ public class AsyncApiDocketServiceTest {
         properties.setDocket(configDocket);
 
         // when
-        AsyncApiDocketService docketConfiguration = new AsyncApiDocketService(Optional.empty(), Optional.of(properties));
+        DefaultAsyncApiDocketService docketConfiguration = new DefaultAsyncApiDocketService(Optional.empty(), Optional.of(properties));
         AsyncApiDocket asyncApiDocket = docketConfiguration.getAsyncApiDocket();
 
         // then
@@ -57,7 +57,7 @@ public class AsyncApiDocketServiceTest {
     @Test
     public void testNoConfigurationShouldThrowException() {
         assertThatThrownBy(() -> {
-            AsyncApiDocketService docketConfiguration = new AsyncApiDocketService(Optional.empty(), Optional.empty());
+            DefaultAsyncApiDocketService docketConfiguration = new DefaultAsyncApiDocketService(Optional.empty(), Optional.empty());
             docketConfiguration.getAsyncApiDocket();
         })
                 .isInstanceOf(IllegalArgumentException.class);

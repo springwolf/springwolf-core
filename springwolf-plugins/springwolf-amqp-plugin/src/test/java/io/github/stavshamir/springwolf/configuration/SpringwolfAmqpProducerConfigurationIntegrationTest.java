@@ -26,7 +26,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
 
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
-            AsyncApiDocketService.class,
+            DefaultAsyncApiDocketService.class,
             SpringwolfAmqpProducer.class,
             SpringwolfAmqpController.class
     })
@@ -63,7 +63,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
 
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
-            AsyncApiDocketService.class,
+            DefaultAsyncApiDocketService.class,
             SpringwolfAmqpProducer.class,
             SpringwolfAmqpController.class
     })

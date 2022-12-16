@@ -18,11 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Enclosed.class)
-public class AsyncApiDocketServiceIntegrationTest {
+public class DefaultAsyncApiDocketServiceIntegrationTest {
 
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
-            AsyncApiDocketService.class,
+            DefaultAsyncApiDocketService.class,
     })
     @EnableConfigurationProperties(SpringWolfConfigProperties.class)
     @TestPropertySource(properties = {
@@ -36,7 +36,7 @@ public class AsyncApiDocketServiceIntegrationTest {
     public static class DocketWillBeAutomaticallyCreateIfNoCustomDocketIsPresentTest {
 
         @Autowired
-        private AsyncApiDocketService asyncApiDocketService;
+        private DefaultAsyncApiDocketService asyncApiDocketService;
 
         @Test
         public void testDocketContentShouldBeLoadedFromProperties() {
@@ -48,7 +48,7 @@ public class AsyncApiDocketServiceIntegrationTest {
 
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
-            AsyncApiDocketService.class,
+            DefaultAsyncApiDocketService.class,
     })
     @EnableConfigurationProperties(SpringWolfConfigProperties.class)
     @TestPropertySource(properties = {
@@ -80,7 +80,7 @@ public class AsyncApiDocketServiceIntegrationTest {
         }
 
         @Autowired
-        private AsyncApiDocketService asyncApiDocketService;
+        private DefaultAsyncApiDocketService asyncApiDocketService;
 
         @Test
         public void testDocketContentShouldNotBeLoadedFromProperties() {

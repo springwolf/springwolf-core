@@ -4,7 +4,7 @@ import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiSerializerService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
+import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -26,7 +26,7 @@ public class SpringContextTest {
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
             AsyncApiDocketConfiguration.class,
-            AsyncApiDocketService.class,
+            DefaultAsyncApiDocketService.class,
             DefaultAsyncApiService.class,
             DefaultChannelsService.class,
             DefaultSchemasService.class,
@@ -51,7 +51,7 @@ public class SpringContextTest {
 
     @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {
-            AsyncApiDocketService.class,
+            DefaultAsyncApiDocketService.class,
             DefaultAsyncApiService.class,
             DefaultChannelsService.class,
             DefaultSchemasService.class,
