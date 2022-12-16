@@ -16,6 +16,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ import static java.util.stream.Collectors.toMap;
 @RequiredArgsConstructor
 public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
-    private final AsyncApiDocket docket;
+    private final AsyncApiDocketService asyncApiDocketService;
     private final DefaultBeanMethodsScanner beanMethodsScanner;
     private final SchemasService schemasService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
@@ -103,6 +104,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     }
 
     private String getProtocolName() {
+        AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
         if (docket.getServers().size() > 1) {
             log.warn("More than one server has been defined - the channels protocol will be determined by the first one");
         }

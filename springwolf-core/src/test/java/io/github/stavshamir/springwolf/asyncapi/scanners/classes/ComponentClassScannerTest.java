@@ -1,6 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
+import com.asyncapi.v2.model.info.Info;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +18,23 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {ComponentClassScanner.class})
 public class ComponentClassScannerTest {
-
     @MockBean
-    private AsyncApiDocket docket;
+    private AsyncApiDocketService asyncApiDocketService;
 
     @Autowired
     private ComponentClassScanner componentsScanner;
 
     @Test
     public void getComponents() {
-        when(docket.getBasePackage())
-                .thenReturn(this.getClass().getPackage().getName());
+        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(
+                AsyncApiDocket.builder()
+                        .info(Info.builder()
+                                .title("ComponentClassScannerTest-title")
+                                .version("ComponentClassScannerTest-version")
+                                .build())
+                        .basePackage(this.getClass().getPackage().getName())
+                        .build()
+        );
 
         Set<Class<?>> components = componentsScanner.scan();
 

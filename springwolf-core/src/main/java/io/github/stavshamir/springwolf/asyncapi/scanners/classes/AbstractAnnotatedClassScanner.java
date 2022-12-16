@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toSet;
 public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implements ClassScanner {
 
     @Autowired
-    private AsyncApiDocket docket;
+    private AsyncApiDocketService asyncApiDocketService;
 
     /**
      * @return The class object of the annotation to scan.
@@ -27,7 +27,7 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
 
     @Override
     public Set<Class<?>> scan() {
-        String basePackage = docket.getBasePackage();
+        String basePackage = asyncApiDocketService.getAsyncApiDocket().getBasePackage();
         if (StringUtils.isBlank(basePackage)) {
             throw new IllegalArgumentException("Base package must not be blank");
         }

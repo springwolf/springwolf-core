@@ -12,6 +12,12 @@ import lombok.Singular;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Use to (manually) configure springwolf
+ * <p>
+ * This will not be the final AsyncApiDocket, use {@link AsyncApiDocketService#getAsyncApiDocket()} to get it.
+ * This will not be the final api definition, use {@link io.github.stavshamir.springwolf.asyncapi.AsyncApiService} to get it.
+ */
 @Data
 @Builder
 public class AsyncApiDocket {
