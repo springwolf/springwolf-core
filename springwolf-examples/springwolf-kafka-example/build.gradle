@@ -42,6 +42,7 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-reflect'
     testImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.10.2'
     testImplementation 'org.testcontainers:testcontainers:1.16.0'
+    testImplementation 'org.testcontainers:junit-jupiter:1.16.0'
     testImplementation 'org.skyscreamer:jsonassert:1.5.0'
     testImplementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
 }
