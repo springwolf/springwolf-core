@@ -12,7 +12,7 @@ def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
 group = 'io.github.springwolf'
 version = '0.9.3' + (isSnapshot ? '-SNAPSHOT' : '')
-sourceCompatibility = 1.8
+sourceCompatibility = '17'
 
 repositories {
     mavenCentral()

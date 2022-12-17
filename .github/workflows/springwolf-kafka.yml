@@ -30,10 +30,11 @@ jobs:
           options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}
           run: spectral lint --ruleset ./.spectral.yaml --fail-on-unmatched-globs ./springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json
 
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          java-version: 1.8
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2

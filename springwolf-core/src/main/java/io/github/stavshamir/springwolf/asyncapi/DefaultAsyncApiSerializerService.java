@@ -19,9 +19,9 @@ import io.github.stavshamir.springwolf.asyncapi.serializers.KafkaOperationBindin
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 
 @Service
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
