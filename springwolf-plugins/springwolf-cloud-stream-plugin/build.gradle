@@ -34,6 +34,7 @@ dependencies {
 
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'org.slf4j:slf4j-api'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
