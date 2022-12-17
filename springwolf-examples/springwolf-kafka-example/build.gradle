@@ -5,8 +5,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.0'
 
     id 'com.bmuschko.docker-spring-boot-application' version '6.1.4'
-
-    id 'org.jetbrains.kotlin.jvm' version '1.4.21'
 }
 
 sourceCompatibility = '1.8'
@@ -41,9 +39,6 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
-    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-    testImplementation 'org.jetbrains.kotlin:kotlin-reflect'
-    testImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.10.2'
     testImplementation 'org.testcontainers:testcontainers:1.16.0'
     testImplementation 'org.testcontainers:junit-jupiter:1.16.0'
     testImplementation 'org.skyscreamer:jsonassert:1.5.0'
@@ -61,12 +56,6 @@ docker {
     registryCredentials {
         username = project.findProperty('dockerhubUsername') ?: ''
         password = project.findProperty('dockerhubPassword') ?: ''
-    }
-}
-
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 
