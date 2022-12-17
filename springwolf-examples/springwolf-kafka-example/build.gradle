@@ -27,7 +27,6 @@ dependencies {
     compileOnly project(":springwolf-plugins:springwolf-kafka-plugin")
     annotationProcessor project(":springwolf-plugins:springwolf-kafka-plugin")
     implementation project(":springwolf-add-ons:springwolf-common-model-converters")
-    implementation 'io.swagger.core.v3:swagger-core:2.2.0'
     runtimeOnly 'io.github.springwolf:springwolf-ui:0.6.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -35,7 +34,7 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'org.slf4j:slf4j-api'
     implementation 'org.javamoney:moneta:1.4.2'
-    implementation 'io.swagger.core.v3:swagger-core:2.2.0'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.7'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
