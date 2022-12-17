@@ -83,7 +83,7 @@ class FunctionalChannelBeanData {
                 return (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[1];
             }
 
-            return (Class<?>) rawType.getClass();
+            return (Class<?>) rawType;
         }
 
         throw new IllegalArgumentException("Cannot handle Type which is not Class or ParameterizedType, but was given: " + type.getClass());
