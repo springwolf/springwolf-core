@@ -23,7 +23,7 @@ import javax.annotation.PostConstruct;
 @Service
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
 
-    private final ObjectMapper jsonMapper = new ObjectMapper();
+    private ObjectMapper jsonMapper = new ObjectMapper();
     private PrettyPrinter printer = new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @PostConstruct
@@ -47,10 +47,19 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
     }
 
     /**
-     * Allows to customize the used objectMapper
+     * Get the current object mapper configuration.
      */
     public ObjectMapper getObjectMapper() {
         return jsonMapper;
+    }
+    
+    /**
+     * Allows to customize the used objectMapper
+     * <p>
+     * Use {@link #getObjectMapper()} as a starting point
+     */
+    public void setObjectMapper(ObjectMapper mapper) {
+        jsonMapper = mapper;
     }
 
     /**
