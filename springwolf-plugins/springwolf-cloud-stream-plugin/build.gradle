@@ -35,13 +35,13 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'org.slf4j:slf4j-api'
 
-    compileOnly 'org.projectlombok:lombok:1.18.4'
-    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
-    testImplementation 'org.projectlombok:lombok:1.18.4'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testImplementation 'org.projectlombok:lombok:1.18.24'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('org.assertj:assertj-core:3.11.1')
+    testImplementation 'org.assertj:assertj-core:3.23.1'
     testImplementation('org.apache.kafka:kafka-streams:3.3.1')
 }
 
