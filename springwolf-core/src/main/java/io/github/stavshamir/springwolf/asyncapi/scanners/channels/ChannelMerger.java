@@ -6,7 +6,6 @@ import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 
 import java.util.*;
-import java.util.function.Function;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 
@@ -34,29 +33,29 @@ public class ChannelMerger {
                 mergedChannels.put(entry.getKey(), entry.getValue());
             } else {
                 ChannelItem channelItem = mergedChannels.get(entry.getKey());
-                channelItem.setPublish(mergeOperation(channelItem, entry.getValue(), ChannelItem::getPublish));
-                channelItem.setSubscribe(mergeOperation(channelItem, entry.getValue(), ChannelItem::getSubscribe));
+                channelItem.setPublish(mergeOperation(channelItem.getPublish(), entry.getValue().getPublish()));
+                channelItem.setSubscribe(mergeOperation(channelItem.getSubscribe(), entry.getValue().getSubscribe()));
             }
         }
 
         return mergedChannels;
     }
 
-    private static Operation mergeOperation(ChannelItem channelItem, ChannelItem otherChannelItem, Function<ChannelItem, Operation> getOperation) {
-        Set<Message> mergedMessages = getChannelMessages(channelItem, getOperation);
-        Set<Message> currentEntryMessages = getChannelMessages(otherChannelItem, getOperation);
+    private static Operation mergeOperation(Operation operation, Operation otherOperation) {
+        Set<Message> mergedMessages = getMessages(operation);
+        Set<Message> currentEntryMessages = getMessages(otherOperation);
         mergedMessages.addAll(currentEntryMessages);
 
-        Operation operation = getOperation.apply(channelItem) != null ? getOperation.apply(channelItem) : getOperation.apply(otherChannelItem);
+        Operation mergedOperation = operation != null ? operation : otherOperation;
         if (!mergedMessages.isEmpty()) {
-            operation.setMessage(toMessageObjectOrComposition(mergedMessages));
+            mergedOperation.setMessage(toMessageObjectOrComposition(mergedMessages));
         }
-        return operation;
+        return mergedOperation;
     }
 
-    private static Set<Message> getChannelMessages(ChannelItem channelItem, Function<ChannelItem, Operation> getOperation) {
+    private static Set<Message> getMessages(Operation operation) {
         return Optional
-                .ofNullable(getOperation.apply(channelItem))
+                .ofNullable(operation)
                 .map(Operation::getMessage)
                 .map(MessageHelper::messageObjectToSet)
                 .orElseGet(TreeSet::new);

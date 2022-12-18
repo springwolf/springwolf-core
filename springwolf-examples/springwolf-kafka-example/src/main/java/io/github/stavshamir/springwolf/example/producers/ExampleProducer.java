@@ -38,8 +38,7 @@ public class ExampleProducer {
     ))
     @KafkaAsyncOperationBinding(
             bindingVersion = "1",
-            clientId = "foo-clientId",
-            groupId = "foo-groupId"
+            clientId = "foo-clientId"
     )
     public void sendMessage(ExamplePayloadDto msg) {
         kafkaTemplate.send(PRODUCER_TOPIC, msg);

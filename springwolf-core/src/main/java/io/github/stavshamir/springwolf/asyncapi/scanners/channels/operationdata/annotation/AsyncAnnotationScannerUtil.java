@@ -4,7 +4,7 @@ import com.asyncapi.v2.binding.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -21,27 +21,42 @@ class AsyncAnnotationScannerUtil {
             return AsyncHeaders.NOT_DOCUMENTED;
         }
 
-        AsyncHeaders headers = new AsyncHeaders(op.headers().schemaName());
-        Arrays.stream(op.headers().values()).collect(groupingBy(AsyncOperation.Headers.Header::name))
-                .forEach((key, value) -> {
-                    List<String> descriptions = value.stream().map(AsyncOperation.Headers.Header::description).filter(it -> !"".equals(it)).sorted().collect(Collectors.toList());
-                    List<String> values = value.stream().map(AsyncOperation.Headers.Header::value).sorted().collect(Collectors.toList());
-                    headers.addHeader(
+        AsyncHeaders asyncHeaders = new AsyncHeaders(op.headers().schemaName());
+        Arrays.stream(op.headers().values())
+                .collect(groupingBy(AsyncOperation.Headers.Header::name))
+                .forEach((headerName, headers) -> {
+                    List<String> values = getHeaderValues(headers);
+                    String exampleValue = values.stream().findFirst().orElse(null);
+                    asyncHeaders.addHeader(
                             AsyncHeaderSchema
                                     .headerBuilder()
-                                    .headerName(key)
-                                    .description(descriptions.stream().findFirst().orElse(null))
+                                    .headerName(headerName)
+                                    .description(getDescription(headers))
                                     .enumValue(values)
-                                    .example(values.stream().findFirst().orElse(null))
+                                    .example(exampleValue)
                                     .build()
                     );
                 });
 
-        return headers;
+        return asyncHeaders;
     }
 
-    public static String nullIfEmpty(String stringValue) {
-        return StringUtils.isEmpty(stringValue) ? null : stringValue;
+    private static List<String> getHeaderValues(List<AsyncOperation.Headers.Header> value) {
+        return value
+                .stream()
+                .map(AsyncOperation.Headers.Header::value)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    private static String getDescription(List<AsyncOperation.Headers.Header> value) {
+        return value
+                .stream()
+                .map(AsyncOperation.Headers.Header::description)
+                .filter(StringUtils::isNotBlank)
+                .sorted()
+                .findFirst()
+                .orElse(null);
     }
 
     public static Map<String, OperationBinding> processBindingFromAnnotation(Method method, List<OperationBindingProcessor> operationBindingProcessors) {
