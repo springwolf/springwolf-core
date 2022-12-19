@@ -1,8 +1,10 @@
 springwolf-core/build/
 springwolf-ui/build/
 springwolf-examples/springwolf-amqp-example/build/
+springwolf-examples/springwolf-cloud-stream-example/build/
 springwolf-examples/springwolf-kafka-example/build/
 springwolf-plugins/springwolf-amqp-plugin/build/
+springwolf-plugins/springwolf-cloud-stream-plugin/build/
 springwolf-plugins/springwolf-kafka-plugin/build/
 springwolf-add-ons/springwolf-common-model-converters/build/
 

@@ -4,6 +4,7 @@ import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -11,6 +12,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 
 import java.util.List;
 import java.util.Map;
@@ -20,10 +22,13 @@ import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageOb
 import static java.util.stream.Collectors.*;
 
 @Slf4j
+@Order(value = ChannelPriority.MANUAL_DEFINED)
 public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
     protected abstract SchemasService getSchemaService();
+
     protected abstract List<OperationData> getOperationData();
+
     protected abstract OperationData.OperationType getOperationType();
 
     @Override
@@ -64,9 +69,9 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
         ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder()
                 .bindings(channelBinding);
-        switch(getOperationType()) {
+        switch (getOperationType()) {
             case PUBLISH:
-                channelBuilder =  channelBuilder.publish(operation);
+                channelBuilder = channelBuilder.publish(operation);
                 break;
             case SUBSCRIBE:
                 channelBuilder = channelBuilder.subscribe(operation);

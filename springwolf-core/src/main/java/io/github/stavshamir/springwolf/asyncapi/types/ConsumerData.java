@@ -46,7 +46,7 @@ public class ConsumerData implements OperationData {
     protected Class<?> payloadType;
 
     /**
-     * The class object of the headers published by this consumer.
+     * The message headers, usually describing the payload.
      */
     @Builder.Default
     protected AsyncHeaders headers = AsyncHeaders.NOT_DOCUMENTED;

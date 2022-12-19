@@ -16,7 +16,7 @@ services:
     image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 
+      ZOOKEEPER_TICK_TIME:
 
   kafka:
     image: confluentinc/cp-kafka:latest

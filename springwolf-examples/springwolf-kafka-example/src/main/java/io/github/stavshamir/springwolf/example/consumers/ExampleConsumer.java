@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.example.consumers;
 
-import io.github.stavshamir.springwolf.example.dtos.*;
+import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
+import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;

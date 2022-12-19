@@ -33,8 +33,7 @@ public class KafkaOperationBindingSerializer extends StdSerializer<KafkaOperatio
         gen.writeFieldName("groupId");
         gen.writeStartObject();
         gen.writeStringField("type", "string");
-        gen.writeFieldName("enum");
-        gen.writeStartArray();
+        gen.writeArrayFieldStart("enum");
         gen.writeString((String) value.getGroupId());
         gen.writeEndArray();
         gen.writeEndObject();

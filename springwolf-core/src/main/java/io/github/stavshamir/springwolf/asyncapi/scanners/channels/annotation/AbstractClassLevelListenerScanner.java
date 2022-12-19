@@ -5,7 +5,7 @@ import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.Maps;
-import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -84,7 +84,7 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
     public Map<String, ChannelItem> scan() {
         Set<Class<?>> components = componentClassScanner.scan();
         Set<Map.Entry<String, ChannelItem>> channels = mapToChannels(components);
-        return mergeChannels(channels);
+        return ChannelMerger.merge(new ArrayList<>(channels));
     }
 
     private Set<Map.Entry<String, ChannelItem>> mapToChannels(Set<Class<?>> components) {
@@ -97,32 +97,6 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
 
     private boolean isClassAnnotated(Class<?> component) {
         return component.isAnnotationPresent(getListenerAnnotationClass());
-    }
-
-    private Map<String, ChannelItem> mergeChannels(Set<Map.Entry<String, ChannelItem>> channelEntries) {
-        Map<String, ChannelItem> mergedChannels = new TreeMap<>();
-
-        for (Map.Entry<String, ChannelItem> entry : channelEntries) {
-            if (!mergedChannels.containsKey(entry.getKey())) {
-                mergedChannels.put(entry.getKey(), entry.getValue());
-            } else {
-                ChannelItem channelItem = mergedChannels.get(entry.getKey());
-                Set<Message> mergedMessages = getChannelMessages(channelItem);
-                Set<Message> currentEntryMessages = getChannelMessages(entry.getValue());
-                mergedMessages.addAll(currentEntryMessages);
-                channelItem.getPublish().setMessage(toMessageObjectOrComposition(mergedMessages));
-            }
-        }
-
-        return mergedChannels;
-    }
-
-    private Set<Message> getChannelMessages(ChannelItem channelItem) {
-        return Optional
-                .ofNullable(channelItem.getPublish())
-                .map(Operation::getMessage)
-                .map(MessageHelper::messageObjectToSet)
-                .orElseGet(TreeSet::new);
     }
 
     private Optional<Map.Entry<String, ChannelItem>> mapClassToChannel(Class<?> component) {

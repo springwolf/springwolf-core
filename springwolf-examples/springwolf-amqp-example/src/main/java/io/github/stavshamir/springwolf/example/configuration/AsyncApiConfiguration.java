@@ -59,7 +59,7 @@ public class AsyncApiConfiguration {
                 .build();
 
         return AsyncApiDocket.builder()
-                .basePackage("io.github.stavshamir.springwolf.example.consumers")
+                .basePackage("io.github.stavshamir.springwolf.example")
                 .info(info)
                 .server("amqp", amqp)
                 .producer(exampleProducer)

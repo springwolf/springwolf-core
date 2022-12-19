@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyChannelBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyOperationBindingSerializer;
+import io.github.stavshamir.springwolf.asyncapi.serializers.AmqpOperationBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.serializers.KafkaChannelBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.serializers.KafkaOperationBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
@@ -36,6 +38,7 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
         SimpleModule module = new SimpleModule();
         module.addSerializer(EmptyChannelBinding.class, new EmptyChannelBindingSerializer());
         module.addSerializer(EmptyOperationBinding.class, new EmptyOperationBindingSerializer());
+        module.addSerializer(AMQPOperationBinding.class, new AmqpOperationBindingSerializer());
         module.addSerializer(KafkaChannelBinding.class, new KafkaChannelBindingSerializer());
         module.addSerializer(KafkaOperationBinding.class, new KafkaOperationBindingSerializer());
         jsonMapper.registerModule(module);

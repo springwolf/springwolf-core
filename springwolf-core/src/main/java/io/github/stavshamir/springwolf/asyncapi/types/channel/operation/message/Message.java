@@ -1,10 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message;
 
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * Describes a message received on a given channel and operation.
@@ -13,6 +10,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @Builder
+@EqualsAndHashCode(of = {"name"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
