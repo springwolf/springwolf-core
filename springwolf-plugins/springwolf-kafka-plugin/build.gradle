@@ -20,6 +20,8 @@ repositories {
 dependencies {
     api project(':springwolf-core')
 
+    implementation 'org.springframework.boot:spring-boot'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'io.swagger.core.v3:swagger-models:2.2.0'
@@ -27,7 +29,9 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
 
     compileOnly 'org.projectlombok:lombok:1.18.4'
+
     annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
@@ -106,4 +110,3 @@ signing {
     useInMemoryPgpKeys (signingKey, signingPassword)
     sign publishing.publications.mavenJava
 }
-

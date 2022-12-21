@@ -10,6 +10,7 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
 import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,7 +28,15 @@ public class AsyncApiConfiguration {
         this.amqpPort = String.valueOf(amqpPort);
     }
 
+    /**
+     * This bean is only required if full control on the {@link AsyncApiDocket} is needed
+     * <p>
+     * By default, Springwolf uses the {@see Info} provided in the application.properties
+     * Consumers are detected when the @RabbitListener or @AsyncSubscriber annotation is used
+     * Producers are detected when the springwolf @AsyncPublisher annotation is used
+     */
     @Bean
+    @ConditionalOnProperty(value = "customAsyncApiDocketBean", havingValue = "true", matchIfMissing = true)
     public AsyncApiDocket asyncApiDocket() {
         Info info = Info.builder()
                 .version("1.0.0")

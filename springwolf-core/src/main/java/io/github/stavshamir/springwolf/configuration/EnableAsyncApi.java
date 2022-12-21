@@ -1,11 +1,13 @@
 package io.github.stavshamir.springwolf.configuration;
 
+import io.github.stavshamir.springwolf.SpringWolfConfigConstants;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -19,4 +21,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(value=RUNTIME)
 @Target(value=TYPE)
 @ComponentScan(basePackages={"io/github/stavshamir/springwolf"})
+@ConditionalOnProperty(name = SpringWolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
 public @interface EnableAsyncApi { }

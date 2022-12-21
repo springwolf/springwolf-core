@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -15,12 +16,13 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
+@ConditionalOnBean(value = SpringwolfKafkaProducerConfiguration.class)
 public class SpringwolfKafkaTemplateFactory {
 
-    private final AsyncApiDocket docket;
+    private final AsyncApiDocketService asyncApiDocketService;
 
     public Optional<KafkaTemplate<Object, Map<String, ?>>> buildKafkaTemplate() {
-        return getBootstrapServers(docket)
+        return getBootstrapServers(asyncApiDocketService.getAsyncApiDocket())
                 .map(this::buildProducerConfiguration)
                 .map(producerConfiguration -> new DefaultKafkaProducerFactory<Object, Map<String, ?>>(producerConfiguration))
                 .map(KafkaTemplate::new);

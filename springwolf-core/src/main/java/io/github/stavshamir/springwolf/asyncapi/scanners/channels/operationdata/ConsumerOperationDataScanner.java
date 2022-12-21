@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class ConsumerOperationDataScanner extends AbstractOperationDataScanner {
 
-    private final AsyncApiDocket docket;
+    private final AsyncApiDocketService asyncApiDocketService;
     private final SchemasService schemasService;
 
     @Override
@@ -25,7 +25,7 @@ public class ConsumerOperationDataScanner extends AbstractOperationDataScanner {
 
     @Override
     protected List<OperationData> getOperationData() {
-        return new ArrayList<>(docket.getConsumers());
+        return new ArrayList<>(asyncApiDocketService.getAsyncApiDocket().getConsumers());
     }
 
     @Override

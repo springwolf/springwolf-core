@@ -4,6 +4,7 @@ import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
+import com.asyncapi.v2.model.info.Info;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -13,6 +14,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +39,7 @@ public class ProducerOperationDataScannerTest {
     private ProducerOperationDataScanner scanner;
 
     @MockBean
-    private AsyncApiDocket asyncApiDocket;
+    private AsyncApiDocketService asyncApiDocketService;
 
     @Test
     public void allFieldsProducerData() {
@@ -51,7 +54,7 @@ public class ProducerOperationDataScannerTest {
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 
-        when(asyncApiDocket.getProducers()).thenReturn(ImmutableList.of(producerData));
+        mockProducers(ImmutableList.of(producerData));
 
         // When scanning for producers
         Map<String, ChannelItem> producerChannels = scanner.scan();
@@ -90,7 +93,7 @@ public class ProducerOperationDataScannerTest {
                 .channelName(channelName)
                 .build();
 
-        when(asyncApiDocket.getProducers()).thenReturn(ImmutableList.of(producerData));
+        mockProducers(ImmutableList.of(producerData));
 
         // When scanning for producers
         Map<String, ChannelItem> producerChannels = scanner.scan();
@@ -123,7 +126,7 @@ public class ProducerOperationDataScannerTest {
                 .headers(AsyncHeaders.NOT_USED)
                 .build();
 
-        when(asyncApiDocket.getProducers()).thenReturn(ImmutableList.of(producerData1, producerData2));
+        mockProducers(ImmutableList.of(producerData1, producerData2));
 
         // When scanning for producers
         Map<String, ChannelItem> producerChannels = scanner.scan();
@@ -164,6 +167,17 @@ public class ProducerOperationDataScannerTest {
 
         assertThat(producerChannels.get(channelName))
                 .isEqualTo(expectedChannel);
+    }
+
+    private void mockProducers(Collection<ProducerData> producers) {
+        AsyncApiDocket asyncApiDocket = AsyncApiDocket.builder()
+                .info(Info.builder()
+                        .title("ProducerOperationDataScannerTest-title")
+                        .version("ProducerOperationDataScannerTest-version")
+                        .build())
+                .producers(producers)
+                .build();
+        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(asyncApiDocket);
     }
 
     static class ExamplePayloadDto {

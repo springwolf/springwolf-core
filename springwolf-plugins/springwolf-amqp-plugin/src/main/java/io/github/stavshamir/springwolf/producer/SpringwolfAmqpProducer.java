@@ -5,28 +5,32 @@ import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import static io.github.stavshamir.springwolf.SpringWolfAmqpConfigConstants.SPRINGWOLF_AMQP_CONFIG_PREFIX;
+import static io.github.stavshamir.springwolf.SpringWolfAmqpConfigConstants.SPRINGWOLF_AMQP_PLUGIN_PUBLISHING_ENABLED;
 
 @Slf4j
 @Service
+@ConditionalOnProperty(prefix = SPRINGWOLF_AMQP_CONFIG_PREFIX, name = SPRINGWOLF_AMQP_PLUGIN_PUBLISHING_ENABLED)
 public class SpringwolfAmqpProducer {
 
     private final ChannelsService channelsService;
-    private final RabbitTemplate rabbitTemplate;
+    private final Optional<RabbitTemplate> rabbitTemplate;
 
-    @Getter
-    private boolean isEnabled = true;
+    public boolean isEnabled() { return rabbitTemplate.isPresent(); }
 
     public SpringwolfAmqpProducer(ChannelsService channelsService, List<RabbitTemplate> rabbitTemplates) {
         this.channelsService = channelsService;
-        this.rabbitTemplate = rabbitTemplates.get(0);
+        this.rabbitTemplate = rabbitTemplates.isEmpty() ? Optional.empty() : Optional.of(rabbitTemplates.get(0));
     }
 
     public void send(String channelName, Map<String, Object> payload) {
@@ -38,7 +42,11 @@ public class SpringwolfAmqpProducer {
             routingKey = channelName;
         }
 
-        rabbitTemplate.convertAndSend(exchange, routingKey, payload);
+        if(rabbitTemplate.isPresent()) {
+            rabbitTemplate.get().convertAndSend(exchange, routingKey, payload);
+        } else {
+            log.warn("AMQP producer is not configured");
+        }
     }
 
     private String getExchangeName(ChannelItem channelItem) {

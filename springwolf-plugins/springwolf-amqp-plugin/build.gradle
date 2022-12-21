@@ -20,6 +20,8 @@ repositories {
 dependencies {
     api project(':springwolf-core')
 
+    implementation 'org.springframework.boot:spring-boot'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework.amqp:spring-rabbit'
 
@@ -27,6 +29,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
@@ -101,4 +104,3 @@ signing {
     useInMemoryPgpKeys (signingKey, signingPassword)
     sign publishing.publications.mavenJava
 }
-
