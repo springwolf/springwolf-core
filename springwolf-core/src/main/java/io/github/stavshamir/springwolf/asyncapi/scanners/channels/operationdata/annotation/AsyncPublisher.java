@@ -9,7 +9,8 @@ import java.lang.annotation.Target;
 
 /**
  * {@code @AsyncPublisher} is a method-level annotation to document springwolf publishers.
- * To document listeners, use {@link AsyncSubscriber}.
+ * Publishers in this context are methods that send a message to a message broker.
+ * To document listeners, use {@link AsyncListener}.
  * <p>
  * The fields channel, description, payload and headers are part of {@link AsyncOperation}
  * and behaves identical to {@link io.github.stavshamir.springwolf.asyncapi.types.ProducerData}.

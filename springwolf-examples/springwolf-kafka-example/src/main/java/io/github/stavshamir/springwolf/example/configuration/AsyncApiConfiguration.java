@@ -4,6 +4,8 @@ import com.asyncapi.v2.model.info.Contact;
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.info.License;
 import com.asyncapi.v2.model.server.Server;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.asyncapi.types.KafkaConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.KafkaProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -35,8 +37,8 @@ public class AsyncApiConfiguration {
      * This bean is only required if full control on the {@link AsyncApiDocket} is needed
      * <p>
      * By default, Springwolf uses the {@see Info} provided in the application.properties
-     * Consumers are detected when the @KafkaListener or @AsyncSubscriber annotation is used
-     * Producers are detected when the springwolf @AsyncPublisher annotation is used
+     * Consumers are detected when the @KafkaListener or {@link AsyncListener} annotation is used
+     * Producers are detected when the springwolf {@link AsyncPublisher} annotation is used
      */
     @Bean
     @ConditionalOnProperty(value = "customAsyncApiDocketBean", havingValue = "true", matchIfMissing = true)

@@ -25,7 +25,7 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor
 @Component
 @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-public class AsyncSubscriberAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
+public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
     private StringValueResolver resolver;
     private final ComponentClassScanner componentClassScanner;
     private final SchemasService schemasService;
@@ -52,7 +52,7 @@ public class AsyncSubscriberAnnotationScanner extends AbstractOperationDataScann
     }
 
     private Set<Method> getAnnotatedMethods(Class<?> type) {
-        Class<AsyncSubscriber> annotationClass = AsyncSubscriber.class;
+        Class<AsyncListener> annotationClass = AsyncListener.class;
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
@@ -65,8 +65,8 @@ public class AsyncSubscriberAnnotationScanner extends AbstractOperationDataScann
 
         Map<String, OperationBinding> operationBindings = AsyncAnnotationScannerUtil.processBindingFromAnnotation(method, operationBindingProcessors);
 
-        Class<AsyncSubscriber> annotationClass = AsyncSubscriber.class;
-        AsyncSubscriber annotation = Optional.of(method.getAnnotation(annotationClass))
+        Class<AsyncListener> annotationClass = AsyncListener.class;
+        AsyncListener annotation = Optional.of(method.getAnnotation(annotationClass))
                 .orElseThrow(() -> new IllegalArgumentException("Method must be annotated with " + annotationClass.getName()));
 
         AsyncOperation op = annotation.operation();

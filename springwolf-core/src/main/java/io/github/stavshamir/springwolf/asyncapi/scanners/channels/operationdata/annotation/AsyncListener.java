@@ -8,7 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * {@code @AsyncSubscriber} is a method-level annotation to document springwolf listeners.
+ * {@code @AsyncListener} is a method-level annotation to document springwolf listeners.
+ * Listeners in this context are methods that receive and process incoming data from a message broker.
  * To document producers, use {@link AsyncPublisher}.
  * <p>
  * The fields channel, description, payload and headers are part of {@link AsyncOperation}
@@ -19,7 +20,7 @@ import java.lang.annotation.Target;
  * Add an operation binding with one of the protocol specific operation binding annotation ({@code AmqpAsyncOperationBinding}, {@code KafkaAsyncOperationBinding}) on the same method.
  * <pre class="code">
  *     &#064;KafkaListener
- *     &#064;AsyncSubscriber(operation = &#064;AsyncOperation(
+ *     &#064;AsyncListener(operation = &#064;AsyncOperation(
  *             channelName = "topic-name",
  *             ...
  *     ))
@@ -29,7 +30,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD})
-public @interface AsyncSubscriber {
+public @interface AsyncListener {
     /**
      * Mapped to {@link OperationData}
      */

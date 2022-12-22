@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface OperationBindingProcessor {
 
     /**
-     * Process the methods annotated with {@link AsyncPublisher} and {@link AsyncSubscriber}
+     * Process the methods annotated with {@link AsyncPublisher} and {@link AsyncListener}
      * for protocol specific operationBinding annotations, method parameters, etc
      *
      * @param method The method being annotated
