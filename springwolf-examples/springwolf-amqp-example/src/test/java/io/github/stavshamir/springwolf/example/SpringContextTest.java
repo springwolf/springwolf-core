@@ -1,23 +1,20 @@
 package io.github.stavshamir.springwolf.example;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-@RunWith(Enclosed.class)
+@Nested
 public class SpringContextTest {
 
-    @RunWith(SpringRunner.class)
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
     public static class AsyncApiDocketTest {
 
@@ -34,7 +31,6 @@ public class SpringContextTest {
         }
     }
 
-    @RunWith(SpringRunner.class)
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
     @TestPropertySource(properties = {
             "customAsyncApiDocketBean=false",

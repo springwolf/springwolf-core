@@ -1,25 +1,22 @@
 package io.github.stavshamir.springwolf.example;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-@RunWith(Enclosed.class)
+@Nested
 public class SpringContextTest {
 
-    @RunWith(SpringRunner.class)
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
     @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:29092", "port=29092" })
     @DirtiesContext
@@ -38,7 +35,6 @@ public class SpringContextTest {
         }
     }
 
-    @RunWith(SpringRunner.class)
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
     @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:29092", "port=29092" })
     @DirtiesContext

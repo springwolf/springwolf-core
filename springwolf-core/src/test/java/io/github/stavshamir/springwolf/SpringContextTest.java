@@ -6,24 +6,23 @@ import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-@RunWith(Enclosed.class)
+@Nested
 public class SpringContextTest {
 
-    @RunWith(SpringRunner.class)
+    @SpringBootTest
     @ContextConfiguration(classes = {
             CustomBeanAsyncApiDocketConfiguration.class, // user has defined an own AsyncApiDocket bean
             DefaultAsyncApiDocketService.class,
@@ -48,7 +47,7 @@ public class SpringContextTest {
         }
     }
 
-    @RunWith(SpringRunner.class)
+    @SpringBootTest
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
             DefaultAsyncApiService.class,

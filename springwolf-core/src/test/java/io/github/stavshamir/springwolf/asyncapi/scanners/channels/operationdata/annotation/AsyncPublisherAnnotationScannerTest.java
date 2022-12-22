@@ -12,13 +12,12 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +27,7 @@ import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@SpringBootTest
 @ContextConfiguration(classes = {AsyncPublisherAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
 @TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
 public class AsyncPublisherAnnotationScannerTest {

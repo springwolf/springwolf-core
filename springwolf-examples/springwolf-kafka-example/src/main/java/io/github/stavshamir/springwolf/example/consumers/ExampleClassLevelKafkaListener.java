@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.money.MonetaryAmount;
 
-import static org.springframework.kafka.support.converter.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
+import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
 
 
 @Service

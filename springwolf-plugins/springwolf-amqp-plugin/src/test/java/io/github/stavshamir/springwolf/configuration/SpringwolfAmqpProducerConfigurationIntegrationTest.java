@@ -5,26 +5,25 @@ import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfAmqpController;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
-import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(Enclosed.class)
+@Nested
 public class SpringwolfAmqpProducerConfigurationIntegrationTest {
 
-    @RunWith(SpringRunner.class)
+    @SpringBootTest
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
             SpringwolfAmqpProducer.class,
@@ -61,7 +60,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
         }
     }
 
-    @RunWith(SpringRunner.class)
+    @SpringBootTest
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
             SpringwolfAmqpProducer.class,

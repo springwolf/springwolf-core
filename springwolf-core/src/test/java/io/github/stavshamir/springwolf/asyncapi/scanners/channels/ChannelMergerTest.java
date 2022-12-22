@@ -7,7 +7,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Map;
