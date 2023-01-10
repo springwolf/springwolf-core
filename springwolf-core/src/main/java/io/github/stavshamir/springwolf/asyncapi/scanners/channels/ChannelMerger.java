@@ -5,7 +5,15 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 
@@ -42,15 +50,23 @@ public class ChannelMerger {
     }
 
     private static Operation mergeOperation(Operation operation, Operation otherOperation) {
-        Set<Message> mergedMessages = getMessages(operation);
-        Set<Message> currentEntryMessages = getMessages(otherOperation);
-        mergedMessages.addAll(currentEntryMessages);
-
         Operation mergedOperation = operation != null ? operation : otherOperation;
+
+        Set<Message> mergedMessages = mergeMessages(getMessages(operation), getMessages(otherOperation));
         if (!mergedMessages.isEmpty()) {
             mergedOperation.setMessage(toMessageObjectOrComposition(mergedMessages));
         }
         return mergedOperation;
+    }
+
+    private static Set<Message> mergeMessages(Set<Message> messages, Set<Message> otherMessages) {
+        Map<String, Message> nameToMessage = messages.stream().collect(Collectors.toMap(Message::getName, Function.identity()));
+
+        for (Message otherMessage : otherMessages) {
+            nameToMessage.putIfAbsent(otherMessage.getName(), otherMessage);
+        }
+
+        return new HashSet<>(nameToMessage.values());
     }
 
     private static Set<Message> getMessages(Operation operation) {

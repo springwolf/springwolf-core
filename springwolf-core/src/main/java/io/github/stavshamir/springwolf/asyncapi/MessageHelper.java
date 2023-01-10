@@ -4,10 +4,11 @@ import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -32,7 +33,7 @@ public class MessageHelper {
             case 1:
                 return messages.toArray()[0];
             default:
-                return ImmutableMap.of(ONE_OF, new HashSet<>(messages.stream().collect(Collectors.toCollection(messageSupplier))));
+                return ImmutableMap.of(ONE_OF, new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier))));
         }
     }
 
@@ -43,12 +44,11 @@ public class MessageHelper {
         }
 
         if (messageObject instanceof Map) {
-            Set<Message> messages = ((Map<String, Set<Message>>) messageObject).get(ONE_OF);
+            List<Message> messages = ((Map<String, List<Message>>) messageObject).get(ONE_OF);
             return new HashSet<>(messages);
         }
 
         log.warn("Message object must contain either a Message or a Map<String, Set<Message>, but contained: {}", messageObject.getClass());
         return new HashSet<>();
     }
-
 }

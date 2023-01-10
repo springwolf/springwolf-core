@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -50,7 +51,7 @@ public class MessageHelperTest {
 
         assertThat(asObject)
                 .isInstanceOf(Map.class)
-                .isEqualTo(ImmutableMap.of("oneOf", ImmutableSet.of(message1, message2)));
+                .isEqualTo(ImmutableMap.of("oneOf", ImmutableList.of(message2, message1)));
     }
 
     @Test
@@ -75,7 +76,7 @@ public class MessageHelperTest {
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
         assertThat(asObject)
                 .isInstanceOf(Map.class)
-                .isEqualTo(ImmutableMap.of("oneOf", ImmutableSet.of(message1, message2)));
+                .isEqualTo(ImmutableMap.of("oneOf", ImmutableList.of(message2, message1)));
     }
 
     @Test
