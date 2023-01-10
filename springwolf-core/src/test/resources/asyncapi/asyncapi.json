@@ -43,6 +43,18 @@
           "title" : "Example Payload",
           "payload" : {
             "$ref" : "#/components/schemas/ExamplePayload"
+          },
+          "bindings" : {
+            "kafka": {
+              "key": {
+                "type": "string",
+                "exampleSetFlag": false,
+                "types": [
+                  "string"
+                ]
+              },
+              "bindingVersion": "binding-version-1"
+            }
           }
         }
       }

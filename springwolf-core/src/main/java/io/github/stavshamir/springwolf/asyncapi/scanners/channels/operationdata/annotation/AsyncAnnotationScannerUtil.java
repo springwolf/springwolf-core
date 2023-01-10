@@ -1,6 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
 
+import com.asyncapi.v2.binding.MessageBinding;
 import com.asyncapi.v2.binding.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -59,11 +61,19 @@ class AsyncAnnotationScannerUtil {
                 .orElse(null);
     }
 
-    public static Map<String, OperationBinding> processBindingFromAnnotation(Method method, List<OperationBindingProcessor> operationBindingProcessors) {
+    public static Map<String, OperationBinding> processOperationBindingFromAnnotation(Method method, List<OperationBindingProcessor> operationBindingProcessors) {
         return operationBindingProcessors.stream()
                 .map(operationBindingProcessor -> operationBindingProcessor.process(method))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toMap(ProcessedOperationBinding::getType, ProcessedOperationBinding::getBinding));
+    }
+
+    public static Map<String, MessageBinding> processMessageBindingFromAnnotation(Method method, List<MessageBindingProcessor> messageBindingProcessors) {
+        return messageBindingProcessors.stream()
+                .map(messageBindingProcessor -> messageBindingProcessor.process(method))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toMap(ProcessedMessageBinding::getType, ProcessedMessageBinding::getBinding));
     }
 }
