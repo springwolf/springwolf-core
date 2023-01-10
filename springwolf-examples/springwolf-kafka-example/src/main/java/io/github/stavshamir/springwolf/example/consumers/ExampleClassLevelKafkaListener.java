@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.example.consumers;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
 import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.money.MonetaryAmount;
 
+import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding.KafkaKeyTypes.STRING_KEY;
 import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
 
 
@@ -48,7 +50,12 @@ public class ExampleClassLevelKafkaListener {
     @KafkaAsyncOperationBinding(
             bindingVersion = "1",
             clientId = "foo-clientId",
-            groupId = "#{'foo-groupId'}"
+            groupId = "#{'foo-groupId'}",
+            messageBinding = @KafkaAsyncMessageBinding(
+                    keyType = STRING_KEY,
+                    bindingVersion = "1",
+                    description = "Kafka Consumer Message Key"
+            )
     )
     public void receiveMonetaryAmount(MonetaryAmount payload) {
         log.info("Received new message in multi-payload-topic: {}", payload.toString());

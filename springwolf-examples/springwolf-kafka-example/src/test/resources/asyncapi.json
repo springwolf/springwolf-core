@@ -167,6 +167,17 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders-MonetaryAmount"
+            },
+            "bindings" : {
+              "kafka" : {
+                "key" : {
+                  "type" : "string",
+                  "description" : "Kafka Consumer Message Key",
+                  "exampleSetFlag" : false,
+                  "types" : [ "string" ]
+                },
+                "bindingVersion" : "1"
+              }
             }
           } ]
         }
