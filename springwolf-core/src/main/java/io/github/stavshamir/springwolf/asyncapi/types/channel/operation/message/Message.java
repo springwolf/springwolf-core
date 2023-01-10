@@ -10,7 +10,8 @@ import lombok.*;
  */
 @Data
 @Builder
-@EqualsAndHashCode(of = {"name"})
+// TODO Why ignore other fields?
+//@EqualsAndHashCode(of = {"name"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {

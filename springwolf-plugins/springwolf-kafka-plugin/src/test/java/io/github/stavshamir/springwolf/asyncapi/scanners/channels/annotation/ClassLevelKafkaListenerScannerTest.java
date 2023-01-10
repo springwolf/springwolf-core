@@ -76,12 +76,14 @@ public class ClassLevelKafkaListenerScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .build();
 
         Message barMessage = Message.builder()
                 .name(SimpleBar.class.getName())
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleBar.class.getSimpleName()))
                 .build();
 
         Operation operation = Operation.builder()
