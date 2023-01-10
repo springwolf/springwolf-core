@@ -4,7 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -13,6 +19,10 @@ public class MessageHelper {
     private static final String ONE_OF = "oneOf";
 
     private static final Comparator<Message> byMessageName = Comparator.comparing(Message::getName);
+
+    // TODO Why do we need a SortedSet here? Using a comparator with only the message name will break deep equals on the Set
+    // Unfortunately there are Tests relying on deep equals
+    // see https://docs.oracle.com/javase/7/docs/api/java/util/TreeSet.html
     private static final Supplier<Set<Message>> messageSupplier = () -> new TreeSet<>(byMessageName);
 
     public static Object toMessageObjectOrComposition(Set<Message> messages) {
@@ -22,14 +32,14 @@ public class MessageHelper {
             case 1:
                 return messages.toArray()[0];
             default:
-                return ImmutableMap.of(ONE_OF, messages.stream().collect(Collectors.toCollection(messageSupplier)));
+                return ImmutableMap.of(ONE_OF, new HashSet<>(messages.stream().collect(Collectors.toCollection(messageSupplier))));
         }
     }
 
     @SuppressWarnings("unchecked")
     public static Set<Message> messageObjectToSet(Object messageObject) {
         if (messageObject instanceof Message) {
-            return new HashSet<>(Arrays.asList((Message) messageObject));
+            return new HashSet<>(Collections.singletonList((Message) messageObject));
         }
 
         if (messageObject instanceof Map) {

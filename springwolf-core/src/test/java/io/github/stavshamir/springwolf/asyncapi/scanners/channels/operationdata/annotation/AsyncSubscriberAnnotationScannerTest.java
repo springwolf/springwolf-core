@@ -66,7 +66,7 @@ public class AsyncSubscriberAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                .description(null)
+                .description("")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .build();
