@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelMergerTest {
 
-
     @Test
     public void shouldNotMergeDifferentChannelNames() {
         // given
@@ -110,8 +109,7 @@ public class ChannelMergerTest {
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
-        // TODO Is it really expected that the first occurrence is used? (no test in Message Helper...)
-        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Sets.newHashSet(message1, message3));
+        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Sets.newHashSet(message1, message2));
         assertThat(mergedChannels).hasSize(1)
                 .hasEntrySatisfying(channelName, it -> {
                     assertThat(it.getPublish()).isEqualTo(Operation.builder().operationId("publisher1").message(expectedMessages).build());
