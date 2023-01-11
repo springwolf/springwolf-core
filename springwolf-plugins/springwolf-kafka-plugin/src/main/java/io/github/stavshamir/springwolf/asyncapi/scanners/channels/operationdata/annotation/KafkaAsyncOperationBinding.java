@@ -26,14 +26,22 @@ public @interface KafkaAsyncOperationBinding {
     @Target({})
     @interface KafkaAsyncMessageBinding {
 
-        KafkaKeyTypes keyType() default KafkaKeyTypes.NO_KEY;
+        KafkaAsyncKey key() default @KafkaAsyncKey(type = KafkaAsyncKey.KafkaKeyTypes.UNDEFINED_KEY);
+
+        String bindingVersion() default "";
+    }
+    @Retention(RetentionPolicy.CLASS)
+    @Target({})
+    @interface KafkaAsyncKey {
+
+        KafkaKeyTypes type() default KafkaKeyTypes.STRING_KEY;
+
+        String example() default "";
 
         String description() default "";
 
-        String bindingVersion() default "";
-
         enum KafkaKeyTypes {
-            NO_KEY,
+            UNDEFINED_KEY,
             STRING_KEY
         }
     }

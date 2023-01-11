@@ -49,12 +49,13 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
 
     private Schema<?> resolveSchemaOrNull(KafkaAsyncMessageBinding messageBinding) {
         Schema<?> schemaDefinition = null;
-        switch (messageBinding.keyType()) {
-            case NO_KEY:
+        switch (messageBinding.key().type()) {
+            case UNDEFINED_KEY:
                 break;
             case STRING_KEY:
                 schemaDefinition = new StringSchema()
-                        .description(resolveOrNull(messageBinding.description()));
+                        .example(messageBinding.key().example())
+                        .description(resolveOrNull(messageBinding.key().description()));
         }
 
         return schemaDefinition;

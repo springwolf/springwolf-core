@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
 import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -15,5 +16,6 @@ public class KafkaConsumerData extends ConsumerData {
         this.payloadType = payloadType;
         this.headers = headers != null ? headers : this.headers;
         this.operationBinding = ImmutableMap.of("kafka", new KafkaOperationBinding());
+        this.messageBinding = ImmutableMap.of("kafka", new KafkaMessageBinding());
     }
 }
