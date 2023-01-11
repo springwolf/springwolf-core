@@ -2,6 +2,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.ChannelBinding;
 import com.asyncapi.v2.binding.amqp.AMQPChannelBinding;
+import com.asyncapi.v2.binding.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -99,6 +100,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -140,6 +142,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -178,6 +181,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -216,6 +220,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -271,6 +276,7 @@ public class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
