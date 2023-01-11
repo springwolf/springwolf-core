@@ -63,6 +63,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "kafka" : { }
           }
         }
       },
@@ -87,6 +90,9 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/CloudEventHeadersForAnotherPayloadDtoEndpoint"
+            },
+            "bindings" : {
+              "kafka" : { }
             }
           }, {
             "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -97,6 +103,17 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders"
+            },
+            "bindings" : {
+              "kafka" : {
+                "key" : {
+                  "type" : "string",
+                  "description" : "Kafka Producer Message Key",
+                  "example" : "example-key",
+                  "exampleSetFlag" : true,
+                  "types" : [ "string" ]
+                }
+              }
             }
           } ]
         }
@@ -120,6 +137,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "kafka" : { }
           }
         }
       },
@@ -148,6 +168,9 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders-AnotherPayloadDto"
+            },
+            "bindings" : {
+              "kafka" : { }
             }
           }, {
             "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -157,6 +180,9 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto"
+            },
+            "bindings" : {
+              "kafka" : { }
             }
           }, {
             "name" : "javax.money.MonetaryAmount",
@@ -173,7 +199,8 @@
                 "key" : {
                   "type" : "string",
                   "description" : "Kafka Consumer Message Key",
-                  "exampleSetFlag" : false,
+                  "example" : "example-key",
+                  "exampleSetFlag" : true,
                   "types" : [ "string" ]
                 },
                 "bindingVersion" : "1"

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.money.MonetaryAmount;
 
-import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding.KafkaKeyTypes.STRING_KEY;
 import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
 
 
@@ -52,9 +51,11 @@ public class ExampleClassLevelKafkaListener {
             clientId = "foo-clientId",
             groupId = "#{'foo-groupId'}",
             messageBinding = @KafkaAsyncMessageBinding(
-                    keyType = STRING_KEY,
-                    bindingVersion = "1",
-                    description = "Kafka Consumer Message Key"
+                    key = @KafkaAsyncOperationBinding.KafkaAsyncKey(
+                            description = "Kafka Consumer Message Key",
+                            example = "example-key"
+                    ),
+                    bindingVersion = "1"
             )
     )
     public void receiveMonetaryAmount(MonetaryAmount payload) {

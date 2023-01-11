@@ -3,13 +3,13 @@ package io.github.stavshamir.springwolf.example.producers;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncKey;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
 import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding.KafkaKeyTypes.STRING_KEY;
 import static io.github.stavshamir.springwolf.example.configuration.KafkaConfiguration.PRODUCER_TOPIC;
 import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
 
@@ -42,9 +42,11 @@ public class ExampleProducer {
             bindingVersion = "1",
             clientId = "foo-clientId",
             messageBinding = @KafkaAsyncMessageBinding(
-                    keyType = STRING_KEY,
-                    bindingVersion = "1",
-                    description = "Kafka Producer Message Key"
+                    key = @KafkaAsyncKey(
+                            description = "Kafka Producer Message Key",
+                            example = "example-key"
+                    ),
+                    bindingVersion = "1"
             )
     )
     public void sendMessage(ExamplePayloadDto msg) {
