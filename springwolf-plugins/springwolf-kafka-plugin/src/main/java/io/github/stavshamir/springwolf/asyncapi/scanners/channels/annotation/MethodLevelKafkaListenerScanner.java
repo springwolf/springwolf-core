@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.ChannelBinding;
+import com.asyncapi.v2.binding.MessageBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
@@ -47,6 +48,13 @@ public class MethodLevelKafkaListenerScanner extends AbstractMethodLevelListener
     @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(KafkaListener annotation) {
         return KafkaListenerUtil.buildOperationBinding(annotation, resolver);
+    }
+
+    @Override
+    protected Map<String, ? extends MessageBinding> buildMessageBinding(KafkaListener annotation) {
+        // Currently there is no interesting data in the KafkaListener annotation, but we keep it for the sake of
+        // consistency in the code and in the serialized specification (always have at least an empty binding for kafka)
+        return KafkaListenerUtil.buildMessageBinding();
     }
 
     @Override
