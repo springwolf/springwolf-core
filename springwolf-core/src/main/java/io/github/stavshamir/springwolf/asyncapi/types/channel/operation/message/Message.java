@@ -13,8 +13,6 @@ import java.util.Map;
  */
 @Data
 @Builder
-// TODO Why ignore other fields?
-//@EqualsAndHashCode(of = {"name"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {

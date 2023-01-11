@@ -21,9 +21,6 @@ public class MessageHelper {
 
     private static final Comparator<Message> byMessageName = Comparator.comparing(Message::getName);
 
-    // TODO Why do we need a SortedSet here? Using a comparator with only the message name will break deep equals on the Set
-    // Unfortunately there are Tests relying on deep equals
-    // see https://docs.oracle.com/javase/7/docs/api/java/util/TreeSet.html
     private static final Supplier<Set<Message>> messageSupplier = () -> new TreeSet<>(byMessageName);
 
     public static Object toMessageObjectOrComposition(Set<Message> messages) {
