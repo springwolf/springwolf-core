@@ -44,7 +44,7 @@ public class SpringwolfKafkaControllerTest {
     @Test
     public void testControllerShouldReturnBadRequestIfPayloadIsEmpty() {
         try {
-            String content = "{\"headers\": null, \"payload\": null }";
+            String content = "{\"bindings\": null, \"headers\": null, \"payload\": null }";
             mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
@@ -58,7 +58,7 @@ public class SpringwolfKafkaControllerTest {
     public void testControllerShouldReturnNotFoundIfNoKafkaProducerIsEnabled() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
 
-        String content = "{\"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
+        String content = "{\"bindings\": null, \"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
@@ -69,14 +69,14 @@ public class SpringwolfKafkaControllerTest {
     public void testControllerShouldCallKafkaProducerIfOnlyPayloadIsSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
-        String content = "{\"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
+        String content = "{\"bindings\": null, \"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
 
         mvc.perform(post("/springwolf/kafka/publish").param("topic", "test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isOk());
 
-        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), payloadCaptor.capture());
+        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), payloadCaptor.capture());
 
         assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-key", "some-value"));
     }
@@ -85,14 +85,31 @@ public class SpringwolfKafkaControllerTest {
     public void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAreSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
-        String content = "{\"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
+        String content = "{\"bindings\": null, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
 
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isOk());
 
-        verify(springwolfKafkaProducer).send(eq("test-topic"), headerCaptor.capture(), payloadCaptor.capture());
+        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), headerCaptor.capture(), payloadCaptor.capture());
+
+        assertThat(headerCaptor.getValue()).isEqualTo(singletonMap("some-header-key", "some-header-value"));
+        assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-payload-key", "some-payload-value"));
+    }
+
+    @Test
+    public void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAndBindingsAreSend() throws Exception{
+        when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
+
+        String content = "{\"bindings\": {\"key\": \"kafka-key-value\"}, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
+
+        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isOk());
+
+        verify(springwolfKafkaProducer).send(eq("test-topic"), eq("kafka-key-value"), headerCaptor.capture(), payloadCaptor.capture());
 
         assertThat(headerCaptor.getValue()).isEqualTo(singletonMap("some-header-key", "some-header-value"));
         assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-payload-key", "some-payload-value"));
