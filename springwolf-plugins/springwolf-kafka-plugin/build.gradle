@@ -10,7 +10,7 @@ plugins {
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
 group 'io.github.springwolf'
-version '0.9.0' + (isSnapshot ? '-SNAPSHOT' : '')
+version '0.10.0' + (isSnapshot ? '-SNAPSHOT' : '')
 sourceCompatibility = 1.8
 
 repositories {
