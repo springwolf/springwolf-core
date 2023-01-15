@@ -42,6 +42,10 @@ dependencies {
 jar.enabled = true
 bootJar.enabled = false
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 publishing {
     publications {
