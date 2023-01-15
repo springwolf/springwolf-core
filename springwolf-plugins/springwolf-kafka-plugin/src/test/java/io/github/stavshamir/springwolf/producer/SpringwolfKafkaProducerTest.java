@@ -3,13 +3,13 @@ package io.github.stavshamir.springwolf.producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Header;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Collections;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SpringwolfKafkaProducerTest {
 
     private SpringwolfKafkaProducer springwolfKafkaProducer;
@@ -31,7 +31,7 @@ public class SpringwolfKafkaProducerTest {
     @Captor
     private ArgumentCaptor<ProducerRecord<Object, Map<String, ?>>> recordArgumentCaptor;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         springwolfKafkaProducer = new SpringwolfKafkaProducer(Optional.of(kafkaTemplate));
     }

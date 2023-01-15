@@ -4,8 +4,8 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '2.1.18.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.4.0'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
@@ -22,6 +22,8 @@ dependencies {
     api 'com.asyncapi:asyncapi-core:1.0.0-EAP'
 
     implementation 'io.swagger:swagger-inflector:2.0.8'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.4'
+    implementation 'io.swagger.parser.v3:swagger-parser-core:2.1.9'
 
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework:spring-context'
@@ -29,8 +31,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
 
     implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.10.8'
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -53,6 +53,10 @@ bootJar.enabled = false
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+test {
+    useJUnitPlatform()
 }
 
 publishing {

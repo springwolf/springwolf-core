@@ -2,8 +2,10 @@ package io.github.stavshamir.springwolf.asyncapi;
 
 import io.github.stavshamir.springwolf.asyncapi.dtos.KafkaMessageDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -19,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SpringwolfKafkaControllerTest {
 
     @InjectMocks

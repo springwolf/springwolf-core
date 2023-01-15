@@ -6,13 +6,13 @@ import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import org.assertj.core.util.Arrays;
 import org.assertj.core.util.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

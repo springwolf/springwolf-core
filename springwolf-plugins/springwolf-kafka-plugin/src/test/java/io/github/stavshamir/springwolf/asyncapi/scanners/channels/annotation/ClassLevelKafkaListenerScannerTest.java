@@ -13,11 +13,10 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import junit.framework.TestCase;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -35,10 +34,10 @@ import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@SpringBootTest
 @ContextConfiguration(classes = {ClassLevelKafkaListenerScanner.class, DefaultSchemasService.class})
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
-public class ClassLevelKafkaListenerScannerTest extends TestCase {
+public class ClassLevelKafkaListenerScannerTest {
 
     @Autowired
     private ClassLevelKafkaListenerScanner methodLevelKafkaListenerScanner;

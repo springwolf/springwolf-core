@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.example;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.web.client.RestTemplate;
