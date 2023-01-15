@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncSubscriber;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 
 public class ChannelPriority {
@@ -15,7 +15,7 @@ public class ChannelPriority {
     /**
      * Definition via custom annotations
      * <p>
-     * Example: {@link AsyncPublisher}, {@link AsyncSubscriber}
+     * Example: {@link AsyncPublisher}, {@link AsyncListener}
      */
     public static final int ASYNC_ANNOTATION = 2;
 

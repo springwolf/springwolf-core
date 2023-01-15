@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.example.consumers;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncSubscriber;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
@@ -33,9 +33,9 @@ public class ExampleClassLevelKafkaListener {
     }
 
     @KafkaHandler
-    @AsyncSubscriber(operation = @AsyncOperation(
+    @AsyncListener(operation = @AsyncOperation(
             channelName = "multi-payload-topic",
-            description = "Override description in the AsyncSubscriber annotation with servers at ${kafka.bootstrap.servers}",
+            description = "Override description in the AsyncListener annotation with servers at ${kafka.bootstrap.servers}",
             headers = @AsyncOperation.Headers(
                     schemaName = "SpringKafkaDefaultHeaders-MonetaryAmount",
                     values = {

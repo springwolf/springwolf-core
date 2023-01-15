@@ -29,12 +29,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {AsyncSubscriberAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
+@ContextConfiguration(classes = {AsyncListenerAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
 @TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
-public class AsyncSubscriberAnnotationScannerTest {
+public class AsyncListenerAnnotationScannerTest {
 
     @Autowired
-    private AsyncSubscriberAnnotationScanner channelScanner;
+    private AsyncListenerAnnotationScanner channelScanner;
 
     @MockBean
     private ComponentClassScanner componentClassScanner;
@@ -46,7 +46,7 @@ public class AsyncSubscriberAnnotationScannerTest {
 
     @Test
     public void scan_componentHasNoListenerMethods() {
-        setClassToScan(ClassWithoutSubscriberAnnotation.class);
+        setClassToScan(ClassWithoutListenerAnnotation.class);
 
         Map<String, ChannelItem> channels = channelScanner.scan();
 
@@ -56,7 +56,7 @@ public class AsyncSubscriberAnnotationScannerTest {
 
     @Test
     public void scan_componentHasListenerMethod() {
-        // Given a class with methods annotated with AsyncSubscriber, where only the channel-name is set
+        // Given a class with methods annotated with AsyncListener, where only the channel-name is set
         setClassToScan(ClassWithListenerAnnotation.class);
 
         // When scan is called
@@ -89,7 +89,7 @@ public class AsyncSubscriberAnnotationScannerTest {
 
     @Test
     public void scan_componentHasListenerMethodWithAllAttributes() {
-        // Given a class with method annotated with AsyncSubscriber, where all attributes are set
+        // Given a class with method annotated with AsyncListener, where all attributes are set
         setClassToScan(ClassWithListenerAnnotationWithAllAttributes.class);
 
         // When scan is called
@@ -121,7 +121,7 @@ public class AsyncSubscriberAnnotationScannerTest {
     }
 
 
-    private static class ClassWithoutSubscriberAnnotation {
+    private static class ClassWithoutListenerAnnotation {
 
         private void methodWithoutAnnotation() {
         }
@@ -129,7 +129,7 @@ public class AsyncSubscriberAnnotationScannerTest {
 
     private static class ClassWithListenerAnnotation {
 
-        @AsyncSubscriber(operation = @AsyncOperation(
+        @AsyncListener(operation = @AsyncOperation(
                 channelName = "test-channel"
         ))
         private void methodWithAnnotation(SimpleFoo payload) {
@@ -142,7 +142,7 @@ public class AsyncSubscriberAnnotationScannerTest {
 
     private static class ClassWithListenerAnnotationWithAllAttributes {
 
-        @AsyncSubscriber(operation = @AsyncOperation(
+        @AsyncListener(operation = @AsyncOperation(
                 channelName = "${test.property.test-channel}",
                 description = "${test.property.description}",
                 headers = @AsyncOperation.Headers(
