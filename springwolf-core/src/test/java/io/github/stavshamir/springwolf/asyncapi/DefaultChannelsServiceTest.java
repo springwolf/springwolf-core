@@ -5,16 +5,17 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
         DefaultChannelsService.class,
         DefaultChannelsServiceTest.FooChannelScanner.class,

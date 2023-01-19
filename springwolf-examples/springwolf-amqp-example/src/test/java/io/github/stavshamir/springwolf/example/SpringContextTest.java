@@ -1,7 +1,6 @@
 package io.github.stavshamir.springwolf.example;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-@Nested
 public class SpringContextTest {
 
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
