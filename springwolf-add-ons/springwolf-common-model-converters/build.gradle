@@ -3,8 +3,8 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '2.1.1.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'org.springframework.boot' version '2.7.6'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     implementation 'org.javamoney.moneta:moneta-core:1.4.2'
-    implementation 'io.swagger.core.v3:swagger-core:2.2.0'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.7'
 
     implementation 'org.springframework:spring-context'
 
@@ -29,16 +29,16 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
-test {
-    useJUnitPlatform()
-}
-
 jar.enabled = true
 bootJar.enabled = false
 
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+test {
+    useJUnitPlatform()
 }
 
 publishing {

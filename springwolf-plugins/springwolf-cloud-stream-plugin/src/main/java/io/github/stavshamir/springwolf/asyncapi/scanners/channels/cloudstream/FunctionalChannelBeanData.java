@@ -2,9 +2,9 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
 import com.google.common.collect.ImmutableSet;
 import lombok.Data;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,7 +65,7 @@ class FunctionalChannelBeanData {
     }
 
     private static List<Class<?>> getReturnTypeGenerics(Method methodBean) {
-        ParameterizedTypeImpl genericReturnType = (ParameterizedTypeImpl) methodBean.getGenericReturnType();
+        ParameterizedType genericReturnType = (ParameterizedType) methodBean.getGenericReturnType();
         return Arrays.stream(genericReturnType.getActualTypeArguments())
                 .map(FunctionalChannelBeanData::toClassObject)
                 .collect(toList());
@@ -76,17 +76,17 @@ class FunctionalChannelBeanData {
             return (Class<?>) type;
         }
 
-        if (type instanceof ParameterizedTypeImpl) {
-            Class<?> rawType = ((ParameterizedTypeImpl) type).getRawType();
+        if (type instanceof ParameterizedType) {
+            Type rawType = ((ParameterizedType) type).getRawType();
 
-            if ("org.apache.kafka.streams.kstream.KStream".equals(rawType.getName())) {
-                return (Class<?>) ((ParameterizedTypeImpl) type).getActualTypeArguments()[1];
+            if ("org.apache.kafka.streams.kstream.KStream".equals(rawType.getTypeName())) {
+                return (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[1];
             }
 
-            return rawType;
+            return (Class<?>) rawType;
         }
 
-        throw new IllegalArgumentException("Cannot handle Type which is not Class or ParameterizedTypeImpl, but was given: " + type.getClass());
+        throw new IllegalArgumentException("Cannot handle Type which is not Class or ParameterizedType, but was given: " + type.getClass());
     }
 
     enum BeanType {

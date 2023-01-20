@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;

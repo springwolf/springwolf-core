@@ -4,23 +4,21 @@ import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
-import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(Enclosed.class)
 public class SpringwolfKafkaProducerConfigurationIntegrationTest {
 
-    @RunWith(SpringRunner.class)
+    @ExtendWith(SpringExtension.class)
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
             SpringwolfKafkaProducerConfiguration.class,
@@ -58,7 +56,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
         }
     }
 
-    @RunWith(SpringRunner.class)
+    @ExtendWith(SpringExtension.class)
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
             SpringwolfKafkaProducerConfiguration.class,

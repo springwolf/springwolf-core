@@ -6,8 +6,8 @@ import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.util.Collections;
@@ -24,7 +24,7 @@ public class SpringwolfAmqpProducerTest {
     private ChannelsService channelsService;
     private RabbitTemplate rabbitTemplate;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         channelsService = mock(ChannelsService.class);
         rabbitTemplate = mock(RabbitTemplate.class);

@@ -7,7 +7,7 @@ import com.asyncapi.v2.model.server.Server;
 import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.SpringWolfConfigProperties.ConfigDocket;
 import io.github.stavshamir.springwolf.SpringWolfConfigProperties.ConfigDocket.Info;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 

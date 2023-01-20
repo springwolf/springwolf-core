@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header;
 
-import org.springframework.kafka.support.converter.AbstractJavaTypeMapper;
+import org.springframework.kafka.support.mapping.AbstractJavaTypeMapper;
 
 import java.util.List;
 

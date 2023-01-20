@@ -2,10 +2,10 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Payload;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +31,7 @@ public class SpringPayloadAnnotationTypeExtractor {
         try {
             // Resolve generic type for batch listeners
             if (parameterClass == List.class) {
-                Type type = ((ParameterizedTypeImpl) method.getGenericParameterTypes()[parameterPayloadIndex]).getActualTypeArguments()[0];
+                Type type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex]).getActualTypeArguments()[0];
                 return Class.forName(type.getTypeName());
             }
         } catch (Exception ex) {

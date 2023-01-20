@@ -2,13 +2,13 @@ package io.github.stavshamir.springwolf.asyncapi;
 
 import io.github.stavshamir.springwolf.asyncapi.dtos.KafkaMessageDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SpringwolfKafkaControllerTest {
 
     @InjectMocks
@@ -41,7 +41,7 @@ public class SpringwolfKafkaControllerTest {
             failBecauseExceptionWasNotThrown(ResponseStatusException.class);
         } catch (ResponseStatusException e) {
             assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            verifyZeroInteractions(springwolfKafkaProducer);
+            verifyNoInteractions(springwolfKafkaProducer);
         }
     }
 

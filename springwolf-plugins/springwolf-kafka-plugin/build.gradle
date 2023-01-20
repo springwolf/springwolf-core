@@ -3,8 +3,8 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '2.1.1.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'org.springframework.boot' version '2.7.6'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
@@ -27,18 +27,19 @@ dependencies {
     implementation 'io.swagger.core.v3:swagger-models:2.2.0'
 
     implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'org.slf4j:slf4j-api'
 
-    compileOnly 'org.projectlombok:lombok:1.18.4'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
 
-    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
-    testImplementation 'org.projectlombok:lombok:1.18.4'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
+    testImplementation 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    testImplementation('org.assertj:assertj-core:3.11.1')
+    testImplementation 'org.assertj:assertj-core:3.23.1'
 }
 
 jar.enabled = true
@@ -47,6 +48,10 @@ bootJar.enabled = false
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+test {
+    useJUnitPlatform()
 }
 
 publishing {
@@ -107,6 +112,6 @@ publishing {
 signing {
     def signingKey = project.findProperty("SIGNINGKEY")
     def signingPassword = project.findProperty("SIGNINGPASSWORD")
-    useInMemoryPgpKeys (signingKey, signingPassword)
+    useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications.mavenJava
 }

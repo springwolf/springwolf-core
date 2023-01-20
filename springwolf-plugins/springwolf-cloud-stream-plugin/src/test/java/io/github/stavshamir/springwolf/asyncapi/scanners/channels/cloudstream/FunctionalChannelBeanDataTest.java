@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
 import org.apache.kafka.streams.kstream.KStream;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 
 import java.lang.reflect.Method;

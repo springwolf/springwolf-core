@@ -4,8 +4,8 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '2.1.18.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.7.6'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
@@ -22,6 +22,8 @@ dependencies {
     api 'com.asyncapi:asyncapi-core:1.0.0-EAP'
 
     implementation 'io.swagger:swagger-inflector:2.0.8'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.7'
+    implementation 'io.swagger.parser.v3:swagger-parser-core:2.1.9'
 
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework:spring-context'
@@ -29,18 +31,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
 
     implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.10.8'
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
 
-    testImplementation 'org.projectlombok:lombok:1.18.22'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testImplementation 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    testImplementation 'org.assertj:assertj-core:3.21.0'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.amqp:spring-rabbit'
@@ -53,6 +53,10 @@ bootJar.enabled = false
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+test {
+    useJUnitPlatform()
 }
 
 publishing {
@@ -113,6 +117,6 @@ publishing {
 signing {
     def signingKey = project.findProperty("SIGNINGKEY")
     def signingPassword = project.findProperty("SIGNINGPASSWORD")
-    useInMemoryPgpKeys (signingKey, signingPassword)
+    useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications.mavenJava
 }
