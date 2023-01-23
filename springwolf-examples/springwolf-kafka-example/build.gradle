@@ -5,6 +5,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.0'
 
     id 'com.bmuschko.docker-spring-boot-application' version '6.7.0'
+    id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
 }
 
 sourceCompatibility = '1.8'
@@ -67,3 +68,13 @@ test {
         exceptionFormat = 'full'
     }
 }
+
+openApi {
+    apiDocsUrl = "http://localhost:8080/springwolf/docs"
+    // For testing purposes we put the generated json into the test resources, but it could be any other directory
+    outputDir = file("$buildDir/resources/test")
+    outputFileName = "openapi-generated.json"
+}
+
+// generate the open api docs before tests are executed so that if it works, the json is already there
+test.dependsOn("generateOpenApiDocs")
