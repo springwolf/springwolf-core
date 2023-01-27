@@ -58,6 +58,6 @@ public class ChannelMerger {
                 .ofNullable(operation)
                 .map(Operation::getMessage)
                 .map(MessageHelper::messageObjectToSet)
-                .orElseGet(TreeSet::new);
+                .orElseGet(HashSet::new);
     }
 }
