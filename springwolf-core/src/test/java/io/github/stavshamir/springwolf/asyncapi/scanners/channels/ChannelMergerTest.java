@@ -144,8 +144,7 @@ public class ChannelMergerTest {
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to
         // message 2
-        Object expectedMessages =
-                MessageHelper.toMessageObjectOrComposition(Sets.newHashSet(message1, message2));
+        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Sets.newHashSet(message1, message2));
         assertThat(mergedChannels)
                 .hasSize(1)
                 .hasEntrySatisfying(
