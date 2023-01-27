@@ -122,6 +122,50 @@ public class AsyncPublisherAnnotationScannerTest {
                 .containsExactly(Maps.immutableEntry("test-channel", expectedChannel));
     }
 
+    @Test
+    public void scan_componentHasMultiplePublisherAnnotations() {
+        // Given a class with methods annotated with AsyncListener, where only the channel-name is set
+        setClassToScan(ClassWithMultipleListenerAnnotations.class);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannels = channelScanner.scan();
+
+        // Then the returned collection contains the channel
+        Message message = Message.builder()
+                .name(SimpleFoo.class.getName())
+                .title(SimpleFoo.class.getSimpleName())
+                .build();
+
+        Operation operation1 = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-channel-1_subscribe")
+                .bindings(EMPTY_MAP)
+                .message(message)
+                .build();
+
+        ChannelItem expectedChannel1 = ChannelItem.builder()
+                .bindings(null)
+                .subscribe(operation1)
+                .build();
+
+        Operation operation2 = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-channel-2_subscribe")
+                .bindings(EMPTY_MAP)
+                .message(message)
+                .build();
+
+        ChannelItem expectedChannel2 = ChannelItem.builder()
+                .bindings(null)
+                .subscribe(operation2)
+                .build();
+
+        assertThat(actualChannels)
+                .containsExactlyEntriesOf(
+                        ImmutableMap.of(
+                                "test-channel-1", expectedChannel1,
+                                "test-channel-2", expectedChannel2));
+    }
 
     private static class ClassWithoutPublisherAnnotation {
 
@@ -157,6 +201,18 @@ public class AsyncPublisherAnnotationScannerTest {
         }
 
         private void methodWithoutAnnotation() {
+        }
+    }
+
+    private static class ClassWithMultipleListenerAnnotations {
+
+        @AsyncPublisher(operation = @AsyncOperation(
+                channelName = "test-channel-1"
+        ))
+        @AsyncPublisher(operation = @AsyncOperation(
+                channelName = "test-channel-2"
+        ))
+        private void methodWithMultipleAnnotation(SimpleFoo payload) {
         }
     }
 
