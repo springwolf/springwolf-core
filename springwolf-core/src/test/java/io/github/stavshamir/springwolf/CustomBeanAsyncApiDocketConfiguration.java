@@ -10,10 +10,11 @@ class CustomBeanAsyncApiDocketConfiguration {
     @Bean
     public AsyncApiDocket docket() {
         return AsyncApiDocket.builder()
-                .info(Info.builder()
-                        .title("AsyncApiDocketConfiguration-title")
-                        .version("AsyncApiDocketConfiguration-version")
-                        .build())
+                .info(
+                        Info.builder()
+                                .title("AsyncApiDocketConfiguration-title")
+                                .version("AsyncApiDocketConfiguration-version")
+                                .build())
                 .build();
     }
 }

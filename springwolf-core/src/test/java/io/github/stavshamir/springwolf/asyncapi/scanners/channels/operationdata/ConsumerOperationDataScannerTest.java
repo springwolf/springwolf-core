@@ -35,24 +35,23 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {ConsumerOperationDataScanner.class, DefaultSchemasService.class})
 public class ConsumerOperationDataScannerTest {
 
-    @Autowired
-    private ConsumerOperationDataScanner scanner;
+    @Autowired private ConsumerOperationDataScanner scanner;
 
-    @MockBean
-    private AsyncApiDocketService asyncApiDocketService;
+    @MockBean private AsyncApiDocketService asyncApiDocketService;
 
     @Test
     public void allFieldsConsumerData() {
         // Given a consumer data with all fields set
         String channelName = "example-consumer-topic-foo1";
         String description = channelName + "-description";
-        ConsumerData consumerData = ConsumerData.builder()
-                .channelName(channelName)
-                .description(description)
-                .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
-                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .payloadType(ExamplePayloadDto.class)
-                .build();
+        ConsumerData consumerData =
+                ConsumerData.builder()
+                        .channelName(channelName)
+                        .description(description)
+                        .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                        .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                        .payloadType(ExamplePayloadDto.class)
+                        .build();
 
         mockConsumers(ImmutableList.of(consumerData));
 
@@ -60,38 +59,42 @@ public class ConsumerOperationDataScannerTest {
         Map<String, ChannelItem> consumerChannels = scanner.scan();
 
         // Then the channel should be created correctly
-        assertThat(consumerChannels)
-                .containsKey(channelName);
+        assertThat(consumerChannels).containsKey(channelName);
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId("example-consumer-topic-foo1_publish")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .message(Message.builder()
-                        .name(ExamplePayloadDto.class.getName())
-                        .description(description)
-                        .title(ExamplePayloadDto.class.getSimpleName())
-                        .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
-                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                        .build())
-                .build();
+        Operation operation =
+                Operation.builder()
+                        .description("Auto-generated description")
+                        .operationId("example-consumer-topic-foo1_publish")
+                        .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                        .message(
+                                Message.builder()
+                                        .name(ExamplePayloadDto.class.getName())
+                                        .description(description)
+                                        .title(ExamplePayloadDto.class.getSimpleName())
+                                        .payload(
+                                                PayloadReference.fromModelName(
+                                                        ExamplePayloadDto.class.getSimpleName()))
+                                        .headers(
+                                                HeaderReference.fromModelName(
+                                                        AsyncHeaders.NOT_DOCUMENTED
+                                                                .getSchemaName()))
+                                        .build())
+                        .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
-                .publish(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder()
+                        .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                        .publish(operation)
+                        .build();
 
-        assertThat(consumerChannels.get(channelName))
-                .isEqualTo(expectedChannel);
+        assertThat(consumerChannels.get(channelName)).isEqualTo(expectedChannel);
     }
 
     @Test
     public void missingFieldConsumerData() {
         // Given a consumer data with missing fields
         String channelName = "example-consumer-topic-foo1";
-        ConsumerData consumerData = ConsumerData.builder()
-                .channelName(channelName)
-                .build();
+        ConsumerData consumerData = ConsumerData.builder().channelName(channelName).build();
 
         mockConsumers(ImmutableList.of(consumerData));
 
@@ -109,22 +112,24 @@ public class ConsumerOperationDataScannerTest {
         String description1 = channelName + "-description1";
         String description2 = channelName + "-description2";
 
-        ConsumerData consumerData1 = ConsumerData.builder()
-                .channelName(channelName)
-                .description(description1)
-                .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
-                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .payloadType(ExamplePayloadDto.class)
-                .build();
+        ConsumerData consumerData1 =
+                ConsumerData.builder()
+                        .channelName(channelName)
+                        .description(description1)
+                        .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                        .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                        .payloadType(ExamplePayloadDto.class)
+                        .build();
 
-        ConsumerData consumerData2 = ConsumerData.builder()
-                .channelName(channelName)
-                .description(description2)
-                .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
-                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .payloadType(AnotherExamplePayloadDto.class)
-                .headers(AsyncHeaders.NOT_USED)
-                .build();
+        ConsumerData consumerData2 =
+                ConsumerData.builder()
+                        .channelName(channelName)
+                        .description(description2)
+                        .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                        .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                        .payloadType(AnotherExamplePayloadDto.class)
+                        .headers(AsyncHeaders.NOT_USED)
+                        .build();
 
         mockConsumers(ImmutableList.of(consumerData1, consumerData2));
 
@@ -132,51 +137,60 @@ public class ConsumerOperationDataScannerTest {
         Map<String, ChannelItem> consumerChannels = scanner.scan();
 
         // Then one channel is created for the ConsumerData objects with multiple messages
-        assertThat(consumerChannels)
-                .hasSize(1)
-                .containsKey(channelName);
+        assertThat(consumerChannels).hasSize(1).containsKey(channelName);
 
-        Set<Message> messages = ImmutableSet.of(
-                Message.builder()
-                        .name(ExamplePayloadDto.class.getName())
-                        .description(description1)
-                        .title(ExamplePayloadDto.class.getSimpleName())
-                        .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
-                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                        .build(),
-                Message.builder()
-                        .name(AnotherExamplePayloadDto.class.getName())
-                        .description(description2)
-                        .title(AnotherExamplePayloadDto.class.getSimpleName())
-                        .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
-                        .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
-                        .build()
-        );
+        Set<Message> messages =
+                ImmutableSet.of(
+                        Message.builder()
+                                .name(ExamplePayloadDto.class.getName())
+                                .description(description1)
+                                .title(ExamplePayloadDto.class.getSimpleName())
+                                .payload(
+                                        PayloadReference.fromModelName(
+                                                ExamplePayloadDto.class.getSimpleName()))
+                                .headers(
+                                        HeaderReference.fromModelName(
+                                                AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                                .build(),
+                        Message.builder()
+                                .name(AnotherExamplePayloadDto.class.getName())
+                                .description(description2)
+                                .title(AnotherExamplePayloadDto.class.getSimpleName())
+                                .payload(
+                                        PayloadReference.fromModelName(
+                                                AnotherExamplePayloadDto.class.getSimpleName()))
+                                .headers(
+                                        HeaderReference.fromModelName(
+                                                AsyncHeaders.NOT_USED.getSchemaName()))
+                                .build());
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId("example-consumer-topic_publish")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .message(toMessageObjectOrComposition(messages))
-                .build();
+        Operation operation =
+                Operation.builder()
+                        .description("Auto-generated description")
+                        .operationId("example-consumer-topic_publish")
+                        .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                        .message(toMessageObjectOrComposition(messages))
+                        .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
-                .publish(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder()
+                        .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                        .publish(operation)
+                        .build();
 
-        assertThat(consumerChannels.get(channelName))
-                .isEqualTo(expectedChannel);
+        assertThat(consumerChannels.get(channelName)).isEqualTo(expectedChannel);
     }
 
     private void mockConsumers(Collection<ConsumerData> consumers) {
-        AsyncApiDocket asyncApiDocket = AsyncApiDocket.builder()
-                .info(Info.builder()
-                        .title("ConsumerOperationDataScannerTest-title")
-                        .version("ConsumerOperationDataScannerTest-version")
-                        .build())
-                .consumers(consumers)
-                .build();
+        AsyncApiDocket asyncApiDocket =
+                AsyncApiDocket.builder()
+                        .info(
+                                Info.builder()
+                                        .title("ConsumerOperationDataScannerTest-title")
+                                        .version("ConsumerOperationDataScannerTest-version")
+                                        .build())
+                        .consumers(consumers)
+                        .build();
         when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(asyncApiDocket);
     }
 
@@ -187,5 +201,4 @@ public class ConsumerOperationDataScannerTest {
     static class AnotherExamplePayloadDto {
         private String bar;
     }
-
 }

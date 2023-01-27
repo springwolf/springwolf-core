@@ -10,55 +10,38 @@ import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
-/**
- * Holds information about a producer channel.
- * All fields must be set and not null.
- */
+/** Holds information about a producer channel. All fields must be set and not null. */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConsumerData implements OperationData {
 
-    /**
-     * The name of the channel (topic, queue etc.).
-     */
+    /** The name of the channel (topic, queue etc.). */
     protected String channelName;
 
-    /**
-     * Optional, additional information about the channel and/or its message
-     */
+    /** Optional, additional information about the channel and/or its message */
     protected String description;
 
     /**
-     * The channel binding of the producer.
-     * <br>
-     * For example:
-     * <code>
+     * The channel binding of the producer. <br>
+     * For example: <code>
      *     ImmutableMap.of("kafka", new KafkaChannelBinding())
      * </code>
      */
     protected Map<String, ? extends ChannelBinding> channelBinding;
 
-    /**
-     * The class object of the payload published by this consumer.
-     */
+    /** The class object of the payload published by this consumer. */
     protected Class<?> payloadType;
 
-    /**
-     * The message headers, usually describing the payload.
-     */
-    @Builder.Default
-    protected AsyncHeaders headers = AsyncHeaders.NOT_DOCUMENTED;
+    /** The message headers, usually describing the payload. */
+    @Builder.Default protected AsyncHeaders headers = AsyncHeaders.NOT_DOCUMENTED;
 
     /**
-     * The operation binding of the consumer.
-     * <br>
-     * For example:
-     * <code>
+     * The operation binding of the consumer. <br>
+     * For example: <code>
      *     ImmutableMap.of("kafka", new KafkaOperationBinding())
      * </code>
      */
     protected Map<String, ? extends OperationBinding> operationBinding;
-
 }

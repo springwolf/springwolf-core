@@ -21,12 +21,12 @@ public class KafkaOperationBindingSerializerTest {
 
     @Test
     public void bindingWithGroupId() throws JsonProcessingException, JSONException {
-        KafkaOperationBinding binding = KafkaOperationBinding.builder().groupId("testGroupId").build();
+        KafkaOperationBinding binding =
+                KafkaOperationBinding.builder().groupId("testGroupId").build();
         String actual = objectMapper.writeValueAsString(binding);
         String expected = "{\"groupId\":{\"type\":\"string\",\"enum\":[\"testGroupId\"]}}";
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
     }
-
 
     @Test
     public void bindingWithEmptyGroupId() throws JsonProcessingException, JSONException {
@@ -43,5 +43,4 @@ public class KafkaOperationBindingSerializerTest {
         String expected = "{}";
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
     }
-
 }

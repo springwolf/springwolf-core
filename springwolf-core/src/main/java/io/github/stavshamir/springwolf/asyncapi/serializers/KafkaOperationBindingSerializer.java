@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.asyncapi.serializers;
 
-
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -19,7 +18,9 @@ public class KafkaOperationBindingSerializer extends StdSerializer<KafkaOperatio
     }
 
     @Override
-    public void serialize(KafkaOperationBinding value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(
+            KafkaOperationBinding value, JsonGenerator gen, SerializerProvider provider)
+            throws IOException {
         gen.writeStartObject();
 
         if (value.getGroupId() != null) {
@@ -38,5 +39,4 @@ public class KafkaOperationBindingSerializer extends StdSerializer<KafkaOperatio
         gen.writeEndArray();
         gen.writeEndObject();
     }
-
 }

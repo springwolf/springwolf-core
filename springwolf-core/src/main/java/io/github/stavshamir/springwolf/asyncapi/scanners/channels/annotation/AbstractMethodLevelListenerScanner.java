@@ -23,25 +23,23 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
-public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> implements ChannelsScanner {
+public abstract class AbstractMethodLevelListenerScanner<T extends Annotation>
+        implements ChannelsScanner {
 
-    @Autowired
-    private ComponentClassScanner componentClassScanner;
+    @Autowired private ComponentClassScanner componentClassScanner;
 
-    @Autowired
-    private SchemasService schemasService;
+    @Autowired private SchemasService schemasService;
 
     @Override
     public Map<String, ChannelItem> scan() {
         return componentClassScanner.scan().stream()
-                .map(this::getAnnotatedMethods).flatMap(Collection::stream)
+                .map(this::getAnnotatedMethods)
+                .flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    /**
-     * @return The class object of the listener annotation.
-     */
+    /** @return The class object of the listener annotation. */
     protected abstract Class<T> getListenerAnnotationClass();
 
     /**
@@ -70,7 +68,10 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
 
     private Set<Method> getAnnotatedMethods(Class<?> type) {
         Class<T> annotationClass = getListenerAnnotationClass();
-        log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
+        log.debug(
+                "Scanning class \"{}\" for @\"{}\" annotated methods",
+                type.getName(),
+                annotationClass.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(annotationClass))
@@ -81,13 +82,19 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
         Class<T> listenerAnnotationClass = getListenerAnnotationClass();
-        T annotation = Optional.of(method.getAnnotation(listenerAnnotationClass))
-                .orElseThrow(() -> new IllegalArgumentException("Method must be annotated with " + listenerAnnotationClass.getName()));
+        T annotation =
+                Optional.of(method.getAnnotation(listenerAnnotationClass))
+                        .orElseThrow(
+                                () ->
+                                        new IllegalArgumentException(
+                                                "Method must be annotated with "
+                                                        + listenerAnnotationClass.getName()));
 
         String channelName = getChannelName(annotation);
 
         Map<String, ? extends ChannelBinding> channelBinding = buildChannelBinding(annotation);
-        Map<String, ? extends OperationBinding> operationBinding = buildOperationBinding(annotation);
+        Map<String, ? extends OperationBinding> operationBinding =
+                buildOperationBinding(annotation);
         Class<?> payload = getPayloadType(method);
         String operationId = channelName + "_publish_" + method.getName();
         ChannelItem channel = buildChannel(channelBinding, payload, operationBinding, operationId);
@@ -95,31 +102,30 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
         return Maps.immutableEntry(channelName, channel);
     }
 
-    private ChannelItem buildChannel(Map<String, ? extends ChannelBinding> channelBinding,
-                                     Class<?> payloadType,
-                                     Map<String, ? extends OperationBinding> operationBinding,
-                                     String operationId) {
+    private ChannelItem buildChannel(
+            Map<String, ? extends ChannelBinding> channelBinding,
+            Class<?> payloadType,
+            Map<String, ? extends OperationBinding> operationBinding,
+            String operationId) {
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
-        Message message = Message.builder()
-                .name(payloadType.getName())
-                .title(modelName)
-                .payload(PayloadReference.fromModelName(modelName))
-                .headers(HeaderReference.fromModelName(headerModelName))
-                .build();
+        Message message =
+                Message.builder()
+                        .name(payloadType.getName())
+                        .title(modelName)
+                        .payload(PayloadReference.fromModelName(modelName))
+                        .headers(HeaderReference.fromModelName(headerModelName))
+                        .build();
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId(operationId)
-                .message(message)
-                .bindings(operationBinding)
-                .build();
+        Operation operation =
+                Operation.builder()
+                        .description("Auto-generated description")
+                        .operationId(operationId)
+                        .message(message)
+                        .bindings(operationBinding)
+                        .build();
 
-        return ChannelItem.builder()
-                .bindings(channelBinding)
-                .publish(operation)
-                .build();
+        return ChannelItem.builder().bindings(channelBinding).publish(operation).build();
     }
-
 }

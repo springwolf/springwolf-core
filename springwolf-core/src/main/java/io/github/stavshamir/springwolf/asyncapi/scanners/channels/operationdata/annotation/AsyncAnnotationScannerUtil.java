@@ -24,34 +24,31 @@ class AsyncAnnotationScannerUtil {
         AsyncHeaders asyncHeaders = new AsyncHeaders(op.headers().schemaName());
         Arrays.stream(op.headers().values())
                 .collect(groupingBy(AsyncOperation.Headers.Header::name))
-                .forEach((headerName, headers) -> {
-                    List<String> values = getHeaderValues(headers);
-                    String exampleValue = values.stream().findFirst().orElse(null);
-                    asyncHeaders.addHeader(
-                            AsyncHeaderSchema
-                                    .headerBuilder()
-                                    .headerName(headerName)
-                                    .description(getDescription(headers))
-                                    .enumValue(values)
-                                    .example(exampleValue)
-                                    .build()
-                    );
-                });
+                .forEach(
+                        (headerName, headers) -> {
+                            List<String> values = getHeaderValues(headers);
+                            String exampleValue = values.stream().findFirst().orElse(null);
+                            asyncHeaders.addHeader(
+                                    AsyncHeaderSchema.headerBuilder()
+                                            .headerName(headerName)
+                                            .description(getDescription(headers))
+                                            .enumValue(values)
+                                            .example(exampleValue)
+                                            .build());
+                        });
 
         return asyncHeaders;
     }
 
     private static List<String> getHeaderValues(List<AsyncOperation.Headers.Header> value) {
-        return value
-                .stream()
+        return value.stream()
                 .map(AsyncOperation.Headers.Header::value)
                 .sorted()
                 .collect(Collectors.toList());
     }
 
     private static String getDescription(List<AsyncOperation.Headers.Header> value) {
-        return value
-                .stream()
+        return value.stream()
                 .map(AsyncOperation.Headers.Header::description)
                 .filter(StringUtils::isNotBlank)
                 .sorted()
@@ -59,11 +56,15 @@ class AsyncAnnotationScannerUtil {
                 .orElse(null);
     }
 
-    public static Map<String, OperationBinding> processBindingFromAnnotation(Method method, List<OperationBindingProcessor> operationBindingProcessors) {
+    public static Map<String, OperationBinding> processBindingFromAnnotation(
+            Method method, List<OperationBindingProcessor> operationBindingProcessors) {
         return operationBindingProcessors.stream()
                 .map(operationBindingProcessor -> operationBindingProcessor.process(method))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toMap(ProcessedOperationBinding::getType, ProcessedOperationBinding::getBinding));
+                .collect(
+                        Collectors.toMap(
+                                ProcessedOperationBinding::getType,
+                                ProcessedOperationBinding::getBinding));
     }
 }

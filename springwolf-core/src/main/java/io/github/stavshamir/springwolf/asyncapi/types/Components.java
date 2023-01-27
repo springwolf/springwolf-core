@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 import java.util.Map;
 
 /**
- * Holds a set of reusable objects for different aspects of the AsyncAPI specification.
- * All objects defined within the components object will have no effect on the API unless they are explicitly
+ * Holds a set of reusable objects for different aspects of the AsyncAPI specification. All objects
+ * defined within the components object will have no effect on the API unless they are explicitly
  * referenced from properties outside the components object.
  *
- * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#componentsObject">Components specification</a>
+ * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#componentsObject">Components
+ *     specification</a>
  */
 @Data
 @Builder
@@ -22,5 +23,4 @@ import java.util.Map;
 public class Components {
 
     private Map<String, Schema> schemas;
-
 }

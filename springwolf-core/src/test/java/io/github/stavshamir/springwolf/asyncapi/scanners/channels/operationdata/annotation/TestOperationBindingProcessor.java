@@ -11,8 +11,8 @@ import java.lang.reflect.Method;
 import java.util.Optional;
 
 public class TestOperationBindingProcessor implements OperationBindingProcessor {
-    public final static String TYPE = "testType";
-    public final static OperationBinding BINDING = new OperationBinding();
+    public static final String TYPE = "testType";
+    public static final OperationBinding BINDING = new OperationBinding();
 
     @Override
     public Optional<ProcessedOperationBinding> process(Method method) {
@@ -24,6 +24,5 @@ public class TestOperationBindingProcessor implements OperationBindingProcessor 
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(value = {ElementType.METHOD})
-    public @interface TestOperationBinding {
-    }
+    public @interface TestOperationBinding {}
 }

@@ -14,41 +14,32 @@ import java.util.Map;
 
 /**
  * Use to (manually) configure springwolf
- * <p>
- * This will not be the final AsyncApiDocket, use {@link AsyncApiDocketService#getAsyncApiDocket()} to get it.
- * This will not be the final api definition, use {@link io.github.stavshamir.springwolf.asyncapi.AsyncApiService} to get it.
+ *
+ * <p>This will not be the final AsyncApiDocket, use {@link
+ * AsyncApiDocketService#getAsyncApiDocket()} to get it. This will not be the final api definition,
+ * use {@link io.github.stavshamir.springwolf.asyncapi.AsyncApiService} to get it.
  */
 @Data
 @Builder
 public class AsyncApiDocket {
 
-    /**
-     * The base package containing the declarations of consumers and producer beans.
-     */
+    /** The base package containing the declarations of consumers and producer beans. */
     private final String basePackage;
 
     /**
-     * <b>Required.</b>
-     * Provide metadata about the API. The metadata can be used by the clients if needed.
+     * <b>Required.</b> Provide metadata about the API. The metadata can be used by the clients if
+     * needed.
      *
-     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#infoObject">Info specification</a>
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#infoObject">Info
+     *     specification</a>
      */
-    @NonNull
-    private final Info info;
+    @NonNull private final Info info;
 
-    /**
-     * Provides connection details of servers.
-     */
-    @Singular
-    private final Map<String, Server> servers;
+    /** Provides connection details of servers. */
+    @Singular private final Map<String, Server> servers;
 
-    /**
-     * Provides information about the producers.
-     */
-    @Singular
-    private final List<ProducerData> producers;
+    /** Provides information about the producers. */
+    @Singular private final List<ProducerData> producers;
 
-    @Singular
-    private final List<ConsumerData> consumers;
-
+    @Singular private final List<ConsumerData> consumers;
 }

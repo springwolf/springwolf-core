@@ -10,10 +10,7 @@ import lombok.ToString;
 @ToString
 public class HeaderReference {
 
-    @Getter
-    @EqualsAndHashCode.Include
-    @ToString.Include
-    private String $ref;
+    @Getter @EqualsAndHashCode.Include @ToString.Include private String $ref;
 
     private HeaderReference(String $ref) {
         this.$ref = $ref;
@@ -22,5 +19,4 @@ public class HeaderReference {
     public static HeaderReference fromModelName(String modelName) {
         return new HeaderReference("#/components/schemas/" + modelName);
     }
-
 }

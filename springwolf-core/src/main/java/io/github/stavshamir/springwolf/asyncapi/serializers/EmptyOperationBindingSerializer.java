@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.asyncapi.serializers;
 
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -19,9 +18,10 @@ public class EmptyOperationBindingSerializer extends StdSerializer<EmptyOperatio
     }
 
     @Override
-    public void serialize(EmptyOperationBinding value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(
+            EmptyOperationBinding value, JsonGenerator gen, SerializerProvider provider)
+            throws IOException {
         gen.writeStartObject();
         gen.writeEndObject();
     }
-
 }

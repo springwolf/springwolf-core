@@ -33,21 +33,25 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
     @Override
     public Map<String, ChannelItem> scan() {
-        Map<String, List<OperationData>> operationDataGroupedByChannelName = this.getOperationData().stream()
-                .filter(this::allFieldsAreNonNull)
-                .collect(groupingBy(OperationData::getChannelName));
+        Map<String, List<OperationData>> operationDataGroupedByChannelName =
+                this.getOperationData().stream()
+                        .filter(this::allFieldsAreNonNull)
+                        .collect(groupingBy(OperationData::getChannelName));
 
         return operationDataGroupedByChannelName.entrySet().stream()
                 .collect(toMap(Map.Entry::getKey, entry -> buildChannel(entry.getValue())));
     }
 
     private boolean allFieldsAreNonNull(OperationData operationData) {
-        boolean allNonNull = operationData.getChannelName() != null
-                && operationData.getPayloadType() != null
-                && operationData.getOperationBinding() != null;
+        boolean allNonNull =
+                operationData.getChannelName() != null
+                        && operationData.getPayloadType() != null
+                        && operationData.getOperationBinding() != null;
 
         if (!allNonNull) {
-            log.warn("Some data fields are null - this producer will not be documented: {}", operationData);
+            log.warn(
+                    "Some data fields are null - this producer will not be documented: {}",
+                    operationData);
         }
 
         return allNonNull;
@@ -56,19 +60,25 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
     private ChannelItem buildChannel(List<OperationData> operationDataList) {
         // All bindings in the group are assumed to be the same
         // AsyncApi does not support multiple bindings on a single channel
-        Map<String, ? extends ChannelBinding> channelBinding = operationDataList.get(0).getChannelBinding();
-        Map<String, ? extends OperationBinding> operationBinding = operationDataList.get(0).getOperationBinding();
-        String operationId = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
+        Map<String, ? extends ChannelBinding> channelBinding =
+                operationDataList.get(0).getChannelBinding();
+        Map<String, ? extends OperationBinding> operationBinding =
+                operationDataList.get(0).getOperationBinding();
+        String operationId =
+                operationDataList.get(0).getChannelName()
+                        + "_"
+                        + this.getOperationType().operationName;
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId(operationId)
-                .message(getMessageObject(operationDataList))
-                .bindings(operationBinding)
-                .build();
+        Operation operation =
+                Operation.builder()
+                        .description("Auto-generated description")
+                        .operationId(operationId)
+                        .message(getMessageObject(operationDataList))
+                        .bindings(operationBinding)
+                        .build();
 
-        ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder()
-                .bindings(channelBinding);
+        ChannelItem.ChannelItemBuilder channelBuilder =
+                ChannelItem.builder().bindings(channelBinding);
         switch (getOperationType()) {
             case PUBLISH:
                 channelBuilder = channelBuilder.publish(operation);
@@ -81,9 +91,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
     }
 
     private Object getMessageObject(List<OperationData> operationDataList) {
-        Set<Message> messages = operationDataList.stream()
-                .map(this::buildMessage)
-                .collect(toSet());
+        Set<Message> messages = operationDataList.stream().map(this::buildMessage).collect(toSet());
 
         return toMessageObjectOrComposition(messages);
     }
@@ -101,5 +109,4 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .build();
     }
-
 }

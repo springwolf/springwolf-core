@@ -10,10 +10,7 @@ import lombok.ToString;
 @ToString
 public class PayloadReference {
 
-    @Getter
-    @EqualsAndHashCode.Include
-    @ToString.Include
-    private String $ref;
+    @Getter @EqualsAndHashCode.Include @ToString.Include private String $ref;
 
     private PayloadReference(String $ref) {
         this.$ref = $ref;
@@ -22,5 +19,4 @@ public class PayloadReference {
     public static PayloadReference fromModelName(String modelName) {
         return new PayloadReference("#/components/schemas/" + modelName);
     }
-
 }

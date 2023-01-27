@@ -35,14 +35,11 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {TestMethodLevelListenerScanner.class, DefaultSchemasService.class})
 public class TestMethodLevelListenerScannerTest {
 
-    @Autowired
-    private TestMethodLevelListenerScanner channelScanner;
+    @Autowired private TestMethodLevelListenerScanner channelScanner;
 
-    @MockBean
-    private ComponentClassScanner componentsScanner;
+    @MockBean private ComponentClassScanner componentsScanner;
 
-    @MockBean
-    private AsyncApiDocket docket;
+    @MockBean private AsyncApiDocket docket;
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
@@ -60,31 +57,43 @@ public class TestMethodLevelListenerScannerTest {
 
     @Test
     public void scan_componentHasListenerMethod() {
-        // Given a class with methods annotated with TestChannelListener, whose topics attribute is hard coded
+        // Given a class with methods annotated with TestChannelListener, whose topics attribute is
+        // hard coded
         setClassToScan(ClassWithListenerAnnotation.class);
 
         // When scan is called
         Map<String, ChannelItem> actualChannels = channelScanner.scan();
 
         // Then the returned collection contains the channel
-        Message message = Message.builder()
-                .name(SimpleFoo.class.getName())
-                .title(SimpleFoo.class.getSimpleName())
-                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .build();
+        Message message =
+                Message.builder()
+                        .name(SimpleFoo.class.getName())
+                        .title(SimpleFoo.class.getSimpleName())
+                        .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                        .headers(
+                                HeaderReference.fromModelName(
+                                        AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                        .build();
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId("test-channel_publish_methodWithAnnotation")
-                .bindings(ImmutableMap.of("test-operation-binding", new TestMethodLevelListenerScanner.TestOperationBinding()))
-                .message(message)
-                .build();
+        Operation operation =
+                Operation.builder()
+                        .description("Auto-generated description")
+                        .operationId("test-channel_publish_methodWithAnnotation")
+                        .bindings(
+                                ImmutableMap.of(
+                                        "test-operation-binding",
+                                        new TestMethodLevelListenerScanner.TestOperationBinding()))
+                        .message(message)
+                        .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("test-channel-binding", new TestMethodLevelListenerScanner.TestChannelBinding()))
-                .publish(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder()
+                        .bindings(
+                                ImmutableMap.of(
+                                        "test-channel-binding",
+                                        new TestMethodLevelListenerScanner.TestChannelBinding()))
+                        .publish(operation)
+                        .build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry("test-channel", expectedChannel));
@@ -92,20 +101,15 @@ public class TestMethodLevelListenerScannerTest {
 
     private static class ClassWithoutListenerAnnotation {
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithListenerAnnotation {
 
         @TestChannelListener
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     @Data
@@ -117,7 +121,5 @@ public class TestMethodLevelListenerScannerTest {
 
     @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface TestChannelListener {
-    }
-
+    public @interface TestChannelListener {}
 }

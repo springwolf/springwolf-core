@@ -19,28 +19,25 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {ConfigurationClassScanner.class})
 public class ConfigurationClassScannerTest {
 
-    @MockBean
-    private AsyncApiDocketService asyncApiDocketService;
+    @MockBean private AsyncApiDocketService asyncApiDocketService;
 
-    @Autowired
-    private ConfigurationClassScanner configurationClassScanner;
+    @Autowired private ConfigurationClassScanner configurationClassScanner;
 
     @Test
     public void getComponents() {
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(
-                AsyncApiDocket.builder()
-                        .info(Info.builder()
-                                .title("ConfigurationClassScannerTest-title")
-                                .version("ConfigurationClassScannerTest-version")
-                                .build())
-                        .basePackage(this.getClass().getPackage().getName())
-                        .build()
-        );
+        when(asyncApiDocketService.getAsyncApiDocket())
+                .thenReturn(
+                        AsyncApiDocket.builder()
+                                .info(
+                                        Info.builder()
+                                                .title("ConfigurationClassScannerTest-title")
+                                                .version("ConfigurationClassScannerTest-version")
+                                                .build())
+                                .basePackage(this.getClass().getPackage().getName())
+                                .build());
 
         Set<Class<?>> configurationClasses = configurationClassScanner.scan();
 
-        assertThat(configurationClasses)
-                .containsExactlyInAnyOrder(TestBeanConfiguration.class);
+        assertThat(configurationClasses).containsExactlyInAnyOrder(TestBeanConfiguration.class);
     }
-
 }

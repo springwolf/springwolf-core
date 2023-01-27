@@ -10,9 +10,9 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import io.github.stavshamir.springwolf.asyncapi.serializers.AmqpOperationBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyChannelBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyOperationBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.AmqpOperationBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.serializers.KafkaChannelBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.serializers.KafkaOperationBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
@@ -26,7 +26,9 @@ import javax.annotation.PostConstruct;
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
 
     private ObjectMapper jsonMapper = new ObjectMapper();
-    private PrettyPrinter printer = new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+    private PrettyPrinter printer =
+            new DefaultPrettyPrinter()
+                    .withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @PostConstruct
     void postConstruct() {
@@ -49,27 +51,22 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
         return jsonMapper.writer(printer).writeValueAsString(asyncAPI);
     }
 
-    /**
-     * Get the current object mapper configuration.
-     */
+    /** Get the current object mapper configuration. */
     public ObjectMapper getObjectMapper() {
         return jsonMapper;
     }
-    
+
     /**
      * Allows to customize the used objectMapper
-     * <p>
-     * Use {@link #getObjectMapper()} as a starting point
+     *
+     * <p>Use {@link #getObjectMapper()} as a starting point
      */
     public void setObjectMapper(ObjectMapper mapper) {
         jsonMapper = mapper;
     }
 
-    /**
-     * Allows to override the used PrettyPrinter
-     */
+    /** Allows to override the used PrettyPrinter */
     public void setPrettyPrinter(PrettyPrinter prettyPrinter) {
         printer = prettyPrinter;
     }
-
 }

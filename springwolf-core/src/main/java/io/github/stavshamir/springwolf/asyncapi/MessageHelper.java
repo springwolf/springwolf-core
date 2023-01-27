@@ -13,7 +13,8 @@ public class MessageHelper {
     private static final String ONE_OF = "oneOf";
 
     private static final Comparator<Message> byMessageName = Comparator.comparing(Message::getName);
-    private static final Supplier<Set<Message>> messageSupplier = () -> new TreeSet<>(byMessageName);
+    private static final Supplier<Set<Message>> messageSupplier =
+            () -> new TreeSet<>(byMessageName);
 
     public static Object toMessageObjectOrComposition(Set<Message> messages) {
         switch (messages.size()) {
@@ -22,7 +23,9 @@ public class MessageHelper {
             case 1:
                 return messages.toArray()[0];
             default:
-                return ImmutableMap.of(ONE_OF, messages.stream().collect(Collectors.toCollection(messageSupplier)));
+                return ImmutableMap.of(
+                        ONE_OF,
+                        messages.stream().collect(Collectors.toCollection(messageSupplier)));
         }
     }
 
@@ -37,8 +40,9 @@ public class MessageHelper {
             return new HashSet<>(messages);
         }
 
-        log.warn("Message object must contain either a Message or a Map<String, Set<Message>, but contained: {}", messageObject.getClass());
+        log.warn(
+                "Message object must contain either a Message or a Map<String, Set<Message>, but contained: {}",
+                messageObject.getClass());
         return new HashSet<>();
     }
-
 }

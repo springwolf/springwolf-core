@@ -28,21 +28,20 @@ public class DefaultAsyncApiService implements AsyncApiService {
 
         AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
 
-        Components components = Components.builder()
-                .schemas(schemasService.getDefinitions())
-                .build();
+        Components components =
+                Components.builder().schemas(schemasService.getDefinitions()).build();
 
-        asyncAPI = AsyncAPI.builder()
-                .info(docket.getInfo())
-                .servers(docket.getServers())
-                .channels(channelsService.getChannels())
-                .components(components)
-                .build();
+        asyncAPI =
+                AsyncAPI.builder()
+                        .info(docket.getInfo())
+                        .servers(docket.getServers())
+                        .channels(channelsService.getChannels())
+                        .components(components)
+                        .build();
     }
 
     @Override
     public AsyncAPI getAsyncAPI() {
         return asyncAPI;
     }
-
 }

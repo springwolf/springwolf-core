@@ -23,14 +23,12 @@ public class DefaultBeanMethodsScanner implements BeanMethodsScanner {
     public Set<Method> getBeanMethods() {
         Set<Class<?>> configurationClasses = configurationClassScanner.scan();
 
-        Stream<Method> methods = configurationClasses.stream()
-                .map(Class::getDeclaredMethods)
-                .map(Arrays::asList)
-                .flatMap(List::stream);
+        Stream<Method> methods =
+                configurationClasses.stream()
+                        .map(Class::getDeclaredMethods)
+                        .map(Arrays::asList)
+                        .flatMap(List::stream);
 
-        return methods
-                .filter(method -> method.isAnnotationPresent(Bean.class))
-                .collect(toSet());
+        return methods.filter(method -> method.isAnnotationPresent(Bean.class)).collect(toSet());
     }
-
 }

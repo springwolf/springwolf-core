@@ -9,15 +9,18 @@ import java.lang.annotation.Target;
 
 /**
  * {@code @AsyncPublisher} is a method-level annotation to document springwolf publishers.
- * Publishers in this context are methods that send a message to a message broker.
- * To document listeners, use {@link AsyncListener}.
- * <p>
- * The fields channel, description, payload and headers are part of {@link AsyncOperation}
- * and behaves identical to {@link io.github.stavshamir.springwolf.asyncapi.types.ProducerData}.
- * If no {@link AsyncOperation#payloadType()} is passed, the payload type is extracted from the signature of the method.
- * Add {@link org.springframework.messaging.handler.annotation.Payload} to the payload argument, if the method has more than one argument.
- * <p>
- * Add an operation binding with one of the protocol specific operation binding annotation ({@code AmqpAsyncOperationBinding}, {@code KafkaAsyncOperationBinding}) on the same method.
+ * Publishers in this context are methods that send a message to a message broker. To document
+ * listeners, use {@link AsyncListener}.
+ *
+ * <p>The fields channel, description, payload and headers are part of {@link AsyncOperation} and
+ * behaves identical to {@link io.github.stavshamir.springwolf.asyncapi.types.ProducerData}. If no
+ * {@link AsyncOperation#payloadType()} is passed, the payload type is extracted from the signature
+ * of the method. Add {@link org.springframework.messaging.handler.annotation.Payload} to the
+ * payload argument, if the method has more than one argument.
+ *
+ * <p>Add an operation binding with one of the protocol specific operation binding annotation
+ * ({@code AmqpAsyncOperationBinding}, {@code KafkaAsyncOperationBinding}) on the same method.
+ *
  * <pre class="code">
  *     &#064;AsyncPublisher(operation = &#064;AsyncOperation(
  *             channelName = "topic-name",
@@ -30,8 +33,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD})
 public @interface AsyncPublisher {
-    /**
-     * Mapped to {@link OperationData}
-     */
+    /** Mapped to {@link OperationData} */
     AsyncOperation operation();
 }

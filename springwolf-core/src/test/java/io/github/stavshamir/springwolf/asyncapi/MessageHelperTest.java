@@ -24,27 +24,18 @@ public class MessageHelperTest {
 
     @Test
     public void toMessageObjectOrComposition_oneMessage() {
-        Message message = Message.builder()
-                .name("foo")
-                .build();
+        Message message = Message.builder().name("foo").build();
 
         Object asObject = toMessageObjectOrComposition(ImmutableSet.of(message));
 
-        assertThat(asObject)
-                .isInstanceOf(Message.class)
-                .isEqualTo(message);
+        assertThat(asObject).isInstanceOf(Message.class).isEqualTo(message);
     }
-
 
     @Test
     public void toMessageObjectOrComposition_multipleMessages() {
-        Message message1 = Message.builder()
-                .name("foo")
-                .build();
+        Message message1 = Message.builder().name("foo").build();
 
-        Message message2 = Message.builder()
-                .name("bar")
-                .build();
+        Message message2 = Message.builder().name("bar").build();
 
         Object asObject = toMessageObjectOrComposition(ImmutableSet.of(message1, message2));
 
@@ -59,39 +50,29 @@ public class MessageHelperTest {
 
         Set<Message> messages = messageObjectToSet(string);
 
-        assertThat(messages)
-                .isEmpty();
+        assertThat(messages).isEmpty();
     }
 
     @Test
     public void messageObjectToSet_Message() {
-        Message message = Message.builder()
-                .name("foo")
-                .build();
+        Message message = Message.builder().name("foo").build();
         Object asObject = toMessageObjectOrComposition(ImmutableSet.of(message));
 
         Set<Message> messages = messageObjectToSet(asObject);
 
-        assertThat(messages)
-                .containsExactly(message);
+        assertThat(messages).containsExactly(message);
     }
 
     @Test
     public void messageObjectToSet_SetOfMessage() {
-        Message message1 = Message.builder()
-                .name("foo")
-                .build();
+        Message message1 = Message.builder().name("foo").build();
 
-        Message message2 = Message.builder()
-                .name("bar")
-                .build();
+        Message message2 = Message.builder().name("bar").build();
 
         Object asObject = toMessageObjectOrComposition(ImmutableSet.of(message1, message2));
 
         Set<Message> messages = messageObjectToSet(asObject);
 
-        assertThat(messages)
-                .containsExactlyInAnyOrder(message1, message2);
+        assertThat(messages).containsExactlyInAnyOrder(message1, message2);
     }
-
 }

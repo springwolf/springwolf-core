@@ -10,40 +10,30 @@ import java.util.Map;
  * Generic, internal interface used by springwolf scanners to process listener and producer data.
  */
 public interface OperationData {
-    /**
-     * The name of the channel (topic, queue etc.).
-     */
+    /** The name of the channel (topic, queue etc.). */
     String getChannelName();
 
-    /**
-     * Optional, additional information about the channel and/or its message
-     */
+    /** Optional, additional information about the channel and/or its message */
     String getDescription();
 
-    /**
-     * The channel binding.
-     */
+    /** The channel binding. */
     Map<String, ? extends ChannelBinding> getChannelBinding();
 
-    /**
-     * The class object of the payload.
-     */
+    /** The class object of the payload. */
     Class<?> getPayloadType();
 
-    /**
-     * The message headers, usually describing the payload.
-     */
+    /** The message headers, usually describing the payload. */
     AsyncHeaders getHeaders();
 
-    /**
-     * The operation binding.
-     */
+    /** The operation binding. */
     Map<String, ? extends OperationBinding> getOperationBinding();
 
     enum OperationType {
-        PUBLISH("publish"), SUBSCRIBE("subscribe");
+        PUBLISH("publish"),
+        SUBSCRIBE("subscribe");
 
         public final String operationName;
+
         OperationType(String operationName) {
             this.operationName = operationName;
         }

@@ -18,25 +18,24 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
 public class SpringContextTest {
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(classes = {
-            CustomBeanAsyncApiDocketConfiguration.class, // user has defined an own AsyncApiDocket bean
-            DefaultAsyncApiDocketService.class,
-            DefaultAsyncApiService.class,
-            DefaultChannelsService.class,
-            DefaultSchemasService.class,
-            DefaultAsyncApiService.class,
-            DefaultAsyncApiSerializerService.class,
-    })
+    @ContextConfiguration(
+            classes = {
+                CustomBeanAsyncApiDocketConfiguration
+                        .class, // user has defined an own AsyncApiDocket bean
+                DefaultAsyncApiDocketService.class,
+                DefaultAsyncApiService.class,
+                DefaultChannelsService.class,
+                DefaultSchemasService.class,
+                DefaultAsyncApiService.class,
+                DefaultAsyncApiSerializerService.class,
+            })
     public static class AsyncApiDocketTest {
 
-        @Autowired
-        private ApplicationContext context;
-        @Autowired
-        private AsyncApiService asyncApiService;
+        @Autowired private ApplicationContext context;
+        @Autowired private AsyncApiService asyncApiService;
 
         @Test
         public void testContextWithAsyncApiDocketBean() {
@@ -47,31 +46,32 @@ public class SpringContextTest {
     }
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(classes = {
-            DefaultAsyncApiDocketService.class,
-            DefaultAsyncApiService.class,
-            DefaultChannelsService.class,
-            DefaultSchemasService.class,
-            DefaultAsyncApiService.class,
-            DefaultAsyncApiSerializerService.class,
-    })
-    @EnableConfigurationProperties(value = {
-            SpringWolfConfigProperties.class,
-    })
-    @TestPropertySource(properties = {
-            "springwolf.enabled=true",
-            "springwolf.docket.info.title=Info title was loaded from spring properties",
-            "springwolf.docket.info.version=1.0.0",
-            "springwolf.docket.base-package=io.github.stavshamir.springwolf.example.consumers",
-            "springwolf.docket.servers.test-protocol.protocol=test",
-            "springwolf.docket.servers.test-protocol.url=some-server:1234",
-    })
+    @ContextConfiguration(
+            classes = {
+                DefaultAsyncApiDocketService.class,
+                DefaultAsyncApiService.class,
+                DefaultChannelsService.class,
+                DefaultSchemasService.class,
+                DefaultAsyncApiService.class,
+                DefaultAsyncApiSerializerService.class,
+            })
+    @EnableConfigurationProperties(
+            value = {
+                SpringWolfConfigProperties.class,
+            })
+    @TestPropertySource(
+            properties = {
+                "springwolf.enabled=true",
+                "springwolf.docket.info.title=Info title was loaded from spring properties",
+                "springwolf.docket.info.version=1.0.0",
+                "springwolf.docket.base-package=io.github.stavshamir.springwolf.example.consumers",
+                "springwolf.docket.servers.test-protocol.protocol=test",
+                "springwolf.docket.servers.test-protocol.url=some-server:1234",
+            })
     public static class ApplicationPropertiesConfigurationTest {
 
-        @Autowired
-        private ApplicationContext context;
-        @Autowired
-        private AsyncApiService asyncApiService;
+        @Autowired private ApplicationContext context;
+        @Autowired private AsyncApiService asyncApiService;
 
         @Test
         public void testContextWithApplicationProperties() {

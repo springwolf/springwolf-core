@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,10 @@ public class DefaultChannelsService implements ChannelsService {
                 Map<String, ChannelItem> channels = scanner.scan();
                 foundChannelItems.addAll(channels.entrySet());
             } catch (Exception e) {
-                log.error("An error was encountered during channel scanning with {}: {}", scanner, e.getMessage());
+                log.error(
+                        "An error was encountered during channel scanning with {}: {}",
+                        scanner,
+                        e.getMessage());
             }
         }
 
@@ -41,5 +45,4 @@ public class DefaultChannelsService implements ChannelsService {
     public Map<String, ChannelItem> getChannels() {
         return channels;
     }
-
 }

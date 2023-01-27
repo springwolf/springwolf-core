@@ -6,8 +6,8 @@ import java.util.Set;
 public interface BeanMethodsScanner {
 
     /**
-     * @return Methods annotated with @Bean which are declared in @Configuration classes from the base package.
+     * @return Methods annotated with @Bean which are declared in @Configuration classes from the
+     *     base package.
      */
     Set<Method> getBeanMethods();
-
 }

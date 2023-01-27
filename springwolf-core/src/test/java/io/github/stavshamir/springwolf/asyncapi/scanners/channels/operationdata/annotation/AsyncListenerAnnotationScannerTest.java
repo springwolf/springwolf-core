@@ -29,15 +29,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {AsyncListenerAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
-@TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
+@ContextConfiguration(
+        classes = {
+            AsyncListenerAnnotationScanner.class,
+            DefaultSchemasService.class,
+            TestOperationBindingProcessor.class
+        })
+@TestPropertySource(
+        properties = {
+            "test.property.test-channel=test-channel",
+            "test.property.description=description"
+        })
 public class AsyncListenerAnnotationScannerTest {
 
-    @Autowired
-    private AsyncListenerAnnotationScanner channelScanner;
+    @Autowired private AsyncListenerAnnotationScanner channelScanner;
 
-    @MockBean
-    private ComponentClassScanner componentClassScanner;
+    @MockBean private ComponentClassScanner componentClassScanner;
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
@@ -53,35 +60,37 @@ public class AsyncListenerAnnotationScannerTest {
         assertThat(channels).isEmpty();
     }
 
-
     @Test
     public void scan_componentHasListenerMethod() {
-        // Given a class with methods annotated with AsyncListener, where only the channel-name is set
+        // Given a class with methods annotated with AsyncListener, where only the channel-name is
+        // set
         setClassToScan(ClassWithListenerAnnotation.class);
 
         // When scan is called
         Map<String, ChannelItem> actualChannels = channelScanner.scan();
 
         // Then the returned collection contains the channel
-        Message message = Message.builder()
-                .name(SimpleFoo.class.getName())
-                .title(SimpleFoo.class.getSimpleName())
-                .description(null)
-                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .build();
+        Message message =
+                Message.builder()
+                        .name(SimpleFoo.class.getName())
+                        .title(SimpleFoo.class.getSimpleName())
+                        .description(null)
+                        .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                        .headers(
+                                HeaderReference.fromModelName(
+                                        AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                        .build();
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId("test-channel_publish")
-                .bindings(EMPTY_MAP)
-                .message(message)
-                .build();
+        Operation operation =
+                Operation.builder()
+                        .description("Auto-generated description")
+                        .operationId("test-channel_publish")
+                        .bindings(EMPTY_MAP)
+                        .message(message)
+                        .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(null)
-                .publish(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).publish(operation).build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry("test-channel", expectedChannel));
@@ -96,66 +105,65 @@ public class AsyncListenerAnnotationScannerTest {
         Map<String, ChannelItem> actualChannels = channelScanner.scan();
 
         // Then the returned collection contains the channel
-        Message message = Message.builder()
-                .name(SimpleFoo.class.getName())
-                .title(SimpleFoo.class.getSimpleName())
-                .description("description")
-                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName("TestSchema"))
-                .build();
+        Message message =
+                Message.builder()
+                        .name(SimpleFoo.class.getName())
+                        .title(SimpleFoo.class.getSimpleName())
+                        .description("description")
+                        .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                        .headers(HeaderReference.fromModelName("TestSchema"))
+                        .build();
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId("test-channel_publish")
-                .bindings(ImmutableMap.of(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING))
-                .message(message)
-                .build();
+        Operation operation =
+                Operation.builder()
+                        .description("Auto-generated description")
+                        .operationId("test-channel_publish")
+                        .bindings(
+                                ImmutableMap.of(
+                                        TestOperationBindingProcessor.TYPE,
+                                        TestOperationBindingProcessor.BINDING))
+                        .message(message)
+                        .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(null)
-                .publish(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).publish(operation).build();
 
         assertThat(actualChannels)
                 .containsExactly(Maps.immutableEntry("test-channel", expectedChannel));
     }
 
-
     private static class ClassWithoutListenerAnnotation {
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithListenerAnnotation {
 
-        @AsyncListener(operation = @AsyncOperation(
-                channelName = "test-channel"
-        ))
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        @AsyncListener(operation = @AsyncOperation(channelName = "test-channel"))
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithListenerAnnotationWithAllAttributes {
 
-        @AsyncListener(operation = @AsyncOperation(
-                channelName = "${test.property.test-channel}",
-                description = "${test.property.description}",
-                headers = @AsyncOperation.Headers(
-                        schemaName = "TestSchema",
-                        values = {@AsyncOperation.Headers.Header(name = "header", value = "value")}
-                )
-        ))
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                description = "${test.property.description}",
+                                headers =
+                                        @AsyncOperation.Headers(
+                                                schemaName = "TestSchema",
+                                                values = {
+                                                    @AsyncOperation.Headers.Header(
+                                                            name = "header",
+                                                            value = "value")
+                                                })))
         @TestOperationBindingProcessor.TestOperationBinding()
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     @Data

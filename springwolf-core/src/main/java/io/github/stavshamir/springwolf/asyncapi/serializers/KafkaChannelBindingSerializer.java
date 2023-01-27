@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.asyncapi.serializers;
 
-
 import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -19,9 +18,9 @@ public class KafkaChannelBindingSerializer extends StdSerializer<KafkaChannelBin
     }
 
     @Override
-    public void serialize(KafkaChannelBinding value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(KafkaChannelBinding value, JsonGenerator gen, SerializerProvider provider)
+            throws IOException {
         gen.writeStartObject();
         gen.writeEndObject();
     }
-
 }

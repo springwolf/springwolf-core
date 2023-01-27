@@ -4,11 +4,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ConfigurationClassScanner extends AbstractAnnotatedClassScanner<Configuration> implements ClassScanner {
+public class ConfigurationClassScanner extends AbstractAnnotatedClassScanner<Configuration>
+        implements ClassScanner {
 
     @Override
     protected Class<Configuration> getAnnotationClass() {
         return Configuration.class;
     }
-
 }

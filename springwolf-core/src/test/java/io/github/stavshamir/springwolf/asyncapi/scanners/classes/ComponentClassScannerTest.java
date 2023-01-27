@@ -18,23 +18,22 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ComponentClassScanner.class})
 public class ComponentClassScannerTest {
-    @MockBean
-    private AsyncApiDocketService asyncApiDocketService;
+    @MockBean private AsyncApiDocketService asyncApiDocketService;
 
-    @Autowired
-    private ComponentClassScanner componentsScanner;
+    @Autowired private ComponentClassScanner componentsScanner;
 
     @Test
     public void getComponents() {
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(
-                AsyncApiDocket.builder()
-                        .info(Info.builder()
-                                .title("ComponentClassScannerTest-title")
-                                .version("ComponentClassScannerTest-version")
-                                .build())
-                        .basePackage(this.getClass().getPackage().getName())
-                        .build()
-        );
+        when(asyncApiDocketService.getAsyncApiDocket())
+                .thenReturn(
+                        AsyncApiDocket.builder()
+                                .info(
+                                        Info.builder()
+                                                .title("ComponentClassScannerTest-title")
+                                                .version("ComponentClassScannerTest-version")
+                                                .build())
+                                .basePackage(this.getClass().getPackage().getName())
+                                .build());
 
         Set<Class<?>> components = componentsScanner.scan();
 
@@ -43,5 +42,4 @@ public class ComponentClassScannerTest {
                 .contains(ConfigurationClassScanner.class)
                 .doesNotContain(ClassScanner.class);
     }
-
 }

@@ -17,12 +17,9 @@ import static java.util.stream.Collectors.toSet;
 @Slf4j
 public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implements ClassScanner {
 
-    @Autowired
-    private AsyncApiDocketService asyncApiDocketService;
+    @Autowired private AsyncApiDocketService asyncApiDocketService;
 
-    /**
-     * @return The class object of the annotation to scan.
-     */
+    /** @return The class object of the annotation to scan. */
     protected abstract Class<T> getAnnotationClass();
 
     @Override
@@ -32,10 +29,12 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
             throw new IllegalArgumentException("Base package must not be blank");
         }
 
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        ClassPathScanningCandidateComponentProvider provider =
+                new ClassPathScanningCandidateComponentProvider(false);
         provider.addIncludeFilter(new AnnotationTypeFilter(getAnnotationClass()));
 
-        log.debug("Scanning for {} classes in {}", getAnnotationClass().getSimpleName(), basePackage);
+        log.debug(
+                "Scanning for {} classes in {}", getAnnotationClass().getSimpleName(), basePackage);
         return provider.findCandidateComponents(basePackage).stream()
                 .map(BeanDefinition::getBeanClassName)
                 .map(this::getClass)
@@ -53,5 +52,4 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
             return Optional.empty();
         }
     }
-
 }

@@ -29,9 +29,11 @@ public class DefaultSchemasService implements SchemasService {
     private final Map<String, Schema> definitions = new TreeMap<>();
 
     public DefaultSchemasService(Optional<List<ModelConverter>> externalModelConverters) {
-        externalModelConverters.ifPresent(converters -> converters.forEach(converter::addConverter));
+        externalModelConverters.ifPresent(
+                converters -> converters.forEach(converter::addConverter));
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        SimpleModule simpleModule = new SimpleModule().addSerializer(new JsonNodeExampleSerializer());
+        SimpleModule simpleModule =
+                new SimpleModule().addSerializer(new JsonNodeExampleSerializer());
         objectMapper.registerModule(simpleModule);
     }
 
@@ -40,7 +42,8 @@ public class DefaultSchemasService implements SchemasService {
         // The examples must first be set as JSON strings (the inflector does not work otherwise)
         definitions.forEach(this::buildExampleAsString);
 
-        // Then they must be deserialized to map, or they will be serialized as reguler string and not json by the
+        // Then they must be deserialized to map, or they will be serialized as reguler string and
+        // not json by the
         // object mapper
         definitions.forEach(this::deserializeExampleToMap);
         return definitions;
@@ -101,5 +104,4 @@ public class DefaultSchemasService implements SchemasService {
             log.error("Failed to convert example object of {} to map", schema.getName());
         }
     }
-
 }

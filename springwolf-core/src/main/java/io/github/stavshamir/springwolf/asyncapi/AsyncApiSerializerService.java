@@ -6,5 +6,4 @@ import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 public interface AsyncApiSerializerService {
 
     String toJsonString(AsyncAPI asyncAPI) throws JsonProcessingException;
-
 }

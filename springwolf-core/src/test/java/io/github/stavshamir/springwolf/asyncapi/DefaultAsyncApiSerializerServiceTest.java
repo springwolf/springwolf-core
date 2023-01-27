@@ -35,63 +35,74 @@ import java.util.Map;
 @ContextConfiguration(classes = {DefaultAsyncApiSerializerService.class})
 public class DefaultAsyncApiSerializerServiceTest {
 
-    @Autowired
-    private DefaultAsyncApiSerializerService serializer;
+    @Autowired private DefaultAsyncApiSerializerService serializer;
 
     @Test
     public void AsyncAPI_should_map_to_a_valid_asyncapi_json() throws IOException, JSONException {
-        Info info = Info.builder()
-                .title("AsyncAPI Sample App")
-                .version("1.0.1")
-                .description("This is a sample server.")
-                .termsOfService("http://asyncapi.org/terms/")
-                .contact(Contact.builder()
-                        .name("API Support")
-                        .url("http://www.asyncapi.org/support")
-                        .email("support@asyncapi.org")
-                        .build())
-                .license(License.builder()
-                        .name("Apache 2.0")
-                        .url("http://www.apache.org/licenses/LICENSE-2.0.html")
-                        .build())
-                .build();
+        Info info =
+                Info.builder()
+                        .title("AsyncAPI Sample App")
+                        .version("1.0.1")
+                        .description("This is a sample server.")
+                        .termsOfService("http://asyncapi.org/terms/")
+                        .contact(
+                                Contact.builder()
+                                        .name("API Support")
+                                        .url("http://www.asyncapi.org/support")
+                                        .email("support@asyncapi.org")
+                                        .build())
+                        .license(
+                                License.builder()
+                                        .name("Apache 2.0")
+                                        .url("http://www.apache.org/licenses/LICENSE-2.0.html")
+                                        .build())
+                        .build();
 
-        Server productionServer = Server.builder()
-                .url("development.gigantic-server.com")
-                .description("Development server")
-                .protocol("kafka")
-                .protocolVersion("1.0.0")
-                .build();
+        Server productionServer =
+                Server.builder()
+                        .url("development.gigantic-server.com")
+                        .description("Development server")
+                        .protocol("kafka")
+                        .protocolVersion("1.0.0")
+                        .build();
 
-        Message message = Message.builder()
-                .name("io.github.stavshamir.springwolf.ExamplePayload")
-                .title("Example Payload")
-                .payload(PayloadReference.fromModelName("ExamplePayload"))
-                .build();
+        Message message =
+                Message.builder()
+                        .name("io.github.stavshamir.springwolf.ExamplePayload")
+                        .title("Example Payload")
+                        .payload(PayloadReference.fromModelName("ExamplePayload"))
+                        .build();
 
-        OperationBinding operationBinding = KafkaOperationBinding.builder().groupId("myGroupId").build();
+        OperationBinding operationBinding =
+                KafkaOperationBinding.builder().groupId("myGroupId").build();
 
-        Operation newUserOperation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId("new-user_listenerMethod_subscribe")
-                .message(message)
-                .bindings(ImmutableMap.of("kafka", operationBinding))
-                .build();
+        Operation newUserOperation =
+                Operation.builder()
+                        .description("Auto-generated description")
+                        .operationId("new-user_listenerMethod_subscribe")
+                        .message(message)
+                        .bindings(ImmutableMap.of("kafka", operationBinding))
+                        .build();
 
-        ChannelItem newUserChannel = ChannelItem.builder()
-                .description("This channel is used to exchange messages about users signing up")
-                .subscribe(newUserOperation)
-                .build();
+        ChannelItem newUserChannel =
+                ChannelItem.builder()
+                        .description(
+                                "This channel is used to exchange messages about users signing up")
+                        .subscribe(newUserOperation)
+                        .build();
 
-        Map<String, Schema> schemas = ModelConverters.getInstance().read(DefaultAsyncApiSerializerServiceTest.ExamplePayload.class);
+        Map<String, Schema> schemas =
+                ModelConverters.getInstance()
+                        .read(DefaultAsyncApiSerializerServiceTest.ExamplePayload.class);
 
-        AsyncAPI asyncapi = AsyncAPI.builder()
-                .info(info)
-                .defaultContentType("application/json")
-                .servers(ImmutableMap.of("production", productionServer))
-                .channels(ImmutableMap.of("new-user", newUserChannel))
-                .components(Components.builder().schemas(schemas).build())
-                .build();
+        AsyncAPI asyncapi =
+                AsyncAPI.builder()
+                        .info(info)
+                        .defaultContentType("application/json")
+                        .servers(ImmutableMap.of("production", productionServer))
+                        .channels(ImmutableMap.of("new-user", newUserChannel))
+                        .components(Components.builder().schemas(schemas).build())
+                        .build();
 
         String actual = serializer.toJsonString(asyncapi);
         System.out.println("Got: " + actual);
@@ -104,5 +115,4 @@ public class DefaultAsyncApiSerializerServiceTest {
     static class ExamplePayload {
         String s;
     }
-
 }

@@ -22,31 +22,26 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {DefaultBeanMethodsScanner.class})
 public class DefaultBeanMethodsScannerTest {
 
-    @Autowired
-    private DefaultBeanMethodsScanner beanMethodsScanner;
+    @Autowired private DefaultBeanMethodsScanner beanMethodsScanner;
 
-    @MockBean
-    private ConfigurationClassScanner configurationClassScanner;
+    @MockBean private ConfigurationClassScanner configurationClassScanner;
 
     @Test
     public void name() {
         when(configurationClassScanner.scan())
                 .thenReturn(ImmutableSet.of(ConfigurationClass.class));
 
-        Set<String> beanMethods = beanMethodsScanner.getBeanMethods().stream()
-                .map(Method::getName)
-                .collect(Collectors.toSet());
+        Set<String> beanMethods =
+                beanMethodsScanner.getBeanMethods().stream()
+                        .map(Method::getName)
+                        .collect(Collectors.toSet());
 
-
-        assertThat(beanMethods)
-                .hasSize(2)
-                .containsExactlyInAnyOrder("stringBean", "consumerBean");
+        assertThat(beanMethods).hasSize(2).containsExactlyInAnyOrder("stringBean", "consumerBean");
     }
 
     private static class ConfigurationClass {
 
-        private void notABean() {
-        }
+        private void notABean() {}
 
         @Bean
         private String stringBean() {
@@ -57,7 +52,5 @@ public class DefaultBeanMethodsScannerTest {
         private Consumer<String> consumerBean() {
             return System.out::println;
         }
-
     }
-
 }

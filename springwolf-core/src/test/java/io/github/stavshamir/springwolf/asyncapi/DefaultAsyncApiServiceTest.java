@@ -27,14 +27,15 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {
-        DefaultAsyncApiDocketService.class,
-        DefaultAsyncApiService.class,
-        DefaultChannelsService.class,
-        DefaultSchemasService.class,
-        ProducerOperationDataScanner.class,
-        ConsumerOperationDataScanner.class
-})
+@ContextConfiguration(
+        classes = {
+            DefaultAsyncApiDocketService.class,
+            DefaultAsyncApiService.class,
+            DefaultChannelsService.class,
+            DefaultSchemasService.class,
+            ProducerOperationDataScanner.class,
+            ConsumerOperationDataScanner.class
+        })
 @Import(DefaultAsyncApiServiceTest.DefaultAsyncApiServiceTestConfiguration.class)
 public class DefaultAsyncApiServiceTest {
 
@@ -43,23 +44,23 @@ public class DefaultAsyncApiServiceTest {
 
         @Bean
         public AsyncApiDocket docket() {
-            Info info = Info.builder()
-                    .title("Test")
-                    .version("1.0.0")
-                    .build();
+            Info info = Info.builder().title("Test").version("1.0.0").build();
 
-            ProducerData kafkaProducerData = ProducerData.builder()
-                    .channelName("producer-topic")
-                    .description("producer-topic-description")
-                    .payloadType(String.class)
-                    .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                    .build();
+            ProducerData kafkaProducerData =
+                    ProducerData.builder()
+                            .channelName("producer-topic")
+                            .description("producer-topic-description")
+                            .payloadType(String.class)
+                            .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                            .build();
 
-            ConsumerData kafkaConsumerData = ConsumerData.builder()
-                    .channelName("consumer-topic")
-                    .description("consumer-topic-description")
-                    .payloadType(String.class)
-                    .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding())).build();
+            ConsumerData kafkaConsumerData =
+                    ConsumerData.builder()
+                            .channelName("consumer-topic")
+                            .description("consumer-topic-description")
+                            .payloadType(String.class)
+                            .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                            .build();
 
             return AsyncApiDocket.builder()
                     .info(info)
@@ -69,38 +70,31 @@ public class DefaultAsyncApiServiceTest {
                     .consumer(kafkaConsumerData)
                     .build();
         }
-
     }
 
-    @Autowired
-    private AsyncApiDocket docket;
+    @Autowired private AsyncApiDocket docket;
 
-    @Autowired
-    private DefaultAsyncApiService asyncApiService;
+    @Autowired private DefaultAsyncApiService asyncApiService;
 
     @Test
     public void getAsyncAPI_info_should_be_correct() {
         Info actualInfo = asyncApiService.getAsyncAPI().getInfo();
 
-        assertThat(actualInfo).
-                isEqualTo(docket.getInfo());
+        assertThat(actualInfo).isEqualTo(docket.getInfo());
     }
 
     @Test
     public void getAsyncAPI_servers_should_be_correct() {
         Map<String, Server> actualServers = asyncApiService.getAsyncAPI().getServers();
 
-        assertThat(actualServers).
-                isEqualTo(docket.getServers());
+        assertThat(actualServers).isEqualTo(docket.getServers());
     }
 
     @Test
     public void getAsyncAPI_producers_should_be_correct() {
         Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
 
-        assertThat(actualChannels)
-                .isNotEmpty()
-                .containsKey("producer-topic");
+        assertThat(actualChannels).isNotEmpty().containsKey("producer-topic");
 
         final ChannelItem channel = actualChannels.get("producer-topic");
         assertThat(channel.getSubscribe()).isNotNull();
@@ -112,14 +106,11 @@ public class DefaultAsyncApiServiceTest {
     public void getAsyncAPI_consumers_should_be_correct() {
         Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
 
-        assertThat(actualChannels)
-                .isNotEmpty()
-                .containsKey("consumer-topic");
+        assertThat(actualChannels).isNotEmpty().containsKey("consumer-topic");
 
         final ChannelItem channel = actualChannels.get("consumer-topic");
         assertThat(channel.getPublish()).isNotNull();
         final Message message = (Message) channel.getPublish().getMessage();
         assertThat(message.getDescription()).isEqualTo("consumer-topic-description");
     }
-
 }

@@ -25,5 +25,4 @@ public class AsyncApiController {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
         return serializer.toJsonString(asyncAPI);
     }
-
 }

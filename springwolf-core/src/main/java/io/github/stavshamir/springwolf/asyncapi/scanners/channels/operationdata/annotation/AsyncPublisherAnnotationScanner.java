@@ -25,7 +25,8 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor
 @Component
 @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
+public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanner
+        implements EmbeddedValueResolverAware {
     private StringValueResolver resolver;
     private final ComponentClassScanner componentClassScanner;
     private final SchemasService schemasService;
@@ -53,7 +54,10 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
 
     private Set<Method> getAnnotatedMethods(Class<?> type) {
         Class<AsyncPublisher> annotationClass = AsyncPublisher.class;
-        log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
+        log.debug(
+                "Scanning class \"{}\" for @\"{}\" annotated methods",
+                type.getName(),
+                annotationClass.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(annotationClass))
@@ -63,15 +67,24 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
     private OperationData mapMethodToOperationData(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
-        Map<String, OperationBinding> operationBindings = AsyncAnnotationScannerUtil.processBindingFromAnnotation(method, operationBindingProcessors);
+        Map<String, OperationBinding> operationBindings =
+                AsyncAnnotationScannerUtil.processBindingFromAnnotation(
+                        method, operationBindingProcessors);
 
         Class<AsyncPublisher> annotationClass = AsyncPublisher.class;
-        AsyncPublisher annotation = Optional.of(method.getAnnotation(annotationClass))
-                .orElseThrow(() -> new IllegalArgumentException("Method must be annotated with " + annotationClass.getName()));
+        AsyncPublisher annotation =
+                Optional.of(method.getAnnotation(annotationClass))
+                        .orElseThrow(
+                                () ->
+                                        new IllegalArgumentException(
+                                                "Method must be annotated with "
+                                                        + annotationClass.getName()));
 
         AsyncOperation op = annotation.operation();
-        Class<?> payloadType = op.payloadType() != Object.class ? op.payloadType() :
-                SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
+        Class<?> payloadType =
+                op.payloadType() != Object.class
+                        ? op.payloadType()
+                        : SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
         return ProducerData.builder()
                 .channelName(resolver.resolveStringValue(op.channelName()))
                 .description(resolver.resolveStringValue(op.description()))

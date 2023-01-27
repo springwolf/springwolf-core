@@ -10,6 +10,6 @@ public interface SchemasService {
     Map<String, Schema> getDefinitions();
 
     String register(AsyncHeaders headers);
-    String register(Class<?> type);
 
+    String register(Class<?> type);
 }

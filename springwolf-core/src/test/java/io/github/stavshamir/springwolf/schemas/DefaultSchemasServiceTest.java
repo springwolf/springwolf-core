@@ -34,8 +34,7 @@ public class DefaultSchemasServiceTest {
     public void string() throws IOException, JSONException {
         String modelName = schemasService.register(String.class);
 
-        assertThat(modelName)
-                .isEqualTo("String");
+        assertThat(modelName).isEqualTo("String");
 
         assertNotNull(schemasService.getDefinitions().get(modelName));
     }
@@ -44,8 +43,7 @@ public class DefaultSchemasServiceTest {
     public void simpleObject() throws IOException, JSONException {
         String modelName = schemasService.register(SimpleFoo.class);
 
-        assertThat(modelName)
-                .isEqualTo("SimpleFoo");
+        assertThat(modelName).isEqualTo("SimpleFoo");
 
         Schema schema = schemasService.getDefinitions().get(modelName);
         String example = objectMapper.writeValueAsString(schema.getExample());
@@ -93,8 +91,7 @@ public class DefaultSchemasServiceTest {
     public void classWithSchemaAnnotation() {
         String modelName = schemasService.register(ClassWithSchemaAnnotation.class);
 
-        assertThat(modelName)
-                .isEqualTo("DifferentName");
+        assertThat(modelName).isEqualTo("DifferentName");
     }
 
     private String jsonResource(String path) throws IOException {
@@ -113,7 +110,10 @@ public class DefaultSchemasServiceTest {
     @NoArgsConstructor
     @io.swagger.v3.oas.annotations.media.Schema(description = "foo model")
     private static class DocumentedSimpleFoo {
-        @io.swagger.v3.oas.annotations.media.Schema(description = "s field", example = "s value", required = true)
+        @io.swagger.v3.oas.annotations.media.Schema(
+                description = "s field",
+                example = "s value",
+                required = true)
         private String s;
     }
 
@@ -131,7 +131,8 @@ public class DefaultSchemasServiceTest {
         private Bar b;
 
         private enum Bar {
-            BAR1, BAR2
+            BAR1,
+            BAR2
         }
     }
 
@@ -142,5 +143,4 @@ public class DefaultSchemasServiceTest {
         private String s;
         private boolean b;
     }
-
 }

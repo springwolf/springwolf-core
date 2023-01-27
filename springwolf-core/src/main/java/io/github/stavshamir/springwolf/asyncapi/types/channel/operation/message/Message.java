@@ -6,7 +6,8 @@ import lombok.*;
 /**
  * Describes a message received on a given channel and operation.
  *
- * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#messageObject">Message specification</a>
+ * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#messageObject">Message
+ *     specification</a>
  */
 @Data
 @Builder
@@ -15,19 +16,13 @@ import lombok.*;
 @AllArgsConstructor
 public class Message {
 
-    /**
-     * A machine-friendly name for the message.
-     */
+    /** A machine-friendly name for the message. */
     private String name;
 
-    /**
-     * A human-friendly title for the message.
-     */
+    /** A human-friendly title for the message. */
     private String title;
 
-    /**
-     * A human-friendly description for the message.
-     */
+    /** A human-friendly description for the message. */
     private String description;
 
     private PayloadReference payload;

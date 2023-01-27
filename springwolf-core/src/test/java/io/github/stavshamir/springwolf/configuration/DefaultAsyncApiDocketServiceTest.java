@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.configuration;
 
-
 import com.asyncapi.v2.model.info.Contact;
 import com.asyncapi.v2.model.info.License;
 import com.asyncapi.v2.model.server.Server;
@@ -23,10 +22,7 @@ public class DefaultAsyncApiDocketServiceTest {
         ConfigDocket configDocket = new ConfigDocket();
         configDocket.setBasePackage("test-base-package");
 
-        Server server = Server.builder()
-                .protocol("some-protocol")
-                .url("some-url")
-                .build();
+        Server server = Server.builder().protocol("some-protocol").url("some-url").build();
         configDocket.setServers(newHashMap("some-protocol", server));
 
         Info info = new Info();
@@ -37,12 +33,12 @@ public class DefaultAsyncApiDocketServiceTest {
         info.setContact(new Contact("contact-name", "contact-url", "contact-email"));
         configDocket.setInfo(info);
 
-
         SpringWolfConfigProperties properties = new SpringWolfConfigProperties();
         properties.setDocket(configDocket);
 
         // when
-        DefaultAsyncApiDocketService docketConfiguration = new DefaultAsyncApiDocketService(Optional.empty(), Optional.of(properties));
+        DefaultAsyncApiDocketService docketConfiguration =
+                new DefaultAsyncApiDocketService(Optional.empty(), Optional.of(properties));
         AsyncApiDocket asyncApiDocket = docketConfiguration.getAsyncApiDocket();
 
         // then
@@ -56,10 +52,13 @@ public class DefaultAsyncApiDocketServiceTest {
 
     @Test
     public void testNoConfigurationShouldThrowException() {
-        assertThatThrownBy(() -> {
-            DefaultAsyncApiDocketService docketConfiguration = new DefaultAsyncApiDocketService(Optional.empty(), Optional.empty());
-            docketConfiguration.getAsyncApiDocket();
-        })
+        assertThatThrownBy(
+                        () -> {
+                            DefaultAsyncApiDocketService docketConfiguration =
+                                    new DefaultAsyncApiDocketService(
+                                            Optional.empty(), Optional.empty());
+                            docketConfiguration.getAsyncApiDocket();
+                        })
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

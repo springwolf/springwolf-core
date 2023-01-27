@@ -9,23 +9,20 @@ import java.util.*;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 
-
-/**
- * Util to merge multiple {@link ChannelItem}s
- */
+/** Util to merge multiple {@link ChannelItem}s */
 public class ChannelMerger {
 
     /**
      * Merges multiple channelItems by channel name
-     * <p>
-     * Given two channelItems for the same channel name, the first seen ChannelItem is used
-     * If an operation is null, the next non-null operation is used
-     * Messages within operations are merged
+     *
+     * <p>Given two channelItems for the same channel name, the first seen ChannelItem is used If an
+     * operation is null, the next non-null operation is used Messages within operations are merged
      *
      * @param channelEntries Ordered pairs of channel name to ChannelItem
      * @return A map of channelName to a single ChannelItem
      */
-    public static Map<String, ChannelItem> merge(List<Map.Entry<String, ChannelItem>> channelEntries) {
+    public static Map<String, ChannelItem> merge(
+            List<Map.Entry<String, ChannelItem>> channelEntries) {
         Map<String, ChannelItem> mergedChannels = new TreeMap<>();
 
         for (Map.Entry<String, ChannelItem> entry : channelEntries) {
@@ -33,8 +30,11 @@ public class ChannelMerger {
                 mergedChannels.put(entry.getKey(), entry.getValue());
             } else {
                 ChannelItem channelItem = mergedChannels.get(entry.getKey());
-                channelItem.setPublish(mergeOperation(channelItem.getPublish(), entry.getValue().getPublish()));
-                channelItem.setSubscribe(mergeOperation(channelItem.getSubscribe(), entry.getValue().getSubscribe()));
+                channelItem.setPublish(
+                        mergeOperation(channelItem.getPublish(), entry.getValue().getPublish()));
+                channelItem.setSubscribe(
+                        mergeOperation(
+                                channelItem.getSubscribe(), entry.getValue().getSubscribe()));
             }
         }
 
@@ -54,8 +54,7 @@ public class ChannelMerger {
     }
 
     private static Set<Message> getMessages(Operation operation) {
-        return Optional
-                .ofNullable(operation)
+        return Optional.ofNullable(operation)
                 .map(Operation::getMessage)
                 .map(MessageHelper::messageObjectToSet)
                 .orElseGet(TreeSet::new);
