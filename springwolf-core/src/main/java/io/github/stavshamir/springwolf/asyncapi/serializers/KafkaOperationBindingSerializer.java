@@ -25,6 +25,12 @@ public class KafkaOperationBindingSerializer extends StdSerializer<KafkaOperatio
         if (value.getGroupId() != null) {
             writeGroupId(value, gen);
         }
+        if(value.getClientId() != null) {
+            writeClientId(value, gen);
+        }
+        if(value.getBindingVersion() != null) {
+            writeBindingVersion(value, gen);
+        }
 
         gen.writeEndObject();
     }
@@ -35,6 +41,26 @@ public class KafkaOperationBindingSerializer extends StdSerializer<KafkaOperatio
         gen.writeStringField("type", "string");
         gen.writeArrayFieldStart("enum");
         gen.writeString((String) value.getGroupId());
+        gen.writeEndArray();
+        gen.writeEndObject();
+    }
+
+    private void writeClientId(KafkaOperationBinding value, JsonGenerator gen) throws IOException {;
+        gen.writeFieldName("clientId");
+        gen.writeStartObject();
+        gen.writeStringField("type", "string");
+        gen.writeArrayFieldStart("enum");
+        gen.writeString((String) value.getClientId());
+        gen.writeEndArray();
+        gen.writeEndObject();
+    }
+
+    private void writeBindingVersion(KafkaOperationBinding value, JsonGenerator gen) throws IOException {
+        gen.writeFieldName("bindingVersion");
+        gen.writeStartObject();
+        gen.writeStringField("type", "string");
+        gen.writeArrayFieldStart("enum");
+        gen.writeString(value.getBindingVersion());
         gen.writeEndArray();
         gen.writeEndObject();
     }
