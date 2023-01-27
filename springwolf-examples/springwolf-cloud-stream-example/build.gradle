@@ -4,6 +4,7 @@ plugins {
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
+    id 'com.diffplug.spotless'
 
     id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
 }
@@ -75,10 +76,31 @@ test {
     maxHeapSize = "1024m" // maximum heap size
 
     dependsOn dockerBuildImage
+    dependsOn spotlessCheck
 
     useJUnitPlatform()
 
     testLogging {
         exceptionFormat = 'full'
+    }
+}
+
+spotless {
+    encoding 'UTF-8'
+
+    java {
+
+//        googleJavaFormat()
+        googleJavaFormat().aosp()
+//        eclipse()
+//        clangFormat()
+//        formatAnnotations()
+
+
+        importOrder('', 'javax', 'java', '\\#')
+        removeUnusedImports()
+
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }
