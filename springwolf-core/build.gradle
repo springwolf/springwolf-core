@@ -57,7 +57,8 @@ java {
 }
 
 test {
-    dependsOn spotlessCheck
+    // Automatically fix code formatting if possible
+    dependsOn spotlessApply
 
     useJUnitPlatform()
 }
