@@ -31,8 +31,8 @@ public class SpringPayloadAnnotationTypeExtractor {
         try {
             // Resolve generic type for batch listeners
             if (parameterClass == List.class) {
-                Type type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex]).getActualTypeArguments()[0];
                 try {
+                    Type type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex]).getActualTypeArguments()[0];
                     return Class.forName(type.getTypeName());
                 } catch (IllegalAccessError error) {
                     // remove, when the used java version has been upgraded to support java modules
