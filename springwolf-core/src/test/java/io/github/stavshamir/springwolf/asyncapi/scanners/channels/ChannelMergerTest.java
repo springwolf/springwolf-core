@@ -117,4 +117,28 @@ public class ChannelMergerTest {
                     assertThat(it.getSubscribe()).isNull();
                 });
     }
+
+    @Test
+    public void shouldUseOtherMessageIfFirstMessageIsMissing() {
+        // given
+        String channelName = "channel";
+        Message message2 = Message.builder().name(String.class.getCanonicalName()).description("This is a string").build();
+        Operation publishOperation1 = Operation.builder().operationId("publisher1").build();
+        Operation publishOperation2 = Operation.builder().operationId("publisher2").message(message2).build();
+        ChannelItem publisherChannel1 = ChannelItem.builder().publish(publishOperation1).build();
+        ChannelItem publisherChannel2 = ChannelItem.builder().publish(publishOperation2).build();
+
+        // when
+        Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(Arrays.asList(
+                Maps.immutableEntry(channelName, publisherChannel1),
+                Maps.immutableEntry(channelName, publisherChannel2)));
+
+        // then expectedMessage message2
+        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Sets.newHashSet(message2));
+        assertThat(mergedChannels).hasSize(1)
+                .hasEntrySatisfying(channelName, it -> {
+                    assertThat(it.getPublish()).isEqualTo(Operation.builder().operationId("publisher1").message(expectedMessages).build());
+                    assertThat(it.getSubscribe()).isNull();
+                });
+    }
 }
