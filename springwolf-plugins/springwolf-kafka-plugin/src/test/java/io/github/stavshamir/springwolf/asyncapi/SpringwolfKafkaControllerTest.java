@@ -1,31 +1,38 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import io.github.stavshamir.springwolf.asyncapi.dtos.KafkaMessageDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collections;
 import java.util.Map;
 
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(SpringwolfKafkaController.class)
+@ContextConfiguration(classes = {SpringwolfKafkaController.class, SpringwolfKafkaProducer.class})
+@TestPropertySource(properties = {"springwolf.plugin.kafka.publishing.enabled=true"})
 public class SpringwolfKafkaControllerTest {
 
-    @InjectMocks
-    private SpringwolfKafkaController springwolfKafkaController;
+    @Autowired
+    private MockMvc mvc;
 
-    @Mock
+    @MockBean
     private SpringwolfKafkaProducer springwolfKafkaProducer;
 
     @Captor
@@ -37,57 +44,57 @@ public class SpringwolfKafkaControllerTest {
     @Test
     public void testControllerShouldReturnBadRequestIfPayloadIsEmpty() {
         try {
-            springwolfKafkaController.publish("test-topic", new KafkaMessageDto(null, null));
-            failBecauseExceptionWasNotThrown(ResponseStatusException.class);
-        } catch (ResponseStatusException e) {
-            assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+            String content = "{\"headers\": null, \"payload\": null }";
+            mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(content))
+                    .andExpect(status().isBadRequest());
+        } catch (Exception e) {
             verifyNoInteractions(springwolfKafkaProducer);
         }
     }
 
     @Test
-    public void testControllerShouldReturnNotFoundIfNoKafkaProducerIsEnabled() {
+    public void testControllerShouldReturnNotFoundIfNoKafkaProducerIsEnabled() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
 
-        Map<String, String> payload = Collections.singletonMap("some-key", "some-value");
-        KafkaMessageDto messageToPublish = new KafkaMessageDto(null, payload);
-
-        try {
-            springwolfKafkaController.publish("test-topic", messageToPublish);
-            failBecauseExceptionWasNotThrown(ResponseStatusException.class);
-        } catch (ResponseStatusException e) {
-            assertThat(e.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-        }
+        String content = "{\"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
+        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isNotFound());
     }
 
     @Test
-    public void testControllerShouldCallKafkaProducerIfOnlyPayloadIsSend() {
+    public void testControllerShouldCallKafkaProducerIfOnlyPayloadIsSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
-        Map<String, String> payload = Collections.singletonMap("some-key", "some-value");
-        KafkaMessageDto messageToPublish = new KafkaMessageDto(null, payload);
+        String content = "{\"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
 
-        springwolfKafkaController.publish("test-topic", messageToPublish);
+        mvc.perform(post("/springwolf/kafka/publish").param("topic", "test-topic")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isOk());
 
         verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), payloadCaptor.capture());
 
-        assertThat(payloadCaptor.getValue()).isEqualTo(payload);
+        assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-key", "some-value"));
     }
 
     @Test
-    public void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAreSend() {
+    public void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAreSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
-        Map<String, String> headers = Collections.singletonMap("some-header-key", "some-header-value");
-        Map<String, String> payload = Collections.singletonMap("some-payload-key", "some-payload-value");
+        String content = "{\"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
 
-        KafkaMessageDto messageToPublish = new KafkaMessageDto(headers, payload);
-
-        springwolfKafkaController.publish("test-topic", messageToPublish);
+        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isOk());
 
         verify(springwolfKafkaProducer).send(eq("test-topic"), headerCaptor.capture(), payloadCaptor.capture());
 
-        assertThat(headerCaptor.getValue()).isEqualTo(headers);
-        assertThat(payloadCaptor.getValue()).isEqualTo(payload);
+        assertThat(headerCaptor.getValue()).isEqualTo(singletonMap("some-header-key", "some-header-value"));
+        assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-payload-key", "some-payload-value"));
     }
 }
