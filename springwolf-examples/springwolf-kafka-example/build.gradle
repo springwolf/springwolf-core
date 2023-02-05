@@ -61,7 +61,7 @@ docker {
 }
 
 java {
-    sourceCompatibility = '17'
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 test {
@@ -73,3 +73,13 @@ test {
         exceptionFormat = 'full'
     }
 }
+
+openApi {
+    apiDocsUrl = "http://localhost:8080/springwolf/docs"
+    // For testing purposes we put the generated json into the test resources, but it could be any other directory
+    outputDir = file("$buildDir/resources/test")
+    outputFileName = "openapi-generated.json"
+}
+
+// generate the open api docs before tests are executed so that if it works, the json is already there
+test.dependsOn("generateOpenApiDocs")

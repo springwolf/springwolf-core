@@ -55,7 +55,7 @@ docker {
 }
 
 java {
-    sourceCompatibility = '17'
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 test {
