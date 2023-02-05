@@ -3,11 +3,11 @@ package io.github.stavshamir.springwolf.asyncapi;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -1,10 +1,10 @@
 plugins {
     id 'java'
 
-    id 'org.springframework.boot' version '3.0.0'
+    id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
 
-    id 'com.bmuschko.docker-spring-boot-application' version '9.0.1'
+    id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
 }
 
 ext {
@@ -17,7 +17,6 @@ dependencyManagement {
     }
 }
 
-sourceCompatibility = '17'
 version '0.1.0'
 
 
@@ -67,6 +66,10 @@ docker {
         username = project.findProperty('dockerhubUsername') ?: ''
         password = project.findProperty('dockerhubPassword') ?: ''
     }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 test {
