@@ -57,7 +57,7 @@ dependencies {
 docker {
     springBootApplication {
         maintainer = 'shamir.stav@gmail.com'
-        baseImage = 'openjdk:8-alpine'
+        baseImage = 'openjdk:17-alpine'
         ports = [8080]
         images = ["stavshamir/springwolf-cloud-stream-example:${project.version}"]
     }
