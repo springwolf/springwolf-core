@@ -26,6 +26,9 @@ public class SpringWolfConfigProperties {
     @Nullable
     private ConfigDocket docket;
 
+    @Nullable
+    private Scanner scanner;
+
     @Getter
     @Setter
     public static class ConfigDocket {
@@ -96,4 +99,60 @@ public class SpringWolfConfigProperties {
     }
 
 
+    @Getter
+    @Setter
+    public static class Scanner {
+
+        @Nullable
+        private static AsyncListener asyncListener;
+
+        @Nullable
+        private static AsyncPublisher asyncPublisher;
+
+        @Nullable
+        private static ConsumerData consumerData;
+
+        @Nullable
+        private static ProducerData producerData;
+
+        @Getter
+        @Setter
+        public static class AsyncListener {
+
+            /**
+             * This mirrors the ConfigConstant {@see SpringWolfConfigConstants#SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED}
+             */
+            private boolean enabled = true;
+        }
+
+        @Getter
+        @Setter
+        public static class AsyncPublisher {
+
+            /**
+             * This mirrors the ConfigConstant {@see SpringWolfConfigConstants#SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED}
+             */
+            private boolean enabled = true;
+        }
+
+        @Getter
+        @Setter
+        public static class ConsumerData {
+
+            /**
+             * This mirrors the ConfigConstant {@see SpringWolfConfigConstants#SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED}
+             */
+            private boolean enabled = true;
+        }
+
+        @Getter
+        @Setter
+        public static class ProducerData {
+
+            /**
+             * This mirrors the ConfigConstant {@see SpringWolfConfigConstants#SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED}
+             */
+            private boolean enabled = true;
+        }
+    }
 }

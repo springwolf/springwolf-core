@@ -9,6 +9,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForSpringKafkaBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.core.annotation.Order;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -19,12 +20,14 @@ import org.springframework.util.StringValueResolver;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED;
 import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor.getPayloadType;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Order(value = ChannelPriority.AUTO_DISCOVERED)
+@ConditionalOnProperty(name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED, matchIfMissing = true)
 public class ClassLevelKafkaListenerScanner extends AbstractClassLevelListenerScanner<KafkaListener, KafkaHandler>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
