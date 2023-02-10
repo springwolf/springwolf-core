@@ -3,8 +3,11 @@ package io.github.stavshamir.springwolf.example.configuration;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.config.SaslConfigs;
+import org.apache.kafka.common.security.plain.PlainLoginModule;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +46,12 @@ public class KafkaConfiguration {
                 .put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100")
                 .put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000")
                 .put(ConsumerConfig.GROUP_ID_CONFIG, "example-group-id")
+                .put("properties.bootstrap.servers", BOOTSTRAP_SERVERS)
+                .put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT")
+                .put(SaslConfigs.SASL_MECHANISM, "PLAIN")
+                .put(SaslConfigs.SASL_JAAS_CONFIG, String.format(
+                        "%s required username=\"%s\" " + "password=\"%s\";", PlainLoginModule.class.getName(), "broker", "broker-secret"
+                ))
                 .build();
     }
 
@@ -70,11 +79,11 @@ public class KafkaConfiguration {
     }
 
     private Map<String, Object> producerConfiguration() {
-       return ImmutableMap.of(
-               ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS,
-               ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
-               ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class
-       );
+        return ImmutableMap.of(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS,
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class
+        );
     }
 
     @Bean

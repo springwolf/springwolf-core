@@ -3,7 +3,9 @@ package io.github.stavshamir.springwolf;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Nullable;
@@ -28,6 +30,9 @@ public class SpringWolfKafkaConfigProperties {
          * Enables/Disables the possibility to publish messages through springwolf on the configured kafka instance.
          */
         private boolean enabled = false;
+
+        @NestedConfigurationProperty
+        private KafkaProperties.Producer producer;
 
     }
 

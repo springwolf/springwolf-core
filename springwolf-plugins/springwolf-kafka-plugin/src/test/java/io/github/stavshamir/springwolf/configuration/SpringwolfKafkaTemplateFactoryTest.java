@@ -1,68 +1,57 @@
 package io.github.stavshamir.springwolf.configuration;
 
-import com.asyncapi.v2.model.info.Info;
-import com.asyncapi.v2.model.server.Server;
+import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties;
+import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties.Publishing;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-public class SpringwolfKafkaTemplateFactoryTest {
-
-    @InjectMocks
-    private SpringwolfKafkaTemplateFactory springwolfKafkaTemplateFactory;
-
-    @Mock
-    private AsyncApiDocketService asyncApiDocketService;
-
-    private AsyncApiDocket.AsyncApiDocketBuilder builder = AsyncApiDocket.builder()
-            .info(Info.builder()
-                    .title("some-title")
-                    .version("some-version")
-                    .build());
+class SpringwolfKafkaTemplateFactoryTest {
 
     @Test
-    public void testNoSpringwolfKafkaProducerCreatedIfNoKafkaInstanceConfigured() {
-        Server noKafkaServer = Server.builder()
-                .url("some-url")
-                .protocol("not-kafka")
-                .build();
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(builder.servers(Collections.singletonMap("some-server", noKafkaServer)).build());
+    void kafkaTemplateShouldNotBeCreatedForEmptyProperties() {
+        SpringWolfKafkaConfigProperties configProperties = new SpringWolfKafkaConfigProperties();
 
-        Optional<KafkaTemplate<Object, Map<String, ?>>> kafkaTemplate = springwolfKafkaTemplateFactory.buildKafkaTemplate();
+        SpringwolfKafkaTemplateFactory templateFactory = new SpringwolfKafkaTemplateFactory(configProperties);
+
+        Optional<KafkaTemplate<Object, Object>> kafkaTemplate = templateFactory.buildKafkaTemplate();
 
         assertThat(kafkaTemplate).isNotPresent();
     }
 
     @Test
-    public void testNoSpringwolfKafkaProducerCreatedIfNoServersConfigured() {
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(builder.servers(Collections.emptyMap()).build());
+    void kafkaTemplateShouldNotBeCreatedForEmptyProducerConfiguration() {
+        SpringWolfKafkaConfigProperties configProperties = new SpringWolfKafkaConfigProperties();
+        configProperties.setPublishing(new Publishing());
 
-        Optional<KafkaTemplate<Object, Map<String, ?>>> kafkaTemplate = springwolfKafkaTemplateFactory.buildKafkaTemplate();
+        SpringwolfKafkaTemplateFactory templateFactory = new SpringwolfKafkaTemplateFactory(configProperties);
+
+        Optional<KafkaTemplate<Object, Object>> kafkaTemplate = templateFactory.buildKafkaTemplate();
 
         assertThat(kafkaTemplate).isNotPresent();
     }
 
     @Test
-    public void testSpringwolfKafkaProducerCreatedIfKafkaInstanceIsConfigured() {
-        Server noKafkaServer = Server.builder()
-                .url("some-url")
-                .protocol("kafka")
-                .build();
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(builder.servers(Collections.singletonMap("some-server", noKafkaServer)).build());
+    void kafkaTemplateShouldBeCreatedWithProducerConfiguration() {
+        SpringWolfKafkaConfigProperties configProperties = new SpringWolfKafkaConfigProperties();
+        Publishing publishing = new Publishing();
+        publishing.setEnabled(true);
+        publishing.setProducer(new KafkaProperties.Producer());
 
-        Optional<KafkaTemplate<Object, Map<String, ?>>> kafkaTemplate = springwolfKafkaTemplateFactory.buildKafkaTemplate();
+        configProperties.setPublishing(publishing);
+
+        SpringwolfKafkaTemplateFactory templateFactory = new SpringwolfKafkaTemplateFactory(configProperties);
+
+        Optional<KafkaTemplate<Object, Object>> kafkaTemplate = templateFactory.buildKafkaTemplate();
 
         assertThat(kafkaTemplate).isPresent();
+        Map<String, Object> configurationProperties = kafkaTemplate.get().getProducerFactory().getConfigurationProperties();
+
+        assertThat(configurationProperties).isEqualTo(new KafkaProperties.Producer().buildProperties());
     }
 }

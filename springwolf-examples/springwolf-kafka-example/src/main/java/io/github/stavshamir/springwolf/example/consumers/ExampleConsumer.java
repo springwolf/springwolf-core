@@ -12,9 +12,15 @@ import java.util.List;
 @Slf4j
 public class ExampleConsumer {
 
+    private final ExampleService exampleService;
+
+    public ExampleConsumer(ExampleService exampleService) {
+        this.exampleService = exampleService;
+    }
+
     @KafkaListener(topics = "example-topic", containerFactory = "exampleKafkaListenerContainerFactory")
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in example-topic: {}", payload.toString());
+        exampleService.doSomething(payload);
     }
 
     @KafkaListener(topics = "another-topic", containerFactory = "anotherKafkaListenerContainerFactory", groupId = "example-group-id")

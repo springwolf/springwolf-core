@@ -7,10 +7,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.SettableListenableFuture;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +21,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SpringwolfKafkaProducerTest {
@@ -26,10 +31,10 @@ public class SpringwolfKafkaProducerTest {
     private SpringwolfKafkaProducer springwolfKafkaProducer;
 
     @Mock
-    private KafkaTemplate<Object, Map<String, ?>> kafkaTemplate;
+    KafkaTemplate<Object, Object> kafkaTemplate;
 
     @Captor
-    private ArgumentCaptor<ProducerRecord<Object, Map<String, ?>>> recordArgumentCaptor;
+    private ArgumentCaptor<ProducerRecord<Object, Object>> recordArgumentCaptor;
 
     @BeforeEach
     public void setUp() {
@@ -38,7 +43,7 @@ public class SpringwolfKafkaProducerTest {
 
     @Test
     public void testSpringwolfKafkaProducerIsNotEnabledWhenThereIsNoKafkaTemplateConfigured() {
-        Optional<KafkaTemplate<Object, Map<String, ?>>> kafkaTemplateMock = Optional.empty();
+        Optional<KafkaTemplate<Object, Object>> kafkaTemplateMock = Optional.empty();
 
         springwolfKafkaProducer = new SpringwolfKafkaProducer(kafkaTemplateMock);
 
@@ -46,14 +51,19 @@ public class SpringwolfKafkaProducerTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testSendingKafkaMessageWithoutHeaders() {
+        SettableListenableFuture<SendResult<Object,Object>> future = new SettableListenableFuture<>();
+        when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any())).thenReturn(future);
+        future.set(mock(SendResult.class));
+
         Map<String, Object> payload = Collections.singletonMap("some", "field");
 
         springwolfKafkaProducer.send("test-topic", null, null, payload);
 
         verify(kafkaTemplate).send(recordArgumentCaptor.capture());
 
-        ProducerRecord<Object, Map<String, ?>> capturedRecord = recordArgumentCaptor.getValue();
+        ProducerRecord<Object, Object> capturedRecord = recordArgumentCaptor.getValue();
 
         assertThat(capturedRecord.value()).isEqualTo(payload);
         assertThat(capturedRecord.topic()).isEqualTo("test-topic");
@@ -63,7 +73,12 @@ public class SpringwolfKafkaProducerTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testSendingKafkaMessageWithHeaders() {
+        SettableListenableFuture<SendResult<Object,Object>> future = new SettableListenableFuture<>();
+        when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any())).thenReturn(future);
+        future.set(mock(SendResult.class));
+
         Map<String, Object> payload = Collections.singletonMap("some", "field");
         Map<String, String> headers = Collections.singletonMap("header-key", "header");
 
@@ -71,7 +86,7 @@ public class SpringwolfKafkaProducerTest {
 
         verify(kafkaTemplate).send(recordArgumentCaptor.capture());
 
-        ProducerRecord<Object, Map<String, ?>> capturedRecord = recordArgumentCaptor.getValue();
+        ProducerRecord<Object, Object> capturedRecord = recordArgumentCaptor.getValue();
 
         assertThat(capturedRecord.value()).isEqualTo(payload);
         assertThat(capturedRecord.topic()).isEqualTo("test-topic");

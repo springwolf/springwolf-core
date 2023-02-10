@@ -19,21 +19,21 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @RequiredArgsConstructor
 public class SpringwolfKafkaProducer {
 
-    private final Optional<KafkaTemplate<Object, Map<String, ?>>> kafkaTemplate;
+    private final Optional<KafkaTemplate<Object, Object>> kafkaTemplate;
 
     public boolean isEnabled() {
         return kafkaTemplate.isPresent();
     }
 
-    public void send(String topic, String key, Map<String, String> headers, Map<String, ?> payload) {
+    public void send(String topic, String key, Map<String, String> headers, Object payload) {
         if (kafkaTemplate.isPresent()) {
-            kafkaTemplate.get().send(buildProducerRecord(topic, key, headers, payload));
+            kafkaTemplate.get().send(buildProducerRecord(topic, key, headers, payload)).completable().join();
         } else {
             log.warn("Kafka producer is not configured");
         }
     }
 
-    private ProducerRecord<Object, Map<String, ?>> buildProducerRecord(String topic, String key, Map<String, String> headers, Map<String, ?> payload) {
+    private ProducerRecord<Object, Object> buildProducerRecord(String topic, String key, Map<String, String> headers, Object payload) {
         List<Header> recordHeaders = headers != null ? buildHeaders(headers) : Collections.emptyList();
 
         return new ProducerRecord<>(topic, null, null, key, payload, recordHeaders);
