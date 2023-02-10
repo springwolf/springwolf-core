@@ -18,12 +18,16 @@ public class ExampleConsumer {
         this.exampleService = exampleService;
     }
 
-    @KafkaListener(topics = "example-topic", containerFactory = "exampleKafkaListenerContainerFactory")
+    @KafkaListener(topics = "example-topic")
     public void receiveExamplePayload(ExamplePayloadDto payload) {
         exampleService.doSomething(payload);
     }
 
-    @KafkaListener(topics = "another-topic", containerFactory = "anotherKafkaListenerContainerFactory", groupId = "example-group-id")
+    @KafkaListener(
+            topics = "another-topic",
+            groupId = "example-group-id",
+            batch = "true"
+    )
     public void receiveAnotherPayloadBatched(List<AnotherPayloadDto> payloads) {
         log.info("Received new messages in another-topic: {}", payloads.toString());
     }

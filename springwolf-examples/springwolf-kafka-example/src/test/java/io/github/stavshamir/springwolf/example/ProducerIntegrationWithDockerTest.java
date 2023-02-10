@@ -5,13 +5,8 @@ import io.github.stavshamir.springwolf.example.consumers.ExampleService;
 import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.example.producers.ExampleProducer;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
-import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.config.SaslConfigs;
-import org.json.JSONException;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -26,11 +21,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ExecutionException;
 
 import static io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -73,22 +65,16 @@ public class ProducerIntegrationWithDockerTest {
 
     @Test
     @Order(1)
-    void verifyKafkaIsAvailable() throws ExecutionException, InterruptedException {
+    void verifyKafkaIsAvailable() {
         Map<String, Object> consumerProperties = properties.getPublishing().getProducer().buildProperties();
-        Properties adminProperties = new Properties();
-        adminProperties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, consumerProperties.get(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG));
-        adminProperties.put(AdminClientConfig.SECURITY_PROTOCOL_CONFIG, consumerProperties.get(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG));
-        adminProperties.put(SaslConfigs.SASL_MECHANISM, consumerProperties.get(SaslConfigs.SASL_MECHANISM));
-        adminProperties.put(SaslConfigs.SASL_JAAS_CONFIG, consumerProperties.get(SaslConfigs.SASL_JAAS_CONFIG));
-
-        AdminClient adminClient = KafkaAdminClient.create(adminProperties);
-        await().atMost(10, SECONDS)
+        AdminClient adminClient = KafkaAdminClient.create(consumerProperties);
+        await().atMost(60, SECONDS)
                 .untilAsserted(() -> assertThat(adminClient.listTopics().names().get()).contains("example-topic"));
     }
 
     @Test
     @Order(2)
-    public void producerCanUseSpringwolfConfigurationToSendMessage() throws IOException, JSONException, InterruptedException {
+    public void producerCanUseSpringwolfConfigurationToSendMessage() {
         Map<String, String> headers = new HashMap<>();
         headers.put("header-key", "header-value");
         ExamplePayloadDto payload = new ExamplePayloadDto();
@@ -96,7 +82,7 @@ public class ProducerIntegrationWithDockerTest {
         payload.setSomeLong(5);
         payload.setSomeEnum(FOO1);
 
-        springwolfKafkaProducer.send("example-topic",headers, payload);
+        springwolfKafkaProducer.send("example-topic", "key", headers, payload);
         verify(exampleService, timeout(10000)).doSomething(payload);
     }
 }

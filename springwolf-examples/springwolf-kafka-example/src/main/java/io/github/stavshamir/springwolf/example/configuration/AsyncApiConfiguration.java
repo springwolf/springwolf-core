@@ -29,7 +29,7 @@ public class AsyncApiConfiguration {
 
     private final String BOOTSTRAP_SERVERS;
 
-    public AsyncApiConfiguration(@Value("${kafka.bootstrap.servers}") String bootstrapServers) {
+    public AsyncApiConfiguration(@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
         this.BOOTSTRAP_SERVERS = bootstrapServers;
     }
 

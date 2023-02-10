@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -21,6 +22,9 @@ import java.nio.charset.StandardCharsets;
         partitions = 1, brokerProperties = {
         "listeners=PLAINTEXT://localhost:29092",
         "port=29092",
+})
+@TestPropertySource(properties = {
+        "spring.kafka.bootstrap-servers=localhost:29092"
 })
 @DirtiesContext
 public class ApiIntegrationTest {
@@ -40,7 +44,7 @@ public class ApiIntegrationTest {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expectedWithoutServersKafkaUrlPatch = IOUtils.toString(s, StandardCharsets.UTF_8);
         // When running with EmbeddedKafka, localhost is used as hostname
-        String expected = expectedWithoutServersKafkaUrlPatch.replace("kafka:29092", "localhost:29092");
+        String expected = expectedWithoutServersKafkaUrlPatch.replace("kafka:9092", "localhost:29092");
 
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER);
     }
