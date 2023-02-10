@@ -23,7 +23,7 @@ dependencies {
 
     implementation 'io.swagger:swagger-inflector:2.0.8'
     implementation 'io.swagger.core.v3:swagger-core:2.2.8'
-    implementation 'io.swagger.parser.v3:swagger-parser-core:2.1.9'
+    implementation 'io.swagger.parser.v3:swagger-parser-core:2.1.11'
 
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework:spring-context'
