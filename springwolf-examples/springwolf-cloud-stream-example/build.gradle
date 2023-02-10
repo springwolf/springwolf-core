@@ -44,7 +44,7 @@ dependencies {
     implementation 'org.apache.kafka:kafka-streams:3.1.2'
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'org.slf4j:slf4j-api'
-    implementation 'io.swagger.core.v3:swagger-core:2.2.7'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.8'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
