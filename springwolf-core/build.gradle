@@ -32,13 +32,13 @@ dependencies {
 
     implementation 'com.google.guava:guava:31.1-jre'
 
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
 
-    testImplementation 'org.projectlombok:lombok:1.18.24'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testImplementation 'org.projectlombok:lombok:1.18.26'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 
     testImplementation 'org.assertj:assertj-core:3.23.1'
 
