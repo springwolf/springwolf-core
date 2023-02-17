@@ -2,6 +2,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -80,6 +81,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -112,6 +114,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -179,6 +182,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -211,6 +215,7 @@ public class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()

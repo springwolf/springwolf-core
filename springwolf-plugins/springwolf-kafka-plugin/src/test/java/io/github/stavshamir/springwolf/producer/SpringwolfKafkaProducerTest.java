@@ -49,7 +49,7 @@ public class SpringwolfKafkaProducerTest {
     public void testSendingKafkaMessageWithoutHeaders() {
         Map<String, Object> payload = Collections.singletonMap("some", "field");
 
-        springwolfKafkaProducer.send("test-topic", null, payload);
+        springwolfKafkaProducer.send("test-topic", null, null, payload);
 
         verify(kafkaTemplate).send(recordArgumentCaptor.capture());
 
@@ -67,7 +67,7 @@ public class SpringwolfKafkaProducerTest {
         Map<String, Object> payload = Collections.singletonMap("some", "field");
         Map<String, String> headers = Collections.singletonMap("header-key", "header");
 
-        springwolfKafkaProducer.send("test-topic", headers, payload);
+        springwolfKafkaProducer.send("test-topic", null, headers, payload);
 
         verify(kafkaTemplate).send(recordArgumentCaptor.capture());
 

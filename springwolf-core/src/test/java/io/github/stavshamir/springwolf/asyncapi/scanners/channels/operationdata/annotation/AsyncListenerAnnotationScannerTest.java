@@ -66,9 +66,10 @@ public class AsyncListenerAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                .description(null)
+                .description("")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(EMPTY_MAP)
                 .build();
 
         Operation operation = Operation.builder()
@@ -102,6 +103,7 @@ public class AsyncListenerAnnotationScannerTest {
                 .description("description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("TestSchema"))
+                .bindings(EMPTY_MAP)
                 .build();
 
         Operation operation = Operation.builder()

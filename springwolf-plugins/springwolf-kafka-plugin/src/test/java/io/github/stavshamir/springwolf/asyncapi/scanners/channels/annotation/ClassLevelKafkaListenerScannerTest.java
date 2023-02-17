@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -76,12 +77,16 @@ public class ClassLevelKafkaListenerScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Message barMessage = Message.builder()
                 .name(SimpleBar.class.getName())
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleBar.class.getSimpleName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -137,6 +142,7 @@ public class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -169,6 +175,7 @@ public class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Message barMessage = Message.builder()
@@ -176,6 +183,7 @@ public class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleBar.class.getSimpleName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -209,6 +217,7 @@ public class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()

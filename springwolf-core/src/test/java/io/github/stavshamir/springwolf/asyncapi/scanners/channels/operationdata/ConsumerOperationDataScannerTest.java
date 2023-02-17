@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
 import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -51,6 +52,7 @@ public class ConsumerOperationDataScannerTest {
                 .description(description)
                 .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 
@@ -73,6 +75,7 @@ public class ConsumerOperationDataScannerTest {
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                        .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                         .build())
                 .build();
 
@@ -114,6 +117,7 @@ public class ConsumerOperationDataScannerTest {
                 .description(description1)
                 .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 
@@ -122,6 +126,7 @@ public class ConsumerOperationDataScannerTest {
                 .description(description2)
                 .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
                 .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                 .payloadType(AnotherExamplePayloadDto.class)
                 .headers(AsyncHeaders.NOT_USED)
                 .build();
@@ -143,6 +148,7 @@ public class ConsumerOperationDataScannerTest {
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                        .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                         .build(),
                 Message.builder()
                         .name(AnotherExamplePayloadDto.class.getName())
@@ -150,6 +156,7 @@ public class ConsumerOperationDataScannerTest {
                         .title(AnotherExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
+                        .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                         .build()
         );
 

@@ -99,6 +99,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                 .description(operationData.getDescription())
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
+                .bindings(operationData.getMessageBinding())
                 .build();
     }
 

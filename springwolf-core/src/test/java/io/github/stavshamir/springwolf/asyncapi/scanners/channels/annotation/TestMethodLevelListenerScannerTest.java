@@ -72,6 +72,7 @@ public class TestMethodLevelListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("test-message-binding", new TestMethodLevelListenerScanner.TestMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()

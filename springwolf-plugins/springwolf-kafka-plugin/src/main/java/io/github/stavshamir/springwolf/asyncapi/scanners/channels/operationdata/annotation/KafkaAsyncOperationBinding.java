@@ -20,4 +20,29 @@ public @interface KafkaAsyncOperationBinding {
     String clientId() default "";
     String bindingVersion() default "";
 
+    KafkaAsyncMessageBinding messageBinding() default @KafkaAsyncMessageBinding();
+
+    @Retention(RetentionPolicy.CLASS)
+    @Target({})
+    @interface KafkaAsyncMessageBinding {
+
+        KafkaAsyncKey key() default @KafkaAsyncKey(type = KafkaAsyncKey.KafkaKeyTypes.UNDEFINED_KEY);
+
+        String bindingVersion() default "";
+    }
+    @Retention(RetentionPolicy.CLASS)
+    @Target({})
+    @interface KafkaAsyncKey {
+
+        KafkaKeyTypes type() default KafkaKeyTypes.STRING_KEY;
+
+        String example() default "";
+
+        String description() default "";
+
+        enum KafkaKeyTypes {
+            UNDEFINED_KEY,
+            STRING_KEY
+        }
+    }
 }

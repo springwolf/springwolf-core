@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.ChannelBinding;
+import com.asyncapi.v2.binding.MessageBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -18,7 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -66,12 +73,18 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
 
     /**
      * @param annotation An instance of a listener annotation.
-     * @return A map containing an channel binding pointed to by the protocol binding name.
+     * @return A map containing a channel binding pointed to by the protocol binding name.
      */
     protected abstract Map<String, ? extends ChannelBinding> buildChannelBinding(ClassAnnotation annotation);
 
     /**
-     * Can be overriden by implementations
+     * @param method The specific method. Can be used to extract message binding from an annotation.
+     * @return A map containing a message binding pointed to by the protocol binding name.
+     */
+    protected abstract Map<String, ? extends MessageBinding> buildMessageBinding(Method method);
+
+    /**
+     * Can be overridden by implementations
      *
      * @param method The specific method. Can be used to extract the payload type
      * @return The AsyncHeaders
@@ -159,6 +172,7 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
                 .title(modelName)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
+                .bindings(buildMessageBinding(method))
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.asyncapi.v2.binding.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.info.Info;
@@ -53,13 +54,16 @@ public class DefaultAsyncApiServiceTest {
                     .description("producer-topic-description")
                     .payloadType(String.class)
                     .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                    .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
                     .build();
 
             ConsumerData kafkaConsumerData = ConsumerData.builder()
                     .channelName("consumer-topic")
                     .description("consumer-topic-description")
                     .payloadType(String.class)
-                    .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding())).build();
+                    .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                    .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                    .build();
 
             return AsyncApiDocket.builder()
                     .info(info)
@@ -106,6 +110,7 @@ public class DefaultAsyncApiServiceTest {
         assertThat(channel.getSubscribe()).isNotNull();
         final Message message = (Message) channel.getSubscribe().getMessage();
         assertThat(message.getDescription()).isEqualTo("producer-topic-description");
+        assertThat(message.getBindings()).isEqualTo(ImmutableMap.of("kafka", new KafkaMessageBinding()));
     }
 
     @Test
@@ -120,6 +125,7 @@ public class DefaultAsyncApiServiceTest {
         assertThat(channel.getPublish()).isNotNull();
         final Message message = (Message) channel.getPublish().getMessage();
         assertThat(message.getDescription()).isEqualTo("consumer-topic-description");
+        assertThat(message.getBindings()).isEqualTo(ImmutableMap.of("kafka", new KafkaMessageBinding()));
     }
 
 }

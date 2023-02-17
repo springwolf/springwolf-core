@@ -1,7 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message;
 
+import com.asyncapi.v2.binding.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import lombok.*;
+
+import java.util.Map;
 
 /**
  * Describes a message received on a given channel and operation.
@@ -10,7 +13,6 @@ import lombok.*;
  */
 @Data
 @Builder
-@EqualsAndHashCode(of = {"name"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
@@ -33,4 +35,6 @@ public class Message {
     private PayloadReference payload;
 
     private HeaderReference headers;
+
+    private Map<String, ? extends MessageBinding> bindings;
 }

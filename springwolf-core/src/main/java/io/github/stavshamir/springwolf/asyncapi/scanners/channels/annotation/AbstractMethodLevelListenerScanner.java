@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.ChannelBinding;
+import com.asyncapi.v2.binding.MessageBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -17,7 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -63,6 +68,12 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
     protected abstract Map<String, ? extends OperationBinding> buildOperationBinding(T annotation);
 
     /**
+     * @param annotation An instance of a listener annotation.
+     * @return A map containing a message binding pointed to by the protocol binding name.
+     */
+    protected abstract Map<String, ? extends MessageBinding> buildMessageBinding(T annotation);
+
+    /**
      * @param method The listener method.
      * @return The class object of the payload received by the listener.
      */
@@ -88,9 +99,10 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
 
         Map<String, ? extends ChannelBinding> channelBinding = buildChannelBinding(annotation);
         Map<String, ? extends OperationBinding> operationBinding = buildOperationBinding(annotation);
+        Map<String, ? extends MessageBinding> messageBinding = buildMessageBinding(annotation);
         Class<?> payload = getPayloadType(method);
         String operationId = channelName + "_publish_" + method.getName();
-        ChannelItem channel = buildChannel(channelBinding, payload, operationBinding, operationId);
+        ChannelItem channel = buildChannel(channelBinding, payload, operationBinding, messageBinding, operationId);
 
         return Maps.immutableEntry(channelName, channel);
     }
@@ -98,6 +110,7 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
     private ChannelItem buildChannel(Map<String, ? extends ChannelBinding> channelBinding,
                                      Class<?> payloadType,
                                      Map<String, ? extends OperationBinding> operationBinding,
+                                     Map<String, ? extends MessageBinding> messageBinding,
                                      String operationId) {
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
@@ -107,6 +120,7 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
                 .title(modelName)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
+                .bindings(messageBinding)
                 .build();
 
         Operation operation = Operation.builder()

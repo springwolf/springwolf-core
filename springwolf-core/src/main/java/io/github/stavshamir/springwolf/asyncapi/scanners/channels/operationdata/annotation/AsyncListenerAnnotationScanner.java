@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
 
+import com.asyncapi.v2.binding.MessageBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor;
@@ -32,6 +33,8 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
 
     private final List<OperationBindingProcessor> operationBindingProcessors;
 
+    private final List<MessageBindingProcessor> messageBindingProcessors;
+
     @Override
     public void setEmbeddedValueResolver(StringValueResolver resolver) {
         this.resolver = resolver;
@@ -63,7 +66,8 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
     private OperationData mapMethodToOperationData(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
-        Map<String, OperationBinding> operationBindings = AsyncAnnotationScannerUtil.processBindingFromAnnotation(method, operationBindingProcessors);
+        Map<String, OperationBinding> operationBindings = AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
+        Map<String, MessageBinding> messageBindings = AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
 
         Class<AsyncListener> annotationClass = AsyncListener.class;
         AsyncListener annotation = Optional.of(method.getAnnotation(annotationClass))
@@ -78,6 +82,7 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
                 .headers(AsyncAnnotationScannerUtil.getAsyncHeaders(op))
                 .payloadType(payloadType)
                 .operationBinding(operationBindings)
+                .messageBinding(messageBindings)
                 .build();
     }
 

@@ -1,12 +1,16 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import io.github.stavshamir.springwolf.asyncapi.dtos.KafkaMessageDto;
+import io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX;
@@ -22,8 +26,8 @@ public class SpringwolfKafkaController {
     private final SpringwolfKafkaProducer kafkaProducer;
 
     @PostMapping("/publish")
-    public void publish(@RequestParam String topic, @RequestBody KafkaMessageDto kafkaMessage) {
-        if(kafkaMessage.getPayload() == null) {
+    public void publish(@RequestParam String topic, @RequestBody MessageDto message) {
+        if(message.getPayload() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Message payload is required");
         }
 
@@ -32,8 +36,10 @@ public class SpringwolfKafkaController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Kafka producer is not enabled");
         }
 
-        log.debug("Publishing to kafka topic {}: {}", topic, kafkaMessage);
-        kafkaProducer.send(topic, kafkaMessage.getHeaders(), kafkaMessage.getPayload());
+        String kafkaKey = message.getBindings() != null ? message.getBindings().get("key") : null;
+        log.debug("Publishing to kafka topic {} with key {}: {}", topic, kafkaKey, message);
+
+        kafkaProducer.send(topic, kafkaKey, message.getHeaders(), message.getPayload());
     }
 
 }

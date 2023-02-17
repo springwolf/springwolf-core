@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
 import com.asyncapi.v2.binding.OperationBinding;
+import com.asyncapi.v2.binding.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.channel.ChannelItem;
 import com.asyncapi.v2.model.channel.operation.Operation;
@@ -15,6 +16,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.Data;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
@@ -67,6 +69,7 @@ public class DefaultAsyncApiSerializerServiceTest {
                 .name("io.github.stavshamir.springwolf.ExamplePayload")
                 .title("Example Payload")
                 .payload(PayloadReference.fromModelName("ExamplePayload"))
+                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding(new StringSchema(), "binding-version-1")))
                 .build();
 
         OperationBinding operationBinding = KafkaOperationBinding.builder().groupId("myGroupId").build();

@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.ChannelBinding;
+import com.asyncapi.v2.binding.MessageBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
@@ -31,6 +32,11 @@ public class TestMethodLevelListenerScanner extends AbstractMethodLevelListenerS
     }
 
     @Override
+    protected Map<String, ? extends MessageBinding> buildMessageBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+        return ImmutableMap.of("test-message-binding", new TestMessageBinding());
+    }
+
+    @Override
     protected Class<?> getPayloadType(Method method) {
         Class<?>[] parameterTypes = method.getParameterTypes();
         if (parameterTypes.length != 1) {
@@ -47,6 +53,10 @@ public class TestMethodLevelListenerScanner extends AbstractMethodLevelListenerS
 
     @EqualsAndHashCode(callSuper = true)
     public static class TestOperationBinding extends OperationBinding {
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    public static class TestMessageBinding extends MessageBinding {
     }
 
 }

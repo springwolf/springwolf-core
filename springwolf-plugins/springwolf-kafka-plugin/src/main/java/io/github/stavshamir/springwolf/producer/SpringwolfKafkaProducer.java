@@ -25,18 +25,18 @@ public class SpringwolfKafkaProducer {
         return kafkaTemplate.isPresent();
     }
 
-    public void send(String topic, Map<String, String> headers, Map<String, ?> payload) {
+    public void send(String topic, String key, Map<String, String> headers, Map<String, ?> payload) {
         if (kafkaTemplate.isPresent()) {
-            kafkaTemplate.get().send(buildProducerRecord(topic, headers, payload));
+            kafkaTemplate.get().send(buildProducerRecord(topic, key, headers, payload));
         } else {
             log.warn("Kafka producer is not configured");
         }
     }
 
-    private ProducerRecord<Object, Map<String, ?>> buildProducerRecord(String topic, Map<String, String> headers, Map<String, ?> payload) {
+    private ProducerRecord<Object, Map<String, ?>> buildProducerRecord(String topic, String key, Map<String, String> headers, Map<String, ?> payload) {
         List<Header> recordHeaders = headers != null ? buildHeaders(headers) : Collections.emptyList();
 
-        return new ProducerRecord<>(topic, null, null, null, payload, recordHeaders);
+        return new ProducerRecord<>(topic, null, null, key, payload, recordHeaders);
     }
 
     private List<Header> buildHeaders(Map<String, String> headers) {

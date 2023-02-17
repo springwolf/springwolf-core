@@ -33,7 +33,7 @@ public class SpringwolfAmqpProducer {
         this.rabbitTemplate = rabbitTemplates.isEmpty() ? Optional.empty() : Optional.of(rabbitTemplates.get(0));
     }
 
-    public void send(String channelName, Map<String, Object> payload) {
+    public void send(String channelName, Map<String, ?> payload) {
         ChannelItem channelItem = channelsService.getChannels().get(channelName);
 
         String exchange = getExchangeName(channelItem);

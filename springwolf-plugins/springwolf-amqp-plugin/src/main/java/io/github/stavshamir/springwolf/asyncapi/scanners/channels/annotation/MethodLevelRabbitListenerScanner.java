@@ -1,8 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.ChannelBinding;
+import com.asyncapi.v2.binding.MessageBinding;
 import com.asyncapi.v2.binding.OperationBinding;
 import com.asyncapi.v2.binding.amqp.AMQPChannelBinding;
+import com.asyncapi.v2.binding.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
@@ -105,6 +107,12 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
     @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(RabbitListener annotation) {
         return ImmutableMap.of("amqp", AMQPOperationBinding.builder().cc(getRoutingKeys(annotation)).build());
+    }
+
+    @Override
+    protected Map<String, ? extends MessageBinding> buildMessageBinding(RabbitListener annotation) {
+        // currently the feature to define amqp message binding is not implemented.
+        return ImmutableMap.of("amqp", new AMQPMessageBinding());
     }
 
     private List<String> getRoutingKeys(RabbitListener annotation) {
