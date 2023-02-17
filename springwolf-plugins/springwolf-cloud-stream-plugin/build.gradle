@@ -40,7 +40,8 @@ dependencies {
 
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
     testImplementation 'org.projectlombok:lombok:1.18.26'
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
     testImplementation 'org.assertj:assertj-core:3.24.2'
 }
 
