@@ -174,6 +174,7 @@ export class AsyncApiMapperService {
     }
 
     private mapSchema(schemaName: string, schema: ServerAsyncApiSchema): Schema {
+      const anchorUrl = schema.$ref ? AsyncApiMapperService.BASE_URL + schema.$ref?.split('/')?.pop() : undefined
       const properties = schema.properties !== undefined ? this.mapSchemas(schema.properties) : undefined
       const items = schema.items !== undefined ? this.mapSchema(schema.$ref+"[]", schema.items) : undefined;
       const example = schema.example !== undefined ? new Example(schema.example) : undefined
@@ -181,7 +182,7 @@ export class AsyncApiMapperService {
         name: schema.$ref,
         description: schema.description,
         anchorIdentifier: '#' + schemaName,
-        anchorUrl: AsyncApiMapperService.BASE_URL + schema.$ref?.split('/')?.pop(),
+        anchorUrl: anchorUrl,
         type: schema.type,
         items: items,
         format: schema.format,
