@@ -47,6 +47,6 @@ public class ApiIntegrationWithDockerTest {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
 
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 }

@@ -38,6 +38,6 @@ public class ApiIntegrationTest {
         // When running with EmbeddedKafka, localhost is used as hostname
         String expected = expectedWithoutServersKafkaUrlPatch.replace("\"kafka:29092\"", "\"localhost:29092\"");
 
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 }

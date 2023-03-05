@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 @Slf4j
 @Service
@@ -19,7 +19,7 @@ import java.util.TreeMap;
 public class DefaultChannelsService implements ChannelsService {
 
     private final List<? extends ChannelsScanner> channelsScanners;
-    private final Map<String, ChannelItem> channels = new TreeMap<>();
+    private final Map<String, ChannelItem> channels = new HashMap<>();
 
     @PostConstruct
     void findChannels() {

@@ -28,6 +28,6 @@ public class OpenApiGeneratorTest {
         String actual = IOUtils.toString(actualStream, StandardCharsets.UTF_8);
         System.out.println("Got: " + actual);
 
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 }

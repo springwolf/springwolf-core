@@ -24,7 +24,7 @@ public class KafkaOperationBindingSerializerTest {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().clientId("testClientId").build();
         String actual = objectMapper.writeValueAsString(binding);
         String expected = "{\"clientId\":{\"type\":\"string\",\"enum\":[\"testClientId\"]}}";
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
 
@@ -33,7 +33,7 @@ public class KafkaOperationBindingSerializerTest {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().clientId("").build();
         String actual = objectMapper.writeValueAsString(binding);
         String expected = "{\"clientId\":{\"type\":\"string\",\"enum\":[\"\"]}}";
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
 
@@ -42,7 +42,7 @@ public class KafkaOperationBindingSerializerTest {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().groupId("testGroupId").build();
         String actual = objectMapper.writeValueAsString(binding);
         String expected = "{\"groupId\":{\"type\":\"string\",\"enum\":[\"testGroupId\"]}}";
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
 
@@ -51,7 +51,7 @@ public class KafkaOperationBindingSerializerTest {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().groupId("").build();
         String actual = objectMapper.writeValueAsString(binding);
         String expected = "{\"groupId\":{\"type\":\"string\",\"enum\":[\"\"]}}";
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
 
@@ -60,7 +60,7 @@ public class KafkaOperationBindingSerializerTest {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().bindingVersion("v1").build();
         String actual = objectMapper.writeValueAsString(binding);
         String expected = "{\"bindingVersion\":{\"type\":\"string\",\"enum\":[\"v1\"]}}";
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
 
@@ -69,7 +69,7 @@ public class KafkaOperationBindingSerializerTest {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().bindingVersion("").build();
         String actual = objectMapper.writeValueAsString(binding);
         String expected = "{\"bindingVersion\":{\"type\":\"string\",\"enum\":[\"\"]}}";
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class KafkaOperationBindingSerializerTest {
         KafkaOperationBinding binding = new KafkaOperationBinding();
         String actual = objectMapper.writeValueAsString(binding);
         String expected = "{}";
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class KafkaOperationBindingSerializerTest {
                 "\"groupId\":{\"type\":\"string\",\"enum\":[\"testGroupId\"]}," +
                 "\"bindingVersion\":{\"type\":\"string\",\"enum\":[\"v1\"]}" +
                 "}";
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
 }
