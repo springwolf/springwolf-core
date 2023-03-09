@@ -45,7 +45,10 @@ dependencies {
     testImplementation('org.apache.kafka:kafka-streams:3.4.0')
 }
 
-jar.enabled = true
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
 bootJar.enabled = false
 
 java {

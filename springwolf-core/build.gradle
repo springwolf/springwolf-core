@@ -47,7 +47,10 @@ dependencies {
     testImplementation 'org.springframework.kafka:spring-kafka'
 }
 
-jar.enabled = true
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
 bootJar.enabled = false
 
 java {
