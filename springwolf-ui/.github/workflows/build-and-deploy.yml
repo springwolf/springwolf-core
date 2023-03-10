@@ -43,10 +43,7 @@ jobs:
 
       - name: Build gh-pages
         if: github.ref == 'refs/heads/master'
-        run: |
-          ./gradlew npmInstall
-          npx ng build --base-href=./
-          cp dist/springwolf-ui/asyncapi-ui.html dist/springwolf-ui/index.html
+        run: ./gradlew buildPages
       - name: Deploy to gh pages 🚀
         if: github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4
