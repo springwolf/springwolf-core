@@ -40,6 +40,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "kafka" : { }
           }
         }
       },
@@ -63,6 +66,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "kafka" : { }
           }
         }
       },
@@ -87,6 +93,18 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/CloudEventHeadersForAnotherPayloadDtoEndpoint"
+            },
+            "bindings" : {
+              "kafka" : {
+                "key" : {
+                  "type" : "string",
+                  "description" : "Kafka Producer Message Key",
+                  "example" : "example-key",
+                  "exampleSetFlag" : true,
+                  "types" : [ "string" ]
+                },
+                "bindingVersion" : "1"
+              }
             }
           }, {
             "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -96,6 +114,18 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/SpringDefaultHeaders"
+            },
+            "bindings" : {
+              "kafka" : {
+                "key" : {
+                  "type" : "string",
+                  "description" : "Kafka Producer Message Key",
+                  "example" : "example-key",
+                  "exampleSetFlag" : true,
+                  "types" : [ "string" ]
+                },
+                "bindingVersion" : "1"
+              }
             }
           } ]
         }
@@ -119,6 +149,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "kafka" : { }
           }
         }
       },
@@ -142,6 +175,9 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/SpringDefaultHeaders-AnotherPayloadDto"
+            },
+            "bindings" : {
+              "kafka" : { }
             }
           }, {
             "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -151,6 +187,9 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/SpringDefaultHeaders-ExamplePayloadDto"
+            },
+            "bindings" : {
+              "kafka" : { }
             }
           }, {
             "name" : "javax.money.MonetaryAmount",
@@ -160,6 +199,9 @@
             },
             "headers" : {
               "$ref" : "#/components/schemas/SpringDefaultHeaders-MonetaryAmount"
+            },
+            "bindings" : {
+              "kafka" : { }
             }
           } ]
         }
