@@ -44,7 +44,7 @@ class AsyncAnnotationScannerUtilTest {
         Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
 
         // when
-        Map<String, OperationBinding> bindings = AsyncAnnotationScannerUtil.processBindingFromAnnotation(m, Collections.singletonList(new TestOperationBindingProcessor()));
+        Map<String, OperationBinding> bindings = AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(m, Collections.singletonList(new TestOperationBindingProcessor()));
 
         // then
         assertEquals(Maps.newHashMap(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING), bindings);

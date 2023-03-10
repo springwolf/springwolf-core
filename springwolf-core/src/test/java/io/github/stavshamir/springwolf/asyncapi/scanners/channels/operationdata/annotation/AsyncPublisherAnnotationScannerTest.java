@@ -134,6 +134,10 @@ public class AsyncPublisherAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
+                .description("")
+                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(EMPTY_MAP)
                 .build();
 
         Operation operation1 = Operation.builder()
