@@ -12,10 +12,10 @@ import { Component, OnInit, Input } from '@angular/core';
 export class JsonComponent implements OnInit {
 
   @Input() data: any;
-  json: string;
+  @Input() json: string;
 
   ngOnInit(): void {
-    this.json = JSON.stringify(this.data, null, 2);
+    this.json = this.json === undefined ? JSON.stringify(this.data, null, 2) : this.json;
   }
 
 }

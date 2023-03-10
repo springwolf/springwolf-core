@@ -33,3 +33,7 @@ button {
   padding: 6px;
   font-weight: normal;
 }
+
+[hidden] {
+  display: none !important;
+}
