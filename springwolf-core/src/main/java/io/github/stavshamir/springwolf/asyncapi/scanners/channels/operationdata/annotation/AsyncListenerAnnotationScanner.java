@@ -17,10 +17,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toSet;
+import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -48,38 +49,40 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
     @Override
     protected List<OperationData> getOperationData() {
         return componentClassScanner.scan().stream()
-                .map(this::getAnnotatedMethods)
-                .flatMap(Collection::stream)
-                .map(this::mapMethodToOperationData)
+                .flatMap(this::getAnnotatedMethods)
+                .flatMap(this::toOperationData)
                 .collect(Collectors.toList());
     }
 
-    private Set<Method> getAnnotatedMethods(Class<?> type) {
+    private Stream<Method> getAnnotatedMethods(Class<?> type) {
         Class<AsyncListener> annotationClass = AsyncListener.class;
+        Class<AsyncListeners> annotationClassRepeatable = AsyncListeners.class;
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(annotationClass))
-                .collect(toSet());
+                .filter(method -> method.isAnnotationPresent(annotationClass) || method.isAnnotationPresent(annotationClassRepeatable));
     }
 
-    private OperationData mapMethodToOperationData(Method method) {
+    private Stream<OperationData> toOperationData(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
         Map<String, OperationBinding> operationBindings = AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
         Map<String, MessageBinding> messageBindings = AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
 
         Class<AsyncListener> annotationClass = AsyncListener.class;
-        AsyncListener annotation = Optional.of(method.getAnnotation(annotationClass))
-                .orElseThrow(() -> new IllegalArgumentException("Method must be annotated with " + annotationClass.getName()));
+        return Arrays
+                .stream(method.getAnnotationsByType(annotationClass))
+                .map(annotation -> toConsumerData(method, operationBindings, messageBindings, annotation));
+    }
 
+    private ConsumerData toConsumerData(Method method, Map<String, OperationBinding> operationBindings, Map<String, MessageBinding> messageBindings, AsyncListener annotation) {
         AsyncOperation op = annotation.operation();
         Class<?> payloadType = op.payloadType() != Object.class ? op.payloadType() :
                 SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
         return ConsumerData.builder()
                 .channelName(resolver.resolveStringValue(op.channelName()))
                 .description(resolver.resolveStringValue(op.description()))
-                .headers(AsyncAnnotationScannerUtil.getAsyncHeaders(op))
+                .headers(AsyncAnnotationScannerUtil.getAsyncHeaders(op, resolver))
                 .payloadType(payloadType)
                 .operationBinding(operationBindings)
                 .messageBinding(messageBindings)

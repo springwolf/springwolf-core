@@ -7,6 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.groupingBy;
 
 class AsyncAnnotationScannerUtil {
-    public static AsyncHeaders getAsyncHeaders(AsyncOperation op) {
+    public static AsyncHeaders getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
         if (op.headers().values().length == 0) {
             return AsyncHeaders.NOT_DOCUMENTED;
         }
@@ -27,13 +28,13 @@ class AsyncAnnotationScannerUtil {
         Arrays.stream(op.headers().values())
                 .collect(groupingBy(AsyncOperation.Headers.Header::name))
                 .forEach((headerName, headers) -> {
-                    List<String> values = getHeaderValues(headers);
+                    List<String> values = getHeaderValues(headers, resolver);
                     String exampleValue = values.stream().findFirst().orElse(null);
                     asyncHeaders.addHeader(
                             AsyncHeaderSchema
                                     .headerBuilder()
-                                    .headerName(headerName)
-                                    .description(getDescription(headers))
+                                    .headerName(resolver.resolveStringValue(headerName))
+                                    .description(getDescription(headers, resolver))
                                     .enumValue(values)
                                     .example(exampleValue)
                                     .build()
@@ -43,18 +44,20 @@ class AsyncAnnotationScannerUtil {
         return asyncHeaders;
     }
 
-    private static List<String> getHeaderValues(List<AsyncOperation.Headers.Header> value) {
+    private static List<String> getHeaderValues(List<AsyncOperation.Headers.Header> value, StringValueResolver resolver) {
         return value
                 .stream()
                 .map(AsyncOperation.Headers.Header::value)
+                .map(resolver::resolveStringValue)
                 .sorted()
                 .collect(Collectors.toList());
     }
 
-    private static String getDescription(List<AsyncOperation.Headers.Header> value) {
+    private static String getDescription(List<AsyncOperation.Headers.Header> value, StringValueResolver resolver) {
         return value
                 .stream()
                 .map(AsyncOperation.Headers.Header::description)
+                .map(resolver::resolveStringValue)
                 .filter(StringUtils::isNotBlank)
                 .sorted()
                 .findFirst()
