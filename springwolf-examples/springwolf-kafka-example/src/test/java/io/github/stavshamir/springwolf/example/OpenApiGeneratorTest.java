@@ -26,10 +26,11 @@ public class OpenApiGeneratorTest {
 
         // When running with EmbeddedKafka, localhost is used as hostname
         String expectedWithoutServersKafkaUrlPatch = IOUtils.toString(expectedStream, StandardCharsets.UTF_8);
-        String expected = expectedWithoutServersKafkaUrlPatch.replace("kafka:9092", "localhost:29092");
+        String expected = expectedWithoutServersKafkaUrlPatch.replace("kafka:29092", "localhost:29092");
 
         InputStream actualStream = this.getClass().getResourceAsStream("/openapi-generated.json");
         String actual = IOUtils.toString(actualStream, StandardCharsets.UTF_8);
+        System.out.println("Got: " + actual);
 
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER);
     }
