@@ -5,8 +5,8 @@ services:
     links:
       - kafka
     environment:
-      BOOTSTRAP_SERVER: kafka:9092
-      BOOTSTRAP_SERVER_SASL: kafka:9093
+      BOOTSTRAP_SERVER: kafka:29092
+      BOOTSTRAP_SERVER_SASL: kafka:29093
     ports:
       - "8080:8080"
     depends_on:
@@ -30,14 +30,14 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - "29092:29092" # plaintext - no authentication
-      - "29093:29093" # sasl
+      - "9092:9092" # plaintext - no authentication
+      - "9093:9093" # sasl
     volumes:
       - ./broker_jaas.conf:/etc/kafka/secrets/broker_jaas.conf
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092,PLAINTEXT_HOST://kafka:9092, SASL_PLAINTEXT://localhost:29093,SASL_PLAINTEXT_HOST://kafka:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_HOST://kafka:29092, SASL_PLAINTEXT://localhost:9093,SASL_PLAINTEXT_HOST://kafka:29093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,  SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_PLAINTEXT_HOST:SASL_PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_HOST
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1

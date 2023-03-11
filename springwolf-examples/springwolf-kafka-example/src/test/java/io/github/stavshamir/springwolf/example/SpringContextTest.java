@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SpringContextTest {
 
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
-    @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:29092", "port=29092" })
+    @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
     @DirtiesContext
     public static class AsyncApiDocketTest {
 
@@ -36,7 +36,7 @@ public class SpringContextTest {
     }
 
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
-    @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:29092", "port=29092" })
+    @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
     @DirtiesContext
     @TestPropertySource(properties = {
             "customAsyncApiDocketBean=false",
