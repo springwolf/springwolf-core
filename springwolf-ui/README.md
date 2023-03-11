@@ -1,9 +1,9 @@
-![version](https://img.shields.io/github/v/release/springwolf/springwolf-ui)
+# <img src="src/assets/springwolf-logo.png" alt="Logo" width="100"/> Springwolf UI
+##### Web UI for Springwolf
+
+![version](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-ui?color=green&label=release&style=plastic)
 ![springwolf-ui](https://github.com/springwolf/springwolf-ui/workflows/springwolf-ui/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
-# Springwolf UI
-##### Web UI for Springwolf
 
 ## Usage
 Add the following dependencies:
