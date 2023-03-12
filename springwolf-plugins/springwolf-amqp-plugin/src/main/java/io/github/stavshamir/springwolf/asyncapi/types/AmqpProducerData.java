@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
 import com.asyncapi.v2.binding.amqp.AMQPChannelBinding;
+import com.asyncapi.v2.binding.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import com.google.common.collect.ImmutableMap;
 import lombok.Builder;
@@ -23,6 +24,9 @@ public class AmqpProducerData extends ProducerData {
 
         this.operationBinding = ImmutableMap.of("amqp", AMQPOperationBinding.builder()
                 .cc(Collections.singletonList(routingKey))
+                .build());
+
+        this.messageBinding = ImmutableMap.of("amqp", AMQPMessageBinding.builder()
                 .build());
 
         this.payloadType = payloadType;

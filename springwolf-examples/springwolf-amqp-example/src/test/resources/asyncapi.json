@@ -122,6 +122,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : { }
           }
         }
       },
@@ -159,6 +162,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : { }
           }
         }
       },
@@ -197,7 +203,9 @@
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
-          "bindings" : { }
+          "bindings" : {
+            "amqp" : { }
+          }
         }
       }
     },
