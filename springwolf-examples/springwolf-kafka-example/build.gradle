@@ -43,6 +43,7 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
     testImplementation 'org.skyscreamer:jsonassert:1.5.1'
     testImplementation 'commons-io:commons-io:2.11.0'
+    testImplementation 'org.awaitility:awaitility:4.2.0'
 }
 
 docker {

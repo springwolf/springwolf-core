@@ -18,7 +18,7 @@ import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.D
 
 @Service
 @Slf4j
-@KafkaListener(topics = "multi-payload-topic", containerFactory = "exampleKafkaListenerContainerFactory")
+@KafkaListener(topics = "multi-payload-topic")
 public class ExampleClassLevelKafkaListener {
 
     @KafkaHandler
@@ -34,7 +34,7 @@ public class ExampleClassLevelKafkaListener {
     @KafkaHandler
     @AsyncListener(operation = @AsyncOperation(
             channelName = "multi-payload-topic",
-            description = "Override description in the AsyncListener annotation with servers at ${kafka.bootstrap.servers}",
+            description = "Override description in the AsyncListener annotation with servers at ${spring.kafka.bootstrap-servers}",
             headers = @AsyncOperation.Headers(
                     schemaName = "SpringKafkaDefaultHeaders-MonetaryAmount",
                     values = {

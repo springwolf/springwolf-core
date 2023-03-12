@@ -12,12 +12,22 @@ import java.util.List;
 @Slf4j
 public class ExampleConsumer {
 
-    @KafkaListener(topics = "example-topic", containerFactory = "exampleKafkaListenerContainerFactory")
-    public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in example-topic: {}", payload.toString());
+    private final ExampleService exampleService;
+
+    public ExampleConsumer(ExampleService exampleService) {
+        this.exampleService = exampleService;
     }
 
-    @KafkaListener(topics = "another-topic", containerFactory = "anotherKafkaListenerContainerFactory", groupId = "example-group-id")
+    @KafkaListener(topics = "example-topic")
+    public void receiveExamplePayload(ExamplePayloadDto payload) {
+        exampleService.doSomething(payload);
+    }
+
+    @KafkaListener(
+            topics = "another-topic",
+            groupId = "example-group-id",
+            batch = "true"
+    )
     public void receiveAnotherPayloadBatched(List<AnotherPayloadDto> payloads) {
         log.info("Received new messages in another-topic: {}", payloads.toString());
     }

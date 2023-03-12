@@ -14,8 +14,8 @@ import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPR
 public class SpringwolfKafkaProducerConfiguration {
 
     @Bean
-    public SpringwolfKafkaProducer springwolfKafkaProducer(@Autowired SpringwolfKafkaTemplateFactory templateFactory) {
-        return new SpringwolfKafkaProducer(templateFactory.buildKafkaTemplate());
+    public SpringwolfKafkaProducer springwolfKafkaProducer(@Autowired SpringwolfKafkaTemplateFactory producerTemplateFactory) {
+        return new SpringwolfKafkaProducer(producerTemplateFactory.buildKafkaTemplate());
     }
 
 }

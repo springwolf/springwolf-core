@@ -43,14 +43,10 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
         private Optional<SpringwolfKafkaProducer> springwolfKafkaProducer;
 
         @Autowired
-        private Optional<SpringwolfKafkaTemplateFactory> kafkaTemplateFactory;
-
-        @Autowired
         private Optional<SpringwolfKafkaController> springwolfKafkaController;
 
         @Test
         public void springwolfKafkaTemplateShouldBePresentInSpringContext() {
-            assertThat(kafkaTemplateFactory).isPresent();
             assertThat(springwolfKafkaProducer).isPresent();
             assertThat(springwolfKafkaController).isPresent();
         }
@@ -60,7 +56,6 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
             SpringwolfKafkaProducerConfiguration.class,
-            SpringwolfKafkaTemplateFactory.class,
             SpringwolfKafkaController.class
     })
     @EnableConfigurationProperties(value = {
@@ -81,14 +76,10 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
         private Optional<SpringwolfKafkaProducer> springwolfKafkaProducer;
 
         @Autowired
-        private Optional<SpringwolfKafkaTemplateFactory> kafkaTemplateFactory;
-
-        @Autowired
         private Optional<SpringwolfKafkaController> springwolfKafkaController;
 
         @Test
         public void springwolfKafkaTemplateShouldNotBePresentInSpringContext() {
-            assertThat(kafkaTemplateFactory).isNotPresent();
             assertThat(springwolfKafkaProducer).isNotPresent();
             assertThat(springwolfKafkaController).isNotPresent();
         }
