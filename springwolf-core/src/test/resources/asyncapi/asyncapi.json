@@ -45,15 +45,13 @@
             "$ref" : "#/components/schemas/ExamplePayload"
           },
           "bindings" : {
-            "kafka": {
-              "key": {
-                "type": "string",
-                "exampleSetFlag": false,
-                "types": [
-                  "string"
-                ]
+            "kafka" : {
+              "key" : {
+                "type" : "string",
+                "exampleSetFlag" : false,
+                "types" : [ "string" ]
               },
-              "bindingVersion": "binding-version-1"
+              "bindingVersion" : "binding-version-1"
             }
           }
         }
@@ -66,9 +64,12 @@
         "type" : "object",
         "properties" : {
           "s" : {
-            "type" : "string"
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
           }
-        }
+        },
+        "exampleSetFlag" : false
       }
     }
   },

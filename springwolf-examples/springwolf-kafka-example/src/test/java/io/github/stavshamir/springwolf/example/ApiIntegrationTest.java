@@ -40,6 +40,6 @@ public class ApiIntegrationTest {
         String actual = restTemplate.getForObject(url, String.class);
         System.out.println("Got: " + actual);
 
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 }

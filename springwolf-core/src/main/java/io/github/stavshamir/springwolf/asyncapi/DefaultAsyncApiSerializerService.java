@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyChannelBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyOperationBindingSerializer;
@@ -30,7 +31,12 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
 
     @PostConstruct
     void postConstruct() {
+        jsonMapper.setConfig(
+            jsonMapper.getSerializationConfig()
+                .with(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+        );
         jsonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
         registerKafkaOperationBindingSerializer();
     }
 

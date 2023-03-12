@@ -35,7 +35,7 @@ public class AsyncApiConfiguration {
     public AsyncApiDocket asyncApiDocket() {
         Info info = Info.builder()
                 .version("1.0.0")
-                .title("Springwolf example project - Kafka")
+                .title("Springwolf example project - CloudStream")
                 .contact(Contact.builder().name("springwolf").url("https://github.com/springwolf/springwolf-core").email("example@example.com").build())
                 .description("Springwolf example project")
                 .license(License.builder().name("Apache License 2.0").build())

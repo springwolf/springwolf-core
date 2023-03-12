@@ -5,13 +5,12 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -34,7 +33,7 @@ public class ChannelMerger {
      * @return A map of channelName to a single ChannelItem
      */
     public static Map<String, ChannelItem> merge(List<Map.Entry<String, ChannelItem>> channelEntries) {
-        Map<String, ChannelItem> mergedChannels = new TreeMap<>();
+        Map<String, ChannelItem> mergedChannels = new HashMap<>();
 
         for (Map.Entry<String, ChannelItem> entry : channelEntries) {
             if (!mergedChannels.containsKey(entry.getKey())) {

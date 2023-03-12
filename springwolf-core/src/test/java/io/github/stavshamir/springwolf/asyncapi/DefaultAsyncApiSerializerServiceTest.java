@@ -100,7 +100,7 @@ public class DefaultAsyncApiSerializerServiceTest {
         System.out.println("Got: " + actual);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT_ORDER);
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
     @Data

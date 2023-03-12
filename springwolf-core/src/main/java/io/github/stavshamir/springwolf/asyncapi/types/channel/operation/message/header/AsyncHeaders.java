@@ -2,9 +2,9 @@ package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message
 
 import io.swagger.v3.oas.models.media.Schema;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 
-public class AsyncHeaders extends TreeMap<String, Schema> {
+public class AsyncHeaders extends HashMap<String, Schema> {
     /**
      * Per default, if no headers are explicitly defined, NOT_DOCUMENTED is used.
      * There can be headers, but don't have to be.

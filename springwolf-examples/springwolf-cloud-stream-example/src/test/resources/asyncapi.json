@@ -1,7 +1,7 @@
 {
   "asyncapi": "2.0.0",
   "info": {
-    "title": "Springwolf example project - Kafka",
+    "title": "Springwolf example project - CloudStream",
     "version": "1.0.0",
     "description": "Springwolf example project",
     "contact": {

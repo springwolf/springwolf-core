@@ -43,6 +43,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : { }
           }
         }
       },
@@ -79,6 +82,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : { }
           }
         }
       },
@@ -190,7 +196,8 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
-          }
+          },
+          "bindings" : { }
         }
       }
     },
@@ -217,6 +224,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : { }
           }
         }
       },
@@ -253,6 +263,9 @@
           },
           "headers" : {
             "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : { }
           }
         }
       },
@@ -273,26 +286,26 @@
         "required" : [ "example" ],
         "type" : "object",
         "properties" : {
+          "example" : {
+            "$ref" : "#/components/schemas/ExamplePayloadDto",
+            "exampleSetFlag" : false
+          },
           "foo" : {
             "type" : "string",
             "description" : "Foo field",
             "example" : "bar",
             "exampleSetFlag" : true,
             "types" : [ "string" ]
-          },
-          "example" : {
-            "$ref" : "#/components/schemas/ExamplePayloadDto",
-            "exampleSetFlag" : false
           }
         },
         "description" : "Another payload model",
         "example" : {
-          "foo" : "bar",
           "example" : {
-            "someString" : "some string value",
+            "someEnum" : "FOO2",
             "someLong" : 5,
-            "someEnum" : "FOO2"
-          }
+            "someString" : "some string value"
+          },
+          "foo" : "bar"
         },
         "exampleSetFlag" : true
       },
@@ -300,12 +313,13 @@
         "required" : [ "someEnum", "someString" ],
         "type" : "object",
         "properties" : {
-          "someString" : {
+          "someEnum" : {
             "type" : "string",
-            "description" : "Some string field",
-            "example" : "some string value",
+            "description" : "Some enum field",
+            "example" : "FOO2",
             "exampleSetFlag" : true,
-            "types" : [ "string" ]
+            "types" : [ "string" ],
+            "enum" : [ "FOO1", "FOO2", "FOO3" ]
           },
           "someLong" : {
             "type" : "integer",
@@ -315,20 +329,19 @@
             "exampleSetFlag" : true,
             "types" : [ "integer" ]
           },
-          "someEnum" : {
+          "someString" : {
             "type" : "string",
-            "description" : "Some enum field",
-            "example" : "FOO2",
+            "description" : "Some string field",
+            "example" : "some string value",
             "exampleSetFlag" : true,
-            "types" : [ "string" ],
-            "enum" : [ "FOO1", "FOO2", "FOO3" ]
+            "types" : [ "string" ]
           }
         },
         "description" : "Example payload model",
         "example" : {
-          "someString" : "some string value",
+          "someEnum" : "FOO2",
           "someLong" : 5,
-          "someEnum" : "FOO2"
+          "someString" : "some string value"
         },
         "exampleSetFlag" : true
       },
