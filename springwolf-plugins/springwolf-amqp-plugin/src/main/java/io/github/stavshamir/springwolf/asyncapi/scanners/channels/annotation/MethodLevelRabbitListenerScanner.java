@@ -12,6 +12,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanne
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.github.stavshamir.springwolf.SpringWolfAmqpConfigConstants.SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED;
+
 @Slf4j
 @Service
 @Order(value = ChannelPriority.AUTO_DISCOVERED)
+@ConditionalOnProperty(name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED, matchIfMissing = true)
 public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListenerScanner<RabbitListener>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 

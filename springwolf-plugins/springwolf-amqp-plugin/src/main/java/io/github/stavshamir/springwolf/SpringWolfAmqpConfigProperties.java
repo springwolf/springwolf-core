@@ -10,6 +10,10 @@ import javax.annotation.Nullable;
 
 import static io.github.stavshamir.springwolf.SpringWolfAmqpConfigConstants.SPRINGWOLF_AMQP_CONFIG_PREFIX;
 
+/**
+ * This class is used to create metadata for auto-completion in spring configuration properties/yaml by using
+ * the spring-boot-configuration-processor.
+ */
 @Configuration
 @ConfigurationProperties(prefix = SPRINGWOLF_AMQP_CONFIG_PREFIX)
 @ConditionalOnProperty(name = SpringWolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
@@ -20,6 +24,9 @@ public class SpringWolfAmqpConfigProperties {
     @Nullable
     private Publishing publishing;
 
+    @Nullable
+    private Scanner scanner;
+
     @Getter
     @Setter
     public static class Publishing {
@@ -29,6 +36,23 @@ public class SpringWolfAmqpConfigProperties {
          */
         private boolean enabled = false;
 
+    }
+
+    @Getter
+    @Setter
+    public static class Scanner {
+
+        private static RabbitListener rabbitListener;
+
+        @Getter
+        @Setter
+        public static class RabbitListener {
+
+            /**
+             * This mirrors the ConfigConstant {@see SpringWolfAmqpConfigConstants#SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED}
+             */
+            private boolean enabled = true;
+        }
     }
 
 }

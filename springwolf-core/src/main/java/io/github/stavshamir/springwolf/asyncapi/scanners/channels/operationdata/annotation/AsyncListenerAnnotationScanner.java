@@ -11,6 +11,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -21,12 +22,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import static io.github.stavshamir.springwolf.SpringWolfConfigConstants.SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED;
 import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 @Order(value = ChannelPriority.ASYNC_ANNOTATION)
+@ConditionalOnProperty(name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED, matchIfMissing = true)
 public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
     private StringValueResolver resolver;
     private final ComponentClassScanner componentClassScanner;
