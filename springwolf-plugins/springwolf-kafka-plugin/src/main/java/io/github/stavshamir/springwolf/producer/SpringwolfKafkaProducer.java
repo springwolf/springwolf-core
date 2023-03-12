@@ -27,7 +27,7 @@ public class SpringwolfKafkaProducer {
 
     public void send(String topic, String key, Map<String, String> headers, Object payload) {
         if (kafkaTemplate.isPresent()) {
-            kafkaTemplate.get().send(buildProducerRecord(topic, key, headers, payload)).completable().join();
+            kafkaTemplate.get().send(buildProducerRecord(topic, key, headers, payload)).toCompletableFuture().join();
         } else {
             log.warn("Kafka producer is not configured");
         }
