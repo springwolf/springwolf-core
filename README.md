@@ -16,8 +16,7 @@
 - [Documentation](#documentation)
 - [Supported protocols](#supported-protocols)
 - [Why you should use it](#why-you-should-use-it)
-- [Usage](#usage)
-- [Example Projects](#example-projects)
+- [Usage & Example](#usage--example)
 - [Development](#development)
 
 ### About
@@ -48,20 +47,14 @@ Springwolf exploits the fact you already fully described your consumer endpoint 
 `@KafkaListner`, `@RabbitListener` etc.) and automatically generates an example payload object for the appropriate payload and allows you 
 to publish it to the correct channel with a single click.
 
-### Usage
-See:
-- [Kafka](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-kafka-plugin)
-  ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-kafka?color=green&label=springwolf-kafka&style=plastic)
-- [Cloud Stream](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-cloud-stream-plugin)
-  ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-cloud-stream?color=green&label=springwolf-cloud-stream&style=plastic)
-- [AMQP](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-amqp-plugin)
-  ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-amqp?color=green&label=springwolf-amqp&style=plastic)
+### Usage & Example
 
-
-#### Example Projects
-- [Kafka](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-kafka-example)
-- [Cloud Stream](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-cloud-stream-example)
-- [AMQP](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-amqp-example)
+| Code / Plugin                                                                                                               | Example project                                                                                                                       | Current version                                                                                                                                               | SNAPSHOT version                                                                                                                                                                                 |
+|-----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Core](https://github.com/springwolf/springwolf-core/tree/master/springwolf-core)                                           |                                                                                                                                       |                                                                                                                                                               |                                                                                                                                                                                                  |
+| [AMQP](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-amqp-plugin)                 | [AMQP Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-amqp-example)                 | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-amqp?color=green&label=springwolf-amqp&style=plastic)                 | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-amqp?label=springwolf-amqp&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                 |
+| [Cloud Stream](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-cloud-stream-plugin) | [Cloud Stream Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-cloud-stream-example) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-cloud-stream?color=green&label=springwolf-cloud-stream&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-cloud-stream?label=springwolf-cloud-stream&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic) |
+| [Kafka](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-kafka-plugin)               | [Kafka Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-kafka-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-kafka?color=green&label=springwolf-kafka&style=plastic)               | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-kafka?label=springwolf-kafka&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)               |
 
 
 ### Development
@@ -75,11 +68,6 @@ repositories {
     }
 }
 ```
-
-Latest `SNAPSHOT` version: 
-![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-amqp?label=springwolf-amqp&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)
-![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-cloud-stream?label=springwolf-cloud-stream&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)
-![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-kafka?label=springwolf-kafka&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)
 
 #### Local Snapshots
 To work with local snapshots, run the `publishToMavenLocal` task with `-Dsnapshot=true`.
