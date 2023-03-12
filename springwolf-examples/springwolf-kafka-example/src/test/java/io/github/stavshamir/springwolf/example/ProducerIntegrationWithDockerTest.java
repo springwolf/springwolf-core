@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -37,9 +36,6 @@ import static org.mockito.Mockito.verify;
  */
 @SpringBootTest(classes = {SpringwolfExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-@TestPropertySource(properties = {
-        "springwolf.plugin.kafka.publishing.producer.bootstrap-servers=localhost:29092"
-})
 @DirtiesContext
 @TestMethodOrder(OrderAnnotation.class)
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")

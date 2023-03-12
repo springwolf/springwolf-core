@@ -40,7 +40,8 @@ public class ApiIntegrationWithDockerTest {
     @Test
     public void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException, JSONException {
         String url = baseUrl() + "/springwolf/docs";
-        String actual = restTemplate.getForObject(url, String.class);
+        String actualWithKafkaPort = restTemplate.getForObject(url, String.class);
+        String actual = actualWithKafkaPort.replace("kafka:29092", "localhost:9092");
         System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
