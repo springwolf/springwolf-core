@@ -3,7 +3,6 @@ package io.github.stavshamir.springwolf.example;
 import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.example.consumers.ExampleService;
 import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.example.producers.ExampleProducer;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
@@ -46,9 +45,6 @@ public class ProducerIntegrationWithDockerTest {
 
     @MockBean
     ExampleService exampleService;
-
-    @Autowired
-    ExampleProducer exampleProducer;
 
     @Autowired
     SpringWolfKafkaConfigProperties properties;
