@@ -11,17 +11,13 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyChannelBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyOperationBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.AmqpOperationBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.KafkaChannelBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.KafkaOperationBindingSerializer;
+import io.github.stavshamir.springwolf.asyncapi.serializers.*;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 
 @Service
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {

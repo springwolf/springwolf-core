@@ -1,13 +1,12 @@
 plugins {
     id 'java'
 
-    id 'org.springframework.boot' version '2.7.8'
+    id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
 
-    id 'com.bmuschko.docker-spring-boot-application' version '6.7.0'
+    id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
 }
 
-sourceCompatibility = '1.8'
 version '0.6.0'
 
 repositories {
@@ -35,6 +34,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.testcontainers:testcontainers:1.17.6'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.9.1'
     testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
     testImplementation 'org.skyscreamer:jsonassert:1.5.1'
     testImplementation 'commons-io:commons-io:2.11.0'
@@ -43,7 +43,7 @@ dependencies {
 docker {
     springBootApplication {
         maintainer = 'shamir.stav@gmail.com'
-        baseImage = 'openjdk:8-alpine'
+        baseImage = 'openjdk:17-alpine'
         ports = [8080]
         images = ["stavshamir/springwolf-amqp-example:${project.version}"]
     }
@@ -52,6 +52,10 @@ docker {
         username = project.findProperty('dockerhubUsername') ?: ''
         password = project.findProperty('dockerhubPassword') ?: ''
     }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 test {

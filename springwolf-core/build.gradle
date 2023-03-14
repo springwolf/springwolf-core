@@ -4,7 +4,7 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '2.7.8'
+    id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -12,7 +12,6 @@ def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
 group = 'io.github.springwolf'
 version = '0.9.3' + (isSnapshot ? '-SNAPSHOT' : '')
-sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -24,6 +23,7 @@ dependencies {
     implementation 'io.swagger:swagger-inflector:2.0.8'
     implementation 'io.swagger.core.v3:swagger-core:2.2.8'
     implementation 'io.swagger.parser.v3:swagger-parser-core:2.1.11'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework:spring-context'
@@ -56,6 +56,8 @@ bootJar.enabled = false
 java {
     withJavadocJar()
     withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 test {

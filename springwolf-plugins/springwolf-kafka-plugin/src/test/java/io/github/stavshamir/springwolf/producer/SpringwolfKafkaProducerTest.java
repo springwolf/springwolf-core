@@ -13,12 +13,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.util.concurrent.SettableListenableFuture;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -53,9 +53,9 @@ public class SpringwolfKafkaProducerTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testSendingKafkaMessageWithoutHeaders() {
-        SettableListenableFuture<SendResult<Object,Object>> future = new SettableListenableFuture<>();
+        CompletableFuture<SendResult<Object, Object>> future = new CompletableFuture<>();
         when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any())).thenReturn(future);
-        future.set(mock(SendResult.class));
+        future.complete(mock(SendResult.class));
 
         Map<String, Object> payload = Collections.singletonMap("some", "field");
 
@@ -75,9 +75,9 @@ public class SpringwolfKafkaProducerTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testSendingKafkaMessageWithHeaders() {
-        SettableListenableFuture<SendResult<Object,Object>> future = new SettableListenableFuture<>();
+        CompletableFuture<SendResult<Object, Object>> future = new CompletableFuture<>();
         when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any())).thenReturn(future);
-        future.set(mock(SendResult.class));
+        future.complete(mock(SendResult.class));
 
         Map<String, Object> payload = Collections.singletonMap("some", "field");
         Map<String, String> headers = Collections.singletonMap("header-key", "header");

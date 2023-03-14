@@ -3,7 +3,7 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '2.7.8'
+    id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -11,14 +11,13 @@ def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
 group 'io.github.springwolf'
 version '0.1.0' + (isSnapshot ? '-SNAPSHOT' : '')
-sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
 ext {
-    set('springCloudVersion', "Hoxton.SR8")
+    set('springCloudVersion', "2022.0.1")
 }
 
 dependencyManagement {
@@ -34,15 +33,16 @@ dependencies {
 
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'org.slf4j:slf4j-api'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
     testImplementation 'org.projectlombok:lombok:1.18.26'
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
     testImplementation 'org.assertj:assertj-core:3.24.2'
-    testImplementation('org.apache.kafka:kafka-streams:3.4.0')
 }
 
 jar {
@@ -54,6 +54,8 @@ bootJar.enabled = false
 java {
     withJavadocJar()
     withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 test {
