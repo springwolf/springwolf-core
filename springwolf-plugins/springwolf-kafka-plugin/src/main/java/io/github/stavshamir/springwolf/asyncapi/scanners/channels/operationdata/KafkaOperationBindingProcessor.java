@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.model.schema.Schema;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.KafkaListenerUtil;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;

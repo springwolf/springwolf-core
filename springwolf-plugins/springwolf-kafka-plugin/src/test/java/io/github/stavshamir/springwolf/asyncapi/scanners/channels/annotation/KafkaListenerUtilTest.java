@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.ChannelBinding;
-import com.asyncapi.v2.binding.OperationBinding;
-import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
+import com.asyncapi.v2.binding.channel.ChannelBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import org.assertj.core.util.Arrays;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message;
 
-import com.asyncapi.v2.binding.MessageBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import lombok.*;
 

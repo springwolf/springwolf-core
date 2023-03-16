@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import com.asyncapi.v2.binding.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.amqp.AMQPMessageBinding;
-import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
+import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
+import com.asyncapi.v2.binding.operation.amqp.AMQPMessageBinding;
+import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import lombok.Builder;

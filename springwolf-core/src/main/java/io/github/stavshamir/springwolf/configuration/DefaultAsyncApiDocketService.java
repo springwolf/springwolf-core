@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.configuration;
 
-import com.asyncapi.v2.model.info.Info;
+import com.asyncapi.v2._0_0.model.info.Info;
 import io.github.stavshamir.springwolf.SpringWolfConfigConstants;
 import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
 import lombok.RequiredArgsConstructor;

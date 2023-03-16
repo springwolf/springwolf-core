@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
-import com.asyncapi.v2.binding.OperationBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
 import lombok.Data;
 
 @Data

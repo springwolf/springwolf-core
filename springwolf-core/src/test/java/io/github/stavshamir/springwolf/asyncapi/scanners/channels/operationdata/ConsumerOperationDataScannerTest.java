@@ -1,11 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
-import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
-import com.asyncapi.v2.model.channel.ChannelItem;
-import com.asyncapi.v2.model.channel.operation.Operation;
-import com.asyncapi.v2.model.info.Info;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
+import com.asyncapi.v2._0_0.model.channel.ChannelItem;
+import com.asyncapi.v2._0_0.model.channel.operation.Operation;
+import com.asyncapi.v2._0_0.model.info.Info;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;

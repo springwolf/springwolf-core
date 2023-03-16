@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.ChannelBinding;
-import com.asyncapi.v2.binding.MessageBinding;
-import com.asyncapi.v2.binding.OperationBinding;
+import com.asyncapi.v2.binding.channel.ChannelBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
 

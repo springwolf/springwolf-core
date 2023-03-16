@@ -1,11 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.ChannelBinding;
-import com.asyncapi.v2.binding.MessageBinding;
-import com.asyncapi.v2.binding.OperationBinding;
-import com.asyncapi.v2.binding.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.amqp.AMQPMessageBinding;
-import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
+import com.asyncapi.v2.binding.channel.ChannelBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
+import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
+import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
+import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
