@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import com.asyncapi.v2.model.Tag;
-import com.asyncapi.v2.model.channel.ChannelItem;
-import com.asyncapi.v2.model.info.Info;
-import com.asyncapi.v2.model.server.Server;
+import com.asyncapi.v2._0_0.model.Tag;
+import com.asyncapi.v2._0_0.model.channel.ChannelItem;
+import com.asyncapi.v2._0_0.model.info.Info;
+import com.asyncapi.v2._0_0.model.server.Server;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

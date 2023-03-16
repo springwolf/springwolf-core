@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
-import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
+import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.PrettyPrinter;

@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.serializers;
 
 
-import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
+import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -34,9 +34,9 @@ public class AmqpOperationBindingSerializer extends StdSerializer<AMQPOperationB
 
         gen.writeNumberField("priority", value.getPriority());
         gen.writeNumberField("deliveryMode", value.getDeliveryMode());
-        gen.writeBooleanField("mandatory", value.isMandatory());
-        gen.writeBooleanField("timestamp", value.isTimestamp());
-        gen.writeBooleanField("ack", value.isAck());
+        gen.writeBooleanField("mandatory", value.getMandatory());
+        gen.writeBooleanField("timestamp", value.getTimestamp());
+        gen.writeBooleanField("ack", value.getAck());
 
         gen.writeEndObject();
     }

@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.serializers;
 
 
-import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;

@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi.serializers;
 
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -23,7 +23,7 @@ public class KafkaOperationBindingSerializerTest {
     public void bindingWithClientIdTest() throws JsonProcessingException, JSONException {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().clientId("testClientId").build();
         String actual = objectMapper.writeValueAsString(binding);
-        String expected = "{\"clientId\":{\"type\":\"string\",\"enum\":[\"testClientId\"]}}";
+        String expected = "{\"clientId\":{\"type\":\"string\",\"enum\":[\"testClientId\"]},\"bindingVersion\":{\"type\":\"string\",\"enum\":[\"0.4.0\"]}}";
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
@@ -32,7 +32,7 @@ public class KafkaOperationBindingSerializerTest {
     public void bindingWithClientIdEmptyTest() throws JsonProcessingException, JSONException {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().clientId("").build();
         String actual = objectMapper.writeValueAsString(binding);
-        String expected = "{\"clientId\":{\"type\":\"string\",\"enum\":[\"\"]}}";
+        String expected = "{\"clientId\":{\"type\":\"string\",\"enum\":[\"\"]},\"bindingVersion\":{\"type\":\"string\",\"enum\":[\"0.4.0\"]}}";
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
@@ -41,7 +41,7 @@ public class KafkaOperationBindingSerializerTest {
     public void bindingWithGroupIdTest() throws JsonProcessingException, JSONException {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().groupId("testGroupId").build();
         String actual = objectMapper.writeValueAsString(binding);
-        String expected = "{\"groupId\":{\"type\":\"string\",\"enum\":[\"testGroupId\"]}}";
+        String expected = "{\"groupId\":{\"type\":\"string\",\"enum\":[\"testGroupId\"]},\"bindingVersion\":{\"type\":\"string\",\"enum\":[\"0.4.0\"]}}";
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
@@ -50,7 +50,7 @@ public class KafkaOperationBindingSerializerTest {
     public void bindingWithGroupIdEmptyTest() throws JsonProcessingException, JSONException {
         KafkaOperationBinding binding = KafkaOperationBinding.builder().groupId("").build();
         String actual = objectMapper.writeValueAsString(binding);
-        String expected = "{\"groupId\":{\"type\":\"string\",\"enum\":[\"\"]}}";
+        String expected = "{\"groupId\":{\"type\":\"string\",\"enum\":[\"\"]},\"bindingVersion\":{\"type\":\"string\",\"enum\":[\"0.4.0\"]}}";
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
@@ -76,7 +76,7 @@ public class KafkaOperationBindingSerializerTest {
     public void emptyKafkaOperationBindingTest() throws JsonProcessingException, JSONException {
         KafkaOperationBinding binding = new KafkaOperationBinding();
         String actual = objectMapper.writeValueAsString(binding);
-        String expected = "{}";
+        String expected = "{\"bindingVersion\":{\"type\":\"string\",\"enum\":[\"0.4.0\"]}}";
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 

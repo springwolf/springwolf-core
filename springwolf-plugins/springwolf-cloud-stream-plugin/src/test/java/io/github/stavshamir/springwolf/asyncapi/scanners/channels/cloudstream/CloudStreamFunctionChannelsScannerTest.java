@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import com.asyncapi.v2.model.channel.ChannelItem;
-import com.asyncapi.v2.model.channel.operation.Operation;
-import com.asyncapi.v2.model.info.Info;
-import com.asyncapi.v2.model.server.Server;
+import com.asyncapi.v2._0_0.model.channel.ChannelItem;
+import com.asyncapi.v2._0_0.model.channel.operation.Operation;
+import com.asyncapi.v2._0_0.model.info.Info;
+import com.asyncapi.v2._0_0.model.server.Server;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
