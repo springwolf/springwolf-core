@@ -1,9 +1,5 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2.binding.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
-import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.PrettyPrinter;
@@ -11,16 +7,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import io.github.stavshamir.springwolf.asyncapi.serializers.AmqpChannelBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.AmqpOperationBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyChannelBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.EmptyOperationBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.KafkaChannelBindingSerializer;
-import io.github.stavshamir.springwolf.asyncapi.serializers.KafkaOperationBindingSerializer;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
@@ -36,22 +23,11 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
         jsonMapper.setConfig(
             jsonMapper.getSerializationConfig()
                 .with(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+                .without(SerializationFeature.FAIL_ON_EMPTY_BEANS)
         );
         jsonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
-        registerKafkaOperationBindingSerializer();
     }
 
-    private void registerKafkaOperationBindingSerializer() {
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(EmptyChannelBinding.class, new EmptyChannelBindingSerializer());
-        module.addSerializer(EmptyOperationBinding.class, new EmptyOperationBindingSerializer());
-        module.addSerializer(AMQPChannelBinding.class, new AmqpChannelBindingSerializer());
-        module.addSerializer(AMQPOperationBinding.class, new AmqpOperationBindingSerializer());
-        module.addSerializer(KafkaChannelBinding.class, new KafkaChannelBindingSerializer());
-        module.addSerializer(KafkaOperationBinding.class, new KafkaOperationBindingSerializer());
-        jsonMapper.registerModule(module);
-    }
 
     @Override
     public String toJsonString(AsyncAPI asyncAPI) throws JsonProcessingException {

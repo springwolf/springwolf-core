@@ -141,10 +141,7 @@
               "type" : "string",
               "enum" : [ "foo-clientId" ]
             },
-            "bindingVersion" : {
-              "type" : "string",
-              "enum" : [ "1" ]
-            }
+            "bindingVersion" : "1"
           }
         },
         "message" : {
@@ -208,10 +205,7 @@
               "type" : "string",
               "enum" : [ "foo-clientId" ]
             },
-            "bindingVersion" : {
-              "type" : "string",
-              "enum" : [ "1" ]
-            }
+            "bindingVersion" :  "1"
           }
         },
         "message" : {

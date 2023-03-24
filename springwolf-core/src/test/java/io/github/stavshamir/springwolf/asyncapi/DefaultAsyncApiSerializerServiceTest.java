@@ -8,6 +8,7 @@ import com.asyncapi.v2.model.channel.operation.Operation;
 import com.asyncapi.v2.model.info.Contact;
 import com.asyncapi.v2.model.info.Info;
 import com.asyncapi.v2.model.info.License;
+import com.asyncapi.v2.model.schema.Type;
 import com.asyncapi.v2.model.server.Server;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
@@ -31,6 +32,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 @ExtendWith(SpringExtension.class)
@@ -72,7 +74,10 @@ public class DefaultAsyncApiSerializerServiceTest {
                 .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding(new StringSchema(), "binding-version-1")))
                 .build();
 
-        OperationBinding operationBinding = KafkaOperationBinding.builder().groupId("myGroupId").build();
+        com.asyncapi.v2.model.schema.Schema groupId = new com.asyncapi.v2.model.schema.Schema();
+        groupId.setEnumValues(List.of("myGroupId"));
+        groupId.setType(Type.STRING);
+        OperationBinding operationBinding = KafkaOperationBinding.builder().groupId(groupId).build();
 
         Operation newUserOperation = Operation.builder()
                 .description("Auto-generated description")
