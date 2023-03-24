@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
-import com.asyncapi.v2.model.schema.Schema;
+import com.asyncapi.v2.schema.Schema;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.KafkaListenerUtil;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.OperationBindingProcessor;
@@ -48,6 +48,6 @@ public class KafkaOperationBindingProcessor implements OperationBindingProcessor
     }
 
     private String resolveOrNull(String stringValue) {
-        return StringUtils.isEmpty(stringValue) ? null : resolver.resolveStringValue(stringValue);
+        return StringUtils.hasText(stringValue) ? resolver.resolveStringValue(stringValue): null;
     }
 }

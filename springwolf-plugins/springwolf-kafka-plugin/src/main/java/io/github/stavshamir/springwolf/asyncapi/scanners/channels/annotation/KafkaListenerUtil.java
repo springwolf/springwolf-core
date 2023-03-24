@@ -1,13 +1,13 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
-import com.asyncapi.v2.model.schema.Schema;
-import com.asyncapi.v2.model.schema.Type;
+import com.asyncapi.v2.schema.Schema;
+import com.asyncapi.v2.schema.Type;
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -74,7 +74,7 @@ public class KafkaListenerUtil {
     private static Schema createStringSchema(String value) {
         if (value != null && !value.isEmpty()) {
             Schema schema = new Schema();
-            schema.setEnumValues(List.of(value));
+            schema.setEnumValue(List.of(value));
             schema.setType(Type.STRING);
             return schema;
         }

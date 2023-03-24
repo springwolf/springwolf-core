@@ -1,14 +1,15 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
 import com.asyncapi.v2._0_0.model.info.Contact;
 import com.asyncapi.v2._0_0.model.info.Info;
 import com.asyncapi.v2._0_0.model.info.License;
 import com.asyncapi.v2._0_0.model.server.Server;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
+import com.asyncapi.v2.schema.Type;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
@@ -73,8 +74,8 @@ public class DefaultAsyncApiSerializerServiceTest {
                 .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding(new StringSchema(), null, null, null, "binding-version-1")))
                 .build();
 
-        com.asyncapi.v2.model.schema.Schema groupId = new com.asyncapi.v2.model.schema.Schema();
-        groupId.setEnumValues(List.of("myGroupId"));
+        com.asyncapi.v2.schema.Schema groupId = new com.asyncapi.v2.schema.Schema();
+        groupId.setEnumValue(List.of("myGroupId"));
         groupId.setType(Type.STRING);
         OperationBinding operationBinding = KafkaOperationBinding.builder().groupId(groupId).build();
 
