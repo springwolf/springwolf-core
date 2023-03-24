@@ -1,8 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
 import com.asyncapi.v2.binding.amqp.AMQPChannelBinding;
+import com.asyncapi.v2.binding.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.amqp.AMQPOperationBinding;
 import com.google.common.collect.ImmutableMap;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import lombok.Builder;
 
 import java.util.Collections;
@@ -10,7 +12,7 @@ import java.util.Collections;
 public class AmqpConsumerData extends ConsumerData {
 
     @Builder(builderMethodName = "amqpConsumerDataBuilder")
-    public AmqpConsumerData(String queueName, String exchangeName, String routingKey, Class<?> payloadType, String description) {
+    public AmqpConsumerData(String queueName, String exchangeName, String routingKey, Class<?> payloadType, String description, AsyncHeaders headers) {
         this.channelName = queueName;
         this.description = description;
 
@@ -25,7 +27,11 @@ public class AmqpConsumerData extends ConsumerData {
                 .cc(Collections.singletonList(routingKey))
                 .build());
 
+        this.messageBinding = ImmutableMap.of("amqp", AMQPMessageBinding.builder()
+                .build());
+
         this.payloadType = payloadType;
+        this.headers = headers != null ? headers : this.headers;
     }
 
 }
