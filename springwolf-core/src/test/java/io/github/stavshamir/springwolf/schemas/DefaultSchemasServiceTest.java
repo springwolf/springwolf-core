@@ -38,6 +38,12 @@ public class DefaultSchemasServiceTest {
                 .isEqualTo("String");
 
         assertNotNull(schemasService.getDefinitions().get(modelName));
+
+        Schema schema = schemasService.getDefinitions().get(modelName);
+        String example = objectMapper.writeValueAsString(schema.getExample());
+        String expectedExample = "\"string\"";
+
+        assertThat(example).isEqualTo(expectedExample);
     }
 
     @Test
@@ -49,7 +55,6 @@ public class DefaultSchemasServiceTest {
 
         Schema schema = schemasService.getDefinitions().get(modelName);
         String example = objectMapper.writeValueAsString(schema.getExample());
-
         String expectedExample = jsonResource(EXAMPLES_PATH + "/simple-foo.json");
 
         JSONAssert.assertEquals(expectedExample, example, JSONCompareMode.STRICT);
