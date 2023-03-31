@@ -96,7 +96,7 @@ public class DefaultSchemasService implements SchemasService {
 
     private void deserializeExampleToMap(String k, Schema schema) {
         try {
-            schema.setExample(objectMapper.readValue((String) schema.getExample(), Map.class));
+            schema.setExample(objectMapper.readValue((String) schema.getExample(), Object.class));
         } catch (IOException e) {
             log.error("Failed to convert example object of {} to map", schema.getName());
         }
