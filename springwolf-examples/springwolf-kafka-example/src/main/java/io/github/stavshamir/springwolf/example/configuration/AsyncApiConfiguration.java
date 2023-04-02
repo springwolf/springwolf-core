@@ -11,7 +11,6 @@ import io.github.stavshamir.springwolf.asyncapi.types.KafkaProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForCloudEventsBuilder;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
-import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
 import io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +23,6 @@ import static io.github.stavshamir.springwolf.example.configuration.KafkaConfigu
 import static io.github.stavshamir.springwolf.example.configuration.KafkaConfiguration.PRODUCER_TOPIC;
 
 @Configuration
-@EnableAsyncApi
 public class AsyncApiConfiguration {
 
     private final String BOOTSTRAP_SERVERS;

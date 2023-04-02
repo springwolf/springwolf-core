@@ -40,7 +40,6 @@ Add a configuration class and provide a `AsyncApiDocket` bean:
 ```java
 
 @Configuration
-@EnableAsyncApi
 public class AsyncApiConfiguration {
 
     private final static String BOOTSTRAP_SERVERS = "localhost:9092"; // Change to your actual bootstrap server

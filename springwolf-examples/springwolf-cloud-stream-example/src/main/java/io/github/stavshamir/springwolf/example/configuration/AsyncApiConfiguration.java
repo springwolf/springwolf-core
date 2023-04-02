@@ -7,14 +7,12 @@ import com.asyncapi.v2.model.server.Server;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
-import io.github.stavshamir.springwolf.configuration.EnableAsyncApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableAsyncApi
 public class AsyncApiConfiguration {
 
     private final String BOOTSTRAP_SERVERS;
