@@ -150,7 +150,7 @@ public class MethodLevelKafkaListenerScannerTest {
         KafkaOperationBinding kafka = (KafkaOperationBinding) actualBindings.get("kafka");
         assertThat(kafka).isNotNull();
         assertThat(kafka.getGroupId())
-                .isEqualTo(ClassWithKafkaListenerAnnotationWithGroupId.GROUP_ID);
+                .isEqualTo(KafkaListenerUtil.buildKafkaGroupIdSchema(ClassWithKafkaListenerAnnotationWithGroupId.GROUP_ID));
     }
 
     @Test

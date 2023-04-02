@@ -61,8 +61,10 @@ public class KafkaListenerUtilTest {
         // then
         assertEquals(operationBinding.size(), 1);
         assertEquals(operationBinding.keySet(), Sets.newTreeSet("kafka"));
-        KafkaOperationBinding expectedOperationBinding = new KafkaOperationBinding();
-        expectedOperationBinding.setGroupId("group-id");
+
+        KafkaOperationBinding expectedOperationBinding = KafkaOperationBinding.builder()
+            .groupId(KafkaListenerUtil.buildKafkaGroupIdSchema("group-id"))
+            .build();
         assertEquals(operationBinding.get("kafka"), expectedOperationBinding);
     }
 }
