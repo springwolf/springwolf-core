@@ -21,9 +21,9 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
     @PostConstruct
     void postConstruct() {
         jsonMapper.setConfig(
-            jsonMapper.getSerializationConfig()
-                .with(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
-                .without(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+                jsonMapper.getSerializationConfig()
+                        .with(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+                        .without(SerializationFeature.FAIL_ON_EMPTY_BEANS)
         );
         jsonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
@@ -40,7 +40,7 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
     public ObjectMapper getObjectMapper() {
         return jsonMapper;
     }
-    
+
     /**
      * Allows to customize the used objectMapper
      * <p>
