@@ -1,14 +1,15 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
 import com.asyncapi.v2._0_0.model.info.Contact;
 import com.asyncapi.v2._0_0.model.info.Info;
 import com.asyncapi.v2._0_0.model.info.License;
 import com.asyncapi.v2._0_0.model.server.Server;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
+import com.asyncapi.v2.schema.Type;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
@@ -31,6 +32,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 @ExtendWith(SpringExtension.class)
@@ -72,7 +74,10 @@ public class DefaultAsyncApiSerializerServiceTest {
                 .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding(new StringSchema(), null, null, null, "binding-version-1")))
                 .build();
 
-        OperationBinding operationBinding = KafkaOperationBinding.builder().groupId("myGroupId").build();
+        com.asyncapi.v2.schema.Schema groupId = new com.asyncapi.v2.schema.Schema();
+        groupId.setEnumValue(List.of("myGroupId"));
+        groupId.setType(Type.STRING);
+        OperationBinding operationBinding = KafkaOperationBinding.builder().groupId(groupId).build();
 
         Operation newUserOperation = Operation.builder()
                 .description("Auto-generated description")
