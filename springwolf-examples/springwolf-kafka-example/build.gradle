@@ -8,7 +8,10 @@ plugins {
     id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
 }
 
-version '0.11.0'
+def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
+
+group 'io.github.springwolf'
+version '0.11.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
 
 repositories {
@@ -55,8 +58,8 @@ docker {
     }
 
     registryCredentials {
-        username = project.findProperty('dockerhubUsername') ?: ''
-        password = project.findProperty('dockerhubPassword') ?: ''
+        username = project.findProperty('DOCKERHUB_USERNAME') ?: ''
+        password = project.findProperty('DOCKERHUB_TOKEN') ?: ''
     }
 }
 

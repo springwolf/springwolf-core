@@ -7,7 +7,10 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
 }
 
-version '0.7.0'
+def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
+
+group 'io.github.springwolf'
+version '0.7.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
 repositories {
     // For local development with snapshots
@@ -49,8 +52,8 @@ docker {
     }
 
     registryCredentials {
-        username = project.findProperty('dockerhubUsername') ?: ''
-        password = project.findProperty('dockerhubPassword') ?: ''
+        username = project.findProperty('DOCKERHUB_USERNAME') ?: ''
+        password = project.findProperty('DOCKERHUB_TOKEN') ?: ''
     }
 }
 
