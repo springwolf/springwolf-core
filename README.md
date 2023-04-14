@@ -1,13 +1,14 @@
+# <img src="logo.png" alt="Logo" width="100"/> Springwolf Core
+##### Automated documentation for AsyncAPIs built with Spring Boot
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![springwolf-core](https://github.com/stavshamir/springwolf/workflows/springwolf-core/badge.svg)
 ![springwolf-kafka](https://github.com/stavshamir/springwolf/workflows/springwolf-kafka/badge.svg)
 ![springwolf-amqp](https://github.com/stavshamir/springwolf/workflows/springwolf-amqp/badge.svg)
 ![springwolf-cloud-stream](https://github.com/stavshamir/springwolf/workflows/springwolf-cloud-stream/badge.svg)
 
-# Springwolf Core
-##### Automated documentation for async APIs built with Spring Boot
-
-*NEW: A discord server has been opened for any question, discussion, request etc. - you are welcome to join https://discord.gg/HZYqd5RPTd*
+> We are on discord for any question, discussion, request etc.
+> Join us at https://discord.gg/HZYqd5RPTd
 
 ### Table Of Contents
 - [About](#about)
@@ -15,8 +16,7 @@
 - [Documentation](#documentation)
 - [Supported protocols](#supported-protocols)
 - [Why you should use it](#why-you-should-use-it)
-- [Usage](#usage)
-- [Example Projects](#example-projects)
+- [Usage & Example](#usage--example)
 - [Development](#development)
 
 ### About
@@ -47,23 +47,25 @@ Springwolf exploits the fact you already fully described your consumer endpoint 
 `@KafkaListner`, `@RabbitListener` etc.) and automatically generates an example payload object for the appropriate payload and allows you 
 to publish it to the correct channel with a single click.
 
-### Usage
-See:
-- [Kafka](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-kafka-plugin)
-- [AMQP](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-amqp-plugin)
+### Usage & Example
 
-
-### Example Projects
-- [Kafka](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-kafka-example)
-- [AMQP](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-amqp-example)
+| Code / Plugin                                                                                                               | Example project                                                                                                                       | Current version                                                                                                                                               | SNAPSHOT version                                                                                                                                                                                 |
+|-----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Core](https://github.com/springwolf/springwolf-core/tree/master/springwolf-core)                                           |                                                                                                                                       |                                                                                                                                                               |                                                                                                                                                                                                  |
+| [AMQP](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-amqp-plugin)                 | [AMQP Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-amqp-example)                 | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-amqp?color=green&label=springwolf-amqp&style=plastic)                 | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-amqp?label=springwolf-amqp&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                 |
+| [Cloud Stream](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-cloud-stream-plugin) | [Cloud Stream Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-cloud-stream-example) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-cloud-stream?color=green&label=springwolf-cloud-stream&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-cloud-stream?label=springwolf-cloud-stream&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic) |
+| [Kafka](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-kafka-plugin)               | [Kafka Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-kafka-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-kafka?color=green&label=springwolf-kafka&style=plastic)               | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-kafka?label=springwolf-kafka&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)               |
 
 
 ### Development
 #### Sonatype snapshots
-Add the following to the `repositories` closure:
+Add the following to the `repositories` closure in `build.gradle`:
 ```groovy
-maven {
-    url "https://s01.oss.sonatype.org/content/repositories/snapshots"
+repositories {
+    // ...
+    maven {
+        url "https://s01.oss.sonatype.org/content/repositories/snapshots"
+    }
 }
 ```
 
