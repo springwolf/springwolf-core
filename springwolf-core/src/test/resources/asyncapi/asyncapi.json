@@ -35,7 +35,8 @@
             "groupId" : {
               "type" : "string",
               "enum" : [ "myGroupId" ]
-            }
+            },
+            "bindingVersion" : "0.4.0"
           }
         },
         "message" : {

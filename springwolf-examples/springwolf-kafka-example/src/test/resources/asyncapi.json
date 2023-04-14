@@ -29,7 +29,8 @@
             "groupId" : {
               "type" : "string",
               "enum" : [ "example-group-id" ]
-            }
+            },
+            "bindingVersion" : "0.4.0"
           }
         },
         "message" : {
@@ -42,12 +43,16 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "kafka" : { }
+            "kafka" : {
+              "bindingVersion" : "0.4.0"
+            }
           }
         }
       },
       "bindings" : {
-        "kafka" : { }
+        "kafka" : {
+          "bindingVersion" : "0.4.0"
+        }
       }
     },
     "example-consumer-topic" : {
@@ -55,7 +60,9 @@
         "operationId" : "example-consumer-topic_publish",
         "description" : "Auto-generated description",
         "bindings" : {
-          "kafka" : { }
+          "kafka" : {
+            "bindingVersion" : "0.4.0"
+          }
         },
         "message" : {
           "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -68,12 +75,16 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "kafka" : { }
+            "kafka" : {
+              "bindingVersion" : "0.4.0"
+            }
           }
         }
       },
       "bindings" : {
-        "kafka" : { }
+        "kafka" : {
+          "bindingVersion" : "0.4.0"
+        }
       }
     },
     "example-producer-topic" : {
@@ -81,7 +92,9 @@
         "operationId" : "example-producer-topic_subscribe",
         "description" : "Auto-generated description",
         "bindings" : {
-          "kafka" : { }
+          "kafka" : {
+            "bindingVersion" : "0.4.0"
+          }
         },
         "message" : {
           "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
@@ -94,12 +107,16 @@
             "$ref" : "#/components/schemas/CloudEventHeadersForAnotherPayloadDtoEndpoint"
           },
           "bindings" : {
-            "kafka" : { }
+            "kafka" : {
+              "bindingVersion" : "0.4.0"
+            }
           }
         }
       },
       "bindings" : {
-        "kafka" : { }
+        "kafka" : {
+          "bindingVersion" : "0.4.0"
+        }
       }
     },
     "example-topic" : {
@@ -107,7 +124,9 @@
         "operationId" : "example-topic_publish_receiveExamplePayload",
         "description" : "Auto-generated description",
         "bindings" : {
-          "kafka" : { }
+          "kafka" : {
+            "bindingVersion" : "0.4.0"
+          }
         },
         "message" : {
           "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -119,12 +138,16 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "kafka" : { }
+            "kafka" : {
+              "bindingVersion" : "0.4.0"
+            }
           }
         }
       },
       "bindings" : {
-        "kafka" : { }
+        "kafka" : {
+          "bindingVersion" : "0.4.0"
+        }
       }
     },
     "multi-payload-topic" : {
@@ -141,10 +164,7 @@
               "type" : "string",
               "enum" : [ "foo-clientId" ]
             },
-            "bindingVersion" : {
-              "type" : "string",
-              "enum" : [ "1" ]
-            }
+            "bindingVersion" : "1"
           }
         },
         "message" : {
@@ -158,7 +178,9 @@
               "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders-AnotherPayloadDto"
             },
             "bindings" : {
-              "kafka" : { }
+              "kafka" : {
+                "bindingVersion" : "0.4.0"
+              }
             }
           }, {
             "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
@@ -170,7 +192,9 @@
               "$ref" : "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto"
             },
             "bindings" : {
-              "kafka" : { }
+              "kafka" : {
+                "bindingVersion" : "0.4.0"
+              }
             }
           }, {
             "name" : "javax.money.MonetaryAmount",
@@ -208,10 +232,7 @@
               "type" : "string",
               "enum" : [ "foo-clientId" ]
             },
-            "bindingVersion" : {
-              "type" : "string",
-              "enum" : [ "1" ]
-            }
+            "bindingVersion" :  "1"
           }
         },
         "message" : {
@@ -409,6 +430,15 @@
       "NestedPayloadDto" : {
         "type" : "object",
         "properties" : {
+          "examplePayloads" : {
+            "type" : "array",
+            "exampleSetFlag" : false,
+            "items" : {
+              "$ref" : "#/components/schemas/ExamplePayloadDto",
+              "exampleSetFlag" : false
+            },
+            "types" : [ "array" ]
+          },
           "someStrings" : {
             "uniqueItems" : true,
             "type" : "array",
@@ -421,25 +451,16 @@
               "types" : [ "string" ]
             },
             "types" : [ "array" ]
-          },
-          "examplePayloads" : {
-            "type" : "array",
-            "exampleSetFlag" : false,
-            "items" : {
-              "$ref" : "#/components/schemas/ExamplePayloadDto",
-              "exampleSetFlag" : false
-            },
-            "types" : [ "array" ]
           }
         },
         "description" : "Payload model with nested complex types",
         "example" : {
-          "someStrings" : [ "some string value" ],
           "examplePayloads" : [ {
-            "someString" : "some string value",
+            "someEnum" : "FOO2",
             "someLong" : 5,
-            "someEnum" : "FOO2"
-          } ]
+            "someString" : "some string value"
+          } ],
+          "someStrings" : [ "some string value" ]
         },
         "exampleSetFlag" : true
       },

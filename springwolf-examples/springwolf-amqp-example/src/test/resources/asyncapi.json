@@ -26,13 +26,8 @@
         "description" : "Auto-generated description",
         "bindings" : {
           "amqp" : {
-            "expiration" : 0,
             "cc" : [ "another-queue" ],
-            "priority" : 0,
-            "deliveryMode" : 0,
-            "mandatory" : false,
-            "timestamp" : false,
-            "ack" : false
+            "bindingVersion" : "0.2.0"
           }
         },
         "message" : {
@@ -45,7 +40,9 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "amqp" : { }
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
           }
         }
       },
@@ -54,8 +51,9 @@
           "is" : "routingKey",
           "exchange" : {
             "name" : "",
-            "autoDelete" : false
-          }
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
         }
       }
     },
@@ -65,13 +63,8 @@
         "description" : "Auto-generated description",
         "bindings" : {
           "amqp" : {
-            "expiration" : 0,
             "cc" : [ "" ],
-            "priority" : 0,
-            "deliveryMode" : 0,
-            "mandatory" : false,
-            "timestamp" : false,
-            "ack" : false
+            "bindingVersion" : "0.2.0"
           }
         },
         "message" : {
@@ -84,7 +77,9 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "amqp" : { }
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
           }
         }
       },
@@ -93,8 +88,9 @@
           "is" : "routingKey",
           "exchange" : {
             "name" : "name",
-            "autoDelete" : false
-          }
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
         }
       }
     },
@@ -104,13 +100,8 @@
         "description" : "Auto-generated description",
         "bindings" : {
           "amqp" : {
-            "expiration" : 0,
             "cc" : [ "example-consumer-topic-routing-key" ],
-            "priority" : 0,
-            "deliveryMode" : 0,
-            "mandatory" : false,
-            "timestamp" : false,
-            "ack" : false
+            "bindingVersion" : "0.2.0"
           }
         },
         "message" : {
@@ -124,7 +115,9 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "amqp" : { }
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
           }
         }
       },
@@ -133,8 +126,9 @@
           "is" : "routingKey",
           "exchange" : {
             "name" : "example-consumer-topic-exchange",
-            "autoDelete" : false
-          }
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
         }
       }
     },
@@ -144,13 +138,8 @@
         "description" : "Auto-generated description",
         "bindings" : {
           "amqp" : {
-            "expiration" : 0,
             "cc" : [ "example-topic-routing-key" ],
-            "priority" : 0,
-            "deliveryMode" : 0,
-            "mandatory" : false,
-            "timestamp" : false,
-            "ack" : false
+            "bindingVersion" : "0.2.0"
           }
         },
         "message" : {
@@ -164,7 +153,9 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "amqp" : { }
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
           }
         }
       },
@@ -173,8 +164,9 @@
           "is" : "routingKey",
           "exchange" : {
             "name" : "example-topic-exchange",
-            "autoDelete" : false
-          }
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
         }
       }
     },
@@ -190,7 +182,8 @@
             "deliveryMode" : 0,
             "mandatory" : false,
             "timestamp" : false,
-            "ack" : false
+            "ack" : false,
+            "bindingVersion" : "0.2.0"
           }
         },
         "message" : {
@@ -204,7 +197,9 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "amqp" : { }
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
           }
         }
       }
@@ -215,13 +210,8 @@
         "description" : "Auto-generated description",
         "bindings" : {
           "amqp" : {
-            "expiration" : 0,
             "cc" : [ "example-queue" ],
-            "priority" : 0,
-            "deliveryMode" : 0,
-            "mandatory" : false,
-            "timestamp" : false,
-            "ack" : false
+            "bindingVersion" : "0.2.0"
           }
         },
         "message" : {
@@ -234,7 +224,9 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "amqp" : { }
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
           }
         }
       },
@@ -243,8 +235,9 @@
           "is" : "routingKey",
           "exchange" : {
             "name" : "",
-            "autoDelete" : false
-          }
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
         }
       }
     },
@@ -254,13 +247,8 @@
         "description" : "Auto-generated description",
         "bindings" : {
           "amqp" : {
-            "expiration" : 0,
             "cc" : [ "example-topic-routing-key" ],
-            "priority" : 0,
-            "deliveryMode" : 0,
-            "mandatory" : false,
-            "timestamp" : false,
-            "ack" : false
+            "bindingVersion" : "0.2.0"
           }
         },
         "message" : {
@@ -273,7 +261,9 @@
             "$ref" : "#/components/schemas/HeadersNotDocumented"
           },
           "bindings" : {
-            "amqp" : { }
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
           }
         }
       },
@@ -282,8 +272,9 @@
           "is" : "routingKey",
           "exchange" : {
             "name" : "example-topic-exchange",
-            "autoDelete" : false
-          }
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
         }
       }
     }

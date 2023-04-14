@@ -1,11 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.OperationBinding;
-import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
-import com.asyncapi.v2.model.channel.ChannelItem;
-import com.asyncapi.v2.model.channel.operation.Operation;
+import com.asyncapi.v2.binding.operation.OperationBinding;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
+import com.asyncapi.v2._0_0.model.channel.ChannelItem;
+import com.asyncapi.v2._0_0.model.channel.operation.Operation;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
@@ -150,7 +150,7 @@ public class MethodLevelKafkaListenerScannerTest {
         KafkaOperationBinding kafka = (KafkaOperationBinding) actualBindings.get("kafka");
         assertThat(kafka).isNotNull();
         assertThat(kafka.getGroupId())
-                .isEqualTo(ClassWithKafkaListenerAnnotationWithGroupId.GROUP_ID);
+                .isEqualTo(KafkaListenerUtil.buildKafkaGroupIdSchema(ClassWithKafkaListenerAnnotationWithGroupId.GROUP_ID));
     }
 
     @Test

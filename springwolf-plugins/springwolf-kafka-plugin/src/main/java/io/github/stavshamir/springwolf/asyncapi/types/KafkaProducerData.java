@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import com.asyncapi.v2.binding.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.kafka.KafkaOperationBinding;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import lombok.Builder;

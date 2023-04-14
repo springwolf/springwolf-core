@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import com.asyncapi.v2.binding.ChannelBinding;
-import com.asyncapi.v2.binding.MessageBinding;
-import com.asyncapi.v2.binding.OperationBinding;
+import com.asyncapi.v2.binding.channel.ChannelBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 
 import java.util.Map;
