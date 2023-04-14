@@ -38,7 +38,6 @@ Add a configuration class and provide a `AsyncApiDocket` bean:
 ```java
 
 @Configuration
-@EnableAsyncApi
 public class AsyncApiConfiguration {
 
     private final String amqpHost = "localhost";
