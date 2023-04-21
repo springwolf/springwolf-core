@@ -95,6 +95,12 @@ publishing {
                         name = 'Timon Back'
                         email = 'timon.back+springwolf@gmail.com'
                     }
+
+                    developer {
+                        id = 'sam0r040'
+                        name = 'David Müller'
+                        email = 'david.mueller@codecentric.de'
+                    }
                 }
 
                 scm {
