@@ -2,7 +2,10 @@ package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message
 
 import com.asyncapi.v2.binding.message.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
@@ -16,6 +19,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
+
+    @Builder.Default
+    private String schemaFormat = "application/vnd.oai.openapi+json;version=3.0.0";
 
     /**
      * A machine-friendly name for the message.

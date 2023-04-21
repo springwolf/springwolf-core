@@ -34,6 +34,7 @@
           }
         },
         "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
           "payload" : {
@@ -65,6 +66,7 @@
           }
         },
         "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
           "title" : "ExamplePayloadDto",
           "description" : "Custom, optional description for this consumed topic",
@@ -97,6 +99,7 @@
           }
         },
         "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
           "description" : "Custom, optional description for this produced to topic",
@@ -129,6 +132,7 @@
           }
         },
         "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
           "title" : "ExamplePayloadDto",
           "payload" : {
@@ -169,6 +173,7 @@
         },
         "message" : {
           "oneOf" : [ {
+            "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
             "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
             "title" : "AnotherPayloadDto",
             "payload" : {
@@ -183,6 +188,7 @@
               }
             }
           }, {
+            "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
             "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
             "title" : "ExamplePayloadDto",
             "payload" : {
@@ -197,6 +203,7 @@
               }
             }
           }, {
+            "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
             "name" : "javax.money.MonetaryAmount",
             "title" : "MonetaryAmount",
             "description" : "Override description in the AsyncListener annotation with servers at localhost:9092",
@@ -236,6 +243,7 @@
           }
         },
         "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.dtos.NestedPayloadDto",
           "title" : "NestedPayloadDto",
           "description" : "Custom, optional description defined in the AsyncPublisher annotation",
