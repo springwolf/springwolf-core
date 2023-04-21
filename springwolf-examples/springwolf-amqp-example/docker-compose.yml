@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    image: stavshamir/springwolf-amqp-example:0.6.0
+    image: stavshamir/springwolf-amqp-example:0.7.0
     links:
       - amqp
     ports:
