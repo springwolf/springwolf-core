@@ -8,7 +8,7 @@ plugins {
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
 group = 'io.github.springwolf'
-version = '0.6.0' + (isSnapshot ? '-SNAPSHOT' : '')
+version = '0.7.0' + (isSnapshot ? '-SNAPSHOT' : '')
 sourceCompatibility = '1.8'
 
 node {
@@ -113,4 +113,3 @@ signing {
   useInMemoryPgpKeys(signingKey, signingPassword)
   sign publishing.publications.mavenJava
 }
-
