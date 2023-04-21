@@ -40,6 +40,7 @@
           }
         },
         "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.ExamplePayload",
           "title" : "Example Payload",
           "payload" : {

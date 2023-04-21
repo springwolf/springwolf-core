@@ -28,6 +28,7 @@
           "kafka": {}
         },
         "message": {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.payload.ConsumerPayload",
           "title": "ConsumerPayload",
           "payload": {
@@ -50,6 +51,7 @@
           "kafka": {}
         },
         "message": {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.payload.InputPayload",
           "title": "InputPayload",
           "payload": {
@@ -72,6 +74,7 @@
           "kafka": {}
         },
         "message": {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.payload.OutputPayload",
           "title": "OutputPayload",
           "payload": {
