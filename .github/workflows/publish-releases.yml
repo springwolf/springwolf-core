@@ -3,6 +3,7 @@ name: Publish releases
 on: workflow_dispatch
 
 permissions:
+  contents: write
   packages: write
 
 jobs:
@@ -29,6 +30,17 @@ jobs:
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
+      - name: Tag version
+        run: |
+          VERSION=$(./gradlew -p springwolf-core properties | grep "version:" | awk '{print $2}')
+          TAG="springwolf-core-$VERSION"
+          git tag "$TAG"
+
+          echo "Publishing tag"
+          git push origin "$TAG" || true # Do not fail, if the tag already exists
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: false
+
   publish-springwolf-amqp-release:
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +63,17 @@ jobs:
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+
+      - name: Tag version
+        run: |
+          VERSION=$(./gradlew -p springwolf-plugins/springwolf-amqp-plugin properties | grep "version:" | awk '{print $2}')
+          TAG="springwolf-amqp-$VERSION"
+          git tag "$TAG"
+
+          echo "Publishing tag"
+          git push origin "$TAG" || true # Do not fail, if the tag already exists
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: false
 
   publish-springwolf-kafka-release:
     runs-on: ubuntu-latest
@@ -75,6 +98,17 @@ jobs:
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
+      - name: Tag version
+        run: |
+          VERSION=$(./gradlew -p springwolf-plugins/springwolf-kafka-plugin properties | grep "version:" | awk '{print $2}')
+          TAG="springwolf-kafka-$VERSION"
+          git tag "$TAG"
+
+          echo "Publishing tag"
+          git push origin "$TAG" || true # Do not fail, if the tag already exists
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: false
+
   publish-springwolf-cloud-stream-release:
     runs-on: ubuntu-latest
     steps:
@@ -97,3 +131,14 @@ jobs:
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+
+      - name: Tag version
+        run: |
+          VERSION=$(./gradlew -p springwolf-plugins/springwolf-cloud-stream-plugin properties | grep "version:" | awk '{print $2}')
+          TAG="springwolf-cloud-stream-$VERSION"
+          git tag "$TAG"
+
+          echo "Publishing tag"
+          git push origin "$TAG" || true # Do not fail, if the tag already exists
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: false
