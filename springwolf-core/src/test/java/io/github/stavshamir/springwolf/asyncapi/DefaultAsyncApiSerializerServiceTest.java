@@ -21,6 +21,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.Data;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -37,13 +38,12 @@ import java.util.Map;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {DefaultAsyncApiSerializerService.class})
-public class DefaultAsyncApiSerializerServiceTest {
+class DefaultAsyncApiSerializerServiceTest {
 
     @Autowired
     private DefaultAsyncApiSerializerService serializer;
 
-    @Test
-    public void AsyncAPI_should_map_to_a_valid_asyncapi_json() throws IOException, JSONException {
+    private AsyncAPI getAsyncAPITestObject() {
         Info info = Info.builder()
                 .title("AsyncAPI Sample App")
                 .version("1.0.1")
@@ -101,11 +101,25 @@ public class DefaultAsyncApiSerializerServiceTest {
                 .components(Components.builder().schemas(schemas).build())
                 .build();
 
+        return asyncapi;
+    }
+
+    @Test
+    void AsyncAPI_should_map_to_a_valid_asyncapi_json() throws IOException, JSONException {
+        var asyncapi = getAsyncAPITestObject();
         String actual = serializer.toJsonString(asyncapi);
-        System.out.println("Got: " + actual);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    void AsyncAPI_should_map_to_a_valid_asyncapi_yaml() throws IOException, JSONException {
+        var asyncapi = getAsyncAPITestObject();
+        String actual = serializer.toYaml(asyncapi);
+        InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.yaml");
+        String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Data

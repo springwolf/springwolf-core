@@ -7,6 +7,8 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
 
     private ObjectMapper jsonMapper = new ObjectMapper();
+
+    private ObjectMapper yamlMapper;
     private PrettyPrinter printer = new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @PostConstruct
@@ -26,28 +30,78 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
                         .without(SerializationFeature.FAIL_ON_EMPTY_BEANS)
         );
         jsonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
 
+        final YAMLFactory factory = new YAMLFactory()
+                .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
+                .enable(YAMLGenerator.Feature.INDENT_ARRAYS_WITH_INDICATOR)
+                .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
+        yamlMapper = new ObjectMapper(factory);
+        yamlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
 
     @Override
     public String toJsonString(AsyncAPI asyncAPI) throws JsonProcessingException {
         return jsonMapper.writer(printer).writeValueAsString(asyncAPI);
     }
 
+    @Override
+    public String toYaml(AsyncAPI asyncAPI) throws JsonProcessingException {
+        return yamlMapper.writer(printer).writeValueAsString(asyncAPI);
+    }
+
     /**
      * Get the current object mapper configuration.
+     *
+     * @deprecated
+     * This method is replaced by {@link DefaultAsyncApiSerializerService#getJsonObjectMapper()}
      */
+    @Deprecated(since = "0.11.0", forRemoval = true)
     public ObjectMapper getObjectMapper() {
+        return getJsonObjectMapper();
+    }
+
+    /**
+     * Get the current JSON object mapper configuration.
+     */
+    public ObjectMapper getJsonObjectMapper() {
         return jsonMapper;
+    }
+
+    /**
+     * Get the current YAML object mapper configuration.
+     */
+    public ObjectMapper getYamlObjectMapper() {
+        return yamlMapper;
     }
 
     /**
      * Allows to customize the used objectMapper
      * <p>
-     * Use {@link #getObjectMapper()} as a starting point
+     * Use {@link #getJsonObjectMapper()} as a starting point
+     * @deprecated
+     * This method is replaced by {@link DefaultAsyncApiSerializerService#setJsonObjectMapper(ObjectMapper)}
      */
+    @Deprecated(since = "0.11.0", forRemoval = true)
     public void setObjectMapper(ObjectMapper mapper) {
         jsonMapper = mapper;
+    }
+
+    /**
+     * Allows to customize the used objectMapper
+     * <p>
+     * Use {@link #getJsonObjectMapper()} as a starting point
+     */
+    public void setJsonObjectMapper(ObjectMapper mapper) {
+        jsonMapper = mapper;
+    }
+
+    /**
+     * Allows to customize the used objectMapper
+     * <p>
+     * Use {@link #getJsonObjectMapper()} as a starting point
+     */
+    public void setYamlObjectMapper(ObjectMapper mapper) {
+        yamlMapper = mapper;
     }
 
     /**
