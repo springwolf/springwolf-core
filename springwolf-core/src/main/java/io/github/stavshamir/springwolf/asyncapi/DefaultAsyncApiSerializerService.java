@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
+import io.swagger.v3.core.util.Yaml;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
 
     private ObjectMapper jsonMapper = new ObjectMapper();
 
-    private ObjectMapper yamlMapper;
+    private ObjectMapper yamlMapper = Yaml.mapper();
     private PrettyPrinter printer = new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @PostConstruct
@@ -31,12 +32,7 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
         );
         jsonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-        final YAMLFactory factory = new YAMLFactory()
-                .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
-                .enable(YAMLGenerator.Feature.INDENT_ARRAYS_WITH_INDICATOR)
-                .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
-        yamlMapper = new ObjectMapper(factory);
-        yamlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        ((YAMLFactory)yamlMapper.getFactory()).enable(YAMLGenerator.Feature.INDENT_ARRAYS_WITH_INDICATOR);
     }
 
     @Override
