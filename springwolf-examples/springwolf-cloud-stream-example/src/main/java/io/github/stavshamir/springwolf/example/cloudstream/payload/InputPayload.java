@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example.payload;
+package io.github.stavshamir.springwolf.example.cloudstream.payload;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

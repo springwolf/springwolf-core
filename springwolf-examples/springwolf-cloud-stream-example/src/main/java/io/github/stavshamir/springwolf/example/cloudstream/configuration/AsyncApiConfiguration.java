@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example.amqp.configuration;
+package io.github.stavshamir.springwolf.example.cloudstream.configuration;
 
 import com.asyncapi.v2._0_0.model.info.Contact;
 import com.asyncapi.v2._0_0.model.info.Info;

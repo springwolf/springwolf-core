@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example;
+package io.github.stavshamir.springwolf.example.cloudstream;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import org.junit.jupiter.api.Nested;

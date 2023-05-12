@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example.payload;
+package io.github.stavshamir.springwolf.example.cloudstream.payload;
 
 public class ConsumerPayload {
 

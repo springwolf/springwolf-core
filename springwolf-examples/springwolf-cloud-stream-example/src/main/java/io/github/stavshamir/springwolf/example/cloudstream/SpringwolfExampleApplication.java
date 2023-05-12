@@ -1,8 +1,8 @@
-package io.github.stavshamir.springwolf.example;
+package io.github.stavshamir.springwolf.example.cloudstream;
 
-import io.github.stavshamir.springwolf.example.payload.ConsumerPayload;
-import io.github.stavshamir.springwolf.example.payload.InputPayload;
-import io.github.stavshamir.springwolf.example.payload.OutputPayload;
+import io.github.stavshamir.springwolf.example.cloudstream.payload.ConsumerPayload;
+import io.github.stavshamir.springwolf.example.cloudstream.payload.InputPayload;
+import io.github.stavshamir.springwolf.example.cloudstream.payload.OutputPayload;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.boot.SpringApplication;

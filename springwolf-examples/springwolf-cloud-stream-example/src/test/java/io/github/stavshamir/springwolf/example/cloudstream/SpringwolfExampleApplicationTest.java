@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example;
+package io.github.stavshamir.springwolf.example.cloudstream;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

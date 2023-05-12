@@ -29,7 +29,7 @@
         },
         "message": {
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.payload.ConsumerPayload",
+          "name": "io.github.stavshamir.springwolf.example.cloudstream.payload.ConsumerPayload",
           "title": "ConsumerPayload",
           "payload": {
             "$ref": "#/components/schemas/ConsumerPayload"
@@ -55,7 +55,7 @@
         },
         "message": {
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.payload.InputPayload",
+          "name": "io.github.stavshamir.springwolf.example.cloudstream.payload.InputPayload",
           "title": "InputPayload",
           "payload": {
             "$ref": "#/components/schemas/InputPayload"
@@ -81,7 +81,7 @@
         },
         "message": {
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.payload.OutputPayload",
+          "name": "io.github.stavshamir.springwolf.example.cloudstream.payload.OutputPayload",
           "title": "OutputPayload",
           "payload": {
             "$ref": "#/components/schemas/OutputPayload"

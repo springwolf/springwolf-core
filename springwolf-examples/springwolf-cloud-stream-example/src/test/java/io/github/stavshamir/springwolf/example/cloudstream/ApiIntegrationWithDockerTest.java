@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example;
+package io.github.stavshamir.springwolf.example.cloudstream;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
