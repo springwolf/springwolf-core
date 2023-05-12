@@ -10,6 +10,7 @@ import io.swagger.oas.inflector.examples.models.Example;
 import io.swagger.oas.inflector.processors.JsonNodeExampleSerializer;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -24,7 +25,7 @@ import java.util.*;
 public class DefaultSchemasService implements SchemasService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = Json.mapper();
 
     private final Map<String, Schema> definitions = new HashMap<>();
 

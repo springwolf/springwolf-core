@@ -6,17 +6,12 @@
       "s": {
         "description": "s field",
         "type": "string",
-        "example": "s value",
-        "exampleSetFlag": true,
-        "types": [
-          "string"
-        ]
+        "example": "s value"
       }
     },
     "example": {
       "s": "s value"
     },
-    "exampleSetFlag": true,
     "required": [
       "s"
     ]

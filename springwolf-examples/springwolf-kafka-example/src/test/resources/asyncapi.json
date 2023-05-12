@@ -218,9 +218,7 @@
                 "key" : {
                   "type" : "string",
                   "description" : "Kafka Consumer Message Key",
-                  "example" : "example-key",
-                  "exampleSetFlag" : true,
-                  "types" : [ "string" ]
+                  "example" : "example-key"
                 },
                 "bindingVersion" : "1"
               }
@@ -258,9 +256,7 @@
               "key" : {
                 "type" : "string",
                 "description" : "Kafka Producer Message Key",
-                "example" : "example-key",
-                "exampleSetFlag" : true,
-                "types" : [ "string" ]
+                "example" : "example-key"
               },
               "bindingVersion" : "1"
             }
@@ -276,15 +272,12 @@
         "type" : "object",
         "properties" : {
           "example" : {
-            "$ref" : "#/components/schemas/ExamplePayloadDto",
-            "exampleSetFlag" : false
+            "$ref" : "#/components/schemas/ExamplePayloadDto"
           },
           "foo" : {
             "type" : "string",
             "description" : "Foo field",
-            "example" : "bar",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ]
+            "example" : "bar"
           }
         },
         "description" : "Another payload model",
@@ -295,8 +288,7 @@
             "someString" : "some string value"
           },
           "foo" : "bar"
-        },
-        "exampleSetFlag" : true
+        }
       },
       "CloudEventHeadersForAnotherPayloadDtoEndpoint" : {
         "type" : "object",
@@ -305,56 +297,42 @@
             "type" : "string",
             "description" : "CloudEvent Id Header",
             "example" : "1234-1234-1234",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "1234-1234-1234" ]
           },
           "ce_source" : {
             "type" : "string",
             "description" : "CloudEvent Source Header",
             "example" : "springwolf-kafka-example/anotherPayloadDtoEndpoint",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "springwolf-kafka-example/anotherPayloadDtoEndpoint" ]
           },
           "ce_specversion" : {
             "type" : "string",
             "description" : "CloudEvent Spec Version Header",
             "example" : "1.0",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "1.0" ]
           },
           "ce_subject" : {
             "type" : "string",
             "description" : "CloudEvent Subject Header",
             "example" : "Test Subject",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "Test Subject" ]
           },
           "ce_time" : {
             "type" : "string",
             "description" : "CloudEvent Time Header",
             "example" : "2015-07-20T15:49:04-07:00",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "2015-07-20T15:49:04-07:00" ]
           },
           "ce_type" : {
             "type" : "string",
             "description" : "CloudEvent Payload Type Header",
             "example" : "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint" ]
           },
           "content-type" : {
             "type" : "string",
             "description" : "CloudEvent Content-Type Header",
             "example" : "application/json",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "application/json" ]
           }
         },
@@ -366,9 +344,7 @@
           "ce_time" : "2015-07-20T15:49:04-07:00",
           "ce_type" : "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint",
           "content-type" : "application/json"
-        },
-        "exampleSetFlag" : true,
-        "types" : [ "object" ]
+        }
       },
       "ExamplePayloadDto" : {
         "required" : [ "someEnum", "someString" ],
@@ -378,24 +354,18 @@
             "type" : "string",
             "description" : "Some enum field",
             "example" : "FOO2",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "FOO1", "FOO2", "FOO3" ]
           },
           "someLong" : {
             "type" : "integer",
             "description" : "Some long field",
             "format" : "int64",
-            "example" : 5,
-            "exampleSetFlag" : true,
-            "types" : [ "integer" ]
+            "example" : 5
           },
           "someString" : {
             "type" : "string",
             "description" : "Some string field",
-            "example" : "some string value",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ]
+            "example" : "some string value"
           }
         },
         "description" : "Example payload model",
@@ -403,62 +373,47 @@
           "someEnum" : "FOO2",
           "someLong" : 5,
           "someString" : "some string value"
-        },
-        "exampleSetFlag" : true
+        }
       },
       "HeadersNotDocumented" : {
         "type" : "object",
         "properties" : { },
-        "example" : { },
-        "exampleSetFlag" : true,
-        "types" : [ "object" ]
+        "example" : { }
       },
       "MonetaryAmount" : {
         "type" : "object",
         "properties" : {
           "amount" : {
             "type" : "number",
-            "example" : 99.99,
-            "exampleSetFlag" : true,
-            "types" : [ "number" ]
+            "example" : 99.99
           },
           "currency" : {
             "type" : "string",
-            "example" : "USD",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ]
+            "example" : "USD"
           }
         },
         "example" : {
           "amount" : 99.99,
           "currency" : "USD"
-        },
-        "exampleSetFlag" : true
+        }
       },
       "NestedPayloadDto" : {
         "type" : "object",
         "properties" : {
           "examplePayloads" : {
             "type" : "array",
-            "exampleSetFlag" : false,
             "items" : {
-              "$ref" : "#/components/schemas/ExamplePayloadDto",
-              "exampleSetFlag" : false
-            },
-            "types" : [ "array" ]
+              "$ref" : "#/components/schemas/ExamplePayloadDto"
+            }
           },
           "someStrings" : {
             "uniqueItems" : true,
             "type" : "array",
-            "exampleSetFlag" : false,
             "items" : {
               "type" : "string",
               "description" : "Some string field",
-              "example" : "some string value",
-              "exampleSetFlag" : true,
-              "types" : [ "string" ]
-            },
-            "types" : [ "array" ]
+              "example" : "some string value"
+            }
           }
         },
         "description" : "Payload model with nested complex types",
@@ -469,8 +424,7 @@
             "someString" : "some string value"
           } ],
           "someStrings" : [ "some string value" ]
-        },
-        "exampleSetFlag" : true
+        }
       },
       "SpringKafkaDefaultHeaders" : {
         "type" : "object",
@@ -479,16 +433,12 @@
             "type" : "string",
             "description" : "Spring Type Id Header",
             "example" : "io.github.stavshamir.springwolf.example.dtos.NestedPayloadDto",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "io.github.stavshamir.springwolf.example.dtos.NestedPayloadDto" ]
           }
         },
         "example" : {
           "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.NestedPayloadDto"
-        },
-        "exampleSetFlag" : true,
-        "types" : [ "object" ]
+        }
       },
       "SpringKafkaDefaultHeaders-AnotherPayloadDto" : {
         "type" : "object",
@@ -497,16 +447,12 @@
             "type" : "string",
             "description" : "Spring Type Id Header",
             "example" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto" ]
           }
         },
         "example" : {
           "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
-        },
-        "exampleSetFlag" : true,
-        "types" : [ "object" ]
+        }
       },
       "SpringKafkaDefaultHeaders-ExamplePayloadDto" : {
         "type" : "object",
@@ -515,16 +461,12 @@
             "type" : "string",
             "description" : "Spring Type Id Header",
             "example" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto" ]
           }
         },
         "example" : {
           "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto"
-        },
-        "exampleSetFlag" : true,
-        "types" : [ "object" ]
+        }
       },
       "SpringKafkaDefaultHeaders-MonetaryAmount" : {
         "type" : "object",
@@ -533,16 +475,12 @@
             "type" : "string",
             "description" : "Spring Type Id Header",
             "example" : "javax.money.MonetaryAmount",
-            "exampleSetFlag" : true,
-            "types" : [ "string" ],
             "enum" : [ "javax.money.MonetaryAmount" ]
           }
         },
         "example" : {
           "__TypeId__" : "javax.money.MonetaryAmount"
-        },
-        "exampleSetFlag" : true,
-        "types" : [ "object" ]
+        }
       }
     }
   },
