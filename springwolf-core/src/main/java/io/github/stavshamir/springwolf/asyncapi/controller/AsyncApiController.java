@@ -8,22 +8,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("${springwolf.paths.docs:/springwolf/docs}")
 @RequiredArgsConstructor
 public class AsyncApiController {
 
     private final AsyncApiService asyncApiService;
     private final AsyncApiSerializerService serializer;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public String asyncApi() throws JsonProcessingException {
+    @GetMapping(path ="${springwolf.paths.docs:/springwolf/docs}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String asyncApiJson() throws JsonProcessingException {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
         return serializer.toJsonString(asyncAPI);
     }
 
+    @GetMapping(path ="${springwolf.paths.docs:/springwolf/docs}.yaml", produces = "application/yaml")
+    public String asyncApiYaml() throws JsonProcessingException {
+        AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
+        return serializer.toYaml(asyncAPI);
+    }
 }

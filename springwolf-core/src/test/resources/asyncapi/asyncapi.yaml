@@ -1,0 +1,52 @@
+asyncapi: 2.0.0
+info:
+  title: AsyncAPI Sample App
+  version: 1.0.1
+  description: This is a sample server.
+  termsOfService: http://asyncapi.org/terms/
+  contact:
+    name: API Support
+    url: http://www.asyncapi.org/support
+    email: support@asyncapi.org
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+defaultContentType: application/json
+servers:
+  production:
+    url: development.gigantic-server.com
+    protocol: kafka
+    protocolVersion: 1.0.0
+    description: Development server
+channels:
+  new-user:
+    description: This channel is used to exchange messages about users signing up
+    subscribe:
+      operationId: new-user_listenerMethod_subscribe
+      description: Auto-generated description
+      bindings:
+        kafka:
+          groupId:
+            type: string
+            enum:
+              - myGroupId
+          bindingVersion: 0.4.0
+      message:
+        schemaFormat: application/vnd.oai.openapi+json;version=3.0.0
+        name: io.github.stavshamir.springwolf.ExamplePayload
+        title: Example Payload
+        payload:
+          $ref: '#/components/schemas/ExamplePayload'
+        bindings:
+          kafka:
+            key:
+              type: string
+            bindingVersion: binding-version-1
+components:
+  schemas:
+    ExamplePayload:
+      type: object
+      properties:
+        s:
+          type: string
+tags: []
