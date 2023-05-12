@@ -23,7 +23,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'io.swagger.core.v3:swagger-models:2.2.8'
+    implementation 'io.swagger.core.v3:swagger-models:2.2.9'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
     implementation 'com.google.guava:guava:31.1-jre'
