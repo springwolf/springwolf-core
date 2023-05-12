@@ -12,6 +12,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChan
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
@@ -82,6 +83,7 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -120,6 +122,7 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
@@ -164,6 +167,7 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .title(Integer.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(Integer.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation subscribeOperation = Operation.builder()
@@ -184,6 +188,7 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation publishOperation = Operation.builder()
@@ -230,6 +235,7 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .title(Integer.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(Integer.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation subscribeOperation = Operation.builder()
@@ -250,6 +256,7 @@ public class CloudStreamFunctionChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(ImmutableMap.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation publishOperation = Operation.builder()
