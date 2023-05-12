@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SpringContextTest {
 
     @Nested
-    @SpringBootTest(classes = SpringwolfExampleApplication.class)
+    @SpringBootTest(classes = SpringwolfAmqpExampleApplication.class)
     class AsyncApiDocketTest {
 
         @Autowired
@@ -37,7 +37,7 @@ public class SpringContextTest {
     }
 
     @Nested
-    @SpringBootTest(classes = SpringwolfExampleApplication.class)
+    @SpringBootTest(classes = SpringwolfAmqpExampleApplication.class)
     @TestPropertySource(properties = {
             "customAsyncApiDocketBean=false",
             "springwolf.enabled=true",
@@ -69,7 +69,7 @@ public class SpringContextTest {
     }
 
     @Nested
-    @SpringBootTest(classes = SpringwolfExampleApplication.class)
+    @SpringBootTest(classes = SpringwolfAmqpExampleApplication.class)
     @TestPropertySource(properties = {
             "springwolf.scanner.async-listener.enabled=false",
             "springwolf.scanner.async-publisher.enabled=false",

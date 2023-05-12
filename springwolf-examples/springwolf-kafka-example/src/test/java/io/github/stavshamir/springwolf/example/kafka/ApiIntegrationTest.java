@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example;
+package io.github.stavshamir.springwolf.example.kafka;
 
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-@SpringBootTest(classes = {SpringwolfExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {SpringwolfKafkaExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(
         partitions = 1, brokerProperties = {
         "listeners=PLAINTEXT://localhost:9092",

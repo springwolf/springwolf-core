@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example.cloudstream;
+package io.github.stavshamir.springwolf.example.kafka;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +9,10 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = {SpringwolfExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
+@SpringBootTest(classes = {SpringwolfKafkaExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 @DirtiesContext
-class SpringwolfExampleApplicationTest {
+class SpringwolfKafkaExampleApplicationTest {
 
     @Autowired
     private ApplicationContext context;

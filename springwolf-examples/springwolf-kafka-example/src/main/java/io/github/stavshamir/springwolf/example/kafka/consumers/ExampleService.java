@@ -1,6 +1,6 @@
-package io.github.stavshamir.springwolf.example.amqp.consumers;
+package io.github.stavshamir.springwolf.example.kafka.consumers;
 
-import io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto;
+import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

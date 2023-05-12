@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example.amqp.dtos;
+package io.github.stavshamir.springwolf.example.kafka.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;

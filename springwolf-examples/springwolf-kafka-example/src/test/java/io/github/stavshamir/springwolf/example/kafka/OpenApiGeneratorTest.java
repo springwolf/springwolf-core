@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example;
+package io.github.stavshamir.springwolf.example.kafka;
 
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;

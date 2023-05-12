@@ -1,11 +1,11 @@
-package io.github.stavshamir.springwolf.example.amqp.consumers;
+package io.github.stavshamir.springwolf.example.kafka.consumers;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
-import io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto;
+import io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto;
+import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;

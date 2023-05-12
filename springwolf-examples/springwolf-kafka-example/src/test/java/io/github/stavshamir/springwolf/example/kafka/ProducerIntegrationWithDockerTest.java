@@ -1,8 +1,8 @@
-package io.github.stavshamir.springwolf.example;
+package io.github.stavshamir.springwolf.example.kafka;
 
 import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties;
-import io.github.stavshamir.springwolf.example.amqp.consumers.ExampleService;
-import io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto;
+import io.github.stavshamir.springwolf.example.kafka.consumers.ExampleService;
+import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
@@ -22,7 +22,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
+import static io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.verify;
  * While the assertion of this test is identical to ApiIntegrationTests,
  * the setup uses a full docker-compose context with a real kafka instance.
  */
-@SpringBootTest(classes = {SpringwolfExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {SpringwolfKafkaExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @DirtiesContext
 @TestMethodOrder(OrderAnnotation.class)

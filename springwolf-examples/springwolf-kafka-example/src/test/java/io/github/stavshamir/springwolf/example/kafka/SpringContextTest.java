@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example;
+package io.github.stavshamir.springwolf.example.kafka;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import org.junit.jupiter.api.Nested;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SpringContextTest {
 
-    @SpringBootTest(classes = SpringwolfExampleApplication.class)
+    @SpringBootTest(classes = SpringwolfKafkaExampleApplication.class)
     @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
     @Nested
     @DirtiesContext
@@ -40,7 +40,7 @@ public class SpringContextTest {
         }
     }
 
-    @SpringBootTest(classes = SpringwolfExampleApplication.class)
+    @SpringBootTest(classes = SpringwolfKafkaExampleApplication.class)
     @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
     @Nested
     @DirtiesContext
@@ -75,7 +75,7 @@ public class SpringContextTest {
         }
     }
 
-    @SpringBootTest(classes = SpringwolfExampleApplication.class)
+    @SpringBootTest(classes = SpringwolfKafkaExampleApplication.class)
     @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
     @Nested
     @DirtiesContext

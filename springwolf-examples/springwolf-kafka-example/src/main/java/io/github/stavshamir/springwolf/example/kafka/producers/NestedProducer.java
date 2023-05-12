@@ -1,16 +1,16 @@
-package io.github.stavshamir.springwolf.example.amqp.producers;
+package io.github.stavshamir.springwolf.example.kafka.producers;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncKey;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
-import io.github.stavshamir.springwolf.example.amqp.dtos.NestedPayloadDto;
+import io.github.stavshamir.springwolf.example.kafka.configuration.KafkaConfiguration;
+import io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import static io.github.stavshamir.springwolf.example.amqp.configuration.KafkaConfiguration.PRODUCER_TOPIC;
 import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
 
 @Component
@@ -28,7 +28,7 @@ public class NestedProducer {
                             @AsyncOperation.Headers.Header(
                                     name = DEFAULT_CLASSID_FIELD_NAME,
                                     description = "Spring Type Id Header",
-                                    value = "io.github.stavshamir.springwolf.example.amqp.dtos.NestedPayloadDto"
+                                    value = "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
                             ),
                     }
             )
@@ -45,7 +45,7 @@ public class NestedProducer {
             )
     )
     public void sendMessage(NestedPayloadDto msg) {
-        kafkaTemplate.send(PRODUCER_TOPIC, msg);
+        kafkaTemplate.send(KafkaConfiguration.PRODUCER_TOPIC, msg);
     }
 
 }

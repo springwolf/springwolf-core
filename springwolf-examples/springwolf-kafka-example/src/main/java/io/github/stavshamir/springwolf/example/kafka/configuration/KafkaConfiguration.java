@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example.amqp.configuration;
+package io.github.stavshamir.springwolf.example.kafka.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;

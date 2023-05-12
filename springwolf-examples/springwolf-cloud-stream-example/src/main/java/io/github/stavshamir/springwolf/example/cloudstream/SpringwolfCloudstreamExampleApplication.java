@@ -15,10 +15,10 @@ import java.util.function.Function;
 
 @SpringBootApplication
 @Slf4j
-public class SpringwolfExampleApplication {
+public class SpringwolfCloudstreamExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringwolfExampleApplication.class, args);
+        SpringApplication.run(SpringwolfCloudstreamExampleApplication.class, args);
     }
 
     @Bean

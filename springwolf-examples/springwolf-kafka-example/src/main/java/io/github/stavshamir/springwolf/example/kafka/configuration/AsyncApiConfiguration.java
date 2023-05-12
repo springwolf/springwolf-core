@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example.amqp.configuration;
+package io.github.stavshamir.springwolf.example.kafka.configuration;
 
 import com.asyncapi.v2._0_0.model.info.Contact;
 import com.asyncapi.v2._0_0.model.info.Info;
@@ -11,16 +11,16 @@ import io.github.stavshamir.springwolf.asyncapi.types.KafkaProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForCloudEventsBuilder;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
-import io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto;
+import io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto;
+import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 
-import static io.github.stavshamir.springwolf.example.amqp.configuration.KafkaConfiguration.CONSUMER_TOPIC;
-import static io.github.stavshamir.springwolf.example.amqp.configuration.KafkaConfiguration.PRODUCER_TOPIC;
+import static io.github.stavshamir.springwolf.example.kafka.configuration.KafkaConfiguration.CONSUMER_TOPIC;
+import static io.github.stavshamir.springwolf.example.kafka.configuration.KafkaConfiguration.PRODUCER_TOPIC;
 
 @Configuration
 public class AsyncApiConfiguration {

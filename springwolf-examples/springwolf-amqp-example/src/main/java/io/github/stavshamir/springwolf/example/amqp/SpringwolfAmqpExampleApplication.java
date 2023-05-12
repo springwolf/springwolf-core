@@ -1,13 +1,14 @@
-package io.github.stavshamir.springwolf.example;
+package io.github.stavshamir.springwolf.example.amqp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringwolfExampleApplication {
+public class SpringwolfAmqpExampleApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringwolfExampleApplication.class, args);
+		SpringApplication.run(SpringwolfAmqpExampleApplication.class, args);
 	}
 
 }
+

@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.example.configuration;
+package io.github.stavshamir.springwolf.example.kafka.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

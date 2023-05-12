@@ -1,11 +1,10 @@
-package io.github.stavshamir.springwolf.example.amqp.producers;
+package io.github.stavshamir.springwolf.example.kafka.producers;
 
-import io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto;
+import io.github.stavshamir.springwolf.example.kafka.configuration.KafkaConfiguration;
+import io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-
-import static io.github.stavshamir.springwolf.example.amqp.configuration.KafkaConfiguration.PRODUCER_TOPIC;
 
 @Component
 public class AnotherProducer {
@@ -14,7 +13,7 @@ public class AnotherProducer {
     private KafkaTemplate<String, AnotherPayloadDto> kafkaTemplate;
 
     public void sendMessage(AnotherPayloadDto msg) {
-        kafkaTemplate.send(PRODUCER_TOPIC, msg);
+        kafkaTemplate.send(KafkaConfiguration.PRODUCER_TOPIC, msg);
     }
 
 }

@@ -1,14 +1,13 @@
-package io.github.stavshamir.springwolf.example.amqp;
+package io.github.stavshamir.springwolf.example.kafka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringwolfExampleApplication {
+public class SpringwolfKafkaExampleApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringwolfExampleApplication.class, args);
+		SpringApplication.run(SpringwolfKafkaExampleApplication.class, args);
 	}
 
 }
-
