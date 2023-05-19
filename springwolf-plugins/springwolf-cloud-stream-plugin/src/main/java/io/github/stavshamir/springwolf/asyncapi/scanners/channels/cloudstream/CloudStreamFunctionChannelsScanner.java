@@ -1,10 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
 import com.asyncapi.v2._0_0.model.server.Server;
+import com.asyncapi.v2.binding.channel.ChannelBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
@@ -13,6 +14,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChan
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
@@ -78,6 +80,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .title(modelName)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
+                .bindings(buildMessageBinding())
                 .build();
 
         Operation operation = Operation.builder()
@@ -91,6 +94,11 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         return beanData.getBeanType() == FunctionalChannelBeanData.BeanType.CONSUMER
                 ? ChannelItem.builder().bindings(channelBinding).publish(operation).build()
                 : ChannelItem.builder().bindings(channelBinding).subscribe(operation).build();
+    }
+
+    private ImmutableMap<String, ? extends MessageBinding> buildMessageBinding() {
+        String protocolName = getProtocolName();
+        return ImmutableMap.of(protocolName, new EmptyMessageBinding());
     }
 
     private ImmutableMap<String, ? extends OperationBinding> buildOperationBinding() {
