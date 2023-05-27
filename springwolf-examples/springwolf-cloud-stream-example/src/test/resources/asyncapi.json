@@ -105,51 +105,30 @@
         "type": "object",
         "properties": {
           "payloadString": {
-            "type": "string",
-            "exampleSetFlag": false,
-            "types": [
-              "string"
-            ]
+            "type": "string"
           }
         },
         "example": {
           "payloadString": "string"
-        },
-        "exampleSetFlag": true
+        }
       },
       "HeadersNotDocumented": {
         "type": "object",
         "properties": {},
-        "example": {},
-        "exampleSetFlag": true,
-        "types": [
-          "object"
-        ]
+        "example": {}
       },
       "InputPayload": {
         "type": "object",
         "properties": {
           "foo": {
             "type": "array",
-            "exampleSetFlag": false,
             "items": {
-              "type": "string",
-              "exampleSetFlag": false,
-              "types": [
-                "string"
-              ]
-            },
-            "types": [
-              "array"
-            ]
+              "type": "string"
+            }
           },
           "bar": {
             "type": "integer",
-            "format": "int32",
-            "exampleSetFlag": false,
-            "types": [
-              "integer"
-            ]
+            "format": "int32"
           }
         },
         "description": "Input payload model",
@@ -158,8 +137,7 @@
             "string"
           ],
           "bar": 0
-        },
-        "exampleSetFlag": true
+        }
       },
       "OutputPayload": {
         "required": [
@@ -170,29 +148,20 @@
           "someString": {
             "type": "string",
             "description": "Some string field",
-            "example": "some string value",
-            "exampleSetFlag": true,
-            "types": [
-              "string"
-            ]
+            "example": "some string value"
           },
           "someLong": {
             "type": "integer",
             "description": "Some long field",
             "format": "int64",
-            "example": 5,
-            "exampleSetFlag": true,
-            "types": [
-              "integer"
-            ]
+            "example": 5
           }
         },
         "description": "Output payload model",
         "example": {
           "someString": "some string value",
           "someLong": 5
-        },
-        "exampleSetFlag": true
+        }
       }
     }
   },

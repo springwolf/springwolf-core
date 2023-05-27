@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.schemas;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +24,7 @@ public class DefaultSchemasServiceTest {
     private final SchemasService schemasService = new DefaultSchemasService(Optional.empty());
 
     private static final String EXAMPLES_PATH = "/schemas/examples";
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    static {
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
+    private static final ObjectMapper objectMapper = Json.mapper();
 
     @Test
     public void string() throws IOException, JSONException {

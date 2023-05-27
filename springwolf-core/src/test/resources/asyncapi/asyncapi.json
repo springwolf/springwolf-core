@@ -49,9 +49,7 @@
           "bindings" : {
             "kafka" : {
               "key" : {
-                "type" : "string",
-                "exampleSetFlag" : false,
-                "types" : [ "string" ]
+                "type" : "string"
               },
               "bindingVersion" : "binding-version-1"
             }
@@ -66,12 +64,9 @@
         "type" : "object",
         "properties" : {
           "s" : {
-            "type" : "string",
-            "exampleSetFlag" : false,
-            "types" : [ "string" ]
+            "type" : "string"
           }
-        },
-        "exampleSetFlag" : false
+        }
       }
     }
   },
