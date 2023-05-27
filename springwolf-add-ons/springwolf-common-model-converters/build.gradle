@@ -17,17 +17,17 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.javamoney.moneta:moneta-core:1.4.2'
-    implementation 'io.swagger.core.v3:swagger-core:2.2.9'
+    implementation "org.javamoney.moneta:moneta-core:${javaMoneyMonetaVersion}"
+    implementation "io.swagger.core.v3:swagger-core:${swaggerCoreVersion}"
 
-    implementation 'org.springframework:spring-context'
+    implementation "org.springframework:spring-context"
 
-    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation "javax.xml.bind:jaxb-api:${jaxbApiVersion}"
 
-    testImplementation 'org.junit.platform:junit-platform-engine:1.9.3'
-    testImplementation 'org.junit.platform:junit-platform-commons:1.9.3'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+    testImplementation "org.junit.platform:junit-platform-engine:${junitPlatformVersion}"
+    testImplementation "org.junit.platform:junit-platform-commons:${junitPlatformVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
 }
 
 jar {
