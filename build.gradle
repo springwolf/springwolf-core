@@ -25,5 +25,5 @@ ext {
     swaggerCoreVersion = '2.2.10'
     swaggerParserVersion = '2.1.11'
 
-    testcontainersVersion = '1.17.6'
+    testcontainersVersion = '1.18.1'
 }
