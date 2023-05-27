@@ -35,22 +35,22 @@ dependencies {
     implementation project(":springwolf-plugins:springwolf-cloud-stream-plugin")
     compileOnly project(":springwolf-plugins:springwolf-cloud-stream-plugin")
     annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream-plugin")
-    runtimeOnly 'io.github.springwolf:springwolf-ui:0.7.0'
+    runtimeOnly "io.github.springwolf:springwolf-ui:0.7.0"
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.cloud:spring-cloud-stream'
-    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
-    implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'org.slf4j:slf4j-api'
-    implementation 'io.swagger.core.v3:swagger-core:2.2.9'
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.cloud:spring-cloud-stream"
+    implementation "org.springframework.cloud:spring-cloud-stream-binder-kafka-streams"
+    implementation "com.google.guava:guava:${guavaVersion}"
+    implementation "org.slf4j:slf4j-api"
+    implementation "io.swagger.core.v3:swagger-core:${swaggerCoreVersion}"
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.kafka:spring-kafka-test'
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.9.1'
-    testImplementation 'org.testcontainers:testcontainers:1.17.6'
-    testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
-    testImplementation 'org.skyscreamer:jsonassert:1.5.1'
-    testImplementation 'commons-io:commons-io:2.11.0'
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.kafka:spring-kafka-test"
+    testImplementation "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}"
+    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+    testImplementation "org.skyscreamer:jsonassert:${jsonAssertVersion}"
+    testImplementation "commons-io:commons-io:${commonsIoVersion}"
 }
 
 docker {

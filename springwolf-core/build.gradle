@@ -18,33 +18,33 @@ repositories {
 }
 
 dependencies {
-    api 'com.asyncapi:asyncapi-core:1.0.0-EAP-2'
+    api "com.asyncapi:asyncapi-core:${asyncApiCoreVersion}"
 
-    implementation 'io.swagger:swagger-inflector:2.0.9'
-    implementation 'io.swagger.core.v3:swagger-core:2.2.9'
-    implementation 'io.swagger.parser.v3:swagger-parser-core:2.1.13'
-    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation "io.swagger:swagger-inflector:${swaggerInflectorVersion}"
+    implementation "io.swagger.core.v3:swagger-core:${swaggerCoreVersion}"
+    implementation "io.swagger.parser.v3:swagger-parser-core:${swaggerParserVersion}"
+    implementation "javax.xml.bind:jaxb-api:${jaxbApiVersion}"
 
-    implementation 'org.springframework:spring-web'
-    implementation 'org.springframework:spring-context'
-    implementation 'org.springframework:spring-messaging'
-    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation "org.springframework:spring-web"
+    implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-messaging"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
 
-    implementation 'com.google.guava:guava:31.1-jre'
+    implementation "com.google.guava:guava:${guavaVersion}"
 
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
 
-    testImplementation 'org.projectlombok:lombok:1.18.26'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+    testImplementation "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.amqp:spring-rabbit'
-    testImplementation 'org.springframework.kafka:spring-kafka'
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.amqp:spring-rabbit"
+    testImplementation "org.springframework.kafka:spring-kafka"
 }
 
 jar {

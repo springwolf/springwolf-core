@@ -1,0 +1,29 @@
+ext {
+    // dependencies sorted alphabetically
+    assertjVersion = '3.24.2'
+
+    asyncApiCoreVersion = '1.0.0-EAP-2'
+
+    awaitabilityVersion = '4.2.0'
+
+    commonsIoVersion = '2.11.0'
+
+    guavaVersion = '31.1-jre'
+
+    javaMoneyMonetaVersion = '1.4.2'
+
+    jaxbApiVersion = '2.3.1'
+
+    jsonAssertVersion = '1.5.1'
+
+    junitJupiterVersion = '5.9.2'
+    junitPlatformVersion = '1.9.2'
+
+    lombokVersion = '1.18.26'
+
+    swaggerInflectorVersion = '2.0.8'
+    swaggerCoreVersion = '2.2.8'
+    swaggerParserVersion = '2.1.11'
+
+    testcontainersVersion = '1.17.6'
+}

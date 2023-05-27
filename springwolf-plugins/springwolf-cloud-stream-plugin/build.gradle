@@ -27,22 +27,22 @@ dependencyManagement {
 }
 
 dependencies {
-    api project(':springwolf-core')
+    api project(":springwolf-core")
 
-    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation "org.springframework.cloud:spring-cloud-stream"
 
-    implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'org.slf4j:slf4j-api'
-    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation "com.google.guava:guava:${guavaVersion}"
+    implementation "org.slf4j:slf4j-api"
+    implementation "javax.xml.bind:jaxb-api:${jaxbApiVersion}"
 
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
-    testImplementation 'org.projectlombok:lombok:1.18.26'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
-    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.cloud:spring-cloud-stream-binder-kafka-streams"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
 }
 
 jar {
