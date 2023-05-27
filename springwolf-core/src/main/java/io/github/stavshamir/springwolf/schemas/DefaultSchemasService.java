@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.schemas;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -18,7 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -31,7 +35,7 @@ public class DefaultSchemasService implements SchemasService {
 
     public DefaultSchemasService(Optional<List<ModelConverter>> externalModelConverters) {
         externalModelConverters.ifPresent(converters -> converters.forEach(converter::addConverter));
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
         SimpleModule simpleModule = new SimpleModule().addSerializer(new JsonNodeExampleSerializer());
         objectMapper.registerModule(simpleModule);
     }
