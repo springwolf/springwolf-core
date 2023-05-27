@@ -16,7 +16,7 @@ ext {
 
     jsonAssertVersion = '1.5.1'
 
-    junitJupiterVersion = '5.9.2'
+    junitJupiterVersion = '5.9.3'
     junitPlatformVersion = '1.9.2'
 
     lombokVersion = '1.18.26'
