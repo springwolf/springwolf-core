@@ -15,4 +15,5 @@ const downloadFile = (url, path) => {
 }
 
 downloadFile("https://raw.githubusercontent.com/springwolf/springwolf-core/master/springwolf-examples/springwolf-amqp-example/src/test/resources/asyncapi.json", "src/app/shared/mock/mock.springwolf-amqp-example.json")
+downloadFile("https://raw.githubusercontent.com/springwolf/springwolf-core/master/springwolf-examples/springwolf-cloud-stream-example/src/test/resources/asyncapi.json", "src/app/shared/mock/mock.springwolf-cloud-stream-example.json")
 downloadFile("https://raw.githubusercontent.com/springwolf/springwolf-core/master/springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json", "src/app/shared/mock/mock.springwolf-kafka-example.json")
