@@ -2,15 +2,17 @@ package io.github.stavshamir.springwolf.example.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 @Schema(description = "Example payload model")
 public class ExamplePayloadDto {
-    @Schema(description = "Some string field", example = "some string value", required = true)
+    @Schema(description = "Some string field", example = "some string value", requiredMode =REQUIRED)
     private String someString;
 
     @Schema(description = "Some long field", example = "5")
     private long someLong;
 
-    @Schema(description = "Some enum field", example = "FOO2", required = true)
+    @Schema(description = "Some enum field", example = "FOO2", requiredMode = REQUIRED)
     private ExampleEnum someEnum;
 
     public String getSomeString() {
