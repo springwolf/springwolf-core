@@ -6,6 +6,9 @@ on:
       - master
     paths:
       - '.github/workflows/springwolf-ui.yml'
+      - 'springwolf-examples/springwolf-amqp-example/src/test/resources/asyncapi.json'
+      - 'springwolf-examples/springwolf-cloud-stream-example/src/test/resources/asyncapi.json'
+      - 'springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json'
       - 'springwolf-ui/**'
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
