@@ -8,8 +8,7 @@
     "build_pages": "ng build --base-href=./",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "update-mocks": "node ./script/update_mock_data.js"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

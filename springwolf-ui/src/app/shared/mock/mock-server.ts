@@ -1,11 +1,11 @@
 import { InMemoryDbService, RequestInfo, STATUS } from 'angular-in-memory-web-api';
-import mockSpringwolfApp from './mock.springwolf-app.json';
-import mockSpringwolfAmqp from './mock.springwolf-amqp-example.json';
-import mockSpringwolfKafka from './mock.springwolf-kafka-example.json';
+import mockSpringwolfAmqp from '../../../../../springwolf-examples/springwolf-amqp-example/src/test/resources/asyncapi.json';
+import mockSpringwolfCloudStream from '../../../../../springwolf-examples/springwolf-cloud-stream-example/src/test/resources/asyncapi.json';
+import mockSpringwolfKafka from '../../../../../springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json';
 
 const mockAsyncApi = {
-  ...mockSpringwolfApp,
   ...mockSpringwolfAmqp,
+  ...mockSpringwolfCloudStream,
   ...mockSpringwolfKafka,
 }
 
