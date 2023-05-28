@@ -16,3 +16,9 @@ updates:
     rebase-strategy: "disabled"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directory: "/springwolf-ui"
+    rebase-strategy: "disabled"
+    schedule:
+      interval: "weekly"
