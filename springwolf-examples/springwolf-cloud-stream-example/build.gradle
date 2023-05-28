@@ -35,7 +35,7 @@ dependencies {
     implementation project(":springwolf-plugins:springwolf-cloud-stream-plugin")
     compileOnly project(":springwolf-plugins:springwolf-cloud-stream-plugin")
     annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream-plugin")
-    runtimeOnly "io.github.springwolf:springwolf-ui:0.7.0"
+    runtimeOnly project(":springwolf-ui")
 
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.cloud:spring-cloud-stream"

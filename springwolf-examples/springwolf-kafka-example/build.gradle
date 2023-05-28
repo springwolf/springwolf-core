@@ -27,7 +27,7 @@ dependencies {
     compileOnly project(":springwolf-plugins:springwolf-kafka-plugin")
     annotationProcessor project(":springwolf-plugins:springwolf-kafka-plugin")
     implementation project(":springwolf-add-ons:springwolf-common-model-converters")
-    runtimeOnly "io.github.springwolf:springwolf-ui:0.7.0"
+    runtimeOnly project(":springwolf-ui")
 
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.kafka:spring-kafka"
