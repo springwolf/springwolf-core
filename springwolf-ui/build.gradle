@@ -9,7 +9,7 @@ def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
 group = 'io.github.springwolf'
 version = '0.7.0' + (isSnapshot ? '-SNAPSHOT' : '')
-sourceCompatibility = '1.8'
+sourceCompatibility = JavaVersion.VERSION_17
 
 node {
   version = '18.14.2'

@@ -1,8 +1,13 @@
 import { InMemoryDbService, RequestInfo, STATUS } from 'angular-in-memory-web-api';
 import mockSpringwolfApp from './mock.springwolf-app.json';
 import mockSpringwolfAmqp from './mock.springwolf-amqp-example.json';
-import mockSpringwolfCloudStream from './mock.springwolf-cloud-stream-example.json';
 import mockSpringwolfKafka from './mock.springwolf-kafka-example.json';
+
+const mockAsyncApi = {
+  ...mockSpringwolfApp,
+  ...mockSpringwolfAmqp,
+  ...mockSpringwolfKafka,
+}
 
 export class MockServer implements InMemoryDbService {
   createDb() {
@@ -11,13 +16,11 @@ export class MockServer implements InMemoryDbService {
 
   get(reqInfo: RequestInfo) {
     console.log("Returning mock data")
-
     if (reqInfo.req.url.endsWith('/docs')) {
-      const body = this.selectMockData()
       return reqInfo.utils.createResponse$(() => {
         return {
           status: STATUS.OK,
-          body: body
+          body: mockSpringwolfKafka
         }
       });
     }
@@ -37,17 +40,4 @@ export class MockServer implements InMemoryDbService {
     return undefined;
   }
 
-  private selectMockData() {
-    const hostname = window.location.hostname;
-
-    if(hostname.includes("app")) {
-      return mockSpringwolfApp;
-    } else if(hostname.includes("amqp")) {
-      return mockSpringwolfAmqp;
-    } else if(hostname.includes("cloud-stream")) {
-      return mockSpringwolfCloudStream;
-    }
-    // Kafka is default
-    return mockSpringwolfKafka;
-  }
 }

@@ -2,7 +2,7 @@
 ##### Web UI for Springwolf
 
 ![version](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-ui?color=green&label=release&style=plastic)
-![springwolf-ui](https://github.com/springwolf/springwolf-ui/workflows/springwolf-ui/badge.svg)
+![springwolf-ui](https://github.com/springwolf/springwolf-core/workflows/springwolf-ui/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Usage
