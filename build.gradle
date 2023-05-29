@@ -23,7 +23,7 @@ ext {
 
     swaggerInflectorVersion = '2.0.9'
     swaggerCoreVersion = '2.2.10'
-    swaggerParserVersion = '2.1.14'
+    swaggerParserVersion = '2.1.15'
 
     testcontainersVersion = '1.18.1'
 }
