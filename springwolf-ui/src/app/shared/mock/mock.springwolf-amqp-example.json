@@ -1,0 +1,364 @@
+{
+  "asyncapi" : "2.0.0",
+  "info" : {
+    "title" : "Springwolf example project - AMQP",
+    "version" : "1.0.0",
+    "description" : "Springwolf example project to demonstrate springwolfs abilities",
+    "contact" : {
+      "name" : "springwolf",
+      "url" : "https://github.com/springwolf/springwolf-core",
+      "email" : "example@example.com"
+    },
+    "license" : {
+      "name" : "Apache License 2.0"
+    }
+  },
+  "servers" : {
+    "amqp" : {
+      "url" : "amqp:5672",
+      "protocol" : "amqp"
+    }
+  },
+  "channels" : {
+    "another-queue" : {
+      "publish" : {
+        "operationId" : "another-queue_publish_receiveAnotherPayload",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "amqp" : {
+            "cc" : [ "another-queue" ],
+            "bindingVersion" : "0.2.0"
+          }
+        },
+        "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+          "title" : "AnotherPayloadDto",
+          "payload" : {
+            "$ref" : "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
+          }
+        }
+      },
+      "bindings" : {
+        "amqp" : {
+          "is" : "routingKey",
+          "exchange" : {
+            "name" : "",
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
+        }
+      }
+    },
+    "example-bindings-queue" : {
+      "publish" : {
+        "operationId" : "example-bindings-queue_publish_bindingsExample",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "amqp" : {
+            "cc" : [ "" ],
+            "bindingVersion" : "0.2.0"
+          }
+        },
+        "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+          "title" : "AnotherPayloadDto",
+          "payload" : {
+            "$ref" : "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
+          }
+        }
+      },
+      "bindings" : {
+        "amqp" : {
+          "is" : "routingKey",
+          "exchange" : {
+            "name" : "name",
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
+        }
+      }
+    },
+    "example-manual-consumer-channel" : {
+      "publish" : {
+        "operationId" : "example-manual-consumer-channel_publish",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "amqp" : {
+            "cc" : [ "example-consumer-topic-routing-key" ],
+            "bindingVersion" : "0.2.0"
+          }
+        },
+        "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+          "title" : "AnotherPayloadDto",
+          "description" : "example-manual-consumer-channel-description",
+          "payload" : {
+            "$ref" : "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
+          }
+        }
+      },
+      "bindings" : {
+        "amqp" : {
+          "is" : "routingKey",
+          "exchange" : {
+            "name" : "example-consumer-topic-exchange",
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
+        }
+      }
+    },
+    "example-producer-channel" : {
+      "subscribe" : {
+        "operationId" : "example-producer-channel_subscribe",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "amqp" : {
+            "cc" : [ "example-topic-routing-key" ],
+            "bindingVersion" : "0.2.0"
+          }
+        },
+        "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+          "title" : "AnotherPayloadDto",
+          "description" : "example-producer-channel-description",
+          "payload" : {
+            "$ref" : "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
+          }
+        }
+      },
+      "bindings" : {
+        "amqp" : {
+          "is" : "routingKey",
+          "exchange" : {
+            "name" : "example-topic-exchange",
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
+        }
+      }
+    },
+    "example-producer-channel-publisher" : {
+      "subscribe" : {
+        "operationId" : "example-producer-channel-publisher_subscribe",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "amqp" : {
+            "expiration" : 0,
+            "cc" : [ ],
+            "priority" : 0,
+            "deliveryMode" : 0,
+            "mandatory" : false,
+            "timestamp" : false,
+            "ack" : false,
+            "bindingVersion" : "0.2.0"
+          }
+        },
+        "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+          "title" : "ExamplePayloadDto",
+          "description" : "Custom, optional description defined in the AsyncPublisher annotation",
+          "payload" : {
+            "$ref" : "#/components/schemas/ExamplePayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
+          }
+        }
+      }
+    },
+    "example-queue" : {
+      "publish" : {
+        "operationId" : "example-queue_publish_receiveExamplePayload",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "amqp" : {
+            "cc" : [ "example-queue" ],
+            "bindingVersion" : "0.2.0"
+          }
+        },
+        "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+          "title" : "ExamplePayloadDto",
+          "payload" : {
+            "$ref" : "#/components/schemas/ExamplePayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
+          }
+        }
+      },
+      "bindings" : {
+        "amqp" : {
+          "is" : "routingKey",
+          "exchange" : {
+            "name" : "",
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
+        }
+      }
+    },
+    "example-topic-queue" : {
+      "publish" : {
+        "operationId" : "example-topic-queue_publish_bindingsBeanExample",
+        "description" : "Auto-generated description",
+        "bindings" : {
+          "amqp" : {
+            "cc" : [ "example-topic-routing-key" ],
+            "bindingVersion" : "0.2.0"
+          }
+        },
+        "message" : {
+          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+          "title" : "AnotherPayloadDto",
+          "payload" : {
+            "$ref" : "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers" : {
+            "$ref" : "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings" : {
+            "amqp" : {
+              "bindingVersion" : "0.2.0"
+            }
+          }
+        }
+      },
+      "bindings" : {
+        "amqp" : {
+          "is" : "routingKey",
+          "exchange" : {
+            "name" : "example-topic-exchange",
+            "vhost" : "/"
+          },
+          "bindingVersion" : "0.2.0"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "AnotherPayloadDto" : {
+        "required" : [ "example" ],
+        "type" : "object",
+        "properties" : {
+          "example" : {
+            "$ref" : "#/components/schemas/ExamplePayloadDto",
+            "exampleSetFlag" : false
+          },
+          "foo" : {
+            "type" : "string",
+            "description" : "Foo field",
+            "example" : "bar",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          }
+        },
+        "description" : "Another payload model",
+        "example" : {
+          "example" : {
+            "someEnum" : "FOO2",
+            "someLong" : 5,
+            "someString" : "some string value"
+          },
+          "foo" : "bar"
+        },
+        "exampleSetFlag" : true
+      },
+      "ExamplePayloadDto" : {
+        "required" : [ "someEnum", "someString" ],
+        "type" : "object",
+        "properties" : {
+          "someEnum" : {
+            "type" : "string",
+            "description" : "Some enum field",
+            "example" : "FOO2",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ],
+            "enum" : [ "FOO1", "FOO2", "FOO3" ]
+          },
+          "someLong" : {
+            "type" : "integer",
+            "description" : "Some long field",
+            "format" : "int64",
+            "example" : 5,
+            "exampleSetFlag" : true,
+            "types" : [ "integer" ]
+          },
+          "someString" : {
+            "type" : "string",
+            "description" : "Some string field",
+            "example" : "some string value",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          }
+        },
+        "description" : "Example payload model",
+        "example" : {
+          "someEnum" : "FOO2",
+          "someLong" : 5,
+          "someString" : "some string value"
+        },
+        "exampleSetFlag" : true
+      },
+      "HeadersNotDocumented" : {
+        "type" : "object",
+        "properties" : { },
+        "example" : { },
+        "exampleSetFlag" : true,
+        "types" : [ "object" ]
+      }
+    }
+  },
+  "tags" : [ ]
+}

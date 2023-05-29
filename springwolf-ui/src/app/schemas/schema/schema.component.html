@@ -1,0 +1,27 @@
+<table class="schema">
+  <tbody>
+  <tr *ngFor="let property of schema?.properties | keyvalue">
+    <td class="key">
+      {{ property.key }}
+      <span class="required" *ngIf="schema.required?.includes(property.key)">*</span>
+    </td>
+    <td>
+      <ng-container *ngIf="property.value.items">
+        <span class="type" *ngIf="property.value.items.type && !property.value.items.anchorUrl">{{ property.value.items.type }}[]</span>
+        <span class="type" *ngIf="property.value.items.anchorUrl">
+          <a [href]="property.value.items.anchorUrl">{{ property.value.items.name }}[]</a>
+        </span>
+      </ng-container>
+      <span class="type" *ngIf="property.value.type != 'array'">{{ property.value.type }}</span>
+      <span class="type" *ngIf="property.value.name">
+        <a [href]="property.value.anchorUrl">{{ property.value.name }}</a>
+      </span>
+      <span class="format" *ngIf="property.value.format">({{ property.value.format }})</span>
+      <div class="description">{{ property.value.description }}</div>
+      <span class="example" *ngIf="property.value.example">example: {{ property.value.example.value }}</span>
+      <mat-select *ngIf="property.value.enum" placeholder="Enum">
+        <mat-option *ngFor="let enum of property.value.enum" [value]="enum">{{ enum }}</mat-option>
+      </mat-select>
+    </td>
+  </tbody>
+</table>

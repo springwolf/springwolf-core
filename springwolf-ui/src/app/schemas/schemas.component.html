@@ -1,0 +1,14 @@
+<h1>Schemas</h1>
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let schema of schemas | keyvalue;" [id]="schema.value.anchorIdentifier" [expanded]="selectedSchema == schema.value.anchorIdentifier" (opened)="this.setSchemaSelection(schema.value)">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h3>{{ schema.key }}</h3>
+            </mat-panel-title>
+            <mat-panel-description>
+                {{ schema.value.description }}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <app-schema [schema]="schema?.value"></app-schema>
+    </mat-expansion-panel>
+</mat-accordion>

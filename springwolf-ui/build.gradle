@@ -1,0 +1,115 @@
+plugins {
+  id 'java'
+  id 'com.github.node-gradle.node' version '3.5.1'
+  id 'signing'
+  id 'maven-publish'
+}
+
+def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
+
+group = 'io.github.springwolf'
+version = '0.7.0' + (isSnapshot ? '-SNAPSHOT' : '')
+sourceCompatibility = '1.8'
+
+node {
+  version = '18.14.2'
+  npmVersion = '9.5.0'
+  download = true
+}
+
+npm_run_build {
+  inputs.files fileTree("src")
+  inputs.file 'angular.json'
+  inputs.file 'package.json'
+  inputs.file 'package-lock.json'
+
+  outputs.dir 'build'
+}
+
+task buildPages(type: NpmTask) {
+  args = ['run', 'build_pages']
+
+  inputs.files fileTree("src")
+  inputs.file 'angular.json'
+  inputs.file 'package.json'
+  inputs.file 'package-lock.json'
+
+  doLast {
+    copy {
+      from "./dist/springwolf-ui/asyncapi-ui.html"
+      into "dist/springwolf-ui"
+      rename ("asyncapi-ui.html", "index.html")
+    }
+  }
+}
+
+jar {
+  dependsOn 'npm_run_build'
+  metaInf { from 'dist/springwolf-ui' into 'resources/springwolf' }
+}
+
+java {
+  withSourcesJar()
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+
+      artifactId 'springwolf-ui'
+      groupId project.group
+      version project.version
+
+      pom {
+        name = 'springwolf-ui'
+        description = 'Web UI for Springwolf'
+        url = 'https://springwolf.github.io'
+
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id = 'stavshamir'
+            name = 'Stav Shamir'
+            email = 'shamir.stav@gmail.com'
+          }
+
+          developer {
+            id = 'timonback'
+            name = 'Timon Back'
+            email = 'timon.back+springwolf@gmail.com'
+          }
+        }
+
+        scm {
+          url = 'https://github.com/springwolf/springwolf-ui'
+        }
+      }
+    }
+  }
+
+  repositories {
+    maven {
+      def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+      def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+      url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
+      credentials {
+        username = project.findProperty('MAVEN_USERNAME') ?: ''
+        password = project.findProperty('MAVEN_PASSWORD') ?: ''
+      }
+    }
+  }
+}
+
+signing {
+  def signingKey = project.findProperty("SIGNINGKEY")
+  def signingPassword = project.findProperty("SIGNINGPASSWORD")
+  useInMemoryPgpKeys(signingKey, signingPassword)
+  sign publishing.publications.mavenJava
+}

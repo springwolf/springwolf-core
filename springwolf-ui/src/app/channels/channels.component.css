@@ -1,0 +1,37 @@
+
+.badge {
+    border-radius: 4px;
+    padding: 8px;
+    font-size: small;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.subscribe-badge {
+    background-color: #FFD580;
+}
+
+.publish-badge {
+    background-color: #9BD279;
+}
+
+.protocol-badge {
+    background-color: #347AEB;
+    color: #fff
+}
+
+.badge .fa {
+    padding-left: 2 px;
+}
+
+mat-divider {
+    height: 20px;
+}
+
+.payload-name {
+    background-color: #E0E0E0;
+    border-radius: 4px;
+    padding: 4px;
+    font-weight: normal;
+    font-size: small;
+}

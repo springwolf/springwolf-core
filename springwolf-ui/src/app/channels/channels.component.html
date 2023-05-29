@@ -1,0 +1,42 @@
+<h1>Channels</h1>
+
+<a href="https://www.asyncapi.com/blog/publish-subscribe-semantics" target="_blank">Semantics of publish and subscribe:</a>
+<ul>
+  <li>
+    <span class="badge publish-badge">
+      publish
+      <i class="fa fa-arrow-circle-down"></i>
+    </span>
+    means publish an event to the channel and this application will receive it
+  </li>
+  <li>
+    <span class="badge subscribe-badge">
+     subscribe
+      <i class="fa fa-arrow-circle-up"></i>
+    </span>
+    means subscribe to this channel to receive events published by this application
+  </li>
+</ul>
+
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let channel of channels" [id]="channel.anchorIdentifier" [expanded]="selectedChannel == channel.anchorIdentifier" (opened)="this.setChannelSelection(channel)">
+        <mat-expansion-panel-header>
+            <mat-panel-title fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="16px">
+                <div class="badge protocol-badge" >
+                    {{ channel.operation.protocol }}
+                </div>
+                <div class="badge" [ngClass]="{'publish-badge': channel.operation.operation === 'publish', 'subscribe-badge': channel.operation.operation === 'subscribe'}">
+                    {{ channel.operation.operation }}
+                    <i class="fa {{channel.operation.operation == 'publish' ? 'fa-arrow-circle-down' : 'fa-arrow-circle-up'}}"></i>
+                </div>
+                <h3>{{ channel.name }}</h3>
+                <div class="payload-name">{{ channel.operation.message.title }}</div>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-channel-main
+            [channelName]="channel.name"
+            [operation]="channel.operation"
+            [docName]="docName">
+        </app-channel-main>
+    </mat-expansion-panel>
+</mat-accordion>

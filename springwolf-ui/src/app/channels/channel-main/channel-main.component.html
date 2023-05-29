@@ -1,0 +1,86 @@
+<section>
+    <mat-divider></mat-divider>
+    <div *ngIf="operation.message.description">
+      <h4>{{ operation.message.description }}</h4>
+      <mat-divider></mat-divider>
+    </div>
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="Example">
+        <div fxLayout="column">
+          <div [hidden]="isEmptyObject(operation.message.bindings.get(protocolName))" fxLayout="column" fxLayoutGap="5px">
+            <h4>Message Binding</h4>
+            <textarea spellcheck="false"
+                      #bindingTextArea
+                      [rows]="messageBindingExampleTextAreaLineCount"
+                      [value]="createMessageBindingExample(operation.message.bindings.get(protocolName))?.value"
+                      (keyup)="recalculateLineCount('massageBindingExample', bindingTextArea.value)"
+            ></textarea>
+          </div>
+          <div [hidden]="!(headersExample?.lineCount > 1)" fxLayout="column" fxLayoutGap="0px">
+
+              <h4>Header</h4>
+              <textarea spellcheck="false"
+                        #headersTextArea
+                        [rows]="headersTextAreaLineCount"
+                        [value]="headersExample?.value"
+                        (keyup)="recalculateLineCount('headers', headersTextArea.value)"
+              ></textarea>
+
+          </div>
+          <div fxLayout="column" fxLayoutGap="5px">
+            <h4>Message</h4>
+            <textarea spellcheck="false"
+                      #messageTextArea
+                      [rows]="exampleTextAreaLineCount"
+                      [value]="defaultExample?.value"
+                      (keyup)="recalculateLineCount('example', messageTextArea.value)"
+            ></textarea>
+          </div>
+          <div fxLayout fxLayoutGap="8px">
+            <button mat-raised-button color="primary"
+                    (click)="publish(messageTextArea.value, headersTextArea?.value, bindingTextArea?.value)">
+              Publish
+            </button>
+            <button mat-raised-button color="primary"
+                    (click)="
+                    messageTextArea.value = defaultExample.value;
+                    exampleTextAreaLineCount = defaultExample.lineCount || 0;
+                    headersTextArea.value = headersExample?.value;
+                    headersTextAreaLineCount = headersExample?.lineCount || 0;
+                    bindingTextArea.value = createMessageBindingExample(operation.message.bindings.get(protocolName))?.value;
+                    messageBindingExampleTextAreaLineCount = messageBindingExample?.lineCount || 0">
+              Default
+            </button>
+            <button mat-raised-button color="primary" [cdkCopyToClipboard]="messageTextArea.value">Copy</button>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Schema">
+        <h4>
+          {{ schemaName }}
+          <span class="payload-name">
+            <a [href]="operation.message.payload.anchorUrl" >{{ operation.message.payload.name }}</a>
+          </span>
+        </h4>
+        <app-schema *ngIf="schema" [schema]="schema"></app-schema>
+      </mat-tab>
+      <mat-tab label="Headers">
+        <h4>
+          {{ headersSchemaName }}
+          <span class="header-name">
+            <a [href]="operation.message.headers.anchorUrl">{{ operation.message.headers.name }}</a>
+          </span>
+        </h4>
+        <app-schema *ngIf="headers" [schema]="headers"></app-schema>
+        <div fxLayout="column">
+          <app-json [json]="headersExample?.value"></app-json>
+        </div>
+      </mat-tab>
+      <mat-tab label="Operation Bindings">
+        <app-json [data]="operation.bindings[protocolName]"></app-json>
+      </mat-tab>
+      <mat-tab label="Message Bindings">
+        <app-json [data]="operation.message.rawBindings[protocolName]"></app-json>
+      </mat-tab>
+    </mat-tab-group>
+</section>

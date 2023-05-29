@@ -1,0 +1,19 @@
+.logo {
+    height: 100%;
+    display:block;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color: lightgray;
+}
+
+.select-doc {
+    width: 200px;
+    height: 24px;
+    display:block;
+}

@@ -1,0 +1,196 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Springwolf UI Demo",
+    "description": "This is a demo project for springwolf that shows how the UI looks like and functions.",
+    "version": "1.0.0"
+  },
+  "servers": {
+    "kafka": {
+      "url": "kafka:29092",
+      "protocol": "kafka"
+    }
+  },
+  "channels": {
+    "example-consumer-topic": {
+      "publish": {
+        "bindings": {
+          "kafka": {
+            "groupId": {
+              "type": "string",
+              "enum": [
+                "example-group-id"
+              ]
+            }
+          }
+        },
+        "message": {
+          "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
+          "description": "Custom, optional description for this message",
+          "payload": {
+            "$ref": "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/NoHeaders"
+          }
+        }
+      }
+    },
+    "example-producer-topic": {
+      "publish": {
+        "bindings": {
+          "kafka": {
+            "groupId": {
+              "type": "string",
+              "enum": [
+                "example-group-id"
+              ]
+            }
+          }
+        },
+        "message": {
+          "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
+          "payload": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/NoHeaders"
+          }
+        }
+      },
+      "subscribe": {
+        "bindings": {
+          "kafka": {}
+        },
+        "message": {
+          "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
+          "payload": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/NoHeaders"
+          }
+        }
+      }
+    },
+    "multi-payload-topic": {
+      "publish": {
+        "bindings": {
+          "kafka": {}
+        },
+        "message": {
+          "oneOf": [
+            {
+              "name": "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+              "title": "ExamplePayloadDto",
+              "description": "Custom, optional description for this message",
+              "payload": {
+                "$ref": "#/components/schemas/ExamplePayloadDto"
+              },
+              "headers": {
+                "$ref": "#/components/schemas/SpringDefaultHeaders"
+              }
+            },
+            {
+              "name": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+              "title": "AnotherPayloadDto",
+              "payload": {
+                "$ref": "#/components/schemas/AnotherPayloadDto"
+              },
+              "headers": {
+                "$ref": "#/components/schemas/NoHeaders"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ExamplePayloadDto": {
+        "description": "Example payload model",
+        "type": "object",
+        "properties": {
+          "someString": {
+            "description": "some string field",
+            "type": "string",
+            "example": "string"
+          },
+          "someLong": {
+            "description": "some long field",
+            "type": "integer",
+            "format": "int64",
+            "example": 0
+          },
+          "someEnum": {
+            "description": "some enum field",
+            "type": "string",
+            "enum": [
+              "FOO1",
+              "FOO2",
+              "FOO3"
+            ],
+            "example": "FOO1"
+          }
+        },
+        "example": {
+          "someString": "string",
+          "someLong": 0,
+          "someEnum": "FOO1"
+        },
+        "required": [
+          "someString",
+          "someEnum"
+        ]
+      },
+      "AnotherPayloadDto": {
+        "description": "Another payload model",
+        "type": "object",
+        "properties": {
+          "foo": {
+            "description": "foo field",
+            "type": "string"
+          },
+          "example": {
+            "description": "example field",
+            "$ref": "#/components/schemas/ExamplePayloadDto"
+          }
+        },
+        "example": {
+          "foo": "string",
+          "example": {
+            "someString": "string",
+            "someLong": 0,
+            "someEnum": "FOO1"
+          }
+        }
+      },
+      "NoHeaders": {
+        "type": "object",
+        "exampleSetFlag": true
+      },
+      "SpringDefaultHeaders": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "example": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "exampleSetFlag": true,
+            "enum": [
+              "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+              "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
+            ]
+          }
+        },
+        "example": {
+          "__TypeId__": "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
+        },
+        "exampleSetFlag": true
+      }
+    }
+  }
+}

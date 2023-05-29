@@ -1,0 +1,38 @@
+{
+  "name": "springwolf-ui",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --configuration production --base-href=./",
+    "build_pages": "ng build --base-href=./",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "update-mocks": "node ./script/update_mock_data.js"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/cdk": "^14.2.6",
+    "@angular/common": "^14.2.6",
+    "@angular/core": "^14.2.6",
+    "@angular/flex-layout": "^14.0.0-beta.41",
+    "@angular/forms": "^14.2.8",
+    "@angular/material": "^14.2.6",
+    "@angular/platform-browser": "^14.2.8",
+    "@angular/platform-browser-dynamic": "^14.2.8",
+    "@angular/router": "^14.2.8",
+    "font-awesome": "^4.7.0",
+    "ngx-highlightjs": "^7.0.1",
+    "rxjs": "^7.5.7",
+    "zone.js": "^0.11.8"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^14.2.7",
+    "@angular/cli": "^14.2.7",
+    "@angular/compiler-cli": "^14.2.8",
+    "@types/node": "^12.11.1",
+    "angular-in-memory-web-api": "^0.14.0",
+    "typescript": "^4.8.4"
+  }
+}
