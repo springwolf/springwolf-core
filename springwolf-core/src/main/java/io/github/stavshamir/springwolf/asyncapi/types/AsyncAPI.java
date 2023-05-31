@@ -36,6 +36,17 @@ public class AsyncAPI {
     private String asyncapi = "2.0.0";
 
     /**
+     * Identifier of the application the AsyncAPI document is defining.
+     * <p>
+     * This field represents a unique universal identifier of the application the AsyncAPI document is defining.
+     * It must conform to the URI format, according to RFC3986.
+     * <p>
+     * It is RECOMMENDED to use a URN to globally and uniquely identify the application during long periods of time,
+     * even after it becomes unavailable or ceases to exist.
+     */
+    private String id;
+
+    /**
      * <b>Required.</b>
      * Provides metadata about the API. The metadata can be used by the clients if needed.
      */

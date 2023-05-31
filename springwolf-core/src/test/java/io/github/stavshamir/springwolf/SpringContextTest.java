@@ -62,6 +62,7 @@ public class SpringContextTest {
             "springwolf.enabled=true",
             "springwolf.docket.info.title=Info title was loaded from spring properties",
             "springwolf.docket.info.version=1.0.0",
+            "springwolf.docket.id=urn:io:github:stavshamir:springwolf:example",
             "springwolf.docket.default-content-type=application/yaml",
             "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
             "springwolf.docket.servers.test-protocol.protocol=test",
@@ -81,6 +82,7 @@ public class SpringContextTest {
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
             assertThat(asyncApiService.getAsyncAPI().getInfo().getTitle()).isEqualTo("Info title was loaded from spring properties");
             assertThat(asyncApiService.getAsyncAPI().getDefaultContentType()).isEqualTo("application/yaml");
+            assertThat(asyncApiService.getAsyncAPI().getId()).isEqualTo("urn:io:github:stavshamir:springwolf:example");
         }
     }
 }

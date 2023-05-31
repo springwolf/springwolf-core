@@ -42,6 +42,14 @@ public class SpringWolfConfigProperties {
         private String basePackage;
 
         /**
+         * Identifier of the application the AsyncAPI document is defining.
+         *
+         * @see com.asyncapi.v2._0_0.model.AsyncAPI#id
+         */
+        @Nullable
+        private String id;
+
+        /**
          * A string representing the default content type to use when encoding/decoding a message's payload.
          *
          * @see com.asyncapi.v2._0_0.model.AsyncAPI#defaultContentType
