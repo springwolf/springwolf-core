@@ -33,6 +33,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
 
         asyncAPI = AsyncAPI.builder()
                 .info(docket.getInfo())
+                .defaultContentType(docket.defaultContentType)
                 .servers(docket.getServers())
                 .channels(channelsService.getChannels())
                 .components(components)

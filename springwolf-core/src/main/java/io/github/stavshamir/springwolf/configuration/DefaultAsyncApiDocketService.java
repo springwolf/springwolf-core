@@ -52,6 +52,7 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
                 .basePackage(configProperties.getDocket().getBasePackage())
                 .info(info)
                 .servers(configProperties.getDocket().getServers())
+                .defaultContentType(configProperties.getDocket().getDefaultContentType())
                 .build();
     }
 

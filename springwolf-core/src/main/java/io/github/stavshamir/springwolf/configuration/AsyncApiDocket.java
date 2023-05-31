@@ -51,4 +51,10 @@ public class AsyncApiDocket {
     @Singular
     private final List<ConsumerData> consumers;
 
+    /**
+     * A string representing the default content type to use when encoding/decoding a message's payload.
+     *
+     * @see <a href="https://www.asyncapi.com/docs/reference/specification/v2.0.0#defaultContentTypeString">Default Content Type</a>
+     */
+    public final String defaultContentType;
 }
