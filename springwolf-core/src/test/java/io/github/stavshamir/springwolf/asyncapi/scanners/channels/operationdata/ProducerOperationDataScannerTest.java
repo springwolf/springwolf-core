@@ -66,7 +66,7 @@ class ProducerOperationDataScannerTest {
                 .containsKey(channelName);
 
         Operation operation = Operation.builder()
-                .description("Auto-generated description")
+                .description(description)
                 .operationId("example-producer-topic-foo1_subscribe")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(Message.builder()
@@ -161,7 +161,7 @@ class ProducerOperationDataScannerTest {
         );
 
         Operation operation = Operation.builder()
-                .description("Auto-generated description")
+                .description(description1)
                 .operationId("example-producer-topic_subscribe")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(toMessageObjectOrComposition(messages))

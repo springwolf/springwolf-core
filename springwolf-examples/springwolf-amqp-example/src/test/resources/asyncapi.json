@@ -100,7 +100,7 @@
     "example-manual-consumer-channel" : {
       "publish" : {
         "operationId" : "example-manual-consumer-channel_publish",
-        "description" : "Auto-generated description",
+        "description" : "example-manual-consumer-channel-description",
         "bindings" : {
           "amqp" : {
             "cc" : [ "example-consumer-topic-routing-key" ],
@@ -139,7 +139,7 @@
     "example-producer-channel" : {
       "subscribe" : {
         "operationId" : "example-producer-channel_subscribe",
-        "description" : "Auto-generated description",
+        "description" : "example-producer-channel-description",
         "bindings" : {
           "amqp" : {
             "cc" : [ "example-topic-routing-key" ],
@@ -178,7 +178,7 @@
     "example-producer-channel-publisher" : {
       "subscribe" : {
         "operationId" : "example-producer-channel-publisher_subscribe",
-        "description" : "Auto-generated description",
+        "description" : "Custom, optional description defined in the AsyncPublisher annotation",
         "bindings" : {
           "amqp" : {
             "expiration" : 0,

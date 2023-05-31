@@ -107,7 +107,7 @@ class AsyncPublisherAnnotationScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .description("Auto-generated description")
+                .description("description")
                 .operationId("test-channel_subscribe")
                 .bindings(ImmutableMap.of(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING))
                 .message(message)
