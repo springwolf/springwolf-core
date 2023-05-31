@@ -5,6 +5,7 @@ import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfAmqpController;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -45,7 +46,8 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
             @MockBean(ChannelsService.class),
             @MockBean(RabbitTemplate.class)
     })
-    public static class AmqpProducerWillBeCreatedIfEnabledTest {
+    @Nested
+    class AmqpProducerWillBeCreatedIfEnabledTest {
         @Autowired
         private Optional<SpringwolfAmqpProducer> springwolfAmqpProducer;
 
@@ -53,7 +55,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
         private Optional<SpringwolfAmqpController> springwolfAmqpController;
 
         @Test
-        public void springwolfAmqpProducerShouldBePresentInSpringContext() {
+        void springwolfAmqpProducerShouldBePresentInSpringContext() {
             assertThat(springwolfAmqpProducer).isPresent();
             assertThat(springwolfAmqpController).isPresent();
         }
@@ -82,7 +84,8 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
             @MockBean(ChannelsService.class),
             @MockBean(RabbitTemplate.class)
     })
-    public static class AmqpProducerWillNotBeCreatedIfDisabledTest {
+    @Nested
+    class AmqpProducerWillNotBeCreatedIfDisabledTest {
         @Autowired
         private Optional<SpringwolfAmqpProducer> springwolfAmqpProducer;
 
@@ -90,7 +93,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
         private Optional<SpringwolfAmqpController> springwolfAmqpController;
 
         @Test
-        public void springwolfAmqpProducerShouldNotBePresentInSpringContext() {
+        void springwolfAmqpProducerShouldNotBePresentInSpringContext() {
             assertThat(springwolfAmqpProducer).isNotPresent();
             assertThat(springwolfAmqpController).isNotPresent();
         }

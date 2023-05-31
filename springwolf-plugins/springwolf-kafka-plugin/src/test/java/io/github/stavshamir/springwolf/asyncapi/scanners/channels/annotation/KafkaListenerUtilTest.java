@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class KafkaListenerUtilTest {
+class KafkaListenerUtilTest {
 
     @Test
-    public void getChannelName() {
+    void getChannelName() {
         // given
         KafkaListener annotation = mock(KafkaListener.class);
         when(annotation.topics()).thenReturn(Arrays.array("${topic-1}", "${topic-2}"));
@@ -32,22 +32,22 @@ public class KafkaListenerUtilTest {
         String channelName = KafkaListenerUtil.getChannelName(annotation, resolver);
 
         // then
-        assertEquals(channelName, "topic-1");
+        assertEquals("topic-1", channelName);
     }
 
     @Test
-    public void buildChannelBinding() {
+    void buildChannelBinding() {
         // when
         Map<String, ? extends ChannelBinding> channelBinding = KafkaListenerUtil.buildChannelBinding();
 
         // then
-        assertEquals(channelBinding.size(), 1);
-        assertEquals(channelBinding.keySet(), Sets.newTreeSet("kafka"));
-        assertEquals(channelBinding.get("kafka"), new KafkaChannelBinding());
+        assertEquals(1, channelBinding.size());
+        assertEquals(Sets.newTreeSet("kafka"), channelBinding.keySet());
+        assertEquals(new KafkaChannelBinding(), channelBinding.get("kafka"));
     }
 
     @Test
-    public void buildOperationBinding() {
+    void buildOperationBinding() {
         // given
         KafkaListener annotation = mock(KafkaListener.class);
         when(annotation.groupId()).thenReturn("${group-id}");
@@ -59,12 +59,12 @@ public class KafkaListenerUtilTest {
         Map<String, ? extends OperationBinding> operationBinding = KafkaListenerUtil.buildOperationBinding(annotation, resolver);
 
         // then
-        assertEquals(operationBinding.size(), 1);
-        assertEquals(operationBinding.keySet(), Sets.newTreeSet("kafka"));
+        assertEquals(1, operationBinding.size());
+        assertEquals(Sets.newTreeSet("kafka"), operationBinding.keySet());
 
         KafkaOperationBinding expectedOperationBinding = KafkaOperationBinding.builder()
             .groupId(KafkaListenerUtil.buildKafkaGroupIdSchema("group-id"))
             .build();
-        assertEquals(operationBinding.get("kafka"), expectedOperationBinding);
+        assertEquals(expectedOperationBinding, operationBinding.get("kafka"));
     }
 }

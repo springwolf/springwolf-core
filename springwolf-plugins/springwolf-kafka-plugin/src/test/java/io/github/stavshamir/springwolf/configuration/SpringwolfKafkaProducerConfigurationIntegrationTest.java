@@ -4,6 +4,7 @@ import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SpringwolfKafkaProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
+    @Nested
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
             SpringwolfKafkaProducerConfiguration.class,
@@ -38,7 +40,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             "springwolf.docket.servers.test-protocol.url=some-server:1234",
             "springwolf.plugin.kafka.publishing.enabled=true"
     })
-    public static class KafkaProducerWillBeCreatedIfEnabledTest {
+    class KafkaProducerWillBeCreatedIfEnabledTest {
         @Autowired
         private Optional<SpringwolfKafkaProducer> springwolfKafkaProducer;
 
@@ -46,13 +48,14 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
         private Optional<SpringwolfKafkaController> springwolfKafkaController;
 
         @Test
-        public void springwolfKafkaTemplateShouldBePresentInSpringContext() {
+        void springwolfKafkaTemplateShouldBePresentInSpringContext() {
             assertThat(springwolfKafkaProducer).isPresent();
             assertThat(springwolfKafkaController).isPresent();
         }
     }
 
     @ExtendWith(SpringExtension.class)
+    @Nested
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
             SpringwolfKafkaProducerConfiguration.class,
@@ -71,7 +74,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             "springwolf.docket.servers.test-protocol.url=some-server:1234",
             "springwolf.plugin.kafka.publishing.enabled=false"
     })
-    public static class KafkaProducerWillNotBeCreatedIfDisabledTest {
+    class KafkaProducerWillNotBeCreatedIfDisabledTest {
         @Autowired
         private Optional<SpringwolfKafkaProducer> springwolfKafkaProducer;
 
@@ -79,7 +82,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
         private Optional<SpringwolfKafkaController> springwolfKafkaController;
 
         @Test
-        public void springwolfKafkaTemplateShouldNotBePresentInSpringContext() {
+        void springwolfKafkaTemplateShouldNotBePresentInSpringContext() {
             assertThat(springwolfKafkaProducer).isNotPresent();
             assertThat(springwolfKafkaController).isNotPresent();
         }

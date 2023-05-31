@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.example;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,8 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SpringContextTest {
 
+    @Nested
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
-    public static class AsyncApiDocketTest {
+    class AsyncApiDocketTest {
 
         @Autowired
         private ApplicationContext context;
@@ -22,18 +24,19 @@ public class SpringContextTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testContextWithAsyncApiDocketBean() {
+        void testContextWithAsyncApiDocketBean() {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
         }
 
         @Test
-        public void testAllChannelsAreFound() {
+        void testAllChannelsAreFound() {
             assertThat(asyncApiService.getAsyncAPI().getChannels()).hasSize(7);
         }
     }
 
+    @Nested
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
     @TestPropertySource(properties = {
             "customAsyncApiDocketBean=false",
@@ -44,7 +47,7 @@ public class SpringContextTest {
             "springwolf.docket.servers.test-protocol.protocol=amqp",
             "springwolf.docket.servers.test-protocol.url=some-server:1234",
     })
-    public static class ApplicationPropertiesConfigurationTest {
+    class ApplicationPropertiesConfigurationTest {
 
         @Autowired
         private ApplicationContext context;
@@ -52,19 +55,20 @@ public class SpringContextTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testContextWithApplicationProperties() {
+        void testContextWithApplicationProperties() {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
         }
 
         @Test
-        public void testAllChannelsAreFound() {
+        void testAllChannelsAreFound() {
             // 2 channels defined in the AsyncDocket are not found (7 - 2 = 5)
             assertThat(asyncApiService.getAsyncAPI().getChannels()).hasSize(5);
         }
     }
 
+    @Nested
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
     @TestPropertySource(properties = {
             "springwolf.scanner.async-listener.enabled=false",
@@ -73,13 +77,13 @@ public class SpringContextTest {
             "springwolf.scanner.producer-data.enabled=false",
             "springwolf.plugin.amqp.scanner.rabbit-listener.enabled=false",
     })
-    public static class DisabledScannerTest {
+    class DisabledScannerTest {
 
         @Autowired
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testNoChannelsAreFound() {
+        void testNoChannelsAreFound() {
             assertThat(asyncApiService.getAsyncAPI().getChannels()).isEmpty();
         }
     }

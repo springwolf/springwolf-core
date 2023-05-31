@@ -8,13 +8,13 @@ import org.springframework.context.ApplicationContext;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class SpringwolfExampleApplicationTest {
+class SpringwolfExampleApplicationTest {
 
     @Autowired
     private ApplicationContext context;
 
     @Test
-    public void testContext() {
+    void testContext() {
         assertNotNull(context);
     }
 }

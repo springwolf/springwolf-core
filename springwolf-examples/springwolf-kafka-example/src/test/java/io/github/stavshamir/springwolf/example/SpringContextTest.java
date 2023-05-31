@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.example;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,9 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SpringContextTest {
 
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
-    @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+    @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
+    @Nested
     @DirtiesContext
-    public static class AsyncApiDocketTest {
+    class AsyncApiDocketTest {
 
         @Autowired
         private ApplicationContext context;
@@ -26,20 +28,21 @@ public class SpringContextTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testContextWithAsyncApiDocketBean() {
+        void testContextWithAsyncApiDocketBean() {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
         }
 
         @Test
-        public void testAllChannelsAreFound() {
+        void testAllChannelsAreFound() {
             assertThat(asyncApiService.getAsyncAPI().getChannels()).hasSize(6);
         }
     }
 
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
-    @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+    @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
+    @Nested
     @DirtiesContext
     @TestPropertySource(properties = {
             "customAsyncApiDocketBean=false",
@@ -50,7 +53,7 @@ public class SpringContextTest {
             "springwolf.docket.servers.test-protocol.protocol=kafka",
             "springwolf.docket.servers.test-protocol.url=some-server:1234",
     })
-    public static class ApplicationPropertiesConfigurationTest {
+    class ApplicationPropertiesConfigurationTest {
 
         @Autowired
         private ApplicationContext context;
@@ -58,14 +61,14 @@ public class SpringContextTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testContextWithApplicationProperties() {
+        void testContextWithApplicationProperties() {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
         }
 
         @Test
-        public void testAllChannelsAreFound() {
+        void testAllChannelsAreFound() {
             // 2 channels defined in the AsyncDocket are not found,
             // however PRODUCER_TOPIC is also used in ExampleProducer (5 - 2 + 1 = 4)
             assertThat(asyncApiService.getAsyncAPI().getChannels()).hasSize(4);
@@ -73,7 +76,8 @@ public class SpringContextTest {
     }
 
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
-    @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+    @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
+    @Nested
     @DirtiesContext
     @TestPropertySource(properties = {
             "springwolf.scanner.async-listener.enabled=false",
@@ -82,13 +86,13 @@ public class SpringContextTest {
             "springwolf.scanner.producer-data.enabled=false",
             "springwolf.plugin.kafka.scanner.kafka-listener.enabled=false"
     })
-    public static class DisabledScannerTest {
+    class DisabledScannerTest {
 
         @Autowired
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testNoChannelsAreFound() {
+        void testNoChannelsAreFound() {
             assertThat(asyncApiService.getAsyncAPI().getChannels()).isEmpty();
         }
     }

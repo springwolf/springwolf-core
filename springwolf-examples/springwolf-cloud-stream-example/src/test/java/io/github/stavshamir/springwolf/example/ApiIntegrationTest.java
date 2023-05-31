@@ -28,7 +28,7 @@ public class ApiIntegrationTest {
     public Integer serverPort;
 
     @Test
-    public void asyncApiResourceArtifactTest() throws JSONException, IOException {
+    void asyncApiResourceArtifactTest() throws JSONException, IOException {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         System.out.println("Got: " + actual);

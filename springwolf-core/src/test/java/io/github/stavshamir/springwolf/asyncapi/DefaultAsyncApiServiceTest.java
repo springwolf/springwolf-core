@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         ConsumerOperationDataScanner.class
 })
 @Import(DefaultAsyncApiServiceTest.DefaultAsyncApiServiceTestConfiguration.class)
-public class DefaultAsyncApiServiceTest {
+class DefaultAsyncApiServiceTest {
 
     @TestConfiguration
     public static class DefaultAsyncApiServiceTestConfiguration {
@@ -83,7 +83,7 @@ public class DefaultAsyncApiServiceTest {
     private DefaultAsyncApiService asyncApiService;
 
     @Test
-    public void getAsyncAPI_info_should_be_correct() {
+    void getAsyncAPI_info_should_be_correct() {
         Info actualInfo = asyncApiService.getAsyncAPI().getInfo();
 
         assertThat(actualInfo).
@@ -91,7 +91,7 @@ public class DefaultAsyncApiServiceTest {
     }
 
     @Test
-    public void getAsyncAPI_servers_should_be_correct() {
+    void getAsyncAPI_servers_should_be_correct() {
         Map<String, Server> actualServers = asyncApiService.getAsyncAPI().getServers();
 
         assertThat(actualServers).
@@ -99,7 +99,7 @@ public class DefaultAsyncApiServiceTest {
     }
 
     @Test
-    public void getAsyncAPI_producers_should_be_correct() {
+    void getAsyncAPI_producers_should_be_correct() {
         Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
 
         assertThat(actualChannels)
@@ -114,7 +114,7 @@ public class DefaultAsyncApiServiceTest {
     }
 
     @Test
-    public void getAsyncAPI_consumers_should_be_correct() {
+    void getAsyncAPI_consumers_should_be_correct() {
         Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
 
         assertThat(actualChannels)

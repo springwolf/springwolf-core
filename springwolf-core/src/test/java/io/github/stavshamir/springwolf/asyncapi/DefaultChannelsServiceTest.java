@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         DefaultChannelsServiceTest.SameTopic.SubscribeChannelScanner.class,
         DefaultChannelsServiceTest.SameTopic.ProduceChannelScanner.class
 })
-public class DefaultChannelsServiceTest {
+class DefaultChannelsServiceTest {
 
     @Autowired
     private DefaultChannelsService defaultChannelsService;
@@ -35,7 +35,7 @@ public class DefaultChannelsServiceTest {
     private BarChannelScanner barChannelScanner;
 
     @Test
-    public void getChannels() {
+    void getChannels() {
         Map<String, ChannelItem> actualChannels = defaultChannelsService.getChannels();
 
         assertThat(actualChannels)

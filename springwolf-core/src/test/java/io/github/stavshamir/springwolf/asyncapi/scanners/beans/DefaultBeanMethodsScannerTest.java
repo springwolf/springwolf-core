@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {DefaultBeanMethodsScanner.class})
-public class DefaultBeanMethodsScannerTest {
+class DefaultBeanMethodsScannerTest {
 
     @Autowired
     private DefaultBeanMethodsScanner beanMethodsScanner;
@@ -29,7 +29,7 @@ public class DefaultBeanMethodsScannerTest {
     private ConfigurationClassScanner configurationClassScanner;
 
     @Test
-    public void name() {
+    void name() {
         when(configurationClassScanner.scan())
                 .thenReturn(ImmutableSet.of(ConfigurationClass.class));
 

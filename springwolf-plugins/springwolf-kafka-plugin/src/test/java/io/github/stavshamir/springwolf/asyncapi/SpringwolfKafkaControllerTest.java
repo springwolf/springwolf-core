@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(SpringwolfKafkaController.class)
 @ContextConfiguration(classes = {SpringwolfKafkaController.class, SpringwolfKafkaProducer.class})
 @TestPropertySource(properties = {"springwolf.plugin.kafka.publishing.enabled=true"})
-public class SpringwolfKafkaControllerTest {
+class SpringwolfKafkaControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -42,7 +42,7 @@ public class SpringwolfKafkaControllerTest {
     private ArgumentCaptor<Map<String, String>> headerCaptor;
 
     @Test
-    public void testControllerShouldReturnBadRequestIfPayloadIsEmpty() {
+    void testControllerShouldReturnBadRequestIfPayloadIsEmpty() {
         try {
             String content = "{\"bindings\": null, \"headers\": null, \"payload\": null }";
             mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
@@ -55,7 +55,7 @@ public class SpringwolfKafkaControllerTest {
     }
 
     @Test
-    public void testControllerShouldReturnNotFoundIfNoKafkaProducerIsEnabled() throws Exception {
+    void testControllerShouldReturnNotFoundIfNoKafkaProducerIsEnabled() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
 
         String content = "{\"bindings\": null, \"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
@@ -66,7 +66,7 @@ public class SpringwolfKafkaControllerTest {
     }
 
     @Test
-    public void testControllerShouldCallKafkaProducerIfOnlyPayloadIsSend() throws Exception {
+    void testControllerShouldCallKafkaProducerIfOnlyPayloadIsSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content = "{\"bindings\": null, \"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
@@ -82,7 +82,7 @@ public class SpringwolfKafkaControllerTest {
     }
 
     @Test
-    public void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAreSend() throws Exception {
+    void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAreSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content = "{\"bindings\": null, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
@@ -99,7 +99,7 @@ public class SpringwolfKafkaControllerTest {
     }
 
     @Test
-    public void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAndBindingsAreSend() throws Exception{
+    void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAndBindingsAreSend() throws Exception{
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content = "{\"bindings\": {\"key\": \"kafka-key-value\"}, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";

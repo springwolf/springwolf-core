@@ -15,10 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.util.Maps.newHashMap;
 
-public class DefaultAsyncApiDocketServiceTest {
+class DefaultAsyncApiDocketServiceTest {
 
     @Test
-    public void testConfigurationShouldMapAllPropertiesToTheDocket() {
+    void testConfigurationShouldMapAllPropertiesToTheDocket() {
         // given
         ConfigDocket configDocket = new ConfigDocket();
         configDocket.setBasePackage("test-base-package");
@@ -55,7 +55,7 @@ public class DefaultAsyncApiDocketServiceTest {
     }
 
     @Test
-    public void testNoConfigurationShouldThrowException() {
+    void testNoConfigurationShouldThrowException() {
         assertThatThrownBy(() -> {
             DefaultAsyncApiDocketService docketConfiguration = new DefaultAsyncApiDocketService(Optional.empty(), Optional.empty());
             docketConfiguration.getAsyncApiDocket();

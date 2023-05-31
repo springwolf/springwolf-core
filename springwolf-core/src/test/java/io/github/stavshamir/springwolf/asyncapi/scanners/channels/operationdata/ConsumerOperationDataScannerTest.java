@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ConsumerOperationDataScanner.class, DefaultSchemasService.class})
-public class ConsumerOperationDataScannerTest {
+class ConsumerOperationDataScannerTest {
 
     @Autowired
     private ConsumerOperationDataScanner scanner;
@@ -43,7 +43,7 @@ public class ConsumerOperationDataScannerTest {
     private AsyncApiDocketService asyncApiDocketService;
 
     @Test
-    public void allFieldsConsumerData() {
+    void allFieldsConsumerData() {
         // Given a consumer data with all fields set
         String channelName = "example-consumer-topic-foo1";
         String description = channelName + "-description";
@@ -89,7 +89,7 @@ public class ConsumerOperationDataScannerTest {
     }
 
     @Test
-    public void missingFieldConsumerData() {
+    void missingFieldConsumerData() {
         // Given a consumer data with missing fields
         String channelName = "example-consumer-topic-foo1";
         ConsumerData consumerData = ConsumerData.builder()
@@ -106,7 +106,7 @@ public class ConsumerOperationDataScannerTest {
     }
 
     @Test
-    public void multipleConsumersForSameTopic() {
+    void multipleConsumersForSameTopic() {
         // Given a multiple ConsumerData objects for the same topic
         String channelName = "example-consumer-topic";
         String description1 = channelName + "-description1";

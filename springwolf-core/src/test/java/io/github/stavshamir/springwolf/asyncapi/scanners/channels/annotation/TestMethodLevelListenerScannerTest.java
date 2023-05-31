@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestMethodLevelListenerScanner.class, DefaultSchemasService.class})
-public class TestMethodLevelListenerScannerTest {
+class TestMethodLevelListenerScannerTest {
 
     @Autowired
     private TestMethodLevelListenerScanner channelScanner;
@@ -50,7 +50,7 @@ public class TestMethodLevelListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasNoListenerMethods() {
+    void scan_componentHasNoListenerMethods() {
         setClassToScan(ClassWithoutListenerAnnotation.class);
 
         Map<String, ChannelItem> channels = channelScanner.scan();
@@ -59,7 +59,7 @@ public class TestMethodLevelListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasListenerMethod() {
+    void scan_componentHasListenerMethod() {
         // Given a class with methods annotated with TestChannelListener, whose topics attribute is hard coded
         setClassToScan(ClassWithListenerAnnotation.class);
 

@@ -18,14 +18,14 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.*;
 
-public class SpringwolfAmqpProducerTest {
+class SpringwolfAmqpProducerTest {
     private SpringwolfAmqpProducer springwolfAmqpProducer;
 
     private ChannelsService channelsService;
     private RabbitTemplate rabbitTemplate;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         channelsService = mock(ChannelsService.class);
         rabbitTemplate = mock(RabbitTemplate.class);
 
@@ -33,7 +33,7 @@ public class SpringwolfAmqpProducerTest {
     }
 
     @Test
-    public void send_defaultExchangeAndChannelNameAsRoutingKey() {
+    void send_defaultExchangeAndChannelNameAsRoutingKey() {
         when(channelsService.getChannels()).thenReturn(ImmutableMap.of("channel-name", new ChannelItem()));
 
         Map<String, Object> payload = new HashMap<>();
@@ -43,7 +43,7 @@ public class SpringwolfAmqpProducerTest {
     }
 
     @Test
-    public void send_exchangeAndNoRoutingKey() {
+    void send_exchangeAndNoRoutingKey() {
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("exchange-name");
         ChannelItem channelItem = ChannelItem.builder()
@@ -64,7 +64,7 @@ public class SpringwolfAmqpProducerTest {
     }
 
     @Test
-    public void send_exchangeAndRoutingKeyFromBindings() {
+    void send_exchangeAndRoutingKeyFromBindings() {
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("exchange-name");
         ChannelItem channelItem = ChannelItem.builder()

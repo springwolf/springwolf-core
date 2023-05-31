@@ -50,7 +50,7 @@ import static org.mockito.Mockito.when;
         MethodLevelRabbitListenerScannerTest.ClassWithRabbitListenerAnnotationsBindingBean.class
 })
 @TestPropertySource(properties = "amqp.queues.test=test-queue")
-public class MethodLevelRabbitListenerScannerTest {
+class MethodLevelRabbitListenerScannerTest {
 
 
     @Autowired
@@ -70,7 +70,7 @@ public class MethodLevelRabbitListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasNoRabbitListenerMethods() {
+    void scan_componentHasNoRabbitListenerMethods() {
         setClassToScan(ClassWithoutRabbitListenerAnnotations.class);
 
         Map<String, ChannelItem> channels = rabbitListenerScanner.scan();
@@ -80,7 +80,7 @@ public class MethodLevelRabbitListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasRabbitListenerMethods_hardCodedTopic() {
+    void scan_componentHasRabbitListenerMethods_hardCodedTopic() {
         // Given a class with methods annotated with RabbitListener, whose queues attribute is hard coded
         setClassToScan(ClassWithRabbitListenerAnnotationHardCodedTopic.class);
 
@@ -122,7 +122,7 @@ public class MethodLevelRabbitListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasRabbitListenerMethods_embeddedValueTopic() {
+    void scan_componentHasRabbitListenerMethods_embeddedValueTopic() {
         // Given a class with methods annotated with RabbitListener, whose queues attribute is an embedded value
         setClassToScan(ClassWithRabbitListenerAnnotationsEmbeddedValueTopic.class);
 
@@ -164,7 +164,7 @@ public class MethodLevelRabbitListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasRabbitListenerMethods_bindingsAnnotation() {
+    void scan_componentHasRabbitListenerMethods_bindingsAnnotation() {
         setClassToScan(ClassWithRabbitListenerAnnotationUsingBindings.class);
 
         Map<String, ChannelItem> actualChannelItems = rabbitListenerScanner.scan();
@@ -203,7 +203,7 @@ public class MethodLevelRabbitListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasRabbitListenerMethods_bindingBean() {
+    void scan_componentHasRabbitListenerMethods_bindingBean() {
         setClassToScan(ClassWithRabbitListenerAnnotationsBindingBean.class);
 
         Map<String, ChannelItem> actualChannelItems = rabbitListenerScanner.scan();
@@ -242,7 +242,7 @@ public class MethodLevelRabbitListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasRabbitListenerMethods_multipleParamsWithoutPayloadAnnotation() {
+    void scan_componentHasRabbitListenerMethods_multipleParamsWithoutPayloadAnnotation() {
         // Given a class with a method annotated with RabbitListener:
         // - The method has more than one parameter
         // - No parameter is annotated with @Payload
@@ -254,7 +254,7 @@ public class MethodLevelRabbitListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasRabbitListenerMethods_multipleParamsWithPayloadAnnotation() {
+    void scan_componentHasRabbitListenerMethods_multipleParamsWithPayloadAnnotation() {
         // Given a class with a method annotated with RabbitListener:
         // - The method has more than one parameter
         // - There is a parameter is annotated with @Payload

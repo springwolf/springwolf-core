@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ConfigurationClassScanner.class})
-public class ConfigurationClassScannerTest {
+class ConfigurationClassScannerTest {
 
     @MockBean
     private AsyncApiDocketService asyncApiDocketService;
@@ -26,7 +26,7 @@ public class ConfigurationClassScannerTest {
     private ConfigurationClassScanner configurationClassScanner;
 
     @Test
-    public void getComponents() {
+    void getComponents() {
         when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(
                 AsyncApiDocket.builder()
                         .info(Info.builder()

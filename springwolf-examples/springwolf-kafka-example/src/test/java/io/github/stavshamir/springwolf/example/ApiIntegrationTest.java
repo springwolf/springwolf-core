@@ -32,7 +32,7 @@ public class ApiIntegrationTest {
     public Integer serverPort;
 
     @Test
-    public void asyncApiResourceArtifactTest() throws JSONException, IOException {
+    void asyncApiResourceArtifactTest() throws JSONException, IOException {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
 
