@@ -3,7 +3,7 @@ import { AsyncApiService } from 'src/app/shared/asyncapi.service';
 import { Example } from 'src/app/shared/models/example.model';
 import { Schema } from 'src/app/shared/models/schema.model';
 import { PublisherService } from 'src/app/shared/publisher.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import {MessageBinding, Operation} from 'src/app/shared/models/channel.model';
 import { STATUS } from 'angular-in-memory-web-api';
 
