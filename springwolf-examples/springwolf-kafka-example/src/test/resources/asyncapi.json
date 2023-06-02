@@ -35,7 +35,7 @@
         },
         "message" : {
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-          "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+          "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
           "payload" : {
             "$ref" : "#/components/schemas/AnotherPayloadDto"
@@ -67,7 +67,7 @@
         },
         "message" : {
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-          "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+          "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
           "title" : "ExamplePayloadDto",
           "description" : "Custom, optional description for this consumed topic",
           "payload" : {
@@ -100,7 +100,7 @@
         },
         "message" : {
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-          "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+          "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
           "description" : "Custom, optional description for this produced to topic",
           "payload" : {
@@ -133,7 +133,7 @@
         },
         "message" : {
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-          "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+          "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
           "title" : "ExamplePayloadDto",
           "payload" : {
             "$ref" : "#/components/schemas/ExamplePayloadDto"
@@ -174,7 +174,7 @@
         "message" : {
           "oneOf" : [ {
             "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-            "name" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
+            "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
             "title" : "AnotherPayloadDto",
             "payload" : {
               "$ref" : "#/components/schemas/AnotherPayloadDto"
@@ -189,7 +189,7 @@
             }
           }, {
             "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-            "name" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
+            "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
             "title" : "ExamplePayloadDto",
             "payload" : {
               "$ref" : "#/components/schemas/ExamplePayloadDto"
@@ -242,7 +242,7 @@
         },
         "message" : {
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
-          "name" : "io.github.stavshamir.springwolf.example.dtos.NestedPayloadDto",
+          "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
           "title" : "NestedPayloadDto",
           "description" : "Custom, optional description defined in the AsyncPublisher annotation",
           "payload" : {
@@ -432,12 +432,12 @@
           "__TypeId__" : {
             "type" : "string",
             "description" : "Spring Type Id Header",
-            "example" : "io.github.stavshamir.springwolf.example.dtos.NestedPayloadDto",
-            "enum" : [ "io.github.stavshamir.springwolf.example.dtos.NestedPayloadDto" ]
+            "example" : "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
+            "enum" : [ "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto" ]
           }
         },
         "example" : {
-          "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.NestedPayloadDto"
+          "__TypeId__" : "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
         }
       },
       "SpringKafkaDefaultHeaders-AnotherPayloadDto" : {
@@ -446,12 +446,12 @@
           "__TypeId__" : {
             "type" : "string",
             "description" : "Spring Type Id Header",
-            "example" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto",
-            "enum" : [ "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto" ]
+            "example" : "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
+            "enum" : [ "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto" ]
           }
         },
         "example" : {
-          "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.AnotherPayloadDto"
+          "__TypeId__" : "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
         }
       },
       "SpringKafkaDefaultHeaders-ExamplePayloadDto" : {
@@ -460,12 +460,12 @@
           "__TypeId__" : {
             "type" : "string",
             "description" : "Spring Type Id Header",
-            "example" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto",
-            "enum" : [ "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto" ]
+            "example" : "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
+            "enum" : [ "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto" ]
           }
         },
         "example" : {
-          "__TypeId__" : "io.github.stavshamir.springwolf.example.dtos.ExamplePayloadDto"
+          "__TypeId__" : "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
         }
       },
       "SpringKafkaDefaultHeaders-MonetaryAmount" : {
