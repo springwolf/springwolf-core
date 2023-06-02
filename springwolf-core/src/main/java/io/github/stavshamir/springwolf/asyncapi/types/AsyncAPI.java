@@ -4,7 +4,11 @@ import com.asyncapi.v2._0_0.model.Tag;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.info.Info;
 import com.asyncapi.v2._0_0.model.server.Server;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
@@ -34,6 +38,17 @@ public class AsyncAPI {
     @NonNull
     @Builder.Default
     private String asyncapi = "2.0.0";
+
+    /**
+     * Identifier of the application the AsyncAPI document is defining.
+     * <p>
+     * This field represents a unique universal identifier of the application the AsyncAPI document is defining.
+     * It must conform to the URI format, according to RFC3986.
+     * <p>
+     * It is RECOMMENDED to use a URN to globally and uniquely identify the application during long periods of time,
+     * even after it becomes unavailable or ceases to exist.
+     */
+    private String id;
 
     /**
      * <b>Required.</b>

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.Singular;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Map;
@@ -51,4 +52,18 @@ public class AsyncApiDocket {
     @Singular
     private final List<ConsumerData> consumers;
 
+    /**
+     * A string representing the default content type to use when encoding/decoding a message's payload.
+     *
+     * @see <a href="https://www.asyncapi.com/docs/reference/specification/v2.0.0#defaultContentTypeString">Default Content Type</a>
+     */
+    @Builder.Default
+    private final String defaultContentType = MediaType.APPLICATION_JSON_VALUE;
+
+    /**
+     * A string representing the default content type to use when encoding/decoding a message's payload.
+     *
+     * @see <a href="https://www.asyncapi.com/docs/reference/specification/v2.0.0#A2SIdString">Identifier</a>
+     */
+    private final String id;
 }

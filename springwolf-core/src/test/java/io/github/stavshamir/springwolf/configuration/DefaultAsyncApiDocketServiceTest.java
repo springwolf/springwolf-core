@@ -23,6 +23,8 @@ class DefaultAsyncApiDocketServiceTest {
         ConfigDocket configDocket = new ConfigDocket();
         configDocket.setBasePackage("test-base-package");
 
+        configDocket.setDefaultContentType("application/json");
+
         Server server = Server.builder()
                 .protocol("some-protocol")
                 .url("some-url")
@@ -46,6 +48,7 @@ class DefaultAsyncApiDocketServiceTest {
         AsyncApiDocket asyncApiDocket = docketConfiguration.getAsyncApiDocket();
 
         // then
+        assertThat(asyncApiDocket.getDefaultContentType()).isEqualTo(configDocket.getDefaultContentType());
         assertThat(asyncApiDocket.getServers()).isEqualTo(configDocket.getServers());
         assertThat(asyncApiDocket.getInfo().getTitle()).isEqualTo(info.getTitle());
         assertThat(asyncApiDocket.getInfo().getVersion()).isEqualTo(info.getVersion());

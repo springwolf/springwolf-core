@@ -13,6 +13,7 @@
       "name" : "Apache License 2.0"
     }
   },
+  "defaultContentType" : "application/json",
   "servers" : {
     "amqp" : {
       "url" : "amqp:5672",
