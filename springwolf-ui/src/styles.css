@@ -4,8 +4,8 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.mat-card {
-    background-color: #F5F5F5;
+.mat-mdc-card {
+    background-color: #F5F5F5 !important;
 }
 
 .mat-expansion-panel {
@@ -13,6 +13,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 /* Migration away from @angular/flex-layout (https://github.com/angular/flex-layout/issues/1426) */
+.flex { display: flex; }
 .flex-row { display: flex; flex-direction: row; }
 .flex-col { display: flex; flex-direction: column; }
 .gap-0 { gap: 0px; }
