@@ -23,14 +23,14 @@
     "font-awesome": "^4.7.0",
     "ngx-highlightjs": "^7.0.1",
     "rxjs": "^7.8.1",
-    "zone.js": "^0.11.8"
+    "zone.js": "^0.13.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.8",
     "@angular/cli": "^15.2.8",
     "@angular/compiler-cli": "^15.2.9",
     "@types/node": "^12.11.1",
-    "angular-in-memory-web-api": "^0.14.0",
-    "typescript": "^4.8.4"
+    "angular-in-memory-web-api": "^0.15.0",
+    "typescript": "^4.9.3"
   }
 }
