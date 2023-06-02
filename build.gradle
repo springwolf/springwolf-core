@@ -22,7 +22,7 @@ ext {
     lombokVersion = '1.18.28'
 
     swaggerInflectorVersion = '2.0.9'
-    swaggerCoreVersion = '2.2.10'
+    swaggerCoreVersion = '2.2.11'
     swaggerParserVersion = '2.1.15'
 
     testcontainersVersion = '1.18.3'
