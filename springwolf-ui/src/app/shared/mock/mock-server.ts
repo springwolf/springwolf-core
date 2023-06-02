@@ -38,9 +38,7 @@ export class MockServer implements InMemoryDbService {
   private selectMockData() {
     const hostname = window.location.hostname;
 
-    if(hostname.includes("app")) {
-      return mockSpringwolfApp;
-    } else if(hostname.includes("amqp")) {
+    if(hostname.includes("amqp")) {
       return mockSpringwolfAmqp;
     } else if(hostname.includes("cloud-stream")) {
       return mockSpringwolfCloudStream;
