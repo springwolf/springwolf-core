@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
+import com.asyncapi.v2.binding.channel.ChannelBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
@@ -20,7 +20,9 @@ import java.util.Map;
 import java.util.Set;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @Order(value = ChannelPriority.MANUAL_DEFINED)

@@ -36,7 +36,7 @@ public class AsyncAPI {
      */
     @NonNull
     @Builder.Default
-    private String asyncapi = "2.0.0";
+    private String asyncapi = "2.6.0";
 
     /**
      * Identifier of the application the AsyncAPI document is defining.

@@ -1,5 +1,5 @@
 {
-  "asyncapi" : "2.0.0",
+  "asyncapi" : "2.6.0",
   "info" : {
     "title" : "Springwolf example project - AMQP",
     "version" : "1.0.0",
