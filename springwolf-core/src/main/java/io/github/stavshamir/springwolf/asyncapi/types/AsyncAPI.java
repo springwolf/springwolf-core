@@ -4,7 +4,11 @@ import com.asyncapi.v2._0_0.model.Tag;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.info.Info;
 import com.asyncapi.v2._0_0.model.server.Server;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collections;

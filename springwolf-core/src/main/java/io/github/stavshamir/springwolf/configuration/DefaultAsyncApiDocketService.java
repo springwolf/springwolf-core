@@ -48,13 +48,17 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
 
         Info info = buildInfo(configProperties.getDocket().getInfo());
 
-        return AsyncApiDocket.builder()
+        AsyncApiDocket.AsyncApiDocketBuilder builder = AsyncApiDocket.builder()
                 .basePackage(configProperties.getDocket().getBasePackage())
                 .info(info)
                 .servers(configProperties.getDocket().getServers())
-                .id(configProperties.getDocket().getId())
-                .defaultContentType(configProperties.getDocket().getDefaultContentType())
-                .build();
+                .id(configProperties.getDocket().getId());
+
+        if(configProperties.getDocket().getDefaultContentType() != null) {
+           builder.defaultContentType(configProperties.getDocket().getDefaultContentType());
+        }
+
+        return builder.build();
     }
 
     private static Info buildInfo(@Nullable SpringWolfConfigProperties.ConfigDocket.Info info) {

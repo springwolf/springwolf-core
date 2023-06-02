@@ -13,6 +13,7 @@
       "name" : "Apache License 2.0"
     }
   },
+  "defaultContentType" : "application/json",
   "servers" : {
     "kafka" : {
       "url" : "localhost:9092",
