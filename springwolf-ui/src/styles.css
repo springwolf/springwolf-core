@@ -11,3 +11,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-expansion-panel {
     background-color: #F5F5F5;
 }
+
+/* Migration away from @angular/flex-layout (https://github.com/angular/flex-layout/issues/1426) */
+.flex-row { display: flex; flex-direction: row; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-0 { gap: 0px; }
+.gap-5 { gap: 5px; }
+.gap-8 { gap: 8px; }
+.gap-16 { gap: 16px; }
+.gap-24 { gap: 24px; }
+.space-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.items-center { align-items: center; }
+.flex-start { align-items: start; }

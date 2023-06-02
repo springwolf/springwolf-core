@@ -21,7 +21,7 @@
 <mat-accordion>
     <mat-expansion-panel *ngFor="let channel of channels" [id]="channel.anchorIdentifier" [expanded]="selectedChannel == channel.anchorIdentifier" (opened)="this.setChannelSelection(channel)">
         <mat-expansion-panel-header>
-            <mat-panel-title fxLayout fxLayoutAlign="flex-start center" fxLayoutGap="16px">
+            <mat-panel-title class="flex-column gap-16 flex-start items-center">
                 <div class="badge protocol-badge" >
                     {{ channel.operation.protocol }}
                 </div>
