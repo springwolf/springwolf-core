@@ -9,7 +9,7 @@ Here, we collected some advice to smooth out the experience for everyone involve
 
 ## I Have A Question
 
-> Some questions can be answered by reading our [documentation](https://springwolf.github.io/docs/faq) including the FAQ page.
+> Some questions can be answered by reading our [documentation](https://www.springwolf.dev/docs/faq) including the FAQ page.
 
 Before you ask a question, it is best to search for existing [Issues](https://github.com/springwolf/springwolf-core/issues) that might help you.
 In case you have found a suitable issue and still need clarification, you can write your question in this issue.

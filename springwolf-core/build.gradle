@@ -76,7 +76,7 @@ publishing {
             pom {
                 name = 'springwolf-core'
                 description = 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring'
-                url = 'https://springwolf.github.io'
+                url = 'https://www.springwolf.dev'
 
                 licenses {
                     license {
@@ -106,7 +106,7 @@ publishing {
                 }
 
                 scm {
-                    url = 'https://github.com/stavshamir/springwolf'
+                    url = 'https://github.com/springwolf/springwolf-core'
                 }
             }
         }
