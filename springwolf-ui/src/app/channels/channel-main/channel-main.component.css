@@ -35,6 +35,10 @@ button {
   font-weight: normal;
 }
 
+.button-container {
+  height: 50px;
+}
+
 [hidden] {
   display: none !important;
 }

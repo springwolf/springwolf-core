@@ -7,7 +7,7 @@
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="Example">
         <div class="flex-column">
-          <div [hidden]="isEmptyObject(operation.message.bindings.get(protocolName))" class="flex-column gap-5">
+          <div [hidden]="isEmptyObject(operation.message.bindings.get(protocolName))" class="flex-column">
             <h4>Message Binding</h4>
             <textarea spellcheck="false"
                       #bindingTextArea
@@ -16,7 +16,7 @@
                       (keyup)="recalculateLineCount('massageBindingExample', bindingTextArea.value)"
             ></textarea>
           </div>
-          <div [hidden]="!(headersExample?.lineCount > 1)" class="flex-column gap-5">
+          <div [hidden]="!(headersExample?.lineCount > 1)" class="flex-column">
 
               <h4>Header</h4>
               <textarea spellcheck="false"
@@ -27,7 +27,7 @@
               ></textarea>
 
           </div>
-          <div class="flex-column gap-5">
+          <div class="flex-column">
             <h4>Message</h4>
             <textarea spellcheck="false"
                       #messageTextArea
@@ -36,7 +36,7 @@
                       (keyup)="recalculateLineCount('example', messageTextArea.value)"
             ></textarea>
           </div>
-          <div class="flex gap-8">
+          <div class="button-container flex gap-8">
             <button mat-raised-button color="primary"
                     (click)="publish(messageTextArea.value, headersTextArea?.value, bindingTextArea?.value)">
               Publish
