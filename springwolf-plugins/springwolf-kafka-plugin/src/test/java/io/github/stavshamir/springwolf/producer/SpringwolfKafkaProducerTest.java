@@ -26,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SpringwolfKafkaProducerTest {
+class SpringwolfKafkaProducerTest {
 
     private SpringwolfKafkaProducer springwolfKafkaProducer;
 
@@ -37,12 +37,12 @@ public class SpringwolfKafkaProducerTest {
     private ArgumentCaptor<ProducerRecord<Object, Object>> recordArgumentCaptor;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         springwolfKafkaProducer = new SpringwolfKafkaProducer(Optional.of(kafkaTemplate));
     }
 
     @Test
-    public void testSpringwolfKafkaProducerIsNotEnabledWhenThereIsNoKafkaTemplateConfigured() {
+    void testSpringwolfKafkaProducerIsNotEnabledWhenThereIsNoKafkaTemplateConfigured() {
         Optional<KafkaTemplate<Object, Object>> kafkaTemplateMock = Optional.empty();
 
         springwolfKafkaProducer = new SpringwolfKafkaProducer(kafkaTemplateMock);
@@ -52,7 +52,7 @@ public class SpringwolfKafkaProducerTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testSendingKafkaMessageWithoutHeaders() {
+    void testSendingKafkaMessageWithoutHeaders() {
         CompletableFuture<SendResult<Object, Object>> future = new CompletableFuture<>();
         when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any())).thenReturn(future);
         future.complete(mock(SendResult.class));
@@ -74,7 +74,7 @@ public class SpringwolfKafkaProducerTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testSendingKafkaMessageWithHeaders() {
+    void testSendingKafkaMessageWithHeaders() {
         CompletableFuture<SendResult<Object, Object>> future = new CompletableFuture<>();
         when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any())).thenReturn(future);
         future.complete(mock(SendResult.class));

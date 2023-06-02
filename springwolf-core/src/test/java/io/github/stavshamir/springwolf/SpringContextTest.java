@@ -6,6 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SpringContextTest {
 
     @ExtendWith(SpringExtension.class)
+    @Nested
     @ContextConfiguration(classes = {
             CustomBeanAsyncApiDocketConfiguration.class, // user has defined an own AsyncApiDocket bean
             DefaultAsyncApiDocketService.class,
@@ -31,7 +33,7 @@ public class SpringContextTest {
             DefaultAsyncApiService.class,
             DefaultAsyncApiSerializerService.class,
     })
-    public static class AsyncApiDocketTest {
+    class AsyncApiDocketTest {
 
         @Autowired
         private ApplicationContext context;
@@ -39,7 +41,7 @@ public class SpringContextTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testContextWithAsyncApiDocketBean() {
+        void testContextWithAsyncApiDocketBean() {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
@@ -47,6 +49,7 @@ public class SpringContextTest {
     }
 
     @ExtendWith(SpringExtension.class)
+    @Nested
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
             DefaultAsyncApiService.class,
@@ -66,7 +69,7 @@ public class SpringContextTest {
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.url=some-server:1234",
     })
-    public static class ApplicationPropertiesConfigurationTest {
+    class ApplicationPropertiesConfigurationTest {
 
         @Autowired
         private ApplicationContext context;
@@ -74,7 +77,7 @@ public class SpringContextTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testContextWithApplicationProperties() {
+        void testContextWithApplicationProperties() {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();

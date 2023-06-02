@@ -66,7 +66,7 @@ public class ProducerIntegrationWithDockerTest {
 
     @Test
     @Order(2)
-    public void producerCanUseSpringwolfConfigurationToSendMessage() {
+    void producerCanUseSpringwolfConfigurationToSendMessage() {
         Map<String, String> headers = new HashMap<>();
         headers.put("header-key", "header-value");
         ExamplePayloadDto payload = new ExamplePayloadDto();

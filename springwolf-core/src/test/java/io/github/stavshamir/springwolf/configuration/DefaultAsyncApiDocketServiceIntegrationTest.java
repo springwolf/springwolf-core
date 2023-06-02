@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.configuration;
 import com.asyncapi.v2._0_0.model.info.Info;
 import com.asyncapi.v2._0_0.model.server.Server;
 import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DefaultAsyncApiDocketServiceIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
+    @Nested
     @ContextConfiguration(classes = {
             DefaultAsyncApiDocketService.class,
     })
@@ -31,13 +33,13 @@ public class DefaultAsyncApiDocketServiceIntegrationTest {
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.url=some-server:1234"
     })
-    public static class DocketWillBeAutomaticallyCreateIfNoCustomDocketIsPresentTest {
+    class DocketWillBeAutomaticallyCreateIfNoCustomDocketIsPresentTest {
 
         @Autowired
         private DefaultAsyncApiDocketService asyncApiDocketService;
 
         @Test
-        public void testDocketContentShouldBeLoadedFromProperties() {
+        void testDocketContentShouldBeLoadedFromProperties() {
             AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
             assertThat(docket).isNotNull();
             assertThat(docket.getInfo().getTitle()).isEqualTo("Info title was loaded from spring properties");
@@ -58,7 +60,8 @@ public class DefaultAsyncApiDocketServiceIntegrationTest {
             "springwolf.docket.servers.test-protocol.url=some-server:1234"
     })
     @Import(DocketWillNotBeAutomaticallyCreateIfCustomDocketIsPresentTest.CustomAsyncApiDocketConfiguration.class)
-    public static class DocketWillNotBeAutomaticallyCreateIfCustomDocketIsPresentTest {
+    @Nested
+    class DocketWillNotBeAutomaticallyCreateIfCustomDocketIsPresentTest {
 
         @TestConfiguration
         public static class CustomAsyncApiDocketConfiguration {
@@ -81,7 +84,7 @@ public class DefaultAsyncApiDocketServiceIntegrationTest {
         private DefaultAsyncApiDocketService asyncApiDocketService;
 
         @Test
-        public void testDocketContentShouldNotBeLoadedFromProperties() {
+        void testDocketContentShouldNotBeLoadedFromProperties() {
             AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
 
             assertThat(docket).isNotNull();

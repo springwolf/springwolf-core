@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class DefaultSchemasServiceTest {
+class DefaultSchemasServiceTest {
 
     private final SchemasService schemasService = new DefaultSchemasService(Optional.empty());
 
@@ -27,7 +27,7 @@ public class DefaultSchemasServiceTest {
     private static final ObjectMapper objectMapper = Json.mapper();
 
     @Test
-    public void string() throws IOException, JSONException {
+    void string() throws IOException, JSONException {
         String modelName = schemasService.register(String.class);
 
         assertThat(modelName)
@@ -43,7 +43,7 @@ public class DefaultSchemasServiceTest {
     }
 
     @Test
-    public void simpleObject() throws IOException, JSONException {
+    void simpleObject() throws IOException, JSONException {
         String modelName = schemasService.register(SimpleFoo.class);
 
         assertThat(modelName)
@@ -57,7 +57,7 @@ public class DefaultSchemasServiceTest {
     }
 
     @Test
-    public void compositeObject() throws IOException, JSONException {
+    void compositeObject() throws IOException, JSONException {
         String modelName = schemasService.register(CompositeFoo.class);
 
         Schema schema = schemasService.getDefinitions().get(modelName);
@@ -70,7 +70,7 @@ public class DefaultSchemasServiceTest {
     }
 
     @Test
-    public void getDefinitions() throws IOException, JSONException {
+    void getDefinitions() throws IOException, JSONException {
         schemasService.register(CompositeFoo.class);
         schemasService.register(FooWithEnum.class);
 
@@ -82,7 +82,7 @@ public class DefaultSchemasServiceTest {
     }
 
     @Test
-    public void getDocumentedDefinitions() throws IOException, JSONException {
+    void getDocumentedDefinitions() throws IOException, JSONException {
         schemasService.register(DocumentedSimpleFoo.class);
 
         String actualDefinitions = objectMapper.writeValueAsString(schemasService.getDefinitions());
@@ -93,7 +93,7 @@ public class DefaultSchemasServiceTest {
     }
 
     @Test
-    public void classWithSchemaAnnotation() {
+    void classWithSchemaAnnotation() {
         String modelName = schemasService.register(ClassWithSchemaAnnotation.class);
 
         assertThat(modelName)

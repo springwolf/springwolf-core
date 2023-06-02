@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ClassLevelKafkaListenerScanner.class, DefaultSchemasService.class})
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
-public class ClassLevelKafkaListenerScannerTest {
+class ClassLevelKafkaListenerScannerTest {
 
     @Autowired
     private ClassLevelKafkaListenerScanner methodLevelKafkaListenerScanner;
@@ -61,7 +61,7 @@ public class ClassLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentWithMultipleKafkaListenersAndHandlers() {
+    void scan_componentWithMultipleKafkaListenersAndHandlers() {
         // Given multiple @KafkaListener annotated classes with method(s) annotated with @KafkaHandler
         ImmutableSet<Class<?>> classesToScan = ImmutableSet.of(
                 KafkaListenerClassWithOneKafkaHandler.class,
@@ -106,7 +106,7 @@ public class ClassLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasNoClassLevelKafkaListenerAnnotation() {
+    void scan_componentHasNoClassLevelKafkaListenerAnnotation() {
         // Given a class with one @KafkaHandler method, but no class level @KafkaListener annotation
         setClassToScan(ClassWithoutClassLevelKafkaListenerAndWithOneKafkaHandler.class);
 
@@ -119,7 +119,7 @@ public class ClassLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasNoKafkaHandlerMethods() {
+    void scan_componentHasNoKafkaHandlerMethods() {
         setClassToScan(KafkaListenerClassWithoutKafkaHandlers.class);
 
         Map<String, ChannelItem> channels = methodLevelKafkaListenerScanner.scan();
@@ -129,7 +129,7 @@ public class ClassLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentWithSingleKafkaHandlerMethod() {
+    void scan_componentWithSingleKafkaHandlerMethod() {
         // Given a @KafkaListener annotated class with one method annotated with @KafkaHandler
         setClassToScan(KafkaListenerClassWithOneKafkaHandler.class);
 
@@ -162,7 +162,7 @@ public class ClassLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentWithMultipleKafkaHandlerMethods() {
+    void scan_componentWithMultipleKafkaHandlerMethods() {
         // Given a @KafkaListener annotated class with multiple methods annotated with @KafkaHandler
         setClassToScan(KafkaListenerClassWithMultipleKafkaHandler.class);
 
@@ -203,7 +203,7 @@ public class ClassLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentWithSingleKafkaHandlerMethod_batchPayload() {
+    void scan_componentWithSingleKafkaHandlerMethod_batchPayload() {
         // Given a @KafkaListener annotated class with one method annotated with @KafkaHandler
         // - There is a payload of type List<?>
         setClassToScan(KafkaListenerClassWithKafkaHandlerWithBatchPayload.class);

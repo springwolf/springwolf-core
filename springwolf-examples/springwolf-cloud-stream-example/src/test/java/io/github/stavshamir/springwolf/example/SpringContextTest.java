@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.example;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,9 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SpringContextTest {
 
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
-    @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:29092", "port=29092" })
+    @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
+    @Nested
     @DirtiesContext
-    public static class AsyncApiDocketTest {
+    class AsyncApiDocketTest {
 
         @Autowired
         private ApplicationContext context;
@@ -26,7 +28,7 @@ public class SpringContextTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testContextWithAsyncApiDocketBean() {
+        void testContextWithAsyncApiDocketBean() {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
@@ -34,7 +36,8 @@ public class SpringContextTest {
     }
 
     @SpringBootTest(classes = SpringwolfExampleApplication.class)
-    @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:29092", "port=29092" })
+    @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
+    @Nested
     @DirtiesContext
     @TestPropertySource(properties = {
             "customAsyncApiDocketBean=false",
@@ -45,7 +48,7 @@ public class SpringContextTest {
             "springwolf.docket.servers.test-protocol.protocol=kafka",
             "springwolf.docket.servers.test-protocol.url=some-server:1234",
     })
-    public static class ApplicationPropertiesConfigurationTest {
+    class ApplicationPropertiesConfigurationTest {
 
         @Autowired
         private ApplicationContext context;
@@ -53,7 +56,7 @@ public class SpringContextTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        public void testContextWithApplicationProperties() {
+        void testContextWithApplicationProperties() {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();

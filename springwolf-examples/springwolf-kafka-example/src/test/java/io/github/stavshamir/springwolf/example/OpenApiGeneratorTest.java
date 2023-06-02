@@ -17,10 +17,10 @@ import java.nio.charset.StandardCharsets;
  * The generateOpenApiDocs task will generate the openapi-generated.json into the test-resources so that
  * this test can pick up the openapi-generated.json afterwards and compare it to the reference asyncapi.json
  */
-public class OpenApiGeneratorTest {
+class OpenApiGeneratorTest {
 
     @Test
-    public void asyncApiResourceArtifactTest() throws JSONException, IOException {
+    void asyncApiResourceArtifactTest() throws JSONException, IOException {
         InputStream expectedStream  = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = IOUtils.toString(expectedStream, StandardCharsets.UTF_8);
 

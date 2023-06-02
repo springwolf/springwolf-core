@@ -21,7 +21,6 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.Data;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -35,6 +34,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {DefaultAsyncApiSerializerService.class})
@@ -119,7 +120,7 @@ class DefaultAsyncApiSerializerServiceTest {
         String actual = serializer.toYaml(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.yaml");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
-        Assertions.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Data

@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AsyncPublisherAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
 @TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
-public class AsyncPublisherAnnotationScannerTest {
+class AsyncPublisherAnnotationScannerTest {
 
     @Autowired
     private AsyncPublisherAnnotationScanner channelScanner;
@@ -45,7 +45,7 @@ public class AsyncPublisherAnnotationScannerTest {
     }
 
     @Test
-    public void scan_componentHasNoPublisherMethods() {
+    void scan_componentHasNoPublisherMethods() {
         setClassToScan(ClassWithoutPublisherAnnotation.class);
 
         Map<String, ChannelItem> channels = channelScanner.scan();
@@ -55,7 +55,7 @@ public class AsyncPublisherAnnotationScannerTest {
 
 
     @Test
-    public void scan_componentHasPublisherMethod() {
+    void scan_componentHasPublisherMethod() {
         // Given a class with methods annotated with AsyncPublisher, where only the channel-name is set
         setClassToScan(ClassWithPublisherAnnotation.class);
 
@@ -89,7 +89,7 @@ public class AsyncPublisherAnnotationScannerTest {
     }
 
     @Test
-    public void scan_componentHasPublisherMethodWithAllAttributes() {
+    void scan_componentHasPublisherMethodWithAllAttributes() {
         // Given a class with method annotated with AsyncPublisher, where all attributes are set
         setClassToScan(ClassWithPublisherAnnotationWithAllAttributes.class);
 
@@ -123,7 +123,7 @@ public class AsyncPublisherAnnotationScannerTest {
     }
 
     @Test
-    public void scan_componentHasMultiplePublisherAnnotations() {
+    void scan_componentHasMultiplePublisherAnnotations() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
         setClassToScan(ClassWithMultipleListenerAnnotations.class);
 

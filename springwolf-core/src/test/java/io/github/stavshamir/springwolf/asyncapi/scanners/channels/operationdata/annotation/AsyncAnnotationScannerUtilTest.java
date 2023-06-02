@@ -31,11 +31,11 @@ class AsyncAnnotationScannerUtilTest {
 
         // then
         AsyncHeaders headers = AsyncAnnotationScannerUtil.getAsyncHeaders(operation, resolver);
-        assertEquals(headers.getSchemaName(), "TestSchema");
+        assertEquals("TestSchema", headers.getSchemaName());
         assertTrue(headers.containsKey("headerResolved"));
-        assertEquals(headers.get("headerResolved").getType(), "string");
-        assertEquals(headers.get("headerResolved").getExample(), "valueResolved");
-        assertEquals(headers.get("headerResolved").getDescription(), "descriptionResolved");
+        assertEquals("string", headers.get("headerResolved").getType());
+        assertEquals("valueResolved", headers.get("headerResolved").getExample());
+        assertEquals("descriptionResolved", headers.get("headerResolved").getDescription());
     }
 
     @Test

@@ -11,10 +11,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SpringPayloadAnnotationTypeExtractorTest {
+class SpringPayloadAnnotationTypeExtractorTest {
 
     @Test
-    public void getPayloadType() throws NoSuchMethodException {
+    void getPayloadType() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithString", String.class);
 
         Class<?> result = SpringPayloadAnnotationTypeExtractor.getPayloadType(m);
@@ -23,7 +23,7 @@ public class SpringPayloadAnnotationTypeExtractorTest {
     }
 
     @Test
-    public void getPayloadTypeWithPayloadAnnotation() throws NoSuchMethodException {
+    void getPayloadTypeWithPayloadAnnotation() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithStringAndPayloadAnnotation", String.class, Integer.class);
 
         Class<?> result = SpringPayloadAnnotationTypeExtractor.getPayloadType(m);
@@ -32,7 +32,7 @@ public class SpringPayloadAnnotationTypeExtractorTest {
     }
 
     @Test
-    public void getPayloadTypeWithListOfStrings() throws NoSuchMethodException {
+    void getPayloadTypeWithListOfStrings() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithListOfStrings", List.class);
 
         Class<?> result = SpringPayloadAnnotationTypeExtractor.getPayloadType(m);
@@ -41,7 +41,7 @@ public class SpringPayloadAnnotationTypeExtractorTest {
     }
 
     @Test
-    public void getPayloadTypeWithListOfInterfaces() throws NoSuchMethodException {
+    void getPayloadTypeWithListOfInterfaces() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithListOfGenericClasses", List.class);
 
         Class<?> result = SpringPayloadAnnotationTypeExtractor.getPayloadType(m);
@@ -51,7 +51,7 @@ public class SpringPayloadAnnotationTypeExtractorTest {
     }
 
     @Test
-    public void getPayloadTypeWithInterface() throws NoSuchMethodException {
+    void getPayloadTypeWithInterface() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithGenericClass", Optional.class);
 
         Class<?> result = SpringPayloadAnnotationTypeExtractor.getPayloadType(m);
@@ -60,7 +60,7 @@ public class SpringPayloadAnnotationTypeExtractorTest {
     }
 
     @Test
-    public void getPayloadTypeWithListOfStringExtends() throws NoSuchMethodException {
+    void getPayloadTypeWithListOfStringExtends() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithListOfStringExtends", List.class);
 
         Class<?> result = SpringPayloadAnnotationTypeExtractor.getPayloadType(m);
@@ -70,7 +70,7 @@ public class SpringPayloadAnnotationTypeExtractorTest {
     }
 
     @Test
-    public void getPayloadTypeWithCustomType() throws NoSuchMethodException {
+    void getPayloadTypeWithCustomType() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomType", TestClass.MyType.class);
 
         Class<?> result = SpringPayloadAnnotationTypeExtractor.getPayloadType(m);

@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {MethodLevelKafkaListenerScanner.class, DefaultSchemasService.class})
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
-public class MethodLevelKafkaListenerScannerTest {
+class MethodLevelKafkaListenerScannerTest {
 
     @Autowired
     private MethodLevelKafkaListenerScanner methodLevelKafkaListenerScanner;
@@ -58,7 +58,7 @@ public class MethodLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasNoKafkaListenerMethods() {
+    void scan_componentHasNoKafkaListenerMethods() {
         setClassToScan(ClassWithoutKafkaListenerAnnotations.class);
 
         Map<String, ChannelItem> channels = methodLevelKafkaListenerScanner.scan();
@@ -68,7 +68,7 @@ public class MethodLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasKafkaListenerMethods_hardCodedTopic() {
+    void scan_componentHasKafkaListenerMethods_hardCodedTopic() {
         // Given a class with methods annotated with KafkaListener, whose topics attribute is hard coded
         setClassToScan(ClassWithKafkaListenerAnnotationHardCodedTopic.class);
 
@@ -101,7 +101,7 @@ public class MethodLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasKafkaListenerMethods_embeddedValueTopic() {
+    void scan_componentHasKafkaListenerMethods_embeddedValueTopic() {
         // Given a class with methods annotated with KafkaListener, whose topics attribute is an embedded value
         setClassToScan(ClassWithKafkaListenerAnnotationsEmbeddedValueTopic.class);
 
@@ -134,7 +134,7 @@ public class MethodLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasKafkaListenerMethods_withGroupId() {
+    void scan_componentHasKafkaListenerMethods_withGroupId() {
         // Given a class with methods annotated with KafkaListener, with a group id
         setClassToScan(ClassWithKafkaListenerAnnotationWithGroupId.class);
 
@@ -154,7 +154,7 @@ public class MethodLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasKafkaListenerMethods_multipleParamsWithoutPayloadAnnotation() {
+    void scan_componentHasKafkaListenerMethods_multipleParamsWithoutPayloadAnnotation() {
         // Given a class with a method annotated with KafkaListener:
         // - The method has more than one parameter
         // - No parameter is annotated with @Payload
@@ -167,7 +167,7 @@ public class MethodLevelKafkaListenerScannerTest {
 
 
     @Test
-    public void scan_componentHasKafkaListenerMethods_multipleParamsWithPayloadAnnotation() {
+    void scan_componentHasKafkaListenerMethods_multipleParamsWithPayloadAnnotation() {
         // Given a class with a method annotated with KafkaListener:
         // - The method has more than one parameter
         // - There is a parameter is annotated with @Payload
@@ -202,7 +202,7 @@ public class MethodLevelKafkaListenerScannerTest {
     }
 
     @Test
-    public void scan_componentHasKafkaListenerMethods_batchPayload() {
+    void scan_componentHasKafkaListenerMethods_batchPayload() {
         // Given a class with a method annotated with KafkaListener with a payload of type List<?>
         setClassToScan(ClassWithKafkaListenerWithBatchPayload.class);
 

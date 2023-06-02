@@ -15,16 +15,16 @@ import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageOb
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class MessageHelperTest {
+class MessageHelperTest {
 
     @Test
-    public void toMessageObjectOrComposition_emptySet() {
+    void toMessageObjectOrComposition_emptySet() {
         assertThatThrownBy(() -> toMessageObjectOrComposition(Collections.emptySet()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    public void toMessageObjectOrComposition_oneMessage() {
+    void toMessageObjectOrComposition_oneMessage() {
         Message message = Message.builder()
                 .name("foo")
                 .build();
@@ -38,7 +38,7 @@ public class MessageHelperTest {
 
 
     @Test
-    public void toMessageObjectOrComposition_multipleMessages() {
+    void toMessageObjectOrComposition_multipleMessages() {
         Message message1 = Message.builder()
                 .name("foo")
                 .build();
@@ -55,7 +55,7 @@ public class MessageHelperTest {
     }
 
     @Test
-    public void toMessageObjectOrComposition_multipleMessages_remove_duplicates() {
+    void toMessageObjectOrComposition_multipleMessages_remove_duplicates() {
         Message message1 = Message.builder()
                 .name("foo")
                 .description("This is message 1")
@@ -80,7 +80,7 @@ public class MessageHelperTest {
     }
 
     @Test
-    public void toMessageObjectOrComposition_multipleMessages_should_not_break_deep_equals() {
+    void toMessageObjectOrComposition_multipleMessages_should_not_break_deep_equals() {
         Message actualMessage1 = Message.builder()
                 .name("foo")
                 .description("This is actual message 1")
@@ -109,7 +109,7 @@ public class MessageHelperTest {
     }
 
     @Test
-    public void messageObjectToSet_notAMessageOrAMap() {
+    void messageObjectToSet_notAMessageOrAMap() {
         Object string = "foo";
 
         Set<Message> messages = messageObjectToSet(string);
@@ -119,7 +119,7 @@ public class MessageHelperTest {
     }
 
     @Test
-    public void messageObjectToSet_Message() {
+    void messageObjectToSet_Message() {
         Message message = Message.builder()
                 .name("foo")
                 .build();
@@ -132,7 +132,7 @@ public class MessageHelperTest {
     }
 
     @Test
-    public void messageObjectToSet_SetOfMessage() {
+    void messageObjectToSet_SetOfMessage() {
         Message message1 = Message.builder()
                 .name("foo")
                 .build();

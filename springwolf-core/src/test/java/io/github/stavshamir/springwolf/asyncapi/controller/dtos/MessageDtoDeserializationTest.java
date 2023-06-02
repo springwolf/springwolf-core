@@ -9,11 +9,11 @@ import java.io.IOException;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MessageDtoDeserializationTest {
+class MessageDtoDeserializationTest {
     private static final ObjectMapper objectMapper = Json.mapper();
 
     @Test
-    public void testCanBeSerialized() throws IOException {
+    void testCanBeSerialized() throws IOException {
         String content = "{\"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
 
         MessageDto value = objectMapper.readValue(content, MessageDto.class);

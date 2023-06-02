@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.integrationtests;
 import com.asyncapi.v2._0_0.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.controller.AsyncApiController;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,28 +19,30 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class SpringWolfAutoConfigurationTest {
 
+    @Nested
     @SpringBootTest(classes = TestApplication.class)
-    public static class TestSpringWolfEnabled{
+    class TestSpringWolfEnabled {
         @Autowired
         private AsyncApiController asyncApiController;
 
         @Test
-        public void autoconfigurationShouldBeLoaded(){
+        void autoconfigurationShouldBeLoaded(){
             assertThat(asyncApiController).isNotNull();
         }
 
     }
 
+    @Nested
     @SpringBootTest(classes = TestApplication.class)
     @TestPropertySource(properties = {"springwolf.enabled=false"})
-    public static class TestSpringWolfDisabled{
+    class TestSpringWolfDisabled {
 
         @Autowired
         private ObjectProvider<AsyncApiController> asyncApiControllerObjectProvider;
 
 
         @Test
-        public void autoconfigurationShouldNotBeLoaded(){
+        void autoconfigurationShouldNotBeLoaded(){
             assertThat(asyncApiControllerObjectProvider.getIfAvailable()).isNull();
         }
 

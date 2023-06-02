@@ -38,7 +38,7 @@ public class ApiIntegrationWithDockerTest {
     }
 
     @Test
-    public void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException, JSONException {
+    void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException, JSONException {
         String url = baseUrl() + "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         System.out.println("Got: " + actual);

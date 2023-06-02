@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AsyncListenerAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
 @TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
-public class AsyncListenerAnnotationScannerTest {
+class AsyncListenerAnnotationScannerTest {
 
     @Autowired
     private AsyncListenerAnnotationScanner channelScanner;
@@ -45,7 +45,7 @@ public class AsyncListenerAnnotationScannerTest {
     }
 
     @Test
-    public void scan_componentHasNoListenerMethods() {
+    void scan_componentHasNoListenerMethods() {
         setClassToScan(ClassWithoutListenerAnnotation.class);
 
         Map<String, ChannelItem> channels = channelScanner.scan();
@@ -55,7 +55,7 @@ public class AsyncListenerAnnotationScannerTest {
 
 
     @Test
-    public void scan_componentHasListenerMethod() {
+    void scan_componentHasListenerMethod() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
         setClassToScan(ClassWithListenerAnnotation.class);
 
@@ -89,7 +89,7 @@ public class AsyncListenerAnnotationScannerTest {
     }
 
     @Test
-    public void scan_componentHasListenerMethodWithAllAttributes() {
+    void scan_componentHasListenerMethodWithAllAttributes() {
         // Given a class with method annotated with AsyncListener, where all attributes are set
         setClassToScan(ClassWithListenerAnnotationWithAllAttributes.class);
 
@@ -123,7 +123,7 @@ public class AsyncListenerAnnotationScannerTest {
     }
 
     @Test
-    public void scan_componentHasMultipleListenerAnnotations() {
+    void scan_componentHasMultipleListenerAnnotations() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
         setClassToScan(ClassWithMultipleListenerAnnotations.class);
 

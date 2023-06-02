@@ -16,10 +16,10 @@ import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudst
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class FunctionalChannelBeanDataTest {
+class FunctionalChannelBeanDataTest {
 
     @Test
-    public void testNotAFunctionalChannelBean() throws NoSuchMethodException {
+    void testNotAFunctionalChannelBean() throws NoSuchMethodException {
         Method method = getMethod("notAFunctionalChannelBean");
 
         Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
@@ -33,7 +33,7 @@ public class FunctionalChannelBeanDataTest {
     }
 
     @Test
-    public void testConsumerBean() throws NoSuchMethodException {
+    void testConsumerBean() throws NoSuchMethodException {
         Method method = getMethod("consumerBean");
 
         Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
@@ -49,7 +49,7 @@ public class FunctionalChannelBeanDataTest {
 
 
     @Test
-    public void testSupplierBean() throws NoSuchMethodException {
+    void testSupplierBean() throws NoSuchMethodException {
         Method method = getMethod("supplierBean");
 
         Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
@@ -64,7 +64,7 @@ public class FunctionalChannelBeanDataTest {
     }
 
     @Test
-    public void testFunctionBean() throws NoSuchMethodException {
+    void testFunctionBean() throws NoSuchMethodException {
         Method method = getMethod("functionBean");
 
         Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
@@ -81,7 +81,7 @@ public class FunctionalChannelBeanDataTest {
     }
 
     @Test
-    public void testConsumerBeanWithGenericPayload() throws NoSuchMethodException {
+    void testConsumerBeanWithGenericPayload() throws NoSuchMethodException {
         String methodName = "consumerBeanWithGenericPayload";
         Method method = getMethod(methodName);
 
@@ -97,7 +97,7 @@ public class FunctionalChannelBeanDataTest {
     }
 
     @Test
-    public void testKafkaStreamsConsumerBean() throws NoSuchMethodException {
+    void testKafkaStreamsConsumerBean() throws NoSuchMethodException {
         String methodName = "kafkaStreamsConsumerBean";
         Method method = getMethod(methodName);
 

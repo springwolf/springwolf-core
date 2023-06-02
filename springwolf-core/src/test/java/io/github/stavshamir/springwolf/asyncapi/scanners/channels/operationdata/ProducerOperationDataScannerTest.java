@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ProducerOperationDataScanner.class, DefaultSchemasService.class})
-public class ProducerOperationDataScannerTest {
+class ProducerOperationDataScannerTest {
 
     @Autowired
     private ProducerOperationDataScanner scanner;
@@ -43,7 +43,7 @@ public class ProducerOperationDataScannerTest {
     private AsyncApiDocketService asyncApiDocketService;
 
     @Test
-    public void allFieldsProducerData() {
+    void allFieldsProducerData() {
         // Given a producer data with all fields set
         String channelName = "example-producer-topic-foo1";
         String description = channelName + "-description";
@@ -89,7 +89,7 @@ public class ProducerOperationDataScannerTest {
     }
 
     @Test
-    public void missingFieldProducerData() {
+    void missingFieldProducerData() {
         // Given a producer data with missing fields
         String channelName = "example-producer-topic-foo1";
         ProducerData producerData = ProducerData.builder()
@@ -106,7 +106,7 @@ public class ProducerOperationDataScannerTest {
     }
 
     @Test
-    public void multipleProducersForSameTopic() {
+    void multipleProducersForSameTopic() {
         // Given a multiple ProducerData objects for the same topic
         String channelName = "example-producer-topic";
         String description1 = channelName + "-description1";

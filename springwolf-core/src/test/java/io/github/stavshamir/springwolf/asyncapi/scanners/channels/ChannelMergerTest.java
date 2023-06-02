@@ -14,10 +14,10 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ChannelMergerTest {
+class ChannelMergerTest {
 
     @Test
-    public void shouldNotMergeDifferentChannelNames() {
+    void shouldNotMergeDifferentChannelNames() {
         // given
         String channelName1 = "channel1";
         String channelName2 = "channel2";
@@ -44,7 +44,7 @@ public class ChannelMergerTest {
     }
 
     @Test
-    public void shouldMergePublisherAndSubscriberIntoOneChannel() {
+    void shouldMergePublisherAndSubscriberIntoOneChannel() {
         // given
         String channelName = "channel";
         Operation publishOperation = Operation.builder().operationId("publisher").build();
@@ -66,7 +66,7 @@ public class ChannelMergerTest {
     }
 
     @Test
-    public void shouldUseFirstOperationFound() {
+    void shouldUseFirstOperationFound() {
         // given
         String channelName = "channel";
         Operation publishOperation1 = Operation.builder().operationId("publisher1").build();
@@ -88,7 +88,7 @@ public class ChannelMergerTest {
     }
 
     @Test
-    public void shouldMergeDifferentMessageForSameOperation() {
+    void shouldMergeDifferentMessageForSameOperation() {
         // given
         String channelName = "channel";
         Message message1 = Message.builder().name(String.class.getCanonicalName()).description("This is a string").build();
@@ -118,7 +118,7 @@ public class ChannelMergerTest {
     }
 
     @Test
-    public void shouldUseOtherMessageIfFirstMessageIsMissing() {
+    void shouldUseOtherMessageIfFirstMessageIsMissing() {
         // given
         String channelName = "channel";
         Message message2 = Message.builder().name(String.class.getCanonicalName()).description("This is a string").build();
