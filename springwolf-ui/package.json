@@ -23,7 +23,7 @@
     "@angular/router": "^14.2.8",
     "font-awesome": "^4.7.0",
     "ngx-highlightjs": "^7.0.1",
-    "rxjs": "^7.5.7",
+    "rxjs": "^7.8.1",
     "zone.js": "^0.11.8"
   },
   "devDependencies": {
