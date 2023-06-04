@@ -12,6 +12,10 @@ on:
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
 
+env:
+  plugin: springwolf-plugins/springwolf-amqp-plugin
+  example: springwolf-examples/springwolf-amqp-example
+
 jobs:
   build:
 
@@ -28,7 +32,7 @@ jobs:
         with:
           image: stoplight/spectral:latest
           options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}
-          run: spectral lint --ruleset ./.spectral.yaml --fail-on-unmatched-globs ./springwolf-examples/springwolf-amqp-example/src/test/resources/asyncapi.json
+          run: spectral lint --ruleset ./.spectral.yaml --fail-on-unmatched-globs ./${{ env.example }}/src/test/resources/asyncapi.json
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -40,14 +44,23 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run unit tests
-        run: ./gradlew -p springwolf-plugins/springwolf-amqp-plugin test
+        run: ./gradlew -p ${{ env.plugin }} test
 
       - name: Run integration tests
-        run: ./gradlew -p springwolf-examples/springwolf-amqp-example test
+        run: ./gradlew -p ${{ env.example }} test
+
+      - name: Publish docker image
+        if: github.ref == 'refs/heads/master'
+        run: ./gradlew -p ${{ env.example }} dockerBuildImage dockerPushImage
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: true
+
+          ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Publish package
         if: github.ref == 'refs/heads/master'
-        run: ./gradlew -p springwolf-plugins/springwolf-amqp-plugin publish
+        run: ./gradlew -p ${{ env.project }} publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true
 

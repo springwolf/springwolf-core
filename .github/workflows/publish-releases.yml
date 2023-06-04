@@ -55,7 +55,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Publish
+      - name: Publish docker image
+        run: ./gradlew -p springwolf-examples/springwolf-kafka-amqp dockerBuildImage dockerPushImage
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: false
+          ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Publish package
         run: ./gradlew -p springwolf-plugins/springwolf-amqp-plugin publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: false
@@ -89,7 +96,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Publish
+      - name: Publish docker image
+        run: ./gradlew -p springwolf-examples/springwolf-kafka-example dockerBuildImage dockerPushImage
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: false
+          ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Publish package
         run: ./gradlew -p springwolf-plugins/springwolf-kafka-plugin publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: false
@@ -123,7 +137,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Publish
+      - name: Publish docker image
+        run: ./gradlew -p springwolf-examples/springwolf-cloud-stream-example dockerBuildImage dockerPushImage
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: false
+          ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Publish package
         run: ./gradlew -p springwolf-plugins/springwolf-cloud-stream-plugin publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: false

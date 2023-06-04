@@ -17,8 +17,10 @@ dependencyManagement {
     }
 }
 
-version '0.2.0'
+def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
+group 'io.github.springwolf'
+version '0.2.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
 repositories {
     // For local development with snapshots
@@ -62,8 +64,8 @@ docker {
     }
 
     registryCredentials {
-        username = project.findProperty('dockerhubUsername') ?: ''
-        password = project.findProperty('dockerhubPassword') ?: ''
+        username = project.findProperty('DOCKERHUB_USERNAME') ?: ''
+        password = project.findProperty('DOCKERHUB_TOKEN') ?: ''
     }
 }
 
