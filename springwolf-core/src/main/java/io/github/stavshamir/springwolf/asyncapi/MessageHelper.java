@@ -24,14 +24,12 @@ public class MessageHelper {
     private static final Supplier<Set<Message>> messageSupplier = () -> new TreeSet<>(byMessageName);
 
     public static Object toMessageObjectOrComposition(Set<Message> messages) {
-        switch (messages.size()) {
-            case 0:
-                throw new IllegalArgumentException("messages must not be empty");
-            case 1:
-                return messages.toArray()[0];
-            default:
-                return ImmutableMap.of(ONE_OF, new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier))));
-        }
+        return switch (messages.size()) {
+            case 0 -> throw new IllegalArgumentException("messages must not be empty");
+            case 1 -> messages.toArray()[0];
+            default ->
+                    ImmutableMap.of(ONE_OF, new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier))));
+        };
     }
 
     @SuppressWarnings("unchecked")
