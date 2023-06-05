@@ -111,7 +111,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
-          "description" : "example-manual-consumer-channel-description",
           "payload" : {
             "$ref" : "#/components/schemas/AnotherPayloadDto"
           },
@@ -150,7 +149,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
-          "description" : "example-producer-channel-description",
           "payload" : {
             "$ref" : "#/components/schemas/AnotherPayloadDto"
           },
@@ -195,7 +193,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
           "title" : "ExamplePayloadDto",
-          "description" : "Custom, optional description defined in the AsyncPublisher annotation",
           "payload" : {
             "$ref" : "#/components/schemas/ExamplePayloadDto"
           },

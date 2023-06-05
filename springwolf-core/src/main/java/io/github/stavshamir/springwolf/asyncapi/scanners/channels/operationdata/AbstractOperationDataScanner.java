@@ -101,8 +101,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         return Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
-                // FIXME? Using operation description in the message?
-                .description(operationData.getDescription())
+                // FIXME: Add support for Message Description
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .bindings(operationData.getMessageBinding())

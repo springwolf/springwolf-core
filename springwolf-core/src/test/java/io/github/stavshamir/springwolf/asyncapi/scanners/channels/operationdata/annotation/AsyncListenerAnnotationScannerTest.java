@@ -66,8 +66,8 @@ class AsyncListenerAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                // FIXME
-                .description("test channel operation description")
+                // Message description is not supported yet
+//                .description("test channel operation description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP)
@@ -101,7 +101,8 @@ class AsyncListenerAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                .description("description")
+                // Message description is not supported yet
+//                .description("description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("TestSchema"))
                 .bindings(EMPTY_MAP)
@@ -143,7 +144,8 @@ class AsyncListenerAnnotationScannerTest {
                 .description("test-channel-1-description")
                 .operationId("test-channel-1_publish")
                 .bindings(EMPTY_MAP)
-                .message(builder.description("test-channel-1-description").build())
+                // Message description is not supported yet
+                .message(builder/*.description("test-channel-1-description")*/.build())
                 .build();
 
         ChannelItem expectedChannel1 = ChannelItem.builder()
@@ -155,7 +157,8 @@ class AsyncListenerAnnotationScannerTest {
                 .description("test-channel-2-description")
                 .operationId("test-channel-2_publish")
                 .bindings(EMPTY_MAP)
-                .message(builder.description("test-channel-2-description").build())
+                // Message description is not supported yet
+                .message(builder/*.description("test-channel-2-description")*/.build())
                 .build();
 
         ChannelItem expectedChannel2 = ChannelItem.builder()
