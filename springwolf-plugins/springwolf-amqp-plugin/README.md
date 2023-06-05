@@ -27,7 +27,7 @@ dependencies {
     implementation 'io.github.springwolf:springwolf-amqp:0.7.0'
 
     // Provides the UI - optional (recommended)
-    runtimeOnly 'io.github.springwolf:springwolf-ui:0.7.0'
+    runtimeOnly 'io.github.springwolf:springwolf-ui:0.8.0'
 }
 ```
 
