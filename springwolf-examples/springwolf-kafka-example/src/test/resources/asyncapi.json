@@ -70,7 +70,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
           "title" : "ExamplePayloadDto",
-          "description" : "Custom, optional description for this consumed topic",
           "payload" : {
             "$ref" : "#/components/schemas/ExamplePayloadDto"
           },
@@ -103,7 +102,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
-          "description" : "Custom, optional description for this produced to topic",
           "payload" : {
             "$ref" : "#/components/schemas/AnotherPayloadDto"
           },
@@ -207,7 +205,6 @@
             "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
             "name" : "javax.money.MonetaryAmount",
             "title" : "MonetaryAmount",
-            "description" : "Override description in the AsyncListener annotation with servers at localhost:9092",
             "payload" : {
               "$ref" : "#/components/schemas/MonetaryAmount"
             },
@@ -245,7 +242,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
           "title" : "NestedPayloadDto",
-          "description" : "Custom, optional description defined in the AsyncPublisher annotation",
           "payload" : {
             "$ref" : "#/components/schemas/NestedPayloadDto"
           },
