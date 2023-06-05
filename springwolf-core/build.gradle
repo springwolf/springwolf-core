@@ -20,10 +20,22 @@ repositories {
 dependencies {
     api "com.asyncapi:asyncapi-core:${asyncApiCoreVersion}"
 
-    implementation "io.swagger:swagger-inflector:${swaggerInflectorVersion}"
-    implementation "io.swagger.core.v3:swagger-core:${swaggerCoreVersion}"
+    implementation("io.swagger:swagger-inflector:${swaggerInflectorVersion}") {
+        // swagger-inflector (2.0.9) transiently pulls two swagger-core dependencies:
+        // - io.swagger.core.v3:swagger-core  2.x
+        // - io.swagger:swagger-core  1.6.9
+        // these deps should be excluded because we need 'io.swagger.core.v3:swagger-core-jakarkta 2.x'
+        // Unfortunatly, io.swagger.swagger-core is still used in one place in swagger-inflector (io.swagger.util.Json)
+        // so we cannot exclude the old 'io.swagger:swagger-core 1.6.9' dependeny. Instead, we exclude explicitly
+        // the 'old' javax.validation groupid.
+
+        exclude group: "io.swagger.core.v3"
+//        exclude group: "io.swagger"  // not possible
+        exclude group: "javax.validation"
+    }
+
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
     implementation "io.swagger.parser.v3:swagger-parser-core:${swaggerParserVersion}"
-    implementation "javax.xml.bind:jaxb-api:${jaxbApiVersion}"
 
     implementation "org.springframework:spring-web"
     implementation "org.springframework:spring-context"

@@ -18,11 +18,9 @@ repositories {
 
 dependencies {
     implementation "org.javamoney.moneta:moneta-core:${javaMoneyMonetaVersion}"
-    implementation "io.swagger.core.v3:swagger-core:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
 
     implementation "org.springframework:spring-context"
-
-    implementation "javax.xml.bind:jaxb-api:${jaxbApiVersion}"
 
     testImplementation "org.junit.platform:junit-platform-engine:${junitPlatformVersion}"
     testImplementation "org.junit.platform:junit-platform-commons:${junitPlatformVersion}"

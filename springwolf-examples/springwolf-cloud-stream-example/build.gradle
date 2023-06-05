@@ -44,7 +44,7 @@ dependencies {
     implementation "org.springframework.cloud:spring-cloud-stream-binder-kafka-streams"
     implementation "com.google.guava:guava:${guavaVersion}"
     implementation "org.slf4j:slf4j-api"
-    implementation "io.swagger.core.v3:swagger-core:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.kafka:spring-kafka-test"
@@ -74,6 +74,9 @@ java {
 }
 
 test {
+    minHeapSize = "128m" // initial heap size
+    maxHeapSize = "1024m" // maximum heap size
+
     dependsOn dockerBuildImage
 
     useJUnitPlatform()
