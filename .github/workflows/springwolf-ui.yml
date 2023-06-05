@@ -13,13 +13,16 @@ on:
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
 
+env:
+  project: springwolf-ui
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -31,11 +34,11 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build
-        run: ./gradlew -p springwolf-ui build
+        run: ./gradlew -p ${{ env.project }} build
 
       - name: Publish package
         if: github.ref == 'refs/heads/master'
-        run: ./gradlew -p springwolf-ui publish
+        run: ./gradlew -p ${{ env.project }} publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true
 
@@ -47,9 +50,9 @@ jobs:
 
       - name: Build gh-pages
         if: github.ref == 'refs/heads/master'
-        run: ./gradlew -p springwolf-ui buildPages
+        run: ./gradlew -p ${{ env.project }} buildPages
       - name: Deploy to gh pages 🚀
         if: github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: springwolf-ui/dist/springwolf-ui/
+          folder: ${{ env.project }}/dist/springwolf-ui/
