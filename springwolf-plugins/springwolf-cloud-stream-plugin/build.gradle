@@ -69,7 +69,7 @@ publishing {
             pom {
                 name = 'springwolf-cloud-stream'
                 description = 'Automated JSON API documentation for Spring Boot cloud stream functions'
-                url = 'https://springwolf.github.io'
+                url = 'https://www.springwolf.dev'
 
                 licenses {
                     license {
@@ -99,7 +99,7 @@ publishing {
                 }
 
                 scm {
-                    url = 'https://github.com/stavshamir/springwolf'
+                    url = 'https://github.com/springwolf/springwolf-core'
                 }
             }
         }
