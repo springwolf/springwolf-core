@@ -1,10 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2._0_0.model.channel.ChannelItem;
-import com.asyncapi.v2._0_0.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -140,15 +141,18 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
     private ChannelItem buildChannel(String simpleName, Set<Method> methods, Map<String, ? extends ChannelBinding> channelBinding, Map<String, ? extends OperationBinding> operationBinding) {
         String operationId = simpleName + "_publish";
 
+        Map<String, Object> opBinding = new HashMap<>(operationBinding);
+        Map<String, Object> chBinding = new HashMap<>(channelBinding);
+
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId(operationId)
                 .message(getMessageObject(methods))
-                .bindings(operationBinding)
+                .bindings(opBinding)
                 .build();
 
         return ChannelItem.builder()
-                .bindings(channelBinding)
+                .bindings(chBinding)
                 .publish(operation)
                 .build();
     }

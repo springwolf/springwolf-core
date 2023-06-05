@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.configuration;
 
 
-import com.asyncapi.v2._0_0.model.info.Contact;
-import com.asyncapi.v2._0_0.model.info.License;
-import com.asyncapi.v2._0_0.model.server.Server;
+import com.asyncapi.v2._6_0.model.info.Contact;
+import com.asyncapi.v2._6_0.model.info.License;
+import com.asyncapi.v2._6_0.model.server.Server;
 import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.SpringWolfConfigProperties.ConfigDocket;
 import io.github.stavshamir.springwolf.SpringWolfConfigProperties.ConfigDocket.Info;

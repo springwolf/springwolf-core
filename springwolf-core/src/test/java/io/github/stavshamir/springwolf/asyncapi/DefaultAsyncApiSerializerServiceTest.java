@@ -1,11 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2._0_0.model.channel.ChannelItem;
-import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.asyncapi.v2._0_0.model.info.Contact;
-import com.asyncapi.v2._0_0.model.info.Info;
-import com.asyncapi.v2._0_0.model.info.License;
-import com.asyncapi.v2._0_0.model.server.Server;
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.channel.operation.Operation;
+import com.asyncapi.v2._6_0.model.info.Contact;
+import com.asyncapi.v2._6_0.model.info.Info;
+import com.asyncapi.v2._6_0.model.info.License;
+import com.asyncapi.v2._6_0.model.server.Server;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
