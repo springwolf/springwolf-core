@@ -60,7 +60,7 @@ jobs:
 
       - name: Publish package
         if: github.ref == 'refs/heads/master'
-        run: ./gradlew -p ${{ env.project }} publish
+        run: ./gradlew -p ${{ env.plugin }} publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true
 
