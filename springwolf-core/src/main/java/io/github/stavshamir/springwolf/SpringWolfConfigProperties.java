@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.Nullable;
+import org.springframework.lang.Nullable;
 import java.util.Map;
 
 @Configuration
