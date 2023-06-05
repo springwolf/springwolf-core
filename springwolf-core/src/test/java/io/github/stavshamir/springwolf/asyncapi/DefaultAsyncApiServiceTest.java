@@ -5,7 +5,6 @@ import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.info.Info;
 import com.asyncapi.v2._0_0.model.server.Server;
-import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ConsumerOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProducerOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
@@ -53,16 +52,16 @@ class DefaultAsyncApiServiceTest {
                     .channelName("producer-topic")
                     .description("producer-topic-description")
                     .payloadType(String.class)
-                    .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                    .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                    .operationBinding(Map.of("kafka", new KafkaOperationBinding()))
+                    .messageBinding(Map.of("kafka", new KafkaMessageBinding()))
                     .build();
 
             ConsumerData kafkaConsumerData = ConsumerData.builder()
                     .channelName("consumer-topic")
                     .description("consumer-topic-description")
                     .payloadType(String.class)
-                    .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                    .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                    .operationBinding(Map.of("kafka", new KafkaOperationBinding()))
+                    .messageBinding(Map.of("kafka", new KafkaMessageBinding()))
                     .build();
 
             return AsyncApiDocket.builder()
@@ -110,7 +109,7 @@ class DefaultAsyncApiServiceTest {
         assertThat(channel.getSubscribe()).isNotNull();
         final Message message = (Message) channel.getSubscribe().getMessage();
         assertThat(message.getDescription()).isNull();
-        assertThat(message.getBindings()).isEqualTo(ImmutableMap.of("kafka", new KafkaMessageBinding()));
+        assertThat(message.getBindings()).isEqualTo(Map.of("kafka", new KafkaMessageBinding()));
     }
 
     @Test
@@ -125,7 +124,7 @@ class DefaultAsyncApiServiceTest {
         assertThat(channel.getPublish()).isNotNull();
         final Message message = (Message) channel.getPublish().getMessage();
         assertThat(message.getDescription()).isNull();
-        assertThat(message.getBindings()).isEqualTo(ImmutableMap.of("kafka", new KafkaMessageBinding()));
+        assertThat(message.getBindings()).isEqualTo(Map.of("kafka", new KafkaMessageBinding()));
     }
 
 }

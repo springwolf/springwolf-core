@@ -1,12 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +27,7 @@ class MessageHelperTest {
                 .name("foo")
                 .build();
 
-        Object asObject = toMessageObjectOrComposition(ImmutableSet.of(message));
+        Object asObject = toMessageObjectOrComposition(Set.of(message));
 
         assertThat(asObject)
                 .isInstanceOf(Message.class)
@@ -47,11 +45,11 @@ class MessageHelperTest {
                 .name("bar")
                 .build();
 
-        Object asObject = toMessageObjectOrComposition(ImmutableSet.of(message1, message2));
+        Object asObject = toMessageObjectOrComposition(Set.of(message1, message2));
 
         assertThat(asObject)
                 .isInstanceOf(Map.class)
-                .isEqualTo(ImmutableMap.of("oneOf", ImmutableList.of(message2, message1)));
+                .isEqualTo(Map.of("oneOf", List.of(message2, message1)));
     }
 
     @Test
@@ -71,12 +69,16 @@ class MessageHelperTest {
                 .description("This is message 3, but in essence the same payload type as message 2")
                 .build();
 
-        Object asObject = toMessageObjectOrComposition(ImmutableSet.of(message1, message2, message3));
+        Object asObject = toMessageObjectOrComposition(Set.of(message1, message2, message3));
 
-        // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
-        assertThat(asObject)
-                .isInstanceOf(Map.class)
-                .isEqualTo(ImmutableMap.of("oneOf", ImmutableList.of(message2, message1)));
+        Map<String, List<Message>> oneOfMap = (Map<String, List<Message>>) asObject;
+        assertThat(oneOfMap).hasSize(1);
+        List<Message> deduplicatedMessageList = oneOfMap.get("oneOf");
+        // we do not have any guarantee wether message2 or message3 won the deduplication.
+        assertThat(deduplicatedMessageList)
+                .hasSize(2)
+                .contains(message1)
+                .containsAnyOf(message2, message3);
     }
 
     @Test
@@ -91,7 +93,7 @@ class MessageHelperTest {
                 .description("This is actual message 2")
                 .build();
 
-        Object actualObject = toMessageObjectOrComposition(ImmutableSet.of(actualMessage1, actualMessage2));
+        Object actualObject = toMessageObjectOrComposition(Set.of(actualMessage1, actualMessage2));
 
         Message expectedMessage1 = Message.builder()
                 .name("foo")
@@ -103,7 +105,7 @@ class MessageHelperTest {
                 .description("This is expected message 2")
                 .build();
 
-        Object expectedObject = toMessageObjectOrComposition(ImmutableSet.of(expectedMessage1, expectedMessage2));
+        Object expectedObject = toMessageObjectOrComposition(Set.of(expectedMessage1, expectedMessage2));
 
         assertThat(actualObject).isNotEqualTo(expectedObject);
     }
@@ -123,7 +125,7 @@ class MessageHelperTest {
         Message message = Message.builder()
                 .name("foo")
                 .build();
-        Object asObject = toMessageObjectOrComposition(ImmutableSet.of(message));
+        Object asObject = toMessageObjectOrComposition(Set.of(message));
 
         Set<Message> messages = messageObjectToSet(asObject);
 
@@ -141,7 +143,7 @@ class MessageHelperTest {
                 .name("bar")
                 .build();
 
-        Object asObject = toMessageObjectOrComposition(ImmutableSet.of(message1, message2));
+        Object asObject = toMessageObjectOrComposition(Set.of(message1, message2));
 
         Set<Message> messages = messageObjectToSet(asObject);
 

@@ -31,7 +31,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.cloud:spring-cloud-stream"
     implementation "org.springframework.cloud:spring-cloud-stream-binder-kafka-streams"
-    implementation "com.google.guava:guava:${guavaVersion}"
     implementation "org.slf4j:slf4j-api"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
 

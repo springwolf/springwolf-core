@@ -4,8 +4,6 @@ import org.springframework.kafka.support.mapping.AbstractJavaTypeMapper;
 
 import java.util.List;
 
-import static com.google.common.collect.ImmutableList.of;
-
 public class AsyncHeadersForSpringKafkaBuilder {
     private final AsyncHeaders headers;
 
@@ -18,7 +16,7 @@ public class AsyncHeadersForSpringKafkaBuilder {
     }
 
     public AsyncHeadersForSpringKafkaBuilder withTypeIdHeader(String exampleTypeId) {
-        return withTypeIdHeader(exampleTypeId, of(exampleTypeId));
+        return withTypeIdHeader(exampleTypeId, List.of(exampleTypeId));
     }
 
     public AsyncHeadersForSpringKafkaBuilder withTypeIdHeader(String exampleTypeId, List<String> types) {

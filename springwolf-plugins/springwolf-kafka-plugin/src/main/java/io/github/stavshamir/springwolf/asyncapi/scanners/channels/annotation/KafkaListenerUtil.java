@@ -8,7 +8,6 @@ import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.schema.Schema;
 import com.asyncapi.v2.schema.Type;
-import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.util.StringValueResolver;
@@ -33,7 +32,7 @@ public class KafkaListenerUtil {
     }
 
     public static Map<String, ? extends ChannelBinding> buildChannelBinding() {
-        return ImmutableMap.of("kafka", new KafkaChannelBinding());
+        return Map.of("kafka", new KafkaChannelBinding());
     }
 
     public static Map<String, ? extends OperationBinding> buildOperationBinding(KafkaListener annotation, StringValueResolver resolver) {
@@ -42,7 +41,7 @@ public class KafkaListenerUtil {
 
         KafkaOperationBinding binding = new KafkaOperationBinding();
         binding.setGroupId(groupIdSchema);
-        return ImmutableMap.of("kafka", binding);
+        return Map.of("kafka", binding);
     }
 
     @Nullable
@@ -82,6 +81,6 @@ public class KafkaListenerUtil {
     }
 
     public static Map<String, ? extends MessageBinding> buildMessageBinding() {
-        return ImmutableMap.of("kafka", new KafkaMessageBinding());
+        return Map.of("kafka", new KafkaMessageBinding());
     }
 }

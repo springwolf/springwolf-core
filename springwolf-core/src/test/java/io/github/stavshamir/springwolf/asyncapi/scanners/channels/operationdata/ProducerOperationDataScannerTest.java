@@ -6,9 +6,6 @@ import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
 import com.asyncapi.v2._0_0.model.info.Info;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -26,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,13 +49,13 @@ class ProducerOperationDataScannerTest {
         ProducerData producerData = ProducerData.builder()
                 .channelName(channelName)
                 .description(description)
-                .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
-                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .channelBinding(Map.of("kafka", new KafkaChannelBinding()))
+                .operationBinding(Map.of("kafka", new KafkaOperationBinding()))
+                .messageBinding(Map.of("kafka", new KafkaMessageBinding()))
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 
-        mockProducers(ImmutableList.of(producerData));
+        mockProducers(List.of(producerData));
 
         // When scanning for producers
         Map<String, ChannelItem> producerChannels = scanner.scan();
@@ -70,19 +68,19 @@ class ProducerOperationDataScannerTest {
         Operation operation = Operation.builder()
                 .description(description)
                 .operationId("example-producer-topic-foo1_subscribe")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(Message.builder()
                         .name(ExamplePayloadDto.class.getName())
                         .description(messageDescription1)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                        .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                        .bindings(Map.of("kafka", new KafkaMessageBinding()))
                         .build())
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .subscribe(operation)
                 .build();
 
@@ -98,7 +96,7 @@ class ProducerOperationDataScannerTest {
                 .channelName(channelName)
                 .build();
 
-        mockProducers(ImmutableList.of(producerData));
+        mockProducers(List.of(producerData));
 
         // When scanning for producers
         Map<String, ChannelItem> producerChannels = scanner.scan();
@@ -117,23 +115,23 @@ class ProducerOperationDataScannerTest {
         ProducerData producerData1 = ProducerData.builder()
                 .channelName(channelName)
                 .description(description1)
-                .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
-                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .channelBinding(Map.of("kafka", new KafkaChannelBinding()))
+                .operationBinding(Map.of("kafka", new KafkaOperationBinding()))
+                .messageBinding(Map.of("kafka", new KafkaMessageBinding()))
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 
         ProducerData producerData2 = ProducerData.builder()
                 .channelName(channelName)
                 .description(description2)
-                .channelBinding(ImmutableMap.of("kafka", new KafkaChannelBinding()))
-                .operationBinding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .messageBinding(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .channelBinding(Map.of("kafka", new KafkaChannelBinding()))
+                .operationBinding(Map.of("kafka", new KafkaOperationBinding()))
+                .messageBinding(Map.of("kafka", new KafkaMessageBinding()))
                 .payloadType(AnotherExamplePayloadDto.class)
                 .headers(AsyncHeaders.NOT_USED)
                 .build();
 
-        mockProducers(ImmutableList.of(producerData1, producerData2));
+        mockProducers(List.of(producerData1, producerData2));
 
         // When scanning for producers
         Map<String, ChannelItem> producerChannels = scanner.scan();
@@ -145,14 +143,14 @@ class ProducerOperationDataScannerTest {
 
         String messageDescription1 = "Example Payload DTO Description";
         String messageDescription2 = "Another Example Payload DTO Description";
-        Set<Message> messages = ImmutableSet.of(
+        Set<Message> messages = Set.of(
                 Message.builder()
                         .name(ExamplePayloadDto.class.getName())
                         .description(messageDescription1)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                        .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                        .bindings(Map.of("kafka", new KafkaMessageBinding()))
                         .build(),
                 Message.builder()
                         .name(AnotherExamplePayloadDto.class.getName())
@@ -160,19 +158,19 @@ class ProducerOperationDataScannerTest {
                         .title(AnotherExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
-                        .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                        .bindings(Map.of("kafka", new KafkaMessageBinding()))
                         .build()
         );
 
         Operation operation = Operation.builder()
                 .description(description1)
                 .operationId("example-producer-topic_subscribe")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(toMessageObjectOrComposition(messages))
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .subscribe(operation)
                 .build();
 

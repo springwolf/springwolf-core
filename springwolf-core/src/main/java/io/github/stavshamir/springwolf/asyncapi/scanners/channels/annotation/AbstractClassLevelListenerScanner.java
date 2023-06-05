@@ -5,7 +5,6 @@ import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
@@ -126,7 +125,7 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
         }
 
         ChannelItem channelItem = buildChannel(component.getSimpleName(), annotatedMethods, channelBinding, operationBinding);
-        return Optional.of(Maps.immutableEntry(channelName, channelItem));
+        return Optional.of(Map.entry(channelName, channelItem));
     }
 
     private Set<Method> getAnnotatedMethods(Class<?> component) {

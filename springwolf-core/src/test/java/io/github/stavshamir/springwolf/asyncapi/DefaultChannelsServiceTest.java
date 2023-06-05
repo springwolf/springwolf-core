@@ -2,7 +2,6 @@ package io.github.stavshamir.springwolf.asyncapi;
 
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +47,7 @@ class DefaultChannelsServiceTest {
     static class FooChannelScanner implements ChannelsScanner {
         @Override
         public Map<String, ChannelItem> scan() {
-            return ImmutableMap.of("foo", new ChannelItem());
+            return Map.of("foo", new ChannelItem());
         }
     }
 
@@ -56,7 +55,7 @@ class DefaultChannelsServiceTest {
     static class BarChannelScanner implements ChannelsScanner {
         @Override
         public Map<String, ChannelItem> scan() {
-            return ImmutableMap.of("bar", new ChannelItem());
+            return Map.of("bar", new ChannelItem());
         }
     }
 
@@ -73,7 +72,7 @@ class DefaultChannelsServiceTest {
 
             @Override
             public Map<String, ChannelItem> scan() {
-                return ImmutableMap.of(topicName, ChannelItem.builder().publish(publishOperation).build());
+                return Map.of(topicName, ChannelItem.builder().publish(publishOperation).build());
             }
         }
 
@@ -83,7 +82,7 @@ class DefaultChannelsServiceTest {
 
             @Override
             public Map<String, ChannelItem> scan() {
-                return ImmutableMap.of(topicName, ChannelItem.builder().subscribe(subscribeOperation).build());
+                return Map.of(topicName, ChannelItem.builder().subscribe(subscribeOperation).build());
             }
         }
     }

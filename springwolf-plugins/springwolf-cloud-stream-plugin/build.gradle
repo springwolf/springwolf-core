@@ -27,7 +27,6 @@ dependencies {
 
     implementation "org.springframework.cloud:spring-cloud-stream"
 
-    implementation "com.google.guava:guava:${guavaVersion}"
     implementation "org.slf4j:slf4j-api"
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"

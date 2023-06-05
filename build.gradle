@@ -28,8 +28,6 @@ ext {
 
     commonsIoVersion = '2.12.0'
 
-    guavaVersion = '32.0.0-jre'
-
     javaMoneyMonetaVersion = '1.4.2'
 
     jsonAssertVersion = '1.5.1'

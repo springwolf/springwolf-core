@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import com.google.common.collect.ImmutableSet;
 import lombok.Data;
 
 import java.lang.reflect.Method;
@@ -29,12 +28,12 @@ class FunctionalChannelBeanData {
 
         if (Consumer.class.isAssignableFrom(returnType)) {
             Class<?> payloadType = getReturnTypeGenerics(methodBean).get(0);
-            return ImmutableSet.of(ofConsumer(methodBean.getName(), payloadType));
+            return Set.of(ofConsumer(methodBean.getName(), payloadType));
         }
 
         if (Supplier.class.isAssignableFrom(returnType)) {
             Class<?> payloadType = getReturnTypeGenerics(methodBean).get(0);
-            return ImmutableSet.of(ofSupplier(methodBean.getName(), payloadType));
+            return Set.of(ofSupplier(methodBean.getName(), payloadType));
         }
 
         if (Function.class.isAssignableFrom(returnType)) {
@@ -52,13 +51,13 @@ class FunctionalChannelBeanData {
         return new FunctionalChannelBeanData(name, payloadType, BeanType.SUPPLIER, name + "-out-0");
     }
 
-    private static ImmutableSet<FunctionalChannelBeanData> fromFunctionBean(Method methodBean) {
+    private static Set<FunctionalChannelBeanData> fromFunctionBean(Method methodBean) {
         String name = methodBean.getName();
 
         Class<?> inputType = getReturnTypeGenerics(methodBean).get(0);
         Class<?> outputType = getReturnTypeGenerics(methodBean).get(1);
 
-        return ImmutableSet.of(
+        return Set.of(
                 ofConsumer(name, inputType),
                 ofSupplier(name, outputType)
         );

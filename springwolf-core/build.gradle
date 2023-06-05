@@ -38,8 +38,6 @@ dependencies {
     implementation "org.springframework:spring-messaging"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
 
-    implementation "com.google.guava:guava:${guavaVersion}"
-
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"

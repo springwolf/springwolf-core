@@ -5,7 +5,6 @@ import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -104,7 +103,7 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
         String operationId = channelName + "_publish_" + method.getName();
         ChannelItem channel = buildChannel(channelBinding, payload, operationBinding, messageBinding, operationId);
 
-        return Maps.immutableEntry(channelName, channel);
+        return Map.entry(channelName, channel);
     }
 
     private ChannelItem buildChannel(Map<String, ? extends ChannelBinding> channelBinding,

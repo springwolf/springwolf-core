@@ -55,7 +55,7 @@ public class AsyncApiConfiguration {
         // you will need to build a ProducerData and register it in the docket (line 65)
         ProducerData exampleProducerData = ProducerData.builder()
                 .channelName("example-producer-topic")
-                .binding(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .binding(Map.of("kafka", new KafkaOperationBinding()))
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 

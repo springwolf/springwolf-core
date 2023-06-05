@@ -54,7 +54,7 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
         return componentClassScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
                 .flatMap(this::toOperationData)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Stream<Method> getAnnotatedMethods(Class<?> type) {

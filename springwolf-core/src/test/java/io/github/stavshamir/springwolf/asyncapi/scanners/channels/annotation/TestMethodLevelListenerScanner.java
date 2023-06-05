@@ -3,7 +3,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
 
 import java.lang.reflect.Method;
@@ -23,17 +22,17 @@ public class TestMethodLevelListenerScanner extends AbstractMethodLevelListenerS
 
     @Override
     protected Map<String, ? extends ChannelBinding> buildChannelBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
-        return ImmutableMap.of("test-channel-binding", new TestChannelBinding());
+        return Map.of("test-channel-binding", new TestChannelBinding());
     }
 
     @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
-        return ImmutableMap.of("test-operation-binding", new TestOperationBinding());
+        return Map.of("test-operation-binding", new TestOperationBinding());
     }
 
     @Override
     protected Map<String, ? extends MessageBinding> buildMessageBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
-        return ImmutableMap.of("test-message-binding", new TestMessageBinding());
+        return Map.of("test-message-binding", new TestMessageBinding());
     }
 
     @Override

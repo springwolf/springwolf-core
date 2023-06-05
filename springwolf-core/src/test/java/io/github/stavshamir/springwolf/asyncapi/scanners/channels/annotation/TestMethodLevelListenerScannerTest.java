@@ -2,8 +2,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -72,23 +70,23 @@ class TestMethodLevelListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("test-message-binding", new TestMethodLevelListenerScanner.TestMessageBinding()))
+                .bindings(Map.of("test-message-binding", new TestMethodLevelListenerScanner.TestMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-channel_publish_methodWithAnnotation")
-                .bindings(ImmutableMap.of("test-operation-binding", new TestMethodLevelListenerScanner.TestOperationBinding()))
+                .bindings(Map.of("test-operation-binding", new TestMethodLevelListenerScanner.TestOperationBinding()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("test-channel-binding", new TestMethodLevelListenerScanner.TestChannelBinding()))
+                .bindings(Map.of("test-channel-binding", new TestMethodLevelListenerScanner.TestChannelBinding()))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannels)
-                .containsExactly(Maps.immutableEntry("test-channel", expectedChannel));
+                .containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     private static class ClassWithoutListenerAnnotation {
