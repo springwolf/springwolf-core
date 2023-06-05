@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -89,7 +88,7 @@ public class AsyncAPI {
      * <b>Required.</b>
      * A set of tags used by the specification with additional metadata. Each tag name in the set MUST be unique.
      */
-    @NotNull
+    @NonNull
     @Builder.Default
     private Set<Tag> tags = Collections.emptySet();
 

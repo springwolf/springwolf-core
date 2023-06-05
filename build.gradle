@@ -12,8 +12,6 @@ ext {
 
     javaMoneyMonetaVersion = '1.4.2'
 
-    jaxbApiVersion = '2.3.1'
-
     jsonAssertVersion = '1.5.1'
 
     junitJupiterVersion = '5.9.3'
