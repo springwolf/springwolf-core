@@ -12,10 +12,6 @@ def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 group 'io.github.springwolf'
 version '0.11.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     api project(":springwolf-core")
 

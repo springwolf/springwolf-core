@@ -12,10 +12,6 @@ def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 group 'io.github.springwolf'
 version '0.2.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
-repositories {
-    mavenCentral()
-}
-
 ext {
     set('springCloudVersion', "2022.0.1")
 }

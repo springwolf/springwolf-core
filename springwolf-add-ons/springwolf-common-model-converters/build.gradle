@@ -12,10 +12,6 @@ def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 group 'io.github.springwolf'
 version '0.1.2' + (isSnapshot ? '-SNAPSHOT' : '')
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation "org.javamoney.moneta:moneta-core:${javaMoneyMonetaVersion}"
     implementation "io.swagger.core.v3:swagger-core:${swaggerCoreVersion}"

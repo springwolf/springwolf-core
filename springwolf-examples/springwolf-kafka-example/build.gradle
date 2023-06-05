@@ -13,18 +13,6 @@ def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 group 'io.github.springwolf'
 version '0.11.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
-
-repositories {
-    // For local development with snapshots
-    mavenLocal() {
-        content {
-            includeGroup "io.github.springwolf"
-        }
-    }
-
-    mavenCentral()
-}
-
 dependencies {
     implementation project(":springwolf-plugins:springwolf-kafka-plugin")
     compileOnly project(":springwolf-plugins:springwolf-kafka-plugin")
