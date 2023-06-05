@@ -69,14 +69,10 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
         ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder()
                 .bindings(channelBinding);
-        switch (getOperationType()) {
-            case PUBLISH:
-                channelBuilder = channelBuilder.publish(operation);
-                break;
-            case SUBSCRIBE:
-                channelBuilder = channelBuilder.subscribe(operation);
-                break;
-        }
+        channelBuilder = switch (getOperationType()) {
+            case PUBLISH -> channelBuilder.publish(operation);
+            case SUBSCRIBE -> channelBuilder.subscribe(operation);
+        };
         return channelBuilder.build();
     }
 

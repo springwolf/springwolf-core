@@ -48,13 +48,12 @@ public class SpringPayloadAnnotationTypeExtractor {
 
     static int getPayloadParameterIndex(Class<?>[] parameterTypes, Annotation[][] parameterAnnotations, String methodName) {
         switch (parameterTypes.length) {
-            case 0:
-                throw new IllegalArgumentException("Listener methods must not have 0 parameters: " + methodName);
-            case 1:
+            case 0 -> throw new IllegalArgumentException("Listener methods must not have 0 parameters: " + methodName);
+            case 1 -> {
                 return 0;
-            default:
+            }
+            default -> {
                 int payloadAnnotatedParameterIndex = getPayloadAnnotatedParameterIndex(parameterAnnotations);
-
                 if (payloadAnnotatedParameterIndex == -1) {
                     String msg = "Multi-parameter KafkaListener methods must have one parameter annotated with @Payload, "
                             + "but none was found: "
@@ -62,8 +61,8 @@ public class SpringPayloadAnnotationTypeExtractor {
 
                     throw new IllegalArgumentException(msg);
                 }
-
                 return payloadAnnotatedParameterIndex;
+            }
         }
     }
 

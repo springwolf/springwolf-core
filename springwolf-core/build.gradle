@@ -13,10 +13,6 @@ def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 group = 'io.github.springwolf'
 version = '0.10.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     api "com.asyncapi:asyncapi-core:${asyncApiCoreVersion}"
 
