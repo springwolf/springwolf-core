@@ -21,7 +21,7 @@ dependencyManagement {
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
 group 'io.github.springwolf'
-version '0.2.0' + (isSnapshot ? '-SNAPSHOT' : '')
+version '0.3.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
 dependencies {
     implementation project(":springwolf-core")
