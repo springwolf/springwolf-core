@@ -60,7 +60,7 @@
     "example-consumer-topic" : {
       "publish" : {
         "operationId" : "example-consumer-topic_publish",
-        "description" : "Auto-generated description",
+        "description" : "Custom, optional description for this consumed topic",
         "bindings" : {
           "kafka" : {
             "bindingVersion" : "0.4.0"
@@ -70,7 +70,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
           "title" : "ExamplePayloadDto",
-          "description" : "Custom, optional description for this consumed topic",
           "payload" : {
             "$ref" : "#/components/schemas/ExamplePayloadDto"
           },
@@ -93,7 +92,7 @@
     "example-producer-topic" : {
       "subscribe" : {
         "operationId" : "example-producer-topic_subscribe",
-        "description" : "Auto-generated description",
+        "description" : "Custom, optional description for this produced to topic",
         "bindings" : {
           "kafka" : {
             "bindingVersion" : "0.4.0"
@@ -103,7 +102,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
-          "description" : "Custom, optional description for this produced to topic",
           "payload" : {
             "$ref" : "#/components/schemas/AnotherPayloadDto"
           },
@@ -158,7 +156,7 @@
     "multi-payload-topic" : {
       "publish" : {
         "operationId" : "multi-payload-topic_publish",
-        "description" : "Auto-generated description",
+        "description" : "Override description in the AsyncListener annotation with servers at localhost:9092",
         "bindings" : {
           "kafka" : {
             "groupId" : {
@@ -207,7 +205,6 @@
             "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
             "name" : "javax.money.MonetaryAmount",
             "title" : "MonetaryAmount",
-            "description" : "Override description in the AsyncListener annotation with servers at localhost:9092",
             "payload" : {
               "$ref" : "#/components/schemas/MonetaryAmount"
             },
@@ -231,7 +228,7 @@
     "topic-defined-via-asyncPublisher-annotation" : {
       "subscribe" : {
         "operationId" : "topic-defined-via-asyncPublisher-annotation_subscribe",
-        "description" : "Auto-generated description",
+        "description" : "Custom, optional description defined in the AsyncPublisher annotation",
         "bindings" : {
           "kafka" : {
             "clientId" : {
@@ -245,7 +242,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
           "title" : "NestedPayloadDto",
-          "description" : "Custom, optional description defined in the AsyncPublisher annotation",
           "payload" : {
             "$ref" : "#/components/schemas/NestedPayloadDto"
           },

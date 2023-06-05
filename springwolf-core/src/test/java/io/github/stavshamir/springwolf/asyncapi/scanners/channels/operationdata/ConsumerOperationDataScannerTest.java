@@ -66,12 +66,13 @@ class ConsumerOperationDataScannerTest {
                 .containsKey(channelName);
 
         Operation operation = Operation.builder()
-                .description("Auto-generated description")
+                .description(description)
                 .operationId("example-consumer-topic-foo1_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(Message.builder()
                         .name(ExamplePayloadDto.class.getName())
-                        .description(description)
+                        // Message description is not supported yet
+//                        .description(description)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
@@ -144,7 +145,8 @@ class ConsumerOperationDataScannerTest {
         Set<Message> messages = ImmutableSet.of(
                 Message.builder()
                         .name(ExamplePayloadDto.class.getName())
-                        .description(description1)
+                        // Message description is not supported yet
+//                        .description(description1)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
@@ -152,7 +154,8 @@ class ConsumerOperationDataScannerTest {
                         .build(),
                 Message.builder()
                         .name(AnotherExamplePayloadDto.class.getName())
-                        .description(description2)
+                        // Message description is not supported yet
+//                        .description(description2)
                         .title(AnotherExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
@@ -161,7 +164,7 @@ class ConsumerOperationDataScannerTest {
         );
 
         Operation operation = Operation.builder()
-                .description("Auto-generated description")
+                .description(description1)
                 .operationId("example-consumer-topic_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(toMessageObjectOrComposition(messages))

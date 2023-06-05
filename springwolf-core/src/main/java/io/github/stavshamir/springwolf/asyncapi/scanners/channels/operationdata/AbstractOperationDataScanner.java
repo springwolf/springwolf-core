@@ -59,9 +59,14 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         Map<String, ? extends ChannelBinding> channelBinding = operationDataList.get(0).getChannelBinding();
         Map<String, ? extends OperationBinding> operationBinding = operationDataList.get(0).getOperationBinding();
         String operationId = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
+        String description = operationDataList.get(0).getDescription();
+
+        if (description.isEmpty()) {
+            description = "Auto-generated description";
+        }
 
         Operation operation = Operation.builder()
-                .description("Auto-generated description")
+                .description(description)
                 .operationId(operationId)
                 .message(getMessageObject(operationDataList))
                 .bindings(operationBinding)
@@ -92,7 +97,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         return Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
-                .description(operationData.getDescription())
+                // FIXME: Add support for Message Description
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .bindings(operationData.getMessageBinding())

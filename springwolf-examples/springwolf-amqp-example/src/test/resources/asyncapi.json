@@ -100,7 +100,7 @@
     "example-manual-consumer-channel" : {
       "publish" : {
         "operationId" : "example-manual-consumer-channel_publish",
-        "description" : "Auto-generated description",
+        "description" : "example-manual-consumer-channel-description",
         "bindings" : {
           "amqp" : {
             "cc" : [ "example-consumer-topic-routing-key" ],
@@ -111,7 +111,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
-          "description" : "example-manual-consumer-channel-description",
           "payload" : {
             "$ref" : "#/components/schemas/AnotherPayloadDto"
           },
@@ -139,7 +138,7 @@
     "example-producer-channel" : {
       "subscribe" : {
         "operationId" : "example-producer-channel_subscribe",
-        "description" : "Auto-generated description",
+        "description" : "example-producer-channel-description",
         "bindings" : {
           "amqp" : {
             "cc" : [ "example-topic-routing-key" ],
@@ -150,7 +149,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
-          "description" : "example-producer-channel-description",
           "payload" : {
             "$ref" : "#/components/schemas/AnotherPayloadDto"
           },
@@ -178,7 +176,7 @@
     "example-producer-channel-publisher" : {
       "subscribe" : {
         "operationId" : "example-producer-channel-publisher_subscribe",
-        "description" : "Auto-generated description",
+        "description" : "Custom, optional description defined in the AsyncPublisher annotation",
         "bindings" : {
           "amqp" : {
             "expiration" : 0,
@@ -195,7 +193,6 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
           "title" : "ExamplePayloadDto",
-          "description" : "Custom, optional description defined in the AsyncPublisher annotation",
           "payload" : {
             "$ref" : "#/components/schemas/ExamplePayloadDto"
           },

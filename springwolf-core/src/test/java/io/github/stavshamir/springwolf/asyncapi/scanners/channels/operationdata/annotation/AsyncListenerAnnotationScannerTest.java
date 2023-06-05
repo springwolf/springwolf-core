@@ -66,14 +66,15 @@ class AsyncListenerAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                .description("")
+                // Message description is not supported yet
+//                .description("test channel operation description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP)
                 .build();
 
         Operation operation = Operation.builder()
-                .description("Auto-generated description")
+                .description("test channel operation description")
                 .operationId("test-channel_publish")
                 .bindings(EMPTY_MAP)
                 .message(message)
@@ -100,14 +101,15 @@ class AsyncListenerAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                .description("description")
+                // Message description is not supported yet
+//                .description("description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("TestSchema"))
                 .bindings(EMPTY_MAP)
                 .build();
 
         Operation operation = Operation.builder()
-                .description("Auto-generated description")
+                .description("description")
                 .operationId("test-channel_publish")
                 .bindings(ImmutableMap.of(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING))
                 .message(message)
@@ -131,20 +133,19 @@ class AsyncListenerAnnotationScannerTest {
         Map<String, ChannelItem> actualChannels = channelScanner.scan();
 
         // Then the returned collection contains the channel
-        Message message = Message.builder()
+        Message.MessageBuilder builder = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                .description("")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(EMPTY_MAP)
-                .build();
+                .bindings(EMPTY_MAP);
 
         Operation operation1 = Operation.builder()
-                .description("Auto-generated description")
+                .description("test-channel-1-description")
                 .operationId("test-channel-1_publish")
                 .bindings(EMPTY_MAP)
-                .message(message)
+                // Message description is not supported yet
+                .message(builder/*.description("test-channel-1-description")*/.build())
                 .build();
 
         ChannelItem expectedChannel1 = ChannelItem.builder()
@@ -153,10 +154,11 @@ class AsyncListenerAnnotationScannerTest {
                 .build();
 
         Operation operation2 = Operation.builder()
-                .description("Auto-generated description")
+                .description("test-channel-2-description")
                 .operationId("test-channel-2_publish")
                 .bindings(EMPTY_MAP)
-                .message(message)
+                // Message description is not supported yet
+                .message(builder/*.description("test-channel-2-description")*/.build())
                 .build();
 
         ChannelItem expectedChannel2 = ChannelItem.builder()
@@ -181,7 +183,8 @@ class AsyncListenerAnnotationScannerTest {
     private static class ClassWithListenerAnnotation {
 
         @AsyncListener(operation = @AsyncOperation(
-                channelName = "test-channel"
+                channelName = "test-channel",
+                description = "test channel operation description"
         ))
         private void methodWithAnnotation(SimpleFoo payload) {
         }
@@ -212,10 +215,12 @@ class AsyncListenerAnnotationScannerTest {
     private static class ClassWithMultipleListenerAnnotations {
 
         @AsyncListener(operation = @AsyncOperation(
-                channelName = "test-channel-1"
+                channelName = "test-channel-1",
+                description = "test-channel-1-description"
         ))
         @AsyncListener(operation = @AsyncOperation(
-                channelName = "test-channel-2"
+                channelName = "test-channel-2",
+                description = "test-channel-2-description"
         ))
         private void methodWithMultipleAnnotation(SimpleFoo payload) {
         }
