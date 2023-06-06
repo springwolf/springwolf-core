@@ -6,7 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -58,7 +58,7 @@ class AsyncAnnotationScannerUtil {
                 .stream()
                 .map(AsyncOperation.Headers.Header::description)
                 .map(resolver::resolveStringValue)
-                .filter(StringUtils::isNotBlank)
+                .filter(StringUtils::hasText)
                 .sorted()
                 .findFirst()
                 .orElse(null);

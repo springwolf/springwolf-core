@@ -2,11 +2,11 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
     @Override
     public Set<Class<?>> scan() {
         String basePackage = asyncApiDocketService.getAsyncApiDocket().getBasePackage();
-        if (StringUtils.isBlank(basePackage)) {
+        if (!StringUtils.hasText(basePackage)) {
             throw new IllegalArgumentException("Base package must not be blank");
         }
 
