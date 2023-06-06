@@ -109,7 +109,6 @@ class DefaultAsyncApiServiceTest {
         final ChannelItem channel = actualChannels.get("producer-topic");
         assertThat(channel.getSubscribe()).isNotNull();
         final Message message = (Message) channel.getSubscribe().getMessage();
-        // Message description is not supported yet
         assertThat(message.getDescription()).isNull();
         assertThat(message.getBindings()).isEqualTo(ImmutableMap.of("kafka", new KafkaMessageBinding()));
     }
@@ -125,7 +124,6 @@ class DefaultAsyncApiServiceTest {
         final ChannelItem channel = actualChannels.get("consumer-topic");
         assertThat(channel.getPublish()).isNotNull();
         final Message message = (Message) channel.getPublish().getMessage();
-        // Message description is not supported yet
         assertThat(message.getDescription()).isNull();
         assertThat(message.getBindings()).isEqualTo(ImmutableMap.of("kafka", new KafkaMessageBinding()));
     }
