@@ -70,6 +70,7 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
           "title" : "ExamplePayloadDto",
+          "description" : "Example payload model",
           "payload" : {
             "$ref" : "#/components/schemas/ExamplePayloadDto"
           },
@@ -102,6 +103,7 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
           "title" : "AnotherPayloadDto",
+          "description" : "Another payload model",
           "payload" : {
             "$ref" : "#/components/schemas/AnotherPayloadDto"
           },
@@ -242,6 +244,7 @@
           "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
           "name" : "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
           "title" : "NestedPayloadDto",
+          "description" : "Payload model with nested complex types",
           "payload" : {
             "$ref" : "#/components/schemas/NestedPayloadDto"
           },

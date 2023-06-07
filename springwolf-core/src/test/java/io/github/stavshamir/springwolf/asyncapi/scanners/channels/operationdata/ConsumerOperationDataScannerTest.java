@@ -17,6 +17,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,14 +66,14 @@ class ConsumerOperationDataScannerTest {
         assertThat(consumerChannels)
                 .containsKey(channelName);
 
+        String messageDescription = "Example Payload DTO Description";
         Operation operation = Operation.builder()
                 .description(description)
                 .operationId("example-consumer-topic-foo1_publish")
                 .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
                 .message(Message.builder()
                         .name(ExamplePayloadDto.class.getName())
-                        // Message description is not supported yet
-//                        .description(description)
+                        .description(messageDescription)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
@@ -142,11 +143,12 @@ class ConsumerOperationDataScannerTest {
                 .hasSize(1)
                 .containsKey(channelName);
 
+        String messageDescription1 = "Example Payload DTO Description";
+        String messageDescription2 = "Another Example Payload DTO Description";
         Set<Message> messages = ImmutableSet.of(
                 Message.builder()
                         .name(ExamplePayloadDto.class.getName())
-                        // Message description is not supported yet
-//                        .description(description1)
+                        .description(messageDescription1)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
@@ -154,8 +156,7 @@ class ConsumerOperationDataScannerTest {
                         .build(),
                 Message.builder()
                         .name(AnotherExamplePayloadDto.class.getName())
-                        // Message description is not supported yet
-//                        .description(description2)
+                        .description(messageDescription2)
                         .title(AnotherExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
@@ -190,10 +191,12 @@ class ConsumerOperationDataScannerTest {
         when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(asyncApiDocket);
     }
 
+    @Schema(description = "Example Payload DTO Description")
     static class ExamplePayloadDto {
         private String foo;
     }
 
+    @Schema(description = "Another Example Payload DTO Description")
     static class AnotherExamplePayloadDto {
         private String bar;
     }

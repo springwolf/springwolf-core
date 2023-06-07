@@ -10,6 +10,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -66,8 +67,7 @@ class AsyncListenerAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                // Message description is not supported yet
-//                .description("test channel operation description")
+                .description("SimpleFoo Message Description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP)
@@ -101,8 +101,7 @@ class AsyncListenerAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                // Message description is not supported yet
-//                .description("description")
+                .description("SimpleFoo Message Description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("TestSchema"))
                 .bindings(EMPTY_MAP)
@@ -144,8 +143,7 @@ class AsyncListenerAnnotationScannerTest {
                 .description("test-channel-1-description")
                 .operationId("test-channel-1_publish")
                 .bindings(EMPTY_MAP)
-                // Message description is not supported yet
-                .message(builder/*.description("test-channel-1-description")*/.build())
+                .message(builder.description("SimpleFoo Message Description").build())
                 .build();
 
         ChannelItem expectedChannel1 = ChannelItem.builder()
@@ -157,8 +155,7 @@ class AsyncListenerAnnotationScannerTest {
                 .description("test-channel-2-description")
                 .operationId("test-channel-2_publish")
                 .bindings(EMPTY_MAP)
-                // Message description is not supported yet
-                .message(builder/*.description("test-channel-2-description")*/.build())
+                .message(builder.description("SimpleFoo Message Description").build())
                 .build();
 
         ChannelItem expectedChannel2 = ChannelItem.builder()
@@ -228,6 +225,7 @@ class AsyncListenerAnnotationScannerTest {
 
     @Data
     @NoArgsConstructor
+    @Schema(description = "SimpleFoo Message Description")
     private static class SimpleFoo {
         private String s;
         private boolean b;

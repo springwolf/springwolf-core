@@ -11,6 +11,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 
@@ -94,10 +95,13 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         String modelName = this.getSchemaService().register(payloadType);
         String headerModelName = this.getSchemaService().register(operationData.getHeaders());
 
+        Schema schema = payloadType.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        String description = schema != null ? schema.description() : null;
+
         return Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
-                // FIXME: Add support for Message Description
+                .description(description)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .bindings(operationData.getMessageBinding())
