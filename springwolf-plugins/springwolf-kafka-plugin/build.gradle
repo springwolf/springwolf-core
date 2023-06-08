@@ -21,7 +21,6 @@ dependencies {
     implementation "org.springframework.kafka:spring-kafka"
     implementation "io.swagger.core.v3:swagger-models:${swaggerCoreVersion}"
 
-    implementation "com.google.guava:guava:${guavaVersion}"
     implementation "org.slf4j:slf4j-api"
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"

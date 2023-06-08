@@ -10,7 +10,6 @@ import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2.schema.Type;
-import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -72,7 +71,7 @@ class DefaultAsyncApiSerializerServiceTest {
                 .name("io.github.stavshamir.springwolf.ExamplePayload")
                 .title("Example Payload")
                 .payload(PayloadReference.fromModelName("ExamplePayload"))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding(new StringSchema(), null, null, null, "binding-version-1")))
+                .bindings(Map.of("kafka", new KafkaMessageBinding(new StringSchema(), null, null, null, "binding-version-1")))
                 .build();
 
         com.asyncapi.v2.schema.Schema groupId = new com.asyncapi.v2.schema.Schema();
@@ -84,7 +83,7 @@ class DefaultAsyncApiSerializerServiceTest {
                 .description("Auto-generated description")
                 .operationId("new-user_listenerMethod_subscribe")
                 .message(message)
-                .bindings(ImmutableMap.of("kafka", operationBinding))
+                .bindings(Map.of("kafka", operationBinding))
                 .build();
 
         ChannelItem newUserChannel = ChannelItem.builder()
@@ -97,8 +96,8 @@ class DefaultAsyncApiSerializerServiceTest {
         AsyncAPI asyncapi = AsyncAPI.builder()
                 .info(info)
                 .defaultContentType("application/json")
-                .servers(ImmutableMap.of("production", productionServer))
-                .channels(ImmutableMap.of("new-user", newUserChannel))
+                .servers(Map.of("production", productionServer))
+                .channels(Map.of("new-user", newUserChannel))
                 .components(Components.builder().schemas(schemas).build())
                 .build();
 

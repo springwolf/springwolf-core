@@ -4,7 +4,6 @@ import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ class SpringwolfAmqpProducerTest {
 
     @Test
     void send_defaultExchangeAndChannelNameAsRoutingKey() {
-        when(channelsService.getChannels()).thenReturn(ImmutableMap.of("channel-name", new ChannelItem()));
+        when(channelsService.getChannels()).thenReturn(Map.of("channel-name", new ChannelItem()));
 
         Map<String, Object> payload = new HashMap<>();
         springwolfAmqpProducer.send("channel-name", payload);
@@ -47,14 +46,14 @@ class SpringwolfAmqpProducerTest {
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("exchange-name");
         ChannelItem channelItem = ChannelItem.builder()
-                .bindings(ImmutableMap.of("amqp", AMQPChannelBinding.builder()
+                .bindings(Map.of("amqp", AMQPChannelBinding.builder()
                         .exchange(properties)
                         .build()))
                 .publish(Operation.builder()
-                        .bindings(ImmutableMap.of("amqp", new AMQPOperationBinding()))
+                        .bindings(Map.of("amqp", new AMQPOperationBinding()))
                         .build())
                 .build();
-        Map<String, ChannelItem> channels = ImmutableMap.of("channel-name", channelItem);
+        Map<String, ChannelItem> channels = Map.of("channel-name", channelItem);
         when(channelsService.getChannels()).thenReturn(channels);
 
         Map<String, Object> payload = new HashMap<>();
@@ -68,16 +67,16 @@ class SpringwolfAmqpProducerTest {
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("exchange-name");
         ChannelItem channelItem = ChannelItem.builder()
-                .bindings(ImmutableMap.of("amqp", AMQPChannelBinding.builder()
+                .bindings(Map.of("amqp", AMQPChannelBinding.builder()
                         .exchange(properties)
                         .build()))
                 .publish(Operation.builder()
-                        .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
+                        .bindings(Map.of("amqp", AMQPOperationBinding.builder()
                                 .cc(Collections.singletonList("routing-key"))
                                 .build()))
                         .build())
                 .build();
-        Map<String, ChannelItem> channels = ImmutableMap.of("channel-name", channelItem);
+        Map<String, ChannelItem> channels = Map.of("channel-name", channelItem);
         when(channelsService.getChannels()).thenReturn(channels);
 
         Map<String, Object> payload = new HashMap<>();

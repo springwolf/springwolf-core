@@ -5,9 +5,6 @@ import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -63,7 +60,7 @@ class ClassLevelKafkaListenerScannerTest {
     @Test
     void scan_componentWithMultipleKafkaListenersAndHandlers() {
         // Given multiple @KafkaListener annotated classes with method(s) annotated with @KafkaHandler
-        ImmutableSet<Class<?>> classesToScan = ImmutableSet.of(
+        Set<Class<?>> classesToScan = Set.of(
                 KafkaListenerClassWithOneKafkaHandler.class,
                 KafkaListenerClassWithMultipleKafkaHandler.class
         );
@@ -78,7 +75,7 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Message barMessage = Message.builder()
@@ -86,23 +83,23 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleBar.class.getSimpleName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("KafkaListenerClassWithMultipleKafkaHandler_publish")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .message(toMessageObjectOrComposition(ImmutableSet.of(fooMessage, barMessage)))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .message(toMessageObjectOrComposition(Set.of(fooMessage, barMessage)))
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannels)
-                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+                .containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -142,23 +139,23 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("KafkaListenerClassWithOneKafkaHandler_publish")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannels)
-                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+                .containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -175,7 +172,7 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Message barMessage = Message.builder()
@@ -183,23 +180,23 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleBar.class.getSimpleName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("KafkaListenerClassWithMultipleKafkaHandler_publish")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
-                .message(toMessageObjectOrComposition(ImmutableSet.of(fooMessage, barMessage)))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .message(toMessageObjectOrComposition(Set.of(fooMessage, barMessage)))
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannels)
-                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+                .containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -217,23 +214,23 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("KafkaListenerClassWithKafkaHandlerWithBatchPayload_publish")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannels)
-                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+                .containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
 

@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,14 +27,14 @@ public class MessageHelper {
             case 0 -> throw new IllegalArgumentException("messages must not be empty");
             case 1 -> messages.toArray()[0];
             default ->
-                    ImmutableMap.of(ONE_OF, new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier))));
+                    Map.of(ONE_OF, new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier))));
         };
     }
 
     @SuppressWarnings("unchecked")
     public static Set<Message> messageObjectToSet(Object messageObject) {
-        if (messageObject instanceof Message) {
-            return new HashSet<>(Collections.singletonList((Message) messageObject));
+        if (messageObject instanceof Message message) {
+            return new HashSet<>(Collections.singletonList(message));
         }
 
         if (messageObject instanceof Map) {

@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.beans;
 
-import com.google.common.collect.ImmutableSet;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +30,7 @@ class DefaultBeanMethodsScannerTest {
     @Test
     void name() {
         when(configurationClassScanner.scan())
-                .thenReturn(ImmutableSet.of(ConfigurationClass.class));
+                .thenReturn(Set.of(ConfigurationClass.class));
 
         Set<String> beanMethods = beanMethodsScanner.getBeanMethods().stream()
                 .map(Method::getName)

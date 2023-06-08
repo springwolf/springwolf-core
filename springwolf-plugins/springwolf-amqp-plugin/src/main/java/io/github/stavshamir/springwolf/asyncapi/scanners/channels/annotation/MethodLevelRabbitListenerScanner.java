@@ -6,7 +6,6 @@ import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
-import com.google.common.collect.ImmutableMap;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import lombok.extern.slf4j.Slf4j;
@@ -89,7 +88,7 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
                 .is("routingKey")
                 .exchange(exchangeProperties)
                 .build();
-        return ImmutableMap.of("amqp", channelBinding);
+        return Map.of("amqp", channelBinding);
     }
 
     private String getExchangeName(RabbitListener annotation) {
@@ -110,13 +109,13 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
 
     @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(RabbitListener annotation) {
-        return ImmutableMap.of("amqp", AMQPOperationBinding.builder().cc(getRoutingKeys(annotation)).build());
+        return Map.of("amqp", AMQPOperationBinding.builder().cc(getRoutingKeys(annotation)).build());
     }
 
     @Override
     protected Map<String, ? extends MessageBinding> buildMessageBinding(RabbitListener annotation) {
         // currently the feature to define amqp message binding is not implemented.
-        return ImmutableMap.of("amqp", new AMQPMessageBinding());
+        return Map.of("amqp", new AMQPMessageBinding());
     }
 
     private List<String> getRoutingKeys(RabbitListener annotation) {

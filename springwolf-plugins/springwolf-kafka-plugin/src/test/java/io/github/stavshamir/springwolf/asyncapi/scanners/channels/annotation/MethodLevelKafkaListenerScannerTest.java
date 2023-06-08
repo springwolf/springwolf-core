@@ -6,8 +6,6 @@ import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -81,23 +79,23 @@ class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannels)
-                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+                .containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -114,23 +112,23 @@ class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation1")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannels)
-                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+                .containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -182,23 +180,23 @@ class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannels)
-                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+                .containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -215,23 +213,23 @@ class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("kafka", new KafkaMessageBinding()))
+                .bindings(Map.of("kafka", new KafkaMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation")
-                .bindings(ImmutableMap.of("kafka", new KafkaOperationBinding()))
+                .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(ImmutableMap.of("kafka", new KafkaChannelBinding()))
+                .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannels)
-                .containsExactly(Maps.immutableEntry(TOPIC, expectedChannel));
+                .containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     private static class ClassWithoutKafkaListenerAnnotations {

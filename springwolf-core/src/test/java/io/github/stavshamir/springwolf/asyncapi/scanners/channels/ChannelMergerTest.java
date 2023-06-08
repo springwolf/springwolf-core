@@ -3,14 +3,13 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,8 +27,8 @@ class ChannelMergerTest {
 
         // when
         Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(Arrays.asList(
-                Maps.immutableEntry(channelName1, publisherChannel),
-                Maps.immutableEntry(channelName2, subscriberChannel)));
+                Map.entry(channelName1, publisherChannel),
+                Map.entry(channelName2, subscriberChannel)));
 
         // then
         assertThat(mergedChannels).hasSize(2)
@@ -54,8 +53,8 @@ class ChannelMergerTest {
 
         // when
         Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(Arrays.asList(
-                Maps.immutableEntry(channelName, publisherChannel),
-                Maps.immutableEntry(channelName, subscriberChannel)));
+                Map.entry(channelName, publisherChannel),
+                Map.entry(channelName, subscriberChannel)));
 
         // then
         assertThat(mergedChannels).hasSize(1)
@@ -76,8 +75,8 @@ class ChannelMergerTest {
 
         // when
         Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(Arrays.asList(
-                Maps.immutableEntry(channelName, publisherChannel1),
-                Maps.immutableEntry(channelName, publisherChannel2)));
+                Map.entry(channelName, publisherChannel1),
+                Map.entry(channelName, publisherChannel2)));
 
         // then
         assertThat(mergedChannels).hasSize(1)
@@ -103,13 +102,13 @@ class ChannelMergerTest {
 
         // when
         Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(Arrays.asList(
-                Maps.immutableEntry(channelName, publisherChannel1),
-                Maps.immutableEntry(channelName, publisherChannel2),
-                Maps.immutableEntry(channelName, publisherChannel3)));
+                Map.entry(channelName, publisherChannel1),
+                Map.entry(channelName, publisherChannel2),
+                Map.entry(channelName, publisherChannel3)));
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
-        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Sets.newHashSet(message1, message2));
+        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Set.of(message1, message2));
         assertThat(mergedChannels).hasSize(1)
                 .hasEntrySatisfying(channelName, it -> {
                     assertThat(it.getPublish()).isEqualTo(Operation.builder().operationId("publisher1").message(expectedMessages).build());
@@ -129,11 +128,11 @@ class ChannelMergerTest {
 
         // when
         Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(Arrays.asList(
-                Maps.immutableEntry(channelName, publisherChannel1),
-                Maps.immutableEntry(channelName, publisherChannel2)));
+                Map.entry(channelName, publisherChannel1),
+                Map.entry(channelName, publisherChannel2)));
 
         // then expectedMessage message2
-        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Sets.newHashSet(message2));
+        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Set.of(message2));
         assertThat(mergedChannels).hasSize(1)
                 .hasEntrySatisfying(channelName, it -> {
                     assertThat(it.getPublish()).isEqualTo(Operation.builder().operationId("publisher1").message(expectedMessages).build());

@@ -6,8 +6,6 @@ import com.asyncapi.v2._0_0.model.server.Server;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
@@ -68,7 +66,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         String operationId = buildOperationId(beanData, channelName);
         ChannelItem channelItem = buildChannel(beanData, operationId);
 
-        return Maps.immutableEntry(channelName, channelItem);
+        return Map.entry(channelName, channelItem);
     }
 
     private ChannelItem buildChannel(FunctionalChannelBeanData beanData, String operationId) {
@@ -90,25 +88,25 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .bindings(buildOperationBinding())
                 .build();
 
-        ImmutableMap<String, ? extends ChannelBinding> channelBinding = buildChannelBinding();
+        Map<String, ? extends ChannelBinding> channelBinding = buildChannelBinding();
         return beanData.getBeanType() == FunctionalChannelBeanData.BeanType.CONSUMER
                 ? ChannelItem.builder().bindings(channelBinding).publish(operation).build()
                 : ChannelItem.builder().bindings(channelBinding).subscribe(operation).build();
     }
 
-    private ImmutableMap<String, ? extends MessageBinding> buildMessageBinding() {
+    private Map<String, ? extends MessageBinding> buildMessageBinding() {
         String protocolName = getProtocolName();
-        return ImmutableMap.of(protocolName, new EmptyMessageBinding());
+        return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private ImmutableMap<String, ? extends OperationBinding> buildOperationBinding() {
+    private Map<String, ? extends OperationBinding> buildOperationBinding() {
         String protocolName = getProtocolName();
-        return ImmutableMap.of(protocolName, new EmptyOperationBinding());
+        return Map.of(protocolName, new EmptyOperationBinding());
     }
 
-    private ImmutableMap<String, ? extends ChannelBinding> buildChannelBinding() {
+    private Map<String, ? extends ChannelBinding> buildChannelBinding() {
         String protocolName = getProtocolName();
-        return ImmutableMap.of(protocolName, new EmptyChannelBinding());
+        return Map.of(protocolName, new EmptyChannelBinding());
     }
 
     private String getProtocolName() {

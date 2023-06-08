@@ -36,7 +36,7 @@ public class ProducerData implements OperationData {
      * <br>
      * For example:
      * <code>
-     *     ImmutableMap.of("kafka", new KafkaChannelBinding())
+     *     Map.of("kafka", new KafkaChannelBinding())
      * </code>
      */
     protected Map<String, ? extends ChannelBinding> channelBinding;
@@ -57,7 +57,7 @@ public class ProducerData implements OperationData {
      * <br>
      * For example:
      * <code>
-     *     ImmutableMap.of("kafka", new KafkaOperationBinding())
+     *     Map.of("kafka", new KafkaOperationBinding())
      * </code>
      */
     protected Map<String, ? extends OperationBinding> operationBinding;
@@ -67,7 +67,7 @@ public class ProducerData implements OperationData {
      * <br>
      * For example:
      * <code>
-     *     ImmutableMap.of("kafka", new KafkaMessageBinding())
+     *     Map.of("kafka", new KafkaMessageBinding())
      * </code>
      */
     protected Map<String, ? extends MessageBinding> messageBinding;

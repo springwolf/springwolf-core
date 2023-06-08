@@ -23,7 +23,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.kafka:spring-kafka"
     implementation "org.springframework.boot:spring-boot-starter-security"
-    implementation "com.google.guava:guava:${guavaVersion}"
     implementation "org.slf4j:slf4j-api"
     implementation "org.javamoney:moneta:${javaMoneyMonetaVersion}"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"

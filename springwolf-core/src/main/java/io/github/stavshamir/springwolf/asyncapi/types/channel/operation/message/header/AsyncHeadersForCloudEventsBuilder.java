@@ -5,9 +5,6 @@ import org.springframework.util.MimeType;
 
 import java.util.List;
 
-import static com.google.common.collect.ImmutableList.of;
-import static java.util.stream.Collectors.toList;
-
 public class AsyncHeadersForCloudEventsBuilder {
 
     private final AsyncHeaders headers;
@@ -25,11 +22,11 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withContentTypeHeader(MediaType contentType) {
-        return withContentTypeHeader(contentType, of(contentType));
+        return withContentTypeHeader(contentType, List.of(contentType));
     }
 
     public AsyncHeadersForCloudEventsBuilder withContentTypeHeader(MediaType exampleContentType, List<MediaType> contentTypeValues) {
-        List<String> contentTypeStringValues = contentTypeValues.stream().map(MimeType::toString).collect(toList());
+        List<String> contentTypeStringValues = contentTypeValues.stream().map(MimeType::toString).toList();
         return withHeader(
                 "content-type",
                 contentTypeStringValues,
@@ -39,7 +36,7 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withSpecVersionHeader(String specVersion) {
-        return withSpecVersionHeader(specVersion, of(specVersion));
+        return withSpecVersionHeader(specVersion, List.of(specVersion));
     }
 
     public AsyncHeadersForCloudEventsBuilder withSpecVersionHeader(String specVersion, List<String> specValues) {
@@ -52,7 +49,7 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withIdHeader(String idExample) {
-        return withIdHeader(idExample, of(idExample));
+        return withIdHeader(idExample, List.of(idExample));
     }
 
     public AsyncHeadersForCloudEventsBuilder withIdHeader(String idExample, List<String> idValues) {
@@ -65,7 +62,7 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withTimeHeader(String timeExample) {
-        return withTimeHeader(timeExample, of(timeExample));
+        return withTimeHeader(timeExample, List.of(timeExample));
     }
 
     public AsyncHeadersForCloudEventsBuilder withTimeHeader(String timeExample, List<String> timeValues) {
@@ -78,7 +75,7 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withTypeHeader(String typeExample) {
-        return withTypeHeader(typeExample, of(typeExample));
+        return withTypeHeader(typeExample, List.of(typeExample));
     }
 
     public AsyncHeadersForCloudEventsBuilder withTypeHeader(String typeExample, List<String> typeValues) {
@@ -91,7 +88,7 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withSourceHeader(String sourceExample) {
-        return withSourceHeader(sourceExample, of(sourceExample));
+        return withSourceHeader(sourceExample, List.of(sourceExample));
     }
 
     public AsyncHeadersForCloudEventsBuilder withSourceHeader(String sourceExample, List<String> sourceValues) {
@@ -104,7 +101,7 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withSubjectHeader(String subjectExample) {
-        return withSubjectHeader(subjectExample, of(subjectExample));
+        return withSubjectHeader(subjectExample, List.of(subjectExample));
     }
 
     public AsyncHeadersForCloudEventsBuilder withSubjectHeader(String subjectExample, List<String> subjectValues) {

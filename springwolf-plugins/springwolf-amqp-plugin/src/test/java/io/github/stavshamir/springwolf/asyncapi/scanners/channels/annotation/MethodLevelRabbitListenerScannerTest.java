@@ -6,8 +6,6 @@ import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import com.asyncapi.v2._0_0.model.channel.ChannelItem;
 import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -100,25 +98,25 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
+                .bindings(Map.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-queue_publish_methodWithAnnotation")
-                .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
+                .bindings(Map.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList(QUEUE))
                         .build()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannelItem = ChannelItem.builder()
-                .bindings(ImmutableMap.of("amqp", channelBinding))
+                .bindings(Map.of("amqp", channelBinding))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannelItems)
-                .containsExactly(Maps.immutableEntry(QUEUE, expectedChannelItem));
+                .containsExactly(Map.entry(QUEUE, expectedChannelItem));
     }
 
     @Test
@@ -142,25 +140,25 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
+                .bindings(Map.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-queue_publish_methodWithAnnotation1")
-                .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
+                .bindings(Map.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList(QUEUE))
                         .build()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannelItem = ChannelItem.builder()
-                .bindings(ImmutableMap.of("amqp", channelBinding))
+                .bindings(Map.of("amqp", channelBinding))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannelItems)
-                .containsExactly(Maps.immutableEntry(QUEUE, expectedChannelItem));
+                .containsExactly(Map.entry(QUEUE, expectedChannelItem));
     }
 
     @Test
@@ -181,25 +179,25 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
+                .bindings(Map.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-queue_publish_methodWithAnnotation1")
-                .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
+                .bindings(Map.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList("key"))
                         .build()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannelItem = ChannelItem.builder()
-                .bindings(ImmutableMap.of("amqp", channelBinding))
+                .bindings(Map.of("amqp", channelBinding))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannelItems)
-                .containsExactly(Maps.immutableEntry(QUEUE, expectedChannelItem));
+                .containsExactly(Map.entry(QUEUE, expectedChannelItem));
     }
 
     @Test
@@ -220,25 +218,25 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
+                .bindings(Map.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("binding-bean-queue_publish_methodWithAnnotation1")
-                .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
+                .bindings(Map.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList("binding-bean-key"))
                         .build()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannelItem = ChannelItem.builder()
-                .bindings(ImmutableMap.of("amqp", channelBinding))
+                .bindings(Map.of("amqp", channelBinding))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannelItems)
-                .containsExactly(Maps.immutableEntry("binding-bean-queue", expectedChannelItem));
+                .containsExactly(Map.entry("binding-bean-queue", expectedChannelItem));
     }
 
     @Test
@@ -276,25 +274,25 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(ImmutableMap.of("amqp", new AMQPMessageBinding()))
+                .bindings(Map.of("amqp", new AMQPMessageBinding()))
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-queue_publish_methodWithAnnotation")
-                .bindings(ImmutableMap.of("amqp", AMQPOperationBinding.builder()
+                .bindings(Map.of("amqp", AMQPOperationBinding.builder()
                         .cc(Collections.singletonList(QUEUE))
                         .build()))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannelItem = ChannelItem.builder()
-                .bindings(ImmutableMap.of("amqp", channelBinding))
+                .bindings(Map.of("amqp", channelBinding))
                 .publish(operation)
                 .build();
 
         assertThat(actualChannelItems)
-                .containsExactly(Maps.immutableEntry(QUEUE, expectedChannelItem));
+                .containsExactly(Map.entry(QUEUE, expectedChannelItem));
     }
 
     private static class ClassWithoutRabbitListenerAnnotations {
