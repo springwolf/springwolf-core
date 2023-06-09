@@ -1,19 +1,17 @@
 {
-  "DocumentedSimpleFoo": {
-    "description": "foo model",
-    "type": "object",
-    "properties": {
-      "s": {
-        "description": "s field",
-        "type": "string",
-        "example": "s value"
+  "DocumentedSimpleFoo" : {
+    "required" : [ "s" ],
+    "type" : "object",
+    "properties" : {
+      "s" : {
+        "type" : "string",
+        "description" : "s field",
+        "example" : "s value"
       }
     },
-    "example": {
-      "s": "s value"
-    },
-    "required": [
-      "s"
-    ]
+    "description" : "foo model",
+    "example" : {
+      "s" : "s value"
+    }
   }
 }

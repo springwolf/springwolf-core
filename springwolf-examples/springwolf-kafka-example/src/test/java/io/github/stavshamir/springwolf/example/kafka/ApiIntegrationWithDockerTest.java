@@ -3,8 +3,6 @@ package io.github.stavshamir.springwolf.example.kafka;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -14,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * While the assertion of this test is identical to ApiIntegrationTests,
@@ -40,13 +40,12 @@ public class ApiIntegrationWithDockerTest {
     @Test
     void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException, JSONException {
         String url = baseUrl() + "/springwolf/docs";
-        String actualWithKafkaPort = restTemplate.getForObject(url, String.class);
-        String actual = actualWithKafkaPort.replace("kafka:29092", "localhost:9092");
+        String actual = restTemplate.getForObject(url, String.class);
         System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
 
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+        assertEquals(expected, actual);
     }
 }

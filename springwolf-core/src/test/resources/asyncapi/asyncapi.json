@@ -29,7 +29,6 @@
       "description" : "This channel is used to exchange messages about users signing up",
       "subscribe" : {
         "operationId" : "new-user_listenerMethod_subscribe",
-        "description" : "Auto-generated description",
         "bindings" : {
           "kafka" : {
             "groupId" : {

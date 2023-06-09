@@ -2,8 +2,6 @@ package io.github.stavshamir.springwolf.example.kafka;
 
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +13,8 @@ import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = {SpringwolfKafkaExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(
@@ -33,13 +33,15 @@ public class ApiIntegrationTest {
 
     @Test
     void asyncApiResourceArtifactTest() throws JSONException, IOException {
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
-
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         System.out.println("Got: " + actual);
 
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
+        String expectedWithoutServersKafkaUrlPatch = IOUtils.toString(s, StandardCharsets.UTF_8);
+        // When running with EmbeddedKafka, localhost is used as hostname
+        String expected = expectedWithoutServersKafkaUrlPatch.replace("kafka:29092", "localhost:9092");
+
+        assertEquals(expected, actual);
     }
 }

@@ -3,8 +3,6 @@ package io.github.stavshamir.springwolf.example.amqp;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -14,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * While the assertion of this test is identical to ApiIntegrationTests,
@@ -46,6 +46,6 @@ public class ApiIntegrationWithDockerTest {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
 
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+        assertEquals(expected, actual);
     }
 }

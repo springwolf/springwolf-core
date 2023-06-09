@@ -1,54 +1,51 @@
 {
-  "CompositeFoo": {
-    "type": "object",
-    "properties": {
-      "s": {
-        "type": "string"
+  "CompositeFoo" : {
+    "type" : "object",
+    "properties" : {
+      "f" : {
+        "$ref" : "#/components/schemas/SimpleFoo"
       },
-      "f": {
-        "$ref": "#/components/schemas/SimpleFoo"
+      "s" : {
+        "type" : "string"
       }
     },
-    "example": {
-      "s": "string",
-      "f": {
-        "s": "string",
-        "b": true
-      }
+    "example" : {
+      "f" : {
+        "b" : true,
+        "s" : "string"
+      },
+      "s" : "string"
     }
   },
-  "FooWithEnum": {
-    "type": "object",
-    "properties": {
-      "s": {
-        "type": "string"
+  "FooWithEnum" : {
+    "type" : "object",
+    "properties" : {
+      "b" : {
+        "type" : "string",
+        "enum" : [ "BAR1", "BAR2" ]
       },
-      "b": {
-        "type": "string",
-        "enum": [
-          "BAR1",
-          "BAR2"
-        ]
+      "s" : {
+        "type" : "string"
       }
     },
-    "example": {
-      "s": "string",
-      "b": "BAR1"
+    "example" : {
+      "b" : "BAR1",
+      "s" : "string"
     }
   },
-  "SimpleFoo": {
-    "type": "object",
-    "properties": {
-      "s": {
-        "type": "string"
+  "SimpleFoo" : {
+    "type" : "object",
+    "properties" : {
+      "b" : {
+        "type" : "boolean"
       },
-      "b": {
-        "type": "boolean"
+      "s" : {
+        "type" : "string"
       }
     },
-    "example": {
-      "s": "string",
-      "b": true
+    "example" : {
+      "b" : true,
+      "s" : "string"
     }
   }
 }

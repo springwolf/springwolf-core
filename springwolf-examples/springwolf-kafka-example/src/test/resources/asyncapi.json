@@ -16,7 +16,7 @@
   "defaultContentType" : "application/json",
   "servers" : {
     "kafka" : {
-      "url" : "localhost:9092",
+      "url" : "kafka:29092",
       "protocol" : "kafka"
     }
   },
@@ -158,7 +158,7 @@
     "multi-payload-topic" : {
       "publish" : {
         "operationId" : "multi-payload-topic_publish",
-        "description" : "Override description in the AsyncListener annotation with servers at localhost:9092",
+        "description" : "Override description in the AsyncListener annotation with servers at kafka:29092",
         "bindings" : {
           "kafka" : {
             "groupId" : {
@@ -237,7 +237,7 @@
               "type" : "string",
               "enum" : [ "foo-clientId" ]
             },
-            "bindingVersion" :  "1"
+            "bindingVersion" : "1"
           }
         },
         "message" : {

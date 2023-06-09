@@ -13,7 +13,7 @@ public class OutputPayload {
         this.someLong = someLong;
     }
 
-    @Schema(description = "Some string field", example = "some string value", required = true)
+    @Schema(description = "Some string field", example = "some string value", requiredMode = Schema.RequiredMode.REQUIRED)
     private String someString;
 
     @Schema(description = "Some long field", example = "5")
