@@ -1,11 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.operation.OperationBinding;
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -140,7 +139,7 @@ class MethodLevelKafkaListenerScannerTest {
         Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains a correct binding
-        Map<String, ? extends OperationBinding> actualBindings = actualChannels.get(TOPIC)
+        Map<String, Object> actualBindings = actualChannels.get(TOPIC)
                 .getPublish()
                 .getBindings();
 

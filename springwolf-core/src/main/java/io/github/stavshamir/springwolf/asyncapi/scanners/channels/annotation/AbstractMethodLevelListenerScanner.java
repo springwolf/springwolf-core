@@ -115,8 +115,8 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
-        Map<String, Object> opBinding = new HashMap<>(operationBinding);
-        Map<String, Object> chBinding = new HashMap<>(channelBinding);
+        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
 
         Message message = Message.builder()
                 .name(payloadType.getName())

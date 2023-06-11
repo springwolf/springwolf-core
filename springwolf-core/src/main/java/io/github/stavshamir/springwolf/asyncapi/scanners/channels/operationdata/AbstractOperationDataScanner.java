@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -61,6 +62,8 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         // AsyncApi does not support multiple bindings on a single channel
         Map<String, ? extends ChannelBinding> channelBinding = operationDataList.get(0).getChannelBinding();
         Map<String, ? extends OperationBinding> operationBinding = operationDataList.get(0).getOperationBinding();
+        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         String operationId = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
         String description = operationDataList.get(0).getDescription();
 
@@ -72,11 +75,11 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                 .description(description)
                 .operationId(operationId)
                 .message(getMessageObject(operationDataList))
-                .bindings(operationBinding)
+                .bindings(opBinding)
                 .build();
 
         ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder()
-                .bindings(channelBinding);
+                .bindings(chBinding);
         channelBuilder = switch (getOperationType()) {
             case PUBLISH -> channelBuilder.publish(operation);
             case SUBSCRIBE -> channelBuilder.subscribe(operation);

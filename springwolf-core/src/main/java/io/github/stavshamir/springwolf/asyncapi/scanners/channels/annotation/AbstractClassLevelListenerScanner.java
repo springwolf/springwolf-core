@@ -141,8 +141,8 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
     private ChannelItem buildChannel(String simpleName, Set<Method> methods, Map<String, ? extends ChannelBinding> channelBinding, Map<String, ? extends OperationBinding> operationBinding) {
         String operationId = simpleName + "_publish";
 
-        Map<String, Object> opBinding = new HashMap<>(operationBinding);
-        Map<String, Object> chBinding = new HashMap<>(channelBinding);
+        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
