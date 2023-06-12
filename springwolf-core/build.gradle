@@ -4,8 +4,9 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
 }
 
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
@@ -14,43 +15,60 @@ group = 'io.github.springwolf'
 version = '0.10.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
 dependencies {
-    api "com.asyncapi:asyncapi-core:${asyncApiCoreVersion}"
+    api "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
 
     implementation("io.swagger:swagger-inflector:${swaggerInflectorVersion}") {
         // swagger-inflector (2.0.9) transiently pulls two swagger-core dependencies:
         // - io.swagger.core.v3:swagger-core  2.x
         // - io.swagger:swagger-core  1.6.9
-        // these deps should be excluded because we need 'io.swagger.core.v3:swagger-core-jakarkta 2.x'
-        // Unfortunatly, io.swagger.swagger-core is still used in one place in swagger-inflector (io.swagger.util.Json)
-        // so we cannot exclude the old 'io.swagger:swagger-core 1.6.9' dependeny. Instead, we exclude explicitly
-        // the 'old' javax.validation groupid.
+        // these deps should be excluded because we need 'io.swagger.core.v3:swagger-core-jakarta 2.x'
+        // Unfortunately, io.swagger.swagger-core is still used in one place in swagger-inflector (io.swagger.util.Json)
+        // so we cannot exclude the old 'io.swagger:swagger-core 1.6.9' dependency. Instead, we exclude explicitly
+        // the 'old' javax.validation groupId.
 
         exclude group: "io.swagger.core.v3"
 //        exclude group: "io.swagger"  // not possible
         exclude group: "javax.validation"
     }
 
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
-    implementation "io.swagger.parser.v3:swagger-parser-core:${swaggerParserVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerAnnotationsVersion}@jar"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreJakartaVersion}"
+
+    implementation "com.fasterxml.jackson.core:jackson-annotations"
+    implementation "com.fasterxml.jackson.core:jackson-core"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"
+
+    implementation "org.slf4j:slf4j-api"
 
     implementation "org.springframework:spring-web"
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-messaging"
+    implementation "org.springframework:spring-beans"
+    implementation "org.springframework:spring-core"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
 
+    implementation "io.swagger.core.v3:swagger-models-jakarta"
+    implementation "jakarta.annotation:jakarta.annotation-api"
+    implementation "org.springframework.boot:spring-boot"
+
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-
-    testImplementation "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.skyscreamer:jsonassert:${jsonassertVersion}"
+    testImplementation "org.springframework.boot:spring-boot-test"
+    testImplementation "org.springframework:spring-test"
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation "org.springframework.amqp:spring-rabbit"
-    testImplementation "org.springframework.kafka:spring-kafka"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
 }
 
 jar {
