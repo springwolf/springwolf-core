@@ -1,8 +1,9 @@
 plugins {
     id 'java'
 
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
 
     id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
     id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
@@ -14,27 +15,55 @@ group 'io.github.springwolf'
 version '0.11.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
 dependencies {
+    implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-kafka-plugin")
-    compileOnly project(":springwolf-plugins:springwolf-kafka-plugin")
-    annotationProcessor project(":springwolf-plugins:springwolf-kafka-plugin")
-    implementation project(":springwolf-add-ons:springwolf-common-model-converters")
+
+    runtimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
     runtimeOnly project(":springwolf-ui")
 
-    implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.springframework.kafka:spring-kafka"
-    implementation "org.springframework.boot:spring-boot-starter-security"
-    implementation "org.slf4j:slf4j-api"
-    implementation "org.javamoney:moneta:${javaMoneyMonetaVersion}"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
+    annotationProcessor project(":springwolf-plugins:springwolf-kafka-plugin")
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    runtimeOnly "org.springframework.boot:spring-boot-starter-web"
+
+    implementation "org.springframework:spring-beans"
+    implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-web"
+
+    implementation "org.springframework.boot:spring-boot"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+
+    implementation "org.springframework.kafka:spring-kafka"
+
+    implementation "org.springframework.security:spring-security-config"
+    implementation "org.springframework.security:spring-security-web"
+
+    implementation "com.asyncapi:asyncapi-core"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
+    implementation "org.slf4j:slf4j-api"
+
+    implementation "javax.money:money-api:${moneyApiVersion}"
+    implementation "org.javamoney:moneta:${monetaVersion}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+
+    testImplementation "commons-io:commons-io:${commonsIoVersion}"
+    testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
+
+    testImplementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
+    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
+    testImplementation "org.skyscreamer:jsonassert:${jsonassertVersion}"
+    testImplementation "org.mockito:mockito-core"
+
+    testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework.kafka:spring-kafka-test"
-    testImplementation "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}"
+    testImplementation "org.springframework:spring-test"
+
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
-    testImplementation "org.skyscreamer:jsonassert:${jsonAssertVersion}"
-    testImplementation "commons-io:commons-io:${commonsIoVersion}"
-    testImplementation "org.awaitility:awaitility:${awaitabilityVersion}"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaClientsVersion}:test@jar"
 }
 
 docker {

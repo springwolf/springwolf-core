@@ -1,8 +1,9 @@
 plugins {
     id 'java'
 
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
 
     id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
 }
@@ -23,23 +24,37 @@ group 'io.github.springwolf'
 version '0.2.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
 dependencies {
-    implementation project(":springwolf-plugins:springwolf-cloud-stream-plugin")
-    compileOnly project(":springwolf-plugins:springwolf-cloud-stream-plugin")
+    implementation project(":springwolf-core")
+
+    runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream-plugin")
     annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream-plugin")
+
     runtimeOnly project(":springwolf-ui")
+    runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 
-    implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.springframework.cloud:spring-cloud-stream"
-    implementation "org.springframework.cloud:spring-cloud-stream-binder-kafka-streams"
+    implementation "com.asyncapi:asyncapi-core"
+    implementation "org.apache.kafka:kafka-streams"
     implementation "org.slf4j:slf4j-api"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.springframework.boot:spring-boot"
+    implementation "org.springframework:spring-beans"
+    implementation "org.springframework:spring-context"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+
+    testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
+    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.springframework.boot:spring-boot-test"
+    testImplementation "org.springframework:spring-test"
+
+    testImplementation "org.springframework:spring-web"
     testImplementation "org.springframework.kafka:spring-kafka-test"
-    testImplementation "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}"
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
-    testImplementation "org.skyscreamer:jsonassert:${jsonAssertVersion}"
+    testImplementation "org.skyscreamer:jsonassert"
     testImplementation "commons-io:commons-io:${commonsIoVersion}"
 }
 

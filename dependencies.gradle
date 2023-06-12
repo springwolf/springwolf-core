@@ -1,0 +1,53 @@
+/**
+ * Explicit dependencies file to share artifact versions between subprojects.
+ * This approach is compatible with dependabot.
+ * (see: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates#gradle)
+ *
+ * Naming strategy.
+ * There is no fixed rule for variable naming but there is a recommendation (which is not always appropriate).
+ * For most cases the following naming rule applies:
+ *  - use the artifactId
+ *  - split the artifactId by hyphens
+ *  - keep the first part of the splitted artifactId lowerCase
+ *  - add the remaining parts upperCase
+ *  - add a 'Version' suffix
+ *
+ *  e.g.: com.asyncapi:asyncapi-core' will be 'asyncapiCoreVersion'
+ *  e.g.: 'io.swagger.core.v3:swagger-core-jakarta' will be 'swaggerCoreJakartaVersion'
+ *
+ * The dependencies are sorted alphabetically.
+ */
+ext {
+    androidJsonVersion = '0.0.20131108.vaadin1'
+    assertjVersion = '3.24.2'
+    asyncapiCoreVersion = '1.0.0-EAP-2'
+    awaitilityVersion = '4.2.0'
+    commonsIoVersion = '2.12.0'
+
+    kafkaClientsVersion = '3.4.0'
+    kafkaStreamsVersion = '3.4.0'
+
+    mockitoCoreVersion = '4.8.1'
+    mockitoJunitJupiterVersion = '4.5.1'
+
+    monetaVersion = '1.4.2'
+    monetaCoreVersion = '1.4.2'
+
+    moneyApiVersion = '1.1'
+    jsonassertVersion = '1.5.1'
+
+    junitJupiterVersion = '5.9.3'
+    junitPlatformVersion = '1.9.3'
+
+    lombokVersion = '1.18.28'
+
+    swaggerCoreJakartaVersion = '2.2.11'
+    swaggerModelsJakartaVersion = '2.2.11'
+
+    swaggerAnnotationsVersion = '2.2.11'
+    swaggerInflectorVersion = '2.0.9'
+    swaggerModelsVersion = '2.2.11'
+    swaggerParserCoreVersion = '2.1.15'
+
+    testcontainersVersion = '1.18.3'
+}

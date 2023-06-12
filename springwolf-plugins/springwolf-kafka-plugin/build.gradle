@@ -3,8 +3,9 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
 }
 
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
@@ -15,23 +16,39 @@ version '0.11.0' + (isSnapshot ? '-SNAPSHOT' : '')
 dependencies {
     api project(":springwolf-core")
 
-    implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.springframework:spring-web"
-    implementation "org.springframework.kafka:spring-kafka"
-    implementation "io.swagger.core.v3:swagger-models:${swaggerCoreVersion}"
-
+    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-models:${swaggerModelsVersion}"
+    implementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}"
     implementation "org.slf4j:slf4j-api"
 
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.springframework:spring-beans"
+    implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-core"
+    implementation "org.springframework:spring-web"
 
+    implementation "org.springframework.boot:spring-boot"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+
+    implementation "org.springframework.kafka:spring-kafka"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-    testImplementation("org.springframework.boot:spring-boot-starter-web")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.springframework.boot:spring-boot-starter-web"
 
-    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-test-autoconfigure"
+    testImplementation "org.springframework.boot:spring-boot-test"
+
+    testImplementation "org.springframework:spring-test"
+
+    testImplementation "org.assertj:assertj-core"
 }
 
 jar {

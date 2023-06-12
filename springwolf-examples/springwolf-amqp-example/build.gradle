@@ -1,8 +1,9 @@
 plugins {
     id 'java'
 
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
 
     id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
 }
@@ -13,22 +14,40 @@ group 'io.github.springwolf'
 version '0.7.0' + (isSnapshot ? '-SNAPSHOT' : '')
 
 dependencies {
+    implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-amqp-plugin")
-    compileOnly project(":springwolf-plugins:springwolf-amqp-plugin")
+
     annotationProcessor project(":springwolf-plugins:springwolf-amqp-plugin")
     runtimeOnly project(":springwolf-ui")
 
-    implementation "org.springframework.boot:spring-boot-starter-web"
+    runtimeOnly "org.springframework.boot:spring-boot-starter-web"
+
     implementation "org.springframework.amqp:spring-rabbit"
     implementation "org.slf4j:slf4j-api"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
+    implementation "com.asyncapi:asyncapi-core"
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
-    testImplementation "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}"
-    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
-    testImplementation "org.skyscreamer:jsonassert:${jsonAssertVersion}"
+    implementation "org.springframework.amqp:spring-amqp"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.springframework.boot:spring-boot"
+    implementation "org.springframework:spring-beans"
+    implementation "org.springframework:spring-context"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+
     testImplementation "commons-io:commons-io:${commonsIoVersion}"
+    testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
+
+    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.skyscreamer:jsonassert"
+
+    testImplementation "org.springframework.boot:spring-boot-test"
+    testImplementation "org.springframework:spring-web"
+    testImplementation "org.springframework:spring-test"
+
+    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
 }
 
 docker {

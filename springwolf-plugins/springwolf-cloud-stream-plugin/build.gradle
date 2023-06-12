@@ -3,8 +3,9 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
 }
 
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
@@ -25,18 +26,27 @@ dependencyManagement {
 dependencies {
     api project(":springwolf-core")
 
-    implementation "org.springframework.cloud:spring-cloud-stream"
-
+    implementation "com.asyncapi:asyncapi-core"
     implementation "org.slf4j:slf4j-api"
+
+    implementation "org.springframework:spring-context"
+    implementation "org.springframework.cloud:spring-cloud-stream"
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testImplementation "org.projectlombok:lombok:${lombokVersion}"
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation "org.springframework.cloud:spring-cloud-stream-binder-kafka-streams"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation "org.apache.kafka:kafka-streams:${kafkaStreamsVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.mockito:mockito-core"
+
+    testImplementation "org.springframework.boot:spring-boot-test"
+    testImplementation "org.springframework:spring-beans"
+    testImplementation "org.springframework:spring-test"
 }
 
 jar {

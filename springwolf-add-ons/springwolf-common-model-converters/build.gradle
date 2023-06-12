@@ -3,8 +3,9 @@ plugins {
     id 'signing'
     id 'maven-publish'
 
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
 }
 
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
@@ -13,15 +14,19 @@ group 'io.github.springwolf'
 version '0.1.2' + (isSnapshot ? '-SNAPSHOT' : '')
 
 dependencies {
-    implementation "org.javamoney.moneta:moneta-core:${javaMoneyMonetaVersion}"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
-
     implementation "org.springframework:spring-context"
 
-    testImplementation "org.junit.platform:junit-platform-engine:${junitPlatformVersion}"
-    testImplementation "org.junit.platform:junit-platform-commons:${junitPlatformVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreJakartaVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerModelsJakartaVersion}"
+
+    implementation "javax.money:money-api"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
 }
 
 jar {

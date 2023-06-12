@@ -1,3 +1,15 @@
+buildscript {
+    // include dependency versions from explicit dependencies.gradle file
+    apply from: 'dependencies.gradle'
+}
+
+plugins {
+    id 'ca.cutterslade.analyze' version '1.9.1'
+
+    id 'io.spring.dependency-management' version '1.1.0'  apply(false)
+    id 'org.springframework.boot' version '3.1.0'  apply(false)
+}
+
 allprojects {
     apply plugin: 'java'
 
@@ -16,30 +28,4 @@ allprojects {
 
         mavenCentral()
     }
-}
-
-ext {
-    // dependencies sorted alphabetically
-    assertjVersion = '3.24.2'
-
-    asyncApiCoreVersion = '1.0.0-EAP-2'
-
-    awaitabilityVersion = '4.2.0'
-
-    commonsIoVersion = '2.12.0'
-
-    javaMoneyMonetaVersion = '1.4.2'
-
-    jsonAssertVersion = '1.5.1'
-
-    junitJupiterVersion = '5.9.3'
-    junitPlatformVersion = '1.9.3'
-
-    lombokVersion = '1.18.28'
-
-    swaggerInflectorVersion = '2.0.9'
-    swaggerCoreVersion = '2.2.11'
-    swaggerParserVersion = '2.1.15'
-
-    testcontainersVersion = '1.18.3'
 }
