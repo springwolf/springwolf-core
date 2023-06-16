@@ -20,7 +20,7 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
 
     private ObjectMapper jsonMapper = Json.mapper();
     private ObjectMapper yamlMapper = Yaml.mapper();
-    private PrettyPrinter printer = new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+    private PrettyPrinter printer = new CustomPrettyPrinter();
 
     @PostConstruct
     void postConstruct() {
@@ -101,4 +101,15 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
         printer = prettyPrinter;
     }
 
+    private static class CustomPrettyPrinter extends DefaultPrettyPrinter {
+        public CustomPrettyPrinter() {
+            super._arrayIndenter = new DefaultIndenter();
+            super._objectFieldValueSeparatorWithSpaces = _separators.getObjectFieldValueSeparator() + " ";
+        }
+
+        @Override
+        public CustomPrettyPrinter createInstance() {
+            return new CustomPrettyPrinter();
+        }
+    }
 }
