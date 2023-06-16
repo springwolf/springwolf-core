@@ -32,7 +32,7 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle-owasp-${{ steps.get-date.outputs.date }}
 
       - name: Generate DependencyCheck report
-        run: ./gradlew dependencyCheckAggregate --no-daemon
+        run: ./gradlew dependencyCheckAggregate
       - name: upload-sarif-4
         uses: github/codeql-action/upload-sarif@v2
         with:
