@@ -15,7 +15,6 @@ plugins {
 
 allprojects {
     apply plugin: 'java'
-//    apply plugin: 'org.owasp.dependencycheck'
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
