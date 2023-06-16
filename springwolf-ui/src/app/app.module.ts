@@ -49,8 +49,9 @@ import {AsyncApiMapperService} from "./shared/asyncapi-mapper.service";
     {
       provide: HIGHLIGHT_OPTIONS,
       useValue: {
-        languages: function () {
-          return { typescript: () => import('highlight.js/lib/languages/typescript') };
+        coreLibraryLoader: () => import('highlight.js/lib/core'),
+        languages: {
+          json: () => import('highlight.js/lib/languages/json'),
         }
       }
     }
