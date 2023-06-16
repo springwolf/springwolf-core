@@ -1,7 +1,7 @@
 {
-  "s" : "string",
   "f" : {
-    "s" : "string",
-    "b" : true
-  }
+    "b" : true,
+    "s" : "string"
+  },
+  "s" : "string"
 }

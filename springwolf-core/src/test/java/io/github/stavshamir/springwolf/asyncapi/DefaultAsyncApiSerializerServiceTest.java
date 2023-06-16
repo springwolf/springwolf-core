@@ -22,8 +22,6 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -80,7 +78,6 @@ class DefaultAsyncApiSerializerServiceTest {
         OperationBinding operationBinding = KafkaOperationBinding.builder().groupId(groupId).build();
 
         Operation newUserOperation = Operation.builder()
-                .description("Auto-generated description")
                 .operationId("new-user_listenerMethod_subscribe")
                 .message(message)
                 .bindings(Map.of("kafka", operationBinding))
@@ -110,7 +107,7 @@ class DefaultAsyncApiSerializerServiceTest {
         String actual = serializer.toJsonString(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
         String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+        assertEquals(expected, actual);
     }
 
     @Test

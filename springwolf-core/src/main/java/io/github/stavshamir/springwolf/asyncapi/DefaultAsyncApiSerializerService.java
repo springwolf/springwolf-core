@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
@@ -19,10 +20,12 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
 
     private ObjectMapper jsonMapper = Json.mapper();
     private ObjectMapper yamlMapper = Yaml.mapper();
-    private PrettyPrinter printer = new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+    private PrettyPrinter printer = new CustomPrettyPrinter();
 
     @PostConstruct
     void postConstruct() {
+        jsonMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+        yamlMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
         ((YAMLFactory)yamlMapper.getFactory()).enable(YAMLGenerator.Feature.INDENT_ARRAYS_WITH_INDICATOR);
     }
 
@@ -98,4 +101,15 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
         printer = prettyPrinter;
     }
 
+    private static class CustomPrettyPrinter extends DefaultPrettyPrinter {
+        public CustomPrettyPrinter() {
+            super._arrayIndenter = new DefaultIndenter();
+            super._objectFieldValueSeparatorWithSpaces = _separators.getObjectFieldValueSeparator() + " ";
+        }
+
+        @Override
+        public CustomPrettyPrinter createInstance() {
+            return new CustomPrettyPrinter();
+        }
+    }
 }

@@ -54,7 +54,6 @@ dependencies {
     testImplementation "org.springframework.kafka:spring-kafka-test"
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
-    testImplementation "org.skyscreamer:jsonassert"
     testImplementation "commons-io:commons-io:${commonsIoVersion}"
 }
 

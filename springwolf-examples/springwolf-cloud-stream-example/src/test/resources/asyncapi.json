@@ -13,7 +13,7 @@
       "name": "Apache License 2.0"
     }
   },
-  "defaultContentType" : "application/json",
+  "defaultContentType": "application/json",
   "servers": {
     "kafka": {
       "url": "kafka:29092",
@@ -26,10 +26,10 @@
         "operationId": "consumer-method-input-topic_publish_consumerMethod",
         "description": "Auto-generated description",
         "bindings": {
-          "kafka": {}
+          "kafka": { }
         },
         "message": {
-          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.cloudstream.payload.ConsumerPayload",
           "title": "ConsumerPayload",
           "payload": {
@@ -39,12 +39,12 @@
             "$ref": "#/components/schemas/HeadersNotDocumented"
           },
           "bindings": {
-            "kafka": {}
+            "kafka": { }
           }
         }
       },
       "bindings": {
-        "kafka": {}
+        "kafka": { }
       }
     },
     "input-topic": {
@@ -52,10 +52,10 @@
         "operationId": "input-topic_publish_process",
         "description": "Auto-generated description",
         "bindings": {
-          "kafka": {}
+          "kafka": { }
         },
         "message": {
-          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.cloudstream.payload.InputPayload",
           "title": "InputPayload",
           "payload": {
@@ -65,12 +65,12 @@
             "$ref": "#/components/schemas/HeadersNotDocumented"
           },
           "bindings": {
-            "kafka": {}
+            "kafka": { }
           }
         }
       },
       "bindings": {
-        "kafka": {}
+        "kafka": { }
       }
     },
     "output-topic": {
@@ -78,10 +78,10 @@
         "operationId": "output-topic_subscribe_process",
         "description": "Auto-generated description",
         "bindings": {
-          "kafka": {}
+          "kafka": { }
         },
         "message": {
-          "schemaFormat" : "application/vnd.oai.openapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.cloudstream.payload.OutputPayload",
           "title": "OutputPayload",
           "payload": {
@@ -91,12 +91,12 @@
             "$ref": "#/components/schemas/HeadersNotDocumented"
           },
           "bindings": {
-            "kafka": {}
+            "kafka": { }
           }
         }
       },
       "bindings": {
-        "kafka": {}
+        "kafka": { }
       }
     }
   },
@@ -115,29 +115,29 @@
       },
       "HeadersNotDocumented": {
         "type": "object",
-        "properties": {},
-        "example": {}
+        "properties": { },
+        "example": { }
       },
       "InputPayload": {
         "type": "object",
         "properties": {
+          "bar": {
+            "type": "integer",
+            "format": "int32"
+          },
           "foo": {
             "type": "array",
             "items": {
               "type": "string"
             }
-          },
-          "bar": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "description": "Input payload model",
         "example": {
+          "bar": 0,
           "foo": [
             "string"
-          ],
-          "bar": 0
+          ]
         }
       },
       "OutputPayload": {
@@ -146,25 +146,25 @@
         ],
         "type": "object",
         "properties": {
-          "someString": {
-            "type": "string",
-            "description": "Some string field",
-            "example": "some string value"
-          },
           "someLong": {
             "type": "integer",
             "description": "Some long field",
             "format": "int64",
             "example": 5
+          },
+          "someString": {
+            "type": "string",
+            "description": "Some string field",
+            "example": "some string value"
           }
         },
         "description": "Output payload model",
         "example": {
-          "someString": "some string value",
-          "someLong": 5
+          "someLong": 5,
+          "someString": "some string value"
         }
       }
     }
   },
-  "tags": []
+  "tags": [ ]
 }
