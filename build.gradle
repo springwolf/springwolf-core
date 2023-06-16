@@ -41,5 +41,5 @@ allprojects {
 
 dependencyCheck {
     outputDirectory = "$buildDir/reports/owasp-dependency-check"
-    formats = listOf(ReportGenerator.Format.SARIF.name)
+    formats = [ReportGenerator.Format.SARIF.toString()]
 }
