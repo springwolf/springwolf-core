@@ -18,14 +18,17 @@ public class CustomWebSecurityConfigurerAdapter {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
+        return http
+            .authorizeHttpRequests(it ->
+                it
                 // anyone can read the springwolf docs + ui
                 // also, anyone can publish messages (as enabled in application.properties)
                 .requestMatchers(DOCS_ENDPOINT, UI_RESOURCES, KAFKA_PUBLISH_ENDPOINT)
                 .permitAll()
 
                 .anyRequest()
-                .denyAll();
-        return http.build();
+                .denyAll()
+            )
+            .build();
     }
 }
