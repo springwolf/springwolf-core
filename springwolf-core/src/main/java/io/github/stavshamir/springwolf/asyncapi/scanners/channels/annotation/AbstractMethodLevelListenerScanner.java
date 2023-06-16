@@ -3,8 +3,8 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2._0_0.model.channel.ChannelItem;
-import com.asyncapi.v2._0_0.model.channel.operation.Operation;
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -114,6 +115,9 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
+        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
+
         Message message = Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
@@ -126,11 +130,11 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
                 .description("Auto-generated description")
                 .operationId(operationId)
                 .message(message)
-                .bindings(operationBinding)
+                .bindings(opBinding)
                 .build();
 
         return ChannelItem.builder()
-                .bindings(channelBinding)
+                .bindings(chBinding)
                 .publish(operation)
                 .build();
     }

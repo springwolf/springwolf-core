@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2._0_0.model.channel.ChannelItem;
-import com.asyncapi.v2._0_0.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
@@ -15,12 +15,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @Order(value = ChannelPriority.MANUAL_DEFINED)
@@ -59,6 +62,8 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         // AsyncApi does not support multiple bindings on a single channel
         Map<String, ? extends ChannelBinding> channelBinding = operationDataList.get(0).getChannelBinding();
         Map<String, ? extends OperationBinding> operationBinding = operationDataList.get(0).getOperationBinding();
+        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         String operationId = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
         String description = operationDataList.get(0).getDescription();
 
@@ -70,11 +75,11 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                 .description(description)
                 .operationId(operationId)
                 .message(getMessageObject(operationDataList))
-                .bindings(operationBinding)
+                .bindings(opBinding)
                 .build();
 
         ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder()
-                .bindings(channelBinding);
+                .bindings(chBinding);
         channelBuilder = switch (getOperationType()) {
             case PUBLISH -> channelBuilder.publish(operation);
             case SUBSCRIBE -> channelBuilder.subscribe(operation);

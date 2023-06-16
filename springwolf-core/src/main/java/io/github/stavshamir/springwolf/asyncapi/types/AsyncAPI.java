@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import com.asyncapi.v2._0_0.model.Tag;
-import com.asyncapi.v2._0_0.model.channel.ChannelItem;
-import com.asyncapi.v2._0_0.model.info.Info;
-import com.asyncapi.v2._0_0.model.server.Server;
+import com.asyncapi.v2._6_0.model.Tag;
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.info.Info;
+import com.asyncapi.v2._6_0.model.server.Server;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +36,7 @@ public class AsyncAPI {
      */
     @NonNull
     @Builder.Default
-    private String asyncapi = "2.0.0";
+    private String asyncapi = "2.6.0";
 
     /**
      * Identifier of the application the AsyncAPI document is defining.

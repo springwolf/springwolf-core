@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2._0_0.model.channel.ChannelItem;
-import com.asyncapi.v2._0_0.model.channel.operation.Operation;
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

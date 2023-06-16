@@ -2,8 +2,8 @@ package io.github.stavshamir.springwolf.producer;
 
 import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
-import com.asyncapi.v2._0_0.model.channel.ChannelItem;
-import com.asyncapi.v2._0_0.model.channel.operation.Operation;
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

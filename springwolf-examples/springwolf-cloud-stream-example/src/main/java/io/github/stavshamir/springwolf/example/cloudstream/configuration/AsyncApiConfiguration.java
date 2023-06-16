@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.example.cloudstream.configuration;
 
-import com.asyncapi.v2._0_0.model.info.Contact;
-import com.asyncapi.v2._0_0.model.info.Info;
-import com.asyncapi.v2._0_0.model.info.License;
-import com.asyncapi.v2._0_0.model.server.Server;
+import com.asyncapi.v2._6_0.model.info.Contact;
+import com.asyncapi.v2._6_0.model.info.Info;
+import com.asyncapi.v2._6_0.model.info.License;
+import com.asyncapi.v2._6_0.model.server.Server;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;

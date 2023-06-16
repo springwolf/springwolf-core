@@ -1,11 +1,9 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import com.asyncapi.v2._0_0.model.channel.ChannelItem;
-import com.asyncapi.v2._0_0.model.channel.operation.Operation;
-import com.asyncapi.v2._0_0.model.server.Server;
-import com.asyncapi.v2.binding.channel.ChannelBinding;
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.channel.operation.Operation;
+import com.asyncapi.v2._6_0.model.server.Server;
 import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
@@ -88,7 +86,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .bindings(buildOperationBinding())
                 .build();
 
-        Map<String, ? extends ChannelBinding> channelBinding = buildChannelBinding();
+        Map<String, Object> channelBinding = buildChannelBinding();
         return beanData.getBeanType() == FunctionalChannelBeanData.BeanType.CONSUMER
                 ? ChannelItem.builder().bindings(channelBinding).publish(operation).build()
                 : ChannelItem.builder().bindings(channelBinding).subscribe(operation).build();
@@ -99,12 +97,12 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private Map<String, ? extends OperationBinding> buildOperationBinding() {
+    private Map<String, Object> buildOperationBinding() {
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyOperationBinding());
     }
 
-    private Map<String, ? extends ChannelBinding> buildChannelBinding() {
+    private Map<String, Object> buildChannelBinding() {
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyChannelBinding());
     }
