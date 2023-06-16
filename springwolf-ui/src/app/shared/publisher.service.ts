@@ -12,7 +12,7 @@ export class PublisherService {
     const url = Endpoints.getPublishEndpoint(protocol);
     const params = new HttpParams().set('topic', topic);
     const body = {payload, headers, bindings};
-    console.log(`Publishing to ${url} with messageBinding ${bindings} and headers ${headers}: ${body}`);
+    console.log(`Publishing to ${url} with messageBinding ${JSON.stringify(bindings)} and headers ${JSON.stringify(headers)}: ${JSON.stringify(body)}`);
     return this.http.post(url, body, { params });
   }
 
