@@ -44,7 +44,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
     }
 
     private String resolveOrNull(String stringValue) {
-        return StringUtils.isEmpty(stringValue) ? null : resolver.resolveStringValue(stringValue);
+        return StringUtils.hasText(stringValue) ? resolver.resolveStringValue(stringValue) : null;
     }
 
     private Schema<?> resolveSchemaOrNull(KafkaAsyncMessageBinding messageBinding) {
