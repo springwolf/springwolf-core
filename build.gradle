@@ -18,6 +18,11 @@ allprojects {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    javadoc {
+        // Disable: warning: no comment
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+
     repositories {
         // For local development with snapshots
         mavenLocal() {
