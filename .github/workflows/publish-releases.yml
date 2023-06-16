@@ -167,7 +167,7 @@ jobs:
   publish-springwolf-ui-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up JDK
         uses: actions/setup-java@v3
