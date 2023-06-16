@@ -1,3 +1,5 @@
+import org.owasp.dependencycheck.reporting.ReportGenerator
+
 buildscript {
     // include dependency versions from explicit dependencies.gradle file
     apply from: 'dependencies.gradle'
@@ -6,8 +8,9 @@ buildscript {
 plugins {
     id 'ca.cutterslade.analyze' version '1.9.1'
 
-    id 'io.spring.dependency-management' version '1.1.0'  apply(false)
-    id 'org.springframework.boot' version '3.1.0'  apply(false)
+    id 'io.spring.dependency-management' version '1.1.0' apply(false)
+    id 'org.springframework.boot' version '3.1.0' apply(false)
+    id("org.owasp.dependencycheck") version "8.2.1"
 }
 
 allprojects {
@@ -33,4 +36,9 @@ allprojects {
 
         mavenCentral()
     }
+}
+
+dependencyCheck {
+    outputDirectory = "$buildDir/reports/owasp-dependency-check"
+    formats = [ReportGenerator.Format.SARIF.toString()]
 }
