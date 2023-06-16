@@ -6,8 +6,8 @@
     </div>
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="Example">
-        <div fxLayout="column">
-          <div [hidden]="isEmptyObject(operation.message.bindings.get(protocolName))" fxLayout="column" fxLayoutGap="5px">
+        <div class="flex-column">
+          <div [hidden]="isEmptyObject(operation.message.bindings.get(protocolName))" class="flex-column">
             <h4>Message Binding</h4>
             <textarea spellcheck="false"
                       #bindingTextArea
@@ -16,7 +16,7 @@
                       (keyup)="recalculateLineCount('massageBindingExample', bindingTextArea.value)"
             ></textarea>
           </div>
-          <div [hidden]="!(headersExample?.lineCount > 1)" fxLayout="column" fxLayoutGap="0px">
+          <div [hidden]="!(headersExample?.lineCount > 1)" class="flex-column">
 
               <h4>Header</h4>
               <textarea spellcheck="false"
@@ -27,7 +27,7 @@
               ></textarea>
 
           </div>
-          <div fxLayout="column" fxLayoutGap="5px">
+          <div class="flex-column">
             <h4>Message</h4>
             <textarea spellcheck="false"
                       #messageTextArea
@@ -36,7 +36,7 @@
                       (keyup)="recalculateLineCount('example', messageTextArea.value)"
             ></textarea>
           </div>
-          <div fxLayout fxLayoutGap="8px">
+          <div class="button-container flex gap-8">
             <button mat-raised-button color="primary"
                     (click)="publish(messageTextArea.value, headersTextArea?.value, bindingTextArea?.value)">
               Publish
@@ -72,7 +72,7 @@
           </span>
         </h4>
         <app-schema *ngIf="headers" [schema]="headers"></app-schema>
-        <div fxLayout="column">
+        <div class="flex-column">
           <app-json [json]="headersExample?.value"></app-json>
         </div>
       </mat-tab>

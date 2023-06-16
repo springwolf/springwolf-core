@@ -1,6 +1,7 @@
 textarea {
-    margin-top: 16px;
+    width: calc(100% - 16px);
     padding: 8px;
+    margin-top: 16px;
     border-radius: 4px;
     border-width: 0;
     line-height: 24px;
@@ -32,6 +33,10 @@ button {
   border-radius: 4px;
   padding: 6px;
   font-weight: normal;
+}
+
+.button-container {
+  height: 50px;
 }
 
 [hidden] {
