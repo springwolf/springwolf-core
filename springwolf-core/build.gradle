@@ -64,7 +64,6 @@ dependencies {
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
     testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
     testImplementation "org.mockito:mockito-core"
-    testImplementation "org.skyscreamer:jsonassert:${jsonassertVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
 

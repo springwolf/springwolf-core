@@ -40,7 +40,6 @@ dependencies {
 
     testImplementation "org.assertj:assertj-core"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "org.skyscreamer:jsonassert"
 
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-web"

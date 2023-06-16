@@ -34,7 +34,6 @@ ext {
     monetaCoreVersion = '1.4.2'
 
     moneyApiVersion = '1.1'
-    jsonassertVersion = '1.5.1'
 
     junitJupiterVersion = '5.9.3'
     junitPlatformVersion = '1.9.3'

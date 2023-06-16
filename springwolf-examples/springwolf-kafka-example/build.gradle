@@ -52,7 +52,6 @@ dependencies {
     testImplementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
     testImplementation "org.assertj:assertj-core"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
-    testImplementation "org.skyscreamer:jsonassert:${jsonassertVersion}"
     testImplementation "org.mockito:mockito-core"
 
     testImplementation "org.springframework.boot:spring-boot-test"
