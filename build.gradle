@@ -1,3 +1,5 @@
+import org.owasp.dependencycheck.reporting.ReportGenerator
+
 buildscript {
     // include dependency versions from explicit dependencies.gradle file
     apply from: 'dependencies.gradle'
@@ -13,7 +15,7 @@ plugins {
 
 allprojects {
     apply plugin: 'java'
-    apply plugin: 'org.owasp.dependencycheck'
+//    apply plugin: 'org.owasp.dependencycheck'
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
