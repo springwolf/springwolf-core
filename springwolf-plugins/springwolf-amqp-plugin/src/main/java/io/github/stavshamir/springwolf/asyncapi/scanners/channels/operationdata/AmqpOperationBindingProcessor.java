@@ -46,6 +46,6 @@ public class AmqpOperationBindingProcessor implements OperationBindingProcessor,
     }
 
     private String resolveOrNull(String stringValue) {
-        return StringUtils.isEmpty(stringValue) ? null : resolver.resolveStringValue(stringValue);
+        return StringUtils.hasText(stringValue) ? resolver.resolveStringValue(stringValue) : null;
     }
 }
