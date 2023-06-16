@@ -6,12 +6,14 @@ buildscript {
 plugins {
     id 'ca.cutterslade.analyze' version '1.9.1'
 
-    id 'io.spring.dependency-management' version '1.1.0'  apply(false)
-    id 'org.springframework.boot' version '3.1.0'  apply(false)
+    id 'io.spring.dependency-management' version '1.1.0' apply(false)
+    id 'org.springframework.boot' version '3.1.0' apply(false)
+    id("org.owasp.dependencycheck") version "8.2.1"
 }
 
 allprojects {
     apply plugin: 'java'
+//    apply plugin: 'org.owasp.dependencycheck'
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -33,4 +35,9 @@ allprojects {
 
         mavenCentral()
     }
+}
+
+dependencyCheck {
+    outputDirectory = "$buildDir/reports/owasp-dependency-check"
+    formats = listOf(ReportGenerator.Format.SARIF.name)
 }
