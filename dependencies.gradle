@@ -22,7 +22,7 @@ ext {
     assertjVersion = '3.24.2'
     asyncapiCoreVersion = '1.0.0-EAP-2'
     awaitilityVersion = '4.2.0'
-    commonsIoVersion = '2.12.0'
+    commonsIoVersion = '2.13.0'
 
     kafkaClientsVersion = '3.4.0'
     kafkaStreamsVersion = '3.4.0'
