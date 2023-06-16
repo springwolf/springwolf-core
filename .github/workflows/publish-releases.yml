@@ -56,7 +56,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Publish docker image
-        run: ./gradlew -p springwolf-examples/springwolf-amqp dockerBuildImage dockerPushImage
+        run: ./gradlew -p springwolf-examples/springwolf-amqp-example dockerBuildImage dockerPushImage
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
