@@ -67,6 +67,7 @@ class AsyncListenerAnnotationScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .description("SimpleFoo Message Description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP)
                 .build();
@@ -100,6 +101,7 @@ class AsyncListenerAnnotationScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .description("SimpleFoo Message Description")
+                .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("TestSchema"))
                 .bindings(EMPTY_MAP)
@@ -134,6 +136,7 @@ class AsyncListenerAnnotationScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP);
 
@@ -168,6 +171,41 @@ class AsyncListenerAnnotationScannerTest {
                                 "test-channel-2", expectedChannel2));
     }
 
+    @Test
+    void scan_componentHasAsyncMethodAnnotation() {
+        // Given a class with methods annotated with AsyncListener, where only the channel-name is set
+        setClassToScan(ClassWithMessageAnnotation.class);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannels = channelScanner.scan();
+
+        // Then the returned collection contains the channel
+        Message message = Message.builder()
+                .messageId("simpleFoo")
+                .name("SimpleFooPayLoad")
+                .title("Message Title")
+                .description("Message description")
+                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .schemaFormat("application/schema+json;version=draft-07")
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(EMPTY_MAP)
+                .build();
+
+        Operation operation = Operation.builder()
+                .description("test channel operation description")
+                .operationId("test-channel_publish")
+                .bindings(EMPTY_MAP)
+                .message(message)
+                .build();
+
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(null)
+                .publish(operation)
+                .build();
+
+        assertThat(actualChannels)
+                .containsExactly(Map.entry("test-channel", expectedChannel));
+    }
 
     private static class ClassWithoutListenerAnnotation {
 
@@ -219,6 +257,27 @@ class AsyncListenerAnnotationScannerTest {
         ))
         private void methodWithMultipleAnnotation(SimpleFoo payload) {
         }
+    }
+
+    private static class ClassWithMessageAnnotation {
+
+        @AsyncListener(operation = @AsyncOperation(
+                channelName = "test-channel",
+                description = "test channel operation description"
+        ))
+        private void methodWithAnnotation(
+                @AsyncMessage(
+                        description = "Message description",
+                        messageId = "simpleFoo",
+                        name = "SimpleFooPayLoad",
+                        schemaFormat = "application/schema+json;version=draft-07",
+                        title = "Message Title"
+                ) SimpleFoo payload) {
+        }
+
+        private void methodWithoutAnnotation() {
+        }
+
     }
 
     @Data

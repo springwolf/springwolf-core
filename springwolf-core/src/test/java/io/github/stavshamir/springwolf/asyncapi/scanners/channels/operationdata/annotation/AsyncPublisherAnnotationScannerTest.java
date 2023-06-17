@@ -51,7 +51,6 @@ class AsyncPublisherAnnotationScannerTest {
         assertThat(channels).isEmpty();
     }
 
-
     @Test
     void scan_componentHasPublisherMethod() {
         // Given a class with methods annotated with AsyncPublisher, where only the channel-name is set
@@ -172,6 +171,42 @@ class AsyncPublisherAnnotationScannerTest {
                                 "test-channel-2", expectedChannel2));
     }
 
+    @Test
+    void scan_componentHasPublisherMethodWithAsyncMessageAnnotation() {
+        // Given a class with methods annotated with AsyncListener, where only the channel-name is set
+        setClassToScan(ClassWithMessageAnnotation.class);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannels = channelScanner.scan();
+
+        // Then the returned collection contains the channel
+        Message message = Message.builder()
+                .messageId("simpleFoo")
+                .name("SimpleFooPayLoad")
+                .title("Message Title")
+                .description("Message description")
+                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .schemaFormat("application/schema+json;version=draft-07")
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(EMPTY_MAP)
+                .build();
+
+        Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-channel_subscribe")
+                .bindings(EMPTY_MAP)
+                .message(message)
+                .build();
+
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(null)
+                .subscribe(operation)
+                .build();
+
+        assertThat(actualChannels)
+                .containsExactly(Map.entry("test-channel", expectedChannel));
+    }
+
     private static class ClassWithoutPublisherAnnotation {
 
         private void methodWithoutAnnotation() {
@@ -226,5 +261,25 @@ class AsyncPublisherAnnotationScannerTest {
     private static class SimpleFoo {
         private String s;
         private boolean b;
+    }
+
+    private static class ClassWithMessageAnnotation {
+
+        @AsyncPublisher(operation = @AsyncOperation(
+                channelName = "test-channel"
+        ))
+        private void methodWithAnnotation(
+                @AsyncMessage(
+                        description = "Message description",
+                        messageId = "simpleFoo",
+                        name = "SimpleFooPayLoad",
+                        schemaFormat = "application/schema+json;version=draft-07",
+                        title = "Message Title"
+                ) SimpleFoo payload) {
+        }
+
+        private void methodWithoutAnnotation() {
+        }
+
     }
 }

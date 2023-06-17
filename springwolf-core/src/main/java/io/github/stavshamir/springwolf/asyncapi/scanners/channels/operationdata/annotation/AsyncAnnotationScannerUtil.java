@@ -4,11 +4,13 @@ import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -78,5 +80,24 @@ class AsyncAnnotationScannerUtil {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toMap(ProcessedMessageBinding::getType, ProcessedMessageBinding::getBinding));
+    }
+
+    public static Message processMessageFromAnnotation(Method method) {
+        var messageBuilder = Message.builder();
+
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        for (Annotation[] annotations : parameterAnnotations) {
+            for (Annotation annotation : annotations) {
+                if (annotation instanceof AsyncMessage asyncMessage) {
+                    messageBuilder.description(asyncMessage.description());
+                    messageBuilder.messageId(asyncMessage.messageId());
+                    messageBuilder.name(asyncMessage.name());
+                    messageBuilder.schemaFormat(asyncMessage.schemaFormat());
+                    messageBuilder.title(asyncMessage.title());
+                }
+            }
+        }
+
+        return messageBuilder.build();
     }
 }

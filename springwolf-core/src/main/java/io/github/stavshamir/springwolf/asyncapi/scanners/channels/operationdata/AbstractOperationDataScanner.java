@@ -14,6 +14,7 @@ import io.github.stavshamir.springwolf.schemas.SchemasService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -100,17 +101,50 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         String modelName = this.getSchemaService().register(payloadType);
         String headerModelName = this.getSchemaService().register(operationData.getHeaders());
 
-        Schema schema = payloadType.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        /*
+         * Message information can be obtained via a @AsyncMessage annotation on the method parameter, the Payload
+         * itself or via the Swagger @Schema annotation on the Payload.
+         */
+
+        var schema = payloadType.getAnnotation(Schema.class);
         String description = schema != null ? schema.description() : null;
 
-        return Message.builder()
+        var builder = Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
                 .description(description)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
-                .bindings(operationData.getMessageBinding())
-                .build();
+                .bindings(operationData.getMessageBinding());
+
+        // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher priority
+        //  so if we find them, we need to override the default values.
+        processAsyncMessageAnnotation(operationData.getMessage(), builder);
+
+        return builder.build();
     }
 
+    private void processAsyncMessageAnnotation(Message annotationMessage, Message.MessageBuilder builder) {
+        if (annotationMessage != null) {
+            builder.messageId(annotationMessage.getMessageId());
+
+            var schemaFormat = annotationMessage.getSchemaFormat() != null ? annotationMessage.getSchemaFormat() : Message.DEFAULT_SCHEMA_FORMAT;
+            builder.schemaFormat(schemaFormat);
+
+            var annotationMessageDescription = annotationMessage.getDescription();
+            if (StringUtils.hasText(annotationMessageDescription)) {
+                builder.description(annotationMessageDescription);
+            }
+
+            var name = annotationMessage.getName();
+            if (StringUtils.hasText(name)) {
+                builder.name(annotationMessage.getName());
+            }
+
+            var title = annotationMessage.getTitle();
+            if (StringUtils.hasText(title)) {
+                builder.title(annotationMessage.getTitle());
+            }
+        }
+    }
 }

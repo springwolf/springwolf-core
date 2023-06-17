@@ -25,5 +25,6 @@ public class TestOperationBindingProcessor implements OperationBindingProcessor 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(value = {ElementType.METHOD})
     public @interface TestOperationBinding {
+        TestMessageBindingProcessor.TestMessageBinding messageBinding() default @TestMessageBindingProcessor.TestMessageBinding();
     }
 }
