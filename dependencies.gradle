@@ -28,7 +28,7 @@ ext {
     kafkaStreamsVersion = '3.4.0'
 
     mockitoCoreVersion = '4.8.1'
-    mockitoJunitJupiterVersion = '4.5.1'
+    mockitoJunitJupiterVersion = '5.4.0'
 
     monetaVersion = '1.4.2'
     monetaCoreVersion = '1.4.2'
