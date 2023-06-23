@@ -37,22 +37,22 @@ dependencies {
     implementation "org.springframework.security:spring-security-config"
     implementation "org.springframework.security:spring-security-web"
 
-    implementation "com.asyncapi:asyncapi-core"
+    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
-    implementation "org.slf4j:slf4j-api"
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "javax.money:money-api:${moneyApiVersion}"
     implementation "org.javamoney:moneta:${monetaVersion}"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 
     testImplementation "commons-io:commons-io:${commonsIoVersion}"
     testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
 
     testImplementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
-    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
-    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework.kafka:spring-kafka-test"
@@ -61,7 +61,7 @@ dependencies {
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
     permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaClientsVersion}:test@jar"
 }
 

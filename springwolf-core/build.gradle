@@ -27,20 +27,20 @@ dependencies {
         // the 'old' javax.validation groupId.
 
         exclude group: "io.swagger.core.v3"
-//        exclude group: "io.swagger"  // not possible
         exclude group: "javax.validation"
     }
 
     implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerAnnotationsVersion}@jar"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreJakartaVersion}"
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations"
-    implementation "com.fasterxml.jackson.core:jackson-core"
-    implementation "com.fasterxml.jackson.core:jackson-databind"
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonAnnotationsVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonCoreVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonDataformatYamlVersion}"
 
-    implementation "org.slf4j:slf4j-api"
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
+    implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework:spring-web"
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-messaging"
@@ -48,9 +48,8 @@ dependencies {
     implementation "org.springframework:spring-core"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
 
-    implementation "io.swagger.core.v3:swagger-models-jakarta"
-    implementation "jakarta.annotation:jakarta.annotation-api"
-    implementation "org.springframework.boot:spring-boot"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerModelsJakartaVersion}"
+    implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationApiVersion}"
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
@@ -60,14 +59,14 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
-    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 }
 
 jar {

@@ -19,7 +19,7 @@ dependencies {
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "io.swagger.core.v3:swagger-models:${swaggerModelsVersion}"
     implementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}"
-    implementation "org.slf4j:slf4j-api"
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
@@ -35,10 +35,10 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
     testRuntimeOnly "org.springframework.boot:spring-boot-starter-web"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
     testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
@@ -48,7 +48,7 @@ dependencies {
 
     testImplementation "org.springframework:spring-test"
 
-    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
 }
 
 jar {

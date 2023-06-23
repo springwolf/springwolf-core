@@ -16,17 +16,17 @@ version '0.1.2' + (isSnapshot ? '-SNAPSHOT' : '')
 dependencies {
     implementation "org.springframework:spring-context"
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations"
-    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonAnnotationsVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
 
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta"
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerAnnotationsJakartaVersion}"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreJakartaVersion}"
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerModelsJakartaVersion}"
 
-    implementation "javax.money:money-api"
+    implementation "javax.money:money-api:${moneyApiVersion}"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 }
 
 jar {
