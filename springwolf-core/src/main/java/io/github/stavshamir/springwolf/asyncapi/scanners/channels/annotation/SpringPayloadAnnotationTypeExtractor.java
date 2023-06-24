@@ -31,13 +31,8 @@ public class SpringPayloadAnnotationTypeExtractor {
         try {
             // Resolve generic type for batch listeners
             if (parameterClass == List.class) {
-                try {
-                    Type type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex]).getActualTypeArguments()[0];
-                    return Class.forName(type.getTypeName());
-                } catch (IllegalAccessError error) {
-                    // remove, when the used java version has been upgraded to support java modules
-                    log.info("Springwolf was not compiled for the Java version you are using. More info: https://github.com/springwolf/springwolf-core/issues/132");
-                }
+                Type type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex]).getActualTypeArguments()[0];
+                return Class.forName(type.getTypeName());
             }
         } catch (Exception ex) {
             log.info("Found payload type List<?>, but was unable to extract generic data type", ex);
