@@ -32,9 +32,9 @@ dependencies {
     runtimeOnly project(":springwolf-ui")
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 
-    implementation "com.asyncapi:asyncapi-core"
-    implementation "org.apache.kafka:kafka-streams"
-    implementation "org.slf4j:slf4j-api"
+    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
+    implementation "org.apache.kafka:kafka-streams:${kafkaStreamsVersion}"
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
 
     implementation "org.springframework.boot:spring-boot-autoconfigure"
@@ -42,11 +42,11 @@ dependencies {
     implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 
     testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
-    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
 

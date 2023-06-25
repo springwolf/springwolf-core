@@ -19,13 +19,20 @@
  */
 ext {
     androidJsonVersion = '0.0.20131108.vaadin1'
-    assertjVersion = '3.24.2'
+    assertjCoreVersion = '3.24.2'
     asyncapiCoreVersion = '1.0.0-EAP-2'
     awaitilityVersion = '4.2.0'
     commonsIoVersion = '2.13.0'
 
     kafkaClientsVersion = '3.4.0'
     kafkaStreamsVersion = '3.4.0'
+
+    jacksonAnnotationsVersion = '2.15.0'
+    jacksonCoreVersion = '2.15.0'
+    jacksonDatabindVersion = '2.15.0'
+    jacksonDataformatYamlVersion = '2.15.0'
+
+    jakartaAnnotationApiVersion = '2.1.1'
 
     mockitoCoreVersion = '4.8.1'
     mockitoJunitJupiterVersion = '4.5.1'
@@ -40,9 +47,12 @@ ext {
 
     lombokVersion = '1.18.28'
 
+    slf4jApiVersion = '2.0.7'
+
     swaggerCoreJakartaVersion = '2.2.11'
     swaggerModelsJakartaVersion = '2.2.11'
 
+    swaggerAnnotationsJakartaVersion = '2.2.11'
     swaggerAnnotationsVersion = '2.2.12'
     swaggerInflectorVersion = '2.0.9'
     swaggerModelsVersion = '2.2.11'

@@ -23,9 +23,9 @@ dependencies {
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 
     implementation "org.springframework.amqp:spring-rabbit"
-    implementation "org.slf4j:slf4j-api"
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
-    implementation "com.asyncapi:asyncapi-core"
+    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
 
     implementation "org.springframework.amqp:spring-amqp"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
@@ -33,13 +33,13 @@ dependencies {
     implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 
     testImplementation "commons-io:commons-io:${commonsIoVersion}"
     testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
 
-    testImplementation "org.assertj:assertj-core"
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-web"

@@ -26,8 +26,8 @@ dependencyManagement {
 dependencies {
     api project(":springwolf-core")
 
-    implementation "com.asyncapi:asyncapi-core"
-    implementation "org.slf4j:slf4j-api"
+    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "org.springframework:spring-context"
     implementation "org.springframework.cloud:spring-cloud-stream"
@@ -37,12 +37,12 @@ dependencies {
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 
-    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.apache.kafka:kafka-streams:${kafkaStreamsVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-beans"
