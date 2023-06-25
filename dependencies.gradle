@@ -55,7 +55,7 @@ ext {
     swaggerAnnotationsJakartaVersion = '2.2.11'
     swaggerAnnotationsVersion = '2.2.12'
     swaggerInflectorVersion = '2.0.9'
-    swaggerModelsVersion = '2.2.11'
+    swaggerModelsVersion = '2.2.12'
     swaggerParserCoreVersion = '2.1.15'
 
     testcontainersVersion = '1.18.3'
