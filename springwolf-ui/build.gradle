@@ -12,8 +12,8 @@ version = '0.8.0' + (isSnapshot ? '-SNAPSHOT' : '')
 sourceCompatibility = JavaVersion.VERSION_17
 
 node {
-  version = '18.14.2'
-  npmVersion = '9.5.0'
+  version = '18.16.1'
+  npmVersion = '9.5.1'
   download = true
 }
 
