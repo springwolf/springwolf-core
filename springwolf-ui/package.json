@@ -28,7 +28,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.0",
     "@angular/cli": "^16.1.0",
-    "@angular/compiler-cli": "^16.1.1",
+    "@angular/compiler-cli": "^16.1.2",
     "@types/node": "^12.11.1",
     "angular-in-memory-web-api": "^0.16.0",
     "typescript": "^5.0.4"
