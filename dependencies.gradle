@@ -29,7 +29,7 @@ ext {
 
     jacksonAnnotationsVersion = '2.15.0'
     jacksonCoreVersion = '2.15.0'
-    jacksonDatabindVersion = '2.15.0'
+    jacksonDatabindVersion = '2.15.2'
     jacksonDataformatYamlVersion = '2.15.0'
 
     jakartaAnnotationApiVersion = '2.1.1'
