@@ -38,7 +38,7 @@ dependencies {
     implementation "org.springframework.security:spring-security-web"
 
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
-    implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerCoreJakartaVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "javax.money:money-api:${moneyApiVersion}"
