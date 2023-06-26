@@ -1,12 +1,16 @@
+build/
+springwolf-add-ons/build/
 springwolf-core/build/
+springwolf-examples/build/
+springwolf-plugins/build/
 springwolf-ui/build/
+springwolf-add-ons/springwolf-common-model-converters/build/
 springwolf-examples/springwolf-amqp-example/build/
 springwolf-examples/springwolf-cloud-stream-example/build/
 springwolf-examples/springwolf-kafka-example/build/
 springwolf-plugins/springwolf-amqp-plugin/build/
 springwolf-plugins/springwolf-cloud-stream-plugin/build/
 springwolf-plugins/springwolf-kafka-plugin/build/
-springwolf-add-ons/springwolf-common-model-converters/build/
 
 .gradle/
 .idea/
