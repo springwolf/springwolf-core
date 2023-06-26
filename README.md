@@ -69,7 +69,7 @@ repositories {
 }
 ```
 
-Or `pom.xml` when you are using maven:
+Or add the `repository` to your `pom.xml` if you are using maven:
 ```xml
 <repositories>    
     <repository>
