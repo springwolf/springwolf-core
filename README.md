@@ -69,5 +69,19 @@ repositories {
 }
 ```
 
+Or `pom.xml` when you are using maven:
+```xml
+<repositories>    
+    <repository>
+        <id>oss-sonatype</id>
+        <name>oss-sonatype</name>
+        <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+ </repositories>
+ ```
+
 #### Local Snapshots
 To work with local snapshots, run the `publishToMavenLocal` task with `-Dsnapshot=true`.
