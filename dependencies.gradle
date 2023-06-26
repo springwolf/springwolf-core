@@ -27,10 +27,7 @@ ext {
     kafkaClientsVersion = '3.4.0'
     kafkaStreamsVersion = '3.4.0'
 
-    jacksonAnnotationsVersion = '2.15.0'
     jacksonCoreVersion = '2.15.0'
-    jacksonDatabindVersion = '2.15.0'
-    jacksonDataformatYamlVersion = '2.15.0'
 
     jakartaAnnotationApiVersion = '2.1.1'
 
@@ -38,7 +35,6 @@ ext {
     mockitoJunitJupiterVersion = '5.4.0'
 
     monetaVersion = '1.4.2'
-    monetaCoreVersion = '1.4.2'
 
     moneyApiVersion = '1.1'
 
