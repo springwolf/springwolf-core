@@ -49,7 +49,7 @@ ext {
 
     slf4jApiVersion = '2.0.7'
 
-    swaggerCoreJakartaVersion = '2.2.13'
+    swaggerCoreJakartaVersion = '2.2.14'
 
     swaggerInflectorVersion = '2.0.9'
     swaggerModelsVersion = '2.2.12'
