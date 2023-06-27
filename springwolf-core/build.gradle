@@ -11,8 +11,8 @@ plugins {
 
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
-group = 'io.github.springwolf'
-version = '0.11.0' + (isSnapshot ? '-SNAPSHOT' : '')
+group 'io.github.springwolf'
+version '0.11.1' + (isSnapshot ? '-SNAPSHOT' : '')
 
 dependencies {
     api "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
