@@ -19,9 +19,9 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonAnnotationsVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
 
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerCoreJakartaVersion}"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreJakartaVersion}"
-    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerCoreJakartaVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerCoreVersion}"
 
     implementation "javax.money:money-api:${moneyApiVersion}"
 

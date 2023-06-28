@@ -17,7 +17,7 @@ dependencies {
     api project(":springwolf-core")
 
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
-    implementation "io.swagger.core.v3:swagger-models:${swaggerModelsVersion}"
+    implementation "io.swagger.core.v3:swagger-models:${swaggerCoreVersion}"
     implementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 

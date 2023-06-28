@@ -30,8 +30,8 @@ dependencies {
         exclude group: "javax.validation"
     }
 
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerCoreJakartaVersion}@jar"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreJakartaVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerCoreVersion}@jar"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
 
     implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonAnnotationsVersion}"
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonCoreVersion}"
@@ -48,7 +48,7 @@ dependencies {
     implementation "org.springframework:spring-core"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
 
-    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerCoreJakartaVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerCoreVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationApiVersion}"
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"

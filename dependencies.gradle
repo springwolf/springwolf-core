@@ -13,7 +13,7 @@
  *  - add a 'Version' suffix
  *
  *  e.g.: com.asyncapi:asyncapi-core' will be 'asyncapiCoreVersion'
- *  e.g.: 'io.swagger.core.v3:swagger-core-jakarta' will be 'swaggerCoreJakartaVersion'
+ *  e.g.: 'io.swagger.core.v3:swagger-core-jakarta' will be 'swaggerCoreVersion'
  *
  * The dependencies are sorted alphabetically.
  */
@@ -51,10 +51,9 @@ ext {
 
     slf4jApiVersion = '2.0.7'
 
-    swaggerCoreJakartaVersion = '2.2.13'
+    swaggerCoreVersion = '2.2.13'
 
     swaggerInflectorVersion = '2.0.9'
-    swaggerModelsVersion = '2.2.12'
     swaggerParserCoreVersion = '2.1.15'
 
     testcontainersVersion = '1.18.3'

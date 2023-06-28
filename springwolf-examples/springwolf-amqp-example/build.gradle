@@ -24,7 +24,7 @@ dependencies {
 
     implementation "org.springframework.amqp:spring-rabbit"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
-    implementation "io.swagger.core.v3:swagger-annotations:${swaggerCoreJakartaVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerCoreVersion}"
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
 
     implementation "org.springframework.amqp:spring-amqp"
