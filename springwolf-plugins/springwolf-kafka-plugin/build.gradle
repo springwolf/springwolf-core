@@ -31,6 +31,8 @@ dependencies {
 
     implementation "org.springframework.kafka:spring-kafka"
 
+    compileOnly "com.google.code.findbugs:jsr305:${findbugsJSR305Version}"
+
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
