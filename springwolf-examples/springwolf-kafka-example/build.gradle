@@ -94,13 +94,7 @@ spotless {
     encoding 'UTF-8'
 
     java {
-
-//        googleJavaFormat()
-        googleJavaFormat().aosp()
-//        eclipse()
-//        clangFormat()
-//        formatAnnotations()
-
+        palantirJavaFormat()
 
         importOrder('', 'javax', 'java', '\\#')
         removeUnusedImports()
