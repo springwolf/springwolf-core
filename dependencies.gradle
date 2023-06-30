@@ -29,7 +29,7 @@ ext {
     kafkaClientsVersion = '3.4.0'
     kafkaStreamsVersion = '3.4.0'
 
-    jacksonCoreVersion = '2.15.0'
+    jacksonCoreVersion = '2.15.2'
 
     jakartaAnnotationApiVersion = '2.1.1'
 
