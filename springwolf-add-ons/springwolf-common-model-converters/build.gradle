@@ -16,8 +16,8 @@ version '0.1.2' + (isSnapshot ? '-SNAPSHOT' : '')
 dependencies {
     implementation "org.springframework:spring-context"
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonAnnotationsVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonCoreVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonCoreVersion}"
 
     implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerCoreVersion}"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"

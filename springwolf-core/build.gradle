@@ -33,10 +33,10 @@ dependencies {
     implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerCoreVersion}@jar"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonAnnotationsVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonCoreVersion}"
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonCoreVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonDataformatYamlVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonCoreVersion}"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonCoreVersion}"
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
