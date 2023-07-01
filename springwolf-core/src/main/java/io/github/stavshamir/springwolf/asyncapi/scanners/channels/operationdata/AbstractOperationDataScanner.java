@@ -86,6 +86,10 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
             case PUBLISH -> channelBuilder.publish(operation);
             case SUBSCRIBE -> channelBuilder.subscribe(operation);
         };
+
+        // Only set servers if servers are defined. Avoid setting an emtpy list
+        // because this would generate empty server entries for each channel in the resulting
+        // async api.
         if(!servers.isEmpty()){
             channelBuilder.servers(servers);
         }
