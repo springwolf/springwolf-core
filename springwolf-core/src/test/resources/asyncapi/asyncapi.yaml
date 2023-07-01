@@ -21,6 +21,8 @@ servers:
 channels:
   new-user:
     description: This channel is used to exchange messages about users signing up
+    servers:
+      - production
     subscribe:
       operationId: new-user_listenerMethod_subscribe
       bindings:

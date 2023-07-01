@@ -115,6 +115,7 @@ class ConsumerOperationDataScannerTest {
         ConsumerData consumerData1 = ConsumerData.builder()
                 .channelName(channelName)
                 .description(description1)
+                .server("kafka1")
                 .channelBinding(Map.of("kafka", new KafkaChannelBinding()))
                 .operationBinding(Map.of("kafka", new KafkaOperationBinding()))
                 .messageBinding(Map.of("kafka", new KafkaMessageBinding()))
@@ -124,6 +125,7 @@ class ConsumerOperationDataScannerTest {
         ConsumerData consumerData2 = ConsumerData.builder()
                 .channelName(channelName)
                 .description(description2)
+                .server("kafka2")
                 .channelBinding(Map.of("kafka", new KafkaChannelBinding()))
                 .operationBinding(Map.of("kafka", new KafkaOperationBinding()))
                 .messageBinding(Map.of("kafka", new KafkaMessageBinding()))
@@ -170,6 +172,7 @@ class ConsumerOperationDataScannerTest {
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
+                .servers(List.of("kafka1"))  // First Consumerdata Server Entry
                 .bindings(Map.of("kafka", new KafkaChannelBinding()))
                 .publish(operation)
                 .build();

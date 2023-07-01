@@ -85,6 +85,7 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
         return ConsumerData.builder()
                 .channelName(resolver.resolveStringValue(op.channelName()))
                 .description(resolver.resolveStringValue(op.description()))
+                .servers(AsyncAnnotationScannerUtil.getServers(op, resolver))
                 .headers(AsyncAnnotationScannerUtil.getAsyncHeaders(op, resolver))
                 .payloadType(payloadType)
                 .operationBinding(operationBindings)

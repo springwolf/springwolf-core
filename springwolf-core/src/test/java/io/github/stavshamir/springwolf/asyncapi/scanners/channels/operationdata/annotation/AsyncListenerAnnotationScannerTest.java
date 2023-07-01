@@ -19,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +30,12 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AsyncListenerAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
-@TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
+@TestPropertySource(properties = {
+        "test.property.test-channel=test-channel",
+        "test.property.description=description",
+        "test.property.server1=server1",
+        "test.property.server2=server2"
+})
 class AsyncListenerAnnotationScannerTest {
 
     @Autowired
@@ -114,6 +120,7 @@ class AsyncListenerAnnotationScannerTest {
 
         ChannelItem expectedChannel = ChannelItem.builder()
                 .bindings(null)
+                .servers(List.of("server1", "server2"))
                 .publish(operation)
                 .build();
 
@@ -194,6 +201,7 @@ class AsyncListenerAnnotationScannerTest {
         @AsyncListener(operation = @AsyncOperation(
                 channelName = "${test.property.test-channel}",
                 description = "${test.property.description}",
+                servers = {"${test.property.server1}", "${test.property.server2}"},
                 headers = @AsyncOperation.Headers(
                         schemaName = "TestSchema",
                         values = {@AsyncOperation.Headers.Header(name = "header", value = "value")}

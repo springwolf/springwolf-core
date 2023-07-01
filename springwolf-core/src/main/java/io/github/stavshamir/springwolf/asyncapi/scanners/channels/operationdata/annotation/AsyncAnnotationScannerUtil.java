@@ -10,10 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -78,5 +75,19 @@ class AsyncAnnotationScannerUtil {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toMap(ProcessedMessageBinding::getType, ProcessedMessageBinding::getBinding));
+    }
+
+    /**
+     * extracts servers array from the given AsyncOperation, resolves placeholdes with spring variables and
+     * return a List of server names.
+     *
+     * @param op       the given AsyncOperation
+     * @param resolver the StringValueResolver to resolve placeholders
+     * @return List of server names
+     */
+    public static List<String> getServers(AsyncOperation op, StringValueResolver resolver) {
+        return Arrays.stream(op.servers())
+                .map(resolver::resolveStringValue)
+                .collect(Collectors.toList());
     }
 }

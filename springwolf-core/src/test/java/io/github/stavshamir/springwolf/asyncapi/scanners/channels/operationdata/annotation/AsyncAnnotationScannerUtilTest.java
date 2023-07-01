@@ -8,10 +8,10 @@ import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -50,10 +50,25 @@ class AsyncAnnotationScannerUtilTest {
         assertEquals(Maps.newHashMap(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING), bindings);
     }
 
+    @Test
+    void getServers() throws NoSuchMethodException {
+        Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
+        AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
+
+        StringValueResolver resolver = mock(StringValueResolver.class);
+
+        // when
+        when(resolver.resolveStringValue("${test.property.server1}")).thenReturn("server1");
+
+        List<String> servers = AsyncAnnotationScannerUtil.getServers(operation, resolver);
+        assertEquals(List.of("server1"), servers );
+    }
+
     private static class ClassWithOperationBindingProcessor {
         @AsyncListener(operation = @AsyncOperation(
                 channelName = "${test.property.test-channel}",
                 description = "${test.property.description}",
+                servers = {"${test.property.server1}"},
                 headers = @AsyncOperation.Headers(
                         schemaName = "TestSchema",
                         values = {@AsyncOperation.Headers.Header(name = "header", value = "value", description = "description")}

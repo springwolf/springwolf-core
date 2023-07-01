@@ -48,7 +48,8 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
     private boolean allFieldsAreNonNull(OperationData operationData) {
         boolean allNonNull = operationData.getChannelName() != null
                 && operationData.getPayloadType() != null
-                && operationData.getOperationBinding() != null;
+                && operationData.getOperationBinding() != null
+                && operationData.getServers() != null;
 
         if (!allNonNull) {
             log.warn("Some data fields are null - this producer will not be documented: {}", operationData);
@@ -66,6 +67,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         String operationId = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
         String description = operationDataList.get(0).getDescription();
+        List<String> servers = operationDataList.get(0).getServers();
 
         if (description.isEmpty()) {
             description = "Auto-generated description";
@@ -84,6 +86,9 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
             case PUBLISH -> channelBuilder.publish(operation);
             case SUBSCRIBE -> channelBuilder.subscribe(operation);
         };
+        if(!servers.isEmpty()){
+            channelBuilder.servers(servers);
+        }
         return channelBuilder.build();
     }
 

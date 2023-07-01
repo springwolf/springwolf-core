@@ -26,6 +26,14 @@ public @interface AsyncOperation {
     String description() default "";
 
     /**
+     * The servers on which this channel is available, list of names of Server Objects.
+     * If servers is empty then this channel is available on all servers defined in the Async API.
+     * Mapped to (
+     * @return
+     */
+    String[] servers() default {};
+
+    /**
      * Mapped to {@link OperationData#getPayloadType()}
      */
     Class<?> payloadType() default Object.class;

@@ -75,16 +75,17 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
         Class<AsyncPublisher> annotationClass = AsyncPublisher.class;
         return Arrays
                 .stream(method.getAnnotationsByType(annotationClass))
-                .map(annotation -> toConsumerData(method, operationBindings, messageBindings, annotation));
+                .map(annotation -> toProducerData(method, operationBindings, messageBindings, annotation));
     }
 
-    private ProducerData toConsumerData(Method method, Map<String, OperationBinding> operationBindings, Map<String, MessageBinding> messageBindings, AsyncPublisher annotation) {
+    private ProducerData toProducerData(Method method, Map<String, OperationBinding> operationBindings, Map<String, MessageBinding> messageBindings, AsyncPublisher annotation) {
         AsyncOperation op = annotation.operation();
         Class<?> payloadType = op.payloadType() != Object.class ? op.payloadType() :
                 SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
         return ProducerData.builder()
                 .channelName(resolver.resolveStringValue(op.channelName()))
                 .description(resolver.resolveStringValue(op.description()))
+                .servers(AsyncAnnotationScannerUtil.getServers(op, resolver))
                 .headers(AsyncAnnotationScannerUtil.getAsyncHeaders(op, resolver))
                 .payloadType(payloadType)
                 .operationBinding(operationBindings)
