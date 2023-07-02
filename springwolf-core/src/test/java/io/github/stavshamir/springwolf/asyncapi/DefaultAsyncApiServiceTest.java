@@ -1,12 +1,13 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.info.Info;
 import com.asyncapi.v2._6_0.model.server.Server;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ConsumerOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProducerOperationDataScanner;
+import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -33,9 +35,11 @@ import static org.assertj.core.api.Assertions.assertThat;
         DefaultChannelsService.class,
         DefaultSchemasService.class,
         ProducerOperationDataScanner.class,
-        ConsumerOperationDataScanner.class
+        ConsumerOperationDataScanner.class,
 })
-@Import(DefaultAsyncApiServiceTest.DefaultAsyncApiServiceTestConfiguration.class)
+@Import({DefaultAsyncApiServiceTest.DefaultAsyncApiServiceTestConfiguration.class,
+        DefaultAsyncApiServiceTest.TestDescriptionCustomizer.class,
+        DefaultAsyncApiServiceTest.TestDescriptionCustomizer2.class})
 class DefaultAsyncApiServiceTest {
 
     @TestConfiguration
@@ -87,6 +91,8 @@ class DefaultAsyncApiServiceTest {
 
         assertThat(actualInfo).
                 isEqualTo(docket.getInfo());
+        assertThat(actualInfo.getDescription())
+                .isEqualTo("AsyncApiInfoDescriptionCustomizer2");
     }
 
     @Test
@@ -127,4 +133,25 @@ class DefaultAsyncApiServiceTest {
         assertThat(message.getBindings()).isEqualTo(Map.of("kafka", new KafkaMessageBinding()));
     }
 
+    @Order(TestDescriptionCustomizer.CUSTOMIZER_ORDER)
+    public static class TestDescriptionCustomizer implements AsyncApiCustomizer {
+        public static final int CUSTOMIZER_ORDER = 0;
+
+        @Override
+        public void customize(AsyncAPI asyncAPI) {
+            asyncAPI.getInfo().setDescription("AsyncApiInfoDescriptionCustomizer");
+        }
+    }
+
+    /**
+     * Using a high @Order value, this customizer overwrites the previous customizers value
+     */
+    @Order(TestDescriptionCustomizer2.CUSTOMIZER_ORDER)
+    public static class TestDescriptionCustomizer2 implements AsyncApiCustomizer {
+        public static final int CUSTOMIZER_ORDER = TestDescriptionCustomizer.CUSTOMIZER_ORDER + 1;
+        @Override
+        public void customize(AsyncAPI asyncAPI) {
+            asyncAPI.getInfo().setDescription("AsyncApiInfoDescriptionCustomizer2");
+        }
+    }
 }
