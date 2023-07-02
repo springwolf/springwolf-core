@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf;
+package io.github.stavshamir.springwolf.configuration.properties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,10 +7,9 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.lang.Nullable;
 
-import static io.github.stavshamir.springwolf.SpringWolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX;
 
 /**
  * This class is used to create metadata for auto-completion in spring configuration properties/yaml by using

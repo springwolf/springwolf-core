@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.configuration;
 
-import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;

@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.configuration;
 
-import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
-import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaController;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

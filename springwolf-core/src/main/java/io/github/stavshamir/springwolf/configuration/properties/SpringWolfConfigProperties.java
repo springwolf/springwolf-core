@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf;
+package io.github.stavshamir.springwolf.configuration.properties;
 
 import com.asyncapi.v2._6_0.model.info.Contact;
 import com.asyncapi.v2._6_0.model.info.License;

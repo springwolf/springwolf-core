@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf;
+package io.github.stavshamir.springwolf.configuration.properties;
 
 public class SpringWolfConfigConstants {
     public static final String ENABLED =  ".enabled";

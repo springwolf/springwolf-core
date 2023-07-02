@@ -5,6 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiSerializerService
 import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

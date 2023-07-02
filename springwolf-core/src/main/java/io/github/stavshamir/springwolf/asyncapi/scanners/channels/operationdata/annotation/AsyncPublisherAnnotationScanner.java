@@ -21,9 +21,9 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import static io.github.stavshamir.springwolf.SpringWolfConfigConstants.*;
 import java.util.stream.Stream;
+
+import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants.SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED;
 
 @Slf4j
 @RequiredArgsConstructor
