@@ -63,6 +63,7 @@ spotless {
         palantirJavaFormat()
 
         importOrder('', 'javax', 'java', '\\#')
+        replaceRegex("Remove wildcard imports", "import\\s+[^\\*\\s]+\\*;(\\r\\n|\\r|\\n)", "\$1")
         removeUnusedImports()
 
         trimTrailingWhitespace()
