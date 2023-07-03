@@ -138,12 +138,12 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
             var name = annotationMessage.getName();
             if (StringUtils.hasText(name)) {
-                builder.name(annotationMessage.getName());
+                builder.name(name);
             }
 
             var title = annotationMessage.getTitle();
             if (StringUtils.hasText(title)) {
-                builder.title(annotationMessage.getTitle());
+                builder.title(title);
             }
         }
     }
