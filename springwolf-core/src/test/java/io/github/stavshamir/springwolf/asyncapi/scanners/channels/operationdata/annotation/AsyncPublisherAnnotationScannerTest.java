@@ -266,16 +266,16 @@ class AsyncPublisherAnnotationScannerTest {
     private static class ClassWithMessageAnnotation {
 
         @AsyncPublisher(operation = @AsyncOperation(
-                channelName = "test-channel"
-        ))
-        private void methodWithAnnotation(
-                @AsyncMessage(
+                channelName = "test-channel",
+                message = @AsyncMessage(
                         description = "Message description",
                         messageId = "simpleFoo",
                         name = "SimpleFooPayLoad",
                         schemaFormat = "application/schema+json;version=draft-07",
                         title = "Message Title"
-                ) SimpleFoo payload) {
+                )
+        ))
+        private void methodWithAnnotation(SimpleFoo payload) {
         }
 
         private void methodWithoutAnnotation() {

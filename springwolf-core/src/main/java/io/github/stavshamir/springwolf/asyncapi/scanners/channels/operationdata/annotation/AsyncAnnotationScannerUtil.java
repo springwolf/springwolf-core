@@ -85,17 +85,36 @@ class AsyncAnnotationScannerUtil {
     public static Message processMessageFromAnnotation(Method method) {
         var messageBuilder = Message.builder();
 
-        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        for (Annotation[] annotations : parameterAnnotations) {
-            for (Annotation annotation : annotations) {
-                if (annotation instanceof AsyncMessage asyncMessage) {
-                    messageBuilder.description(asyncMessage.description());
-                    messageBuilder.messageId(asyncMessage.messageId());
-                    messageBuilder.name(asyncMessage.name());
-                    messageBuilder.schemaFormat(asyncMessage.schemaFormat());
-                    messageBuilder.title(asyncMessage.title());
-                }
+        Annotation[] annotations = method.getAnnotations();
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof AsyncListener asyncListener) {
+                return parseMessage(asyncListener.operation());
+            } else if (annotation instanceof AsyncPublisher asyncPublisher) {
+                return parseMessage(asyncPublisher.operation());
             }
+        }
+
+        return messageBuilder.build();
+    }
+
+    private static Message parseMessage(AsyncOperation asyncOperation) {
+        var messageBuilder = Message.builder();
+
+        var asyncMessage = asyncOperation.message();
+        if (StringUtils.hasText(asyncMessage.description())) {
+            messageBuilder.description(asyncMessage.description());
+        }
+        if (StringUtils.hasText(asyncMessage.messageId())) {
+            messageBuilder.messageId(asyncMessage.messageId());
+        }
+        if (StringUtils.hasText(asyncMessage.name())) {
+            messageBuilder.name(asyncMessage.name());
+        }
+        if (StringUtils.hasText(asyncMessage.schemaFormat())) {
+            messageBuilder.schemaFormat(asyncMessage.schemaFormat());
+        }
+        if (StringUtils.hasText(asyncMessage.title())) {
+            messageBuilder.title(asyncMessage.title());
         }
 
         return messageBuilder.build();

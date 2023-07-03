@@ -26,6 +26,11 @@ public @interface AsyncOperation {
     String description() default "";
 
     /**
+     * Mapped to {@link OperationData#getMessage()}
+     */
+    AsyncMessage message() default @AsyncMessage();
+
+    /**
      * Mapped to {@link OperationData#getPayloadType()}
      */
     Class<?> payloadType() default Object.class;

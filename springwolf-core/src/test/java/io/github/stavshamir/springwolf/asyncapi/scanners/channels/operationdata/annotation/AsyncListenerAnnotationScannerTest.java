@@ -263,16 +263,16 @@ class AsyncListenerAnnotationScannerTest {
 
         @AsyncListener(operation = @AsyncOperation(
                 channelName = "test-channel",
-                description = "test channel operation description"
-        ))
-        private void methodWithAnnotation(
-                @AsyncMessage(
+                description = "test channel operation description",
+                message = @AsyncMessage(
                         description = "Message description",
                         messageId = "simpleFoo",
                         name = "SimpleFooPayLoad",
                         schemaFormat = "application/schema+json;version=draft-07",
                         title = "Message Title"
-                ) SimpleFoo payload) {
+                )
+        ))
+        private void methodWithAnnotation(SimpleFoo payload) {
         }
 
         private void methodWithoutAnnotation() {

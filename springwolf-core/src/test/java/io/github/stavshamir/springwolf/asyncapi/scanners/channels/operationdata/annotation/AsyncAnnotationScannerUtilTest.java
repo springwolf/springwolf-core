@@ -115,18 +115,17 @@ class AsyncAnnotationScannerUtilTest {
                 headers = @AsyncOperation.Headers(
                         schemaName = "TestSchema",
                         values = {@AsyncOperation.Headers.Header(name = "header", value = "value", description = "description")}
-                )
-        ))
-        @TestOperationBindingProcessor.TestOperationBinding()
-        private void methodWithAsyncMessageAnnotation(
-                @AsyncMessage(
+                ),
+                message = @AsyncMessage(
                         description = "Message description",
                         messageId = "simpleFoo",
                         name = "SimpleFooPayLoad",
                         schemaFormat = "application/schema+json;version=draft-07",
                         title = "Message Title"
                 )
-                String payload) {
+        ))
+        @TestOperationBindingProcessor.TestOperationBinding()
+        private void methodWithAsyncMessageAnnotation(String payload) {
         }
     }
 }
