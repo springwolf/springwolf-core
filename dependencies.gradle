@@ -26,7 +26,7 @@ ext {
 
     findbugsJSR305Version = '3.0.2'
 
-    kafkaClientsVersion = '3.4.0'
+    kafkaClientsVersion = '3.5.0'
     kafkaStreamsVersion = '3.4.0'
 
     jacksonCoreVersion = '2.15.2'
