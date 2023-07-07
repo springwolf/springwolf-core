@@ -4,11 +4,13 @@ import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -78,5 +80,43 @@ class AsyncAnnotationScannerUtil {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toMap(ProcessedMessageBinding::getType, ProcessedMessageBinding::getBinding));
+    }
+
+    public static Message processMessageFromAnnotation(Method method) {
+        var messageBuilder = Message.builder();
+
+        Annotation[] annotations = method.getAnnotations();
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof AsyncListener asyncListener) {
+                return parseMessage(asyncListener.operation());
+            } else if (annotation instanceof AsyncPublisher asyncPublisher) {
+                return parseMessage(asyncPublisher.operation());
+            }
+        }
+
+        return messageBuilder.build();
+    }
+
+    private static Message parseMessage(AsyncOperation asyncOperation) {
+        var messageBuilder = Message.builder();
+
+        var asyncMessage = asyncOperation.message();
+        if (StringUtils.hasText(asyncMessage.description())) {
+            messageBuilder.description(asyncMessage.description());
+        }
+        if (StringUtils.hasText(asyncMessage.messageId())) {
+            messageBuilder.messageId(asyncMessage.messageId());
+        }
+        if (StringUtils.hasText(asyncMessage.name())) {
+            messageBuilder.name(asyncMessage.name());
+        }
+        if (StringUtils.hasText(asyncMessage.schemaFormat())) {
+            messageBuilder.schemaFormat(asyncMessage.schemaFormat());
+        }
+        if (StringUtils.hasText(asyncMessage.title())) {
+            messageBuilder.title(asyncMessage.title());
+        }
+
+        return messageBuilder.build();
     }
 }

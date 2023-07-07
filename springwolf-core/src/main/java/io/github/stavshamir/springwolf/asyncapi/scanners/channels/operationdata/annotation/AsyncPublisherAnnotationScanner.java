@@ -8,6 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,14 +72,15 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
 
         Map<String, OperationBinding> operationBindings = AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
         Map<String, MessageBinding> messageBindings = AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
+        Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
 
         Class<AsyncPublisher> annotationClass = AsyncPublisher.class;
         return Arrays
                 .stream(method.getAnnotationsByType(annotationClass))
-                .map(annotation -> toConsumerData(method, operationBindings, messageBindings, annotation));
+                .map(annotation -> toConsumerData(method, operationBindings, messageBindings, message, annotation));
     }
 
-    private ProducerData toConsumerData(Method method, Map<String, OperationBinding> operationBindings, Map<String, MessageBinding> messageBindings, AsyncPublisher annotation) {
+    private ProducerData toConsumerData(Method method, Map<String, OperationBinding> operationBindings, Map<String, MessageBinding> messageBindings, Message message, AsyncPublisher annotation) {
         AsyncOperation op = annotation.operation();
         Class<?> payloadType = op.payloadType() != Object.class ? op.payloadType() :
                 SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
@@ -89,6 +91,7 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
                 .payloadType(payloadType)
                 .operationBinding(operationBindings)
                 .messageBinding(messageBindings)
+                .message(message)
                 .build();
     }
 
