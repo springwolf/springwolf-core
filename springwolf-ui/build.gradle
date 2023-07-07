@@ -8,7 +8,7 @@ plugins {
 def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
 
 group 'io.github.springwolf'
-version '0.8.0' + (isSnapshot ? '-SNAPSHOT' : '')
+version '0.13.0' + (isSnapshot ? '-SNAPSHOT' : '')
 sourceCompatibility = JavaVersion.VERSION_17
 
 node {
