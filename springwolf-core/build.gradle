@@ -44,6 +44,8 @@ dependencies {
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationApiVersion}"
 
+    implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
+
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"

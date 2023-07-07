@@ -1,11 +1,8 @@
 package io.github.stavshamir.springwolf.schemas;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.swagger.oas.inflector.examples.ExampleBuilder;
-import io.swagger.oas.inflector.examples.models.Example;
 import io.swagger.oas.inflector.processors.JsonNodeExampleSerializer;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -90,13 +87,9 @@ public class DefaultSchemasService implements SchemasService {
     private void buildExampleAsString(String k, Schema schema) {
         log.debug("Setting example for {}", schema.getName());
 
-        Example example = ExampleBuilder.fromSchema(schema, definitions);
-        try {
-            String exampleAsJson = objectMapper.writeValueAsString(example);
-            schema.setExample(exampleAsJson);
-        } catch (JsonProcessingException e) {
-            log.error("Failed to write example value as a string");
-        }
+        String exampleString = ExampleJsonGenerator.fromSchema(schema, definitions);
+
+        schema.setExample(exampleString);
     }
 
     private void deserializeExampleToMap(String k, Schema schema) {

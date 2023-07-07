@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,6 +62,34 @@ class DefaultSchemasServiceTest {
     @Test
     void compositeObject() throws IOException {
         String modelName = schemasService.register(CompositeFoo.class);
+
+        Schema schema = schemasService.getDefinitions().get(modelName);
+        String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
+
+        String expectedExample = jsonResource(EXAMPLES_PATH + "/composite-foo.json");
+
+        // Then it returns the correct example object as json
+        assertEquals(expectedExample, example);
+    }
+
+    @Test
+        // TODO: move to ExampleJsonGeneratorTest
+    void arrayObject() throws IOException {
+        String modelName = schemasService.register(ArrayFoo.class);
+
+        Schema schema = schemasService.getDefinitions().get(modelName);
+        String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
+
+        String expectedExample = jsonResource(EXAMPLES_PATH + "/composite-foo.json");
+
+        // Then it returns the correct example object as json
+        assertEquals(expectedExample, example);
+    }
+
+    @Test
+        // TODO: move to ExampleJsonGeneratorTest
+    void arraySimple() throws IOException {
+        String modelName = schemasService.register(SimpleArrayFoo.class);
 
         Schema schema = schemasService.getDefinitions().get(modelName);
         String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
@@ -129,6 +158,18 @@ class DefaultSchemasServiceTest {
     private static class CompositeFoo {
         private String s;
         private SimpleFoo f;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class ArrayFoo {
+        private List<SimpleFoo> fList;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class SimpleArrayFoo {
+        private List<String> fList;
     }
 
     @Data
