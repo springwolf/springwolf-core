@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.configuration;
 
 import com.asyncapi.v2._6_0.model.info.Info;
-import io.github.stavshamir.springwolf.SpringWolfConfigConstants;
-import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

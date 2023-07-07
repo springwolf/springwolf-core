@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf;
 
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

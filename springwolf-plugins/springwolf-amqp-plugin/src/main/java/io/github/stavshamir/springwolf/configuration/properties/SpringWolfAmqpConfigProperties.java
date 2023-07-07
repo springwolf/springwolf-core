@@ -1,21 +1,18 @@
-package io.github.stavshamir.springwolf;
+package io.github.stavshamir.springwolf.configuration.properties;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.lang.Nullable;
-
-import static io.github.stavshamir.springwolf.SpringWolfAmqpConfigConstants.SPRINGWOLF_AMQP_CONFIG_PREFIX;
 
 /**
  * This class is used to create metadata for auto-completion in spring configuration properties/yaml by using
  * the spring-boot-configuration-processor.
  */
 @Configuration
-@ConfigurationProperties(prefix = SPRINGWOLF_AMQP_CONFIG_PREFIX)
+@ConfigurationProperties(prefix = SpringWolfAmqpConfigConstants.SPRINGWOLF_AMQP_CONFIG_PREFIX)
 @ConditionalOnProperty(name = SpringWolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
 @Getter
 @Setter

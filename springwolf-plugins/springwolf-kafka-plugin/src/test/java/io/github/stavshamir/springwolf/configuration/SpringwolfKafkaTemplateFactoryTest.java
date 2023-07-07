@@ -1,7 +1,6 @@
 package io.github.stavshamir.springwolf.configuration;
 
-import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties;
-import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties.Publishing;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -27,7 +26,7 @@ class SpringwolfKafkaTemplateFactoryTest {
     @Test
     void kafkaTemplateShouldNotBeCreatedForEmptyProducerConfiguration() {
         SpringWolfKafkaConfigProperties configProperties = new SpringWolfKafkaConfigProperties();
-        configProperties.setPublishing(new Publishing());
+        configProperties.setPublishing(new SpringWolfKafkaConfigProperties.Publishing());
 
         SpringwolfKafkaTemplateFactory templateFactory = new SpringwolfKafkaTemplateFactory(configProperties);
 
@@ -39,7 +38,7 @@ class SpringwolfKafkaTemplateFactoryTest {
     @Test
     void kafkaTemplateShouldBeCreatedWithProducerConfiguration() {
         SpringWolfKafkaConfigProperties configProperties = new SpringWolfKafkaConfigProperties();
-        Publishing publishing = new Publishing();
+        SpringWolfKafkaConfigProperties.Publishing publishing = new SpringWolfKafkaConfigProperties.Publishing();
         publishing.setEnabled(true);
         publishing.setProducer(new KafkaProperties.Producer());
 

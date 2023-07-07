@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.configuration;
 
-import io.github.stavshamir.springwolf.SpringWolfAmqpConfigProperties;
-import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfAmqpController;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfAmqpConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

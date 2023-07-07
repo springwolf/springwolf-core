@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.example.kafka;
 
-import io.github.stavshamir.springwolf.SpringWolfKafkaConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.example.kafka.consumers.ExampleService;
 import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;

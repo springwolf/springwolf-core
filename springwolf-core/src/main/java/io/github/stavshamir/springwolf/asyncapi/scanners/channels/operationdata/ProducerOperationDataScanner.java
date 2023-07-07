@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.stavshamir.springwolf.SpringWolfConfigConstants.*;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants.*;
 
 @Slf4j
 @RequiredArgsConstructor
