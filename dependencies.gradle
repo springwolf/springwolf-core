@@ -26,14 +26,14 @@ ext {
 
     findbugsJSR305Version = '3.0.2'
 
-    kafkaClientsVersion = '3.4.0'
-    kafkaStreamsVersion = '3.4.0'
+    kafkaClientsVersion = '3.5.0'
+    kafkaStreamsVersion = '3.5.0'
 
     jacksonCoreVersion = '2.15.2'
 
     jakartaAnnotationApiVersion = '2.1.1'
 
-    mockitoCoreVersion = '4.8.1'
+    mockitoCoreVersion = '5.4.0'
     mockitoJunitJupiterVersion = '5.4.0'
 
     monetaVersion = '1.4.2'
