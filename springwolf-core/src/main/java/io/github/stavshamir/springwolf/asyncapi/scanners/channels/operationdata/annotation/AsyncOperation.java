@@ -28,7 +28,7 @@ public @interface AsyncOperation {
     /**
      * The servers on which this channel is available, list of names of Server Objects.
      * If servers is empty then this channel is available on all servers defined in the Async API.
-     * Mapped to (
+     * Mapped to ({@link OperationData#getServers()}
      * @return
      */
     String[] servers() default {};
