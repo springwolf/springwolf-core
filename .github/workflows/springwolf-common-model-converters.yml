@@ -1,0 +1,46 @@
+name: springwolf-common-model-converters
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/springwolf-common-model-converters.yml'
+      - 'springwolf-add-ons/springwolf-common-model-converters/**'
+  pull_request:
+    types: [ opened, synchronize, ready_for_review ]
+
+env:
+  addon: springwolf-add-ons/springwolf-common-model-converters
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Run unit tests
+        run: ./gradlew -p ${{ env.addon }} test
+
+      - name: Publish package
+        if: github.ref == 'refs/heads/master'
+        run: ./gradlew -p ${{ env.addon }} publish
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: true
+
+          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
+          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+
+          ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}

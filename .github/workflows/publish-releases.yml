@@ -164,6 +164,42 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: false
 
+
+
+  publish-springwolf-add-ons-common-model-converters-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Publish package
+        run: ./gradlew -p springwolf-add-ons/springwolf-common-model-converters publish
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: false
+          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
+          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+          ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+
+      - name: Tag version
+        run: |
+          VERSION=$(./gradlew -p springwolf-add-ons/springwolf-common-model-converters properties | grep "version:" | awk '{print $2}')
+          TAG="springwolf-common-model-converters-$VERSION"
+          git tag "$TAG"
+
+          echo "Publishing tag"
+          git push origin "$TAG" || true # Do not fail, if the tag already exists
+        env:
+          ORG_GRADLE_PROJECT_SNAPSHOT: false
+
   publish-springwolf-ui-release:
     runs-on: ubuntu-latest
     steps:
