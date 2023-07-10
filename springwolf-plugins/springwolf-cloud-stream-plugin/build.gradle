@@ -1,7 +1,6 @@
 plugins {
     id 'java-library'
     id 'signing'
-    id 'maven-publish'
 
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
@@ -61,59 +60,9 @@ test {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
-
-            artifactId 'springwolf-cloud-stream'
-            groupId project.group
-            version project.version
-
             pom {
                 name = 'springwolf-cloud-stream'
                 description = 'Automated JSON API documentation for Spring Boot cloud stream functions'
-                url = 'https://www.springwolf.dev'
-
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'stavshamir'
-                        name = 'Stav Shamir'
-                        email = 'shamir.stav@gmail.com'
-                    }
-
-                    developer {
-                        id = 'timonback'
-                        name = 'Timon Back'
-                        email = 'timon.back+springwolf@gmail.com'
-                    }
-
-                    developer {
-                        id = 'sam0r040'
-                        name = 'David Müller'
-                        email = 'david.mueller@codecentric.de'
-                    }
-                }
-
-                scm {
-                    url = 'https://github.com/springwolf/springwolf-core'
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-            url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
-            credentials {
-                username = project.findProperty('MAVEN_USERNAME') ?: ''
-                password = project.findProperty('MAVEN_PASSWORD') ?: ''
             }
         }
     }
