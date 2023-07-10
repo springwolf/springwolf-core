@@ -58,10 +58,6 @@ docker {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
 test {
     dependsOn dockerBuildImage
 
