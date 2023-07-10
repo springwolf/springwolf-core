@@ -8,11 +8,6 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
 }
 
-def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
-
-group 'io.github.springwolf'
-version '0.13.0' + (isSnapshot ? '-SNAPSHOT' : '')
-
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-amqp-plugin")
