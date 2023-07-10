@@ -16,6 +16,12 @@ plugins {
 allprojects {
     apply plugin: 'java'
 
+    ext {
+        isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT') as String)
+    }
+    group 'io.github.springwolf'
+    version '0.13.0' + (isSnapshot ? '-SNAPSHOT' : '')
+
     java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

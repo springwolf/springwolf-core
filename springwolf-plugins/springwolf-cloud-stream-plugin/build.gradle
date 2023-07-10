@@ -8,11 +8,6 @@ plugins {
     id 'ca.cutterslade.analyze'
 }
 
-def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
-
-group 'io.github.springwolf'
-version '0.13.0' + (isSnapshot ? '-SNAPSHOT' : '')
-
 ext {
     set('springCloudVersion', "2022.0.1")
 }

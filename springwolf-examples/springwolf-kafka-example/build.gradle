@@ -9,11 +9,6 @@ plugins {
     id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
 }
 
-def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
-
-group 'io.github.springwolf'
-version '0.13.0' + (isSnapshot ? '-SNAPSHOT' : '')
-
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-kafka-plugin")
