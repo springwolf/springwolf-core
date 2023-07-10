@@ -27,7 +27,6 @@ dependencies {
     implementation "org.springframework:spring-context"
     implementation "org.springframework.cloud:spring-cloud-stream"
 
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
