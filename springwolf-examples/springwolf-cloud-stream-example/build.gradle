@@ -66,10 +66,6 @@ docker {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
 test {
     minHeapSize = "128m" // initial heap size
     maxHeapSize = "1024m" // maximum heap size
