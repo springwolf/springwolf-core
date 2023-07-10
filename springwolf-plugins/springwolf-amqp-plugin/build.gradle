@@ -23,8 +23,8 @@ dependencies {
     implementation "org.springframework.amqp:spring-rabbit"
 
     compileOnly "com.google.code.findbugs:jsr305:${findbugsJSR305Version}"
+    permitUnusedDeclared "com.google.code.findbugs:jsr305:${findbugsJSR305Version}"
 
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
