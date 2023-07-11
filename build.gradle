@@ -16,6 +16,7 @@ plugins {
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 
     ext {
         isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT') as String)
@@ -103,6 +104,14 @@ allprojects {
                 }
             }
         }
+    }
+
+    signing {
+        required { gradle.taskGraph.hasTask("publish") }
+        def signingKey = project.findProperty("SIGNINGKEY")
+        def signingPassword = project.findProperty("SIGNINGPASSWORD")
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign publishing.publications.mavenJava
     }
 }
 
