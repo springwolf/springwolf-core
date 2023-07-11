@@ -1,6 +1,5 @@
 plugins {
     id 'java-library'
-    id 'signing'
 
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
@@ -65,9 +64,3 @@ publishing {
     }
 }
 
-signing {
-    def signingKey = project.findProperty("SIGNINGKEY")
-    def signingPassword = project.findProperty("SIGNINGPASSWORD")
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign publishing.publications.mavenJava
-}

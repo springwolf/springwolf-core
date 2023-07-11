@@ -1,7 +1,6 @@
 plugins {
   id 'java'
   id 'com.github.node-gradle.node' version '5.0.0'
-  id 'signing'
 }
 
 node {
@@ -54,11 +53,4 @@ publishing {
       }
     }
   }
-}
-
-signing {
-  def signingKey = project.findProperty("SIGNINGKEY")
-  def signingPassword = project.findProperty("SIGNINGPASSWORD")
-  useInMemoryPgpKeys(signingKey, signingPassword)
-  sign publishing.publications.mavenJava
 }
