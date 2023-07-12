@@ -2,25 +2,23 @@
 
 The following lists describe the steps necessary to release a new version.
 
+1. Update the version number in `.env`
+
 ## SpringWolf
 
-1. Update version number in `build.gradle`
-2. Run all tests (including all examples + integration)
-3. Run github `Publish releases` pipeline
-4. Release version in nexus
-5. Update version number on website
+1. Run all tests (including all examples + integration)
+2. Run github `Publish releases` pipeline
+3. Release version in nexus
+4. Update version number on website
 
 ## springwolf-ui
 
-1. Update version number in `build.gradle`
-2. Update version number in `README.md`
-3. Run github `Publish releases` pipeline
-4. Release version in nexus
-5. Update version number on website
+1. Update version number in `README.md`
+2. Run github `Publish releases` pipeline
+3. Release version in nexus
+4. Update version number on website
 
 ## Plugins
-
-1. Update version number in `.env`
 
 ### springwolf-amqp
 
