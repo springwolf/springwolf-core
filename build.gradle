@@ -13,6 +13,8 @@ plugins {
     id("org.owasp.dependencycheck") version "8.3.1"
 }
 
+applyDotEnvFileAsGradleProperties()
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -22,7 +24,7 @@ allprojects {
         isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT') as String)
     }
     group 'io.github.springwolf'
-    version '0.13.0' + (isSnapshot ? '-SNAPSHOT' : '')
+    version System.getProperty("SPRINGWOLF_VERSION") + (isSnapshot ? '-SNAPSHOT' : '')
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -118,4 +120,25 @@ allprojects {
 dependencyCheck {
     outputDirectory = "$buildDir/reports/owasp-dependency-check"
     formats = [ReportGenerator.Format.SARIF.toString()]
+}
+
+def static readEnvFile(path = ".env") {
+    def env = [:]
+
+    def file = new File(path)
+    if (file.exists()) {
+        file.eachLine { line ->
+            line = line.trim()
+            if (line != "" && !line.startsWith("#")) {
+                def pair = line.split("=", 2)
+                env[pair[0].trim()] = pair.length == 2 ? pair[1].trim() : ""
+            }
+        }
+    }
+
+    return env
+}
+
+def static applyDotEnvFileAsGradleProperties() {
+    readEnvFile().each { key, value -> if (System.getProperty(key as String) == null) { System.setProperty(key as String, value as String) } }
 }
