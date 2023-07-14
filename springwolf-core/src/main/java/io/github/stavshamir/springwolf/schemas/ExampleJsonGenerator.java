@@ -4,29 +4,33 @@ import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-// TODO: use default value
 public class ExampleJsonGenerator {
 
     public static String fromSchema(Schema schema, Map<String, Schema> definitions) {
+        Object exampleValue = schema.getExample();
+        if (exampleValue instanceof String) {
+            return "\"" + exampleValue + "\"";
+        }
 
-        if (schema.getType() == null) {
+        String type = schema.getType();
+        if (type == null) {
             String schemaName = StringUtils.substringAfterLast(schema.get$ref(), "/");
             Schema resolvedSchema = definitions.get(schemaName);
             return fromSchema(resolvedSchema, definitions);
         }
 
-        return switch (schema.getType()) {
-            // TODO: array
+        return switch (type) {
+            case "array" -> handleArraySchema(schema, definitions);
             case "boolean" -> handleBoolean(schema);
             case "integer" -> handleInteger(schema);
             case "number" -> handleNumber(schema);
             case "object" -> handleObject(schema, definitions);
             case "string" -> handleStringSchema(schema);
-            case "array" -> handleArraySchema(schema, definitions);
-            default -> "unknown schema type: "+schema.getType();
+            default -> "unknown schema type: " + type;
         };
 
     }
@@ -40,19 +44,24 @@ public class ExampleJsonGenerator {
     }
 
     private static String handleInteger(Schema schema) {
-        return getExampleOrDefault(schema,"0");
+        return "0";
     }
 
     private static String handleNumber(Schema schema) {
-        return getExampleOrDefault(schema, "1.1");
+        return "1.1";
     }
 
     private static String handleBoolean(Schema schema) {
-        return getExampleOrDefault(schema, "true");
+        return "true";
     }
 
     private static String handleStringSchema(Schema schema) {
-        String format = schema.getFormat(); // TODO:
+        String firstEnumValue = getFirstEnumValue(schema);
+        if (firstEnumValue != null) {
+            return "\"" + firstEnumValue + "\"";
+        }
+
+        String format = schema.getFormat();
 
         if (format == null) {
             return "\"string\"";
@@ -63,9 +72,20 @@ public class ExampleJsonGenerator {
             case "date-time" -> "\"2006-01-02T15:04:05Z07:00\"";
             case "password" -> "\"string-password\"";
             case "byte" -> "\"YmFzZTY0LWV4YW1wbGU=\"";
-            case "binary" -> "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
+            case "binary" ->
+                    "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
             default -> "unknown type format: " + format;
         };
+    }
+
+    private static String getFirstEnumValue(Schema schema) {
+        if (schema.getEnum() != null) {
+            Optional<String> firstEnumEntry = schema.getEnum().stream().findFirst();
+            if (firstEnumEntry.isPresent()) {
+                return firstEnumEntry.get();
+            }
+        }
+        return null;
     }
 
     private static String handleObject(Schema schema, Map<String, Schema> definitions) {
@@ -90,14 +110,4 @@ public class ExampleJsonGenerator {
 
         return sb.toString();
     }
-
-    private static String getExampleOrDefault(Schema schema, String defaultValue) {
-        Object exampleValue = schema.getExample();
-        if (exampleValue instanceof String) {
-            return (String)exampleValue;
-        }
-
-        return defaultValue;
-    }
-
 }

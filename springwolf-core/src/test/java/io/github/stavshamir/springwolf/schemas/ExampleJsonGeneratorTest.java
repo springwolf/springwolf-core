@@ -30,7 +30,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "true");
+        assertThat(actual).isEqualTo("true");
     }
 
     @Test
@@ -39,7 +39,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "0");
+        assertThat(actual).isEqualTo("0");
     }
 
     @Test
@@ -49,7 +49,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "0");
+        assertThat(actual).isEqualTo("0");
     }
 
     @Test
@@ -59,7 +59,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "1.1");
+        assertThat(actual).isEqualTo("1.1");
     }
 
     @Test
@@ -69,7 +69,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "1.1");
+        assertThat(actual).isEqualTo("1.1");
     }
 
     @Test
@@ -78,7 +78,28 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "\"string\"");
+        assertThat(actual).isEqualTo("\"string\"");
+    }
+
+    @Test
+    void type_string_from_enum() {
+        StringSchema schema = new StringSchema();
+        schema.addEnumItem("EnumItem1");
+        schema.addEnumItem("EnumItem2");
+
+        String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
+
+        assertThat(actual).isEqualTo("\"EnumItem1\"");
+    }
+
+    @Test
+    void type_string_example_set() {
+        StringSchema schema = new StringSchema();
+        schema.setExample("custom-example-value");
+
+        String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
+
+        assertThat(actual).isEqualTo("\"custom-example-value\"");
     }
 
     @Test
@@ -97,7 +118,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
+        assertThat(actual).isEqualTo("\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
     }
 
     @Test
@@ -106,7 +127,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "\"2006-01-02\"");
+        assertThat(actual).isEqualTo("\"2006-01-02\"");
     }
 
     @Test
@@ -115,7 +136,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "\"2006-01-02T15:04:05Z07:00\"");
+        assertThat(actual).isEqualTo("\"2006-01-02T15:04:05Z07:00\"");
     }
 
     @Test
@@ -124,7 +145,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo( "\"string-password\"");
+        assertThat(actual).isEqualTo("\"string-password\"");
     }
 
     @Test
@@ -176,7 +197,6 @@ class ExampleJsonGeneratorTest {
         nestedSchema.addProperty("b", new BooleanSchema());
         String actual = ExampleJsonGenerator.fromSchema(compositeSchema, Map.of("Nested", nestedSchema));
 
-        assertThat(actual).isEqualTo("""
-        {"f": {"b": true,"s": "string"},"s": "string"}""");
+        assertThat(actual).isEqualTo("{\"f\": {\"b\": true,\"s\": \"string\"},\"s\": \"string\"}");
     }
 }
