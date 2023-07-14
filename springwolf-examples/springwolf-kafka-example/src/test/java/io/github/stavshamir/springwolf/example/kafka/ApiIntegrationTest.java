@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
-import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +40,7 @@ public class ApiIntegrationTest {
         System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expectedWithoutServersKafkaUrlPatch = IOUtils.toString(s, StandardCharsets.UTF_8);
+        String expectedWithoutServersKafkaUrlPatch = new String(s.readAllBytes(), StandardCharsets.UTF_8);
         // When running with EmbeddedKafka, localhost is used as hostname
         String expected = expectedWithoutServersKafkaUrlPatch.replace("kafka:29092", "localhost:9092");
 

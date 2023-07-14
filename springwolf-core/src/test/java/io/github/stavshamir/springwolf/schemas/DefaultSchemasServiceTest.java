@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.swagger.v3.core.util.Json;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -72,7 +71,7 @@ class DefaultSchemasServiceTest {
 
     private String jsonResource(String path) throws IOException {
         InputStream s = this.getClass().getResourceAsStream(path);
-        return IOUtils.toString(s, StandardCharsets.UTF_8);
+        return new String(s.readAllBytes(), StandardCharsets.UTF_8);
     }
 
     @Data

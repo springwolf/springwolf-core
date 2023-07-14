@@ -19,9 +19,6 @@ import java.util.Map;
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Based on https://www.asyncapi.com/docs/reference/specification/v2.6.0#dataTypeFormat
- */
 class ExampleJsonGeneratorTest {
 
     @Test
@@ -49,7 +46,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo("5");
+        assertThat(actual).isEqualTo("0");
     }
 
     @Test
@@ -69,7 +66,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo("5");
+        assertThat(actual).isEqualTo("0");
     }
 
     @Test
@@ -185,7 +182,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo("[ \"string\" ]");
+        assertThat(actual).isEqualTo("[\"string\"]");
     }
 
     @Test
@@ -199,7 +196,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo("[ {\"b\": true,\"s\": \"string\"} ]");
+        assertThat(actual).isEqualTo("[{\"b\": true,\"s\": \"string\"}]");
     }
 
     @Test

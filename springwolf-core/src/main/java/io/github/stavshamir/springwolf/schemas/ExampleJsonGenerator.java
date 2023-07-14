@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+/**
+ * Handling types defined in https://www.asyncapi.com/docs/reference/specification/v2.6.0#dataTypeFormat
+ */
 public class ExampleJsonGenerator {
 
     public static String fromSchema(Schema schema, Map<String, Schema> definitions) {
@@ -52,14 +54,14 @@ public class ExampleJsonGenerator {
 
     private static String handleArraySchema(Schema schema, Map<String, Schema> definitions) {
         StringBuilder sb = new StringBuilder();
-        sb.append("[ ");
+        sb.append("[");
         sb.append(fromSchema(schema.getItems(), definitions));
-        sb.append(" ]");
+        sb.append("]");
         return sb.toString();
     }
 
     private static String handleInteger(Schema schema) {
-        return "5";
+        return "0";
     }
 
     private static String handleNumber(Schema schema) {

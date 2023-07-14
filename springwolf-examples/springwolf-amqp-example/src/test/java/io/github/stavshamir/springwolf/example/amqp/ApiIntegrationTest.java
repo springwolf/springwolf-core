@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +31,7 @@ public class ApiIntegrationTest {
         System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
 
         assertEquals(expected, actual);
     }
