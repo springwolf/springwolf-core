@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.swagger.v3.core.util.Json;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ class DefaultSchemasServiceTest {
 
     private final SchemasService schemasService = new DefaultSchemasService(Optional.empty());
 
-    private static final ObjectMapper objectMapper = Json.mapper();
+    private static final ObjectMapper objectMapper = Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
     private static final PrettyPrinter printer =
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
@@ -42,11 +42,22 @@ class DefaultSchemasServiceTest {
     }
 
     @Test
-    void getDocumentedDefinitions() throws IOException, JSONException {
+    void getDocumentedDefinitions() throws IOException {
         schemasService.register(DocumentedSimpleFoo.class);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
         String expected = jsonResource("/schemas/documented-definitions.json");
+
+        System.out.println("Got: " + actualDefinitions);
+        assertEquals(expected, actualDefinitions);
+    }
+
+    @Test
+    void getArrayDefinitions() throws IOException {
+        schemasService.register(ArrayFoo.class);
+
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String expected = jsonResource("/schemas/array-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -93,12 +104,6 @@ class DefaultSchemasServiceTest {
     @NoArgsConstructor
     private static class ArrayFoo {
         private List<SimpleFoo> fList;
-    }
-
-    @Data
-    @NoArgsConstructor
-    private static class SimpleArrayFoo {
-        private List<String> fList;
     }
 
     @Data

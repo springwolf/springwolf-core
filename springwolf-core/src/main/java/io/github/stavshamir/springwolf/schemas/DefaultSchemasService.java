@@ -39,12 +39,7 @@ public class DefaultSchemasService implements SchemasService {
 
     @Override
     public Map<String, Schema> getDefinitions() {
-        // The examples must first be set as JSON strings (the inflector does not work otherwise)
-        definitions.forEach(this::buildExampleAsString);
-
-        // Then they must be deserialized to map, or they will be serialized as reguler string and not json by the
-        // object mapper
-        definitions.forEach(this::deserializeExampleToMap);
+        definitions.forEach(this::generateJsonExampleWhenMissing);
         return definitions;
     }
 
@@ -84,19 +79,18 @@ public class DefaultSchemasService implements SchemasService {
         return type.getSimpleName();
     }
 
-    private void buildExampleAsString(String k, Schema schema) {
-        log.debug("Setting example for {}", schema.getName());
+    private void generateJsonExampleWhenMissing(String k, Schema schema) {
+        if (schema.getExample() == null) {
+            log.debug("Generate example for {}", schema.getName());
 
-        String exampleString = ExampleJsonGenerator.fromSchema(schema, definitions);
+            try {
+                String exampleString = ExampleJsonGenerator.fromSchema(schema, definitions);
+                Object objectStructure = objectMapper.readValue(exampleString, Object.class);
 
-        schema.setExample(exampleString);
-    }
-
-    private void deserializeExampleToMap(String k, Schema schema) {
-        try {
-            schema.setExample(objectMapper.readValue((String) schema.getExample(), Object.class));
-        } catch (IOException e) {
-            log.error("Failed to convert example object of {} to map", schema.getName());
+                schema.setExample(objectStructure);
+            } catch (IOException e) {
+                log.error("Failed to convert example object of {} to map", schema.getName());
+            }
         }
     }
 }
