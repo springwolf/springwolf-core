@@ -151,6 +151,29 @@ class MethodLevelKafkaListenerScannerTest {
     }
 
     @Test
+    void scan_componentHasKafkaListenerMethods_withDifferentGroupId() {
+        // Given a class with methods annotated with KafkaListener, with a group id
+        setClassToScan(ClassWithKafkaListenerAnnotationWithDifferentGroupId.class);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
+
+        // Then the returned collection contains a correct binding
+        Map<String, Object> actualBindings = actualChannels.get(TOPIC)
+                .getPublish()
+                .getBindings();
+
+        assertThat(actualBindings).isNotNull();
+        KafkaOperationBinding kafka = (KafkaOperationBinding) actualBindings.get("kafka");
+        assertThat(kafka).isNotNull();
+        assertThat(kafka.getGroupId())
+                .isIn(
+                        KafkaListenerUtil.buildKafkaGroupIdSchema(ClassWithKafkaListenerAnnotationWithDifferentGroupId.GROUP_ID_FIRST),
+                        KafkaListenerUtil.buildKafkaGroupIdSchema(ClassWithKafkaListenerAnnotationWithDifferentGroupId.GROUP_ID_SECOND)
+                );
+    }
+
+    @Test
     void scan_componentHasKafkaListenerMethods_multipleParamsWithoutPayloadAnnotation() {
         // Given a class with a method annotated with KafkaListener:
         // - The method has more than one parameter
@@ -266,6 +289,20 @@ class MethodLevelKafkaListenerScannerTest {
         }
 
         private void methodWithoutAnnotation() {
+        }
+
+    }
+
+    private static class ClassWithKafkaListenerAnnotationWithDifferentGroupId {
+        private static final String GROUP_ID_FIRST = "test-group-id-first";
+        private static final String GROUP_ID_SECOND = "test-group-id-second";
+
+        @KafkaListener(topics = TOPIC, groupId = GROUP_ID_FIRST)
+        private void methodWithAnnotation(SimpleFoo payload) {
+        }
+
+        @KafkaListener(topics = TOPIC, groupId = GROUP_ID_SECOND)
+        private void sameMethodWithDifferentGroupId(SimpleFoo payload) {
         }
 
     }
