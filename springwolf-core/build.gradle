@@ -23,13 +23,13 @@ dependencies {
         exclude group: "javax.validation"
     }
 
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerCoreVersion}@jar"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}@jar"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonCoreVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonCoreVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonCoreVersion}"
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonCoreVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}"
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
@@ -41,7 +41,7 @@ dependencies {
     implementation "org.springframework:spring-core"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
 
-    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationApiVersion}"
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
