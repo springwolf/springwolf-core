@@ -29,6 +29,7 @@ public class DefaultSchemasService implements SchemasService {
     private final ObjectMapper objectMapper = Json.mapper();
 
     private final Map<String, Schema> definitions = new HashMap<>();
+    private Map<String, Schema> finalizedDefinitions = null;
 
     public DefaultSchemasService(Optional<List<ModelConverter>> externalModelConverters) {
         externalModelConverters.ifPresent(converters -> converters.forEach(converter::addConverter));
@@ -39,8 +40,15 @@ public class DefaultSchemasService implements SchemasService {
 
     @Override
     public Map<String, Schema> getDefinitions() {
+        if (finalizedDefinitions == null) {
+            finalizeDefinitions();
+        }
+        return finalizedDefinitions;
+    }
+
+    private void finalizeDefinitions() {
         definitions.forEach(this::generateJsonExampleWhenMissing);
-        return definitions;
+        finalizedDefinitions = definitions;
     }
 
     @Override
@@ -89,7 +97,7 @@ public class DefaultSchemasService implements SchemasService {
 
                 schema.setExample(objectStructure);
             } catch (IOException e) {
-                log.error("Failed to convert example object of {} to map", schema.getName());
+                log.error("Failed to convert example string of {} to object", schema.getName());
             }
         }
     }

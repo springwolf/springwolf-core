@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.schemas;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,9 +12,9 @@ import java.util.stream.Collectors;
 public class ExampleJsonGenerator {
 
     public static String fromSchema(Schema schema, Map<String, Schema> definitions) {
-        Object exampleValue = schema.getExample();
-        if (exampleValue instanceof String) {
-            return "\"" + exampleValue + "\"";
+        String exampleValue = getExampleValue(schema);
+        if (exampleValue != null) {
+            return exampleValue;
         }
 
         String type = schema.getType();
@@ -35,6 +36,20 @@ public class ExampleJsonGenerator {
 
     }
 
+    private static String getExampleValue(Schema schema) {
+        Object exampleValue = schema.getExample();
+        if (exampleValue instanceof BigDecimal) {
+            return exampleValue.toString();
+        } else if (exampleValue instanceof Boolean) {
+            return exampleValue.toString();
+        } else if (exampleValue instanceof Number) {
+            return exampleValue.toString();
+        } else if (exampleValue instanceof String) {
+            return "\"" + exampleValue + "\"";
+        }
+        return null;
+    }
+
     private static String handleArraySchema(Schema schema, Map<String, Schema> definitions) {
         StringBuilder sb = new StringBuilder();
         sb.append("[ ");
@@ -44,7 +59,7 @@ public class ExampleJsonGenerator {
     }
 
     private static String handleInteger(Schema schema) {
-        return "0";
+        return "5";
     }
 
     private static String handleNumber(Schema schema) {

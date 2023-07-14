@@ -34,12 +34,32 @@ class ExampleJsonGeneratorTest {
     }
 
     @Test
+    void type_boolean_example_set() {
+        BooleanSchema schema = new BooleanSchema();
+        schema.setExample(Boolean.FALSE);
+
+        String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
+
+        assertThat(actual).isEqualTo("false");
+    }
+
+    @Test
     void type_integer() {
         IntegerSchema schema = new IntegerSchema();
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo("0");
+        assertThat(actual).isEqualTo("5");
+    }
+
+    @Test
+    void type_integer_example_set() {
+        IntegerSchema schema = new IntegerSchema();
+        schema.setExample(Integer.parseInt("123"));
+
+        String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
+
+        assertThat(actual).isEqualTo("123");
     }
 
     @Test
@@ -49,7 +69,7 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo("0");
+        assertThat(actual).isEqualTo("5");
     }
 
     @Test
@@ -73,12 +93,32 @@ class ExampleJsonGeneratorTest {
     }
 
     @Test
+    void type_number_example_set() {
+        Schema<BigDecimal> schema = new NumberSchema();
+        schema.setExample(new BigDecimal("123.45"));
+
+        String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
+
+        assertThat(actual).isEqualTo("123.45");
+    }
+
+    @Test
     void type_string() {
         StringSchema schema = new StringSchema();
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
         assertThat(actual).isEqualTo("\"string\"");
+    }
+
+    @Test
+    void type_string_example_set() {
+        StringSchema schema = new StringSchema();
+        schema.setExample("custom-example-value");
+
+        String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
+
+        assertThat(actual).isEqualTo("\"custom-example-value\"");
     }
 
     @Test
@@ -90,16 +130,6 @@ class ExampleJsonGeneratorTest {
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
         assertThat(actual).isEqualTo("\"EnumItem1\"");
-    }
-
-    @Test
-    void type_string_example_set() {
-        StringSchema schema = new StringSchema();
-        schema.setExample("custom-example-value");
-
-        String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
-
-        assertThat(actual).isEqualTo("\"custom-example-value\"");
     }
 
     @Test
