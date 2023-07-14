@@ -1,11 +1,12 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
-import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
+import com.asyncapi.v2.binding.channel.ChannelBinding;
+import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
+import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
+import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -32,6 +33,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,6 +63,17 @@ class MethodLevelRabbitListenerScannerTest {
     private AsyncApiDocket asyncApiDocket;
 
     private static final String QUEUE = "test-queue";
+    private static final Map<String, Object> defaultOperationBinding =
+            Map.of("amqp", AMQPOperationBinding.builder()
+                    .cc(List.of(QUEUE))
+                    .build());
+    private static final Map<String, ? extends MessageBinding> defaultMessageBinding =
+            Map.of("amqp", new AMQPMessageBinding());
+    private static final Map<String, Object> defaultChannelBinding = Map.of("amqp", AMQPChannelBinding.builder()
+            .is("routingKey")
+            .exchange(AMQPChannelBinding.ExchangeProperties.builder().name("").build())
+            .build());
+
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
@@ -98,20 +111,18 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("amqp", new AMQPMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-queue_publish_methodWithAnnotation")
-                .bindings(Map.of("amqp", AMQPOperationBinding.builder()
-                        .cc(Collections.singletonList(QUEUE))
-                        .build()))
+                .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannelItem = ChannelItem.builder()
-                .bindings(Map.of("amqp", channelBinding))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 
@@ -140,15 +151,13 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("amqp", new AMQPMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-queue_publish_methodWithAnnotation1")
-                .bindings(Map.of("amqp", AMQPOperationBinding.builder()
-                        .cc(Collections.singletonList(QUEUE))
-                        .build()))
+                .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
 
@@ -179,7 +188,7 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("amqp", new AMQPMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
@@ -218,7 +227,7 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("amqp", new AMQPMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
@@ -274,20 +283,18 @@ class MethodLevelRabbitListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("amqp", new AMQPMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-queue_publish_methodWithAnnotation")
-                .bindings(Map.of("amqp", AMQPOperationBinding.builder()
-                        .cc(Collections.singletonList(QUEUE))
-                        .build()))
+                .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannelItem = ChannelItem.builder()
-                .bindings(Map.of("amqp", channelBinding))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 
