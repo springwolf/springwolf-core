@@ -1,9 +1,7 @@
 package io.github.stavshamir.springwolf.schemas;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.swagger.oas.inflector.processors.JsonNodeExampleSerializer;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.Json;
@@ -33,9 +31,6 @@ public class DefaultSchemasService implements SchemasService {
 
     public DefaultSchemasService(Optional<List<ModelConverter>> externalModelConverters) {
         externalModelConverters.ifPresent(converters -> converters.forEach(converter::addConverter));
-
-        SimpleModule simpleModule = new SimpleModule().addSerializer(new JsonNodeExampleSerializer());
-        objectMapper.registerModule(simpleModule);
     }
 
     @Override
