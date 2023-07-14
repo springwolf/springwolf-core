@@ -54,6 +54,9 @@ class CloudStreamFunctionChannelsScannerTest {
 
     @Autowired
     private CloudStreamFunctionChannelsScanner scanner;
+    private Map<String, EmptyMessageBinding> messageBinding = Map.of("kafka", new EmptyMessageBinding());
+    private Map<String, Object> operationBinding = Map.of("kafka", new EmptyOperationBinding());
+    private Map<String, Object> channelBinding = Map.of("kafka", new EmptyChannelBinding());
 
     @Test
     void testNoBindings() {
@@ -81,18 +84,18 @@ class CloudStreamFunctionChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation operation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-consumer-input-topic_publish_testConsumer")
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .publish(operation)
                 .build();
 
@@ -115,23 +118,24 @@ class CloudStreamFunctionChannelsScannerTest {
         Map<String, ChannelItem> channels = scanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
+
         Message message = Message.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation operation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-supplier-output-topic_subscribe_testSupplier")
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .subscribe(operation)
                 .build();
 
@@ -165,18 +169,18 @@ class CloudStreamFunctionChannelsScannerTest {
                 .title(Integer.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(Integer.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation subscribeOperation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-out-topic_subscribe_testFunction")
                 .message(subscribeMessage)
                 .build();
 
         ChannelItem subscribeChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .subscribe(subscribeOperation)
                 .build();
 
@@ -186,18 +190,18 @@ class CloudStreamFunctionChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation publishOperation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-in-topic_publish_testFunction")
                 .message(publishMessage)
                 .build();
 
         ChannelItem publishChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .publish(publishOperation)
                 .build();
 
@@ -233,18 +237,18 @@ class CloudStreamFunctionChannelsScannerTest {
                 .title(Integer.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(Integer.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation subscribeOperation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-out-topic_subscribe_kStreamTestFunction")
                 .message(subscribeMessage)
                 .build();
 
         ChannelItem subscribeChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .subscribe(subscribeOperation)
                 .build();
 
@@ -254,18 +258,18 @@ class CloudStreamFunctionChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation publishOperation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-in-topic_publish_kStreamTestFunction")
                 .message(publishMessage)
                 .build();
 
         ChannelItem publishChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .publish(publishOperation)
                 .build();
 

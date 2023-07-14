@@ -1,10 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.when;
 class ClassLevelKafkaListenerScannerTest {
 
     @Autowired
-    private ClassLevelKafkaListenerScanner methodLevelKafkaListenerScanner;
+    private ClassLevelKafkaListenerScanner classLevelKafkaListenerScanner;
 
     @MockBean
     private ComponentClassScanner componentsScanner;
@@ -47,6 +48,9 @@ class ClassLevelKafkaListenerScannerTest {
     private AsyncApiDocket asyncApiDocket;
 
     private static final String TOPIC = "test-topic";
+    private static final Map<String, Object> defaultOperationBinding = Map.of("kafka", new KafkaOperationBinding());
+    private static final Map<String, ? extends MessageBinding> defaultMessageBinding = Map.of("kafka", new KafkaMessageBinding());
+    private static final Map<String, Object> defaultChannelBinding = Map.of("kafka", new KafkaChannelBinding());
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
@@ -67,7 +71,7 @@ class ClassLevelKafkaListenerScannerTest {
         setClassesToScan(classesToScan);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
+        Map<String, ChannelItem> actualChannels = classLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel with message set to oneOf
         Message fooMessage = Message.builder()
@@ -75,7 +79,7 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Message barMessage = Message.builder()
@@ -83,18 +87,18 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleBar.class.getSimpleName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("KafkaListenerClassWithMultipleKafkaHandler_publish")
-                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .bindings(defaultOperationBinding)
                 .message(toMessageObjectOrComposition(Set.of(fooMessage, barMessage)))
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 
@@ -108,7 +112,7 @@ class ClassLevelKafkaListenerScannerTest {
         setClassToScan(ClassWithoutClassLevelKafkaListenerAndWithOneKafkaHandler.class);
 
         // When scan is called
-        Map<String, ChannelItem> channels = methodLevelKafkaListenerScanner.scan();
+        Map<String, ChannelItem> channels = classLevelKafkaListenerScanner.scan();
 
         // Then no channel is not created
         assertThat(channels)
@@ -119,7 +123,7 @@ class ClassLevelKafkaListenerScannerTest {
     void scan_componentHasNoKafkaHandlerMethods() {
         setClassToScan(KafkaListenerClassWithoutKafkaHandlers.class);
 
-        Map<String, ChannelItem> channels = methodLevelKafkaListenerScanner.scan();
+        Map<String, ChannelItem> channels = classLevelKafkaListenerScanner.scan();
 
         assertThat(channels)
                 .isEmpty();
@@ -131,7 +135,7 @@ class ClassLevelKafkaListenerScannerTest {
         setClassToScan(KafkaListenerClassWithOneKafkaHandler.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
+        Map<String, ChannelItem> actualChannels = classLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel
         Message message = Message.builder()
@@ -139,18 +143,18 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("KafkaListenerClassWithOneKafkaHandler_publish")
-                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 
@@ -164,7 +168,7 @@ class ClassLevelKafkaListenerScannerTest {
         setClassToScan(KafkaListenerClassWithMultipleKafkaHandler.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
+        Map<String, ChannelItem> actualChannels = classLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel with message set to oneOf
         Message fooMessage = Message.builder()
@@ -172,7 +176,7 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Message barMessage = Message.builder()
@@ -180,18 +184,18 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleBar.class.getSimpleName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("KafkaListenerClassWithMultipleKafkaHandler_publish")
-                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .bindings(defaultOperationBinding)
                 .message(toMessageObjectOrComposition(Set.of(fooMessage, barMessage)))
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 
@@ -206,7 +210,7 @@ class ClassLevelKafkaListenerScannerTest {
         setClassToScan(KafkaListenerClassWithKafkaHandlerWithBatchPayload.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
+        Map<String, ChannelItem> actualChannels = classLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel, and the payload is the generic type of the list
         Message message = Message.builder()
@@ -214,18 +218,18 @@ class ClassLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("KafkaListenerClassWithKafkaHandlerWithBatchPayload_publish")
-                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 

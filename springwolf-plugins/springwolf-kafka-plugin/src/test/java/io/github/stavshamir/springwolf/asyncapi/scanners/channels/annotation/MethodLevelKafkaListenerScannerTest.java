@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
@@ -48,6 +49,9 @@ class MethodLevelKafkaListenerScannerTest {
     private AsyncApiDocket asyncApiDocket;
 
     private static final String TOPIC = "test-topic";
+    private static final Map<String, Object> defaultOperationBinding = Map.of("kafka", new KafkaOperationBinding());
+    private static final Map<String, ? extends MessageBinding> defaultMessageBinding = Map.of("kafka", new KafkaMessageBinding());
+    private static final Map<String, Object> defaultChannelBinding = Map.of("kafka", new KafkaChannelBinding());
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
@@ -78,18 +82,18 @@ class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation")
-                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 
@@ -111,18 +115,18 @@ class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation1")
-                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 
@@ -179,18 +183,18 @@ class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation")
-                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 
@@ -212,18 +216,18 @@ class MethodLevelKafkaListenerScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new KafkaMessageBinding()))
+                .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
                 .operationId("test-topic_publish_methodWithAnnotation")
-                .bindings(Map.of("kafka", new KafkaOperationBinding()))
+                .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                .bindings(defaultChannelBinding)
                 .publish(operation)
                 .build();
 
