@@ -9,12 +9,12 @@ plugins {
 dependencies {
     implementation "org.springframework:spring-context"
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonCoreVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonCoreVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerCoreVersion}"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerCoreVersion}"
-    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
 
     implementation "javax.money:money-api:${moneyApiVersion}"
 
