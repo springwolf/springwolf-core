@@ -6,6 +6,8 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import org.assertj.core.util.Maps;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -20,10 +22,11 @@ import static org.mockito.Mockito.when;
 
 class AsyncAnnotationScannerUtilTest {
 
-    @Test
-    void getAsyncHeaders() throws NoSuchMethodException {
+    @ParameterizedTest
+    @ValueSource(classes = {ClassWithOperationBindingProcessor.class, ClassWithAbstractOperationBindingProcessor.class})
+    void getAsyncHeaders(Class<?> classWithOperationBindingProcessor) throws NoSuchMethodException {
         // given
-        Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
+        Method m = classWithOperationBindingProcessor.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
 
         StringValueResolver resolver = mock(StringValueResolver.class);
@@ -68,11 +71,12 @@ class AsyncAnnotationScannerUtilTest {
         assertEquals(Maps.newHashMap(TestMessageBindingProcessor.TYPE, TestMessageBindingProcessor.BINDING), bindings);
     }
 
-    @Test
-    void processMessageFromAnnotationWithoutAsyncMessage() throws NoSuchMethodException {
+    @ParameterizedTest
+    @ValueSource(classes = {ClassWithOperationBindingProcessor.class, ClassWithAbstractOperationBindingProcessor.class})
+    void processMessageFromAnnotationWithoutAsyncMessage(Class<?> classWithOperationBindingProcessor)
+            throws NoSuchMethodException {
         // given
-        Method method =
-                ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
+        Method method = classWithOperationBindingProcessor.getDeclaredMethod("methodWithAnnotation", String.class);
 
         // when
         Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
@@ -82,11 +86,13 @@ class AsyncAnnotationScannerUtilTest {
         assertEquals(expectedMessage, message);
     }
 
-    @Test
-    void processMessageFromAnnotationWithAsyncMessage() throws NoSuchMethodException {
+    @ParameterizedTest
+    @ValueSource(classes = {ClassWithOperationBindingProcessor.class, ClassWithAbstractOperationBindingProcessor.class})
+    void processMessageFromAnnotationWithAsyncMessage(Class<?> classWithOperationBindingProcessor)
+            throws NoSuchMethodException {
         // given
-        Method method = ClassWithOperationBindingProcessor.class.getDeclaredMethod(
-                "methodWithAsyncMessageAnnotation", String.class);
+        Method method =
+                classWithOperationBindingProcessor.getDeclaredMethod("methodWithAsyncMessageAnnotation", String.class);
 
         // when
         Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
@@ -142,6 +148,49 @@ class AsyncAnnotationScannerUtilTest {
                                                 schemaFormat = "application/schema+json;version=draft-07",
                                                 title = "Message Title")))
         @TestOperationBindingProcessor.TestOperationBinding()
+        private void methodWithAsyncMessageAnnotation(String payload) {}
+    }
+
+    private static class ClassWithAbstractOperationBindingProcessor {
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                description = "${test.property.description}",
+                                headers =
+                                        @AsyncOperation.Headers(
+                                                schemaName = "TestSchema",
+                                                values = {
+                                                    @AsyncOperation.Headers.Header(
+                                                            name = "header",
+                                                            value = "value",
+                                                            description = "description")
+                                                })))
+        @TestAbstractOperationBindingProcessor.TestOperationBinding()
+        private void methodWithAnnotation(String payload) {}
+
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                description = "${test.property.description}",
+                                headers =
+                                        @AsyncOperation.Headers(
+                                                schemaName = "TestSchema",
+                                                values = {
+                                                    @AsyncOperation.Headers.Header(
+                                                            name = "header",
+                                                            value = "value",
+                                                            description = "description")
+                                                }),
+                                message =
+                                        @AsyncMessage(
+                                                description = "Message description",
+                                                messageId = "simpleFoo",
+                                                name = "SimpleFooPayLoad",
+                                                schemaFormat = "application/schema+json;version=draft-07",
+                                                title = "Message Title")))
+        @TestAbstractOperationBindingProcessor.TestOperationBinding()
         private void methodWithAsyncMessageAnnotation(String payload) {}
     }
 }

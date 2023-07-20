@@ -55,6 +55,7 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}")
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
