@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.LoadingMode.FAIL_FAST;
 
@@ -75,6 +77,11 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
 
             AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
 
+            // ChannelsService must be invoked before accessing SchemasService,
+            // because during channel scanning, all detected schemas are registered with
+            // SchemasService.
+            Map<String, ChannelItem> channels = channelsService.findChannels();
+
             Components components = Components.builder()
                     .schemas(schemasService.getDefinitions())
                     .build();
@@ -84,7 +91,7 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
                     .id(docket.getId())
                     .defaultContentType(docket.getDefaultContentType())
                     .servers(docket.getServers())
-                    .channels(channelsService.findChannels())
+                    .channels(channels)
                     .components(components)
                     .build();
 
