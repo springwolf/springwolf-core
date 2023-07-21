@@ -43,6 +43,12 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Check formatting (before running tests) on plugin
+        run: ./gradlew -p ${{ env.plugin }} spotlessCheck
+
+      - name: Check formatting (before running tests) on example
+        run: ./gradlew -p ${{ env.example }} spotlessCheck
+
       - name: Run unit tests
         run: ./gradlew -p ${{ env.plugin }} test
 
