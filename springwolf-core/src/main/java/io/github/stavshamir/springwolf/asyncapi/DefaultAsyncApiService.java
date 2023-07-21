@@ -4,53 +4,109 @@ import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
+import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.LoadingMode.*;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DefaultAsyncApiService implements AsyncApiService {
+public class DefaultAsyncApiService implements AsyncApiService, InitializingBean {
+
+    /**
+     * Record holding the result of AsyncAPI creation.
+     *
+     * @param asyncAPI
+     * @param exception
+     */
+    private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {
+    }
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final ChannelsService channelsService;
     private final SchemasService schemasService;
     private final List<AsyncApiCustomizer> customizers;
 
-    private AsyncAPI asyncAPI;
+    private final SpringWolfConfigProperties configProperties;
 
-    @PostConstruct
-    void buildAsyncApi() {
-        log.debug("Building AsyncAPI document");
+    private volatile AsyncAPIResult asyncAPIResult = null;
 
-        AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
-
-        Components components = Components.builder()
-                .schemas(schemasService.getDefinitions())
-                .build();
-
-        asyncAPI = AsyncAPI.builder()
-                .info(docket.getInfo())
-                .id(docket.getId())
-                .defaultContentType(docket.getDefaultContentType())
-                .servers(docket.getServers())
-                .channels(channelsService.getChannels())
-                .components(components)
-                .build();
-
-        for (AsyncApiCustomizer customizer: customizers) {
-            customizer.customize(asyncAPI);
+    @Override
+    public void afterPropertiesSet() {
+        if (configProperties.getLoadingMode() == FAIL_FAST) {
+            getAsyncAPI();
         }
     }
 
     @Override
     public AsyncAPI getAsyncAPI() {
-        return asyncAPI;
+        if (asyncAPIResult == null) {
+            initAsyncAPI();
+        }
+
+        if (asyncAPIResult.asyncAPI != null) {
+            return asyncAPIResult.asyncAPI;
+        } else {
+            throw new RuntimeException("Error occured during creation of AsyncAPI", asyncAPIResult.exception);
+        }
     }
+
+
+    /**
+     * Does the 'heavy work' of detecting the AsyncAPI documents. Stores the resulting
+     * AsyncAPI document or alternativly a catched exception/error in the instance variable asyncAPIResult.
+     *
+     * @return
+     */
+    protected synchronized void initAsyncAPI() {
+        if (this.asyncAPIResult != null) {
+            return;  // Double Check Idiom
+        }
+
+        try {
+            log.debug("Building AsyncAPI document");
+
+            AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
+
+            Components components = Components.builder()
+                    .schemas(schemasService.getDefinitions())
+                    .build();
+
+            AsyncAPI asyncAPI = AsyncAPI.builder()
+                    .info(docket.getInfo())
+                    .id(docket.getId())
+                    .defaultContentType(docket.getDefaultContentType())
+                    .servers(docket.getServers())
+                    .channels(channelsService.findChannels())
+                    .components(components)
+                    .build();
+
+            for (AsyncApiCustomizer customizer : customizers) {
+                customizer.customize(asyncAPI);
+            }
+            this.asyncAPIResult = new AsyncAPIResult(asyncAPI, null);
+        }catch(Throwable t){
+            this.asyncAPIResult = new AsyncAPIResult(null, t);
+        }
+    }
+
+    /**
+     * checks whether asyncApi has internally allready been initialized. For testing purposes.
+     *
+     * @return true if asyncApi has been created and initialized.
+     */
+    public synchronized boolean isInitialized() {
+        return this.asyncAPIResult != null;
+    }
+
 
 }

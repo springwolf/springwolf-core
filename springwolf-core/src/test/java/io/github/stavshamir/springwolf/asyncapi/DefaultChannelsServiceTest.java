@@ -35,7 +35,7 @@ class DefaultChannelsServiceTest {
 
     @Test
     void getChannels() {
-        Map<String, ChannelItem> actualChannels = defaultChannelsService.getChannels();
+        Map<String, ChannelItem> actualChannels = defaultChannelsService.findChannels();
 
         assertThat(actualChannels)
                 .containsAllEntriesOf(fooChannelScanner.scan())

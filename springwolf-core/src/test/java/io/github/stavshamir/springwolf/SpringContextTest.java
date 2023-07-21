@@ -26,6 +26,7 @@ public class SpringContextTest {
     @ExtendWith(SpringExtension.class)
     @Nested
     @ContextConfiguration(classes = {
+            SpringWolfConfigProperties.class,
             CustomBeanAsyncApiDocketConfiguration.class, // user has defined an own AsyncApiDocket bean
             DefaultAsyncApiDocketService.class,
             DefaultAsyncApiService.class,

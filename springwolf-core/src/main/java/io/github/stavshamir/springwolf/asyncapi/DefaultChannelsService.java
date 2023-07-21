@@ -13,16 +13,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Service to detect AsyncAPI channels in the current spring context.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DefaultChannelsService implements ChannelsService {
 
     private final List<? extends ChannelsScanner> channelsScanners;
-    private final Map<String, ChannelItem> channels = new HashMap<>();
 
-    @PostConstruct
-    void findChannels() {
+    /**
+     * Collects all AsyncAPI ChannelItems using the available {@link ChannelsScanner}
+     * beans.
+     * @return Map of channel names mapping to detected ChannelItems
+     */
+    @Override
+    public Map<String, ChannelItem> findChannels() {
         List<Map.Entry<String, ChannelItem>> foundChannelItems = new ArrayList<>();
 
         for (ChannelsScanner scanner : channelsScanners) {
@@ -33,13 +40,7 @@ public class DefaultChannelsService implements ChannelsService {
                 log.error("An error was encountered during channel scanning with {}: {}", scanner, e.getMessage());
             }
         }
-
-        this.channels.putAll(ChannelMerger.merge(foundChannelItems));
-    }
-
-    @Override
-    public Map<String, ChannelItem> getChannels() {
-        return channels;
+        return ChannelMerger.merge(foundChannelItems);
     }
 
 }
