@@ -64,10 +64,26 @@ docker {
 
 test {
     dependsOn dockerBuildImage
+    dependsOn spotlessApply // Automatically fix code formatting if possible
 
     useJUnitPlatform()
 
     testLogging {
         exceptionFormat = 'full'
+    }
+}
+
+spotless {
+    encoding 'UTF-8'
+
+    java {
+        palantirJavaFormat()
+
+        importOrder('', 'javax', 'java', '\\#')
+        replaceRegex("Remove wildcard imports", "import\\s+[^\\*\\s]+\\*;(\\r\\n|\\r|\\n)", "\$1")
+        removeUnusedImports()
+
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }

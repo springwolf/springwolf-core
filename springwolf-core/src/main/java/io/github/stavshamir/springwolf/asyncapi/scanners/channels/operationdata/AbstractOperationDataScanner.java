@@ -61,8 +61,10 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
     private ChannelItem buildChannel(List<OperationData> operationDataList) {
         // All bindings in the group are assumed to be the same
         // AsyncApi does not support multiple bindings on a single channel
-        Map<String, ? extends ChannelBinding> channelBinding = operationDataList.get(0).getChannelBinding();
-        Map<String, ? extends OperationBinding> operationBinding = operationDataList.get(0).getOperationBinding();
+        Map<String, ? extends ChannelBinding> channelBinding =
+                operationDataList.get(0).getChannelBinding();
+        Map<String, ? extends OperationBinding> operationBinding =
+                operationDataList.get(0).getOperationBinding();
         Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
         Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         String operationId = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
@@ -79,19 +81,16 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                 .bindings(opBinding)
                 .build();
 
-        ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder()
-                .bindings(chBinding);
+        ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder().bindings(chBinding);
         channelBuilder = switch (getOperationType()) {
             case PUBLISH -> channelBuilder.publish(operation);
-            case SUBSCRIBE -> channelBuilder.subscribe(operation);
-        };
+            case SUBSCRIBE -> channelBuilder.subscribe(operation);};
         return channelBuilder.build();
     }
 
     private Object getMessageObject(List<OperationData> operationDataList) {
-        Set<Message> messages = operationDataList.stream()
-                .map(this::buildMessage)
-                .collect(toSet());
+        Set<Message> messages =
+                operationDataList.stream().map(this::buildMessage).collect(toSet());
 
         return toMessageObjectOrComposition(messages);
     }
@@ -117,7 +116,8 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .bindings(operationData.getMessageBinding());
 
-        // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher priority
+        // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher
+        // priority
         //  so if we find them, we need to override the default values.
         processAsyncMessageAnnotation(operationData.getMessage(), builder);
 
@@ -128,7 +128,9 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         if (annotationMessage != null) {
             builder.messageId(annotationMessage.getMessageId());
 
-            var schemaFormat = annotationMessage.getSchemaFormat() != null ? annotationMessage.getSchemaFormat() : Message.DEFAULT_SCHEMA_FORMAT;
+            var schemaFormat = annotationMessage.getSchemaFormat() != null
+                    ? annotationMessage.getSchemaFormat()
+                    : Message.DEFAULT_SCHEMA_FORMAT;
             builder.schemaFormat(schemaFormat);
 
             var annotationMessageDescription = annotationMessage.getDescription();

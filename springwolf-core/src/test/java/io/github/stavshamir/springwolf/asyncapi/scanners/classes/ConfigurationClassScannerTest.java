@@ -27,20 +27,17 @@ class ConfigurationClassScannerTest {
 
     @Test
     void getComponents() {
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(
-                AsyncApiDocket.builder()
+        when(asyncApiDocketService.getAsyncApiDocket())
+                .thenReturn(AsyncApiDocket.builder()
                         .info(Info.builder()
                                 .title("ConfigurationClassScannerTest-title")
                                 .version("ConfigurationClassScannerTest-version")
                                 .build())
                         .basePackage(this.getClass().getPackage().getName())
-                        .build()
-        );
+                        .build());
 
         Set<Class<?>> configurationClasses = configurationClassScanner.scan();
 
-        assertThat(configurationClasses)
-                .containsExactlyInAnyOrder(TestBeanConfiguration.class);
+        assertThat(configurationClasses).containsExactlyInAnyOrder(TestBeanConfiguration.class);
     }
-
 }

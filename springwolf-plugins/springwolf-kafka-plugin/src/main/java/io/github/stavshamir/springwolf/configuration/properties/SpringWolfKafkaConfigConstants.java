@@ -12,6 +12,4 @@ public class SpringWolfKafkaConfigConstants {
 
     public static final String SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED =
             SPRINGWOLF_KAFKA_CONFIG_PREFIX + SCANNER + ".kafka-listener" + ENABLED;
-
-
 }

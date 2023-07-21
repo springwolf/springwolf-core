@@ -34,7 +34,8 @@ public class RabbitListenerUtil {
                 .map(resolver::resolveStringValue)
                 .peek(queue -> log.debug("Resolved queue name: {}", queue))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No queue name was found in @RabbitListener annotation"));
+                .orElseThrow(
+                        () -> new IllegalArgumentException("No queue name was found in @RabbitListener annotation"));
     }
 
     private static String getChannelNameFromBindings(RabbitListener annotation, StringValueResolver resolver) {
@@ -43,10 +44,12 @@ public class RabbitListenerUtil {
                 .map(resolver::resolveStringValue)
                 .peek(queue -> log.debug("Resolved queue name: {}", queue))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No queue name was found in @RabbitListener annotation"));
+                .orElseThrow(
+                        () -> new IllegalArgumentException("No queue name was found in @RabbitListener annotation"));
     }
 
-    public static Map<String, ? extends ChannelBinding> buildChannelBinding(RabbitListener annotation, StringValueResolver resolver, Map<String, Binding> bindingsMap) {
+    public static Map<String, ? extends ChannelBinding> buildChannelBinding(
+            RabbitListener annotation, StringValueResolver resolver, Map<String, Binding> bindingsMap) {
         AMQPChannelBinding.ExchangeProperties exchangeProperties = new AMQPChannelBinding.ExchangeProperties();
         exchangeProperties.setName(getExchangeName(annotation, resolver, bindingsMap));
 
@@ -57,7 +60,8 @@ public class RabbitListenerUtil {
         return Map.of("amqp", channelBinding);
     }
 
-    private static String getExchangeName(RabbitListener annotation, StringValueResolver resolver, Map<String, Binding> bindingsMap) {
+    private static String getExchangeName(
+            RabbitListener annotation, StringValueResolver resolver, Map<String, Binding> bindingsMap) {
         String exchangeName = Stream.of(annotation.bindings())
                 .map(binding -> binding.exchange().name())
                 .filter(StringUtils::hasText)
@@ -74,17 +78,23 @@ public class RabbitListenerUtil {
         return exchangeName;
     }
 
-    public static Map<String, ? extends OperationBinding> buildOperationBinding(RabbitListener annotation, StringValueResolver resolver, Map<String, Binding> bindingsMap) {
-        return Map.of("amqp", AMQPOperationBinding.builder().cc(getRoutingKeys(annotation, resolver, bindingsMap)).build());
+    public static Map<String, ? extends OperationBinding> buildOperationBinding(
+            RabbitListener annotation, StringValueResolver resolver, Map<String, Binding> bindingsMap) {
+        return Map.of(
+                "amqp",
+                AMQPOperationBinding.builder()
+                        .cc(getRoutingKeys(annotation, resolver, bindingsMap))
+                        .build());
     }
 
-    private static List<String> getRoutingKeys(RabbitListener annotation, StringValueResolver resolver, Map<String, Binding> bindingsMap) {
+    private static List<String> getRoutingKeys(
+            RabbitListener annotation, StringValueResolver resolver, Map<String, Binding> bindingsMap) {
         /*
-            The routing key is taken from the binding. As the key field in the @QueueBinding can be an empty array,
-            it is set as an empty String in that case.
-            Also in the case when there is no binding for the queue present at all, it means it uses the fact that
-            RabbitMQ automatically binds default exchange to a queue with queue's name as a routing key.
-         */
+           The routing key is taken from the binding. As the key field in the @QueueBinding can be an empty array,
+           it is set as an empty String in that case.
+           Also in the case when there is no binding for the queue present at all, it means it uses the fact that
+           RabbitMQ automatically binds default exchange to a queue with queue's name as a routing key.
+        */
         List<String> routingKeys = Stream.of(annotation.bindings())
                 .map(binding -> {
                     if (binding.key().length == 0) {

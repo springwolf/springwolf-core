@@ -18,13 +18,15 @@ public class AsyncApiController {
     private final AsyncApiService asyncApiService;
     private final AsyncApiSerializerService serializer;
 
-    @GetMapping(path ={"${springwolf.paths.docs:/springwolf/docs}","${springwolf.paths.docs:/springwolf/docs}.json"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+            path = {"${springwolf.paths.docs:/springwolf/docs}", "${springwolf.paths.docs:/springwolf/docs}.json"},
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public String asyncApiJson() throws JsonProcessingException {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
         return serializer.toJsonString(asyncAPI);
     }
 
-    @GetMapping(path ="${springwolf.paths.docs:/springwolf/docs}.yaml", produces = "application/yaml")
+    @GetMapping(path = "${springwolf.paths.docs:/springwolf/docs}.yaml", produces = "application/yaml")
     public String asyncApiYaml() throws JsonProcessingException {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
         return serializer.toYaml(asyncAPI);

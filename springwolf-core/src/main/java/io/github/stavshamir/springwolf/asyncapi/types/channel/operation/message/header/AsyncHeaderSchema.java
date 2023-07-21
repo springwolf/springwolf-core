@@ -9,8 +9,8 @@ import java.util.List;
 public class AsyncHeaderSchema extends StringSchema {
     @JsonIgnore
     private final String headerName;
-    
-    public AsyncHeaderSchema(String headerName){
+
+    public AsyncHeaderSchema(String headerName) {
         super();
         this.headerName = headerName;
     }
@@ -20,7 +20,8 @@ public class AsyncHeaderSchema extends StringSchema {
     }
 
     @Builder(builderMethodName = "headerBuilder")
-    private static AsyncHeaderSchema createHeader(String headerName, String description, String example, List<String> enumValue) {
+    private static AsyncHeaderSchema createHeader(
+            String headerName, String description, String example, List<String> enumValue) {
         AsyncHeaderSchema header = new AsyncHeaderSchema(headerName);
         header.setDescription(description);
         header.setExample(example);

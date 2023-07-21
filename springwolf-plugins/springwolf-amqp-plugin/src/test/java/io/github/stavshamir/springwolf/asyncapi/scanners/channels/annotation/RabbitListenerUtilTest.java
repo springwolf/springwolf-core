@@ -53,15 +53,20 @@ class RabbitListenerUtilTest {
             Map<String, Binding> bindingsMap = emptyMap();
 
             // when
-            Map<String, ? extends ChannelBinding> channelBinding = RabbitListenerUtil.buildChannelBinding(annotation, resolver, bindingsMap);
+            Map<String, ? extends ChannelBinding> channelBinding =
+                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, bindingsMap);
 
             // then
             assertEquals(1, channelBinding.size());
             assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
-            assertEquals(AMQPChannelBinding.builder()
-                    .is("routingKey")
-                    .exchange(AMQPChannelBinding.ExchangeProperties.builder().name("").build())
-                    .build(), channelBinding.get("amqp"));
+            assertEquals(
+                    AMQPChannelBinding.builder()
+                            .is("routingKey")
+                            .exchange(AMQPChannelBinding.ExchangeProperties.builder()
+                                    .name("")
+                                    .build())
+                            .build(),
+                    channelBinding.get("amqp"));
         }
 
         @Test
@@ -73,14 +78,13 @@ class RabbitListenerUtilTest {
             Map<String, Binding> bindingsMap = emptyMap();
 
             // when
-            Map<String, ? extends OperationBinding> operationBinding = RabbitListenerUtil.buildOperationBinding(annotation, resolver, bindingsMap);
+            Map<String, ? extends OperationBinding> operationBinding =
+                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, bindingsMap);
 
             // then
             assertEquals(1, operationBinding.size());
             assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
-            assertEquals(AMQPOperationBinding.builder()
-                    .cc(List.of(QUEUE))
-                    .build(), operationBinding.get("amqp"));
+            assertEquals(AMQPOperationBinding.builder().cc(List.of(QUEUE)).build(), operationBinding.get("amqp"));
         }
 
         @Test
@@ -94,13 +98,10 @@ class RabbitListenerUtilTest {
             assertEquals(new AMQPMessageBinding(), messageBinding.get("amqp"));
         }
 
-
         private static class ClassWithMinimalRabbitListenerConfiguration {
 
             @RabbitListener(queues = QUEUE)
-            private void methodWithAnnotation(String payload) {
-            }
-
+            private void methodWithAnnotation(String payload) {}
         }
     }
 
@@ -128,15 +129,20 @@ class RabbitListenerUtilTest {
             Map<String, Binding> bindingsMap = emptyMap();
 
             // when
-            Map<String, ? extends ChannelBinding> channelBinding = RabbitListenerUtil.buildChannelBinding(annotation, resolver, bindingsMap);
+            Map<String, ? extends ChannelBinding> channelBinding =
+                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, bindingsMap);
 
             // then
             assertEquals(1, channelBinding.size());
             assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
-            assertEquals(AMQPChannelBinding.builder()
-                    .is("routingKey")
-                    .exchange(AMQPChannelBinding.ExchangeProperties.builder().name("name").build())
-                    .build(), channelBinding.get("amqp"));
+            assertEquals(
+                    AMQPChannelBinding.builder()
+                            .is("routingKey")
+                            .exchange(AMQPChannelBinding.ExchangeProperties.builder()
+                                    .name("name")
+                                    .build())
+                            .build(),
+                    channelBinding.get("amqp"));
         }
 
         @Test
@@ -147,14 +153,13 @@ class RabbitListenerUtilTest {
             Map<String, Binding> bindingsMap = emptyMap();
 
             // when
-            Map<String, ? extends OperationBinding> operationBinding = RabbitListenerUtil.buildOperationBinding(annotation, resolver, bindingsMap);
+            Map<String, ? extends OperationBinding> operationBinding =
+                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, bindingsMap);
 
             // then
             assertEquals(1, operationBinding.size());
             assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
-            assertEquals(AMQPOperationBinding.builder()
-                    .cc(List.of("key"))
-                    .build(), operationBinding.get("amqp"));
+            assertEquals(AMQPOperationBinding.builder().cc(List.of("key")).build(), operationBinding.get("amqp"));
         }
 
         @Test
@@ -170,14 +175,14 @@ class RabbitListenerUtilTest {
 
         private static class ClassWithFullRabbitListenerConfiguration {
 
-            @RabbitListener(bindings = {
-                    @QueueBinding(
-                            exchange = @Exchange(name = "name"),
-                            key = "key",
-                            value = @Queue(name = "${queue-1}"))
-            })
-            private void methodWithAnnotation(String payload) {
-            }
+            @RabbitListener(
+                    bindings = {
+                        @QueueBinding(
+                                exchange = @Exchange(name = "name"),
+                                key = "key",
+                                value = @Queue(name = "${queue-1}"))
+                    })
+            private void methodWithAnnotation(String payload) {}
         }
     }
 

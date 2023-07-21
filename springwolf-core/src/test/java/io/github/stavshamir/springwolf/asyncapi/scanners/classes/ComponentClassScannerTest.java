@@ -26,15 +26,14 @@ class ComponentClassScannerTest {
 
     @Test
     void getComponents() {
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(
-                AsyncApiDocket.builder()
+        when(asyncApiDocketService.getAsyncApiDocket())
+                .thenReturn(AsyncApiDocket.builder()
                         .info(Info.builder()
                                 .title("ComponentClassScannerTest-title")
                                 .version("ComponentClassScannerTest-version")
                                 .build())
                         .basePackage(this.getClass().getPackage().getName())
-                        .build()
-        );
+                        .build());
 
         Set<Class<?>> components = componentsScanner.scan();
 
@@ -43,5 +42,4 @@ class ComponentClassScannerTest {
                 .contains(ConfigurationClassScanner.class)
                 .doesNotContain(ClassScanner.class);
     }
-
 }

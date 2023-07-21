@@ -1,9 +1,9 @@
 package io.github.stavshamir.springwolf.producer;
 
-import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
+import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
+import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,9 +46,9 @@ class SpringwolfAmqpProducerTest {
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("exchange-name");
         ChannelItem channelItem = ChannelItem.builder()
-                .bindings(Map.of("amqp", AMQPChannelBinding.builder()
-                        .exchange(properties)
-                        .build()))
+                .bindings(Map.of(
+                        "amqp",
+                        AMQPChannelBinding.builder().exchange(properties).build()))
                 .publish(Operation.builder()
                         .bindings(Map.of("amqp", new AMQPOperationBinding()))
                         .build())
@@ -67,13 +67,15 @@ class SpringwolfAmqpProducerTest {
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("exchange-name");
         ChannelItem channelItem = ChannelItem.builder()
-                .bindings(Map.of("amqp", AMQPChannelBinding.builder()
-                        .exchange(properties)
-                        .build()))
+                .bindings(Map.of(
+                        "amqp",
+                        AMQPChannelBinding.builder().exchange(properties).build()))
                 .publish(Operation.builder()
-                        .bindings(Map.of("amqp", AMQPOperationBinding.builder()
-                                .cc(Collections.singletonList("routing-key"))
-                                .build()))
+                        .bindings(Map.of(
+                                "amqp",
+                                AMQPOperationBinding.builder()
+                                        .cc(Collections.singletonList("routing-key"))
+                                        .build()))
                         .build())
                 .build();
         Map<String, ChannelItem> channels = Map.of("channel-name", channelItem);

@@ -16,12 +16,15 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = {SpringwolfKafkaExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        classes = {SpringwolfKafkaExampleApplication.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(
-        partitions = 1, brokerProperties = {
-        "listeners=PLAINTEXT://localhost:9092",
-        "port=9092",
-})
+        partitions = 1,
+        brokerProperties = {
+            "listeners=PLAINTEXT://localhost:9092",
+            "port=9092",
+        })
 @DirtiesContext
 public class ApiIntegrationTest {
 

@@ -50,7 +50,8 @@ class MethodLevelKafkaListenerScannerTest {
 
     private static final String TOPIC = "test-topic";
     private static final Map<String, Object> defaultOperationBinding = Map.of("kafka", new KafkaOperationBinding());
-    private static final Map<String, ? extends MessageBinding> defaultMessageBinding = Map.of("kafka", new KafkaMessageBinding());
+    private static final Map<String, ? extends MessageBinding> defaultMessageBinding =
+            Map.of("kafka", new KafkaMessageBinding());
     private static final Map<String, Object> defaultChannelBinding = Map.of("kafka", new KafkaChannelBinding());
 
     private void setClassToScan(Class<?> classToScan) {
@@ -64,8 +65,7 @@ class MethodLevelKafkaListenerScannerTest {
 
         Map<String, ChannelItem> channels = methodLevelKafkaListenerScanner.scan();
 
-        assertThat(channels)
-                .isEmpty();
+        assertThat(channels).isEmpty();
     }
 
     @Test
@@ -97,8 +97,7 @@ class MethodLevelKafkaListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(TOPIC, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -130,8 +129,7 @@ class MethodLevelKafkaListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(TOPIC, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -143,15 +141,15 @@ class MethodLevelKafkaListenerScannerTest {
         Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains a correct binding
-        Map<String, Object> actualBindings = actualChannels.get(TOPIC)
-                .getPublish()
-                .getBindings();
+        Map<String, Object> actualBindings =
+                actualChannels.get(TOPIC).getPublish().getBindings();
 
         assertThat(actualBindings).isNotNull();
         KafkaOperationBinding kafka = (KafkaOperationBinding) actualBindings.get("kafka");
         assertThat(kafka).isNotNull();
         assertThat(kafka.getGroupId())
-                .isEqualTo(KafkaListenerUtil.buildKafkaGroupIdSchema(ClassWithKafkaListenerAnnotationWithGroupId.GROUP_ID));
+                .isEqualTo(KafkaListenerUtil.buildKafkaGroupIdSchema(
+                        ClassWithKafkaListenerAnnotationWithGroupId.GROUP_ID));
     }
 
     @Test
@@ -163,18 +161,18 @@ class MethodLevelKafkaListenerScannerTest {
         Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains a correct binding
-        Map<String, Object> actualBindings = actualChannels.get(TOPIC)
-                .getPublish()
-                .getBindings();
+        Map<String, Object> actualBindings =
+                actualChannels.get(TOPIC).getPublish().getBindings();
 
         assertThat(actualBindings).isNotNull();
         KafkaOperationBinding kafka = (KafkaOperationBinding) actualBindings.get("kafka");
         assertThat(kafka).isNotNull();
         assertThat(kafka.getGroupId())
                 .isIn(
-                        KafkaListenerUtil.buildKafkaGroupIdSchema(ClassWithKafkaListenerAnnotationWithDifferentGroupId.GROUP_ID_FIRST),
-                        KafkaListenerUtil.buildKafkaGroupIdSchema(ClassWithKafkaListenerAnnotationWithDifferentGroupId.GROUP_ID_SECOND)
-                );
+                        KafkaListenerUtil.buildKafkaGroupIdSchema(
+                                ClassWithKafkaListenerAnnotationWithDifferentGroupId.GROUP_ID_FIRST),
+                        KafkaListenerUtil.buildKafkaGroupIdSchema(
+                                ClassWithKafkaListenerAnnotationWithDifferentGroupId.GROUP_ID_SECOND));
     }
 
     @Test
@@ -185,10 +183,8 @@ class MethodLevelKafkaListenerScannerTest {
         setClassToScan(ClassWithKafkaListenerAnnotationMultipleParamsWithoutPayloadAnnotation.class);
 
         // Then an exception is thrown when scan is called
-        assertThatThrownBy(() -> methodLevelKafkaListenerScanner.scan())
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> methodLevelKafkaListenerScanner.scan()).isInstanceOf(IllegalArgumentException.class);
     }
-
 
     @Test
     void scan_componentHasKafkaListenerMethods_multipleParamsWithPayloadAnnotation() {
@@ -200,7 +196,8 @@ class MethodLevelKafkaListenerScannerTest {
         // When scan is called
         Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
 
-        // Then the returned collection contains the channel, and the payload is of the parameter annotated with @Payload
+        // Then the returned collection contains the channel, and the payload is of the parameter annotated with
+        // @Payload
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
@@ -221,8 +218,7 @@ class MethodLevelKafkaListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(TOPIC, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -254,34 +250,26 @@ class MethodLevelKafkaListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(TOPIC, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     private static class ClassWithoutKafkaListenerAnnotations {
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithKafkaListenerAnnotationHardCodedTopic {
 
         @KafkaListener(topics = TOPIC)
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithKafkaListenerAnnotationsEmbeddedValueTopic {
 
         @KafkaListener(topics = "${kafka.topics.test}")
-        private void methodWithAnnotation1(SimpleFoo payload) {
-        }
-
+        private void methodWithAnnotation1(SimpleFoo payload) {}
     }
 
     private static class ClassWithKafkaListenerAnnotationWithGroupId {
@@ -289,12 +277,9 @@ class MethodLevelKafkaListenerScannerTest {
         private static final String GROUP_ID = "test-group-id";
 
         @KafkaListener(topics = TOPIC, groupId = GROUP_ID)
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithKafkaListenerAnnotationWithDifferentGroupId {
@@ -302,37 +287,28 @@ class MethodLevelKafkaListenerScannerTest {
         private static final String GROUP_ID_SECOND = "test-group-id-second";
 
         @KafkaListener(topics = TOPIC, groupId = GROUP_ID_FIRST)
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
         @KafkaListener(topics = TOPIC, groupId = GROUP_ID_SECOND)
-        private void sameMethodWithDifferentGroupId(SimpleFoo payload) {
-        }
-
+        private void sameMethodWithDifferentGroupId(SimpleFoo payload) {}
     }
 
     private static class ClassWithKafkaListenerAnnotationMultipleParamsWithoutPayloadAnnotation {
 
         @KafkaListener(topics = TOPIC)
-        private void methodWithAnnotation(SimpleFoo payload, String anotherParam) {
-        }
-
+        private void methodWithAnnotation(SimpleFoo payload, String anotherParam) {}
     }
 
     private static class ClassWithKafkaListenerAnnotationMultipleParamsWithPayloadAnnotation {
 
         @KafkaListener(topics = TOPIC)
-        private void methodWithAnnotation(String anotherParam, @Payload SimpleFoo payload) {
-        }
-
+        private void methodWithAnnotation(String anotherParam, @Payload SimpleFoo payload) {}
     }
 
     private static class ClassWithKafkaListenerWithBatchPayload {
 
         @KafkaListener(topics = TOPIC)
-        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {
-        }
-
+        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {}
     }
 
     @Data
@@ -341,5 +317,4 @@ class MethodLevelKafkaListenerScannerTest {
         private String s;
         private boolean b;
     }
-
 }

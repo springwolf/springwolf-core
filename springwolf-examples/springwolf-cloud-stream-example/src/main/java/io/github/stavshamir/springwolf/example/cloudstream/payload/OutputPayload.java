@@ -5,15 +5,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Output payload model")
 public class OutputPayload {
 
-    public OutputPayload() {
-    }
+    public OutputPayload() {}
 
     public OutputPayload(String someString, long someLong) {
         this.someString = someString;
         this.someLong = someLong;
     }
 
-    @Schema(description = "Some string field", example = "some string value", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(
+            description = "Some string field",
+            example = "some string value",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String someString;
 
     @Schema(description = "Some long field", example = "5")
@@ -37,10 +39,6 @@ public class OutputPayload {
 
     @Override
     public String toString() {
-        return "OutputPayload{" +
-                "someString='" + someString + '\'' +
-                ", someLong=" + someLong +
-                '}';
+        return "OutputPayload{" + "someString='" + someString + '\'' + ", someLong=" + someLong + '}';
     }
-
 }

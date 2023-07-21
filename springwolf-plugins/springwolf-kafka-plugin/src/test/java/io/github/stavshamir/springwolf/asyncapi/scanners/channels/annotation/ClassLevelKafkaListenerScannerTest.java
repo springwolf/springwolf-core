@@ -49,7 +49,8 @@ class ClassLevelKafkaListenerScannerTest {
 
     private static final String TOPIC = "test-topic";
     private static final Map<String, Object> defaultOperationBinding = Map.of("kafka", new KafkaOperationBinding());
-    private static final Map<String, ? extends MessageBinding> defaultMessageBinding = Map.of("kafka", new KafkaMessageBinding());
+    private static final Map<String, ? extends MessageBinding> defaultMessageBinding =
+            Map.of("kafka", new KafkaMessageBinding());
     private static final Map<String, Object> defaultChannelBinding = Map.of("kafka", new KafkaChannelBinding());
 
     private void setClassToScan(Class<?> classToScan) {
@@ -64,10 +65,8 @@ class ClassLevelKafkaListenerScannerTest {
     @Test
     void scan_componentWithMultipleKafkaListenersAndHandlers() {
         // Given multiple @KafkaListener annotated classes with method(s) annotated with @KafkaHandler
-        Set<Class<?>> classesToScan = Set.of(
-                KafkaListenerClassWithOneKafkaHandler.class,
-                KafkaListenerClassWithMultipleKafkaHandler.class
-        );
+        Set<Class<?>> classesToScan =
+                Set.of(KafkaListenerClassWithOneKafkaHandler.class, KafkaListenerClassWithMultipleKafkaHandler.class);
         setClassesToScan(classesToScan);
 
         // When scan is called
@@ -102,8 +101,7 @@ class ClassLevelKafkaListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(TOPIC, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -115,8 +113,7 @@ class ClassLevelKafkaListenerScannerTest {
         Map<String, ChannelItem> channels = classLevelKafkaListenerScanner.scan();
 
         // Then no channel is not created
-        assertThat(channels)
-                .isEmpty();
+        assertThat(channels).isEmpty();
     }
 
     @Test
@@ -125,8 +122,7 @@ class ClassLevelKafkaListenerScannerTest {
 
         Map<String, ChannelItem> channels = classLevelKafkaListenerScanner.scan();
 
-        assertThat(channels)
-                .isEmpty();
+        assertThat(channels).isEmpty();
     }
 
     @Test
@@ -158,8 +154,7 @@ class ClassLevelKafkaListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(TOPIC, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -199,8 +194,7 @@ class ClassLevelKafkaListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(TOPIC, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
@@ -233,60 +227,45 @@ class ClassLevelKafkaListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(TOPIC, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
-
 
     private static class ClassWithoutClassLevelKafkaListenerAndWithOneKafkaHandler {
 
         @KafkaHandler
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
-
+        private void methodWithAnnotation(SimpleFoo payload) {}
     }
 
     @KafkaListener(topics = TOPIC)
     private static class KafkaListenerClassWithoutKafkaHandlers {
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
-
 
     @KafkaListener(topics = TOPIC)
     private static class KafkaListenerClassWithOneKafkaHandler {
 
         @KafkaHandler
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     @KafkaListener(topics = TOPIC)
     private static class KafkaListenerClassWithMultipleKafkaHandler {
 
         @KafkaHandler
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
         @KafkaHandler
-        private void anotherMethodWithoutAnnotation(SimpleBar payload) {
-        }
-
+        private void anotherMethodWithoutAnnotation(SimpleBar payload) {}
     }
 
     @KafkaListener(topics = TOPIC)
     private static class KafkaListenerClassWithKafkaHandlerWithBatchPayload {
 
         @KafkaHandler
-        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {
-        }
-
+        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {}
     }
 
     @Data
@@ -302,5 +281,4 @@ class ClassLevelKafkaListenerScannerTest {
         private String s;
         private boolean b;
     }
-
 }

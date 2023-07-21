@@ -106,5 +106,4 @@ public class DefaultSchemasService implements SchemasService {
             log.error("Failed to convert example object of {} to map", schema.getName());
         }
     }
-
 }

@@ -28,9 +28,6 @@ public class DefaultBeanMethodsScanner implements BeanMethodsScanner {
                 .map(Arrays::asList)
                 .flatMap(List::stream);
 
-        return methods
-                .filter(method -> method.isAnnotationPresent(Bean.class))
-                .collect(toSet());
+        return methods.filter(method -> method.isAnnotationPresent(Bean.class)).collect(toSet());
     }
-
 }

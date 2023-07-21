@@ -10,7 +10,8 @@ plugins {
 
     id 'io.spring.dependency-management' version '1.1.2' apply(false)
     id 'org.springframework.boot' version '3.1.1' apply(false)
-    id("org.owasp.dependencycheck") version "8.3.1"
+    id 'org.owasp.dependencycheck' version "8.3.1"
+    id 'com.diffplug.spotless' version '6.19.0'
 }
 
 applyDotEnvFileAsGradleProperties()
@@ -19,6 +20,7 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
+    apply plugin: 'com.diffplug.spotless'
 
     ext {
         isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT') as String)

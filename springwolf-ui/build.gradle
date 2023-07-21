@@ -10,6 +10,8 @@ node {
 }
 
 npm_run_build {
+  dependsOn spotlessCheck
+
   inputs.files fileTree("src")
   inputs.file 'angular.json'
   inputs.file 'package.json'
@@ -30,7 +32,7 @@ task buildPages(type: NpmTask) {
     copy {
       from "./dist/springwolf-ui/asyncapi-ui.html"
       into "dist/springwolf-ui"
-      rename ("asyncapi-ui.html", "index.html")
+      rename("asyncapi-ui.html", "index.html")
     }
   }
 }
@@ -42,6 +44,26 @@ jar {
 
 java {
   withSourcesJar()
+}
+
+spotless {
+  encoding 'UTF-8'
+
+  format 'styling', {
+    target 'src/**/*.ts', 'src/**/*.js', 'src/**/*.json', 'src/**/*.html', 'src/**/*.css', 'src/**/*.scss'
+
+    def npmExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/npm.cmd' : '/bin/npm'
+    def nodeExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/node.exe' : '/bin/node'
+    prettier()
+      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}") // get the npm executable path from gradle-node-plugin
+      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
+}
+tasks.named('spotlessStyling').configure {
+  it.dependsOn('nodeSetup', 'npmSetup')
 }
 
 publishing {

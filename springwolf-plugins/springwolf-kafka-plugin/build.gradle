@@ -58,7 +58,24 @@ java {
 }
 
 test {
+    dependsOn spotlessApply // Automatically fix code formatting if possible
+
     useJUnitPlatform()
+}
+
+spotless {
+    encoding 'UTF-8'
+
+    java {
+        palantirJavaFormat()
+
+        importOrder('', 'javax', 'java', '\\#')
+        replaceRegex("Remove wildcard imports", "import\\s+[^\\*\\s]+\\*;(\\r\\n|\\r|\\n)", "\$1")
+        removeUnusedImports()
+
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 publishing {

@@ -8,7 +8,8 @@ import lombok.EqualsAndHashCode;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-public class TestMethodLevelListenerScanner extends AbstractMethodLevelListenerScanner<TestMethodLevelListenerScannerTest.TestChannelListener> {
+public class TestMethodLevelListenerScanner
+        extends AbstractMethodLevelListenerScanner<TestMethodLevelListenerScannerTest.TestChannelListener> {
 
     @Override
     protected Class<TestMethodLevelListenerScannerTest.TestChannelListener> getListenerAnnotationClass() {
@@ -21,17 +22,20 @@ public class TestMethodLevelListenerScanner extends AbstractMethodLevelListenerS
     }
 
     @Override
-    protected Map<String, ? extends ChannelBinding> buildChannelBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends ChannelBinding> buildChannelBinding(
+            TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
         return Map.of("test-channel-binding", new TestChannelBinding());
     }
 
     @Override
-    protected Map<String, ? extends OperationBinding> buildOperationBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends OperationBinding> buildOperationBinding(
+            TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
         return Map.of("test-operation-binding", new TestOperationBinding());
     }
 
     @Override
-    protected Map<String, ? extends MessageBinding> buildMessageBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends MessageBinding> buildMessageBinding(
+            TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
         return Map.of("test-message-binding", new TestMessageBinding());
     }
 
@@ -46,16 +50,11 @@ public class TestMethodLevelListenerScanner extends AbstractMethodLevelListenerS
     }
 
     @EqualsAndHashCode(callSuper = true)
-    public static class TestChannelBinding extends ChannelBinding {
-    }
-
+    public static class TestChannelBinding extends ChannelBinding {}
 
     @EqualsAndHashCode(callSuper = true)
-    public static class TestOperationBinding extends OperationBinding {
-    }
+    public static class TestOperationBinding extends OperationBinding {}
 
     @EqualsAndHashCode(callSuper = true)
-    public static class TestMessageBinding extends MessageBinding {
-    }
-
+    public static class TestMessageBinding extends MessageBinding {}
 }

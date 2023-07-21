@@ -50,7 +50,8 @@ public interface OperationData {
     Message getMessage();
 
     enum OperationType {
-        PUBLISH("publish"), SUBSCRIBE("subscribe");
+        PUBLISH("publish"),
+        SUBSCRIBE("subscribe");
 
         public final String operationName;
 

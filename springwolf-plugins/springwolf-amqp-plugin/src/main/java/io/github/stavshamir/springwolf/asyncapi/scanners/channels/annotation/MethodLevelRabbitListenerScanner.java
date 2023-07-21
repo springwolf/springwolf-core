@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfAmqpConfigConstants.SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED;
 
-
 @Slf4j
 @Service
 @Order(value = ChannelPriority.AUTO_DISCOVERED)

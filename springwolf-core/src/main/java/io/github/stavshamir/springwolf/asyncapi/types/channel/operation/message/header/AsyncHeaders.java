@@ -9,11 +9,11 @@ public class AsyncHeaders extends HashMap<String, Schema> {
      * Per default, if no headers are explicitly defined, NOT_DOCUMENTED is used.
      * There can be headers, but don't have to be.
      */
-    public final static AsyncHeaders NOT_DOCUMENTED = new AsyncHeaders("HeadersNotDocumented");
+    public static final AsyncHeaders NOT_DOCUMENTED = new AsyncHeaders("HeadersNotDocumented");
     /**
      * Explicitly document that no headers are used.
      */
-    public final static AsyncHeaders NOT_USED = new AsyncHeaders("HeadersNotUsed");
+    public static final AsyncHeaders NOT_USED = new AsyncHeaders("HeadersNotUsed");
 
     private final String schemaName;
 

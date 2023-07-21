@@ -31,7 +31,8 @@ import static io.github.stavshamir.springwolf.configuration.properties.SpringWol
 @Component
 @Order(value = ChannelPriority.ASYNC_ANNOTATION)
 @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED, matchIfMissing = true)
-public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
+public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanner
+        implements EmbeddedValueResolverAware {
     private StringValueResolver resolver;
     private final ComponentClassScanner componentClassScanner;
     private final SchemasService schemasService;
@@ -64,26 +65,34 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(annotationClass) || method.isAnnotationPresent(annotationClassRepeatable));
+                .filter(method -> method.isAnnotationPresent(annotationClass)
+                        || method.isAnnotationPresent(annotationClassRepeatable));
     }
 
     private Stream<OperationData> toOperationData(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
-        Map<String, OperationBinding> operationBindings = AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
-        Map<String, MessageBinding> messageBindings = AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
+        Map<String, OperationBinding> operationBindings =
+                AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
+        Map<String, MessageBinding> messageBindings =
+                AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
         Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
 
         Class<AsyncPublisher> annotationClass = AsyncPublisher.class;
-        return Arrays
-                .stream(method.getAnnotationsByType(annotationClass))
+        return Arrays.stream(method.getAnnotationsByType(annotationClass))
                 .map(annotation -> toConsumerData(method, operationBindings, messageBindings, message, annotation));
     }
 
-    private ProducerData toConsumerData(Method method, Map<String, OperationBinding> operationBindings, Map<String, MessageBinding> messageBindings, Message message, AsyncPublisher annotation) {
+    private ProducerData toConsumerData(
+            Method method,
+            Map<String, OperationBinding> operationBindings,
+            Map<String, MessageBinding> messageBindings,
+            Message message,
+            AsyncPublisher annotation) {
         AsyncOperation op = annotation.operation();
-        Class<?> payloadType = op.payloadType() != Object.class ? op.payloadType() :
-                SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
+        Class<?> payloadType = op.payloadType() != Object.class
+                ? op.payloadType()
+                : SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
         return ProducerData.builder()
                 .channelName(resolver.resolveStringValue(op.channelName()))
                 .description(resolver.resolveStringValue(op.description()))

@@ -58,7 +58,8 @@ public class Message {
     // Why do we add this empty class if Lombok @Builder is doing this job? Because this class is used as an argument
     // in one method. Since Lombok works as an annotation Processor, the JavaDoc tool cannot find the generated class
     // and fails.
-    // The alternative to define this class would be to use `delombok` during the Javadoc generation. This is really easy
+    // The alternative to define this class would be to use `delombok` during the Javadoc generation. This is really
+    // easy
     // in Maven, but with Gradle seems to be more complicated. Creating an empty class that Lombok overrides and expands
     // is much cleaner.
     public static class MessageBuilder {
