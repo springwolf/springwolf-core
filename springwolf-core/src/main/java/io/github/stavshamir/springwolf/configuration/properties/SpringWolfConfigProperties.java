@@ -21,7 +21,7 @@ import java.util.Map;
 @Setter
 public class SpringWolfConfigProperties {
 
-    public enum LoadingMode{
+    public enum LoadingMode {
         /**
          * AsyncAPI detection on application startup. Exceptions interrupt the application start.
          */

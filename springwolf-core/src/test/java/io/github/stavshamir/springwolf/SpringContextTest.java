@@ -34,7 +34,7 @@ public class SpringContextTest {
                 DefaultSchemasService.class,
                 DefaultAsyncApiService.class,
                 DefaultAsyncApiSerializerService.class,
-    })
+            })
     class AsyncApiDocketTest {
 
         @Autowired

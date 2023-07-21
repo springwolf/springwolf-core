@@ -39,10 +39,12 @@ import static org.assertj.core.api.Assertions.assertThat;
             DefaultSchemasService.class,
             ProducerOperationDataScanner.class,
             ConsumerOperationDataScanner.class,
+        })
+@Import({
+    DefaultAsyncApiServiceTest.DefaultAsyncApiServiceTestConfiguration.class,
+    DefaultAsyncApiServiceTest.TestDescriptionCustomizer.class,
+    DefaultAsyncApiServiceTest.TestDescriptionCustomizer2.class
 })
-@Import({DefaultAsyncApiServiceTest.DefaultAsyncApiServiceTestConfiguration.class,
-        DefaultAsyncApiServiceTest.TestDescriptionCustomizer.class,
-        DefaultAsyncApiServiceTest.TestDescriptionCustomizer2.class})
 class DefaultAsyncApiServiceTest {
 
     @TestConfiguration

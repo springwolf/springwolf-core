@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-@ConditionalOnProperty(name= "springwolf.loading-mode", havingValue = "BACKGROUND")
+@ConditionalOnProperty(name = "springwolf.loading-mode", havingValue = "BACKGROUND")
 public class AsyncApiApplicationListener implements ApplicationListener<ApplicationReadyEvent> {
 
     private final TaskExecutor taskExecutor;

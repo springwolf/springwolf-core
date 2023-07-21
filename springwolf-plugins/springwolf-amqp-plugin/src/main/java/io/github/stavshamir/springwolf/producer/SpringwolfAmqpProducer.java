@@ -2,10 +2,9 @@ package io.github.stavshamir.springwolf.producer;
 
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
+import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

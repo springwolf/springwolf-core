@@ -41,8 +41,7 @@ public class DefaultAsyncApiServiceUnitTest {
         when(schemasService.getDefinitions()).thenReturn(Map.of());
 
         defaultAsyncApiService = new DefaultAsyncApiService(
-                asyncApiDocketService, channelsService, schemasService, customizers, configProperties
-        );
+                asyncApiDocketService, channelsService, schemasService, customizers, configProperties);
     }
 
     @Test
@@ -60,8 +59,9 @@ public class DefaultAsyncApiServiceUnitTest {
         configProperties.setLoadingMode(LoadingMode.FAIL_FAST);
 
         assertThatThrownBy(() -> {
-            defaultAsyncApiService.afterPropertiesSet();
-        }).isInstanceOfAny(RuntimeException.class)
+                    defaultAsyncApiService.afterPropertiesSet();
+                })
+                .isInstanceOfAny(RuntimeException.class)
                 .hasMessage("Error occured during creation of AsyncAPI");
     }
 
@@ -75,10 +75,10 @@ public class DefaultAsyncApiServiceUnitTest {
 
         Throwable cause = null;
 
-        try{
+        try {
             defaultAsyncApiService.getAsyncAPI();
             fail("RuntimeException expected");
-        }catch(RuntimeException exc){
+        } catch (RuntimeException exc) {
             assertThat(exc.getMessage()).isEqualTo("Error occured during creation of AsyncAPI");
             cause = exc.getCause();
             assertThat(cause.getMessage()).isEqualTo("test exception");
@@ -86,17 +86,14 @@ public class DefaultAsyncApiServiceUnitTest {
 
         // further invocations of getAsyncAPI should again throw RuntimeException.
         // cause should be same instance.
-        try{
+        try {
             defaultAsyncApiService.getAsyncAPI();
             fail("RuntimeException expected");
-        }catch(RuntimeException exc){
+        } catch (RuntimeException exc) {
             assertThat(exc.getMessage()).isEqualTo("Error occured during creation of AsyncAPI");
             assertThat(exc.getCause()).isSameAs(cause);
         }
-
-
     }
-
 
     @Test
     void shouldLazyInitializeOnLoadingModeLazy() {
@@ -108,9 +105,7 @@ public class DefaultAsyncApiServiceUnitTest {
         AsyncAPI asyncAPI = defaultAsyncApiService.getAsyncAPI();
         assertThat(asyncAPI).isNotNull();
         assertThat(defaultAsyncApiService.isInitialized()).isTrue();
-
     }
-
 
     /**
      * prepares prepares {@link AsyncApiDocketService} mock to throw Exception on getAsyncApiDocket().
@@ -126,7 +121,8 @@ public class DefaultAsyncApiServiceUnitTest {
         Info info = Info.builder()
                 .description("Info")
                 .version("1.0")
-                .title("Test AsyncApi").build();
+                .title("Test AsyncApi")
+                .build();
 
         Server server1 = Server.builder()
                 .description("Server 1")

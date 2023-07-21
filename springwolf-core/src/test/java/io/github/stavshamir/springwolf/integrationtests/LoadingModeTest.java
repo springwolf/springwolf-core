@@ -1,26 +1,20 @@
 package io.github.stavshamir.springwolf.integrationtests;
 
-import com.asyncapi.v2._6_0.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiApplicationListener;
 import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.controller.AsyncApiController;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests the possible loading modes (failfast, lazy, background)
@@ -38,18 +32,17 @@ public class LoadingModeTest {
         private DefaultAsyncApiService defaultAsyncApiService;
 
         @Test
-        void asyncApiApplicationListenerShouldNotBeLoaded(){
+        void asyncApiApplicationListenerShouldNotBeLoaded() {
             assertThat(asyncApiApplicationListener).isNull();
         }
 
         @Test
-        void asyncApiShouldBeInitializedOnFirstGetAsyncAPIInvocation(){
+        void asyncApiShouldBeInitializedOnFirstGetAsyncAPIInvocation() {
             assertThat(defaultAsyncApiService.isInitialized()).isFalse();
             AsyncAPI asyncAPI = defaultAsyncApiService.getAsyncAPI();
             assertThat(asyncAPI).isNotNull();
             assertThat(defaultAsyncApiService.isInitialized()).isTrue();
         }
-
     }
 
     @Nested
@@ -64,15 +57,14 @@ public class LoadingModeTest {
         private DefaultAsyncApiService defaultAsyncApiService;
 
         @Test
-        void asyncApiApplicationListenerShouldNotBeLoaded(){
+        void asyncApiApplicationListenerShouldNotBeLoaded() {
             assertThat(asyncApiApplicationListener).isNull();
         }
 
         @Test
-        void asyncApiShouldHaveBeenInitializedDuringStartup(){
+        void asyncApiShouldHaveBeenInitializedDuringStartup() {
             assertThat(defaultAsyncApiService.isInitialized()).isTrue();
         }
-
     }
 
     @Nested
@@ -87,13 +79,11 @@ public class LoadingModeTest {
         private TaskExecutor taskExecutor;
 
         @Test
-        void asyncApiApplicationListenerShouldNotBeLoaded(){
+        void asyncApiApplicationListenerShouldNotBeLoaded() {
             assertThat(asyncApiApplicationListener).isNotNull();
             verify(taskExecutor).execute(any(Runnable.class));
         }
-
     }
-
 
     @Nested
     @SpringBootTest(classes = TestApplication.class)
@@ -103,13 +93,9 @@ public class LoadingModeTest {
         @Autowired(required = false)
         private AsyncApiController asyncApiController;
 
-
         @Test
-        void autoconfigurationShouldNotBeLoaded(){
+        void autoconfigurationShouldNotBeLoaded() {
             assertThat(asyncApiController).isNull();
         }
     }
-
-
-
 }

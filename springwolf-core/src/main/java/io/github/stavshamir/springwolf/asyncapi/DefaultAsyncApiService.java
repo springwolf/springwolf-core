@@ -28,8 +28,7 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
      * @param asyncAPI
      * @param exception
      */
-    private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {
-    }
+    private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {}
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final ChannelsService channelsService;
@@ -60,7 +59,6 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
         }
     }
 
-
     /**
      * Does the 'heavy work' of detecting the AsyncAPI documents. Stores the resulting
      * AsyncAPI document or alternativly a catched exception/error in the instance variable asyncAPIResult.
@@ -69,7 +67,7 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
      */
     protected synchronized void initAsyncAPI() {
         if (this.asyncAPIResult != null) {
-            return;  // Double Check Idiom
+            return; // Double Check Idiom
         }
 
         try {
@@ -82,8 +80,9 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
             // SchemasService.
             Map<String, ChannelItem> channels = channelsService.findChannels();
 
-            Components components =
-                    Components.builder().schemas(schemasService.getDefinitions()).build();
+            Components components = Components.builder()
+                    .schemas(schemasService.getDefinitions())
+                    .build();
 
             AsyncAPI asyncAPI = AsyncAPI.builder()
                     .info(docket.getInfo())
@@ -98,7 +97,7 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
                 customizer.customize(asyncAPI);
             }
             this.asyncAPIResult = new AsyncAPIResult(asyncAPI, null);
-        }catch(Throwable t){
+        } catch (Throwable t) {
             this.asyncAPIResult = new AsyncAPIResult(null, t);
         }
     }

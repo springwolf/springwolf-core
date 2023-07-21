@@ -16,5 +16,4 @@ public class TestApplication {
                         .build())
                 .build();
     }
-
 }

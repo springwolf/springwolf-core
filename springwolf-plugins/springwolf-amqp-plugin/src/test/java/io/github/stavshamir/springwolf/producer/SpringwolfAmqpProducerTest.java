@@ -1,12 +1,11 @@
 package io.github.stavshamir.springwolf.producer;
 
-import com.asyncapi.v2._6_0.model.info.Info;
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
+import com.asyncapi.v2._6_0.model.info.Info;
 import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import static org.mockito.Mockito.*;
 
 class SpringwolfAmqpProducerTest {
     private SpringwolfAmqpProducer springwolfAmqpProducer;
-
 
     private AsyncApiService asyncApiService;
     private RabbitTemplate rabbitTemplate;
@@ -63,10 +61,8 @@ class SpringwolfAmqpProducerTest {
                 .build();
         Map<String, ChannelItem> channels = Map.of("channel-name", channelItem);
 
-        AsyncAPI asyncAPI = AsyncAPI.builder()
-                .info(new Info())
-                .channels(channels)
-                .build();
+        AsyncAPI asyncAPI =
+                AsyncAPI.builder().info(new Info()).channels(channels).build();
         when(asyncApiService.getAsyncAPI()).thenReturn(asyncAPI);
 
         Map<String, Object> payload = new HashMap<>();
@@ -93,10 +89,8 @@ class SpringwolfAmqpProducerTest {
                 .build();
         Map<String, ChannelItem> channels = Map.of("channel-name", channelItem);
 
-        AsyncAPI asyncAPI = AsyncAPI.builder()
-                .info(new Info())
-                .channels(channels)
-                .build();
+        AsyncAPI asyncAPI =
+                AsyncAPI.builder().info(new Info()).channels(channels).build();
         when(asyncApiService.getAsyncAPI()).thenReturn(asyncAPI);
 
         Map<String, Object> payload = new HashMap<>();
