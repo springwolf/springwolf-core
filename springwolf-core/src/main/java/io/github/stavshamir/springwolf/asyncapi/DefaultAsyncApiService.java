@@ -6,16 +6,14 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.LoadingMode.*;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.LoadingMode.FAIL_FAST;
 
 @Slf4j
 @Service
