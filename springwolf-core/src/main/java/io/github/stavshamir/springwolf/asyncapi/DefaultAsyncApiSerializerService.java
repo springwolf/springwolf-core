@@ -14,7 +14,6 @@ import io.swagger.v3.core.util.Yaml;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
 
@@ -26,7 +25,7 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
     void postConstruct() {
         jsonMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
         yamlMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
-        ((YAMLFactory)yamlMapper.getFactory()).enable(YAMLGenerator.Feature.INDENT_ARRAYS_WITH_INDICATOR);
+        ((YAMLFactory) yamlMapper.getFactory()).enable(YAMLGenerator.Feature.INDENT_ARRAYS_WITH_INDICATOR);
     }
 
     @Override

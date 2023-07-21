@@ -85,26 +85,20 @@ class TestMethodLevelListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     private static class ClassWithoutListenerAnnotation {
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithListenerAnnotation {
 
         @TestChannelListener
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     @Data
@@ -116,7 +110,5 @@ class TestMethodLevelListenerScannerTest {
 
     @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface TestChannelListener {
-    }
-
+    public @interface TestChannelListener {}
 }

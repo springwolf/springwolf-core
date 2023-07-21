@@ -10,5 +10,4 @@ public class ConfigurationClassScanner extends AbstractAnnotatedClassScanner<Con
     protected Class<Configuration> getAnnotationClass() {
         return Configuration.class;
     }
-
 }

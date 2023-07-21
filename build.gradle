@@ -8,13 +8,25 @@ buildscript {
 plugins {
     id 'ca.cutterslade.analyze' version '1.9.1'
 
-    id 'io.spring.dependency-management' version '1.1.0' apply(false)
+    id 'io.spring.dependency-management' version '1.1.2' apply(false)
     id 'org.springframework.boot' version '3.1.1' apply(false)
-    id("org.owasp.dependencycheck") version "8.3.1"
+    id 'org.owasp.dependencycheck' version "8.3.1"
+    id 'com.diffplug.spotless' version '6.19.0'
 }
+
+applyDotEnvFileAsGradleProperties()
 
 allprojects {
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+    apply plugin: 'com.diffplug.spotless'
+
+    ext {
+        isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT') as String)
+    }
+    group 'io.github.springwolf'
+    version System.getProperty("SPRINGWOLF_VERSION") + (isSnapshot ? '-SNAPSHOT' : '')
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -36,9 +48,99 @@ allprojects {
 
         mavenCentral()
     }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                artifactId project.name
+                groupId project.group
+                version project.version
+
+                pom {
+                    name = ''
+                    description = ''
+                    url = 'https://www.springwolf.dev'
+
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'stavshamir'
+                            name = 'Stav Shamir'
+                            email = 'shamir.stav@gmail.com'
+                        }
+
+                        developer {
+                            id = 'timonback'
+                            name = 'Timon Back'
+                            email = 'timon.back+springwolf@gmail.com'
+                        }
+
+                        developer {
+                            id = 'sam0r040'
+                            name = 'David Müller'
+                            email = 'david.mueller@codecentric.de'
+                        }
+                    }
+
+                    scm {
+                        url = 'https://github.com/springwolf/springwolf-core'
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
+                credentials {
+                    username = project.findProperty('MAVEN_USERNAME') ?: ''
+                    password = project.findProperty('MAVEN_PASSWORD') ?: ''
+                }
+            }
+        }
+    }
+
+    signing {
+        required { gradle.taskGraph.hasTask("publish") }
+        def signingKey = project.findProperty("SIGNINGKEY")
+        def signingPassword = project.findProperty("SIGNINGPASSWORD")
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign publishing.publications.mavenJava
+    }
 }
 
 dependencyCheck {
     outputDirectory = "$buildDir/reports/owasp-dependency-check"
     formats = [ReportGenerator.Format.SARIF.toString()]
+}
+
+def static readEnvFile(path = ".env") {
+    def env = [:]
+
+    def file = new File(path)
+    if (file.exists()) {
+        file.eachLine { line ->
+            line = line.trim()
+            if (line != "" && !line.startsWith("#")) {
+                def pair = line.split("=", 2)
+                env[pair[0].trim()] = pair.length == 2 ? pair[1].trim() : ""
+            }
+        }
+    }
+
+    return env
+}
+
+def static applyDotEnvFileAsGradleProperties() {
+    readEnvFile().each { key, value -> if (System.getProperty(key as String) == null) { System.setProperty(key as String, value as String) } }
 }

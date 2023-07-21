@@ -15,5 +15,4 @@ public class AnotherProducer {
     public void sendMessage(AnotherPayloadDto msg) {
         kafkaTemplate.send(KafkaConfiguration.PRODUCER_TOPIC, msg);
     }
-
 }

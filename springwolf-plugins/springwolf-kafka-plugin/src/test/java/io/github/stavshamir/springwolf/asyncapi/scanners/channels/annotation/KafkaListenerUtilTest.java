@@ -1,8 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.message.MessageBinding;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import org.assertj.core.util.Arrays;
 import org.assertj.core.util.Sets;
@@ -56,15 +58,27 @@ class KafkaListenerUtilTest {
         when(resolver.resolveStringValue("${group-id}")).thenReturn("group-id");
 
         // when
-        Map<String, ? extends OperationBinding> operationBinding = KafkaListenerUtil.buildOperationBinding(annotation, resolver);
+        Map<String, ? extends OperationBinding> operationBinding =
+                KafkaListenerUtil.buildOperationBinding(annotation, resolver);
 
         // then
         assertEquals(1, operationBinding.size());
         assertEquals(Sets.newTreeSet("kafka"), operationBinding.keySet());
 
         KafkaOperationBinding expectedOperationBinding = KafkaOperationBinding.builder()
-            .groupId(KafkaListenerUtil.buildKafkaGroupIdSchema("group-id"))
-            .build();
+                .groupId(KafkaListenerUtil.buildKafkaGroupIdSchema("group-id"))
+                .build();
         assertEquals(expectedOperationBinding, operationBinding.get("kafka"));
+    }
+
+    @Test
+    void buildMessageBinding() {
+        // when
+        Map<String, ? extends MessageBinding> messageBinding = KafkaListenerUtil.buildMessageBinding();
+
+        // then
+        assertEquals(1, messageBinding.size());
+        assertEquals(Sets.newTreeSet("kafka"), messageBinding.keySet());
+        assertEquals(new KafkaMessageBinding(), messageBinding.get("kafka"));
     }
 }

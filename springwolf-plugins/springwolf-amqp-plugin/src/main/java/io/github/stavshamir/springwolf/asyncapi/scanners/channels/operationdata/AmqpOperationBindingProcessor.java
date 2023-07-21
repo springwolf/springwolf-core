@@ -34,7 +34,9 @@ public class AmqpOperationBindingProcessor implements OperationBindingProcessor,
     private ProcessedOperationBinding mapToOperationBinding(AmqpAsyncOperationBinding bindingAnnotation) {
         AMQPOperationBinding amqpOperationBinding = AMQPOperationBinding.builder()
                 .expiration(bindingAnnotation.expiration())
-                .cc(Arrays.stream(bindingAnnotation.cc()).map(this::resolveOrNull).collect(Collectors.toList()))
+                .cc(Arrays.stream(bindingAnnotation.cc())
+                        .map(this::resolveOrNull)
+                        .collect(Collectors.toList()))
                 .priority(bindingAnnotation.priority())
                 .deliveryMode(bindingAnnotation.deliveryMode())
                 .mandatory(bindingAnnotation.mandatory())

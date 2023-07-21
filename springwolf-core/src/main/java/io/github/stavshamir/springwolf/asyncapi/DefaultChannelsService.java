@@ -40,5 +40,4 @@ public class DefaultChannelsService implements ChannelsService {
         }
         return ChannelMerger.merge(foundChannelItems);
     }
-
 }

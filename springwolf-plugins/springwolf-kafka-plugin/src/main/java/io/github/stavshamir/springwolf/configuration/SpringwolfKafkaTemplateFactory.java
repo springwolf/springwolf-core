@@ -22,9 +22,12 @@ public class SpringwolfKafkaTemplateFactory {
 
         if (springWolfKafkaConfigProperties.getPublishing() != null
                 && springWolfKafkaConfigProperties.getPublishing().getProducer() != null) {
-            Map<String, Object> producerProperties = springWolfKafkaConfigProperties.getPublishing().getProducer()
+            Map<String, Object> producerProperties = springWolfKafkaConfigProperties
+                    .getPublishing()
+                    .getProducer()
                     .buildProperties();
-            DefaultKafkaProducerFactory<Object, Object> producerFactory = new DefaultKafkaProducerFactory<>(producerProperties);
+            DefaultKafkaProducerFactory<Object, Object> producerFactory =
+                    new DefaultKafkaProducerFactory<>(producerProperties);
             kafkaTemplate = Optional.of(new KafkaTemplate<>(producerFactory));
         }
 

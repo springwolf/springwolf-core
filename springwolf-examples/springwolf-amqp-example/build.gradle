@@ -8,11 +8,6 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
 }
 
-def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
-
-group 'io.github.springwolf'
-version '0.13.0' + (isSnapshot ? '-SNAPSHOT' : '')
-
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-amqp-plugin")
@@ -24,7 +19,7 @@ dependencies {
 
     implementation "org.springframework.amqp:spring-rabbit"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
-    implementation "io.swagger.core.v3:swagger-annotations:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
 
     implementation "org.springframework.amqp:spring-amqp"
@@ -49,6 +44,10 @@ dependencies {
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
 }
 
+// We don't want to publish the examples
+tasks.withType(PublishToMavenRepository).configureEach { it.enabled = false }
+tasks.withType(PublishToMavenLocal).configureEach { it.enabled = false }
+
 docker {
     springBootApplication {
         maintainer = 'shamir.stav@gmail.com'
@@ -63,16 +62,28 @@ docker {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
 test {
     dependsOn dockerBuildImage
+    dependsOn spotlessApply // Automatically fix code formatting if possible
 
     useJUnitPlatform()
 
     testLogging {
         exceptionFormat = 'full'
+    }
+}
+
+spotless {
+    encoding 'UTF-8'
+
+    java {
+        palantirJavaFormat()
+
+        importOrder('', 'javax', 'java', '\\#')
+        replaceRegex("Remove wildcard imports", "import\\s+[^\\*\\s]+\\*;(\\r\\n|\\r|\\n)", "\$1")
+        removeUnusedImports()
+
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }

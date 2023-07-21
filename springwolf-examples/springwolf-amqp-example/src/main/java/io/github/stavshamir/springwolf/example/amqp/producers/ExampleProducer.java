@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExampleProducer {
 
-    @AsyncPublisher(operation = @AsyncOperation(
-            channelName = "example-producer-channel-publisher",
-            description = "Custom, optional description defined in the AsyncPublisher annotation"
-    ))
+    @AsyncPublisher(
+            operation =
+                    @AsyncOperation(
+                            channelName = "example-producer-channel-publisher",
+                            description = "Custom, optional description defined in the AsyncPublisher annotation"))
     @AmqpAsyncOperationBinding()
     public void sendMessage(ExamplePayloadDto msg) {
         // send
     }
-
 }

@@ -12,23 +12,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class CustomWebSecurityConfigurerAdapter {
-    private final static String DOCS_ENDPOINT = "/springwolf/docs";
-    private final static String KAFKA_PUBLISH_ENDPOINT = "/springwolf/kafka/publish";
-    private final static String UI_RESOURCES = "/springwolf/**";
+    private static final String DOCS_ENDPOINT = "/springwolf/docs";
+    private static final String KAFKA_PUBLISH_ENDPOINT = "/springwolf/kafka/publish";
+    private static final String UI_RESOURCES = "/springwolf/**";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-            .authorizeHttpRequests(it ->
-                it
-                // anyone can read the springwolf docs + ui
-                // also, anyone can publish messages (as enabled in application.properties)
-                .requestMatchers(DOCS_ENDPOINT, UI_RESOURCES, KAFKA_PUBLISH_ENDPOINT)
-                .permitAll()
-
-                .anyRequest()
-                .denyAll()
-            )
-            .build();
+        return http.authorizeHttpRequests(it -> it
+                        // anyone can read the springwolf docs + ui
+                        // also, anyone can publish messages (as enabled in application.properties)
+                        .requestMatchers(DOCS_ENDPOINT, UI_RESOURCES, KAFKA_PUBLISH_ENDPOINT)
+                        .permitAll()
+                        .anyRequest()
+                        .denyAll())
+                .build();
     }
 }

@@ -15,5 +15,4 @@ public interface ChannelsService {
      * @return Map of channel names mapping to detected ChannelItems
      */
     Map<String, ChannelItem> findChannels();
-
 }

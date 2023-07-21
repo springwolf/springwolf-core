@@ -19,7 +19,6 @@ import java.util.Map;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigConstants.SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor

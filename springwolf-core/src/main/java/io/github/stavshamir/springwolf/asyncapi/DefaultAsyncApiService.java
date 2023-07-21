@@ -82,9 +82,8 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
             // SchemasService.
             Map<String, ChannelItem> channels = channelsService.findChannels();
 
-            Components components = Components.builder()
-                    .schemas(schemasService.getDefinitions())
-                    .build();
+            Components components =
+                    Components.builder().schemas(schemasService.getDefinitions()).build();
 
             AsyncAPI asyncAPI = AsyncAPI.builder()
                     .info(docket.getInfo())
@@ -112,6 +111,4 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
     public synchronized boolean isInitialized() {
         return this.asyncAPIResult != null;
     }
-
-
 }

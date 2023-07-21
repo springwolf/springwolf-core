@@ -1,10 +1,10 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -39,9 +39,10 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
     @Override
     public Map<String, ChannelItem> scan() {
         return componentClassScanner.scan().stream()
-                .map(this::getAnnotatedMethods).flatMap(Collection::stream)
+                .map(this::getAnnotatedMethods)
+                .flatMap(Collection::stream)
                 .map(this::mapMethodToChannel)
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (el1, el2) -> el1));
     }
 
     /**
@@ -93,7 +94,8 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
 
         Class<T> listenerAnnotationClass = getListenerAnnotationClass();
         T annotation = Optional.of(method.getAnnotation(listenerAnnotationClass))
-                .orElseThrow(() -> new IllegalArgumentException("Method must be annotated with " + listenerAnnotationClass.getName()));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Method must be annotated with " + listenerAnnotationClass.getName()));
 
         String channelName = getChannelName(annotation);
 
@@ -107,11 +109,12 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
         return Map.entry(channelName, channel);
     }
 
-    private ChannelItem buildChannel(Map<String, ? extends ChannelBinding> channelBinding,
-                                     Class<?> payloadType,
-                                     Map<String, ? extends OperationBinding> operationBinding,
-                                     Map<String, ? extends MessageBinding> messageBinding,
-                                     String operationId) {
+    private ChannelItem buildChannel(
+            Map<String, ? extends ChannelBinding> channelBinding,
+            Class<?> payloadType,
+            Map<String, ? extends OperationBinding> operationBinding,
+            Map<String, ? extends MessageBinding> messageBinding,
+            String operationId) {
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
@@ -133,10 +136,6 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
                 .bindings(opBinding)
                 .build();
 
-        return ChannelItem.builder()
-                .bindings(chBinding)
-                .publish(operation)
-                .build();
+        return ChannelItem.builder().bindings(chBinding).publish(operation).build();
     }
-
 }

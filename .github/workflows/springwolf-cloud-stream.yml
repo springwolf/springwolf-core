@@ -43,11 +43,23 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Check formatting (before running tests) on plugin
+        run: ./gradlew -p ${{ env.plugin }} spotlessCheck
+
+      - name: Check formatting (before running tests) on example
+        run: ./gradlew -p ${{ env.example }} spotlessCheck
+
       - name: Run unit tests
         run: ./gradlew -p ${{ env.plugin }} test
 
       - name: Run integration tests
         run: ./gradlew -p ${{ env.example }} test
+
+      - name: Run build, check, analyzeDependencies on plugin
+        run: ./gradlew -p ${{ env.plugin }} build
+
+      - name: Run build, check, analyzeDependencies on example
+        run: ./gradlew -p ${{ env.example }} build
 
       - name: Publish docker image
         if: github.ref == 'refs/heads/master'

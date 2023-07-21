@@ -39,13 +39,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {
-        ConfigurationClassScanner.class,
-        DefaultBeanMethodsScanner.class,
-        DefaultSchemasService.class,
-        DefaultAsyncApiDocketService.class,
-        CloudStreamFunctionChannelsScanner.class
-})
+@ContextConfiguration(
+        classes = {
+            ConfigurationClassScanner.class,
+            DefaultBeanMethodsScanner.class,
+            DefaultSchemasService.class,
+            DefaultAsyncApiDocketService.class,
+            CloudStreamFunctionChannelsScanner.class
+        })
 @Import(CloudStreamFunctionChannelsScannerTest.Configuration.class)
 class CloudStreamFunctionChannelsScannerTest {
 
@@ -54,6 +55,10 @@ class CloudStreamFunctionChannelsScannerTest {
 
     @Autowired
     private CloudStreamFunctionChannelsScanner scanner;
+
+    private Map<String, EmptyMessageBinding> messageBinding = Map.of("kafka", new EmptyMessageBinding());
+    private Map<String, Object> operationBinding = Map.of("kafka", new EmptyOperationBinding());
+    private Map<String, Object> channelBinding = Map.of("kafka", new EmptyChannelBinding());
 
     @Test
     void testNoBindings() {
@@ -68,9 +73,7 @@ class CloudStreamFunctionChannelsScannerTest {
         BindingProperties testConsumerInBinding = new BindingProperties();
         String topicName = "test-consumer-input-topic";
         testConsumerInBinding.setDestination(topicName);
-        when(bindingServiceProperties.getBindings()).thenReturn(Map.of(
-                "testConsumer-in-0", testConsumerInBinding
-        ));
+        when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testConsumer-in-0", testConsumerInBinding));
 
         // When scan is called
         Map<String, ChannelItem> channels = scanner.scan();
@@ -81,25 +84,23 @@ class CloudStreamFunctionChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation operation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-consumer-input-topic_publish_testConsumer")
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .publish(operation)
                 .build();
 
-        assertThat(channels)
-                .containsExactly(Map.entry(topicName, expectedChannel));
+        assertThat(channels).containsExactly(Map.entry(topicName, expectedChannel));
     }
-
 
     @Test
     void testSupplierBinding() {
@@ -107,36 +108,34 @@ class CloudStreamFunctionChannelsScannerTest {
         BindingProperties testSupplierOutBinding = new BindingProperties();
         String topicName = "test-supplier-output-topic";
         testSupplierOutBinding.setDestination(topicName);
-        when(bindingServiceProperties.getBindings()).thenReturn(Map.of(
-                "testSupplier-out-0", testSupplierOutBinding
-        ));
+        when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testSupplier-out-0", testSupplierOutBinding));
 
         // When scan is called
         Map<String, ChannelItem> channels = scanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
+
         Message message = Message.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation operation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-supplier-output-topic_subscribe_testSupplier")
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .subscribe(operation)
                 .build();
 
-        assertThat(channels)
-                .containsExactly(Map.entry(topicName, expectedChannel));
+        assertThat(channels).containsExactly(Map.entry(topicName, expectedChannel));
     }
 
     @Test
@@ -149,12 +148,11 @@ class CloudStreamFunctionChannelsScannerTest {
 
         String outputTopicName = "test-out-topic";
         BindingProperties testFunctionOutBinding = new BindingProperties();
-        testFunctionOutBinding.setDestination(outputTopicName)
-        ;
-        when(bindingServiceProperties.getBindings()).thenReturn(Map.of(
-                "testFunction-in-0", testFunctionInBinding,
-                "testFunction-out-0", testFunctionOutBinding
-        ));
+        testFunctionOutBinding.setDestination(outputTopicName);
+        when(bindingServiceProperties.getBindings())
+                .thenReturn(Map.of(
+                        "testFunction-in-0", testFunctionInBinding,
+                        "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
         Map<String, ChannelItem> channels = scanner.scan();
@@ -165,46 +163,43 @@ class CloudStreamFunctionChannelsScannerTest {
                 .title(Integer.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(Integer.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation subscribeOperation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-out-topic_subscribe_testFunction")
                 .message(subscribeMessage)
                 .build();
 
         ChannelItem subscribeChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .subscribe(subscribeOperation)
                 .build();
-
 
         Message publishMessage = Message.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation publishOperation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-in-topic_publish_testFunction")
                 .message(publishMessage)
                 .build();
 
         ChannelItem publishChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .publish(publishOperation)
                 .build();
 
-        assertThat(channels).contains(
-                Map.entry(inputTopicName, publishChannel),
-                Map.entry(outputTopicName, subscribeChannel)
-        );
+        assertThat(channels)
+                .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
     }
 
     @Test
@@ -217,12 +212,11 @@ class CloudStreamFunctionChannelsScannerTest {
 
         String outputTopicName = "test-out-topic";
         BindingProperties testFunctionOutBinding = new BindingProperties();
-        testFunctionOutBinding.setDestination(outputTopicName)
-        ;
-        when(bindingServiceProperties.getBindings()).thenReturn(Map.of(
-                "kStreamTestFunction-in-0", testFunctionInBinding,
-                "kStreamTestFunction-out-0", testFunctionOutBinding
-        ));
+        testFunctionOutBinding.setDestination(outputTopicName);
+        when(bindingServiceProperties.getBindings())
+                .thenReturn(Map.of(
+                        "kStreamTestFunction-in-0", testFunctionInBinding,
+                        "kStreamTestFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
         Map<String, ChannelItem> channels = scanner.scan();
@@ -233,63 +227,58 @@ class CloudStreamFunctionChannelsScannerTest {
                 .title(Integer.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(Integer.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation subscribeOperation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-out-topic_subscribe_kStreamTestFunction")
                 .message(subscribeMessage)
                 .build();
 
         ChannelItem subscribeChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .subscribe(subscribeOperation)
                 .build();
-
 
         Message publishMessage = Message.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation publishOperation = Operation.builder()
-                .bindings(Map.of("kafka", new EmptyOperationBinding()))
+                .bindings(operationBinding)
                 .description("Auto-generated description")
                 .operationId("test-in-topic_publish_kStreamTestFunction")
                 .message(publishMessage)
                 .build();
 
         ChannelItem publishChannel = ChannelItem.builder()
-                .bindings(Map.of("kafka", new EmptyChannelBinding()))
+                .bindings(channelBinding)
                 .publish(publishOperation)
                 .build();
 
-        assertThat(channels).contains(
-                Map.entry(inputTopicName, publishChannel),
-                Map.entry(outputTopicName, subscribeChannel)
-        );
+        assertThat(channels)
+                .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
     }
-
 
     @TestConfiguration
     public static class Configuration {
 
         @Bean
         public AsyncApiDocket docket() {
-            Info info = Info.builder()
-                    .title("Test")
-                    .version("1.0.0")
-                    .build();
+            Info info = Info.builder().title("Test").version("1.0.0").build();
 
             return AsyncApiDocket.builder()
                     .info(info)
                     .basePackage(this.getClass().getPackage().getName())
-                    .server("kafka", Server.builder().protocol("kafka").url("kafka:9092").build())
+                    .server(
+                            "kafka",
+                            Server.builder().protocol("kafka").url("kafka:9092").build())
                     .build();
         }
 
@@ -312,7 +301,5 @@ class CloudStreamFunctionChannelsScannerTest {
         public Function<KStream<Void, String>, KStream<Void, Integer>> kStreamTestFunction() {
             return stream -> stream.mapValues(s -> 1);
         }
-
     }
-
 }

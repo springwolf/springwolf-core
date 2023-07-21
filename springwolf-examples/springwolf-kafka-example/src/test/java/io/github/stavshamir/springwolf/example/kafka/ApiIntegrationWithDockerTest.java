@@ -9,9 +9,13 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,13 +27,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ApiIntegrationWithDockerTest {
 
-    private final static RestTemplate restTemplate = new RestTemplate();
-    private final static String APP_NAME = "app_1";
-    private final static int APP_PORT = 8080;
+    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final String APP_NAME = "app_1";
+    private static final int APP_PORT = 8080;
+
+    private static final Map<String, String> ENV = new HashMap<>();
+
+    static {
+        try (InputStream input = new FileInputStream(".env")) {
+            var properties = new Properties();
+            properties.load(input);
+            properties.forEach((key, value) -> ENV.put(String.valueOf(key), String.valueOf(value)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
-            .withExposedService(APP_NAME, APP_PORT);
+            .withExposedService(APP_NAME, APP_PORT)
+            .withEnv(ENV);
 
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);

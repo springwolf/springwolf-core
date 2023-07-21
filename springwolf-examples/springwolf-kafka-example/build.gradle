@@ -9,11 +9,6 @@ plugins {
     id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
 }
 
-def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
-
-group 'io.github.springwolf'
-version '0.13.0' + (isSnapshot ? '-SNAPSHOT' : '')
-
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-kafka-plugin")
@@ -38,7 +33,7 @@ dependencies {
     implementation "org.springframework.security:spring-security-web"
 
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
-    implementation "io.swagger.core.v3:swagger-annotations:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "javax.money:money-api:${moneyApiVersion}"
@@ -65,6 +60,10 @@ dependencies {
     permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaClientsVersion}:test@jar"
 }
 
+// We don't want to publish the examples
+tasks.withType(PublishToMavenRepository).configureEach { it.enabled = false }
+tasks.withType(PublishToMavenLocal).configureEach { it.enabled = false }
+
 docker {
     springBootApplication {
         maintainer = 'shamir.stav@gmail.com'
@@ -79,17 +78,29 @@ docker {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
 test {
     dependsOn dockerBuildImage
+    dependsOn spotlessApply // Automatically fix code formatting if possible
 
     useJUnitPlatform()
 
     testLogging {
         exceptionFormat = 'full'
+    }
+}
+
+spotless {
+    encoding 'UTF-8'
+
+    java {
+        palantirJavaFormat()
+
+        importOrder('', 'javax', 'java', '\\#')
+        replaceRegex("Remove wildcard imports", "import\\s+[^\\*\\s]+\\*;(\\r\\n|\\r|\\n)", "\$1")
+        removeUnusedImports()
+
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }
 

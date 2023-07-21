@@ -10,9 +10,9 @@ import com.asyncapi.v2.schema.Schema;
 import com.asyncapi.v2.schema.Type;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringValueResolver;
 
-import org.springframework.lang.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +35,8 @@ public class KafkaListenerUtil {
         return Map.of("kafka", new KafkaChannelBinding());
     }
 
-    public static Map<String, ? extends OperationBinding> buildOperationBinding(KafkaListener annotation, StringValueResolver resolver) {
+    public static Map<String, ? extends OperationBinding> buildOperationBinding(
+            KafkaListener annotation, StringValueResolver resolver) {
         String groupId = resolver.resolveStringValue(annotation.groupId());
         Schema groupIdSchema = buildKafkaGroupIdSchema(groupId);
 
@@ -56,6 +57,7 @@ public class KafkaListenerUtil {
 
         return schema;
     }
+
     @Nullable
     public static Schema buildKafkaGroupIdSchema(String groupId) {
         Schema schema = createStringSchema(groupId);

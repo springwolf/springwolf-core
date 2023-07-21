@@ -21,14 +21,11 @@ public class AsyncHeadersForSpringKafkaBuilder {
 
     public AsyncHeadersForSpringKafkaBuilder withTypeIdHeader(String exampleTypeId, List<String> types) {
         return this.withHeader(
-                AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME,
-                types,
-                exampleTypeId,
-                "Spring Type Id Header"
-        );
+                AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME, types, exampleTypeId, "Spring Type Id Header");
     }
 
-    private AsyncHeadersForSpringKafkaBuilder withHeader(String headerName, List<String> types, String exampleType, String description) {
+    private AsyncHeadersForSpringKafkaBuilder withHeader(
+            String headerName, List<String> types, String exampleType, String description) {
         AsyncHeaderSchema header = AsyncHeaderSchema.headerBuilder()
                 .headerName(headerName)
                 .description(description)

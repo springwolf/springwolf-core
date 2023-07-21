@@ -22,8 +22,7 @@ public class AsyncApiConfiguration {
     private final String amqpPort;
 
     public AsyncApiConfiguration(
-            @Value("${spring.rabbitmq.host}") String amqpHost,
-            @Value("${spring.rabbitmq.port}") int amqpPort) {
+            @Value("${spring.rabbitmq.host}") String amqpHost, @Value("${spring.rabbitmq.port}") int amqpPort) {
         this.amqpHost = amqpHost;
         this.amqpPort = String.valueOf(amqpPort);
     }
@@ -41,7 +40,11 @@ public class AsyncApiConfiguration {
         Info info = Info.builder()
                 .version("1.0.0")
                 .title("Springwolf example project - AMQP")
-                .contact(Contact.builder().name("springwolf").url("https://github.com/springwolf/springwolf-core").email("example@example.com").build())
+                .contact(Contact.builder()
+                        .name("springwolf")
+                        .url("https://github.com/springwolf/springwolf-core")
+                        .email("example@example.com")
+                        .build())
                 .description("Springwolf example project to demonstrate springwolfs abilities")
                 .license(License.builder().name("Apache License 2.0").build())
                 .build();
@@ -75,5 +78,4 @@ public class AsyncApiConfiguration {
                 .consumer(exampleManuallyDefinedConsumer)
                 .build();
     }
-
 }

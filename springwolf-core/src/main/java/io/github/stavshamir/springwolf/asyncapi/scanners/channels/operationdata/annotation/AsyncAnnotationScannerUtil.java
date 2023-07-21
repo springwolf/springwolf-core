@@ -32,23 +32,20 @@ class AsyncAnnotationScannerUtil {
                 .forEach((headerName, headers) -> {
                     List<String> values = getHeaderValues(headers, resolver);
                     String exampleValue = values.stream().findFirst().orElse(null);
-                    asyncHeaders.addHeader(
-                            AsyncHeaderSchema
-                                    .headerBuilder()
-                                    .headerName(resolver.resolveStringValue(headerName))
-                                    .description(getDescription(headers, resolver))
-                                    .enumValue(values)
-                                    .example(exampleValue)
-                                    .build()
-                    );
+                    asyncHeaders.addHeader(AsyncHeaderSchema.headerBuilder()
+                            .headerName(resolver.resolveStringValue(headerName))
+                            .description(getDescription(headers, resolver))
+                            .enumValue(values)
+                            .example(exampleValue)
+                            .build());
                 });
 
         return asyncHeaders;
     }
 
-    private static List<String> getHeaderValues(List<AsyncOperation.Headers.Header> value, StringValueResolver resolver) {
-        return value
-                .stream()
+    private static List<String> getHeaderValues(
+            List<AsyncOperation.Headers.Header> value, StringValueResolver resolver) {
+        return value.stream()
                 .map(AsyncOperation.Headers.Header::value)
                 .map(resolver::resolveStringValue)
                 .sorted()
@@ -56,8 +53,7 @@ class AsyncAnnotationScannerUtil {
     }
 
     private static String getDescription(List<AsyncOperation.Headers.Header> value, StringValueResolver resolver) {
-        return value
-                .stream()
+        return value.stream()
                 .map(AsyncOperation.Headers.Header::description)
                 .map(resolver::resolveStringValue)
                 .filter(StringUtils::hasText)
@@ -66,7 +62,8 @@ class AsyncAnnotationScannerUtil {
                 .orElse(null);
     }
 
-    public static Map<String, OperationBinding> processOperationBindingFromAnnotation(Method method, List<OperationBindingProcessor> operationBindingProcessors) {
+    public static Map<String, OperationBinding> processOperationBindingFromAnnotation(
+            Method method, List<OperationBindingProcessor> operationBindingProcessors) {
         return operationBindingProcessors.stream()
                 .map(operationBindingProcessor -> operationBindingProcessor.process(method))
                 .filter(Optional::isPresent)
@@ -74,7 +71,8 @@ class AsyncAnnotationScannerUtil {
                 .collect(Collectors.toMap(ProcessedOperationBinding::getType, ProcessedOperationBinding::getBinding));
     }
 
-    public static Map<String, MessageBinding> processMessageBindingFromAnnotation(Method method, List<MessageBindingProcessor> messageBindingProcessors) {
+    public static Map<String, MessageBinding> processMessageBindingFromAnnotation(
+            Method method, List<MessageBindingProcessor> messageBindingProcessors) {
         return messageBindingProcessors.stream()
                 .map(messageBindingProcessor -> messageBindingProcessor.process(method))
                 .filter(Optional::isPresent)

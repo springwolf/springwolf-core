@@ -33,7 +33,9 @@ import static org.mockito.Mockito.verify;
  * While the assertion of this test is identical to ApiIntegrationTests,
  * the setup uses a full docker-compose context with a real kafka instance.
  */
-@SpringBootTest(classes = {SpringwolfKafkaExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        classes = {SpringwolfKafkaExampleApplication.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @DirtiesContext
 @TestMethodOrder(OrderAnnotation.class)
@@ -49,19 +51,19 @@ public class ProducerIntegrationWithDockerTest {
     @Autowired
     SpringWolfKafkaConfigProperties properties;
 
-
     @Container
-    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
-            .withServices("kafka");
-
+    public static DockerComposeContainer<?> environment =
+            new DockerComposeContainer<>(new File("docker-compose.yml")).withServices("kafka");
 
     @Test
     @Order(1)
     void verifyKafkaIsAvailable() {
-        Map<String, Object> consumerProperties = properties.getPublishing().getProducer().buildProperties();
+        Map<String, Object> consumerProperties =
+                properties.getPublishing().getProducer().buildProperties();
         AdminClient adminClient = KafkaAdminClient.create(consumerProperties);
         await().atMost(60, SECONDS)
-                .untilAsserted(() -> assertThat(adminClient.listTopics().names().get()).contains("example-topic"));
+                .untilAsserted(
+                        () -> assertThat(adminClient.listTopics().names().get()).contains("example-topic"));
     }
 
     @Test

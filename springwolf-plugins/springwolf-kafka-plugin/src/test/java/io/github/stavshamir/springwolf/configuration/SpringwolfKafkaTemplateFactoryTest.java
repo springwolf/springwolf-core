@@ -49,7 +49,8 @@ class SpringwolfKafkaTemplateFactoryTest {
         Optional<KafkaTemplate<Object, Object>> kafkaTemplate = templateFactory.buildKafkaTemplate();
 
         assertThat(kafkaTemplate).isPresent();
-        Map<String, Object> configurationProperties = kafkaTemplate.get().getProducerFactory().getConfigurationProperties();
+        Map<String, Object> configurationProperties =
+                kafkaTemplate.get().getProducerFactory().getConfigurationProperties();
 
         assertThat(configurationProperties).isEqualTo(new KafkaProperties.Producer().buildProperties());
     }

@@ -48,6 +48,6 @@ public class KafkaOperationBindingProcessor implements OperationBindingProcessor
     }
 
     private String resolveOrNull(String stringValue) {
-        return StringUtils.hasText(stringValue) ? resolver.resolveStringValue(stringValue): null;
+        return StringUtils.hasText(stringValue) ? resolver.resolveStringValue(stringValue) : null;
     }
 }

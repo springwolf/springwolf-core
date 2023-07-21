@@ -30,14 +30,15 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {
-        SpringWolfConfigProperties.class,
-        DefaultAsyncApiDocketService.class,
-        DefaultAsyncApiService.class,
-        DefaultChannelsService.class,
-        DefaultSchemasService.class,
-        ProducerOperationDataScanner.class,
-        ConsumerOperationDataScanner.class,
+@ContextConfiguration(
+        classes = {
+            SpringWolfConfigProperties.class,
+            DefaultAsyncApiDocketService.class,
+            DefaultAsyncApiService.class,
+            DefaultChannelsService.class,
+            DefaultSchemasService.class,
+            ProducerOperationDataScanner.class,
+            ConsumerOperationDataScanner.class,
 })
 @Import({DefaultAsyncApiServiceTest.DefaultAsyncApiServiceTestConfiguration.class,
         DefaultAsyncApiServiceTest.TestDescriptionCustomizer.class,
@@ -49,10 +50,7 @@ class DefaultAsyncApiServiceTest {
 
         @Bean
         public AsyncApiDocket docket() {
-            Info info = Info.builder()
-                    .title("Test")
-                    .version("1.0.0")
-                    .build();
+            Info info = Info.builder().title("Test").version("1.0.0").build();
 
             ProducerData kafkaProducerData = ProducerData.builder()
                     .channelName("producer-topic")
@@ -73,12 +71,13 @@ class DefaultAsyncApiServiceTest {
             return AsyncApiDocket.builder()
                     .info(info)
                     .basePackage("package")
-                    .server("kafka", Server.builder().protocol("kafka").url("kafka:9092").build())
+                    .server(
+                            "kafka",
+                            Server.builder().protocol("kafka").url("kafka:9092").build())
                     .producer(kafkaProducerData)
                     .consumer(kafkaConsumerData)
                     .build();
         }
-
     }
 
     @Autowired
@@ -91,27 +90,22 @@ class DefaultAsyncApiServiceTest {
     void getAsyncAPI_info_should_be_correct() {
         Info actualInfo = asyncApiService.getAsyncAPI().getInfo();
 
-        assertThat(actualInfo).
-                isEqualTo(docket.getInfo());
-        assertThat(actualInfo.getDescription())
-                .isEqualTo("AsyncApiInfoDescriptionCustomizer2");
+        assertThat(actualInfo).isEqualTo(docket.getInfo());
+        assertThat(actualInfo.getDescription()).isEqualTo("AsyncApiInfoDescriptionCustomizer2");
     }
 
     @Test
     void getAsyncAPI_servers_should_be_correct() {
         Map<String, Server> actualServers = asyncApiService.getAsyncAPI().getServers();
 
-        assertThat(actualServers).
-                isEqualTo(docket.getServers());
+        assertThat(actualServers).isEqualTo(docket.getServers());
     }
 
     @Test
     void getAsyncAPI_producers_should_be_correct() {
         Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
 
-        assertThat(actualChannels)
-                .isNotEmpty()
-                .containsKey("producer-topic");
+        assertThat(actualChannels).isNotEmpty().containsKey("producer-topic");
 
         final ChannelItem channel = actualChannels.get("producer-topic");
         assertThat(channel.getSubscribe()).isNotNull();
@@ -124,9 +118,7 @@ class DefaultAsyncApiServiceTest {
     void getAsyncAPI_consumers_should_be_correct() {
         Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
 
-        assertThat(actualChannels)
-                .isNotEmpty()
-                .containsKey("consumer-topic");
+        assertThat(actualChannels).isNotEmpty().containsKey("consumer-topic");
 
         final ChannelItem channel = actualChannels.get("consumer-topic");
         assertThat(channel.getPublish()).isNotNull();
@@ -151,6 +143,7 @@ class DefaultAsyncApiServiceTest {
     @Order(TestDescriptionCustomizer2.CUSTOMIZER_ORDER)
     public static class TestDescriptionCustomizer2 implements AsyncApiCustomizer {
         public static final int CUSTOMIZER_ORDER = TestDescriptionCustomizer.CUSTOMIZER_ORDER + 1;
+
         @Override
         public void customize(AsyncAPI asyncAPI) {
             asyncAPI.getInfo().setDescription("AsyncApiInfoDescriptionCustomizer2");

@@ -2,6 +2,4 @@ package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.binding
 
 import com.asyncapi.v2.binding.operation.OperationBinding;
 
-public class EmptyOperationBinding extends OperationBinding {
-
-}
+public class EmptyOperationBinding extends OperationBinding {}

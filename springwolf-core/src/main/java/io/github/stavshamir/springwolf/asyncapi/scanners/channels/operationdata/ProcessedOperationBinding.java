@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class ProcessedOperationBinding {
-     private final String type;
-     private final OperationBinding binding;
+    private final String type;
+    private final OperationBinding binding;
 }

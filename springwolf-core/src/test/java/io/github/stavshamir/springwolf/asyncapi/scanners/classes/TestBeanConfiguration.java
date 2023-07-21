@@ -10,5 +10,4 @@ public class TestBeanConfiguration {
     public TestBean testBean() {
         return new TestBean("foo");
     }
-
 }

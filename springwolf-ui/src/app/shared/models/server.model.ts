@@ -1,4 +1,4 @@
 export interface Server {
-    url: string;
-    protocol: string;
+  url: string;
+  protocol: string;
 }

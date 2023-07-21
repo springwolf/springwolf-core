@@ -18,8 +18,6 @@ public class ConsumerPayload {
 
     @Override
     public String toString() {
-        return "ConsumerPayload{" +
-                "payloadString='" + payloadString + '\'' +
-                '}';
+        return "ConsumerPayload{" + "payloadString='" + payloadString + '\'' + '}';
     }
 }

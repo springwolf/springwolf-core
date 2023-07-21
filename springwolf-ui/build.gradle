@@ -1,15 +1,7 @@
 plugins {
   id 'java'
   id 'com.github.node-gradle.node' version '5.0.0'
-  id 'signing'
-  id 'maven-publish'
 }
-
-def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
-
-group 'io.github.springwolf'
-version '0.13.0' + (isSnapshot ? '-SNAPSHOT' : '')
-sourceCompatibility = JavaVersion.VERSION_17
 
 node {
   version = '18.16.1'
@@ -18,6 +10,8 @@ node {
 }
 
 npm_run_build {
+  dependsOn spotlessCheck
+
   inputs.files fileTree("src")
   inputs.file 'angular.json'
   inputs.file 'package.json'
@@ -38,7 +32,7 @@ task buildPages(type: NpmTask) {
     copy {
       from "./dist/springwolf-ui/asyncapi-ui.html"
       into "dist/springwolf-ui"
-      rename ("asyncapi-ui.html", "index.html")
+      rename("asyncapi-ui.html", "index.html")
     }
   }
 }
@@ -52,70 +46,33 @@ java {
   withSourcesJar()
 }
 
+spotless {
+  encoding 'UTF-8'
+
+  format 'styling', {
+    target 'src/**/*.ts', 'src/**/*.js', 'src/**/*.json', 'src/**/*.html', 'src/**/*.css', 'src/**/*.scss'
+
+    def npmExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/npm.cmd' : '/bin/npm'
+    def nodeExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/node.exe' : '/bin/node'
+    prettier()
+      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}") // get the npm executable path from gradle-node-plugin
+      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
+}
+tasks.named('spotlessStyling').configure {
+  it.dependsOn('nodeSetup', 'npmSetup')
+}
+
 publishing {
   publications {
     mavenJava(MavenPublication) {
-      from components.java
-
-      artifactId 'springwolf-ui'
-      groupId project.group
-      version project.version
-
       pom {
         name = 'springwolf-ui'
         description = 'Web UI for Springwolf'
-        url = 'https://www.springwolf.dev'
-
-        licenses {
-          license {
-            name = 'The Apache License, Version 2.0'
-            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-          }
-        }
-
-        developers {
-          developer {
-            id = 'stavshamir'
-            name = 'Stav Shamir'
-            email = 'shamir.stav@gmail.com'
-          }
-
-          developer {
-            id = 'timonback'
-            name = 'Timon Back'
-            email = 'timon.back+springwolf@gmail.com'
-          }
-
-          developer {
-            id = 'sam0r040'
-            name = 'David Müller'
-            email = 'david.mueller@codecentric.de'
-          }
-        }
-
-        scm {
-          url = 'https://github.com/springwolf/springwolf-core'
-        }
       }
     }
   }
-
-  repositories {
-    maven {
-      def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-      def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-      url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
-      credentials {
-        username = project.findProperty('MAVEN_USERNAME') ?: ''
-        password = project.findProperty('MAVEN_PASSWORD') ?: ''
-      }
-    }
-  }
-}
-
-signing {
-  def signingKey = project.findProperty("SIGNINGKEY")
-  def signingPassword = project.findProperty("SIGNINGPASSWORD")
-  useInMemoryPgpKeys(signingKey, signingPassword)
-  sign publishing.publications.mavenJava
 }
