@@ -62,6 +62,9 @@ spotless {
     endWithNewline()
   }
 }
+tasks.named('spotlessStyling').configure {
+  it.dependsOn('nodeSetup', 'npmSetup')
+}
 
 publishing {
   publications {
