@@ -22,8 +22,7 @@ The following lists describe the steps necessary to release a new version.
 
 ### springwolf-amqp
 
-1. Update version number in
-    1. `springwolf-plugins/springwolf-amqp-plugin/README.md`
+1. Update version number in `springwolf-plugins/springwolf-amqp-plugin/README.md`
 2. Run all tests (including all examples + integration)
 3. Run docker compose and manually test ui
 4. Run github `Publish releases` pipeline
@@ -32,8 +31,7 @@ The following lists describe the steps necessary to release a new version.
 
 ### springwolf-cloud-stream
 
-1. Update version number in
-    1. `springwolf-plugins/springwolf-cloud-stream-plugin/README.md`
+1. Update version number in `springwolf-plugins/springwolf-cloud-stream-plugin/README.md`
 2. Run all tests (including all examples + integration)
 3. Run docker compose and manually test ui
 4. Run github `Publish releases` pipeline
@@ -42,8 +40,7 @@ The following lists describe the steps necessary to release a new version.
 
 ### springwolf-kafka
 
-1. Update version number in
-    1. `springwolf-plugins/springwolf-kafka-plugin/README.md`
+1. Update version number in `springwolf-plugins/springwolf-kafka-plugin/README.md`
 2. Run all tests (including all examples + integration)
 3. Run docker compose and manually test ui
 4. Run github `Publish releases` pipeline
