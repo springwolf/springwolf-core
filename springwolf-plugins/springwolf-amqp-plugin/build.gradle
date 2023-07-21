@@ -4,7 +4,6 @@ plugins {
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
-    id 'com.diffplug.spotless'
 }
 
 dependencies {
@@ -81,4 +80,3 @@ publishing {
         }
     }
 }
-
