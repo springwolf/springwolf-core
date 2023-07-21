@@ -1,11 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
-import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2._6_0.model.info.Info;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -61,8 +61,7 @@ class ConsumerOperationDataScannerTest {
         Map<String, ChannelItem> consumerChannels = scanner.scan();
 
         // Then the channel should be created correctly
-        assertThat(consumerChannels)
-                .containsKey(channelName);
+        assertThat(consumerChannels).containsKey(channelName);
 
         String messageDescription = "Example Payload DTO Description";
         Operation operation = Operation.builder()
@@ -84,17 +83,15 @@ class ConsumerOperationDataScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(consumerChannels.get(channelName))
-                .isEqualTo(expectedChannel);
+        assertThat(consumerChannels.get(channelName)).isEqualTo(expectedChannel);
     }
 
     @Test
     void missingFieldConsumerData() {
         // Given a consumer data with missing fields
         String channelName = "example-consumer-topic-foo1";
-        ConsumerData consumerData = ConsumerData.builder()
-                .channelName(channelName)
-                .build();
+        ConsumerData consumerData =
+                ConsumerData.builder().channelName(channelName).build();
 
         mockConsumers(List.of(consumerData));
 
@@ -137,9 +134,7 @@ class ConsumerOperationDataScannerTest {
         Map<String, ChannelItem> consumerChannels = scanner.scan();
 
         // Then one channel is created for the ConsumerData objects with multiple messages
-        assertThat(consumerChannels)
-                .hasSize(1)
-                .containsKey(channelName);
+        assertThat(consumerChannels).hasSize(1).containsKey(channelName);
 
         String messageDescription1 = "Example Payload DTO Description";
         String messageDescription2 = "Another Example Payload DTO Description";
@@ -159,8 +154,7 @@ class ConsumerOperationDataScannerTest {
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
                         .bindings(Map.of("kafka", new KafkaMessageBinding()))
-                        .build()
-        );
+                        .build());
 
         Operation operation = Operation.builder()
                 .description(description1)
@@ -174,8 +168,7 @@ class ConsumerOperationDataScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(consumerChannels.get(channelName))
-                .isEqualTo(expectedChannel);
+        assertThat(consumerChannels.get(channelName)).isEqualTo(expectedChannel);
     }
 
     private void mockConsumers(Collection<ConsumerData> consumers) {
@@ -198,5 +191,4 @@ class ConsumerOperationDataScannerTest {
     static class AnotherExamplePayloadDto {
         private String bar;
     }
-
 }

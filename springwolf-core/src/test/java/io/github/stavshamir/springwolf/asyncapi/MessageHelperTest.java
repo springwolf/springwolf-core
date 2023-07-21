@@ -23,46 +23,31 @@ class MessageHelperTest {
 
     @Test
     void toMessageObjectOrComposition_oneMessage() {
-        Message message = Message.builder()
-                .name("foo")
-                .build();
+        Message message = Message.builder().name("foo").build();
 
         Object asObject = toMessageObjectOrComposition(Set.of(message));
 
-        assertThat(asObject)
-                .isInstanceOf(Message.class)
-                .isEqualTo(message);
+        assertThat(asObject).isInstanceOf(Message.class).isEqualTo(message);
     }
-
 
     @Test
     void toMessageObjectOrComposition_multipleMessages() {
-        Message message1 = Message.builder()
-                .name("foo")
-                .build();
+        Message message1 = Message.builder().name("foo").build();
 
-        Message message2 = Message.builder()
-                .name("bar")
-                .build();
+        Message message2 = Message.builder().name("bar").build();
 
         Object asObject = toMessageObjectOrComposition(Set.of(message1, message2));
 
-        assertThat(asObject)
-                .isInstanceOf(Map.class)
-                .isEqualTo(Map.of("oneOf", List.of(message2, message1)));
+        assertThat(asObject).isInstanceOf(Map.class).isEqualTo(Map.of("oneOf", List.of(message2, message1)));
     }
 
     @Test
     void toMessageObjectOrComposition_multipleMessages_remove_duplicates() {
-        Message message1 = Message.builder()
-                .name("foo")
-                .description("This is message 1")
-                .build();
+        Message message1 =
+                Message.builder().name("foo").description("This is message 1").build();
 
-        Message message2 = Message.builder()
-                .name("bar")
-                .description("This is message 2")
-                .build();
+        Message message2 =
+                Message.builder().name("bar").description("This is message 2").build();
 
         Message message3 = Message.builder()
                 .name("bar")
@@ -75,10 +60,7 @@ class MessageHelperTest {
         assertThat(oneOfMap).hasSize(1);
         List<Message> deduplicatedMessageList = oneOfMap.get("oneOf");
         // we do not have any guarantee wether message2 or message3 won the deduplication.
-        assertThat(deduplicatedMessageList)
-                .hasSize(2)
-                .contains(message1)
-                .containsAnyOf(message2, message3);
+        assertThat(deduplicatedMessageList).hasSize(2).contains(message1).containsAnyOf(message2, message3);
     }
 
     @Test
@@ -116,39 +98,29 @@ class MessageHelperTest {
 
         Set<Message> messages = messageObjectToSet(string);
 
-        assertThat(messages)
-                .isEmpty();
+        assertThat(messages).isEmpty();
     }
 
     @Test
     void messageObjectToSet_Message() {
-        Message message = Message.builder()
-                .name("foo")
-                .build();
+        Message message = Message.builder().name("foo").build();
         Object asObject = toMessageObjectOrComposition(Set.of(message));
 
         Set<Message> messages = messageObjectToSet(asObject);
 
-        assertThat(messages)
-                .containsExactly(message);
+        assertThat(messages).containsExactly(message);
     }
 
     @Test
     void messageObjectToSet_SetOfMessage() {
-        Message message1 = Message.builder()
-                .name("foo")
-                .build();
+        Message message1 = Message.builder().name("foo").build();
 
-        Message message2 = Message.builder()
-                .name("bar")
-                .build();
+        Message message2 = Message.builder().name("bar").build();
 
         Object asObject = toMessageObjectOrComposition(Set.of(message1, message2));
 
         Set<Message> messages = messageObjectToSet(asObject);
 
-        assertThat(messages)
-                .containsExactlyInAnyOrder(message1, message2);
+        assertThat(messages).containsExactlyInAnyOrder(message1, message2);
     }
-
 }

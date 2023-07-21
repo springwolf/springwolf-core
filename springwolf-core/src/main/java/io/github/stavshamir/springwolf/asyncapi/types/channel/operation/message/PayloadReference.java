@@ -22,5 +22,4 @@ public class PayloadReference {
     public static PayloadReference fromModelName(String modelName) {
         return new PayloadReference("#/components/schemas/" + modelName);
     }
-
 }

@@ -27,7 +27,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {AsyncPublisherAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
+@ContextConfiguration(
+        classes = {
+            AsyncPublisherAnnotationScanner.class,
+            DefaultSchemasService.class,
+            TestOperationBindingProcessor.class
+        })
 @TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
 class AsyncPublisherAnnotationScannerTest {
 
@@ -64,7 +69,7 @@ class AsyncPublisherAnnotationScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 // Message description is not supported yet
-//                .description("")
+                //                .description("")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP)
@@ -77,13 +82,10 @@ class AsyncPublisherAnnotationScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(null)
-                .subscribe(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).subscribe(operation).build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     @Test
@@ -99,7 +101,7 @@ class AsyncPublisherAnnotationScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 // Message description is not supported yet
-//                .description("description")
+                //                .description("description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("TestSchema"))
                 .bindings(EMPTY_MAP)
@@ -112,13 +114,10 @@ class AsyncPublisherAnnotationScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(null)
-                .subscribe(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).subscribe(operation).build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     @Test
@@ -134,7 +133,7 @@ class AsyncPublisherAnnotationScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 // Message description is not supported yet
-//                .description("")
+                //                .description("")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP)
@@ -147,10 +146,8 @@ class AsyncPublisherAnnotationScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel1 = ChannelItem.builder()
-                .bindings(null)
-                .subscribe(operation1)
-                .build();
+        ChannelItem expectedChannel1 =
+                ChannelItem.builder().bindings(null).subscribe(operation1).build();
 
         Operation operation2 = Operation.builder()
                 .description("Auto-generated description")
@@ -159,16 +156,13 @@ class AsyncPublisherAnnotationScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel2 = ChannelItem.builder()
-                .bindings(null)
-                .subscribe(operation2)
-                .build();
+        ChannelItem expectedChannel2 =
+                ChannelItem.builder().bindings(null).subscribe(operation2).build();
 
         assertThat(actualChannels)
-                .containsExactlyInAnyOrderEntriesOf(
-                        Map.of(
-                                "test-channel-1", expectedChannel1,
-                                "test-channel-2", expectedChannel2));
+                .containsExactlyInAnyOrderEntriesOf(Map.of(
+                        "test-channel-1", expectedChannel1,
+                        "test-channel-2", expectedChannel2));
     }
 
     @Test
@@ -198,62 +192,49 @@ class AsyncPublisherAnnotationScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(null)
-                .subscribe(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).subscribe(operation).build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     private static class ClassWithoutPublisherAnnotation {
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithPublisherAnnotation {
 
-        @AsyncPublisher(operation = @AsyncOperation(
-                channelName = "test-channel"
-        ))
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        @AsyncPublisher(operation = @AsyncOperation(channelName = "test-channel"))
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithPublisherAnnotationWithAllAttributes {
 
-        @AsyncPublisher(operation = @AsyncOperation(
-                channelName = "${test.property.test-channel}",
-                description = "${test.property.description}",
-                headers = @AsyncOperation.Headers(
-                        schemaName = "TestSchema",
-                        values = {@AsyncOperation.Headers.Header(name = "header", value = "value")}
-                )
-        ))
+        @AsyncPublisher(
+                operation =
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                description = "${test.property.description}",
+                                headers =
+                                        @AsyncOperation.Headers(
+                                                schemaName = "TestSchema",
+                                                values = {
+                                                    @AsyncOperation.Headers.Header(name = "header", value = "value")
+                                                })))
         @TestOperationBindingProcessor.TestOperationBinding()
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithMultipleListenerAnnotations {
 
-        @AsyncPublisher(operation = @AsyncOperation(
-                channelName = "test-channel-1"
-        ))
-        @AsyncPublisher(operation = @AsyncOperation(
-                channelName = "test-channel-2"
-        ))
-        private void methodWithMultipleAnnotation(SimpleFoo payload) {
-        }
+        @AsyncPublisher(operation = @AsyncOperation(channelName = "test-channel-1"))
+        @AsyncPublisher(operation = @AsyncOperation(channelName = "test-channel-2"))
+        private void methodWithMultipleAnnotation(SimpleFoo payload) {}
     }
 
     @Data
@@ -265,21 +246,19 @@ class AsyncPublisherAnnotationScannerTest {
 
     private static class ClassWithMessageAnnotation {
 
-        @AsyncPublisher(operation = @AsyncOperation(
-                channelName = "test-channel",
-                message = @AsyncMessage(
-                        description = "Message description",
-                        messageId = "simpleFoo",
-                        name = "SimpleFooPayLoad",
-                        schemaFormat = "application/schema+json;version=draft-07",
-                        title = "Message Title"
-                )
-        ))
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        @AsyncPublisher(
+                operation =
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                message =
+                                        @AsyncMessage(
+                                                description = "Message description",
+                                                messageId = "simpleFoo",
+                                                name = "SimpleFooPayLoad",
+                                                schemaFormat = "application/schema+json;version=draft-07",
+                                                title = "Message Title")))
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 }

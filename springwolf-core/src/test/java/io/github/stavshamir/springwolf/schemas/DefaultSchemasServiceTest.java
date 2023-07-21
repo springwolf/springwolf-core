@@ -27,14 +27,14 @@ class DefaultSchemasServiceTest {
 
     private static final String EXAMPLES_PATH = "/schemas/examples";
     private static final ObjectMapper objectMapper = Json.mapper();
-    private static final PrettyPrinter printer = new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+    private static final PrettyPrinter printer =
+            new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @Test
     void string() throws IOException {
         String modelName = schemasService.register(String.class);
 
-        assertThat(modelName)
-                .isEqualTo("String");
+        assertThat(modelName).isEqualTo("String");
 
         assertNotNull(schemasService.getDefinitions().get(modelName));
 
@@ -49,8 +49,7 @@ class DefaultSchemasServiceTest {
     void simpleObject() throws IOException {
         String modelName = schemasService.register(SimpleFoo.class);
 
-        assertThat(modelName)
-                .isEqualTo("SimpleFoo");
+        assertThat(modelName).isEqualTo("SimpleFoo");
 
         Schema schema = schemasService.getDefinitions().get(modelName);
         String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
@@ -99,8 +98,7 @@ class DefaultSchemasServiceTest {
     void classWithSchemaAnnotation() {
         String modelName = schemasService.register(ClassWithSchemaAnnotation.class);
 
-        assertThat(modelName)
-                .isEqualTo("DifferentName");
+        assertThat(modelName).isEqualTo("DifferentName");
     }
 
     private String jsonResource(String path) throws IOException {
@@ -119,7 +117,10 @@ class DefaultSchemasServiceTest {
     @NoArgsConstructor
     @io.swagger.v3.oas.annotations.media.Schema(description = "foo model")
     private static class DocumentedSimpleFoo {
-        @io.swagger.v3.oas.annotations.media.Schema(description = "s field", example = "s value", requiredMode = io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED)
+        @io.swagger.v3.oas.annotations.media.Schema(
+                description = "s field",
+                example = "s value",
+                requiredMode = io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED)
         private String s;
     }
 
@@ -137,7 +138,8 @@ class DefaultSchemasServiceTest {
         private Bar b;
 
         private enum Bar {
-            BAR1, BAR2
+            BAR1,
+            BAR2
         }
     }
 
@@ -148,5 +150,4 @@ class DefaultSchemasServiceTest {
         private String s;
         private boolean b;
     }
-
 }

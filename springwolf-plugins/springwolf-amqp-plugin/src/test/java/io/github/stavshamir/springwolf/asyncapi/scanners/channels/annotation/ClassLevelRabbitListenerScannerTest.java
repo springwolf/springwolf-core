@@ -47,15 +47,17 @@ class ClassLevelRabbitListenerScannerTest {
 
     private static final String QUEUE = "test-queue";
     private static final Map<String, Object> defaultOperationBinding =
-            Map.of("amqp", AMQPOperationBinding.builder()
-                    .cc(List.of(QUEUE))
-                    .build());
+            Map.of("amqp", AMQPOperationBinding.builder().cc(List.of(QUEUE)).build());
     private static final Map<String, ? extends MessageBinding> defaultMessageBinding =
             Map.of("amqp", new AMQPMessageBinding());
-    private static final Map<String, Object> defaultChannelBinding = Map.of("amqp", AMQPChannelBinding.builder()
-            .is("routingKey")
-            .exchange(AMQPChannelBinding.ExchangeProperties.builder().name("").build())
-            .build());
+    private static final Map<String, Object> defaultChannelBinding = Map.of(
+            "amqp",
+            AMQPChannelBinding.builder()
+                    .is("routingKey")
+                    .exchange(AMQPChannelBinding.ExchangeProperties.builder()
+                            .name("")
+                            .build())
+                    .build());
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
@@ -70,9 +72,7 @@ class ClassLevelRabbitListenerScannerTest {
     void scan_componentWithMultipleRabbitListenersAndHandlers() {
         // Given multiple @RabbitListener annotated classes with method(s) annotated with @RabbitHandler
         Set<Class<?>> classesToScan = Set.of(
-                RabbitListenerClassWithOneRabbitHandler.class,
-                RabbitListenerClassWithMultipleRabbitHandler.class
-        );
+                RabbitListenerClassWithOneRabbitHandler.class, RabbitListenerClassWithMultipleRabbitHandler.class);
         setClassesToScan(classesToScan);
 
         // When scan is called
@@ -107,8 +107,7 @@ class ClassLevelRabbitListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(QUEUE, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(QUEUE, expectedChannel));
     }
 
     @Test
@@ -120,8 +119,7 @@ class ClassLevelRabbitListenerScannerTest {
         Map<String, ChannelItem> channels = classLevelRabbitListenerScanner.scan();
 
         // Then no channel is not created
-        assertThat(channels)
-                .isEmpty();
+        assertThat(channels).isEmpty();
     }
 
     @Test
@@ -130,8 +128,7 @@ class ClassLevelRabbitListenerScannerTest {
 
         Map<String, ChannelItem> channels = classLevelRabbitListenerScanner.scan();
 
-        assertThat(channels)
-                .isEmpty();
+        assertThat(channels).isEmpty();
     }
 
     @Test
@@ -163,8 +160,7 @@ class ClassLevelRabbitListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(QUEUE, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(QUEUE, expectedChannel));
     }
 
     @Test
@@ -204,8 +200,7 @@ class ClassLevelRabbitListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(QUEUE, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(QUEUE, expectedChannel));
     }
 
     @Test
@@ -238,60 +233,45 @@ class ClassLevelRabbitListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry(QUEUE, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(QUEUE, expectedChannel));
     }
-
 
     private static class ClassWithoutClassLevelRabbitListenerAndWithOneRabbitHandler {
 
         @RabbitHandler
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
-
+        private void methodWithAnnotation(SimpleFoo payload) {}
     }
 
     @RabbitListener(queues = QUEUE)
     private static class RabbitListenerClassWithoutRabbitHandlers {
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
-
 
     @RabbitListener(queues = QUEUE)
     private static class RabbitListenerClassWithOneRabbitHandler {
 
         @RabbitHandler
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     @RabbitListener(queues = QUEUE)
     private static class RabbitListenerClassWithMultipleRabbitHandler {
 
         @RabbitHandler
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
         @RabbitHandler
-        private void anotherMethodWithoutAnnotation(SimpleBar payload) {
-        }
-
+        private void anotherMethodWithoutAnnotation(SimpleBar payload) {}
     }
 
     @RabbitListener(queues = QUEUE)
     private static class RabbitListenerClassWithRabbitHandlerWithBatchPayload {
 
         @RabbitHandler
-        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {
-        }
-
+        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {}
     }
 
     @Data
@@ -307,5 +287,4 @@ class ClassLevelRabbitListenerScannerTest {
         private String s;
         private boolean b;
     }
-
 }

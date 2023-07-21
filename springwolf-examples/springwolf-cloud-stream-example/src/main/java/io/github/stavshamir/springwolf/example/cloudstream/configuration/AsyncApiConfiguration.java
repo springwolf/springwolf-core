@@ -34,7 +34,11 @@ public class AsyncApiConfiguration {
         Info info = Info.builder()
                 .version("1.0.0")
                 .title("Springwolf example project - CloudStream")
-                .contact(Contact.builder().name("springwolf").url("https://github.com/springwolf/springwolf-core").email("example@example.com").build())
+                .contact(Contact.builder()
+                        .name("springwolf")
+                        .url("https://github.com/springwolf/springwolf-core")
+                        .email("example@example.com")
+                        .build())
                 .description("Springwolf example project")
                 .license(License.builder().name("Apache License 2.0").build())
                 .build();
@@ -42,8 +46,12 @@ public class AsyncApiConfiguration {
         return AsyncApiDocket.builder()
                 .basePackage("io.github.stavshamir.springwolf.example")
                 .info(info)
-                .server("kafka", Server.builder().protocol("kafka").url(BOOTSTRAP_SERVERS).build())
+                .server(
+                        "kafka",
+                        Server.builder()
+                                .protocol("kafka")
+                                .url(BOOTSTRAP_SERVERS)
+                                .build())
                 .build();
     }
-
 }

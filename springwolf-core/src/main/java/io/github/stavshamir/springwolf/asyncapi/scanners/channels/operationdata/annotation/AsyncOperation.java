@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
 
-
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;

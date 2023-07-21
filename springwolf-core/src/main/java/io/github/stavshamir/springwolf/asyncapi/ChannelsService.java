@@ -7,5 +7,4 @@ import java.util.Map;
 public interface ChannelsService {
 
     Map<String, ChannelItem> getChannels();
-
 }

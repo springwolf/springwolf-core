@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * It configures the operation binding for the Kafka protocol.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value={ElementType.METHOD})
+@Target(value = {ElementType.METHOD})
 public @interface KafkaAsyncOperationBinding {
 
     String type() default "kafka";
@@ -18,6 +18,7 @@ public @interface KafkaAsyncOperationBinding {
     String groupId() default "";
 
     String clientId() default "";
+
     String bindingVersion() default "";
 
     KafkaAsyncMessageBinding messageBinding() default @KafkaAsyncMessageBinding();
@@ -30,6 +31,7 @@ public @interface KafkaAsyncOperationBinding {
 
         String bindingVersion() default "";
     }
+
     @Retention(RetentionPolicy.CLASS)
     @Target({})
     @interface KafkaAsyncKey {

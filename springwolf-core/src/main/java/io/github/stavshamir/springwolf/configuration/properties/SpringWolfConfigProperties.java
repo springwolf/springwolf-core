@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.lang.Nullable;
+
 import java.util.Map;
 
 @Configuration
@@ -111,9 +111,7 @@ public class SpringWolfConfigProperties {
             @Nullable
             private License license;
         }
-
     }
-
 
     @Getter
     @Setter

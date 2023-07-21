@@ -22,16 +22,16 @@ public class ExamplePayloadDto {
     private ExampleEnum someEnum;
 
     public enum ExampleEnum {
-        FOO1, FOO2, FOO3
+        FOO1,
+        FOO2,
+        FOO3
     }
 
     @Override
     public String toString() {
-        return "ExamplePayloadDto{" +
-                "someString='" + someString + '\'' +
-                ", someLong=" + someLong +
-                ", someEnum=" + someEnum +
-                '}';
+        return "ExamplePayloadDto{" + "someString='"
+                + someString + '\'' + ", someLong="
+                + someLong + ", someEnum="
+                + someEnum + '}';
     }
-
 }

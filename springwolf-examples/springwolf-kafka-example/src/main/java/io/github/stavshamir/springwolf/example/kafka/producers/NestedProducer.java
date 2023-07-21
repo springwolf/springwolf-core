@@ -19,33 +19,29 @@ public class NestedProducer {
     @Autowired
     private KafkaTemplate<String, NestedPayloadDto> kafkaTemplate;
 
-    @AsyncPublisher(operation = @AsyncOperation(
-            channelName = "topic-defined-via-asyncPublisher-annotation",
-            description = "Custom, optional description defined in the AsyncPublisher annotation",
-            headers = @AsyncOperation.Headers(
-                    schemaName = "SpringKafkaDefaultHeaders",
-                    values = {
-                            @AsyncOperation.Headers.Header(
-                                    name = DEFAULT_CLASSID_FIELD_NAME,
-                                    description = "Spring Type Id Header",
-                                    value = "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
-                            ),
-                    }
-            )
-    ))
+    @AsyncPublisher(
+            operation =
+                    @AsyncOperation(
+                            channelName = "topic-defined-via-asyncPublisher-annotation",
+                            description = "Custom, optional description defined in the AsyncPublisher annotation",
+                            headers =
+                                    @AsyncOperation.Headers(
+                                            schemaName = "SpringKafkaDefaultHeaders",
+                                            values = {
+                                                @AsyncOperation.Headers.Header(
+                                                        name = DEFAULT_CLASSID_FIELD_NAME,
+                                                        description = "Spring Type Id Header",
+                                                        value =
+                                                                "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"),
+                                            })))
     @KafkaAsyncOperationBinding(
             bindingVersion = "1",
             clientId = "foo-clientId",
-            messageBinding = @KafkaAsyncMessageBinding(
-                    key = @KafkaAsyncKey(
-                            description = "Kafka Producer Message Key",
-                            example = "example-key"
-                    ),
-                    bindingVersion = "1"
-            )
-    )
+            messageBinding =
+                    @KafkaAsyncMessageBinding(
+                            key = @KafkaAsyncKey(description = "Kafka Producer Message Key", example = "example-key"),
+                            bindingVersion = "1"))
     public void sendMessage(NestedPayloadDto msg) {
         kafkaTemplate.send(KafkaConfiguration.PRODUCER_TOPIC, msg);
     }
-
 }

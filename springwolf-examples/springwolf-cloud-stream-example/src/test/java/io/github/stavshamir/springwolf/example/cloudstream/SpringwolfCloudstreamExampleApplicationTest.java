@@ -9,8 +9,12 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = {SpringwolfCloudstreamExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
+@SpringBootTest(
+        classes = {SpringwolfCloudstreamExampleApplication.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EmbeddedKafka(
+        partitions = 1,
+        brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
 @DirtiesContext
 class SpringwolfCloudstreamExampleApplicationTest {
 

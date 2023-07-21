@@ -20,5 +20,4 @@ public class KafkaProducerData extends ProducerData {
         this.operationBinding = Map.of("kafka", new KafkaOperationBinding());
         this.messageBinding = Map.of("kafka", new KafkaMessageBinding());
     }
-
 }

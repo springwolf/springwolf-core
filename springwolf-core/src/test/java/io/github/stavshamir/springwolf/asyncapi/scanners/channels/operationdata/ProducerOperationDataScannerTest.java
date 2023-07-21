@@ -1,11 +1,11 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
-import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2._6_0.model.info.Info;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -61,8 +61,7 @@ class ProducerOperationDataScannerTest {
         Map<String, ChannelItem> producerChannels = scanner.scan();
 
         // Then the channel should be created correctly
-        assertThat(producerChannels)
-                .containsKey(channelName);
+        assertThat(producerChannels).containsKey(channelName);
 
         String messageDescription1 = "Example Payload DTO Description";
         Operation operation = Operation.builder()
@@ -84,17 +83,15 @@ class ProducerOperationDataScannerTest {
                 .subscribe(operation)
                 .build();
 
-        assertThat(producerChannels.get(channelName))
-                .isEqualTo(expectedChannel);
+        assertThat(producerChannels.get(channelName)).isEqualTo(expectedChannel);
     }
 
     @Test
     void missingFieldProducerData() {
         // Given a producer data with missing fields
         String channelName = "example-producer-topic-foo1";
-        ProducerData producerData = ProducerData.builder()
-                .channelName(channelName)
-                .build();
+        ProducerData producerData =
+                ProducerData.builder().channelName(channelName).build();
 
         mockProducers(List.of(producerData));
 
@@ -137,9 +134,7 @@ class ProducerOperationDataScannerTest {
         Map<String, ChannelItem> producerChannels = scanner.scan();
 
         // Then one channel is created for the ProducerData objects with multiple messages
-        assertThat(producerChannels)
-                .hasSize(1)
-                .containsKey(channelName);
+        assertThat(producerChannels).hasSize(1).containsKey(channelName);
 
         String messageDescription1 = "Example Payload DTO Description";
         String messageDescription2 = "Another Example Payload DTO Description";
@@ -159,8 +154,7 @@ class ProducerOperationDataScannerTest {
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
                         .bindings(Map.of("kafka", new KafkaMessageBinding()))
-                        .build()
-        );
+                        .build());
 
         Operation operation = Operation.builder()
                 .description(description1)

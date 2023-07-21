@@ -28,7 +28,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {AsyncListenerAnnotationScanner.class, DefaultSchemasService.class, TestOperationBindingProcessor.class})
+@ContextConfiguration(
+        classes = {
+            AsyncListenerAnnotationScanner.class,
+            DefaultSchemasService.class,
+            TestOperationBindingProcessor.class
+        })
 @TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
 class AsyncListenerAnnotationScannerTest {
 
@@ -51,7 +56,6 @@ class AsyncListenerAnnotationScannerTest {
 
         assertThat(channels).isEmpty();
     }
-
 
     @Test
     void scan_componentHasListenerMethod() {
@@ -79,13 +83,10 @@ class AsyncListenerAnnotationScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(null)
-                .publish(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).publish(operation).build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     @Test
@@ -114,13 +115,10 @@ class AsyncListenerAnnotationScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(null)
-                .publish(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).publish(operation).build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     @Test
@@ -147,10 +145,8 @@ class AsyncListenerAnnotationScannerTest {
                 .message(builder.description("SimpleFoo Message Description").build())
                 .build();
 
-        ChannelItem expectedChannel1 = ChannelItem.builder()
-                .bindings(null)
-                .publish(operation1)
-                .build();
+        ChannelItem expectedChannel1 =
+                ChannelItem.builder().bindings(null).publish(operation1).build();
 
         Operation operation2 = Operation.builder()
                 .description("test-channel-2-description")
@@ -159,16 +155,13 @@ class AsyncListenerAnnotationScannerTest {
                 .message(builder.description("SimpleFoo Message Description").build())
                 .build();
 
-        ChannelItem expectedChannel2 = ChannelItem.builder()
-                .bindings(null)
-                .publish(operation2)
-                .build();
+        ChannelItem expectedChannel2 =
+                ChannelItem.builder().bindings(null).publish(operation2).build();
 
         assertThat(actualChannels)
-                .containsExactlyInAnyOrderEntriesOf(
-                        Map.of(
-                                "test-channel-1", expectedChannel1,
-                                "test-channel-2", expectedChannel2));
+                .containsExactlyInAnyOrderEntriesOf(Map.of(
+                        "test-channel-1", expectedChannel1,
+                        "test-channel-2", expectedChannel2));
     }
 
     @Test
@@ -198,86 +191,74 @@ class AsyncListenerAnnotationScannerTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel = ChannelItem.builder()
-                .bindings(null)
-                .publish(operation)
-                .build();
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).publish(operation).build();
 
-        assertThat(actualChannels)
-                .containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     private static class ClassWithoutListenerAnnotation {
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithListenerAnnotation {
 
-        @AsyncListener(operation = @AsyncOperation(
-                channelName = "test-channel",
-                description = "test channel operation description"
-        ))
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description"))
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithListenerAnnotationWithAllAttributes {
 
-        @AsyncListener(operation = @AsyncOperation(
-                channelName = "${test.property.test-channel}",
-                description = "${test.property.description}",
-                headers = @AsyncOperation.Headers(
-                        schemaName = "TestSchema",
-                        values = {@AsyncOperation.Headers.Header(name = "header", value = "value")}
-                )
-        ))
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                description = "${test.property.description}",
+                                headers =
+                                        @AsyncOperation.Headers(
+                                                schemaName = "TestSchema",
+                                                values = {
+                                                    @AsyncOperation.Headers.Header(name = "header", value = "value")
+                                                })))
         @TestOperationBindingProcessor.TestOperationBinding()
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithMultipleListenerAnnotations {
 
-        @AsyncListener(operation = @AsyncOperation(
-                channelName = "test-channel-1",
-                description = "test-channel-1-description"
-        ))
-        @AsyncListener(operation = @AsyncOperation(
-                channelName = "test-channel-2",
-                description = "test-channel-2-description"
-        ))
-        private void methodWithMultipleAnnotation(SimpleFoo payload) {
-        }
+        @AsyncListener(
+                operation = @AsyncOperation(channelName = "test-channel-1", description = "test-channel-1-description"))
+        @AsyncListener(
+                operation = @AsyncOperation(channelName = "test-channel-2", description = "test-channel-2-description"))
+        private void methodWithMultipleAnnotation(SimpleFoo payload) {}
     }
 
     private static class ClassWithMessageAnnotation {
 
-        @AsyncListener(operation = @AsyncOperation(
-                channelName = "test-channel",
-                description = "test channel operation description",
-                message = @AsyncMessage(
-                        description = "Message description",
-                        messageId = "simpleFoo",
-                        name = "SimpleFooPayLoad",
-                        schemaFormat = "application/schema+json;version=draft-07",
-                        title = "Message Title"
-                )
-        ))
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description",
+                                message =
+                                        @AsyncMessage(
+                                                description = "Message description",
+                                                messageId = "simpleFoo",
+                                                name = "SimpleFooPayLoad",
+                                                schemaFormat = "application/schema+json;version=draft-07",
+                                                title = "Message Title")))
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
-
+        private void methodWithoutAnnotation() {}
     }
 
     @Data

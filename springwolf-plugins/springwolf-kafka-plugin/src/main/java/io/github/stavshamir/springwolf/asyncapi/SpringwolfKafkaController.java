@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX;
 import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigConstants.SPRINGWOLF_KAFKA_PLUGIN_PUBLISHING_ENABLED;
 
-
 @Slf4j
 @RestController
 @RequestMapping("/springwolf/kafka")
@@ -28,7 +27,7 @@ public class SpringwolfKafkaController {
 
     @PostMapping("/publish")
     public void publish(@RequestParam String topic, @RequestBody MessageDto message) {
-        if(message.getPayload() == null) {
+        if (message.getPayload() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Message payload is required");
         }
 
@@ -42,5 +41,4 @@ public class SpringwolfKafkaController {
 
         kafkaProducer.send(topic, kafkaKey, message.getHeaders(), message.getPayload());
     }
-
 }

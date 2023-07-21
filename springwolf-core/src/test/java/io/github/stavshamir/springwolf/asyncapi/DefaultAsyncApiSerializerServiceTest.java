@@ -69,13 +69,15 @@ class DefaultAsyncApiSerializerServiceTest {
                 .name("io.github.stavshamir.springwolf.ExamplePayload")
                 .title("Example Payload")
                 .payload(PayloadReference.fromModelName("ExamplePayload"))
-                .bindings(Map.of("kafka", new KafkaMessageBinding(new StringSchema(), null, null, null, "binding-version-1")))
+                .bindings(Map.of(
+                        "kafka", new KafkaMessageBinding(new StringSchema(), null, null, null, "binding-version-1")))
                 .build();
 
         com.asyncapi.v2.schema.Schema groupId = new com.asyncapi.v2.schema.Schema();
         groupId.setEnumValue(List.of("myGroupId"));
         groupId.setType(Type.STRING);
-        OperationBinding operationBinding = KafkaOperationBinding.builder().groupId(groupId).build();
+        OperationBinding operationBinding =
+                KafkaOperationBinding.builder().groupId(groupId).build();
 
         Operation newUserOperation = Operation.builder()
                 .operationId("new-user_listenerMethod_subscribe")
@@ -88,7 +90,8 @@ class DefaultAsyncApiSerializerServiceTest {
                 .subscribe(newUserOperation)
                 .build();
 
-        Map<String, Schema> schemas = ModelConverters.getInstance().read(DefaultAsyncApiSerializerServiceTest.ExamplePayload.class);
+        Map<String, Schema> schemas =
+                ModelConverters.getInstance().read(DefaultAsyncApiSerializerServiceTest.ExamplePayload.class);
 
         AsyncAPI asyncapi = AsyncAPI.builder()
                 .info(info)
@@ -123,5 +126,4 @@ class DefaultAsyncApiSerializerServiceTest {
     static class ExamplePayload {
         String s;
     }
-
 }

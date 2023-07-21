@@ -14,7 +14,9 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = {SpringwolfAmqpExampleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        classes = {SpringwolfAmqpExampleApplication.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApiIntegrationTest {
 
     @Autowired

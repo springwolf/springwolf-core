@@ -23,13 +23,8 @@ public class ExampleConsumer {
         exampleService.doSomething(payload);
     }
 
-    @KafkaListener(
-            topics = "another-topic",
-            groupId = "example-group-id",
-            batch = "true"
-    )
+    @KafkaListener(topics = "another-topic", groupId = "example-group-id", batch = "true")
     public void receiveAnotherPayloadBatched(List<AnotherPayloadDto> payloads) {
         log.info("Received new messages in another-topic: {}", payloads.toString());
     }
-
 }

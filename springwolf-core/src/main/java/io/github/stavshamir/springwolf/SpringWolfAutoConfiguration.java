@@ -21,8 +21,8 @@ import org.springframework.context.annotation.FilterType;
 @ComponentScan(
         basePackages = {"io.github.stavshamir.springwolf"},
         excludeFilters = {
-                @ComponentScan.Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
-                @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class)})
+            @ComponentScan.Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+            @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class)
+        })
 @ConditionalOnProperty(name = SpringWolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
-public class SpringWolfAutoConfiguration {
-}
+public class SpringWolfAutoConfiguration {}

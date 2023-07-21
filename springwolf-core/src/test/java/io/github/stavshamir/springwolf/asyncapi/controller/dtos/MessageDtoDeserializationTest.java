@@ -14,7 +14,8 @@ class MessageDtoDeserializationTest {
 
     @Test
     void testCanBeSerialized() throws IOException {
-        String content = "{\"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
+        String content =
+                "{\"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
 
         MessageDto value = objectMapper.readValue(content, MessageDto.class);
 

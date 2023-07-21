@@ -27,7 +27,6 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toMap;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -50,9 +49,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     }
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {
-        return cloudStreamBindingsProperties
-                .getBindings()
-                .containsKey(beanData.getCloudStreamBinding());
+        return cloudStreamBindingsProperties.getBindings().containsKey(beanData.getCloudStreamBinding());
     }
 
     private Map.Entry<String, ChannelItem> toChannelEntry(FunctionalChannelBeanData beanData) {
@@ -88,8 +85,14 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
         Map<String, Object> channelBinding = buildChannelBinding();
         return beanData.getBeanType() == FunctionalChannelBeanData.BeanType.CONSUMER
-                ? ChannelItem.builder().bindings(channelBinding).publish(operation).build()
-                : ChannelItem.builder().bindings(channelBinding).subscribe(operation).build();
+                ? ChannelItem.builder()
+                        .bindings(channelBinding)
+                        .publish(operation)
+                        .build()
+                : ChannelItem.builder()
+                        .bindings(channelBinding)
+                        .subscribe(operation)
+                        .build();
     }
 
     private Map<String, ? extends MessageBinding> buildMessageBinding() {
@@ -110,21 +113,22 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private String getProtocolName() {
         AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
         if (docket.getServers().size() > 1) {
-            log.warn("More than one server has been defined - the channels protocol will be determined by the first one");
+            log.warn(
+                    "More than one server has been defined - the channels protocol will be determined by the first one");
         }
 
-        return docket.getServers().entrySet().stream().findFirst()
+        return docket.getServers().entrySet().stream()
+                .findFirst()
                 .map(Map.Entry::getValue)
                 .map(Server::getProtocol)
-                .orElseThrow(() -> new IllegalStateException("There must be at least one server define in the AsyncApiDocker"));
+                .orElseThrow(() ->
+                        new IllegalStateException("There must be at least one server define in the AsyncApiDocker"));
     }
 
     private String buildOperationId(FunctionalChannelBeanData beanData, String channelName) {
-        String operationName = beanData.getBeanType() == FunctionalChannelBeanData.BeanType.CONSUMER
-                ? "publish"
-                : "subscribe";
+        String operationName =
+                beanData.getBeanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
 
         return String.format("%s_%s_%s", channelName, operationName, beanData.getBeanName());
     }
-
 }

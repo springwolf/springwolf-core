@@ -28,10 +28,6 @@ public class InputPayload {
 
     @Override
     public String toString() {
-        return "InputPayload{" +
-                "foo=" + foo +
-                ", bar=" + bar +
-                '}';
+        return "InputPayload{" + "foo=" + foo + ", bar=" + bar + '}';
     }
-
 }

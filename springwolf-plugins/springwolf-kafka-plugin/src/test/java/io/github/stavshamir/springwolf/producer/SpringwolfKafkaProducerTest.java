@@ -54,7 +54,8 @@ class SpringwolfKafkaProducerTest {
     @SuppressWarnings("unchecked")
     void testSendingKafkaMessageWithoutHeaders() {
         CompletableFuture<SendResult<Object, Object>> future = new CompletableFuture<>();
-        when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any())).thenReturn(future);
+        when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any()))
+                .thenReturn(future);
         future.complete(mock(SendResult.class));
 
         Map<String, Object> payload = Collections.singletonMap("some", "field");
@@ -68,7 +69,8 @@ class SpringwolfKafkaProducerTest {
         assertThat(capturedRecord.value()).isEqualTo(payload);
         assertThat(capturedRecord.topic()).isEqualTo("test-topic");
 
-        List<Header> headersFromRecord = Lists.newArrayList(capturedRecord.headers().iterator());
+        List<Header> headersFromRecord =
+                Lists.newArrayList(capturedRecord.headers().iterator());
         assertThat(headersFromRecord).isEmpty();
     }
 
@@ -76,7 +78,8 @@ class SpringwolfKafkaProducerTest {
     @SuppressWarnings("unchecked")
     void testSendingKafkaMessageWithHeaders() {
         CompletableFuture<SendResult<Object, Object>> future = new CompletableFuture<>();
-        when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any())).thenReturn(future);
+        when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any()))
+                .thenReturn(future);
         future.complete(mock(SendResult.class));
 
         Map<String, Object> payload = Collections.singletonMap("some", "field");
@@ -91,7 +94,8 @@ class SpringwolfKafkaProducerTest {
         assertThat(capturedRecord.value()).isEqualTo(payload);
         assertThat(capturedRecord.topic()).isEqualTo("test-topic");
 
-        List<Header> headersFromRecord = Lists.newArrayList(capturedRecord.headers().iterator());
+        List<Header> headersFromRecord =
+                Lists.newArrayList(capturedRecord.headers().iterator());
         assertThat(headersFromRecord).hasSize(1);
 
         assertThat(headersFromRecord.get(0).key()).isEqualTo("header-key");

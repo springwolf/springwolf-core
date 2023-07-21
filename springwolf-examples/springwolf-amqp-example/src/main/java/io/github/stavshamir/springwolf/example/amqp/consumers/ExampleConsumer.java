@@ -24,11 +24,12 @@ public class ExampleConsumer {
         log.info("Received new message in another-queue: {}", payload.toString());
     }
 
-    @RabbitListener(bindings = {
-            @QueueBinding(
-                    exchange = @Exchange(name = "name", type = ExchangeTypes.TOPIC),
-                    value = @Queue(name = "example-bindings-queue"))
-    })
+    @RabbitListener(
+            bindings = {
+                @QueueBinding(
+                        exchange = @Exchange(name = "name", type = ExchangeTypes.TOPIC),
+                        value = @Queue(name = "example-bindings-queue"))
+            })
     public void bindingsExample(AnotherPayloadDto payload) {
         log.info("Received new message in example-bindings-queue: {}", payload.toString());
     }

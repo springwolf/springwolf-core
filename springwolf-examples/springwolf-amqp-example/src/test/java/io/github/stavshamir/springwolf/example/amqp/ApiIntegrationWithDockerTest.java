@@ -27,11 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ApiIntegrationWithDockerTest {
 
-    private final static RestTemplate restTemplate = new RestTemplate();
-    private final static String APP_NAME = "app_1";
-    private final static int APP_PORT = 8080;
+    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final String APP_NAME = "app_1";
+    private static final int APP_PORT = 8080;
 
-    private final static Map<String, String> ENV = new HashMap<>();
+    private static final Map<String, String> ENV = new HashMap<>();
+
     static {
         try (InputStream input = new FileInputStream(".env")) {
             var properties = new Properties();
@@ -44,7 +45,8 @@ public class ApiIntegrationWithDockerTest {
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
-            .withExposedService(APP_NAME, APP_PORT).withEnv(ENV);
+            .withExposedService(APP_NAME, APP_PORT)
+            .withEnv(ENV);
 
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);
