@@ -49,6 +49,12 @@ jobs:
       - name: Run integration tests
         run: ./gradlew -p ${{ env.example }} test
 
+      - name: Run build, check, analyzeDependencies on plugin
+        run: ./gradlew -p ${{ env.plugin }} build
+
+      - name: Run build, check, analyzeDependencies on example
+        run: ./gradlew -p ${{ env.example }} build
+
       - name: Publish docker image
         if: github.ref == 'refs/heads/master'
         run: ./gradlew -p ${{ env.example }} dockerBuildImage dockerPushImage
