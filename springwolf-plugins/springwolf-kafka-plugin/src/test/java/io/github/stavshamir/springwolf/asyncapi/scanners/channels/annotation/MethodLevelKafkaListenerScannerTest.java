@@ -13,6 +13,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {MethodLevelKafkaListenerScanner.class, DefaultSchemasService.class})
+@ContextConfiguration(
+        classes = {MethodLevelKafkaListenerScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
 class MethodLevelKafkaListenerScannerTest {
 
