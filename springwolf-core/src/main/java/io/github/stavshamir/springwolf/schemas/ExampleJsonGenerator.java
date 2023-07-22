@@ -35,7 +35,6 @@ public class ExampleJsonGenerator {
             case "string" -> handleStringSchema(schema);
             default -> "unknown schema type: " + type;
         };
-
     }
 
     private static String getExampleValue(Schema schema) {
@@ -89,8 +88,7 @@ public class ExampleJsonGenerator {
             case "date-time" -> "\"2006-01-02T15:04:05Z07:00\"";
             case "password" -> "\"string-password\"";
             case "byte" -> "\"YmFzZTY0LWV4YW1wbGU=\"";
-            case "binary" ->
-                    "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
+            case "binary" -> "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
             default -> "unknown type format: " + format;
         };
     }

@@ -23,10 +23,10 @@ class DefaultSchemasServiceTest {
 
     private final SchemasService schemasService = new DefaultSchemasService(Optional.empty());
 
-    private static final ObjectMapper objectMapper = Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+    private static final ObjectMapper objectMapper =
+            Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
     private static final PrettyPrinter printer =
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
-
 
     @Test
     void getDefinitions() throws IOException {

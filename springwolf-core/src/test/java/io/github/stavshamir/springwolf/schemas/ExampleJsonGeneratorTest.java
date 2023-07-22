@@ -145,7 +145,9 @@ class ExampleJsonGeneratorTest {
 
         String actual = ExampleJsonGenerator.fromSchema(schema, emptyMap());
 
-        assertThat(actual).isEqualTo("\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
+        assertThat(actual)
+                .isEqualTo(
+                        "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
     }
 
     @Test
