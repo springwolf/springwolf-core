@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.core.util.Json;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultSchemasServiceTest {
 
-    private final SchemasService schemasService = new DefaultSchemasService(Optional.empty());
+    private final ExampleGenerator exampleGenerator = new ExampleJsonGenerator();
+    private final SchemasService schemasService = new DefaultSchemasService(Optional.empty(), exampleGenerator);
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);

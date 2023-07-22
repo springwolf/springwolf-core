@@ -1,20 +1,38 @@
-package io.github.stavshamir.springwolf.schemas;
+package io.github.stavshamir.springwolf.schemas.example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * Handling types defined in https://www.asyncapi.com/docs/reference/specification/v2.6.0#dataTypeFormat
- */
-public class ExampleJsonGenerator {
+@Component
+@Slf4j
+public class ExampleJsonGenerator implements ExampleGenerator {
 
-    public static String fromSchema(Schema schema, Map<String, Schema> definitions) {
-        String exampleValue = getExampleValue(schema);
+    private final ObjectMapper objectMapper = Json.mapper();
+
+    @Override
+    public Object fromSchema(Schema schema, Map<String, Schema> definitions) {
+        try {
+            String exampleString = buildSchema(schema, definitions);
+            return objectMapper.readValue(exampleString, Object.class);
+        } catch (JsonProcessingException | ExampleGeneratingException ex) {
+            log.error("Failed to build json example for schema {}", schema.getName());
+        }
+        return null;
+    }
+
+    static String buildSchema(Schema schema, Map<String, Schema> definitions) {
+
+        String exampleValue = ExampleJsonGenerator.getExampleValue(schema);
         if (exampleValue != null) {
             return exampleValue;
         }
@@ -23,16 +41,19 @@ public class ExampleJsonGenerator {
         if (type == null) {
             String schemaName = StringUtils.substringAfterLast(schema.get$ref(), "/");
             Schema resolvedSchema = definitions.get(schemaName);
-            return fromSchema(resolvedSchema, definitions);
+            if (resolvedSchema == null) {
+                throw new ExampleGeneratingException("Missing schema during example json generation: " + schemaName);
+            }
+            return buildSchema(resolvedSchema, definitions);
         }
 
         return switch (type) {
-            case "array" -> handleArraySchema(schema, definitions);
-            case "boolean" -> handleBoolean(schema);
-            case "integer" -> handleInteger(schema);
-            case "number" -> handleNumber(schema);
-            case "object" -> handleObject(schema, definitions);
-            case "string" -> handleStringSchema(schema);
+            case "array" -> ExampleJsonGenerator.handleArraySchema(schema, definitions);
+            case "boolean" -> ExampleJsonGenerator.handleBoolean(schema);
+            case "integer" -> ExampleJsonGenerator.handleInteger(schema);
+            case "number" -> ExampleJsonGenerator.handleNumber(schema);
+            case "object" -> ExampleJsonGenerator.handleObject(schema, definitions);
+            case "string" -> ExampleJsonGenerator.handleStringSchema(schema);
             default -> "unknown schema type: " + type;
         };
     }
@@ -54,7 +75,7 @@ public class ExampleJsonGenerator {
     private static String handleArraySchema(Schema schema, Map<String, Schema> definitions) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        sb.append(fromSchema(schema.getItems(), definitions));
+        sb.append(buildSchema(schema.getItems(), definitions));
         sb.append("]");
         return sb.toString();
     }
@@ -114,7 +135,7 @@ public class ExampleJsonGenerator {
                     propertyStringBuilder.append("\"");
                     propertyStringBuilder.append(entry.getKey());
                     propertyStringBuilder.append("\": ");
-                    propertyStringBuilder.append(fromSchema(entry.getValue(), definitions));
+                    propertyStringBuilder.append(buildSchema(entry.getValue(), definitions));
                     return propertyStringBuilder.toString();
                 })
                 .sorted()

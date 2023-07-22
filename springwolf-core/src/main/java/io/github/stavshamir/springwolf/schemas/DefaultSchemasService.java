@@ -1,17 +1,15 @@
 package io.github.stavshamir.springwolf.schemas;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,13 +22,15 @@ import java.util.Set;
 public class DefaultSchemasService implements SchemasService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
-    private final ObjectMapper objectMapper = Json.mapper();
+    private final ExampleGenerator exampleGenerator;
 
     private final Map<String, Schema> definitions = new HashMap<>();
     private Map<String, Schema> finalizedDefinitions = null;
 
-    public DefaultSchemasService(Optional<List<ModelConverter>> externalModelConverters) {
+    public DefaultSchemasService(
+            Optional<List<ModelConverter>> externalModelConverters, ExampleGenerator exampleGenerator) {
         externalModelConverters.ifPresent(converters -> converters.forEach(converter::addConverter));
+        this.exampleGenerator = exampleGenerator;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     private void finalizeDefinitions() {
-        definitions.forEach(this::generateJsonExampleWhenMissing);
+        definitions.forEach(this::generateExampleWhenMissing);
         finalizedDefinitions = definitions;
     }
 
@@ -82,18 +82,12 @@ public class DefaultSchemasService implements SchemasService {
         return type.getSimpleName();
     }
 
-    private void generateJsonExampleWhenMissing(String k, Schema schema) {
+    private void generateExampleWhenMissing(String k, Schema schema) {
         if (schema.getExample() == null) {
             log.debug("Generate example for {}", schema.getName());
 
-            try {
-                String exampleString = ExampleJsonGenerator.fromSchema(schema, definitions);
-                Object objectStructure = objectMapper.readValue(exampleString, Object.class);
-
-                schema.setExample(objectStructure);
-            } catch (IOException e) {
-                log.error("Failed to convert example string of {} to object", schema.getName());
-            }
+            Object example = exampleGenerator.fromSchema(schema, definitions);
+            schema.setExample(example);
         }
     }
 }
