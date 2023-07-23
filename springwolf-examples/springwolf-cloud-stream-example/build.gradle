@@ -48,7 +48,6 @@ dependencies {
     testImplementation "org.springframework.kafka:spring-kafka-test"
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
-    testImplementation "commons-io:commons-io:${commonsIoVersion}"
 }
 
 // We don't want to publish the examples
