@@ -10,15 +10,20 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants.SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR;
+
+/**
+ * This only exists as a fallback when {@see ExampleJsonGenerator} does not work. Please open issue when you feel the need to use this class.
+ */
 @Component
 @Slf4j
-@Primary
-// @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED, havingValue = "swaggerInflector")
+@ConditionalOnProperty(name = SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR, havingValue = "swagger-inflector-json")
+@Deprecated(forRemoval = true)
 public class SwaggerInflectorJsonGenerator implements ExampleGenerator {
     private static final ObjectMapper objectMapper = Json.mapper();
 

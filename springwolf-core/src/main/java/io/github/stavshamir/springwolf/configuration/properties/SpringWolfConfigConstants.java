@@ -19,4 +19,6 @@ public class SpringWolfConfigConstants {
             SPRINGWOLF_SCANNER_PREFIX + ".consumer-data" + ENABLED;
     public static final String SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED =
             SPRINGWOLF_SCANNER_PREFIX + ".producer-data" + ENABLED;
+
+    public static final String SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR = SPRINGWOLF_CONFIG_PREFIX + ".example-generator";
 }
