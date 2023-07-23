@@ -47,7 +47,6 @@ public class ExampleClassLevelKafkaListener {
                                                         value = "javax.money.MonetaryAmount"),
                                             })))
     @KafkaAsyncOperationBinding(
-            bindingVersion = "1",
             clientId = "foo-clientId",
             groupId = "#{'foo-groupId'}",
             messageBinding =
@@ -55,8 +54,7 @@ public class ExampleClassLevelKafkaListener {
                             key =
                                     @KafkaAsyncOperationBinding.KafkaAsyncKey(
                                             description = "Kafka Consumer Message Key",
-                                            example = "example-key"),
-                            bindingVersion = "1"))
+                                            example = "example-key")))
     public void receiveMonetaryAmount(MonetaryAmount payload) {
         log.info("Received new message in multi-payload-topic: {}", payload.toString());
     }

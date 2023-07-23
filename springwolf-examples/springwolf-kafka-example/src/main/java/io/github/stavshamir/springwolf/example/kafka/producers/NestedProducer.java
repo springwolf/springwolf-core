@@ -35,12 +35,10 @@ public class NestedProducer {
                                                                 "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"),
                                             })))
     @KafkaAsyncOperationBinding(
-            bindingVersion = "1",
             clientId = "foo-clientId",
             messageBinding =
                     @KafkaAsyncMessageBinding(
-                            key = @KafkaAsyncKey(description = "Kafka Producer Message Key", example = "example-key"),
-                            bindingVersion = "1"))
+                            key = @KafkaAsyncKey(description = "Kafka Producer Message Key", example = "example-key")))
     public void sendMessage(NestedPayloadDto msg) {
         kafkaTemplate.send(KafkaConfiguration.PRODUCER_TOPIC, msg);
     }
