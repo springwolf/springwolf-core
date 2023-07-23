@@ -7,7 +7,7 @@ permissions:
   packages: write
 
 jobs:
-  publish-springwolf-core-release:
+  publish-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,46 +21,17 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Publish
-        run: ./gradlew -p springwolf-core publish
-        env:
-          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
-          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
-          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
-          ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+      - name: Build
+        run: ./gradlew build dockerBuildImage
 
-      - name: Tag version
-        run: |
-          VERSION=$(./gradlew -p springwolf-core properties | grep "version:" | awk '{print $2}')
-          TAG="springwolf-core-$VERSION"
-          git tag "$TAG"
-
-          echo "Publishing tag"
-          git push origin "$TAG" || true # Do not fail, if the tag already exists
-
-  publish-springwolf-amqp-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Publish docker image
-        run: ./gradlew -p springwolf-examples/springwolf-amqp-example dockerBuildImage dockerPushImage
+      - name: Publish example docker images
+        run: ./gradlew dockerPushImage
         env:
           ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Publish package
-        run: ./gradlew -p springwolf-plugins/springwolf-amqp-plugin publish
+      - name: Publish maven artifacts
+        run: ./gradlew publish
         env:
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
@@ -70,148 +41,8 @@ jobs:
 
       - name: Tag version
         run: |
-          VERSION=$(./gradlew -p springwolf-plugins/springwolf-amqp-plugin properties | grep "version:" | awk '{print $2}')
-          TAG="springwolf-amqp-$VERSION"
-          git tag "$TAG"
-
-          echo "Publishing tag"
-          git push origin "$TAG" || true # Do not fail, if the tag already exists
-
-  publish-springwolf-kafka-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Publish docker image
-        run: ./gradlew -p springwolf-examples/springwolf-kafka-example dockerBuildImage dockerPushImage
-        env:
-          ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Publish package
-        run: ./gradlew -p springwolf-plugins/springwolf-kafka-plugin publish
-        env:
-          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
-          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
-          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
-          ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-
-      - name: Tag version
-        run: |
-          VERSION=$(./gradlew -p springwolf-plugins/springwolf-kafka-plugin properties | grep "version:" | awk '{print $2}')
-          TAG="springwolf-kafka-$VERSION"
-          git tag "$TAG"
-
-          echo "Publishing tag"
-          git push origin "$TAG" || true # Do not fail, if the tag already exists
-
-  publish-springwolf-cloud-stream-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Publish docker image
-        run: ./gradlew -p springwolf-examples/springwolf-cloud-stream-example dockerBuildImage dockerPushImage
-        env:
-          ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Publish package
-        run: ./gradlew -p springwolf-plugins/springwolf-cloud-stream-plugin publish
-        env:
-          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
-          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
-          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
-          ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-
-      - name: Tag version
-        run: |
-          VERSION=$(./gradlew -p springwolf-plugins/springwolf-cloud-stream-plugin properties | grep "version:" | awk '{print $2}')
-          TAG="springwolf-cloud-stream-$VERSION"
-          git tag "$TAG"
-
-          echo "Publishing tag"
-          git push origin "$TAG" || true # Do not fail, if the tag already exists
-
-  publish-springwolf-add-ons-common-model-converters-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Publish package
-        run: ./gradlew -p springwolf-add-ons/springwolf-common-model-converters publish
-        env:
-          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
-          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
-          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
-          ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-
-      - name: Tag version
-        run: |
-          VERSION=$(./gradlew -p springwolf-add-ons/springwolf-common-model-converters properties | grep "version:" | awk '{print $2}')
-          TAG="springwolf-common-model-converters-$VERSION"
-          git tag "$TAG"
-
-          echo "Publishing tag"
-          git push origin "$TAG" || true # Do not fail, if the tag already exists
-
-  publish-springwolf-ui-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Publish
-        run: ./gradlew -p springwolf-ui publish
-        env:
-          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
-          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
-          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
-          ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-
-      - name: Tag version
-        run: |
-          VERSION=$(./gradlew -p springwolf-ui properties | grep "version:" | awk '{print $2}')
-          TAG="springwolf-ui-$VERSION"
+          VERSION=$(./gradlew properties | grep "version:" | awk '{print $2}')
+          TAG="v$VERSION"
           git tag "$TAG"
 
           echo "Publishing tag"
