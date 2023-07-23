@@ -39,17 +39,6 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
     }
 
     /**
-     * Get the current object mapper configuration.
-     *
-     * @deprecated
-     * This method is replaced by {@link DefaultAsyncApiSerializerService#getJsonObjectMapper()}
-     */
-    @Deprecated(since = "0.11.0", forRemoval = true)
-    public ObjectMapper getObjectMapper() {
-        return getJsonObjectMapper();
-    }
-
-    /**
      * Get the current JSON object mapper configuration.
      */
     public ObjectMapper getJsonObjectMapper() {
@@ -61,18 +50,6 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
      */
     public ObjectMapper getYamlObjectMapper() {
         return yamlMapper;
-    }
-
-    /**
-     * Allows to customize the used objectMapper
-     * <p>
-     * Use {@link #getJsonObjectMapper()} as a starting point
-     * @deprecated
-     * This method is replaced by {@link DefaultAsyncApiSerializerService#setJsonObjectMapper(ObjectMapper)}
-     */
-    @Deprecated(since = "0.11.0", forRemoval = true)
-    public void setObjectMapper(ObjectMapper mapper) {
-        jsonMapper = mapper;
     }
 
     /**
