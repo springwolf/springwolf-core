@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ExampleJsonGenerator implements ExampleGenerator {
 
-    private final ObjectMapper objectMapper = Json.mapper();
+    private static final ObjectMapper objectMapper = Json.mapper();
 
     @Override
     public Object fromSchema(Schema schema, Map<String, Schema> definitions) {

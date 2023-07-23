@@ -10,6 +10,19 @@ plugins {
 dependencies {
     api "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
 
+    implementation("io.swagger:swagger-inflector:${swaggerInflectorVersion}") {
+        // swagger-inflector (2.0.9) transiently pulls two swagger-core dependencies:
+        // - io.swagger.core.v3:swagger-core  2.x
+        // - io.swagger:swagger-core  1.6.9
+        // these deps should be excluded because we need 'io.swagger.core.v3:swagger-core-jakarta 2.x'
+        // Unfortunately, io.swagger.swagger-core is still used in one place in swagger-inflector (io.swagger.util.Json)
+        // so we cannot exclude the old 'io.swagger:swagger-core 1.6.9' dependency. Instead, we exclude explicitly
+        // the 'old' javax.validation groupId.
+
+        exclude group: "io.swagger.core.v3"
+        exclude group: "javax.validation"
+    }
+
     implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}@jar"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
 
