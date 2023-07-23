@@ -24,9 +24,9 @@ jobs:
       - name: Publish
         run: ./gradlew -p springwolf-core publish
         env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
@@ -38,8 +38,6 @@ jobs:
 
           echo "Publishing tag"
           git push origin "$TAG" || true # Do not fail, if the tag already exists
-        env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
 
   publish-springwolf-amqp-release:
     runs-on: ubuntu-latest
@@ -58,16 +56,15 @@ jobs:
       - name: Publish docker image
         run: ./gradlew -p springwolf-examples/springwolf-amqp-example dockerBuildImage dockerPushImage
         env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Publish package
         run: ./gradlew -p springwolf-plugins/springwolf-amqp-plugin publish
         env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
@@ -79,8 +76,6 @@ jobs:
 
           echo "Publishing tag"
           git push origin "$TAG" || true # Do not fail, if the tag already exists
-        env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
 
   publish-springwolf-kafka-release:
     runs-on: ubuntu-latest
@@ -99,16 +94,15 @@ jobs:
       - name: Publish docker image
         run: ./gradlew -p springwolf-examples/springwolf-kafka-example dockerBuildImage dockerPushImage
         env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Publish package
         run: ./gradlew -p springwolf-plugins/springwolf-kafka-plugin publish
         env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
@@ -120,8 +114,6 @@ jobs:
 
           echo "Publishing tag"
           git push origin "$TAG" || true # Do not fail, if the tag already exists
-        env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
 
   publish-springwolf-cloud-stream-release:
     runs-on: ubuntu-latest
@@ -140,16 +132,15 @@ jobs:
       - name: Publish docker image
         run: ./gradlew -p springwolf-examples/springwolf-cloud-stream-example dockerBuildImage dockerPushImage
         env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Publish package
         run: ./gradlew -p springwolf-plugins/springwolf-cloud-stream-plugin publish
         env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
@@ -161,10 +152,6 @@ jobs:
 
           echo "Publishing tag"
           git push origin "$TAG" || true # Do not fail, if the tag already exists
-        env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
-
-
 
   publish-springwolf-add-ons-common-model-converters-release:
     runs-on: ubuntu-latest
@@ -183,9 +170,9 @@ jobs:
       - name: Publish package
         run: ./gradlew -p springwolf-add-ons/springwolf-common-model-converters publish
         env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
@@ -197,8 +184,6 @@ jobs:
 
           echo "Publishing tag"
           git push origin "$TAG" || true # Do not fail, if the tag already exists
-        env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
 
   publish-springwolf-ui-release:
     runs-on: ubuntu-latest
@@ -217,9 +202,9 @@ jobs:
       - name: Publish
         run: ./gradlew -p springwolf-ui publish
         env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
@@ -231,5 +216,3 @@ jobs:
 
           echo "Publishing tag"
           git push origin "$TAG" || true # Do not fail, if the tag already exists
-        env:
-          ORG_GRADLE_PROJECT_SNAPSHOT: false
