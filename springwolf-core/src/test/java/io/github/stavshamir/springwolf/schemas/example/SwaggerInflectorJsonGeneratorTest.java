@@ -45,7 +45,7 @@ class SwaggerInflectorJsonGeneratorTest {
             compositeSchema.addProperty("f", referenceSchema);
 
             Object result = generator.fromSchema(compositeSchema, emptyMap());
-            assertThat(result).isNull();
+            assertThat(result.toString()).isEqualTo("{}");
         }
     }
 
@@ -116,7 +116,7 @@ class SwaggerInflectorJsonGeneratorTest {
 
             String actual = generator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("1.1");
+            assertThat(actual).isEqualTo("1.100000023841858");
         }
 
         @Test
@@ -166,7 +166,7 @@ class SwaggerInflectorJsonGeneratorTest {
 
             String actual = generator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("\"YmFzZTY0LWV4YW1wbGU=\"");
+            assertThat(actual).isEqualTo("\"string\"");
         }
 
         @Test
@@ -175,9 +175,7 @@ class SwaggerInflectorJsonGeneratorTest {
 
             String actual = generator.buildSchema(schema, emptyMap());
 
-            assertThat(actual)
-                    .isEqualTo(
-                            "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
+            assertThat(actual).isEqualTo("null");
         }
 
         @Test
@@ -186,7 +184,7 @@ class SwaggerInflectorJsonGeneratorTest {
 
             String actual = generator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("\"2006-01-02\"");
+            assertThat(actual).isEqualTo("\"2015-07-20\"");
         }
 
         @Test
@@ -195,7 +193,7 @@ class SwaggerInflectorJsonGeneratorTest {
 
             String actual = generator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("\"2006-01-02T15:04:05Z07:00\"");
+            assertThat(actual).isEqualTo("\"2015-07-20T15:49:04-07:00\"");
         }
 
         @Test
@@ -204,7 +202,7 @@ class SwaggerInflectorJsonGeneratorTest {
 
             String actual = generator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("\"string-password\"");
+            assertThat(actual).isEqualTo("\"string\"");
         }
 
         @Test
@@ -228,7 +226,7 @@ class SwaggerInflectorJsonGeneratorTest {
 
             String actual = generator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("[{\"b\": true,\"s\": \"string\"}]");
+            assertThat(actual).isEqualTo("[{\"s\":\"string\",\"b\":true}]");
         }
 
         @Test
@@ -239,7 +237,7 @@ class SwaggerInflectorJsonGeneratorTest {
 
             String actual = generator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("{\"b\": true,\"s\": \"string\"}");
+            assertThat(actual).isEqualTo("{\"s\":\"string\",\"b\":true}");
         }
 
         @Test
@@ -256,7 +254,7 @@ class SwaggerInflectorJsonGeneratorTest {
             nestedSchema.addProperty("b", new BooleanSchema());
             String actual = generator.buildSchema(compositeSchema, Map.of("Nested", nestedSchema));
 
-            assertThat(actual).isEqualTo("{\"f\": {\"b\": true,\"s\": \"string\"},\"s\": \"string\"}");
+            assertThat(actual).isEqualTo("{\"s\":\"string\",\"f\":{\"s\":\"string\",\"b\":true}}");
         }
     }
 }

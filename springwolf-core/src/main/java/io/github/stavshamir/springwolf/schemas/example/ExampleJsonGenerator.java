@@ -18,7 +18,7 @@ import static io.github.stavshamir.springwolf.configuration.properties.SpringWol
 
 @Component
 @Slf4j
-@ConditionalOnProperty(name = SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR, havingValue = "buildin-json")
+@ConditionalOnProperty(name = SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR, havingValue = "buildin-json", matchIfMissing = true)
 public class ExampleJsonGenerator implements ExampleGenerator {
 
     private static final ObjectMapper objectMapper = Json.mapper();
