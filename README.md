@@ -21,6 +21,7 @@
 - [Why you should use it](#why-you-should-use-it)
 - [Usage & Example](#usage--example)
 - [Development](#development)
+- [Contributors](#contributors)
 
 ### About
 
@@ -100,3 +101,52 @@ Or add the `repository` to your `pom.xml` if you are using maven:
 #### Local Snapshot Build
 
 To work with local builds, run the `publishToMavenLocal` task. The current version number is set in [`.env`](.env) file.
+
+### Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://stavshamir.github.io/"><img src="https://avatars.githubusercontent.com/u/22257261?v=4?s=100" width="100px;" alt="Stav Shamir"/><br /><sub><b>Stav Shamir</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=stavshamir" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/timonback"><img src="https://avatars.githubusercontent.com/u/7568775?v=4?s=100" width="100px;" alt="Timon Back"/><br /><sub><b>Timon Back</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=timonback" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sam0r040"><img src="https://avatars.githubusercontent.com/u/93372330?v=4?s=100" width="100px;" alt="sam0r040"/><br /><sub><b>sam0r040</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=sam0r040" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ctasada"><img src="https://avatars.githubusercontent.com/u/1381772?v=4?s=100" width="100px;" alt="Carlos Tasada"/><br /><sub><b>Carlos Tasada</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=ctasada" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jrlambs"><img src="https://avatars.githubusercontent.com/u/13246477?v=4?s=100" width="100px;" alt="jrlambs"/><br /><sub><b>jrlambs</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=jrlambs" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/DmitriButorchin"><img src="https://avatars.githubusercontent.com/u/54904872?v=4?s=100" width="100px;" alt="DmitriButorchin"/><br /><sub><b>DmitriButorchin</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=DmitriButorchin" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/tvahrst"><img src="https://avatars.githubusercontent.com/u/1325409?v=4?s=100" width="100px;" alt="Thomas Vahrst"/><br /><sub><b>Thomas Vahrst</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=tvahrst" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/yasen-pavlov"><img src="https://avatars.githubusercontent.com/u/91540875?v=4?s=100" width="100px;" alt="Yasen Pavlov"/><br /><sub><b>Yasen Pavlov</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=yasen-pavlov" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.ageweiler.de/"><img src="https://avatars.githubusercontent.com/u/4521930?v=4?s=100" width="100px;" alt="Arthur Geweiler"/><br /><sub><b>Arthur Geweiler</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=harare" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/CS-BASF"><img src="https://avatars.githubusercontent.com/u/137758458?v=4?s=100" width="100px;" alt="CS-BASF"/><br /><sub><b>CS-BASF</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=CS-BASF" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://vanwilgenburg.wordpress.com/"><img src="https://avatars.githubusercontent.com/u/251901?v=4?s=100" width="100px;" alt="Jeroen van Wilgenburg"/><br /><sub><b>Jeroen van Wilgenburg</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=jvwilge" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/strelchm"><img src="https://avatars.githubusercontent.com/u/23243577?v=4?s=100" width="100px;" alt="Michael Strelchenko"/><br /><sub><b>Michael Strelchenko</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=strelchm" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ogaudefroy"><img src="https://avatars.githubusercontent.com/u/959653?v=4?s=100" width="100px;" alt="Olivier Gaudefroy"/><br /><sub><b>Olivier Gaudefroy</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=ogaudefroy" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Omerbea"><img src="https://avatars.githubusercontent.com/u/7481612?v=4?s=100" width="100px;" alt="Omerbea"/><br /><sub><b>Omerbea</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=Omerbea" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/pavel-bo/"><img src="https://avatars.githubusercontent.com/u/3388414?v=4?s=100" width="100px;" alt="Pavel Bodiachevskii"/><br /><sub><b>Pavel Bodiachevskii</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=Pakisan" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sergiorc"><img src="https://avatars.githubusercontent.com/u/3658801?v=4?s=100" width="100px;" alt="Sergio Roldán"/><br /><sub><b>Sergio Roldán</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=sergiorc" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Stmated"><img src="https://avatars.githubusercontent.com/u/12374471?v=4?s=100" width="100px;" alt="Stmated"/><br /><sub><b>Stmated</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=Stmated" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/themis-pyrgiotis"><img src="https://avatars.githubusercontent.com/u/1893315?v=4?s=100" width="100px;" alt="Themistoklis Pyrgiotis"/><br /><sub><b>Themistoklis Pyrgiotis</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=themis-pyrgiotis" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ZachHubbs"><img src="https://avatars.githubusercontent.com/u/6667523?v=4?s=100" width="100px;" alt="Zach Hubbs"/><br /><sub><b>Zach Hubbs</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=ZachHubbs" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/biergit"><img src="https://avatars.githubusercontent.com/u/1071968?v=4?s=100" width="100px;" alt="biergit"/><br /><sub><b>biergit</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=biergit" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kalarani"><img src="https://avatars.githubusercontent.com/u/318466?v=4?s=100" width="100px;" alt="kalarani"/><br /><sub><b>kalarani</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=kalarani" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+To add yourself as a contributor, install the [all-contributors CLI](https://allcontributors.org/docs/en/cli/installation) and run:
+1. `all-contributors check` 
+2. `all-contributors add <username> code`
+3. `all-contributors generate`
