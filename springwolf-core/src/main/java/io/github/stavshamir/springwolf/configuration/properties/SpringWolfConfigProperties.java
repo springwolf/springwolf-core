@@ -21,7 +21,7 @@ import java.util.Map;
 @Setter
 public class SpringWolfConfigProperties {
 
-    public enum LoadingMode {
+    public enum InitMode {
         /**
          * Default option.
          * AsyncAPI detection on application startup. Exceptions interrupt the application start.
@@ -29,10 +29,7 @@ public class SpringWolfConfigProperties {
          * Use for immediate feedback in case of misconfiguration.
          */
         FAIL_FAST,
-        /**
-         * AsyncAPI detection lazy on first request.
-         */
-        LAZY,
+
         /**
          * AsyncAPI detection after application startup in background thread (via Spring TaskExecutor).
          *
@@ -44,9 +41,9 @@ public class SpringWolfConfigProperties {
     private boolean enabled = true;
 
     /**
-     * Loading mode for AsyncAPI detection.
+     * Init mode for building AsyncAPI.
      */
-    private LoadingMode loadingMode = LoadingMode.LAZY;
+    private InitMode initMode = InitMode.FAIL_FAST;
 
     @Nullable
     private ConfigDocket docket;

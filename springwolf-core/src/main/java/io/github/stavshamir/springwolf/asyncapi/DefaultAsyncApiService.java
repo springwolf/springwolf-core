@@ -5,22 +5,18 @@ import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.LoadingMode.FAIL_FAST;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DefaultAsyncApiService implements AsyncApiService, InitializingBean {
+public class DefaultAsyncApiService implements AsyncApiService {
 
     /**
      * Record holding the result of AsyncAPI creation.
@@ -35,20 +31,11 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
     private final SchemasService schemasService;
     private final List<AsyncApiCustomizer> customizers;
 
-    private final SpringWolfConfigProperties configProperties;
-
     private volatile AsyncAPIResult asyncAPIResult = null;
 
     @Override
-    public void afterPropertiesSet() {
-        if (configProperties.getLoadingMode() == FAIL_FAST) {
-            getAsyncAPI();
-        }
-    }
-
-    @Override
     public AsyncAPI getAsyncAPI() {
-        if (!isInitialized()) {
+        if (isNotInitialized()) {
             initAsyncAPI();
         }
 
@@ -60,7 +47,7 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
     }
 
     /**
-     * Does the 'heavy work' of bulding the AsyncAPI documents once. Stores the resulting
+     * Does the 'heavy work' of building the AsyncAPI documents once. Stores the resulting
      * AsyncAPI document or alternativly a catched exception/error in the instance variable asyncAPIResult.
      *
      * @return
@@ -103,13 +90,11 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
     }
 
     /**
-     * checks whether asyncApi has internally allready been initialized. For testing purposes.
+     * checks whether asyncApi has internally allready been initialized or not.
      *
-     * @return true if asyncApi has been created and initialized.
+     * @return true if asyncApi has not allready been created and initialized.
      */
-    public synchronized boolean isNotInitialized() {
-         return this.asyncAPIResult == null;
-}
-        return this.asyncAPIResult != null;
+    public boolean isNotInitialized() {
+        return this.asyncAPIResult == null;
     }
 }

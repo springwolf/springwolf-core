@@ -5,8 +5,6 @@ import com.asyncapi.v2._6_0.model.server.Server;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.LoadingMode;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.when;
 public class DefaultAsyncApiServiceUnitTest {
 
     private DefaultAsyncApiService defaultAsyncApiService;
-    private SpringWolfConfigProperties configProperties = new SpringWolfConfigProperties();
     private AsyncApiDocketService asyncApiDocketService;
     private ChannelsService channelsService;
     private SchemasService schemasService;
@@ -40,56 +38,34 @@ public class DefaultAsyncApiServiceUnitTest {
         when(channelsService.findChannels()).thenReturn(Map.of());
         when(schemasService.getDefinitions()).thenReturn(Map.of());
 
-        defaultAsyncApiService = new DefaultAsyncApiService(
-                asyncApiDocketService, channelsService, schemasService, customizers, configProperties);
+        defaultAsyncApiService =
+                new DefaultAsyncApiService(asyncApiDocketService, channelsService, schemasService, customizers);
     }
 
     @Test
-    void shouldEagerInitializeOnLoadingModeFailFast() {
-        prepareValidDocket();
-        configProperties.setLoadingMode(LoadingMode.FAIL_FAST);
-
-        defaultAsyncApiService.afterPropertiesSet();
-        assertThat(defaultAsyncApiService.isInitialized()).isTrue();
-    }
-
-    @Test
-    void testExceptionOnFailFastInitialize() {
+    void shouldThrowExceptionOnSubsequentGetAsyncApi() {
+        // Given an AsyncApiDocketService which throws an exception on 'getAsyncApiDocket()'
         prepareExceptionDocket();
-        configProperties.setLoadingMode(LoadingMode.FAIL_FAST);
 
-        assertThatThrownBy(() -> {
-                    defaultAsyncApiService.afterPropertiesSet();
-                })
-                .isInstanceOfAny(RuntimeException.class)
-                .hasMessage("Error occured during creation of AsyncAPI");
-    }
-
-    @Test
-    void testExceptionOnLazyInitialize() {
-        prepareExceptionDocket();
-        configProperties.setLoadingMode(LoadingMode.LAZY);
-
-        // should not initialize asyncapi, no exception expected.
-        defaultAsyncApiService.afterPropertiesSet();
-
+        // When getAsyncAPI is invoked the first time
         Throwable cause = null;
-
         try {
             defaultAsyncApiService.getAsyncAPI();
             fail("RuntimeException expected");
         } catch (RuntimeException exc) {
+            // Then a RuntimeException is thrown.
             assertThat(exc.getMessage()).isEqualTo("Error occured during creation of AsyncAPI");
             cause = exc.getCause();
             assertThat(cause.getMessage()).isEqualTo("test exception");
         }
 
-        // further invocations of getAsyncAPI should again throw RuntimeException.
-        // cause should be same instance.
+        // When further invocations of getAsyncAPI
         try {
             defaultAsyncApiService.getAsyncAPI();
             fail("RuntimeException expected");
         } catch (RuntimeException exc) {
+            // Then the same RuntimeException as on first invocatin should be thrown.
+
             assertThat(exc.getMessage()).isEqualTo("Error occured during creation of AsyncAPI");
             assertThat(exc.getCause()).isSameAs(cause);
         }
@@ -97,14 +73,20 @@ public class DefaultAsyncApiServiceUnitTest {
 
     @Test
     void shouldLazyInitializeOnLoadingModeLazy() {
+        // Given a valid Docket-Specification
         prepareValidDocket();
-        configProperties.setLoadingMode(LoadingMode.LAZY);
-        defaultAsyncApiService.afterPropertiesSet();
-        assertThat(defaultAsyncApiService.isInitialized()).isFalse();
 
+        // When getAsyncAPI() isn't called yet
+        // Then isNotInitilized() returns 'true'.
+        assertThat(defaultAsyncApiService.isNotInitialized()).isTrue();
+
+        // When getAsyncAPI() is invoked
         AsyncAPI asyncAPI = defaultAsyncApiService.getAsyncAPI();
+
+        // Then the result is a non-null AsyncAPI instance and
+        // isNotInitialized() return 'false'.
         assertThat(asyncAPI).isNotNull();
-        assertThat(defaultAsyncApiService.isInitialized()).isTrue();
+        assertThat(defaultAsyncApiService.isNotInitialized()).isFalse();
     }
 
     /**
