@@ -23,6 +23,7 @@ public class LoadingModeTest {
 
     @Nested
     @SpringBootTest(classes = TestApplication.class)
+    @TestPropertySource(properties = {"springwolf.loading-mode=lazy"})
     class TestLoadingModeLazy {
 
         @Autowired(required = false)

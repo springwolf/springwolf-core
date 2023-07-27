@@ -48,7 +48,7 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
 
     @Override
     public AsyncAPI getAsyncAPI() {
-        if (asyncAPIResult == null) {
+        if (!isInitialized()) {
             initAsyncAPI();
         }
 
@@ -60,7 +60,7 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
     }
 
     /**
-     * Does the 'heavy work' of detecting the AsyncAPI documents. Stores the resulting
+     * Does the 'heavy work' of bulding the AsyncAPI documents once. Stores the resulting
      * AsyncAPI document or alternativly a catched exception/error in the instance variable asyncAPIResult.
      *
      * @return
@@ -107,7 +107,9 @@ public class DefaultAsyncApiService implements AsyncApiService, InitializingBean
      *
      * @return true if asyncApi has been created and initialized.
      */
-    public synchronized boolean isInitialized() {
+    public synchronized boolean isNotInitialized() {
+         return this.asyncAPIResult == null;
+}
         return this.asyncAPIResult != null;
     }
 }

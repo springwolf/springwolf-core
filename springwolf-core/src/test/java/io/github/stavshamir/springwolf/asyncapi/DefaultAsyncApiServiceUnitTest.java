@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Pure unit tests of {@link DefaultAsyncApiService} without spring test support
+ * Pure unit tests of {@link DefaultAsyncApiService}. Faking spring context support
  */
 public class DefaultAsyncApiServiceUnitTest {
 
