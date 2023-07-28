@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -63,7 +64,7 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     }
 
     private static Info buildInfo(@Nullable SpringWolfConfigProperties.ConfigDocket.Info info) {
-        if (info == null || info.getVersion() == null || info.getTitle() == null) {
+        if (info == null || !StringUtils.hasText(info.getVersion()) || !StringUtils.hasText(info.getTitle())) {
             throw new IllegalArgumentException("One or more required fields of the info object (title, version) "
                     + "in application.properties with path prefix " + SpringWolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX
                     + " is not set.");

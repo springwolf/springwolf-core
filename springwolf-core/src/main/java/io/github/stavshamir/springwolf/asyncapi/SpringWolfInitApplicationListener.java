@@ -4,6 +4,7 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfig
 import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.InitMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.task.TaskExecutor;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class AsyncApiInitApplicationListener implements ApplicationListener<ApplicationReadyEvent> {
+public class SpringWolfInitApplicationListener implements ApplicationListener<ApplicationReadyEvent>, InitializingBean {
 
     private final TaskExecutor taskExecutor;
     private final AsyncApiService asyncApiService;
@@ -25,12 +26,17 @@ public class AsyncApiInitApplicationListener implements ApplicationListener<Appl
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
+        if (configProperties.getInitMode() == InitMode.BACKGROUND) {
+            log.debug("triggering background asyncapi creation..");
+            taskExecutor.execute(this.asyncApiService::getAsyncAPI);
+        }
+    }
+
+    @Override
+    public void afterPropertiesSet() {
         if (configProperties.getInitMode() == InitMode.FAIL_FAST) {
             log.debug("triggering asyncapi creation..");
             this.asyncApiService.getAsyncAPI();
-        } else {
-            log.debug("triggering background asyncapi creation..");
-            taskExecutor.execute(this.asyncApiService::getAsyncAPI);
         }
     }
 }
