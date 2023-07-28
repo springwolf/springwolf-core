@@ -11,7 +11,7 @@ import org.springframework.test.context.TestPropertySource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SpringContextTest {
+public class SpringContextIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = SpringwolfAmqpExampleApplication.class)

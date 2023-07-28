@@ -6,7 +6,7 @@ import com.asyncapi.v2._6_0.model.info.Info;
 import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
+import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -34,21 +34,21 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
-        classes = {ConsumerOperationDataScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
-class ConsumerOperationDataScannerTest {
+        classes = {ProducerOperationDataScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
+class ProducerOperationDataScannerIntegrationTest {
 
     @Autowired
-    private ConsumerOperationDataScanner scanner;
+    private ProducerOperationDataScanner scanner;
 
     @MockBean
     private AsyncApiDocketService asyncApiDocketService;
 
     @Test
-    void allFieldsConsumerData() {
-        // Given a consumer data with all fields set
-        String channelName = "example-consumer-topic-foo1";
+    void allFieldsProducerData() {
+        // Given a producer data with all fields set
+        String channelName = "example-producer-topic-foo1";
         String description = channelName + "-description";
-        ConsumerData consumerData = ConsumerData.builder()
+        ProducerData producerData = ProducerData.builder()
                 .channelName(channelName)
                 .description(description)
                 .channelBinding(Map.of("kafka", new KafkaChannelBinding()))
@@ -57,22 +57,22 @@ class ConsumerOperationDataScannerTest {
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 
-        mockConsumers(List.of(consumerData));
+        mockProducers(List.of(producerData));
 
-        // When scanning for consumers
-        Map<String, ChannelItem> consumerChannels = scanner.scan();
+        // When scanning for producers
+        Map<String, ChannelItem> producerChannels = scanner.scan();
 
         // Then the channel should be created correctly
-        assertThat(consumerChannels).containsKey(channelName);
+        assertThat(producerChannels).containsKey(channelName);
 
-        String messageDescription = "Example Payload DTO Description";
+        String messageDescription1 = "Example Payload DTO Description";
         Operation operation = Operation.builder()
                 .description(description)
-                .operationId("example-consumer-topic-foo1_publish")
+                .operationId("example-producer-topic-foo1_subscribe")
                 .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(Message.builder()
                         .name(ExamplePayloadDto.class.getName())
-                        .description(messageDescription)
+                        .description(messageDescription1)
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
@@ -82,36 +82,36 @@ class ConsumerOperationDataScannerTest {
 
         ChannelItem expectedChannel = ChannelItem.builder()
                 .bindings(Map.of("kafka", new KafkaChannelBinding()))
-                .publish(operation)
+                .subscribe(operation)
                 .build();
 
-        assertThat(consumerChannels.get(channelName)).isEqualTo(expectedChannel);
+        assertThat(producerChannels.get(channelName)).isEqualTo(expectedChannel);
     }
 
     @Test
-    void missingFieldConsumerData() {
-        // Given a consumer data with missing fields
-        String channelName = "example-consumer-topic-foo1";
-        ConsumerData consumerData =
-                ConsumerData.builder().channelName(channelName).build();
+    void missingFieldProducerData() {
+        // Given a producer data with missing fields
+        String channelName = "example-producer-topic-foo1";
+        ProducerData producerData =
+                ProducerData.builder().channelName(channelName).build();
 
-        mockConsumers(List.of(consumerData));
+        mockProducers(List.of(producerData));
 
-        // When scanning for consumers
-        Map<String, ChannelItem> consumerChannels = scanner.scan();
+        // When scanning for producers
+        Map<String, ChannelItem> producerChannels = scanner.scan();
 
         // Then the channel is not created, and no exception is thrown
-        assertThat(consumerChannels).isEmpty();
+        assertThat(producerChannels).isEmpty();
     }
 
     @Test
-    void multipleConsumersForSameTopic() {
-        // Given a multiple ConsumerData objects for the same topic
-        String channelName = "example-consumer-topic";
+    void multipleProducersForSameTopic() {
+        // Given a multiple ProducerData objects for the same topic
+        String channelName = "example-producer-topic";
         String description1 = channelName + "-description1";
         String description2 = channelName + "-description2";
 
-        ConsumerData consumerData1 = ConsumerData.builder()
+        ProducerData producerData1 = ProducerData.builder()
                 .channelName(channelName)
                 .description(description1)
                 .channelBinding(Map.of("kafka", new KafkaChannelBinding()))
@@ -120,7 +120,7 @@ class ConsumerOperationDataScannerTest {
                 .payloadType(ExamplePayloadDto.class)
                 .build();
 
-        ConsumerData consumerData2 = ConsumerData.builder()
+        ProducerData producerData2 = ProducerData.builder()
                 .channelName(channelName)
                 .description(description2)
                 .channelBinding(Map.of("kafka", new KafkaChannelBinding()))
@@ -130,13 +130,13 @@ class ConsumerOperationDataScannerTest {
                 .headers(AsyncHeaders.NOT_USED)
                 .build();
 
-        mockConsumers(List.of(consumerData1, consumerData2));
+        mockProducers(List.of(producerData1, producerData2));
 
-        // When scanning for consumers
-        Map<String, ChannelItem> consumerChannels = scanner.scan();
+        // When scanning for producers
+        Map<String, ChannelItem> producerChannels = scanner.scan();
 
-        // Then one channel is created for the ConsumerData objects with multiple messages
-        assertThat(consumerChannels).hasSize(1).containsKey(channelName);
+        // Then one channel is created for the ProducerData objects with multiple messages
+        assertThat(producerChannels).hasSize(1).containsKey(channelName);
 
         String messageDescription1 = "Example Payload DTO Description";
         String messageDescription2 = "Another Example Payload DTO Description";
@@ -160,26 +160,26 @@ class ConsumerOperationDataScannerTest {
 
         Operation operation = Operation.builder()
                 .description(description1)
-                .operationId("example-consumer-topic_publish")
+                .operationId("example-producer-topic_subscribe")
                 .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(toMessageObjectOrComposition(messages))
                 .build();
 
         ChannelItem expectedChannel = ChannelItem.builder()
                 .bindings(Map.of("kafka", new KafkaChannelBinding()))
-                .publish(operation)
+                .subscribe(operation)
                 .build();
 
-        assertThat(consumerChannels.get(channelName)).isEqualTo(expectedChannel);
+        assertThat(producerChannels.get(channelName)).isEqualTo(expectedChannel);
     }
 
-    private void mockConsumers(Collection<ConsumerData> consumers) {
+    private void mockProducers(Collection<ProducerData> producers) {
         AsyncApiDocket asyncApiDocket = AsyncApiDocket.builder()
                 .info(Info.builder()
-                        .title("ConsumerOperationDataScannerTest-title")
-                        .version("ConsumerOperationDataScannerTest-version")
+                        .title("ProducerOperationDataScannerTest-title")
+                        .version("ProducerOperationDataScannerTest-version")
                         .build())
-                .consumers(consumers)
+                .producers(producers)
                 .build();
         when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(asyncApiDocket);
     }

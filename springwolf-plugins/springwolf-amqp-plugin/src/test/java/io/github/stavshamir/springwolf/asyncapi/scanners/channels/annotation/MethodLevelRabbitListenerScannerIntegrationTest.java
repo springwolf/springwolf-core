@@ -49,10 +49,10 @@ import static org.mockito.Mockito.when;
             MethodLevelRabbitListenerScanner.class,
             DefaultSchemasService.class,
             ExampleJsonGenerator.class,
-            MethodLevelRabbitListenerScannerTest.ClassWithRabbitListenerAnnotationsBindingBean.class
+            MethodLevelRabbitListenerScannerIntegrationTest.ClassWithRabbitListenerAnnotationsBindingBean.class
         })
 @TestPropertySource(properties = "amqp.queues.test=test-queue")
-class MethodLevelRabbitListenerScannerTest {
+class MethodLevelRabbitListenerScannerIntegrationTest {
 
     @Autowired
     private MethodLevelRabbitListenerScanner rabbitListenerScanner;

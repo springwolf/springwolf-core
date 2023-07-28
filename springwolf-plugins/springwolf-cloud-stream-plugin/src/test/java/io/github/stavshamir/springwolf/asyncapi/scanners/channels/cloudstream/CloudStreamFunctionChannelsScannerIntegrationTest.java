@@ -49,8 +49,8 @@ import static org.mockito.Mockito.when;
             DefaultAsyncApiDocketService.class,
             CloudStreamFunctionChannelsScanner.class
         })
-@Import(CloudStreamFunctionChannelsScannerTest.Configuration.class)
-class CloudStreamFunctionChannelsScannerTest {
+@Import(CloudStreamFunctionChannelsScannerIntegrationTest.Configuration.class)
+class CloudStreamFunctionChannelsScannerIntegrationTest {
 
     @MockBean
     private BindingServiceProperties bindingServiceProperties;

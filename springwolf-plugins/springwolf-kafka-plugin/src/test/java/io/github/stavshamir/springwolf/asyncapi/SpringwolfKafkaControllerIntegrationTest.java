@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(SpringwolfKafkaController.class)
 @ContextConfiguration(classes = {SpringwolfKafkaController.class, SpringwolfKafkaProducer.class})
 @TestPropertySource(properties = {"springwolf.plugin.kafka.publishing.enabled=true"})
-class SpringwolfKafkaControllerTest {
+class SpringwolfKafkaControllerIntegrationTest {
 
     @Autowired
     private MockMvc mvc;

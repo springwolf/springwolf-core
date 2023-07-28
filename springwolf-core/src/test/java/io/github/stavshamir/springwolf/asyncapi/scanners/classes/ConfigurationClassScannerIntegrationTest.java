@@ -16,30 +16,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ComponentClassScanner.class})
-class ComponentClassScannerTest {
+@ContextConfiguration(classes = {ConfigurationClassScanner.class})
+class ConfigurationClassScannerIntegrationTest {
+
     @MockBean
     private AsyncApiDocketService asyncApiDocketService;
 
     @Autowired
-    private ComponentClassScanner componentsScanner;
+    private ConfigurationClassScanner configurationClassScanner;
 
     @Test
     void getComponents() {
         when(asyncApiDocketService.getAsyncApiDocket())
                 .thenReturn(AsyncApiDocket.builder()
                         .info(Info.builder()
-                                .title("ComponentClassScannerTest-title")
-                                .version("ComponentClassScannerTest-version")
+                                .title("ConfigurationClassScannerTest-title")
+                                .version("ConfigurationClassScannerTest-version")
                                 .build())
                         .basePackage(this.getClass().getPackage().getName())
                         .build());
 
-        Set<Class<?>> components = componentsScanner.scan();
+        Set<Class<?>> configurationClasses = configurationClassScanner.scan();
 
-        assertThat(components)
-                .contains(ComponentClassScanner.class)
-                .contains(ConfigurationClassScanner.class)
-                .doesNotContain(ClassScanner.class);
+        assertThat(configurationClasses).containsExactlyInAnyOrder(TestBeanConfiguration.class);
     }
 }

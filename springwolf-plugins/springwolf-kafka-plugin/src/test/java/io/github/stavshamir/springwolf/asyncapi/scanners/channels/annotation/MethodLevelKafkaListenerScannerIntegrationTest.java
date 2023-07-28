@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(
         classes = {MethodLevelKafkaListenerScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
 @TestPropertySource(properties = "kafka.topics.test=test-topic")
-class MethodLevelKafkaListenerScannerTest {
+class MethodLevelKafkaListenerScannerIntegrationTest {
 
     @Autowired
     private MethodLevelKafkaListenerScanner methodLevelKafkaListenerScanner;

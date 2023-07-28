@@ -2,10 +2,10 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
+import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
-import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -17,11 +17,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.kafka.annotation.KafkaHandler;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -35,11 +36,12 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
-        classes = {ClassLevelRabbitListenerScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
-class ClassLevelRabbitListenerScannerTest {
+        classes = {ClassLevelKafkaListenerScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
+@TestPropertySource(properties = "kafka.topics.test=test-topic")
+class ClassLevelKafkaListenerScannerIntegrationTest {
 
     @Autowired
-    private ClassLevelRabbitListenerScanner classLevelRabbitListenerScanner;
+    private ClassLevelKafkaListenerScanner classLevelKafkaListenerScanner;
 
     @MockBean
     private ComponentClassScanner componentsScanner;
@@ -47,19 +49,11 @@ class ClassLevelRabbitListenerScannerTest {
     @MockBean
     private AsyncApiDocket asyncApiDocket;
 
-    private static final String QUEUE = "test-queue";
-    private static final Map<String, Object> defaultOperationBinding =
-            Map.of("amqp", AMQPOperationBinding.builder().cc(List.of(QUEUE)).build());
+    private static final String TOPIC = "test-topic";
+    private static final Map<String, Object> defaultOperationBinding = Map.of("kafka", new KafkaOperationBinding());
     private static final Map<String, ? extends MessageBinding> defaultMessageBinding =
-            Map.of("amqp", new AMQPMessageBinding());
-    private static final Map<String, Object> defaultChannelBinding = Map.of(
-            "amqp",
-            AMQPChannelBinding.builder()
-                    .is("routingKey")
-                    .exchange(AMQPChannelBinding.ExchangeProperties.builder()
-                            .name("")
-                            .build())
-                    .build());
+            Map.of("kafka", new KafkaMessageBinding());
+    private static final Map<String, Object> defaultChannelBinding = Map.of("kafka", new KafkaChannelBinding());
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
@@ -71,21 +65,21 @@ class ClassLevelRabbitListenerScannerTest {
     }
 
     @Test
-    void scan_componentWithMultipleRabbitListenersAndHandlers() {
-        // Given multiple @RabbitListener annotated classes with method(s) annotated with @RabbitHandler
-        Set<Class<?>> classesToScan = Set.of(
-                RabbitListenerClassWithOneRabbitHandler.class, RabbitListenerClassWithMultipleRabbitHandler.class);
+    void scan_componentWithMultipleKafkaListenersAndHandlers() {
+        // Given multiple @KafkaListener annotated classes with method(s) annotated with @KafkaHandler
+        Set<Class<?>> classesToScan =
+                Set.of(KafkaListenerClassWithOneKafkaHandler.class, KafkaListenerClassWithMultipleKafkaHandler.class);
         setClassesToScan(classesToScan);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = classLevelRabbitListenerScanner.scan();
+        Map<String, ChannelItem> actualChannels = classLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel with message set to oneOf
         Message fooMessage = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName("SpringRabbitListenerDefaultHeaders"))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .bindings(defaultMessageBinding)
                 .build();
 
@@ -93,13 +87,13 @@ class ClassLevelRabbitListenerScannerTest {
                 .name(SimpleBar.class.getName())
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName("SpringRabbitListenerDefaultHeaders"))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleBar.class.getSimpleName()))
                 .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("RabbitListenerClassWithMultipleRabbitHandler_publish")
+                .operationId("KafkaListenerClassWithMultipleKafkaHandler_publish")
                 .bindings(defaultOperationBinding)
                 .message(toMessageObjectOrComposition(Set.of(fooMessage, barMessage)))
                 .build();
@@ -109,50 +103,50 @@ class ClassLevelRabbitListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry(QUEUE, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
-    void scan_componentHasNoClassLevelRabbitListenerAnnotation() {
-        // Given a class with one @RabbitHandler method, but no class level @RabbitListener annotation
-        setClassToScan(ClassWithoutClassLevelRabbitListenerAndWithOneRabbitHandler.class);
+    void scan_componentHasNoClassLevelKafkaListenerAnnotation() {
+        // Given a class with one @KafkaHandler method, but no class level @KafkaListener annotation
+        setClassToScan(ClassWithoutClassLevelKafkaListenerAndWithOneKafkaHandler.class);
 
         // When scan is called
-        Map<String, ChannelItem> channels = classLevelRabbitListenerScanner.scan();
+        Map<String, ChannelItem> channels = classLevelKafkaListenerScanner.scan();
 
         // Then no channel is not created
         assertThat(channels).isEmpty();
     }
 
     @Test
-    void scan_componentHasNoRabbitHandlerMethods() {
-        setClassToScan(RabbitListenerClassWithoutRabbitHandlers.class);
+    void scan_componentHasNoKafkaHandlerMethods() {
+        setClassToScan(KafkaListenerClassWithoutKafkaHandlers.class);
 
-        Map<String, ChannelItem> channels = classLevelRabbitListenerScanner.scan();
+        Map<String, ChannelItem> channels = classLevelKafkaListenerScanner.scan();
 
         assertThat(channels).isEmpty();
     }
 
     @Test
-    void scan_componentWithSingleRabbitHandlerMethod() {
-        // Given a @RabbitListener annotated class with one method annotated with @RabbitHandler
-        setClassToScan(RabbitListenerClassWithOneRabbitHandler.class);
+    void scan_componentWithSingleKafkaHandlerMethod() {
+        // Given a @KafkaListener annotated class with one method annotated with @KafkaHandler
+        setClassToScan(KafkaListenerClassWithOneKafkaHandler.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = classLevelRabbitListenerScanner.scan();
+        Map<String, ChannelItem> actualChannels = classLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName("SpringRabbitListenerDefaultHeaders"))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("RabbitListenerClassWithOneRabbitHandler_publish")
+                .operationId("KafkaListenerClassWithOneKafkaHandler_publish")
                 .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
@@ -162,23 +156,23 @@ class ClassLevelRabbitListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry(QUEUE, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
-    void scan_componentWithMultipleRabbitHandlerMethods() {
-        // Given a @RabbitListener annotated class with multiple methods annotated with @RabbitHandler
-        setClassToScan(RabbitListenerClassWithMultipleRabbitHandler.class);
+    void scan_componentWithMultipleKafkaHandlerMethods() {
+        // Given a @KafkaListener annotated class with multiple methods annotated with @KafkaHandler
+        setClassToScan(KafkaListenerClassWithMultipleKafkaHandler.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = classLevelRabbitListenerScanner.scan();
+        Map<String, ChannelItem> actualChannels = classLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel with message set to oneOf
         Message fooMessage = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName("SpringRabbitListenerDefaultHeaders"))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .bindings(defaultMessageBinding)
                 .build();
 
@@ -186,13 +180,13 @@ class ClassLevelRabbitListenerScannerTest {
                 .name(SimpleBar.class.getName())
                 .title(SimpleBar.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleBar.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName("SpringRabbitListenerDefaultHeaders"))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleBar.class.getSimpleName()))
                 .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("RabbitListenerClassWithMultipleRabbitHandler_publish")
+                .operationId("KafkaListenerClassWithMultipleKafkaHandler_publish")
                 .bindings(defaultOperationBinding)
                 .message(toMessageObjectOrComposition(Set.of(fooMessage, barMessage)))
                 .build();
@@ -202,30 +196,30 @@ class ClassLevelRabbitListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry(QUEUE, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
     @Test
-    void scan_componentWithSingleRabbitHandlerMethod_batchPayload() {
-        // Given a @RabbitListener annotated class with one method annotated with @RabbitHandler
+    void scan_componentWithSingleKafkaHandlerMethod_batchPayload() {
+        // Given a @KafkaListener annotated class with one method annotated with @KafkaHandler
         // - There is a payload of type List<?>
-        setClassToScan(RabbitListenerClassWithRabbitHandlerWithBatchPayload.class);
+        setClassToScan(KafkaListenerClassWithKafkaHandlerWithBatchPayload.class);
 
         // When scan is called
-        Map<String, ChannelItem> actualChannels = classLevelRabbitListenerScanner.scan();
+        Map<String, ChannelItem> actualChannels = classLevelKafkaListenerScanner.scan();
 
         // Then the returned collection contains the channel, and the payload is the generic type of the list
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName("SpringRabbitListenerDefaultHeaders"))
+                .headers(HeaderReference.fromModelName("SpringKafkaDefaultHeaders-" + SimpleFoo.class.getSimpleName()))
                 .bindings(defaultMessageBinding)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("RabbitListenerClassWithRabbitHandlerWithBatchPayload_publish")
+                .operationId("KafkaListenerClassWithKafkaHandlerWithBatchPayload_publish")
                 .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
@@ -235,44 +229,44 @@ class ClassLevelRabbitListenerScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry(QUEUE, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
     }
 
-    private static class ClassWithoutClassLevelRabbitListenerAndWithOneRabbitHandler {
+    private static class ClassWithoutClassLevelKafkaListenerAndWithOneKafkaHandler {
 
-        @RabbitHandler
+        @KafkaHandler
         private void methodWithAnnotation(SimpleFoo payload) {}
     }
 
-    @RabbitListener(queues = QUEUE)
-    private static class RabbitListenerClassWithoutRabbitHandlers {
+    @KafkaListener(topics = TOPIC)
+    private static class KafkaListenerClassWithoutKafkaHandlers {
 
         private void methodWithoutAnnotation() {}
     }
 
-    @RabbitListener(queues = QUEUE)
-    private static class RabbitListenerClassWithOneRabbitHandler {
+    @KafkaListener(topics = TOPIC)
+    private static class KafkaListenerClassWithOneKafkaHandler {
 
-        @RabbitHandler
+        @KafkaHandler
         private void methodWithAnnotation(SimpleFoo payload) {}
 
         private void methodWithoutAnnotation() {}
     }
 
-    @RabbitListener(queues = QUEUE)
-    private static class RabbitListenerClassWithMultipleRabbitHandler {
+    @KafkaListener(topics = TOPIC)
+    private static class KafkaListenerClassWithMultipleKafkaHandler {
 
-        @RabbitHandler
+        @KafkaHandler
         private void methodWithAnnotation(SimpleFoo payload) {}
 
-        @RabbitHandler
+        @KafkaHandler
         private void anotherMethodWithoutAnnotation(SimpleBar payload) {}
     }
 
-    @RabbitListener(queues = QUEUE)
-    private static class RabbitListenerClassWithRabbitHandlerWithBatchPayload {
+    @KafkaListener(topics = TOPIC)
+    private static class KafkaListenerClassWithKafkaHandlerWithBatchPayload {
 
-        @RabbitHandler
+        @KafkaHandler
         private void methodWithAnnotation(List<SimpleFoo> batchPayload) {}
     }
 

@@ -18,12 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(
         classes = {
             DefaultChannelsService.class,
-            DefaultChannelsServiceTest.FooChannelScanner.class,
-            DefaultChannelsServiceTest.BarChannelScanner.class,
-            DefaultChannelsServiceTest.SameTopic.SubscribeChannelScanner.class,
-            DefaultChannelsServiceTest.SameTopic.ProduceChannelScanner.class
+            DefaultChannelsServiceIntegrationTest.FooChannelScanner.class,
+            DefaultChannelsServiceIntegrationTest.BarChannelScanner.class,
+            DefaultChannelsServiceIntegrationTest.SameTopic.SubscribeChannelScanner.class,
+            DefaultChannelsServiceIntegrationTest.SameTopic.ProduceChannelScanner.class
         })
-class DefaultChannelsServiceTest {
+class DefaultChannelsServiceIntegrationTest {
 
     @Autowired
     private DefaultChannelsService defaultChannelsService;

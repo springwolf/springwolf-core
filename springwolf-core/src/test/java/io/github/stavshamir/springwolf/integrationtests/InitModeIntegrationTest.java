@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 /**
  * Tests the possible init modes (failfast, background)
  */
-public class InitModeTest {
+public class InitModeIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = TestApplication.class)

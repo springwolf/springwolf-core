@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {TestMethodLevelListenerScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
-class TestMethodLevelListenerScannerTest {
+class TestMethodLevelListenerScannerIntegrationTest {
 
     @Autowired
     private TestMethodLevelListenerScanner channelScanner;

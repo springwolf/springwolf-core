@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Tests loading or ignoring the SpringWolfAutoConfiguration
  */
-public class SpringWolfAutoConfigurationTest {
+public class AutoConfigurationIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = TestApplication.class)

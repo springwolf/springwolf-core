@@ -9,7 +9,6 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -31,16 +30,16 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {
-            AsyncListenerAnnotationScanner.class,
+            AsyncPublisherAnnotationScanner.class,
             DefaultSchemasService.class,
             ExampleJsonGenerator.class,
             TestOperationBindingProcessor.class
         })
 @TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
-class AsyncListenerAnnotationScannerTest {
+class AsyncPublisherAnnotationScannerIntegrationTest {
 
     @Autowired
-    private AsyncListenerAnnotationScanner channelScanner;
+    private AsyncPublisherAnnotationScanner channelScanner;
 
     @MockBean
     private ComponentClassScanner componentClassScanner;
@@ -51,8 +50,8 @@ class AsyncListenerAnnotationScannerTest {
     }
 
     @Test
-    void scan_componentHasNoListenerMethods() {
-        setClassToScan(ClassWithoutListenerAnnotation.class);
+    void scan_componentHasNoPublisherMethods() {
+        setClassToScan(ClassWithoutPublisherAnnotation.class);
 
         Map<String, ChannelItem> channels = channelScanner.scan();
 
@@ -60,9 +59,9 @@ class AsyncListenerAnnotationScannerTest {
     }
 
     @Test
-    void scan_componentHasListenerMethod() {
-        // Given a class with methods annotated with AsyncListener, where only the channel-name is set
-        setClassToScan(ClassWithListenerAnnotation.class);
+    void scan_componentHasPublisherMethod() {
+        // Given a class with methods annotated with AsyncPublisher, where only the channel-name is set
+        setClassToScan(ClassWithPublisherAnnotation.class);
 
         // When scan is called
         Map<String, ChannelItem> actualChannels = channelScanner.scan();
@@ -71,30 +70,30 @@ class AsyncListenerAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                .description("SimpleFoo Message Description")
+                // Message description is not supported yet
+                //                .description("")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP)
                 .build();
 
         Operation operation = Operation.builder()
-                .description("test channel operation description")
-                .operationId("test-channel_publish")
+                .description("Auto-generated description")
+                .operationId("test-channel_subscribe")
                 .bindings(EMPTY_MAP)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel =
-                ChannelItem.builder().bindings(null).publish(operation).build();
+                ChannelItem.builder().bindings(null).subscribe(operation).build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     @Test
-    void scan_componentHasListenerMethodWithAllAttributes() {
-        // Given a class with method annotated with AsyncListener, where all attributes are set
-        setClassToScan(ClassWithListenerAnnotationWithAllAttributes.class);
+    void scan_componentHasPublisherMethodWithAllAttributes() {
+        // Given a class with method annotated with AsyncPublisher, where all attributes are set
+        setClassToScan(ClassWithPublisherAnnotationWithAllAttributes.class);
 
         // When scan is called
         Map<String, ChannelItem> actualChannels = channelScanner.scan();
@@ -103,8 +102,8 @@ class AsyncListenerAnnotationScannerTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                .description("SimpleFoo Message Description")
-                .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
+                // Message description is not supported yet
+                //                .description("description")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("TestSchema"))
                 .bindings(EMPTY_MAP)
@@ -112,19 +111,19 @@ class AsyncListenerAnnotationScannerTest {
 
         Operation operation = Operation.builder()
                 .description("description")
-                .operationId("test-channel_publish")
+                .operationId("test-channel_subscribe")
                 .bindings(Map.of(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING))
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel =
-                ChannelItem.builder().bindings(null).publish(operation).build();
+                ChannelItem.builder().bindings(null).subscribe(operation).build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
     @Test
-    void scan_componentHasMultipleListenerAnnotations() {
+    void scan_componentHasMultiplePublisherAnnotations() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
         setClassToScan(ClassWithMultipleListenerAnnotations.class);
 
@@ -132,33 +131,35 @@ class AsyncListenerAnnotationScannerTest {
         Map<String, ChannelItem> actualChannels = channelScanner.scan();
 
         // Then the returned collection contains the channel
-        Message.MessageBuilder builder = Message.builder()
+        Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
+                // Message description is not supported yet
+                //                .description("")
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(EMPTY_MAP);
+                .bindings(EMPTY_MAP)
+                .build();
 
         Operation operation1 = Operation.builder()
-                .description("test-channel-1-description")
-                .operationId("test-channel-1_publish")
+                .description("Auto-generated description")
+                .operationId("test-channel-1_subscribe")
                 .bindings(EMPTY_MAP)
-                .message(builder.description("SimpleFoo Message Description").build())
+                .message(message)
                 .build();
 
         ChannelItem expectedChannel1 =
-                ChannelItem.builder().bindings(null).publish(operation1).build();
+                ChannelItem.builder().bindings(null).subscribe(operation1).build();
 
         Operation operation2 = Operation.builder()
-                .description("test-channel-2-description")
-                .operationId("test-channel-2_publish")
+                .description("Auto-generated description")
+                .operationId("test-channel-2_subscribe")
                 .bindings(EMPTY_MAP)
-                .message(builder.description("SimpleFoo Message Description").build())
+                .message(message)
                 .build();
 
         ChannelItem expectedChannel2 =
-                ChannelItem.builder().bindings(null).publish(operation2).build();
+                ChannelItem.builder().bindings(null).subscribe(operation2).build();
 
         assertThat(actualChannels)
                 .containsExactlyInAnyOrderEntriesOf(Map.of(
@@ -167,7 +168,7 @@ class AsyncListenerAnnotationScannerTest {
     }
 
     @Test
-    void scan_componentHasAsyncMethodAnnotation() {
+    void scan_componentHasPublisherMethodWithAsyncMessageAnnotation() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
         setClassToScan(ClassWithMessageAnnotation.class);
 
@@ -187,38 +188,34 @@ class AsyncListenerAnnotationScannerTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .description("test channel operation description")
-                .operationId("test-channel_publish")
+                .description("Auto-generated description")
+                .operationId("test-channel_subscribe")
                 .bindings(EMPTY_MAP)
                 .message(message)
                 .build();
 
         ChannelItem expectedChannel =
-                ChannelItem.builder().bindings(null).publish(operation).build();
+                ChannelItem.builder().bindings(null).subscribe(operation).build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
-    private static class ClassWithoutListenerAnnotation {
+    private static class ClassWithoutPublisherAnnotation {
 
         private void methodWithoutAnnotation() {}
     }
 
-    private static class ClassWithListenerAnnotation {
+    private static class ClassWithPublisherAnnotation {
 
-        @AsyncListener(
-                operation =
-                        @AsyncOperation(
-                                channelName = "test-channel",
-                                description = "test channel operation description"))
+        @AsyncPublisher(operation = @AsyncOperation(channelName = "test-channel"))
         private void methodWithAnnotation(SimpleFoo payload) {}
 
         private void methodWithoutAnnotation() {}
     }
 
-    private static class ClassWithListenerAnnotationWithAllAttributes {
+    private static class ClassWithPublisherAnnotationWithAllAttributes {
 
-        @AsyncListener(
+        @AsyncPublisher(
                 operation =
                         @AsyncOperation(
                                 channelName = "${test.property.test-channel}",
@@ -237,20 +234,24 @@ class AsyncListenerAnnotationScannerTest {
 
     private static class ClassWithMultipleListenerAnnotations {
 
-        @AsyncListener(
-                operation = @AsyncOperation(channelName = "test-channel-1", description = "test-channel-1-description"))
-        @AsyncListener(
-                operation = @AsyncOperation(channelName = "test-channel-2", description = "test-channel-2-description"))
+        @AsyncPublisher(operation = @AsyncOperation(channelName = "test-channel-1"))
+        @AsyncPublisher(operation = @AsyncOperation(channelName = "test-channel-2"))
         private void methodWithMultipleAnnotation(SimpleFoo payload) {}
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class SimpleFoo {
+        private String s;
+        private boolean b;
     }
 
     private static class ClassWithMessageAnnotation {
 
-        @AsyncListener(
+        @AsyncPublisher(
                 operation =
                         @AsyncOperation(
                                 channelName = "test-channel",
-                                description = "test channel operation description",
                                 message =
                                         @AsyncMessage(
                                                 description = "Message description",
@@ -261,13 +262,5 @@ class AsyncListenerAnnotationScannerTest {
         private void methodWithAnnotation(SimpleFoo payload) {}
 
         private void methodWithoutAnnotation() {}
-    }
-
-    @Data
-    @NoArgsConstructor
-    @Schema(description = "SimpleFoo Message Description")
-    private static class SimpleFoo {
-        private String s;
-        private boolean b;
     }
 }

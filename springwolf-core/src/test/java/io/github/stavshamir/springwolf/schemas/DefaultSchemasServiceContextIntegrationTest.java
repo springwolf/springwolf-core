@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DefaultSchemasServiceContextTest {
+public class DefaultSchemasServiceContextIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
     @Nested

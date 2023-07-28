@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {DefaultBeanMethodsScanner.class})
-class DefaultBeanMethodsScannerTest {
+class DefaultBeanMethodsScannerIntegrationTest {
 
     @Autowired
     private DefaultBeanMethodsScanner beanMethodsScanner;

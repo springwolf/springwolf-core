@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {DefaultAsyncApiSerializerService.class})
-class DefaultAsyncApiSerializerServiceTest {
+class DefaultAsyncApiSerializerServiceIntegrationTest {
 
     @Autowired
     private DefaultAsyncApiSerializerService serializer;
@@ -90,7 +90,7 @@ class DefaultAsyncApiSerializerServiceTest {
                 .build();
 
         Map<String, Schema> schemas =
-                ModelConverters.getInstance().read(DefaultAsyncApiSerializerServiceTest.ExamplePayload.class);
+                ModelConverters.getInstance().read(DefaultAsyncApiSerializerServiceIntegrationTest.ExamplePayload.class);
 
         AsyncAPI asyncapi = AsyncAPI.builder()
                 .info(info)
