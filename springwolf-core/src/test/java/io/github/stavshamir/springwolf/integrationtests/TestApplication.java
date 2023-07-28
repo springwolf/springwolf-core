@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class TestApplication {
+class TestApplication {
     @TestConfiguration
     @ConditionalOnProperty(name = "test.springwolf.asyncapidocket", havingValue = "true", matchIfMissing = true)
     public static class TestApplicationConfiguration {
