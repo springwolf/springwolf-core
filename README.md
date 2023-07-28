@@ -46,8 +46,7 @@ Springwolf documentation is available at [here](https://www.springwolf.dev/docs/
 ### Why you should use it
 
 In projects using async APIs, you may often find yourself needing to manually send a message to some topic, whether if
-you
-are manually testing a new feature, debugging or trying to understand some flow. This requires:
+you are manually testing a new feature, debugging or trying to understand some flow. This requires:
 
 1. Instantiating a payload object
 2. Serializing your payload object
@@ -55,8 +54,7 @@ are manually testing a new feature, debugging or trying to understand some flow.
 
 Springwolf exploits the fact you already fully described your consumer endpoint (with listener annotations, such as
 `@KafkaListner`, `@RabbitListener` etc.) and automatically generates an example payload object for the appropriate
-payload and allows you
-to publish it to the correct channel with a single click.
+payload and allows you to publish it to the correct channel with a single click.
 
 ### Usage & Example
 
@@ -99,6 +97,6 @@ Or add the `repository` to your `pom.xml` if you are using maven:
 </repositories>
  ```
 
-#### Local Snapshots
+#### Local Snapshot Build
 
-To work with local snapshots, run the `publishToMavenLocal` task with `-Dsnapshot=true`.
+To work with local builds, run the `publishToMavenLocal` task. The current version number is set in [`.env`](.env) file.
