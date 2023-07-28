@@ -22,6 +22,16 @@ import static io.github.stavshamir.springwolf.configuration.properties.SpringWol
 public class ExampleJsonGenerator implements ExampleGenerator {
 
     private static final ObjectMapper objectMapper = Json.mapper();
+    private static final String DEFAULT_NUMBER_EXAMPLE = "1.1";
+    private static final String DEFAULT_INTEGER_EXAMPLE = "0";
+    private static final String DEFAULT_BOOLEAN_EXAMPLE = "true";
+    private static final String DEFUALT_DATE_EXAMPLE = "\"2015-07-20\"";
+    private static final String DEFAULT_DATE_TIME_EXAMPLE = "\"2015-07-20T15:49:04-07:00\"";
+    private static final String DEFAULT_PASSWORD_EXAMPLE = "\"string-password\"";
+    private static final String DEFAULT_BYTE_EXAMPLE = "\"YmFzZTY0LWV4YW1wbGU=\"";
+    private static final String DEFAULT_BINARY_EXAMPLE =
+            "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
+    private static final String DEFAULT_STRING_EXAMPLE = "\"string\"";
 
     @Override
     public Object fromSchema(Schema schema, Map<String, Schema> definitions) {
@@ -53,9 +63,9 @@ public class ExampleJsonGenerator implements ExampleGenerator {
 
         return switch (type) {
             case "array" -> ExampleJsonGenerator.handleArraySchema(schema, definitions);
-            case "boolean" -> ExampleJsonGenerator.handleBoolean(schema);
-            case "integer" -> ExampleJsonGenerator.handleInteger(schema);
-            case "number" -> ExampleJsonGenerator.handleNumber(schema);
+            case "boolean" -> DEFAULT_BOOLEAN_EXAMPLE;
+            case "integer" -> DEFAULT_INTEGER_EXAMPLE;
+            case "number" -> DEFAULT_NUMBER_EXAMPLE;
             case "object" -> ExampleJsonGenerator.handleObject(schema, definitions);
             case "string" -> ExampleJsonGenerator.handleStringSchema(schema);
             default -> "unknown schema type: " + type;
@@ -84,18 +94,6 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         return sb.toString();
     }
 
-    private static String handleInteger(Schema schema) {
-        return "0";
-    }
-
-    private static String handleNumber(Schema schema) {
-        return "1.1";
-    }
-
-    private static String handleBoolean(Schema schema) {
-        return "true";
-    }
-
     private static String handleStringSchema(Schema schema) {
         String firstEnumValue = getFirstEnumValue(schema);
         if (firstEnumValue != null) {
@@ -105,15 +103,15 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         String format = schema.getFormat();
 
         if (format == null) {
-            return "\"string\"";
+            return DEFAULT_STRING_EXAMPLE;
         }
 
         return switch (format) {
-            case "date" -> "\"2006-01-02\"";
-            case "date-time" -> "\"2006-01-02T15:04:05Z07:00\"";
-            case "password" -> "\"string-password\"";
-            case "byte" -> "\"YmFzZTY0LWV4YW1wbGU=\"";
-            case "binary" -> "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
+            case "date" -> DEFUALT_DATE_EXAMPLE;
+            case "date-time" -> DEFAULT_DATE_TIME_EXAMPLE;
+            case "password" -> DEFAULT_PASSWORD_EXAMPLE;
+            case "byte" -> DEFAULT_BYTE_EXAMPLE;
+            case "binary" -> DEFAULT_BINARY_EXAMPLE;
             default -> "unknown type format: " + format;
         };
     }

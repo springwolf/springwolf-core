@@ -34,7 +34,7 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     @Override
-    public Map<String, Schema> getDefinitions() {
+    public synchronized Map<String, Schema> getDefinitions() {
         if (finalizedDefinitions == null) {
             finalizeDefinitions();
         }

@@ -185,7 +185,7 @@ class ExampleJsonGeneratorTest {
 
             String actual = ExampleJsonGenerator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("\"2006-01-02\"");
+            assertThat(actual).isEqualTo("\"2015-07-20\"");
         }
 
         @Test
@@ -194,7 +194,7 @@ class ExampleJsonGeneratorTest {
 
             String actual = ExampleJsonGenerator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("\"2006-01-02T15:04:05Z07:00\"");
+            assertThat(actual).isEqualTo("\"2015-07-20T15:49:04-07:00\"");
         }
 
         @Test
