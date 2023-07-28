@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants.SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR;
 
 /**
  * This only exists as a fallback when {@see ExampleJsonGenerator} does not work. Please open issue when you feel the need to use this class.

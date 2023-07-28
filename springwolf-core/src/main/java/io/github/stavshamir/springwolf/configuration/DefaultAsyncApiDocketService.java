@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.configuration;
 
 import com.asyncapi.v2._6_0.model.info.Info;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
@@ -24,7 +24,7 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     /**
      * Docket definition in application.properties
      */
-    private final Optional<SpringWolfConfigProperties> configProperties;
+    private final Optional<SpringwolfConfigProperties> configProperties;
 
     @Override
     public AsyncApiDocket getAsyncApiDocket() {
@@ -37,15 +37,15 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
         }
         throw new IllegalArgumentException("No springwolf configuration found. "
                 + "Either define the properties in the application.properties under the "
-                + SpringWolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX + " prefix "
+                + SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX + " prefix "
                 + "or add a @Bean AsyncApiDocket to the spring context");
     }
 
-    private AsyncApiDocket parseApplicationConfigProperties(SpringWolfConfigProperties configProperties) {
+    private AsyncApiDocket parseApplicationConfigProperties(SpringwolfConfigProperties configProperties) {
         if (configProperties.getDocket() == null || configProperties.getDocket().getBasePackage() == null) {
             throw new IllegalArgumentException(
                     "One or more required fields (docket, basePackage) " + "in application.properties with path prefix "
-                            + SpringWolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX + " is not set.");
+                            + SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX + " is not set.");
         }
 
         Info info = buildInfo(configProperties.getDocket().getInfo());
@@ -63,10 +63,10 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
         return builder.build();
     }
 
-    private static Info buildInfo(@Nullable SpringWolfConfigProperties.ConfigDocket.Info info) {
+    private static Info buildInfo(@Nullable SpringwolfConfigProperties.ConfigDocket.Info info) {
         if (info == null || !StringUtils.hasText(info.getVersion()) || !StringUtils.hasText(info.getTitle())) {
             throw new IllegalArgumentException("One or more required fields of the info object (title, version) "
-                    + "in application.properties with path prefix " + SpringWolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX
+                    + "in application.properties with path prefix " + SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX
                     + " is not set.");
         }
 

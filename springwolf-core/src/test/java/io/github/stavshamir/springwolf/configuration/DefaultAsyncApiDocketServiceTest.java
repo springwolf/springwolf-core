@@ -3,9 +3,9 @@ package io.github.stavshamir.springwolf.configuration;
 import com.asyncapi.v2._6_0.model.info.Contact;
 import com.asyncapi.v2._6_0.model.info.License;
 import com.asyncapi.v2._6_0.model.server.Server;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.ConfigDocket;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.ConfigDocket.Info;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket.Info;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -36,7 +36,7 @@ class DefaultAsyncApiDocketServiceTest {
         info.setContact(new Contact("contact-name", "contact-url", "contact-email"));
         configDocket.setInfo(info);
 
-        SpringWolfConfigProperties properties = new SpringWolfConfigProperties();
+        SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setDocket(configDocket);
 
         // when

@@ -9,33 +9,33 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 public class TestMethodLevelListenerScanner
-        extends AbstractMethodLevelListenerScanner<TestMethodLevelListenerScannerTest.TestChannelListener> {
+        extends AbstractMethodLevelListenerScanner<TestMethodLevelListenerScannerIntegrationTest.TestChannelListener> {
 
     @Override
-    protected Class<TestMethodLevelListenerScannerTest.TestChannelListener> getListenerAnnotationClass() {
-        return TestMethodLevelListenerScannerTest.TestChannelListener.class;
+    protected Class<TestMethodLevelListenerScannerIntegrationTest.TestChannelListener> getListenerAnnotationClass() {
+        return TestMethodLevelListenerScannerIntegrationTest.TestChannelListener.class;
     }
 
     @Override
-    protected String getChannelName(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+    protected String getChannelName(TestMethodLevelListenerScannerIntegrationTest.TestChannelListener annotation) {
         return "test-channel";
     }
 
     @Override
     protected Map<String, ? extends ChannelBinding> buildChannelBinding(
-            TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+            TestMethodLevelListenerScannerIntegrationTest.TestChannelListener annotation) {
         return Map.of("test-channel-binding", new TestChannelBinding());
     }
 
     @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(
-            TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+            TestMethodLevelListenerScannerIntegrationTest.TestChannelListener annotation) {
         return Map.of("test-operation-binding", new TestOperationBinding());
     }
 
     @Override
     protected Map<String, ? extends MessageBinding> buildMessageBinding(
-            TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+            TestMethodLevelListenerScannerIntegrationTest.TestChannelListener annotation) {
         return Map.of("test-message-binding", new TestMessageBinding());
     }
 

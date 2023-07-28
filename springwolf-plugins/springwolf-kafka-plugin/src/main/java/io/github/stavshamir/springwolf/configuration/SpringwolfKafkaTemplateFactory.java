@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.configuration;
 
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @ConditionalOnBean(value = SpringwolfKafkaProducerConfiguration.class)
 public class SpringwolfKafkaTemplateFactory {
 
-    private final SpringWolfKafkaConfigProperties springWolfKafkaConfigProperties;
+    private final SpringwolfKafkaConfigProperties springWolfKafkaConfigProperties;
 
     public Optional<KafkaTemplate<Object, Object>> buildKafkaTemplate() {
         Optional<KafkaTemplate<Object, Object>> kafkaTemplate = Optional.empty();
