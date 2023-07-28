@@ -48,6 +48,8 @@ public class SpringContextTest {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
+            assertThat(asyncApiService.getAsyncAPI().getInfo().getTitle())
+                    .isEqualTo("CustomBeanAsyncApiDocketConfiguration-title");
         }
     }
 
