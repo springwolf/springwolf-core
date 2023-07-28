@@ -43,10 +43,6 @@ dependencies {
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
 }
 
-// We don't want to publish the examples
-tasks.withType(PublishToMavenRepository).configureEach { it.enabled = false }
-tasks.withType(PublishToMavenLocal).configureEach { it.enabled = false }
-
 docker {
     springBootApplication {
         maintainer = 'shamir.stav@gmail.com'

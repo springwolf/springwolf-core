@@ -59,10 +59,6 @@ dependencies {
     permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaClientsVersion}:test@jar"
 }
 
-// We don't want to publish the examples
-tasks.withType(PublishToMavenRepository).configureEach { it.enabled = false }
-tasks.withType(PublishToMavenLocal).configureEach { it.enabled = false }
-
 docker {
     springBootApplication {
         maintainer = 'shamir.stav@gmail.com'
