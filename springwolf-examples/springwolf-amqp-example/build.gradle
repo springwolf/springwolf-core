@@ -10,9 +10,9 @@ plugins {
 
 dependencies {
     implementation project(":springwolf-core")
-    implementation project(":springwolf-plugins:springwolf-amqp-plugin")
+    implementation project(":springwolf-plugins:springwolf-amqp")
 
-    annotationProcessor project(":springwolf-plugins:springwolf-amqp-plugin")
+    annotationProcessor project(":springwolf-plugins:springwolf-amqp")
     runtimeOnly project(":springwolf-ui")
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
@@ -42,10 +42,6 @@ dependencies {
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
 }
-
-// We don't want to publish the examples
-tasks.withType(PublishToMavenRepository).configureEach { it.enabled = false }
-tasks.withType(PublishToMavenLocal).configureEach { it.enabled = false }
 
 docker {
     springBootApplication {

@@ -46,6 +46,15 @@ allprojects {
         mavenCentral()
     }
 
+    var publishingEnabled = (
+            project.name == 'springwolf-core' ||
+            project.name == 'springwolf-amqp' ||
+            project.name == 'springwolf-cloud-stream' ||
+            project.name == 'springwolf-kafka' ||
+            project.name == 'springwolf-ui' ||
+            project.name == 'springwolf-common-model-converters')
+    tasks.withType(PublishToMavenRepository).configureEach { it.enabled = publishingEnabled }
+    tasks.withType(PublishToMavenLocal).configureEach { it.enabled = publishingEnabled }
     publishing {
         publications {
             mavenJava(MavenPublication) {

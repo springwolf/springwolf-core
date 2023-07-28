@@ -12,3 +12,7 @@ include(
         'springwolf-add-ons:springwolf-common-model-converters'
 )
 
+project(':springwolf-plugins:springwolf-amqp-plugin').name = 'springwolf-amqp'
+project(':springwolf-plugins:springwolf-cloud-stream-plugin').name = 'springwolf-cloud-stream'
+project(':springwolf-plugins:springwolf-kafka-plugin').name = 'springwolf-kafka'
+
