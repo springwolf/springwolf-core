@@ -11,12 +11,12 @@ plugins {
 
 dependencies {
     implementation project(":springwolf-core")
-    implementation project(":springwolf-plugins:springwolf-kafka-plugin")
+    implementation project(":springwolf-plugins:springwolf-kafka")
 
     runtimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
     runtimeOnly project(":springwolf-ui")
 
-    annotationProcessor project(":springwolf-plugins:springwolf-kafka-plugin")
+    annotationProcessor project(":springwolf-plugins:springwolf-kafka")
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 

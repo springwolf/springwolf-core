@@ -20,8 +20,8 @@ dependencyManagement {
 dependencies {
     implementation project(":springwolf-core")
 
-    runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream-plugin")
-    annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream-plugin")
+    runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream")
+    annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream")
 
     runtimeOnly project(":springwolf-ui")
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"

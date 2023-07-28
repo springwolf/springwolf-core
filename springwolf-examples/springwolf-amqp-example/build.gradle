@@ -10,9 +10,9 @@ plugins {
 
 dependencies {
     implementation project(":springwolf-core")
-    implementation project(":springwolf-plugins:springwolf-amqp-plugin")
+    implementation project(":springwolf-plugins:springwolf-amqp")
 
-    annotationProcessor project(":springwolf-plugins:springwolf-amqp-plugin")
+    annotationProcessor project(":springwolf-plugins:springwolf-amqp")
     runtimeOnly project(":springwolf-ui")
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
