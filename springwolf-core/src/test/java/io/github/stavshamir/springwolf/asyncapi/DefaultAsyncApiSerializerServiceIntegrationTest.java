@@ -89,8 +89,8 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .subscribe(newUserOperation)
                 .build();
 
-        Map<String, Schema> schemas =
-                ModelConverters.getInstance().read(DefaultAsyncApiSerializerServiceIntegrationTest.ExamplePayload.class);
+        Map<String, Schema> schemas = ModelConverters.getInstance()
+                .read(DefaultAsyncApiSerializerServiceIntegrationTest.ExamplePayload.class);
 
         AsyncAPI asyncapi = AsyncAPI.builder()
                 .info(info)

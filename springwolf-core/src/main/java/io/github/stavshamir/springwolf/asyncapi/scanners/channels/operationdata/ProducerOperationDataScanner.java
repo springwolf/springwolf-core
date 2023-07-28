@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.*;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED;
 
 @Slf4j
 @RequiredArgsConstructor
