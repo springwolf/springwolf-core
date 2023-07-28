@@ -18,7 +18,6 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.Data;
-import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -109,7 +108,7 @@ class DefaultAsyncApiSerializerServiceTest {
         var asyncapi = getAsyncAPITestObject();
         String actual = serializer.toJsonString(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
-        String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
         assertEquals(expected, actual);
     }
 
@@ -118,7 +117,7 @@ class DefaultAsyncApiSerializerServiceTest {
         var asyncapi = getAsyncAPITestObject();
         String actual = serializer.toYaml(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.yaml");
-        String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
         assertEquals(expected, actual);
     }
 

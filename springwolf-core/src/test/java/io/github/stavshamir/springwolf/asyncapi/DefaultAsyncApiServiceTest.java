@@ -14,6 +14,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             DefaultAsyncApiService.class,
             DefaultChannelsService.class,
             DefaultSchemasService.class,
+            ExampleJsonGenerator.class,
             ProducerOperationDataScanner.class,
             ConsumerOperationDataScanner.class,
         })

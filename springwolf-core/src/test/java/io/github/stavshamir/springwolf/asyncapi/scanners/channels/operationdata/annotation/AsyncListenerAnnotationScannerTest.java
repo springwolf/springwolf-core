@@ -8,6 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ import static org.mockito.Mockito.when;
         classes = {
             AsyncListenerAnnotationScanner.class,
             DefaultSchemasService.class,
+            ExampleJsonGenerator.class,
             TestOperationBindingProcessor.class
         })
 @TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})

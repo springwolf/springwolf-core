@@ -38,13 +38,15 @@ public class KafkaOperationBindingProcessor implements OperationBindingProcessor
         String groupId = resolveOrNull(bindingAnnotation.groupId());
         Schema groupIdSchema = KafkaListenerUtil.buildKafkaGroupIdSchema(groupId);
 
-        KafkaOperationBinding kafkaOperationBinding = KafkaOperationBinding.builder()
-                .bindingVersion(resolveOrNull(bindingAnnotation.bindingVersion()))
-                .clientId(clientIdSchema)
-                .groupId(groupIdSchema)
-                .build();
+        KafkaOperationBinding.KafkaOperationBindingBuilder kafkaOperationBindingBuilder =
+                KafkaOperationBinding.builder();
+        kafkaOperationBindingBuilder.clientId(clientIdSchema).groupId(groupIdSchema);
+        String bindingVersion = resolveOrNull(bindingAnnotation.bindingVersion());
+        if (StringUtils.hasText(bindingVersion)) {
+            kafkaOperationBindingBuilder.bindingVersion(bindingVersion);
+        }
 
-        return new ProcessedOperationBinding(bindingAnnotation.type(), kafkaOperationBinding);
+        return new ProcessedOperationBinding(bindingAnnotation.type(), kafkaOperationBindingBuilder.build());
     }
 
     private String resolveOrNull(String stringValue) {

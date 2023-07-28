@@ -4,7 +4,7 @@ The following lists describe the steps necessary to release a new version.
 
 1. Update the version number in `.env`
 
-## SpringWolf
+## Springwolf
 
 1. Run all tests (including all examples + integration)
 2. Run github `Publish releases` pipeline

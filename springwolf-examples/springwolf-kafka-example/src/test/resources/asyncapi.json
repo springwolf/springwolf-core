@@ -175,7 +175,7 @@
                 "foo-clientId"
               ]
             },
-            "bindingVersion": "1"
+            "bindingVersion": "0.4.0"
           }
         },
         "message": {
@@ -229,7 +229,7 @@
                     "description": "Kafka Consumer Message Key",
                     "example": "example-key"
                   },
-                  "bindingVersion": "1"
+                  "bindingVersion": "0.4.0"
                 }
               }
             }
@@ -249,7 +249,7 @@
                 "foo-clientId"
               ]
             },
-            "bindingVersion": "1"
+            "bindingVersion": "0.4.0"
           }
         },
         "message": {
@@ -270,7 +270,7 @@
                 "description": "Kafka Producer Message Key",
                 "example": "example-key"
               },
-              "bindingVersion": "1"
+              "bindingVersion": "0.4.0"
             }
           }
         }

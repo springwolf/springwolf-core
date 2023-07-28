@@ -16,6 +16,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,6 +45,7 @@ import static org.mockito.Mockito.when;
             ConfigurationClassScanner.class,
             DefaultBeanMethodsScanner.class,
             DefaultSchemasService.class,
+            ExampleJsonGenerator.class,
             DefaultAsyncApiDocketService.class,
             CloudStreamFunctionChannelsScanner.class
         })

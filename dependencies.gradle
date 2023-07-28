@@ -33,12 +33,12 @@ ext {
 
     awaitilityVersion = '4.2.0'
 
-    commonsIoVersion = '2.13.0'
+    commonsLang3Version = '3.12.0'
 
     jsr305Version = '3.0.2'
 
     kafkaClientsVersion = '3.5.0'
-    kafkaStreamsVersion = '3.5.0'
+    kafkaStreamsVersion = '3.5.1'
 
     jacksonVersion = '2.15.2'
     jakartaAnnotationApiVersion = '2.1.1'
@@ -49,7 +49,7 @@ ext {
     monetaVersion = '1.4.2'
     moneyApiVersion = '1.1'
 
-    junitJupiterVersion = '5.9.3'
+    junitJupiterVersion = '5.10.0'
 
     lombokVersion = '1.18.28'
 

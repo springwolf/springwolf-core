@@ -7,11 +7,10 @@ buildscript {
 
 plugins {
     id 'ca.cutterslade.analyze' version '1.9.1'
-
     id 'io.spring.dependency-management' version '1.1.2' apply false
-    id 'org.springframework.boot' version '3.1.1' apply false
+    id 'org.springframework.boot' version '3.1.2' apply false
     id 'org.owasp.dependencycheck' version '8.3.1'
-    id 'com.diffplug.spotless' version '6.19.0'
+    id 'com.diffplug.spotless' version '6.20.0'
     id 'com.bmuschko.docker-spring-boot-application' version '9.3.1' apply false
 }
 
@@ -23,11 +22,8 @@ allprojects {
     apply plugin: 'signing'
     apply plugin: 'com.diffplug.spotless'
 
-    ext {
-        isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT') as String)
-    }
     group 'io.github.springwolf'
-    version System.getProperty("SPRINGWOLF_VERSION") + (isSnapshot ? '-SNAPSHOT' : '')
+    version System.getProperty("SPRINGWOLF_VERSION")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -100,9 +96,7 @@ allprojects {
 
         repositories {
             maven {
-                def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-                def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-                url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
+                url = project.findProperty('MAVEN_URL')
                 credentials {
                     username = project.findProperty('MAVEN_USERNAME') ?: ''
                     password = project.findProperty('MAVEN_PASSWORD') ?: ''
