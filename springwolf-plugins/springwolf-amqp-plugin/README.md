@@ -24,10 +24,10 @@ Add the following dependencies and configuration class to enable this plugin.
 ```groovy
 dependencies {
     // Provides the documentation API    
-    implementation 'io.github.springwolf:springwolf-amqp:0.13.0'
+    implementation 'io.github.springwolf:springwolf-amqp:<springwolf-version>'
 
     // Provides the UI - optional (recommended)
-    runtimeOnly 'io.github.springwolf:springwolf-ui:0.13.0'
+    runtimeOnly 'io.github.springwolf:springwolf-ui:<springwolf-version>'
 }
 ```
 

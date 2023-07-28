@@ -1,48 +1,14 @@
 # Releasing
 
-The following lists describe the steps necessary to release a new version.
-
-1. Update the version number in `.env`
-
-## Springwolf
+The following list describe the steps necessary to release a new version.
 
 1. Run all tests (including all examples + integration)
-2. Run github `Publish releases` pipeline
-3. Release version in nexus
-4. Update version number on website
-
-## springwolf-ui
-
-1. Update version number in `README.md`
-2. Run github `Publish releases` pipeline
-3. Release version in nexus
-4. Update version number on website
-
-## Plugins
-
-### springwolf-amqp
-
-1. Update version number in `springwolf-plugins/springwolf-amqp-plugin/README.md`
-2. Run all tests (including all examples + integration)
-3. Run docker compose and manually test ui
-4. Run github `Publish releases` pipeline
+2. Run docker compose and manually test ui (or verify on website):
+   1. AMQP: https://amqp.demo.springwolf.dev/
+   2. CloudStream https://cloud-stream.demo.springwolf.dev/
+   3. Kafka: https://kafka.demo.springwolf.dev/
+3. Remove the `-SNAPHSOT` postfix in `.env`, create a new branch `release/0.X.X` (version number), commit & push
+4. Run GitHub `Publish releases` pipeline from the newly created release branch
 5. Release version in nexus
 6. Update version number on website
-
-### springwolf-cloud-stream
-
-1. Update version number in `springwolf-plugins/springwolf-cloud-stream-plugin/README.md`
-2. Run all tests (including all examples + integration)
-3. Run docker compose and manually test ui
-4. Run github `Publish releases` pipeline
-5. Release version in nexus
-6. Update version number on website
-
-### springwolf-kafka
-
-1. Update version number in `springwolf-plugins/springwolf-kafka-plugin/README.md`
-2. Run all tests (including all examples + integration)
-3. Run docker compose and manually test ui
-4. Run github `Publish releases` pipeline
-5. Release version in nexus
-6. Update version number on website
+7. Update the version number in `.env` for next snapshot on branch `master`, commit & push
