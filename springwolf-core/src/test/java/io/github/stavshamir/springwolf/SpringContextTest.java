@@ -27,6 +27,7 @@ public class SpringContextTest {
     @Nested
     @ContextConfiguration(
             classes = {
+                SpringWolfConfigProperties.class,
                 CustomBeanAsyncApiDocketConfiguration.class, // user has defined an own AsyncApiDocket bean
                 DefaultAsyncApiDocketService.class,
                 DefaultAsyncApiService.class,
@@ -49,6 +50,8 @@ public class SpringContextTest {
             assertNotNull(context);
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
+            assertThat(asyncApiService.getAsyncAPI().getInfo().getTitle())
+                    .isEqualTo("CustomBeanAsyncApiDocketConfiguration-title");
         }
     }
 

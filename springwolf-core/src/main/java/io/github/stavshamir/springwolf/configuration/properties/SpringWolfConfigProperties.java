@@ -21,7 +21,29 @@ import java.util.Map;
 @Setter
 public class SpringWolfConfigProperties {
 
+    public enum InitMode {
+        /**
+         * Default option.
+         * AsyncAPI detection on application startup. Exceptions interrupt the application start.
+         *
+         * Use for immediate feedback in case of misconfiguration.
+         */
+        FAIL_FAST,
+
+        /**
+         * AsyncAPI detection after application startup in background thread (via Spring TaskExecutor).
+         *
+         * Use when your application context is large and initialization should be deferred to reduce start-up time.
+         */
+        BACKGROUND
+    }
+
     private boolean enabled = true;
+
+    /**
+     * Init mode for building AsyncAPI.
+     */
+    private InitMode initMode = InitMode.FAIL_FAST;
 
     @Nullable
     private ConfigDocket docket;
@@ -46,7 +68,7 @@ public class SpringWolfConfigProperties {
         /**
          * Identifier of the application the AsyncAPI document is defining.
          *
-         * @see com.asyncapi.v2._0_0.model.AsyncAPI#id
+         * @see com.asyncapi.v2._6_0.model.AsyncAPI#id
          */
         @Nullable
         private String id;
@@ -54,7 +76,7 @@ public class SpringWolfConfigProperties {
         /**
          * A string representing the default content type to use when encoding/decoding a message's payload.
          *
-         * @see com.asyncapi.v2._0_0.model.AsyncAPI#defaultContentType
+         * @see com.asyncapi.v2._6_0.model.AsyncAPI#getdefaultContentType
          */
         @Nullable
         private String defaultContentType;

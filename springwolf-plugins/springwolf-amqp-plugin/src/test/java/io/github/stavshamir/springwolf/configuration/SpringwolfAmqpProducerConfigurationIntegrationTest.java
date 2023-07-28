@@ -1,5 +1,6 @@
 package io.github.stavshamir.springwolf.configuration;
 
+import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfAmqpController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringWolfAmqpConfigProperties;
@@ -38,7 +39,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.url=some-server:1234",
                 "springwolf.plugin.amqp.publishing.enabled=true"
             })
-    @MockBeans(value = {@MockBean(ChannelsService.class), @MockBean(RabbitTemplate.class)})
+    @MockBeans(value = {@MockBean(AsyncApiService.class), @MockBean(RabbitTemplate.class)})
     @Nested
     class AmqpProducerWillBeCreatedIfEnabledTest {
         @Autowired

@@ -4,7 +4,8 @@ import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
+import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
+import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -23,20 +24,21 @@ import static io.github.stavshamir.springwolf.configuration.properties.SpringWol
 @ConditionalOnProperty(prefix = SPRINGWOLF_AMQP_CONFIG_PREFIX, name = SPRINGWOLF_AMQP_PLUGIN_PUBLISHING_ENABLED)
 public class SpringwolfAmqpProducer {
 
-    private final ChannelsService channelsService;
+    private final AsyncApiService asyncApiService;
     private final Optional<RabbitTemplate> rabbitTemplate;
 
     public boolean isEnabled() {
         return rabbitTemplate.isPresent();
     }
 
-    public SpringwolfAmqpProducer(ChannelsService channelsService, List<RabbitTemplate> rabbitTemplates) {
-        this.channelsService = channelsService;
+    public SpringwolfAmqpProducer(AsyncApiService asyncApiService, List<RabbitTemplate> rabbitTemplates) {
+        this.asyncApiService = asyncApiService;
         this.rabbitTemplate = rabbitTemplates.isEmpty() ? Optional.empty() : Optional.of(rabbitTemplates.get(0));
     }
 
     public void send(String channelName, Map<String, ?> payload) {
-        ChannelItem channelItem = channelsService.getChannels().get(channelName);
+        AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
+        ChannelItem channelItem = asyncAPI.getChannels().get(channelName);
 
         String exchange = getExchangeName(channelItem);
         String routingKey = getRoutingKey(channelItem);
