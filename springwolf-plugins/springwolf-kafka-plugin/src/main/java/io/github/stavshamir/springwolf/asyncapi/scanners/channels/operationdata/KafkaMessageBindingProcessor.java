@@ -35,12 +35,15 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
 
     private ProcessedMessageBinding mapToMessageBinding(KafkaAsyncOperationBinding bindingAnnotation) {
         KafkaAsyncMessageBinding messageBinding = bindingAnnotation.messageBinding();
-        KafkaMessageBinding kafkaMessageBinding = KafkaMessageBinding.builder()
-                .bindingVersion(resolveOrNull(messageBinding.bindingVersion()))
-                .key(resolveSchemaOrNull(messageBinding))
-                .build();
 
-        return new ProcessedMessageBinding(bindingAnnotation.type(), kafkaMessageBinding);
+        KafkaMessageBinding.KafkaMessageBindingBuilder kafkaMessageBindingBuilder = KafkaMessageBinding.builder();
+        kafkaMessageBindingBuilder.key(resolveSchemaOrNull(messageBinding));
+        String bindingVersion = resolveOrNull(messageBinding.bindingVersion());
+        if (StringUtils.hasText(bindingVersion)) {
+            kafkaMessageBindingBuilder.bindingVersion(bindingVersion);
+        }
+
+        return new ProcessedMessageBinding(bindingAnnotation.type(), kafkaMessageBindingBuilder.build());
     }
 
     private String resolveOrNull(String stringValue) {
