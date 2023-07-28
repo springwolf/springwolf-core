@@ -15,11 +15,11 @@ import org.springframework.lang.Nullable;
 import java.util.Map;
 
 @Configuration
-@ConfigurationProperties(prefix = SpringWolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX)
-@ConditionalOnProperty(name = SpringWolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
+@ConfigurationProperties(prefix = SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX)
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
 @Getter
 @Setter
-public class SpringWolfConfigProperties {
+public class SpringwolfConfigProperties {
 
     public enum InitMode {
         /**
@@ -158,7 +158,7 @@ public class SpringWolfConfigProperties {
         public static class AsyncListener {
 
             /**
-             * This mirrors the ConfigConstant {@see SpringWolfConfigConstants#SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED}
+             * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED}
              */
             private boolean enabled = true;
         }
@@ -168,7 +168,7 @@ public class SpringWolfConfigProperties {
         public static class AsyncPublisher {
 
             /**
-             * This mirrors the ConfigConstant {@see SpringWolfConfigConstants#SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED}
+             * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED}
              */
             private boolean enabled = true;
         }
@@ -178,7 +178,7 @@ public class SpringWolfConfigProperties {
         public static class ConsumerData {
 
             /**
-             * This mirrors the ConfigConstant {@see SpringWolfConfigConstants#SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED}
+             * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED}
              */
             private boolean enabled = true;
         }
@@ -188,7 +188,7 @@ public class SpringWolfConfigProperties {
         public static class ProducerData {
 
             /**
-             * This mirrors the ConfigConstant {@see SpringWolfConfigConstants#SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED}
+             * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED}
              */
             private boolean enabled = true;
         }

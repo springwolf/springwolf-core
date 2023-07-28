@@ -1,10 +1,10 @@
 package io.github.stavshamir.springwolf.configuration.properties;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants.ENABLED;
-import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants.SCANNER;
-import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants.SPRINGWOLF_PLUGIN_CONFIG_PREFIX;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.ENABLED;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SCANNER;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_PLUGIN_CONFIG_PREFIX;
 
-public class SpringWolfKafkaConfigConstants {
+public class SpringwolfKafkaConfigConstants {
 
     public static final String SPRINGWOLF_KAFKA_CONFIG_PREFIX = SPRINGWOLF_PLUGIN_CONFIG_PREFIX + ".kafka";
 

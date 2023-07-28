@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor.getPayloadType;
-import static io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigConstants.SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigConstants.SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED;
 
 @Slf4j
 @Service

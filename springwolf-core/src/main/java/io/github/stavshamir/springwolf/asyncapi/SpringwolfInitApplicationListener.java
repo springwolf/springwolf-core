@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties.InitMode;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.InitMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class SpringWolfInitApplicationListener implements ApplicationListener<ApplicationReadyEvent>, InitializingBean {
+public class SpringwolfInitApplicationListener implements ApplicationListener<ApplicationReadyEvent>, InitializingBean {
 
     private final TaskExecutor taskExecutor;
     private final AsyncApiService asyncApiService;
-    private final SpringWolfConfigProperties configProperties;
+    private final SpringwolfConfigProperties configProperties;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {

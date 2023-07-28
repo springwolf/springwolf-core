@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf;
 
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigConstants;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,5 +24,5 @@ import org.springframework.context.annotation.FilterType;
             @ComponentScan.Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
             @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class)
         })
-@ConditionalOnProperty(name = SpringWolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
-public class SpringWolfAutoConfiguration {}
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
+public class SpringwolfAutoConfiguration {}

@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.configuration;
 
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -14,7 +14,7 @@ class SpringwolfKafkaTemplateFactoryTest {
 
     @Test
     void kafkaTemplateShouldNotBeCreatedForEmptyProperties() {
-        SpringWolfKafkaConfigProperties configProperties = new SpringWolfKafkaConfigProperties();
+        SpringwolfKafkaConfigProperties configProperties = new SpringwolfKafkaConfigProperties();
 
         SpringwolfKafkaTemplateFactory templateFactory = new SpringwolfKafkaTemplateFactory(configProperties);
 
@@ -25,8 +25,8 @@ class SpringwolfKafkaTemplateFactoryTest {
 
     @Test
     void kafkaTemplateShouldNotBeCreatedForEmptyProducerConfiguration() {
-        SpringWolfKafkaConfigProperties configProperties = new SpringWolfKafkaConfigProperties();
-        configProperties.setPublishing(new SpringWolfKafkaConfigProperties.Publishing());
+        SpringwolfKafkaConfigProperties configProperties = new SpringwolfKafkaConfigProperties();
+        configProperties.setPublishing(new SpringwolfKafkaConfigProperties.Publishing());
 
         SpringwolfKafkaTemplateFactory templateFactory = new SpringwolfKafkaTemplateFactory(configProperties);
 
@@ -37,8 +37,8 @@ class SpringwolfKafkaTemplateFactoryTest {
 
     @Test
     void kafkaTemplateShouldBeCreatedWithProducerConfiguration() {
-        SpringWolfKafkaConfigProperties configProperties = new SpringWolfKafkaConfigProperties();
-        SpringWolfKafkaConfigProperties.Publishing publishing = new SpringWolfKafkaConfigProperties.Publishing();
+        SpringwolfKafkaConfigProperties configProperties = new SpringwolfKafkaConfigProperties();
+        SpringwolfKafkaConfigProperties.Publishing publishing = new SpringwolfKafkaConfigProperties.Publishing();
         publishing.setEnabled(true);
         publishing.setProducer(new KafkaProperties.Producer());
 

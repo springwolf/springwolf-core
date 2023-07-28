@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.example.kafka;
 
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.example.kafka.consumers.ExampleService;
 import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
@@ -49,7 +49,7 @@ public class ProducerIntegrationWithDockerIntegrationTest {
     ExampleService exampleService;
 
     @Autowired
-    SpringWolfKafkaConfigProperties properties;
+    SpringwolfKafkaConfigProperties properties;
 
     @Container
     public static DockerComposeContainer<?> environment =

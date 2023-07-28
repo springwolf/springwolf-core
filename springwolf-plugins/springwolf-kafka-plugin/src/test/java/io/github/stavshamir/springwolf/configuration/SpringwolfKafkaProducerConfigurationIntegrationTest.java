@@ -1,8 +1,8 @@
 package io.github.stavshamir.springwolf.configuration;
 
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaController;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfKafkaConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 SpringwolfKafkaTemplateFactory.class,
                 SpringwolfKafkaController.class
             })
-    @EnableConfigurationProperties(value = {SpringWolfConfigProperties.class, SpringWolfKafkaConfigProperties.class})
+    @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfKafkaConfigProperties.class})
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
@@ -61,7 +61,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 SpringwolfKafkaProducerConfiguration.class,
                 SpringwolfKafkaController.class
             })
-    @EnableConfigurationProperties(value = {SpringWolfConfigProperties.class, SpringWolfKafkaConfigProperties.class})
+    @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfKafkaConfigProperties.class})
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",

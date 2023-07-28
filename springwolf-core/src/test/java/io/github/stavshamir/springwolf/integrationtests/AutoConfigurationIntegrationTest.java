@@ -11,13 +11,13 @@ import org.springframework.test.context.TestPropertySource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests loading or ignoring the SpringWolfAutoConfiguration
+ * Tests loading or ignoring the SpringwolfAutoConfiguration
  */
 public class AutoConfigurationIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = TestApplication.class)
-    class TestSpringWolfEnabled {
+    class TestSpringwolfEnabled {
         @Autowired
         private AsyncApiController asyncApiController;
 
@@ -30,7 +30,7 @@ public class AutoConfigurationIntegrationTest {
     @Nested
     @SpringBootTest(classes = TestApplication.class)
     @TestPropertySource(properties = {"springwolf.enabled=false"})
-    class TestSpringWolfDisabled {
+    class TestSpringwolfDisabled {
 
         @Autowired
         private ObjectProvider<AsyncApiController> asyncApiControllerObjectProvider;

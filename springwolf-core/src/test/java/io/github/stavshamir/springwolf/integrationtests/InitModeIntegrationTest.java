@@ -76,7 +76,7 @@ public class InitModeIntegrationTest {
     @Nested
     @SpringBootTest(classes = TestApplication.class)
     @TestPropertySource(properties = {"springwolf.enabled=false"})
-    class TestSpringWolfDisabled {
+    class TestSpringwolfDisabled {
 
         @Autowired(required = false)
         private AsyncApiController asyncApiController;

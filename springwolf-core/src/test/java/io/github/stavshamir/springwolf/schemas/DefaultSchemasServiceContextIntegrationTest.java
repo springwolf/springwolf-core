@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.schemas;
 
-import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.github.stavshamir.springwolf.schemas.example.SwaggerInflectorJsonGenerator;
@@ -46,7 +46,7 @@ public class DefaultSchemasServiceContextIntegrationTest {
             })
     @EnableConfigurationProperties(
             value = {
-                SpringWolfConfigProperties.class,
+                SpringwolfConfigProperties.class,
             })
     @TestPropertySource(
             properties = {
