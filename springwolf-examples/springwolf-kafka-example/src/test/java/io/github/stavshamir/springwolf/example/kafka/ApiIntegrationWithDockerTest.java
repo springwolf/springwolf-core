@@ -1,6 +1,5 @@
 package io.github.stavshamir.springwolf.example.kafka;
 
-import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
@@ -61,7 +60,7 @@ public class ApiIntegrationWithDockerTest {
         System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = IOUtils.toString(s, StandardCharsets.UTF_8);
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
 
         assertEquals(expected, actual);
     }

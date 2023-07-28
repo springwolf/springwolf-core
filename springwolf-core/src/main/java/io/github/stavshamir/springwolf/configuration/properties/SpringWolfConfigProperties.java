@@ -29,6 +29,8 @@ public class SpringWolfConfigProperties {
     @Nullable
     private Scanner scanner;
 
+    private SchemaExampleGeneratorOptions exampleGenerator = SchemaExampleGeneratorOptions.BUILTIN_JSON;
+
     @Getter
     @Setter
     public static class ConfigDocket {
@@ -168,5 +170,20 @@ public class SpringWolfConfigProperties {
              */
             private boolean enabled = true;
         }
+    }
+
+    public enum SchemaExampleGeneratorOptions {
+        /**
+         * Generate example json
+         */
+        BUILTIN_JSON,
+
+        /**
+         * Generate example json via swagger-inflector
+         *
+         * This is a fallback solution, scheduled for removal.
+         */
+        @Deprecated
+        SWAGGER_INFLECTOR_JSON,
     }
 }

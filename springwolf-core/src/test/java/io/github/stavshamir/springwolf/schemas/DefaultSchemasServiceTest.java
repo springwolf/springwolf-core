@@ -4,72 +4,32 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.core.util.Json;
-import io.swagger.v3.oas.models.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.io.IOUtils;
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DefaultSchemasServiceTest {
 
-    private final SchemasService schemasService = new DefaultSchemasService(Optional.empty());
+    private final ExampleGenerator exampleGenerator = new ExampleJsonGenerator();
+    private final SchemasService schemasService = new DefaultSchemasService(Optional.empty(), exampleGenerator);
 
-    private static final String EXAMPLES_PATH = "/schemas/examples";
-    private static final ObjectMapper objectMapper = Json.mapper();
+    private static final ObjectMapper objectMapper =
+            Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
     private static final PrettyPrinter printer =
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
-
-    @Test
-    void string() throws IOException {
-        String modelName = schemasService.register(String.class);
-
-        assertThat(modelName).isEqualTo("String");
-
-        assertNotNull(schemasService.getDefinitions().get(modelName));
-
-        Schema schema = schemasService.getDefinitions().get(modelName);
-        String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
-        String expectedExample = "\"string\"";
-
-        assertThat(example).isEqualTo(expectedExample);
-    }
-
-    @Test
-    void simpleObject() throws IOException {
-        String modelName = schemasService.register(SimpleFoo.class);
-
-        assertThat(modelName).isEqualTo("SimpleFoo");
-
-        Schema schema = schemasService.getDefinitions().get(modelName);
-        String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
-        String expectedExample = jsonResource(EXAMPLES_PATH + "/simple-foo.json");
-
-        assertEquals(expectedExample, example);
-    }
-
-    @Test
-    void compositeObject() throws IOException {
-        String modelName = schemasService.register(CompositeFoo.class);
-
-        Schema schema = schemasService.getDefinitions().get(modelName);
-        String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
-
-        String expectedExample = jsonResource(EXAMPLES_PATH + "/composite-foo.json");
-
-        // Then it returns the correct example object as json
-        assertEquals(expectedExample, example);
-    }
 
     @Test
     void getDefinitions() throws IOException {
@@ -84,11 +44,22 @@ class DefaultSchemasServiceTest {
     }
 
     @Test
-    void getDocumentedDefinitions() throws IOException, JSONException {
+    void getDocumentedDefinitions() throws IOException {
         schemasService.register(DocumentedSimpleFoo.class);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
         String expected = jsonResource("/schemas/documented-definitions.json");
+
+        System.out.println("Got: " + actualDefinitions);
+        assertEquals(expected, actualDefinitions);
+    }
+
+    @Test
+    void getArrayDefinitions() throws IOException {
+        schemasService.register(ArrayFoo.class);
+
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String expected = jsonResource("/schemas/array-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -103,7 +74,7 @@ class DefaultSchemasServiceTest {
 
     private String jsonResource(String path) throws IOException {
         InputStream s = this.getClass().getResourceAsStream(path);
-        return IOUtils.toString(s, StandardCharsets.UTF_8);
+        return new String(s.readAllBytes(), StandardCharsets.UTF_8);
     }
 
     @Data
@@ -129,6 +100,12 @@ class DefaultSchemasServiceTest {
     private static class CompositeFoo {
         private String s;
         private SimpleFoo f;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class ArrayFoo {
+        private List<SimpleFoo> fList;
     }
 
     @Data

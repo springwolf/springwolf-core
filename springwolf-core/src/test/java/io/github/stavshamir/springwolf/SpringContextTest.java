@@ -7,6 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringWolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,7 @@ public class SpringContextTest {
                 DefaultAsyncApiService.class,
                 DefaultChannelsService.class,
                 DefaultSchemasService.class,
+                ExampleJsonGenerator.class,
                 DefaultAsyncApiService.class,
                 DefaultAsyncApiSerializerService.class,
             })
@@ -58,6 +60,7 @@ public class SpringContextTest {
                 DefaultAsyncApiService.class,
                 DefaultChannelsService.class,
                 DefaultSchemasService.class,
+                ExampleJsonGenerator.class,
                 DefaultAsyncApiService.class,
                 DefaultAsyncApiSerializerService.class,
             })
