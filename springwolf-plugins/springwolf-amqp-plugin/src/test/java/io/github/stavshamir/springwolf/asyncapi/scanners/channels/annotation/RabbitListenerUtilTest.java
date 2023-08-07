@@ -10,6 +10,7 @@ import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -25,92 +26,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class RabbitListenerUtilTest {
-    private static final String QUEUE = "test-queue";
 
     @Nested
-    public class MinimalConfiguration {
+    public class QueuesConfiguration {
 
         @Test
         void getChannelName() {
             // given
-            RabbitListener annotation = getAnnotation(ClassWithMinimalRabbitListenerConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue(QUEUE)).thenReturn(QUEUE);
-
-            // when
-            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
-
-            // then
-            assertEquals(QUEUE, channelName);
-        }
-
-        @Test
-        void buildChannelBinding() {
-            // given
-            RabbitListener annotation = getAnnotation(ClassWithMinimalRabbitListenerConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue(QUEUE)).thenReturn(QUEUE);
-            Map<String, Binding> bindingsMap = emptyMap();
-
-            // when
-            Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, bindingsMap);
-
-            // then
-            assertEquals(1, channelBinding.size());
-            assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
-            assertEquals(
-                    AMQPChannelBinding.builder()
-                            .is("routingKey")
-                            .exchange(AMQPChannelBinding.ExchangeProperties.builder()
-                                    .name("")
-                                    .build())
-                            .build(),
-                    channelBinding.get("amqp"));
-        }
-
-        @Test
-        void buildOperationBinding() {
-            // given
-            RabbitListener annotation = getAnnotation(ClassWithMinimalRabbitListenerConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue(QUEUE)).thenReturn(QUEUE);
-            Map<String, Binding> bindingsMap = emptyMap();
-
-            // when
-            Map<String, ? extends OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, bindingsMap);
-
-            // then
-            assertEquals(1, operationBinding.size());
-            assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
-            assertEquals(AMQPOperationBinding.builder().cc(List.of(QUEUE)).build(), operationBinding.get("amqp"));
-        }
-
-        @Test
-        void buildMessageBinding() {
-            // when
-            Map<String, ? extends MessageBinding> messageBinding = RabbitListenerUtil.buildMessageBinding();
-
-            // then
-            assertEquals(1, messageBinding.size());
-            assertEquals(Sets.newTreeSet("amqp"), messageBinding.keySet());
-            assertEquals(new AMQPMessageBinding(), messageBinding.get("amqp"));
-        }
-
-        private static class ClassWithMinimalRabbitListenerConfiguration {
-
-            @RabbitListener(queues = QUEUE)
-            private void methodWithAnnotation(String payload) {}
-        }
-    }
-
-    @Nested
-    class FullConfiguration {
-        @Test
-        void getChannelName() {
-            // given
-            RabbitListener annotation = getAnnotation(ClassWithFullRabbitListenerConfiguration.class);
+            RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
             StringValueResolver resolver = mock(StringValueResolver.class);
             when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
@@ -124,8 +47,10 @@ class RabbitListenerUtilTest {
         @Test
         void buildChannelBinding() {
             // given
-            RabbitListener annotation = getAnnotation(ClassWithFullRabbitListenerConfiguration.class);
+            RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
             StringValueResolver resolver = mock(StringValueResolver.class);
+            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            ;
             Map<String, Binding> bindingsMap = emptyMap();
 
             // when
@@ -137,9 +62,20 @@ class RabbitListenerUtilTest {
             assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
             assertEquals(
                     AMQPChannelBinding.builder()
-                            .is("routingKey")
+                            .is("queue")
                             .exchange(AMQPChannelBinding.ExchangeProperties.builder()
-                                    .name("name")
+                                    .name("")
+                                    .type(ExchangeTypes.DIRECT)
+                                    .durable(true)
+                                    .autoDelete(false)
+                                    .vhost("/")
+                                    .build())
+                            .queue(AMQPChannelBinding.QueueProperties.builder()
+                                    .name("queue-1")
+                                    .durable(true)
+                                    .autoDelete(false)
+                                    .exclusive(false)
+                                    .vhost("/")
                                     .build())
                             .build(),
                     channelBinding.get("amqp"));
@@ -148,8 +84,9 @@ class RabbitListenerUtilTest {
         @Test
         void buildOperationBinding() {
             // given
-            RabbitListener annotation = getAnnotation(ClassWithFullRabbitListenerConfiguration.class);
+            RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
             StringValueResolver resolver = mock(StringValueResolver.class);
+            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
             Map<String, Binding> bindingsMap = emptyMap();
 
             // when
@@ -159,7 +96,7 @@ class RabbitListenerUtilTest {
             // then
             assertEquals(1, operationBinding.size());
             assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
-            assertEquals(AMQPOperationBinding.builder().cc(List.of("key")).build(), operationBinding.get("amqp"));
+            assertEquals(AMQPOperationBinding.builder().cc(List.of("queue-1")).build(), operationBinding.get("amqp"));
         }
 
         @Test
@@ -173,13 +110,190 @@ class RabbitListenerUtilTest {
             assertEquals(new AMQPMessageBinding(), messageBinding.get("amqp"));
         }
 
-        private static class ClassWithFullRabbitListenerConfiguration {
+        private static class ClassWithQueuesConfiguration {
+
+            @RabbitListener(queues = "${queue-1}")
+            private void methodWithAnnotation(String payload) {}
+        }
+    }
+
+    @Nested
+    class BindingsConfiguration {
+        @Test
+        void getChannelName() {
+            // given
+            RabbitListener annotation = getAnnotation(ClassWithBindingsConfiguration.class);
+            StringValueResolver resolver = mock(StringValueResolver.class);
+            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+
+            // when
+            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+
+            // then
+            assertEquals("queue-1", channelName);
+        }
+
+        @Test
+        void buildChannelBinding() {
+            // given
+            RabbitListener annotation = getAnnotation(ClassWithBindingsConfiguration.class);
+            StringValueResolver resolver = mock(StringValueResolver.class);
+            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            Map<String, Binding> bindingsMap = emptyMap();
+
+            // when
+            Map<String, ? extends ChannelBinding> channelBinding =
+                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, bindingsMap);
+
+            // then
+            assertEquals(1, channelBinding.size());
+            assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
+            assertEquals(
+                    AMQPChannelBinding.builder()
+                            .is("routingKey")
+                            .exchange(AMQPChannelBinding.ExchangeProperties.builder()
+                                    .name("exchange-name")
+                                    .type(ExchangeTypes.DIRECT)
+                                    .durable(true)
+                                    .autoDelete(false)
+                                    .build())
+                            .queue(AMQPChannelBinding.QueueProperties.builder()
+                                    .name("queue-1")
+                                    .durable(true)
+                                    .autoDelete(false)
+                                    .exclusive(false)
+                                    .vhost("/")
+                                    .build())
+                            .build(),
+                    channelBinding.get("amqp"));
+        }
+
+        @Test
+        void buildOperationBinding() {
+            // given
+            RabbitListener annotation = getAnnotation(ClassWithBindingsConfiguration.class);
+            StringValueResolver resolver = mock(StringValueResolver.class);
+            Map<String, Binding> bindingsMap = emptyMap();
+
+            // when
+            Map<String, ? extends OperationBinding> operationBinding =
+                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, bindingsMap);
+
+            // then
+            assertEquals(1, operationBinding.size());
+            assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
+            assertEquals(AMQPOperationBinding.builder().cc(List.of("")).build(), operationBinding.get("amqp"));
+        }
+
+        @Test
+        void buildMessageBinding() {
+            // when
+            Map<String, ? extends MessageBinding> messageBinding = RabbitListenerUtil.buildMessageBinding();
+
+            // then
+            assertEquals(1, messageBinding.size());
+            assertEquals(Sets.newTreeSet("amqp"), messageBinding.keySet());
+            assertEquals(new AMQPMessageBinding(), messageBinding.get("amqp"));
+        }
+
+        private static class ClassWithBindingsConfiguration {
+
+            @RabbitListener(
+                    bindings = {
+                        @QueueBinding(exchange = @Exchange(name = "exchange-name"), value = @Queue(name = "${queue-1}"))
+                    })
+            private void methodWithAnnotation(String payload) {}
+        }
+    }
+
+    @Nested
+    class BindingWithRoutingKeyConfiguration {
+        @Test
+        void getChannelName() {
+            // given
+            RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
+            StringValueResolver resolver = mock(StringValueResolver.class);
+            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
+
+            // when
+            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+
+            // then
+            assertEquals("routing-key", channelName);
+        }
+
+        @Test
+        void buildChannelBinding() {
+            // given
+            RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
+            StringValueResolver resolver = mock(StringValueResolver.class);
+            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            Map<String, Binding> bindingsMap = emptyMap();
+
+            // when
+            Map<String, ? extends ChannelBinding> channelBinding =
+                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, bindingsMap);
+
+            // then
+            assertEquals(1, channelBinding.size());
+            assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
+            assertEquals(
+                    AMQPChannelBinding.builder()
+                            .is("routingKey")
+                            .exchange(AMQPChannelBinding.ExchangeProperties.builder()
+                                    .name("exchange-name")
+                                    .type(ExchangeTypes.DIRECT)
+                                    .durable(true)
+                                    .autoDelete(false)
+                                    .build())
+                            .queue(AMQPChannelBinding.QueueProperties.builder()
+                                    .name("queue-1")
+                                    .durable(true)
+                                    .autoDelete(false)
+                                    .exclusive(false)
+                                    .vhost("/")
+                                    .build())
+                            .build(),
+                    channelBinding.get("amqp"));
+        }
+
+        @Test
+        void buildOperationBinding() {
+            // given
+            RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
+            StringValueResolver resolver = mock(StringValueResolver.class);
+            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
+            Map<String, Binding> bindingsMap = emptyMap();
+
+            // when
+            Map<String, ? extends OperationBinding> operationBinding =
+                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, bindingsMap);
+
+            // then
+            assertEquals(1, operationBinding.size());
+            assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
+            assertEquals(
+                    AMQPOperationBinding.builder().cc(List.of("routing-key")).build(), operationBinding.get("amqp"));
+        }
+
+        @Test
+        void buildMessageBinding() {
+            // when
+            Map<String, ? extends MessageBinding> messageBinding = RabbitListenerUtil.buildMessageBinding();
+
+            // then
+            assertEquals(1, messageBinding.size());
+            assertEquals(Sets.newTreeSet("amqp"), messageBinding.keySet());
+            assertEquals(new AMQPMessageBinding(), messageBinding.get("amqp"));
+        }
+
+        private static class ClassWithBindingsAndRoutingKeyConfiguration {
 
             @RabbitListener(
                     bindings = {
                         @QueueBinding(
-                                exchange = @Exchange(name = "name"),
-                                key = "key",
+                                exchange = @Exchange(name = "exchange-name"),
+                                key = "${routing-key}",
                                 value = @Queue(name = "${queue-1}"))
                     })
             private void methodWithAnnotation(String payload) {}

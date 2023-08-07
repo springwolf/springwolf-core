@@ -17,6 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +56,20 @@ class ClassLevelRabbitListenerScannerIntegrationTest {
     private static final Map<String, Object> defaultChannelBinding = Map.of(
             "amqp",
             AMQPChannelBinding.builder()
-                    .is("routingKey")
+                    .is("queue")
                     .exchange(AMQPChannelBinding.ExchangeProperties.builder()
                             .name("")
+                            .durable(true)
+                            .autoDelete(false)
+                            .type(ExchangeTypes.DIRECT)
+                            .vhost("/")
+                            .build())
+                    .queue(AMQPChannelBinding.QueueProperties.builder()
+                            .name(QUEUE)
+                            .durable(true)
+                            .autoDelete(false)
+                            .exclusive(false)
+                            .vhost("/")
                             .build())
                     .build());
 

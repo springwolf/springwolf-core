@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -71,9 +72,20 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
     private static final Map<String, Object> defaultChannelBinding = Map.of(
             "amqp",
             AMQPChannelBinding.builder()
-                    .is("routingKey")
+                    .is("queue")
                     .exchange(AMQPChannelBinding.ExchangeProperties.builder()
                             .name("")
+                            .durable(true)
+                            .autoDelete(false)
+                            .type(ExchangeTypes.DIRECT)
+                            .vhost("/")
+                            .build())
+                    .queue(AMQPChannelBinding.QueueProperties.builder()
+                            .name(QUEUE)
+                            .durable(true)
+                            .autoDelete(false)
+                            .exclusive(false)
+                            .vhost("/")
                             .build())
                     .build());
 
@@ -102,10 +114,9 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
         // Then the returned collection contains the channel
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("");
-        ChannelBinding channelBinding = AMQPChannelBinding.builder()
-                .is("routingKey")
-                .exchange(properties)
-                .build();
+        properties.setType(ExchangeTypes.DIRECT);
+        properties.setAutoDelete(false);
+        properties.setDurable(true);
 
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
@@ -141,9 +152,19 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
         // Then the returned collection contains the channel
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("");
+        properties.setType(ExchangeTypes.DIRECT);
+        properties.setAutoDelete(false);
+        properties.setDurable(true);
         ChannelBinding channelBinding = AMQPChannelBinding.builder()
-                .is("routingKey")
+                .is("queue")
                 .exchange(properties)
+                .queue(AMQPChannelBinding.QueueProperties.builder()
+                        .name(QUEUE)
+                        .durable(true)
+                        .autoDelete(false)
+                        .exclusive(false)
+                        .vhost("/")
+                        .build())
                 .build();
 
         Message message = Message.builder()
@@ -177,9 +198,19 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
 
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("name");
+        properties.setType(ExchangeTypes.TOPIC);
+        properties.setAutoDelete(false);
+        properties.setDurable(true);
         ChannelBinding channelBinding = AMQPChannelBinding.builder()
                 .is("routingKey")
                 .exchange(properties)
+                .queue(AMQPChannelBinding.QueueProperties.builder()
+                        .name(QUEUE)
+                        .durable(true)
+                        .autoDelete(false)
+                        .exclusive(false)
+                        .vhost("/")
+                        .build())
                 .build();
 
         Message message = Message.builder()
@@ -192,7 +223,7 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("test-queue_publish_methodWithAnnotation1")
+                .operationId("key_publish_methodWithAnnotation1")
                 .bindings(Map.of(
                         "amqp",
                         AMQPOperationBinding.builder()
@@ -206,7 +237,7 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
                 .publish(operation)
                 .build();
 
-        assertThat(actualChannelItems).containsExactly(Map.entry(QUEUE, expectedChannelItem));
+        assertThat(actualChannelItems).containsExactly(Map.entry("key", expectedChannelItem));
     }
 
     @Test
@@ -217,9 +248,19 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
 
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("binding-bean-exchange");
+        properties.setType(ExchangeTypes.DIRECT);
+        properties.setAutoDelete(false);
+        properties.setDurable(true);
         ChannelBinding channelBinding = AMQPChannelBinding.builder()
                 .is("routingKey")
                 .exchange(properties)
+                .queue(AMQPChannelBinding.QueueProperties.builder()
+                        .name("binding-bean-queue")
+                        .durable(true)
+                        .autoDelete(false)
+                        .exclusive(false)
+                        .vhost("/")
+                        .build())
                 .build();
 
         Message message = Message.builder()
@@ -274,10 +315,9 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
         // @Payload
         AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
         properties.setName("");
-        ChannelBinding channelBinding = AMQPChannelBinding.builder()
-                .is("routingKey")
-                .exchange(properties)
-                .build();
+        properties.setType(ExchangeTypes.DIRECT);
+        properties.setAutoDelete(false);
+        properties.setDurable(true);
 
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())

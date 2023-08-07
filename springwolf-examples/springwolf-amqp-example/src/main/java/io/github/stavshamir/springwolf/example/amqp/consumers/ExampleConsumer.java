@@ -33,8 +33,13 @@ public class ExampleConsumer {
     @RabbitListener(
             bindings = {
                 @QueueBinding(
-                        exchange = @Exchange(name = "name", type = ExchangeTypes.TOPIC),
-                        value = @Queue(name = "example-bindings-queue", durable = "false"),
+                        exchange = @Exchange(name = "example-bindings-exchange-name", type = ExchangeTypes.TOPIC),
+                        value =
+                                @Queue(
+                                        name = "example-bindings-queue",
+                                        durable = "false",
+                                        exclusive = "true",
+                                        autoDelete = "true"),
                         key = "example-topic-routing-key")
             })
     public void bindingsExample(AnotherPayloadDto payload) {
