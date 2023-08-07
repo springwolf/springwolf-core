@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.core.util.Json;
+import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,11 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -60,6 +64,17 @@ class DefaultSchemasServiceTest {
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
         String expected = jsonResource("/schemas/array-definitions.json");
+
+        System.out.println("Got: " + actualDefinitions);
+        assertEquals(expected, actualDefinitions);
+    }
+
+    @Test
+    void getComplexDefinitions() throws IOException {
+        schemasService.register(ComplexFoo.class);
+
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String expected = jsonResource("/schemas/complex-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -126,5 +141,41 @@ class DefaultSchemasServiceTest {
     private static class ClassWithSchemaAnnotation {
         private String s;
         private boolean b;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class ComplexFoo {
+        private String s;
+        private Boolean b;
+        private Integer i;
+        private Float f;
+        private Double d;
+        private OffsetDateTime dt;
+        private Nested n;
+
+        @Data
+        @NoArgsConstructor
+        private static class Nested {
+            private String ns;
+            private List<Integer> nli;
+            private Set<MyClass> nsm;
+            private Map<Float, MyClass> nmfm;
+            private Cyclic nc;
+
+            @Data
+            @NoArgsConstructor
+            private static class Cyclic {
+
+                @Nullable
+                private Cyclic cyclic;
+            }
+
+            @Data
+            @NoArgsConstructor
+            private static class MyClass {
+                private String s;
+            }
+        }
     }
 }

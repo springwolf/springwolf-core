@@ -10,8 +10,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR;
@@ -45,7 +48,10 @@ public class ExampleJsonGenerator implements ExampleGenerator {
     }
 
     static String buildSchema(Schema schema, Map<String, Schema> definitions) {
+        return buildSchemaInternal(schema, definitions, new HashSet<>());
+    }
 
+    private static String buildSchemaInternal(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         String exampleValue = ExampleJsonGenerator.getExampleValue(schema);
         if (exampleValue != null) {
             return exampleValue;
@@ -58,15 +64,15 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             if (resolvedSchema == null) {
                 throw new ExampleGeneratingException("Missing schema during example json generation: " + schemaName);
             }
-            return buildSchema(resolvedSchema, definitions);
+            return buildSchemaInternal(resolvedSchema, definitions, visited);
         }
 
         return switch (type) {
-            case "array" -> ExampleJsonGenerator.handleArraySchema(schema, definitions);
+            case "array" -> ExampleJsonGenerator.handleArraySchema(schema, definitions, visited);
             case "boolean" -> DEFAULT_BOOLEAN_EXAMPLE;
             case "integer" -> DEFAULT_INTEGER_EXAMPLE;
             case "number" -> DEFAULT_NUMBER_EXAMPLE;
-            case "object" -> ExampleJsonGenerator.handleObject(schema, definitions);
+            case "object" -> ExampleJsonGenerator.handleObject(schema, definitions, visited);
             case "string" -> ExampleJsonGenerator.handleStringSchema(schema);
             default -> "unknown schema type: " + type;
         };
@@ -86,10 +92,10 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         return null;
     }
 
-    private static String handleArraySchema(Schema schema, Map<String, Schema> definitions) {
+    private static String handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        sb.append(buildSchema(schema.getItems(), definitions));
+        sb.append(buildSchemaInternal(schema.getItems(), definitions, visited));
         sb.append("]");
         return sb.toString();
     }
@@ -117,8 +123,9 @@ public class ExampleJsonGenerator implements ExampleGenerator {
     }
 
     private static String getFirstEnumValue(Schema schema) {
-        if (schema.getEnum() != null) {
-            Optional<String> firstEnumEntry = schema.getEnum().stream().findFirst();
+        List<String> enums = schema.getEnum();
+        if (enums != null) {
+            Optional<String> firstEnumEntry = enums.stream().findFirst();
             if (firstEnumEntry.isPresent()) {
                 return firstEnumEntry.get();
             }
@@ -126,18 +133,34 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         return null;
     }
 
-    private static String handleObject(Schema schema, Map<String, Schema> definitions) {
+    private static String handleObject(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+        Map<String, Schema> properties = schema.getProperties();
+        if (properties != null) {
+
+            if (!visited.contains(schema)) {
+                visited.add(schema);
+                String example = handleObjectProperties(properties, definitions, visited);
+                visited.remove(schema);
+
+                return example;
+            }
+        }
+        // i.e. A MapSchema is type=object, but has properties=null
+        return "{}";
+    }
+
+    private static String handleObjectProperties(
+            Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
 
-        Map<String, Schema> properties = schema.getProperties();
         String data = properties.entrySet().stream()
                 .map(entry -> {
                     StringBuilder propertyStringBuilder = new StringBuilder();
                     propertyStringBuilder.append("\"");
                     propertyStringBuilder.append(entry.getKey());
                     propertyStringBuilder.append("\": ");
-                    propertyStringBuilder.append(buildSchema(entry.getValue(), definitions));
+                    propertyStringBuilder.append(buildSchemaInternal(entry.getValue(), definitions, visited));
                     return propertyStringBuilder.toString();
                 })
                 .sorted()
