@@ -2,6 +2,8 @@ package io.github.stavshamir.springwolf.example.amqp.consumers;
 
 import io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto;
+import io.github.stavshamir.springwolf.example.amqp.producers.ExampleProducer;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -12,11 +14,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ExampleConsumer {
+
+    private final ExampleProducer exampleProducer;
 
     @RabbitListener(queues = "example-queue")
     public void receiveExamplePayload(ExamplePayloadDto payload) {
         log.info("Received new message in example-queue: {}", payload.toString());
+        exampleProducer.sendMessage(payload);
     }
 
     @RabbitListener(queues = "another-queue")
@@ -28,7 +34,8 @@ public class ExampleConsumer {
             bindings = {
                 @QueueBinding(
                         exchange = @Exchange(name = "name", type = ExchangeTypes.TOPIC),
-                        value = @Queue(name = "example-bindings-queue"))
+                        value = @Queue(name = "example-bindings-queue", durable = "false"),
+                        key = "example-topic-routing-key")
             })
     public void bindingsExample(AnotherPayloadDto payload) {
         log.info("Received new message in example-bindings-queue: {}", payload.toString());

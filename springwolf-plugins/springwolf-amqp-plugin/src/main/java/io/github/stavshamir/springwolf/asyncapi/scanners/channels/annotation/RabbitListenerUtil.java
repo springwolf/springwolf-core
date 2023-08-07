@@ -89,6 +89,9 @@ public class RabbitListenerUtil {
 
     private static List<String> getRoutingKeys(
             RabbitListener annotation, StringValueResolver resolver, Map<String, Binding> bindingsMap) {
+
+        // exchange name = "" -> exchange name = queue name
+
         /*
            The routing key is taken from the binding. As the key field in the @QueueBinding can be an empty array,
            it is set as an empty String in that case.

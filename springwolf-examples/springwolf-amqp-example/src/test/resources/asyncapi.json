@@ -52,7 +52,10 @@
       },
       "bindings": {
         "amqp": {
-          "is": "routingKey",
+          "is": "queue",
+          "queue": {
+            "name": "another-queue"
+          },
           "exchange": {
             "name": "",
             "vhost": "/"
@@ -258,7 +261,7 @@
         }
       }
     },
-    "example-topic-queue": {
+    "example-topic-routing-key": {
       "publish": {
         "operationId": "example-topic-queue_publish_bindingsBeanExample",
         "description": "Auto-generated description",
@@ -292,7 +295,17 @@
           "is": "routingKey",
           "exchange": {
             "name": "example-topic-exchange",
-            "vhost": "/"
+            "vhost": "/",
+            "durable": true,
+            "type": "topic",
+            "autoDelete": false
+          },
+          "queue": {
+            "name": "example-topic-queue",
+            "vhost": "/",
+            "durable": true,
+            "exclusive": "true",
+            "autoDelete": false
           },
           "bindingVersion": "0.2.0"
         }
