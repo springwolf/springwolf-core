@@ -62,7 +62,7 @@
           },
           "queue": {
             "name": "another-queue",
-            "durable": true,
+            "durable": false,
             "exclusive": false,
             "autoDelete": false,
             "vhost": "/"
@@ -229,7 +229,7 @@
           },
           "queue": {
             "name": "example-queue",
-            "durable": true,
+            "durable": false,
             "exclusive": false,
             "autoDelete": false,
             "vhost": "/"
@@ -272,7 +272,7 @@
           "is": "routingKey",
           "exchange": {
             "name": "example-topic-exchange",
-            "type": "direct",
+            "type": "topic",
             "durable": true,
             "autoDelete": false,
             "vhost": "/"

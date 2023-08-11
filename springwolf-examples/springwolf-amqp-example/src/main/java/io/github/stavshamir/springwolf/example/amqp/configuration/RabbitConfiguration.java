@@ -32,7 +32,7 @@ public class RabbitConfiguration {
 
     @Bean
     public Queue exampleBindingsQueue() {
-        return new Queue("example-bindings-queue", false);
+        return new Queue("example-bindings-queue", false, true, true);
     }
 
     @Bean
