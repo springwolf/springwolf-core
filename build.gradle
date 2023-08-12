@@ -52,6 +52,8 @@ allprojects {
         java {
             palantirJavaFormat()
 
+            licenseHeader("// SPDX-License-Identifier: Apache-2.0", "package|import|public")
+
             importOrder('', 'javax', 'java', '\\#')
             replaceRegex("Remove wildcard imports", "import( static)?\\s+[^*\\s]+\\*;(\\r\\n|\\r|\\n)", "\$2")
             removeUnusedImports()
