@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
 import { AsyncApiService } from "../shared/asyncapi.service";
 import { Channel, CHANNEL_ANCHOR_PREFIX } from "../shared/models/channel.model";

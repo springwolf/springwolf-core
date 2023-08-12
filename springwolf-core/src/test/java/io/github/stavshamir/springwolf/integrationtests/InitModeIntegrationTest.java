@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.integrationtests;
 
 import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.configuration;
 
 import com.asyncapi.v2._6_0.model.info.Contact;

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.producer;
 
 import io.awspring.cloud.sqs.operations.SqsTemplate;

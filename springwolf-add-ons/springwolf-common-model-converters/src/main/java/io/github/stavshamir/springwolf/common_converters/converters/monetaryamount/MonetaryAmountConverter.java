@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.common_converters.converters.monetaryamount;
 
 import com.fasterxml.jackson.databind.JavaType;

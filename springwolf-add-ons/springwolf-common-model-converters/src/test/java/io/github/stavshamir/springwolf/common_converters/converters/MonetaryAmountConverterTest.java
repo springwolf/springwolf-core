@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.common_converters.converters;
 
 import io.github.stavshamir.springwolf.common_converters.converters.monetaryamount.MonetaryAmountConverter;

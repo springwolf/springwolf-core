@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 import { AsyncApi } from "./models/asyncapi.model";
 import { Server } from "./models/server.model";
 import {

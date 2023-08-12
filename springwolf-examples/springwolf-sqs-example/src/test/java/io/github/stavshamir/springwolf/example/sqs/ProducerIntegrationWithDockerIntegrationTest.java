@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.sqs;
 
 import io.github.stavshamir.springwolf.example.sqs.consumers.ExampleConsumer;

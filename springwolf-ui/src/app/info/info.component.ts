@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
 import { AsyncApi } from "../shared/models/asyncapi.model";
 import { Info } from "../shared/models/info.model";

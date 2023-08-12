@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 import { Example } from "./example.model";
 
 export interface Schema {

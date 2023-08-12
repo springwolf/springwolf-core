@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.kafka.producers;
 
 import io.github.stavshamir.springwolf.example.kafka.configuration.KafkaConfiguration;
