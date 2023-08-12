@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -41,6 +43,7 @@ public class RabbitListenerUtil {
         return Stream.concat(annotationQueueNames, annotationBindingChannelNames)
                 .map(resolver::resolveStringValue)
                 .filter(Objects::nonNull)
+                .peek(queue -> log.debug("Resolved channel name: {}", queue))
                 .findFirst()
                 .orElseThrow(
                         () -> new IllegalArgumentException(
@@ -55,6 +58,7 @@ public class RabbitListenerUtil {
         return Stream.concat(annotationQueueNames, annotationBindingChannelNames)
                 .map(resolver::resolveStringValue)
                 .filter(Objects::nonNull)
+                .peek(queue -> log.debug("Resolved queue name: {}", queue))
                 .findFirst()
                 .orElseThrow(
                         () -> new IllegalArgumentException(
@@ -215,5 +219,19 @@ public class RabbitListenerUtil {
     public record RabbitListenerUtilContext(
             Map<String, org.springframework.amqp.core.Queue> queueMap,
             Map<String, Exchange> exchangeMap,
-            Map<String, Binding> bindingMap) {}
+            Map<String, Binding> bindingMap) {
+
+        static RabbitListenerUtilContext create(
+                List<org.springframework.amqp.core.Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
+            Map<String, org.springframework.amqp.core.Queue> queueMap = queues.stream()
+                    .collect(Collectors.toMap(
+                            org.springframework.amqp.core.Queue::getName, Function.identity(), (e1, e2) -> e1));
+            Map<String, Exchange> exchangeMap = exchanges.stream()
+                    .collect(Collectors.toMap(Exchange::getName, Function.identity(), (e1, e2) -> e1));
+            Map<String, Binding> bindingMap = bindings.stream()
+                    .filter(Binding::isDestinationQueue)
+                    .collect(Collectors.toMap(Binding::getDestination, Function.identity(), (e1, e2) -> e1));
+            return new RabbitListenerUtil.RabbitListenerUtilContext(queueMap, exchangeMap, bindingMap);
+        }
+    }
 }

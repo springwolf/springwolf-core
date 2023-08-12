@@ -19,8 +19,6 @@ import org.springframework.util.StringValueResolver;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED;
 
@@ -35,14 +33,7 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
     private StringValueResolver resolver;
 
     public MethodLevelRabbitListenerScanner(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
-        Map<String, Queue> queueMap =
-                queues.stream().collect(Collectors.toMap(Queue::getName, Function.identity(), (e1, e2) -> e1));
-        Map<String, Exchange> exchangeMap =
-                exchanges.stream().collect(Collectors.toMap(Exchange::getName, Function.identity(), (e1, e2) -> e1));
-        Map<String, Binding> bindingMap = bindings.stream()
-                .filter(Binding::isDestinationQueue)
-                .collect(Collectors.toMap(Binding::getDestination, Function.identity(), (e1, e2) -> e1));
-        context = new RabbitListenerUtil.RabbitListenerUtilContext(queueMap, exchangeMap, bindingMap);
+        context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
     }
 
     @Override
