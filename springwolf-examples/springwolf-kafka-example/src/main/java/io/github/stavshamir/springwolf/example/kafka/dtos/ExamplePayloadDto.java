@@ -1,16 +1,16 @@
 package io.github.stavshamir.springwolf.example.kafka.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 @Schema(description = "Example payload model")
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExamplePayloadDto {
     @Schema(description = "Some string field", example = "some string value", requiredMode = REQUIRED)
     private String someString;
@@ -25,13 +25,5 @@ public class ExamplePayloadDto {
         FOO1,
         FOO2,
         FOO3
-    }
-
-    @Override
-    public String toString() {
-        return "ExamplePayloadDto{" + "someString='"
-                + someString + '\'' + ", someLong="
-                + someLong + ", someEnum="
-                + someEnum + '}';
     }
 }

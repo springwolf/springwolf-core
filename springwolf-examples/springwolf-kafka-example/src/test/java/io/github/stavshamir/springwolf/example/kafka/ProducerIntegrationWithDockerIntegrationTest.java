@@ -71,10 +71,7 @@ public class ProducerIntegrationWithDockerIntegrationTest {
     void producerCanUseSpringwolfConfigurationToSendMessage() {
         Map<String, String> headers = new HashMap<>();
         headers.put("header-key", "header-value");
-        ExamplePayloadDto payload = new ExamplePayloadDto();
-        payload.setSomeString("foo");
-        payload.setSomeLong(5);
-        payload.setSomeEnum(FOO1);
+        ExamplePayloadDto payload = new ExamplePayloadDto("foo", 5, FOO1);
 
         springwolfKafkaProducer.send("example-topic", "key", headers, payload);
         verify(exampleService, timeout(10000)).doSomething(payload);
