@@ -36,6 +36,10 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
     private static final String DEFAULT_STRING_EXAMPLE = "\"string\"";
 
+    private static String DEFAULT_UNKNOWN_SCHAME_EXAMPLE(String type) {
+        return "\"unknown schema type: " + type + "\"";
+    }
+
     @Override
     public Object fromSchema(Schema schema, Map<String, Schema> definitions) {
         try {
@@ -57,9 +61,9 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             return exampleValue;
         }
 
-        String type = schema.getType();
-        if (type == null) {
-            String schemaName = StringUtils.substringAfterLast(schema.get$ref(), "/");
+        String ref = schema.get$ref();
+        if (ref != null) {
+            String schemaName = StringUtils.substringAfterLast(ref, "/");
             Schema resolvedSchema = definitions.get(schemaName);
             if (resolvedSchema == null) {
                 throw new ExampleGeneratingException("Missing schema during example json generation: " + schemaName);
@@ -67,6 +71,7 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             return buildSchemaInternal(resolvedSchema, definitions, visited);
         }
 
+        String type = schema.getType();
         return switch (type) {
             case "array" -> ExampleJsonGenerator.handleArraySchema(schema, definitions, visited);
             case "boolean" -> DEFAULT_BOOLEAN_EXAMPLE;
@@ -74,7 +79,7 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             case "number" -> DEFAULT_NUMBER_EXAMPLE;
             case "object" -> ExampleJsonGenerator.handleObject(schema, definitions, visited);
             case "string" -> ExampleJsonGenerator.handleStringSchema(schema);
-            default -> "unknown schema type: " + type;
+            default -> DEFAULT_UNKNOWN_SCHAME_EXAMPLE(type);
         };
     }
 

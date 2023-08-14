@@ -207,6 +207,21 @@ class ExampleJsonGeneratorTest {
         }
 
         @Test
+        void type_unknown_schema() {
+            class TestSchema extends Schema<StringSchema> {
+                TestSchema() {
+                    super("test-schema", (String) null);
+                }
+            }
+
+            TestSchema schema = new TestSchema();
+
+            String actual = ExampleJsonGenerator.buildSchema(schema, emptyMap());
+
+            assertThat(actual).isEqualTo("\"unknown schema type: test-schema\"");
+        }
+
+        @Test
         void type_primitive_array() {
             ArraySchema schema = new ArraySchema();
             schema.setItems(new StringSchema());
