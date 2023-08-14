@@ -35,9 +35,15 @@ public class ExampleJsonGenerator implements ExampleGenerator {
     private static final String DEFAULT_BINARY_EXAMPLE =
             "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
     private static final String DEFAULT_STRING_EXAMPLE = "\"string\"";
+    public static final String DEFAULT_EMAIL_EXAMPLE = "\"example@example.com\"";
+    public static final String DEFAULT_UUID_EXAMPLE = "\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"";
 
-    private static String DEFAULT_UNKNOWN_SCHAME_EXAMPLE(String type) {
+    private static String DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(String type) {
         return "\"unknown schema type: " + type + "\"";
+    }
+
+    private static String DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(String format) {
+        return "\"unknown string schema format: " + format + "\"";
     }
 
     @Override
@@ -79,7 +85,7 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             case "number" -> DEFAULT_NUMBER_EXAMPLE;
             case "object" -> ExampleJsonGenerator.handleObject(schema, definitions, visited);
             case "string" -> ExampleJsonGenerator.handleStringSchema(schema);
-            default -> DEFAULT_UNKNOWN_SCHAME_EXAMPLE(type);
+            default -> DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(type);
         };
     }
 
@@ -120,10 +126,12 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         return switch (format) {
             case "date" -> DEFUALT_DATE_EXAMPLE;
             case "date-time" -> DEFAULT_DATE_TIME_EXAMPLE;
+            case "email" -> DEFAULT_EMAIL_EXAMPLE;
             case "password" -> DEFAULT_PASSWORD_EXAMPLE;
             case "byte" -> DEFAULT_BYTE_EXAMPLE;
             case "binary" -> DEFAULT_BINARY_EXAMPLE;
-            default -> "unknown type format: " + format;
+            case "uuid" -> DEFAULT_UUID_EXAMPLE;
+            default -> DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(format);
         };
     }
 

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -161,6 +162,8 @@ class DefaultSchemasServiceTest {
             private List<Integer> nli;
             private Set<MyClass> nsm;
             private Map<Float, MyClass> nmfm;
+            private UUID nu;
+            private byte[] nba;
             private Cyclic nc;
 
             @Data

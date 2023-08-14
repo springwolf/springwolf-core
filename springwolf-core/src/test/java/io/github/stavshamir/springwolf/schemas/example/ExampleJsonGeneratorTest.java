@@ -5,12 +5,14 @@ import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
+import io.swagger.v3.oas.models.media.EmailSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.PasswordSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.media.UUIDSchema;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -198,12 +200,40 @@ class ExampleJsonGeneratorTest {
         }
 
         @Test
+        void type_string_format_email() {
+            EmailSchema schema = new EmailSchema();
+
+            String actual = ExampleJsonGenerator.buildSchema(schema, emptyMap());
+
+            assertThat(actual).isEqualTo("\"example@example.com\"");
+        }
+
+        @Test
         void type_string_format_password() {
             PasswordSchema schema = new PasswordSchema();
 
             String actual = ExampleJsonGenerator.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"string-password\"");
+        }
+
+        @Test
+        void type_string_format_uuid() {
+            UUIDSchema schema = new UUIDSchema();
+
+            String actual = ExampleJsonGenerator.buildSchema(schema, emptyMap());
+
+            assertThat(actual).isEqualTo("\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"");
+        }
+
+        @Test
+        void type_string_format_unknown() {
+            StringSchema schema = new StringSchema();
+            schema.setFormat("unknown");
+
+            String actual = ExampleJsonGenerator.buildSchema(schema, emptyMap());
+
+            assertThat(actual).isEqualTo("\"unknown string schema format: unknown\"");
         }
 
         @Test
