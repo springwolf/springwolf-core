@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -28,15 +28,15 @@ public class ExampleJsonGenerator implements ExampleGenerator {
     private static final String DEFAULT_NUMBER_EXAMPLE = "1.1";
     private static final String DEFAULT_INTEGER_EXAMPLE = "0";
     private static final String DEFAULT_BOOLEAN_EXAMPLE = "true";
-    private static final String DEFUALT_DATE_EXAMPLE = "\"2015-07-20\"";
+    private static final String DEFAULT_DATE_EXAMPLE = "\"2015-07-20\"";
     private static final String DEFAULT_DATE_TIME_EXAMPLE = "\"2015-07-20T15:49:04-07:00\"";
     private static final String DEFAULT_PASSWORD_EXAMPLE = "\"string-password\"";
     private static final String DEFAULT_BYTE_EXAMPLE = "\"YmFzZTY0LWV4YW1wbGU=\"";
     private static final String DEFAULT_BINARY_EXAMPLE =
             "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
     private static final String DEFAULT_STRING_EXAMPLE = "\"string\"";
-    public static final String DEFAULT_EMAIL_EXAMPLE = "\"example@example.com\"";
-    public static final String DEFAULT_UUID_EXAMPLE = "\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"";
+    private static final String DEFAULT_EMAIL_EXAMPLE = "\"example@example.com\"";
+    private static final String DEFAULT_UUID_EXAMPLE = "\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"";
 
     private static String DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(String type) {
         return "\"unknown schema type: " + type + "\"";
@@ -62,7 +62,7 @@ public class ExampleJsonGenerator implements ExampleGenerator {
     }
 
     private static String buildSchemaInternal(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        String exampleValue = ExampleJsonGenerator.getExampleValue(schema);
+        String exampleValue = ExampleJsonGenerator.getExampleValueFromSchemaAnnotation(schema);
         if (exampleValue != null) {
             return exampleValue;
         }
@@ -89,18 +89,34 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         };
     }
 
-    private static String getExampleValue(Schema schema) {
+    private static String getExampleValueFromSchemaAnnotation(Schema schema) {
         Object exampleValue = schema.getExample();
-        if (exampleValue instanceof BigDecimal) {
-            return exampleValue.toString();
-        } else if (exampleValue instanceof Boolean) {
-            return exampleValue.toString();
-        } else if (exampleValue instanceof Number) {
-            return exampleValue.toString();
-        } else if (exampleValue instanceof String) {
-            return "\"" + exampleValue + "\"";
+        if (exampleValue == null) {
+            return null;
         }
-        return null;
+
+        // Handle special types (i.e. map) with custom @Schema annotation and specified example value
+        Object additionalProperties = schema.getAdditionalProperties();
+        if (additionalProperties instanceof StringSchema) {
+            StringSchema additionalPropertiesSchema = (StringSchema) additionalProperties;
+            Object exampleValueString = additionalPropertiesSchema.getExample();
+            if (exampleValueString != null) {
+                return (String) exampleValueString;
+            }
+        }
+
+        // schema is a map of properties from a nested object, whose example cannot be inferred
+        if (exampleValue instanceof Map) {
+            return null;
+        }
+
+        // exampleValue is represented in their native type
+        if (exampleValue instanceof Boolean || exampleValue instanceof Number) {
+            return exampleValue.toString();
+        }
+
+        // exampleValue (i.e. OffsetDateTime) is represented as string
+        return "\"" + exampleValue + "\"";
     }
 
     private static String handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
@@ -124,7 +140,7 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         }
 
         return switch (format) {
-            case "date" -> DEFUALT_DATE_EXAMPLE;
+            case "date" -> DEFAULT_DATE_EXAMPLE;
             case "date-time" -> DEFAULT_DATE_TIME_EXAMPLE;
             case "email" -> DEFAULT_EMAIL_EXAMPLE;
             case "password" -> DEFAULT_PASSWORD_EXAMPLE;
