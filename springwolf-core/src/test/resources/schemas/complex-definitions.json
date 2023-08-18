@@ -1,0 +1,130 @@
+{
+  "ComplexFoo" : {
+    "type" : "object",
+    "properties" : {
+      "b" : {
+        "type" : "boolean"
+      },
+      "d" : {
+        "type" : "number",
+        "format" : "double"
+      },
+      "dt" : {
+        "type" : "string",
+        "format" : "date-time"
+      },
+      "f" : {
+        "type" : "number",
+        "format" : "float"
+      },
+      "i" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "n" : {
+        "$ref" : "#/components/schemas/Nested"
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "example" : {
+      "b" : true,
+      "d" : 1.1,
+      "dt" : "2015-07-20T15:49:04-07:00",
+      "f" : 1.1,
+      "i" : 0,
+      "n" : {
+        "nba" : [ "YmFzZTY0LWV4YW1wbGU=" ],
+        "nc" : {
+          "cyclic" : { }
+        },
+        "nli" : [ 0 ],
+        "nmfm" : { },
+        "ns" : "string",
+        "nsm" : [ {
+          "s" : "string"
+        } ],
+        "nu" : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      },
+      "s" : "string"
+    }
+  },
+  "Cyclic" : {
+    "type" : "object",
+    "properties" : {
+      "cyclic" : {
+        "$ref" : "#/components/schemas/Cyclic"
+      }
+    },
+    "example" : {
+      "cyclic" : { }
+    }
+  },
+  "MyClass" : {
+    "type" : "object",
+    "properties" : {
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "example" : {
+      "s" : "string"
+    }
+  },
+  "Nested" : {
+    "type" : "object",
+    "properties" : {
+      "nba" : {
+        "type" : "array",
+        "items" : {
+          "type" : "string",
+          "format" : "byte"
+        }
+      },
+      "nc" : {
+        "$ref" : "#/components/schemas/Cyclic"
+      },
+      "nli" : {
+        "type" : "array",
+        "items" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "nmfm" : {
+        "type" : "object",
+        "additionalProperties" : {
+          "$ref" : "#/components/schemas/MyClass"
+        }
+      },
+      "ns" : {
+        "type" : "string"
+      },
+      "nsm" : {
+        "uniqueItems" : true,
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/MyClass"
+        }
+      },
+      "nu" : {
+        "type" : "string",
+        "format" : "uuid"
+      }
+    },
+    "example" : {
+      "nba" : [ "YmFzZTY0LWV4YW1wbGU=" ],
+      "nc" : {
+        "cyclic" : { }
+      },
+      "nli" : [ 0 ],
+      "nmfm" : { },
+      "ns" : "string",
+      "nsm" : [ {
+        "s" : "string"
+      } ],
+      "nu" : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    }
+  }
+}
