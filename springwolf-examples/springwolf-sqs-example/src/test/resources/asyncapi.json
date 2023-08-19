@@ -21,11 +21,13 @@
     }
   },
   "channels": {
-    "example-producer-channel-publisher": {
+    "another-queue": {
       "subscribe": {
-        "operationId": "example-producer-channel-publisher_subscribe",
+        "operationId": "another-queue_subscribe",
         "description": "Custom, optional description defined in the AsyncPublisher annotation",
-        "bindings": { },
+        "bindings": {
+          "sqs": { }
+        },
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
@@ -39,6 +41,53 @@
           },
           "bindings": { }
         }
+      },
+      "publish": {
+        "operationId": "another-queue_publish_receiveAnotherPayload",
+        "description": "Auto-generated description",
+        "bindings": {
+          "sqs": { }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
+          "payload": {
+            "$ref": "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "sqs": { }
+          }
+        }
+      }
+    },
+    "example-queue": {
+      "publish": {
+        "operationId": "example-queue_publish_receiveExamplePayload",
+        "description": "Auto-generated description",
+        "bindings": {
+          "sqs": { }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
+          "payload": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "sqs": { }
+          }
+        }
+      },
+      "bindings": {
+        "sqs": { }
       }
     }
   },

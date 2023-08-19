@@ -1,15 +1,15 @@
 package io.github.stavshamir.springwolf.configuration;
 
+import io.awspring.cloud.sqs.operations.SqsTemplate;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
-import io.github.stavshamir.springwolf.asyncapi.SpringwolfAmqpController;
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfAmqpConfigProperties;
+import io.github.stavshamir.springwolf.asyncapi.SpringwolfSqsController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfSqsConfigProperties;
+import io.github.stavshamir.springwolf.producer.SpringwolfSqsProducer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,13 +22,12 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SpringwolfAmqpProducerConfigurationIntegrationTest {
+public class SpringwolfSqsProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
     @ContextConfiguration(
-            classes = {DefaultAsyncApiDocketService.class, SpringwolfAmqpProducer.class, SpringwolfAmqpController.class
-            })
-    @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfAmqpConfigProperties.class})
+            classes = {DefaultAsyncApiDocketService.class, SpringwolfSqsProducer.class, SpringwolfSqsController.class})
+    @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfSqsConfigProperties.class})
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
@@ -37,29 +36,28 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
                 "springwolf.docket.servers.test-protocol.protocol=test",
                 "springwolf.docket.servers.test-protocol.url=some-server:1234",
-                "springwolf.plugin.amqp.publishing.enabled=true"
+                "springwolf.plugin.sqs.publishing.enabled=true"
             })
-    @MockBeans(value = {@MockBean(AsyncApiService.class), @MockBean(RabbitTemplate.class)})
+    @MockBeans(value = {@MockBean(AsyncApiService.class), @MockBean(SqsTemplate.class)})
     @Nested
-    class AmqpProducerWillBeCreatedIfEnabledTest {
+    class SqsProducerWillBeCreatedIfEnabledTest {
         @Autowired
-        private Optional<SpringwolfAmqpProducer> springwolfAmqpProducer;
+        private Optional<SpringwolfSqsProducer> springwolfSqsProducer;
 
         @Autowired
-        private Optional<SpringwolfAmqpController> springwolfAmqpController;
+        private Optional<SpringwolfSqsController> springwolfSqsController;
 
         @Test
-        void springwolfAmqpProducerShouldBePresentInSpringContext() {
-            assertThat(springwolfAmqpProducer).isPresent();
-            assertThat(springwolfAmqpController).isPresent();
+        void springwolfSqsProducerShouldBePresentInSpringContext() {
+            assertThat(springwolfSqsProducer).isPresent();
+            assertThat(springwolfSqsController).isPresent();
         }
     }
 
     @ExtendWith(SpringExtension.class)
     @ContextConfiguration(
-            classes = {DefaultAsyncApiDocketService.class, SpringwolfAmqpProducer.class, SpringwolfAmqpController.class
-            })
-    @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfAmqpConfigProperties.class})
+            classes = {DefaultAsyncApiDocketService.class, SpringwolfSqsProducer.class, SpringwolfSqsController.class})
+    @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfSqsConfigProperties.class})
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
@@ -68,21 +66,21 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
                 "springwolf.docket.servers.test-protocol.protocol=test",
                 "springwolf.docket.servers.test-protocol.url=some-server:1234",
-                "springwolf.plugin.amqp.publishing.enabled=false"
+                "springwolf.plugin.sqs.publishing.enabled=false"
             })
-    @MockBeans(value = {@MockBean(ChannelsService.class), @MockBean(RabbitTemplate.class)})
+    @MockBeans(value = {@MockBean(ChannelsService.class), @MockBean(SqsTemplate.class)})
     @Nested
-    class AmqpProducerWillNotBeCreatedIfDisabledTest {
+    class SqsProducerWillNotBeCreatedIfDisabledTest {
         @Autowired
-        private Optional<SpringwolfAmqpProducer> springwolfAmqpProducer;
+        private Optional<SpringwolfSqsProducer> springwolfSqsProducer;
 
         @Autowired
-        private Optional<SpringwolfAmqpController> springwolfAmqpController;
+        private Optional<SpringwolfSqsController> springwolfSqsController;
 
         @Test
-        void springwolfAmqpProducerShouldNotBePresentInSpringContext() {
-            assertThat(springwolfAmqpProducer).isNotPresent();
-            assertThat(springwolfAmqpController).isNotPresent();
+        void springwolfSqsProducerShouldNotBePresentInSpringContext() {
+            assertThat(springwolfSqsProducer).isNotPresent();
+            assertThat(springwolfSqsController).isNotPresent();
         }
     }
 }

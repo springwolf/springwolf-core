@@ -4,12 +4,12 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SCANNER;
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_PLUGIN_CONFIG_PREFIX;
 
-public class SpringwolfAmqpConfigConstants {
+public class SpringwolfSqsConfigConstants {
 
-    public static final String SPRINGWOLF_AMQP_CONFIG_PREFIX = SPRINGWOLF_PLUGIN_CONFIG_PREFIX + ".amqp";
+    public static final String SPRINGWOLF_SQS_CONFIG_PREFIX = SPRINGWOLF_PLUGIN_CONFIG_PREFIX + ".sqs";
 
-    public static final String SPRINGWOLF_AMQP_PLUGIN_PUBLISHING_ENABLED = "publishing.enabled";
+    public static final String SPRINGWOLF_SQS_PLUGIN_PUBLISHING_ENABLED = "publishing.enabled";
 
-    public static final String SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED =
-            SPRINGWOLF_AMQP_CONFIG_PREFIX + SCANNER + ".rabbit-listener" + ENABLED;
+    public static final String SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED =
+            SPRINGWOLF_SQS_CONFIG_PREFIX + SCANNER + ".sqs-listener" + ENABLED;
 }

@@ -12,11 +12,11 @@ import org.springframework.lang.Nullable;
  * the spring-boot-configuration-processor.
  */
 @Configuration
-@ConfigurationProperties(prefix = SpringwolfAmqpConfigConstants.SPRINGWOLF_AMQP_CONFIG_PREFIX)
+@ConfigurationProperties(prefix = SpringwolfSqsConfigConstants.SPRINGWOLF_SQS_CONFIG_PREFIX)
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
 @Getter
 @Setter
-public class SpringwolfAmqpConfigProperties {
+public class SpringwolfSqsConfigProperties {
 
     @Nullable
     private Publishing publishing;
@@ -29,7 +29,7 @@ public class SpringwolfAmqpConfigProperties {
     public static class Publishing {
 
         /**
-         * Enables/Disables the possibility to publish messages through springwolf on the configured amqp instance.
+         * Enables/Disables the possibility to publish messages through springwolf on the configured sqs instance.
          */
         private boolean enabled = false;
     }
@@ -38,14 +38,14 @@ public class SpringwolfAmqpConfigProperties {
     @Setter
     public static class Scanner {
 
-        private static RabbitListener rabbitListener;
+        private static SqsListener sqsListener;
 
         @Getter
         @Setter
-        public static class RabbitListener {
+        public static class SqsListener {
 
             /**
-             * This mirrors the ConfigConstant {@see SpringwolfAmqpConfigConstants#SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED}
+             * This mirrors the ConfigConstant {@see SpringwolfAmqpConfigConstants#SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED}
              */
             private boolean enabled = true;
         }
