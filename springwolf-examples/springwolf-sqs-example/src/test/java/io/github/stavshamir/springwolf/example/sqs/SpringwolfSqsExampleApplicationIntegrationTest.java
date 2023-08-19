@@ -11,11 +11,11 @@ import org.springframework.test.context.DynamicPropertySource;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-@ExtendWith({TestContainerExtension.class})
+@ExtendWith({SqsTestContainerExtension.class})
 class SpringwolfSqsExampleApplicationIntegrationTest {
     @DynamicPropertySource
     static void setUpTestContainers(DynamicPropertyRegistry registry) {
-        TestContainerExtension.overrideConfiguration(registry);
+        SqsTestContainerExtension.overrideConfiguration(registry);
     }
 
     @Autowired

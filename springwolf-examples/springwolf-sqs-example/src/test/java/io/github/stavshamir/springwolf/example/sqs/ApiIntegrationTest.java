@@ -19,12 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(
         classes = {SpringwolfSqsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ExtendWith({TestContainerExtension.class})
+@ExtendWith({SqsTestContainerExtension.class})
 public class ApiIntegrationTest {
 
     @DynamicPropertySource
     static void setUpTestContainers(DynamicPropertyRegistry registry) {
-        TestContainerExtension.overrideConfiguration(registry);
+        SqsTestContainerExtension.overrideConfiguration(registry);
     }
 
     @Autowired

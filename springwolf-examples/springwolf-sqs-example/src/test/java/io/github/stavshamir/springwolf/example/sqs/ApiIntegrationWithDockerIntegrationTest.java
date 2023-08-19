@@ -43,7 +43,7 @@ public class ApiIntegrationWithDockerIntegrationTest {
     }
 
     @Container
-    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+    public DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withExposedService(APP_NAME, APP_PORT)
             .withEnv(ENV);
 
