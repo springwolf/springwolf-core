@@ -16,9 +16,9 @@ dependencyManagement {
 
 dependencies {
     implementation project(":springwolf-core")
-    implementation project(":springwolf-plugins:springwolf-amqp") // TODO
+    implementation project(":springwolf-plugins:springwolf-sqs")
 
-    annotationProcessor project(":springwolf-plugins:springwolf-amqp") // TODO
+    annotationProcessor project(":springwolf-plugins:springwolf-sqs")
     runtimeOnly project(":springwolf-ui")
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
