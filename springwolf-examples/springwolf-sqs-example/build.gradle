@@ -27,6 +27,8 @@ dependencies {
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
 
     implementation 'io.awspring.cloud:spring-cloud-aws-sqs'
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+    permitUnusedDeclared 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework:spring-context"

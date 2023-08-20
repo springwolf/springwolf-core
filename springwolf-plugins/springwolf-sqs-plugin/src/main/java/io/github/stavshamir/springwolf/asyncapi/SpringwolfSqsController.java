@@ -27,12 +27,12 @@ public class SpringwolfSqsController {
 
     @PostMapping("/publish")
     public void publish(@RequestParam String topic, @RequestBody MessageDto message) {
-        if (producer.isEnabled()) {
+        if (!producer.isEnabled()) {
             log.warn("SQS producer is not enabled - message will not be published");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SQS producer is not enabled");
         }
 
-        log.info("Publishing to amqp queue {}: {}", topic, message.getPayload());
+        log.info("Publishing to sqs queue {}: {}", topic, message.getPayload());
         producer.send(topic, message.getPayload());
     }
 }

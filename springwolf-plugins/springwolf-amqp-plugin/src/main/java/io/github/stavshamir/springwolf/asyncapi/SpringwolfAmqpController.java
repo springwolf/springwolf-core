@@ -27,7 +27,7 @@ public class SpringwolfAmqpController {
 
     @PostMapping("/publish")
     public void publish(@RequestParam String topic, @RequestBody MessageDto message) {
-        if (amqpProducer.isEnabled()) {
+        if (!amqpProducer.isEnabled()) {
             log.warn("AMQP producer is not enabled - message will not be published");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "AMQP producer is not enabled");
         }

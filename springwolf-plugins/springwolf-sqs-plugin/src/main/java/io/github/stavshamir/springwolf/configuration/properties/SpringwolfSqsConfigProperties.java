@@ -45,7 +45,7 @@ public class SpringwolfSqsConfigProperties {
         public static class SqsListener {
 
             /**
-             * This mirrors the ConfigConstant {@see SpringwolfAmqpConfigConstants#SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED}
+             * This mirrors the ConfigConstant {@see SpringwolfSqsConfigConstants#SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED}
              */
             private boolean enabled = true;
         }
