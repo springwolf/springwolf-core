@@ -115,8 +115,13 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             return exampleValue.toString();
         }
 
-        // exampleValue (i.e. OffsetDateTime) is represented as string
-        return "\"" + exampleValue + "\"";
+        try {
+            // exampleValue (i.e. OffsetDateTime) is represented as string
+            return objectMapper.writeValueAsString(exampleValue.toString());
+        } catch (JsonProcessingException ex) {
+            log.debug("Unable to convert example to string: %s".formatted(exampleValue.toString()), ex);
+        }
+        return "\"\"";
     }
 
     private static String handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {

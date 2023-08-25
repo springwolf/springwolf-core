@@ -316,5 +316,21 @@ class ExampleJsonGeneratorTest {
 
             assertThat(actual).isEqualTo("{\"anyOfField\": {}}");
         }
+
+        @Test
+        void schema_with_problematic_object_toString_example() {
+            ObjectSchema schema = new ObjectSchema();
+            schema.setExample(new ClassWithToString());
+
+            String actual = ExampleJsonGenerator.buildSchema(schema, Map.of());
+            assertThat(actual).isEqualTo("\"Text with special character /\\\\\\\"\\\\'\\\\b\\\\f\\\\t\\\\r\\\\n.\"");
+        }
+
+        class ClassWithToString {
+            @Override
+            public String toString() {
+                return "Text with special character /\\\"\\'\\b\\f\\t\\r\\n.";
+            }
+        }
     }
 }
