@@ -58,5 +58,5 @@ ext {
     swaggerVersion = '2.2.15'
     swaggerInflectorVersion = '2.0.9'
 
-    testcontainersVersion = '1.18.3'
+    testcontainersVersion = '1.19.0'
 }
