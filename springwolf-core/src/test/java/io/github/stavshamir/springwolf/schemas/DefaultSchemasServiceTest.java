@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -193,6 +194,52 @@ class DefaultSchemasServiceTest {
             private static class MyClass {
                 private String s;
             }
+        }
+    }
+
+    @Nested
+    class SchemaWithOneOf {
+        @Test
+        void testSchemaWithOneOf() throws IOException {
+            schemasService.register(SchemaAnnotationFoo.class);
+
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+            String expected = jsonResource("/schemas/annotation-definitions.json");
+
+            System.out.println("Got: " + actualDefinitions);
+            assertEquals(expected, actualDefinitions);
+        }
+
+        @Data
+        @NoArgsConstructor
+        public class SchemaAnnotationFoo {
+            private String field;
+            private AnyOf anyOf;
+            private AllOf allOf;
+            private OneOf oneOf;
+        }
+
+        @Schema(anyOf = {ImplementationOne.class, ImplementationTwo.class})
+        public interface AnyOf {}
+
+        @Schema(allOf = {ImplementationOne.class, ImplementationTwo.class})
+        public interface AllOf {}
+
+        @Schema(oneOf = {ImplementationOne.class, ImplementationTwo.class})
+        public interface OneOf {}
+
+        @Data
+        @NoArgsConstructor
+        public class ImplementationOne {
+            private String firstOne;
+            private String secondOne;
+        }
+
+        @Data
+        @NoArgsConstructor
+        public class ImplementationTwo {
+            private Integer firstTwo;
+            private Boolean secondTwo;
         }
     }
 }
