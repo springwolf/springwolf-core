@@ -179,6 +179,21 @@ public class ExampleJsonGenerator implements ExampleGenerator {
                 return example;
             }
         }
+
+        if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
+            List<Schema> schemas = schema.getAllOf();
+            // Open: Handle properties of all schemas, not only the first one
+            return buildSchemaInternal(schemas.get(0), definitions, visited);
+        }
+        if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
+            List<Schema> schemas = schema.getAnyOf();
+            return buildSchemaInternal(schemas.get(0), definitions, visited);
+        }
+        if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
+            List<Schema> schemas = schema.getOneOf();
+            return buildSchemaInternal(schemas.get(0), definitions, visited);
+        }
+
         // i.e. A MapSchema is type=object, but has properties=null
         return "{}";
     }

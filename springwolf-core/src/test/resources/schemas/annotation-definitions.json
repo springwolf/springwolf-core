@@ -1,7 +1,10 @@
 {
   "AllOf" : {
     "type" : "object",
-    "example" : { },
+    "example" : {
+      "firstOne" : "string",
+      "secondOne" : "string"
+    },
     "allOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -10,7 +13,10 @@
   },
   "AnyOf" : {
     "type" : "object",
-    "example" : { },
+    "example" : {
+      "firstOne" : "string",
+      "secondOne" : "string"
+    },
     "anyOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -50,7 +56,10 @@
   },
   "OneOf" : {
     "type" : "object",
-    "example" : { },
+    "example" : {
+      "firstOne" : "string",
+      "secondOne" : "string"
+    },
     "oneOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -74,10 +83,19 @@
       }
     },
     "example" : {
-      "allOf" : { },
-      "anyOf" : { },
+      "allOf" : {
+        "firstOne" : "string",
+        "secondOne" : "string"
+      },
+      "anyOf" : {
+        "firstOne" : "string",
+        "secondOne" : "string"
+      },
       "field" : "string",
-      "oneOf" : { }
+      "oneOf" : {
+        "firstOne" : "string",
+        "secondOne" : "string"
+      }
     }
   }
 }
