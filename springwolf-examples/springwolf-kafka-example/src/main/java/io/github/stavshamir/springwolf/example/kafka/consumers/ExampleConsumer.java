@@ -19,13 +19,13 @@ public class ExampleConsumer {
 
     @KafkaListener(topics = "example-topic")
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        AnotherPayloadDto anotherPayloadDto = new AnotherPayloadDto();
+        log.info("Received new message in example-queue: {}", payload.toString());
 
-        log.info("Received new message in anotherPayloadDto-queue: {}", payload.toString());;
-        anotherPayloadDto.setExample(payload);
-        anotherPayloadDto.setFoo("foo");
+        AnotherPayloadDto example = new AnotherPayloadDto();
+        example.setExample(payload);
+        example.setFoo("foo");
 
-        anotherProducer.sendMessage(anotherPayloadDto);
+        anotherProducer.sendMessage(example);
     }
 
     @KafkaListener(topics = "another-topic", groupId = "example-group-id", batch = "true")
