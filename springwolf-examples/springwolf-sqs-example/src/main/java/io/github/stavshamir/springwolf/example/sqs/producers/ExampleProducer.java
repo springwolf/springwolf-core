@@ -13,13 +13,15 @@ import org.springframework.stereotype.Component;
 public class ExampleProducer {
     private final SqsTemplate template;
 
+    public static final String QUEUE = "another-queue";
+
     @AsyncPublisher(
             operation =
                     @AsyncOperation(
-                            channelName = "another-queue",
+                            channelName = QUEUE,
                             description = "Custom, optional description defined in the AsyncPublisher annotation"))
     @SqsAsyncOperationBinding
     public void sendMessage(AnotherPayloadDto msg) {
-        template.send(msg);
+        template.send(QUEUE, msg);
     }
 }

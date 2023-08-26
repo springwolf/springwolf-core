@@ -20,7 +20,7 @@ public class ExampleConsumer {
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
-        example.setFoo("foot");
+        example.setFoo("foo");
 
         exampleProducer.sendMessage(example);
     }
