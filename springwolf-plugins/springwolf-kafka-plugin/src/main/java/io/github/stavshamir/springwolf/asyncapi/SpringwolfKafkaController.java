@@ -1,5 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.MessageFormat;
+
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX;
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigConstants.SPRINGWOLF_KAFKA_PLUGIN_PUBLISHING_ENABLED;
 
@@ -23,22 +27,30 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 @ConditionalOnProperty(prefix = SPRINGWOLF_KAFKA_CONFIG_PREFIX, name = SPRINGWOLF_KAFKA_PLUGIN_PUBLISHING_ENABLED)
 public class SpringwolfKafkaController {
 
-    private final SpringwolfKafkaProducer kafkaProducer;
+    private final SpringwolfKafkaProducer producer;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/publish")
     public void publish(@RequestParam String topic, @RequestBody MessageDto message) {
-        if (message.getPayload() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Message payload is required");
-        }
-
-        if (!kafkaProducer.isEnabled()) {
+        if (!producer.isEnabled()) {
             log.debug("Kafka producer is not enabled - message will not be published");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Kafka producer is not enabled");
         }
 
-        String kafkaKey = message.getBindings() != null ? message.getBindings().get("key") : null;
-        log.debug("Publishing to kafka topic {} with key {}: {}", topic, kafkaKey, message);
+        try {
+            Class<?> payloadClass = message.getPayloadClass();
+            Object payload = objectMapper.readValue(message.getPayload(), payloadClass);
 
-        kafkaProducer.send(topic, kafkaKey, message.getHeaders(), message.getPayload());
+            String kafkaKey =
+                    message.getBindings() != null ? message.getBindings().get("key") : null;
+            log.debug("Publishing to kafka topic {} with key {}: {}", topic, kafkaKey, message);
+            producer.send(topic, kafkaKey, message.getHeaders(), payload);
+        } catch (ClassNotFoundException | JsonProcessingException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    MessageFormat.format(
+                            "Unable to create payload {0} from data: {1}",
+                            message.getPayloadType(), message.getPayload()));
+        }
     }
 }

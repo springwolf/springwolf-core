@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfSqsConfigConstants.SPRINGWOLF_SQS_CONFIG_PREFIX;
@@ -19,15 +18,15 @@ public class SpringwolfSqsProducer {
 
     private final Optional<SqsTemplate> template;
 
-    public boolean isEnabled() {
-        return template.isPresent();
-    }
-
     public SpringwolfSqsProducer(List<SqsTemplate> templates) {
         this.template = templates.isEmpty() ? Optional.empty() : Optional.of(templates.get(0));
     }
 
-    public void send(String channelName, Map<String, ?> payload) {
+    public boolean isEnabled() {
+        return template.isPresent();
+    }
+
+    public void send(String channelName, Object payload) {
         if (template.isPresent()) {
             template.get().send(channelName, payload);
         } else {

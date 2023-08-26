@@ -1,5 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.MessageFormat;
+
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_AMQP_CONFIG_PREFIX;
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_AMQP_PLUGIN_PUBLISHING_ENABLED;
 
@@ -24,6 +28,7 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 public class SpringwolfAmqpController {
 
     private final SpringwolfAmqpProducer amqpProducer;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/publish")
     public void publish(@RequestParam String topic, @RequestBody MessageDto message) {
@@ -32,7 +37,18 @@ public class SpringwolfAmqpController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "AMQP producer is not enabled");
         }
 
-        log.info("Publishing to amqp queue {}: {}", topic, message.getPayload());
-        amqpProducer.send(topic, message.getPayload());
+        try {
+            Class<?> payloadClass = message.getPayloadClass();
+            Object payload = objectMapper.readValue(message.getPayload(), payloadClass);
+
+            log.info("Publishing to amqp queue {}: {}", topic, message.getPayload());
+            amqpProducer.send(topic, payload);
+        } catch (ClassNotFoundException | JsonProcessingException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    MessageFormat.format(
+                            "Unable to create payload {0} from data: {1}",
+                            message.getPayloadType(), message.getPayload()));
+        }
     }
 }
