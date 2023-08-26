@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ExampleProducer {
+public class AnotherProducer {
     private final SqsTemplate template;
 
     public static final String QUEUE = "another-queue";

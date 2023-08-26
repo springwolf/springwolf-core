@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.example.sqs.consumers;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.example.sqs.producers.ExampleProducer;
+import io.github.stavshamir.springwolf.example.sqs.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class ExampleConsumer {
-    private final ExampleProducer exampleProducer;
+    private final AnotherProducer anotherProducer;
 
     @SqsListener("example-queue")
     public void receiveExamplePayload(ExamplePayloadDto payload) {
@@ -22,7 +22,7 @@ public class ExampleConsumer {
         example.setExample(payload);
         example.setFoo("foo");
 
-        exampleProducer.sendMessage(example);
+        anotherProducer.sendMessage(example);
     }
 
     @SqsListener("another-queue")
