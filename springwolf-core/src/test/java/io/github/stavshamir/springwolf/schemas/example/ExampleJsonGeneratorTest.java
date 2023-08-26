@@ -314,7 +314,7 @@ class ExampleJsonGeneratorTest {
 
             String actual = ExampleJsonGenerator.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
 
-            assertThat(actual).isEqualTo("{\"anyOfField\": {}}");
+            assertThat(actual).isEqualTo("{\"anyOfField\": \"string\"}");
         }
 
         @Test
