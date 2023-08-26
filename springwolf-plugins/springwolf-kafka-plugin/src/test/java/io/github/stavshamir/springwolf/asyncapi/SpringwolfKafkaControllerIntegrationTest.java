@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -41,10 +42,28 @@ class SpringwolfKafkaControllerIntegrationTest {
     @Captor
     private ArgumentCaptor<Map<String, String>> headerCaptor;
 
+    @BeforeEach
+    void setup() {
+        when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
+    }
+
     @Test
     void testControllerShouldReturnBadRequestIfPayloadIsEmpty() {
         try {
-            String content = "{\"bindings\": null, \"headers\": null, \"payload\": null }";
+            String content = "{\"bindings\": null, \"headers\": null, \"payload\": \"\" }";
+            mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(content))
+                    .andExpect(status().isBadRequest());
+        } catch (Exception e) {
+            verifyNoInteractions(springwolfKafkaProducer);
+        }
+    }
+
+    @Test
+    void testControllerShouldReturnBadRequestIfPayloadIsNotSet() {
+        try {
+            String content = "{\"bindings\": null, \"headers\": null }";
             mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
@@ -58,7 +77,8 @@ class SpringwolfKafkaControllerIntegrationTest {
     void testControllerShouldReturnNotFoundIfNoKafkaProducerIsEnabled() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
 
-        String content = "{\"bindings\": null, \"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
+        String content =
+                "{\"bindings\": null, \"headers\": null, \"payload\": \"{ \\\"some-payload-key\\\" : \\\"some-payload-value\\\" }\"}";
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
@@ -69,7 +89,8 @@ class SpringwolfKafkaControllerIntegrationTest {
     void testControllerShouldCallKafkaProducerIfOnlyPayloadIsSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
-        String content = "{\"bindings\": null, \"headers\": null, \"payload\": { \"some-key\" : \"some-value\" }}";
+        String content =
+                "{\"bindings\": null, \"headers\": null, \"payload\": \"{ \\\"some-payload-key\\\" : \\\"some-payload-value\\\" }\", \"payloadType\": \"java.util.Map\"}";
 
         mvc.perform(post("/springwolf/kafka/publish")
                         .param("topic", "test-topic")
@@ -79,7 +100,7 @@ class SpringwolfKafkaControllerIntegrationTest {
 
         verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), payloadCaptor.capture());
 
-        assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-key", "some-value"));
+        assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-payload-key", "some-payload-value"));
     }
 
     @Test
@@ -87,7 +108,7 @@ class SpringwolfKafkaControllerIntegrationTest {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content =
-                "{\"bindings\": null, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
+                "{\"bindings\": null, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": \"{ \\\"some-payload-key\\\" : \\\"some-payload-value\\\" }\", \"payloadType\": \"java.util.Map\"}";
 
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -106,7 +127,7 @@ class SpringwolfKafkaControllerIntegrationTest {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content =
-                "{\"bindings\": {\"key\": \"kafka-key-value\"}, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": { \"some-payload-key\" : \"some-payload-value\" }}";
+                "{\"bindings\": {\"key\": \"kafka-key-value\"}, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": \"{ \\\"some-payload-key\\\" : \\\"some-payload-value\\\" }\", \"payloadType\": \"java.util.Map\"}";
 
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)

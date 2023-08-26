@@ -21,7 +21,7 @@ public class ExamplePayloadDto {
     @Schema(description = "Some enum field", example = "FOO2", requiredMode = REQUIRED)
     private ExampleEnum someEnum;
 
-    enum ExampleEnum {
+    public enum ExampleEnum {
         FOO1,
         FOO2,
         FOO3

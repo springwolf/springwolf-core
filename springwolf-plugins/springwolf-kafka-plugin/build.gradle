@@ -24,6 +24,9 @@ dependencies {
 
     implementation "org.springframework.kafka:spring-kafka"
 
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+
     compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
     permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
 

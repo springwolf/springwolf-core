@@ -20,6 +20,9 @@ dependencies {
     implementation "org.springframework.amqp:spring-amqp"
     implementation "org.springframework.amqp:spring-rabbit"
 
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+
     compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
     permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
 

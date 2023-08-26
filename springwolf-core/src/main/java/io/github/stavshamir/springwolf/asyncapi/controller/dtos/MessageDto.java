@@ -15,8 +15,11 @@ public class MessageDto {
 
     private final Map<String, String> headers;
 
-    private final String payload;
-    private final String payloadType;
+    @Builder.Default
+    private final String payload = "";
+
+    @Builder.Default
+    private final String payloadType = String.class.getCanonicalName();
 
     public Class<?> getPayloadClass() throws ClassNotFoundException {
         return Class.forName(payloadType);

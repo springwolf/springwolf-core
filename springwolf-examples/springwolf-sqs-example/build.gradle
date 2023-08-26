@@ -39,6 +39,8 @@ dependencies {
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-beans"
     testImplementation "org.springframework:spring-web"
