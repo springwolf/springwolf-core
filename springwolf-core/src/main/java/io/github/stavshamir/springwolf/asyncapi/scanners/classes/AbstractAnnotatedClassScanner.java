@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.env.Environment;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.StringUtils;
 
@@ -20,6 +21,9 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
     @Autowired
     private AsyncApiDocketService asyncApiDocketService;
 
+    @Autowired(required = false) // Handle missing bean gracefully
+    private Environment environment;
+
     /**
      * @return The class object of the annotation to scan.
      */
@@ -32,7 +36,14 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
             throw new IllegalArgumentException("Base package must not be blank");
         }
 
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        ClassPathScanningCandidateComponentProvider provider;
+
+        if (environment != null) {
+            provider = new ClassPathScanningCandidateComponentProvider(false, environment);
+        } else {
+            provider = new ClassPathScanningCandidateComponentProvider(false);
+        }
+
         provider.addIncludeFilter(new AnnotationTypeFilter(getAnnotationClass()));
 
         log.debug("Scanning for {} classes in {}", getAnnotationClass().getSimpleName(), basePackage);
