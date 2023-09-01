@@ -1,7 +1,7 @@
 package io.github.stavshamir.springwolf.example.kafka;
 
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
-import io.github.stavshamir.springwolf.example.kafka.consumers.ExampleService;
+import io.github.stavshamir.springwolf.example.kafka.consumers.ExampleConsumer;
 import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import org.apache.kafka.clients.admin.AdminClient;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -45,8 +45,8 @@ public class ProducerIntegrationWithDockerIntegrationTest {
     @Autowired
     SpringwolfKafkaProducer springwolfKafkaProducer;
 
-    @MockBean
-    ExampleService exampleService;
+    @SpyBean
+    ExampleConsumer exampleConsumer;
 
     @Autowired
     SpringwolfKafkaConfigProperties properties;
@@ -69,11 +69,15 @@ public class ProducerIntegrationWithDockerIntegrationTest {
     @Test
     @Order(2)
     void producerCanUseSpringwolfConfigurationToSendMessage() {
+        // given
         Map<String, String> headers = new HashMap<>();
         headers.put("header-key", "header-value");
         ExamplePayloadDto payload = new ExamplePayloadDto("foo", 5, FOO1);
 
+        // when
         springwolfKafkaProducer.send("example-topic", "key", headers, payload);
-        verify(exampleService, timeout(10000)).doSomething(payload);
+
+        // then
+        verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
     }
 }

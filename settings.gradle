@@ -3,11 +3,13 @@ rootProject.name = 'springwolf-core'
 include(
         'springwolf-core',
         'springwolf-plugins:springwolf-amqp-plugin',
-        'springwolf-plugins:springwolf-kafka-plugin',
         'springwolf-plugins:springwolf-cloud-stream-plugin',
-        'springwolf-examples:springwolf-kafka-example',
+        'springwolf-plugins:springwolf-kafka-plugin',
+        'springwolf-plugins:springwolf-sqs-plugin',
         'springwolf-examples:springwolf-amqp-example',
         'springwolf-examples:springwolf-cloud-stream-example',
+        'springwolf-examples:springwolf-kafka-example',
+        'springwolf-examples:springwolf-sqs-example',
         'springwolf-ui',
         'springwolf-add-ons:springwolf-common-model-converters'
 )
@@ -15,4 +17,5 @@ include(
 project(':springwolf-plugins:springwolf-amqp-plugin').name = 'springwolf-amqp'
 project(':springwolf-plugins:springwolf-cloud-stream-plugin').name = 'springwolf-cloud-stream'
 project(':springwolf-plugins:springwolf-kafka-plugin').name = 'springwolf-kafka'
+project(':springwolf-plugins:springwolf-sqs-plugin').name = 'springwolf-sqs'
 

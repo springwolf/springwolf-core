@@ -20,6 +20,7 @@ export class ChannelMainComponent implements OnInit {
   schema: Schema;
   schemaName: string;
   defaultExample: Example;
+  defaultExampleType: string;
   exampleTextAreaLineCount: number;
   headers: Schema;
   headersSchemaName: string;
@@ -45,6 +46,7 @@ export class ChannelMainComponent implements OnInit {
 
       this.defaultExample = this.schema.example;
       this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 0;
+      this.defaultExampleType = this.operation.message.name;
 
       this.headersSchemaName = this.operation.message.headers.name.slice(
         this.operation.message.headers.name.lastIndexOf("/") + 1
@@ -112,9 +114,13 @@ export class ChannelMainComponent implements OnInit {
     }
   }
 
-  publish(example: string, headers?: string, bindings?: string): void {
+  publish(
+    example: string,
+    payloadType: string,
+    headers?: string,
+    bindings?: string
+  ): void {
     try {
-      const payloadJson = JSON.parse(example);
       const headersJson = JSON.parse(headers);
       const bindingsJson = JSON.parse(bindings);
 
@@ -122,7 +128,8 @@ export class ChannelMainComponent implements OnInit {
         .publish(
           this.protocolName,
           this.channelName,
-          payloadJson,
+          example,
+          payloadType,
           headersJson,
           bindingsJson
         )

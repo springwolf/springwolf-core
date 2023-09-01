@@ -1,0 +1,36 @@
+version: '3'
+services:
+  app:
+    image: stavshamir/springwolf-sqs-example:${SPRINGWOLF_VERSION}
+    links:
+      - localstack
+    environment:
+      - SPRING_CLOUD_AWS_ENDPOINT=http://localstack:4566
+    ports:
+      - "8080:8080"
+    depends_on:
+      - localstack
+
+  localstack:
+    image: localstack/localstack:2.2.0
+    environment:
+      - DEBUG=${DEBUG-}
+      - AWS_REGION=eu-central-1
+      - SERVICES=sqs,sns
+    ports:
+      - "4566:4566"            # LocalStack Gateway
+#      - "4510-4559:4510-4559"  # external services port range
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+  localstack_setup:
+    image: localstack/localstack:2.2.0
+    links:
+      - localstack
+    depends_on:
+      - localstack
+    restart: "no"
+    entrypoint: [ "bash", "-c", "
+      awslocal --endpoint-url=http://localstack:4566 sqs create-queue --queue-name another-queue --region eu-central-1;
+      awslocal --endpoint-url=http://localstack:4566 sqs create-queue --queue-name example-queue --region eu-central-1;
+    " ]

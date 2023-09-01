@@ -6,6 +6,7 @@ import {
 import mockSpringwolfAmqp from "../../../../../springwolf-examples/springwolf-amqp-example/src/test/resources/asyncapi.json";
 import mockSpringwolfCloudStream from "../../../../../springwolf-examples/springwolf-cloud-stream-example/src/test/resources/asyncapi.json";
 import mockSpringwolfKafka from "../../../../../springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json";
+import mockSpringwolfSqs from "../../../../../springwolf-examples/springwolf-sqs-example/src/test/resources/asyncapi.json";
 
 export class MockServer implements InMemoryDbService {
   createDb() {
@@ -46,6 +47,8 @@ export class MockServer implements InMemoryDbService {
       return mockSpringwolfAmqp;
     } else if (hostname.includes("cloud-stream")) {
       return mockSpringwolfCloudStream;
+    } else if (hostname.includes("sqs")) {
+      return mockSpringwolfSqs;
     }
     // Kafka is default
     return mockSpringwolfKafka;

@@ -10,13 +10,19 @@ export class PublisherService {
   publish(
     protocol: string,
     topic: string,
-    payload: object,
+    payload: string,
+    payloadType: string,
     headers: object,
     bindings: object
   ): Observable<unknown> {
     const url = Endpoints.getPublishEndpoint(protocol);
     const params = new HttpParams().set("topic", topic);
-    const body = { payload, headers, bindings };
+    const body = {
+      payload,
+      payloadType,
+      headers,
+      bindings,
+    };
     console.log(
       `Publishing to ${url} with messageBinding ${JSON.stringify(
         bindings
