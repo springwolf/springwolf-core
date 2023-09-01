@@ -44,7 +44,7 @@ ext {
     jakartaAnnotationApiVersion = '2.1.1'
 
     mockitoCoreVersion = '5.5.0'
-    mockitoJunitJupiterVersion = '5.4.0'
+    mockitoJunitJupiterVersion = '5.5.0'
 
     monetaVersion = '1.4.2'
     moneyApiVersion = '1.1'
