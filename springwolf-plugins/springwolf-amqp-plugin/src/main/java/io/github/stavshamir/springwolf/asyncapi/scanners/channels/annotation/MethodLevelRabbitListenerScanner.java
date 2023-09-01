@@ -7,6 +7,8 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriorit
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.EmbeddedValueResolverAware;
@@ -17,8 +19,6 @@ import org.springframework.util.StringValueResolver;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED;
 
@@ -29,13 +29,11 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListenerScanner<RabbitListener>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
-    private final Map<String, Binding> bindingsMap;
+    private final RabbitListenerUtil.RabbitListenerUtilContext context;
     private StringValueResolver resolver;
 
-    public MethodLevelRabbitListenerScanner(List<Binding> bindings) {
-        bindingsMap = bindings.stream()
-                .filter(Binding::isDestinationQueue)
-                .collect(Collectors.toMap(Binding::getDestination, Function.identity()));
+    public MethodLevelRabbitListenerScanner(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
+        context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
     }
 
     @Override
@@ -55,12 +53,12 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
 
     @Override
     protected Map<String, ? extends ChannelBinding> buildChannelBinding(RabbitListener annotation) {
-        return RabbitListenerUtil.buildChannelBinding(annotation, resolver, bindingsMap);
+        return RabbitListenerUtil.buildChannelBinding(annotation, resolver, context);
     }
 
     @Override
     protected Map<String, ? extends OperationBinding> buildOperationBinding(RabbitListener annotation) {
-        return RabbitListenerUtil.buildOperationBinding(annotation, resolver, bindingsMap);
+        return RabbitListenerUtil.buildOperationBinding(annotation, resolver, context);
     }
 
     @Override

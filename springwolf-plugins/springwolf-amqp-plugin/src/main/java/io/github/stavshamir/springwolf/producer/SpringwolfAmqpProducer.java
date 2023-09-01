@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_AMQP_CONFIG_PREFIX;
@@ -36,7 +35,7 @@ public class SpringwolfAmqpProducer {
         this.rabbitTemplate = rabbitTemplates.isEmpty() ? Optional.empty() : Optional.of(rabbitTemplates.get(0));
     }
 
-    public void send(String channelName, Map<String, ?> payload) {
+    public void send(String channelName, Object payload) {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
         ChannelItem channelItem = asyncAPI.getChannels().get(channelName);
 
