@@ -1,0 +1,101 @@
+{
+  "AllOf" : {
+    "type" : "object",
+    "example" : {
+      "firstOne" : "string",
+      "secondOne" : "string"
+    },
+    "allOf" : [ {
+      "$ref" : "#/components/schemas/ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/ImplementationTwo"
+    } ]
+  },
+  "AnyOf" : {
+    "type" : "object",
+    "example" : {
+      "firstOne" : "string",
+      "secondOne" : "string"
+    },
+    "anyOf" : [ {
+      "$ref" : "#/components/schemas/ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/ImplementationTwo"
+    } ]
+  },
+  "ImplementationOne" : {
+    "type" : "object",
+    "properties" : {
+      "firstOne" : {
+        "type" : "string"
+      },
+      "secondOne" : {
+        "type" : "string"
+      }
+    },
+    "example" : {
+      "firstOne" : "string",
+      "secondOne" : "string"
+    }
+  },
+  "ImplementationTwo" : {
+    "type" : "object",
+    "properties" : {
+      "firstTwo" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "secondTwo" : {
+        "type" : "boolean"
+      }
+    },
+    "example" : {
+      "firstTwo" : 0,
+      "secondTwo" : true
+    }
+  },
+  "OneOf" : {
+    "type" : "object",
+    "example" : {
+      "firstOne" : "string",
+      "secondOne" : "string"
+    },
+    "oneOf" : [ {
+      "$ref" : "#/components/schemas/ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/ImplementationTwo"
+    } ]
+  },
+  "SchemaAnnotationFoo" : {
+    "type" : "object",
+    "properties" : {
+      "allOf" : {
+        "$ref" : "#/components/schemas/AllOf"
+      },
+      "anyOf" : {
+        "$ref" : "#/components/schemas/AnyOf"
+      },
+      "field" : {
+        "type" : "string"
+      },
+      "oneOf" : {
+        "$ref" : "#/components/schemas/OneOf"
+      }
+    },
+    "example" : {
+      "allOf" : {
+        "firstOne" : "string",
+        "secondOne" : "string"
+      },
+      "anyOf" : {
+        "firstOne" : "string",
+        "secondOne" : "string"
+      },
+      "field" : "string",
+      "oneOf" : {
+        "firstOne" : "string",
+        "secondOne" : "string"
+      }
+    }
+  }
+}

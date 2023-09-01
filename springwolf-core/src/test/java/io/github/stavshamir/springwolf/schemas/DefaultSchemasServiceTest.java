@@ -8,13 +8,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -102,13 +105,25 @@ class DefaultSchemasServiceTest {
 
     @Data
     @NoArgsConstructor
-    @io.swagger.v3.oas.annotations.media.Schema(description = "foo model")
+    @Schema(description = "foo model")
     private static class DocumentedSimpleFoo {
-        @io.swagger.v3.oas.annotations.media.Schema(
-                description = "s field",
-                example = "s value",
-                requiredMode = io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED)
+        @Schema(description = "s field", example = "s value", requiredMode = Schema.RequiredMode.REQUIRED)
         private String s;
+
+        @Schema(example = "1.432", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private BigInteger bi;
+
+        @Schema(example = "2000-01-01T02:00:00+02:00", requiredMode = Schema.RequiredMode.REQUIRED)
+        private OffsetDateTime dt;
+
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        private SimpleFoo f;
+
+        @Schema(description = "Map with example", example = "{\"key1\": \"value1\"}")
+        private Map<String, String> mss;
+
+        @Schema(description = "Map without example")
+        private Map<String, String> mss_plain;
     }
 
     @Data
@@ -138,7 +153,7 @@ class DefaultSchemasServiceTest {
 
     @Data
     @NoArgsConstructor
-    @io.swagger.v3.oas.annotations.media.Schema(name = "DifferentName")
+    @Schema(name = "DifferentName")
     private static class ClassWithSchemaAnnotation {
         private String s;
         private boolean b;
@@ -179,6 +194,52 @@ class DefaultSchemasServiceTest {
             private static class MyClass {
                 private String s;
             }
+        }
+    }
+
+    @Nested
+    class SchemaWithOneOf {
+        @Test
+        void testSchemaWithOneOf() throws IOException {
+            schemasService.register(SchemaAnnotationFoo.class);
+
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+            String expected = jsonResource("/schemas/annotation-definitions.json");
+
+            System.out.println("Got: " + actualDefinitions);
+            assertEquals(expected, actualDefinitions);
+        }
+
+        @Data
+        @NoArgsConstructor
+        public class SchemaAnnotationFoo {
+            private String field;
+            private AnyOf anyOf;
+            private AllOf allOf;
+            private OneOf oneOf;
+        }
+
+        @Schema(anyOf = {ImplementationOne.class, ImplementationTwo.class})
+        public interface AnyOf {}
+
+        @Schema(allOf = {ImplementationOne.class, ImplementationTwo.class})
+        public interface AllOf {}
+
+        @Schema(oneOf = {ImplementationOne.class, ImplementationTwo.class})
+        public interface OneOf {}
+
+        @Data
+        @NoArgsConstructor
+        public class ImplementationOne {
+            private String firstOne;
+            private String secondOne;
+        }
+
+        @Data
+        @NoArgsConstructor
+        public class ImplementationTwo {
+            private Integer firstTwo;
+            private Boolean secondTwo;
         }
     }
 }

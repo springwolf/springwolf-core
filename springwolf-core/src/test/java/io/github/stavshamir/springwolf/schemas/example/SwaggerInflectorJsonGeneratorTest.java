@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.emptyMap;
@@ -255,6 +256,35 @@ class SwaggerInflectorJsonGeneratorTest {
             String actual = generator.buildSchema(compositeSchema, Map.of("Nested", nestedSchema));
 
             assertThat(actual).isEqualTo("{\"s\":\"string\",\"f\":{\"s\":\"string\",\"b\":true}}");
+        }
+
+        @Test
+        void object_with_anyOf() {
+            ObjectSchema compositeSchema = new ObjectSchema();
+
+            Schema propertySchema = new ObjectSchema();
+            propertySchema.setAnyOf(List.of(new StringSchema(), new NumberSchema()));
+            compositeSchema.addProperty("anyOfField", propertySchema);
+
+            String actual = ExampleJsonGenerator.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
+
+            assertThat(actual).isEqualTo("{\"anyOfField\": \"string\"}");
+        }
+
+        @Test
+        void schema_with_problematic_object_toString_example() throws JsonProcessingException {
+            ObjectSchema schema = new ObjectSchema();
+            schema.setExample(new ClassWithToString());
+
+            String actual = generator.buildSchema(schema, Map.of());
+            assertThat(actual).isEqualTo("{}");
+        }
+
+        class ClassWithToString {
+            @Override
+            public String toString() {
+                return "Text with special character /\\\"\\'\\b\\f\\t\\r\\n.";
+            }
         }
     }
 }

@@ -43,6 +43,7 @@ public class DefaultSchemasService implements SchemasService {
 
     private void finalizeDefinitions() {
         definitions.forEach(this::generateExampleWhenMissing);
+        definitions.forEach(this::removeSwaggerSchemaFields);
         finalizedDefinitions = definitions;
     }
 
@@ -80,6 +81,15 @@ public class DefaultSchemasService implements SchemasService {
         }
 
         return type.getSimpleName();
+    }
+
+    private void removeSwaggerSchemaFields(String schemaName, Schema schema) {
+        schema.setAdditionalProperties(null);
+
+        Map<String, Schema> properties = schema.getProperties();
+        if (properties != null) {
+            properties.forEach(this::removeSwaggerSchemaFields);
+        }
     }
 
     private void generateExampleWhenMissing(String k, Schema schema) {
