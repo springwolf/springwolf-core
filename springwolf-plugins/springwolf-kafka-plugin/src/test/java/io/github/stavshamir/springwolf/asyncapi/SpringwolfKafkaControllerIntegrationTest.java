@@ -1,6 +1,13 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.extern.jackson.Jacksonized;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -26,8 +33,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SpringwolfKafkaController.class)
-@ContextConfiguration(classes = {SpringwolfKafkaController.class, SpringwolfKafkaProducer.class})
-@TestPropertySource(properties = {"springwolf.plugin.kafka.publishing.enabled=true"})
+@ContextConfiguration(
+        classes = {
+            SpringwolfKafkaController.class,
+            SpringwolfKafkaProducer.class,
+            DefaultAsyncApiDocketService.class,
+            SpringwolfConfigProperties.class,
+        })
+@TestPropertySource(
+        properties = {
+            "springwolf.docket.base-package=io.github.stavshamir.springwolf.asyncapi",
+            "springwolf.docket.info.title=Title",
+            "springwolf.docket.info.version=1.0",
+            "springwolf.docket.servers.kafka.protocol=kafka",
+            "springwolf.docket.servers.kafka.url=127.0.0.1",
+            "springwolf.plugin.kafka.publishing.enabled=true"
+        })
 class SpringwolfKafkaControllerIntegrationTest {
 
     @Autowired
@@ -37,7 +58,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     private SpringwolfKafkaProducer springwolfKafkaProducer;
 
     @Captor
-    private ArgumentCaptor<Map<String, ?>> payloadCaptor;
+    private ArgumentCaptor<PayloadDto> payloadCaptor;
 
     @Captor
     private ArgumentCaptor<Map<String, String>> headerCaptor;
@@ -50,7 +71,13 @@ class SpringwolfKafkaControllerIntegrationTest {
     @Test
     void testControllerShouldReturnBadRequestIfPayloadIsEmpty() {
         try {
-            String content = "{\"bindings\": null, \"headers\": null, \"payload\": \"\" }";
+            String content =
+                    """
+            {
+              "bindings": null,
+              "headers": null,
+              "payload": ""
+            }""";
             mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
@@ -63,7 +90,12 @@ class SpringwolfKafkaControllerIntegrationTest {
     @Test
     void testControllerShouldReturnBadRequestIfPayloadIsNotSet() {
         try {
-            String content = "{\"bindings\": null, \"headers\": null }";
+            String content =
+                    """
+            {
+              "bindings": null,
+              "headers": null
+            }""";
             mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
@@ -78,7 +110,12 @@ class SpringwolfKafkaControllerIntegrationTest {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
 
         String content =
-                "{\"bindings\": null, \"headers\": null, \"payload\": \"{ \\\"some-payload-key\\\" : \\\"some-payload-value\\\" }\"}";
+                """
+                {
+                  "bindings": null,
+                  "headers": null,
+                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }"
+                }""";
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
@@ -90,7 +127,13 @@ class SpringwolfKafkaControllerIntegrationTest {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content =
-                "{\"bindings\": null, \"headers\": null, \"payload\": \"{ \\\"some-payload-key\\\" : \\\"some-payload-value\\\" }\", \"payloadType\": \"java.util.Map\"}";
+                """
+                {
+                  "bindings": null,
+                  "headers": null,
+                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
+                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
+                }""";
 
         mvc.perform(post("/springwolf/kafka/publish")
                         .param("topic", "test-topic")
@@ -100,7 +143,7 @@ class SpringwolfKafkaControllerIntegrationTest {
 
         verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), payloadCaptor.capture());
 
-        assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-payload-key", "some-payload-value"));
+        assertThat(payloadCaptor.getValue()).isEqualTo(new PayloadDto("some-payload-value"));
     }
 
     @Test
@@ -108,7 +151,16 @@ class SpringwolfKafkaControllerIntegrationTest {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content =
-                "{\"bindings\": null, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": \"{ \\\"some-payload-key\\\" : \\\"some-payload-value\\\" }\", \"payloadType\": \"java.util.Map\"}";
+                """
+                {
+                  "bindings": null,
+                  "headers": {
+                    "some-header-key": "some-header-value"
+                  },
+                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
+                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
+                }
+                """;
 
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +171,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                 .send(eq("test-topic"), isNull(), headerCaptor.capture(), payloadCaptor.capture());
 
         assertThat(headerCaptor.getValue()).isEqualTo(singletonMap("some-header-key", "some-header-value"));
-        assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-payload-key", "some-payload-value"));
+        assertThat(payloadCaptor.getValue()).isEqualTo(new PayloadDto("some-payload-value"));
     }
 
     @Test
@@ -127,7 +179,17 @@ class SpringwolfKafkaControllerIntegrationTest {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content =
-                "{\"bindings\": {\"key\": \"kafka-key-value\"}, \"headers\": { \"some-header-key\" : \"some-header-value\" }, \"payload\": \"{ \\\"some-payload-key\\\" : \\\"some-payload-value\\\" }\", \"payloadType\": \"java.util.Map\"}";
+                """
+                {
+                  "bindings": {
+                    "key": "kafka-key-value"
+                  },
+                  "headers": {
+                    "some-header-key": "some-header-value"
+                  },
+                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
+                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
+                }""";
 
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -138,6 +200,15 @@ class SpringwolfKafkaControllerIntegrationTest {
                 .send(eq("test-topic"), eq("kafka-key-value"), headerCaptor.capture(), payloadCaptor.capture());
 
         assertThat(headerCaptor.getValue()).isEqualTo(singletonMap("some-header-key", "some-header-value"));
-        assertThat(payloadCaptor.getValue()).isEqualTo(singletonMap("some-payload-key", "some-payload-value"));
+        assertThat(payloadCaptor.getValue()).isEqualTo(new PayloadDto("some-payload-value"));
+    }
+
+    @Data
+    @AllArgsConstructor
+    @Jacksonized
+    @Builder
+    public static class PayloadDto {
+        @JsonProperty("some-payload-key")
+        private String field;
     }
 }

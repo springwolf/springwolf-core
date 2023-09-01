@@ -20,8 +20,4 @@ public class MessageDto {
 
     @Builder.Default
     private final String payloadType = String.class.getCanonicalName();
-
-    public Class<?> getPayloadClass() throws ClassNotFoundException {
-        return Class.forName(payloadType);
-    }
 }

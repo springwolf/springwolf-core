@@ -28,6 +28,5 @@ class MessageDtoDeserializationTest {
                         new ObjectMapper().writeValueAsString(singletonMap("some-payload-key", "some-payload-value")));
         assertThat(value.getPayloadType())
                 .isEqualTo("io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto");
-        assertThat(value.getPayloadClass()).isEqualTo(MessageDto.class);
     }
 }

@@ -29,6 +29,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"

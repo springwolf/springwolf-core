@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.producer.SpringwolfSqsProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,8 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 @ConditionalOnProperty(prefix = SPRINGWOLF_SQS_CONFIG_PREFIX, name = SPRINGWOLF_SQS_PLUGIN_PUBLISHING_ENABLED)
 public class SpringwolfSqsController {
 
+    private final AsyncApiDocketService asyncApiDocketService;
+
     private final SpringwolfSqsProducer producer;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -38,18 +41,22 @@ public class SpringwolfSqsController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SQS producer is not enabled");
         }
 
-        try {
-            Class<?> payloadClass = message.getPayloadClass();
-            Object payload = objectMapper.readValue(message.getPayload(), payloadClass);
+        String payloadType = message.getPayloadType();
+        if (payloadType.startsWith(asyncApiDocketService.getAsyncApiDocket().getBasePackage())) {
+            try {
+                Class<?> payloadClass = Class.forName(payloadType);
+                Object payload = objectMapper.readValue(message.getPayload(), payloadClass);
 
-            log.info("Publishing to sqs queue {}: {}", topic, payload);
-            producer.send(topic, payload);
-        } catch (ClassNotFoundException | JsonProcessingException ex) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    MessageFormat.format(
-                            "Unable to create payload {0} from data: {1}",
-                            message.getPayloadType(), message.getPayload()));
+                log.debug("Publishing to sqs queue {}: {}", topic, payload);
+                producer.send(topic, payload);
+            } catch (ClassNotFoundException | JsonProcessingException ex) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        MessageFormat.format(
+                                "Unable to create payload {0} from data: {1}", payloadType, message.getPayload()));
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No payloadType specified.");
         }
     }
 }
