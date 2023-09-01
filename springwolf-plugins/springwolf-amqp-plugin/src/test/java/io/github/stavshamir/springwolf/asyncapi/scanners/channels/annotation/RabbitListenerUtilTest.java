@@ -304,6 +304,7 @@ class RabbitListenerUtilTest {
     class QueueBindingsWithBeansConfiguration {
         private final RabbitListenerUtil.RabbitListenerUtilContext context;
 
+        // Simulate a RabbitListenerUtilContext that has already been populated by exising spring beans
         {
             org.springframework.amqp.core.Queue queue =
                     new org.springframework.amqp.core.Queue("queue-1", false, true, true);
