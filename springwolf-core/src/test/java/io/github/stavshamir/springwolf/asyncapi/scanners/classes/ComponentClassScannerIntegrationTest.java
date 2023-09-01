@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 import com.asyncapi.v2._6_0.model.info.Info;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ class ComponentClassScannerIntegrationTest {
     @Autowired
     ConfigurableBeanFactory beanFactory;
 
-    @Test
-    void getComponents() {
+    @BeforeEach
+    void setUp() {
         when(asyncApiDocketService.getAsyncApiDocket())
                 .thenReturn(AsyncApiDocket.builder()
                         .info(Info.builder()
@@ -42,7 +43,10 @@ class ComponentClassScannerIntegrationTest {
                                 .build())
                         .basePackage(this.getClass().getPackage().getName())
                         .build());
+    }
 
+    @Test
+    void getComponents() {
         Set<Class<?>> components = componentsScanner.scan();
 
         assertThat(components)
@@ -55,15 +59,8 @@ class ComponentClassScannerIntegrationTest {
 
     @Test
     void getComponentsIncludesConditional() {
-        addEnvironmentPropertyToIncludeConditionalComponent();
-        when(asyncApiDocketService.getAsyncApiDocket())
-                .thenReturn(AsyncApiDocket.builder()
-                        .info(Info.builder()
-                                .title("ComponentClassScannerTest-title")
-                                .version("ComponentClassScannerTest-version")
-                                .build())
-                        .basePackage(this.getClass().getPackage().getName())
-                        .build());
+        StandardEnvironment environment = (StandardEnvironment) beanFactory.getBean(Environment.class);
+        environment.getSystemProperties().put(TestConditionalComponent.CONDITIONAL_PROPERTY, true);
 
         Set<Class<?>> components = componentsScanner.scan();
 
@@ -73,10 +70,5 @@ class ComponentClassScannerIntegrationTest {
                 .contains(TestConditionalComponent.class)
                 .doesNotContain(ClassScanner.class)
                 .doesNotContain(TestOtherConditionalComponent.class);
-    }
-
-    void addEnvironmentPropertyToIncludeConditionalComponent() {
-        StandardEnvironment environment = (StandardEnvironment) beanFactory.getBean(Environment.class);
-        environment.getSystemProperties().put("include-conditional-component", true);
     }
 }

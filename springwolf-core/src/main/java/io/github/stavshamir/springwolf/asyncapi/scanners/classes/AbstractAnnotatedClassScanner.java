@@ -2,7 +2,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.env.Environment;
@@ -18,11 +17,15 @@ import static java.util.stream.Collectors.toSet;
 @Slf4j
 public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implements ClassScanner {
 
-    @Autowired
-    private AsyncApiDocketService asyncApiDocketService;
+    private final AsyncApiDocketService asyncApiDocketService;
 
-    @Autowired(required = false) // Handle missing bean gracefully
-    private Environment environment;
+    private final Optional<Environment> environment;
+
+    public AbstractAnnotatedClassScanner(
+            AsyncApiDocketService asyncApiDocketService, Optional<Environment> environment) {
+        this.asyncApiDocketService = asyncApiDocketService;
+        this.environment = environment;
+    }
 
     /**
      * @return The class object of the annotation to scan.
@@ -36,13 +39,9 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
             throw new IllegalArgumentException("Base package must not be blank");
         }
 
-        ClassPathScanningCandidateComponentProvider provider;
-
-        if (environment != null) {
-            provider = new ClassPathScanningCandidateComponentProvider(false, environment);
-        } else {
-            provider = new ClassPathScanningCandidateComponentProvider(false);
-        }
+        ClassPathScanningCandidateComponentProvider provider = environment
+                .map(env -> new ClassPathScanningCandidateComponentProvider(false, env))
+                .orElseGet(() -> new ClassPathScanningCandidateComponentProvider(false));
 
         provider.addIncludeFilter(new AnnotationTypeFilter(getAnnotationClass()));
 

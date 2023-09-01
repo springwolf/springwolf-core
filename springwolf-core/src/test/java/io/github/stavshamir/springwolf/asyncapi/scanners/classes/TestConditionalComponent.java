@@ -4,5 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty("include-conditional-component")
-public class TestConditionalComponent {}
+@ConditionalOnProperty(TestConditionalComponent.CONDITIONAL_PROPERTY)
+public class TestConditionalComponent {
+    public static final String CONDITIONAL_PROPERTY = "include-conditional-component";
+}
