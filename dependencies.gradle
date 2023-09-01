@@ -43,7 +43,7 @@ ext {
     jacksonVersion = '2.15.2'
     jakartaAnnotationApiVersion = '2.1.1'
 
-    mockitoCoreVersion = '5.4.0'
+    mockitoCoreVersion = '5.5.0'
     mockitoJunitJupiterVersion = '5.4.0'
 
     monetaVersion = '1.4.2'
