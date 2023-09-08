@@ -1,6 +1,6 @@
 package io.github.stavshamir.springwolf.configuration;
 
-import io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaController;
+import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;

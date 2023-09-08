@@ -1,6 +1,7 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;

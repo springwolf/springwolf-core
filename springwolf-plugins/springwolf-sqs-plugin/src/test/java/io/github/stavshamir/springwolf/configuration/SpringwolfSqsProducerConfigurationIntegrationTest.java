@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.configuration;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
-import io.github.stavshamir.springwolf.asyncapi.SpringwolfSqsController;
+import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSqsController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfSqsConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfSqsProducer;
