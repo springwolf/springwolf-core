@@ -21,6 +21,7 @@ dependencies {
     implementation 'io.awspring.cloud:spring-cloud-aws-sqs'
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
     permitUnusedDeclared 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+    implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-core"
     implementation "org.springframework:spring-web"

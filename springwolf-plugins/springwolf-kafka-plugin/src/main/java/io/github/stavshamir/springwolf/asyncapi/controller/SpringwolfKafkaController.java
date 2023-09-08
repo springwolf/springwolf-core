@@ -1,4 +1,4 @@
-package io.github.stavshamir.springwolf.asyncapi;
+package io.github.stavshamir.springwolf.asyncapi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +7,7 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 @RequestMapping("/springwolf/kafka")
 @RequiredArgsConstructor
 @ConditionalOnProperty(prefix = SPRINGWOLF_KAFKA_CONFIG_PREFIX, name = SPRINGWOLF_KAFKA_PLUGIN_PUBLISHING_ENABLED)
-public class SpringwolfKafkaController {
+public class SpringwolfKafkaController implements InitializingBean {
 
     private final AsyncApiDocketService asyncApiDocketService;
 
@@ -59,5 +60,10 @@ public class SpringwolfKafkaController {
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No payloadType specified.");
         }
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        log.debug("Message publishing via " + this.getClass().getSimpleName() + " is active.");
     }
 }

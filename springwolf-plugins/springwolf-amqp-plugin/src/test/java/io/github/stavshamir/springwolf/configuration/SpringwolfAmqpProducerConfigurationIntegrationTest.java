@@ -2,7 +2,7 @@ package io.github.stavshamir.springwolf.configuration;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
-import io.github.stavshamir.springwolf.asyncapi.SpringwolfAmqpController;
+import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfAmqpController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfAmqpConfigProperties;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
