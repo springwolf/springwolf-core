@@ -3,11 +3,16 @@ package io.github.stavshamir.springwolf.configuration.properties;
 public class SpringwolfConfigConstants {
     public static final String ENABLED = ".enabled";
 
+    public static final String USE_MANAGEMENT_PORT = ".use-management-port";
+
     public static final String SCANNER = ".scanner";
 
     public static final String SPRINGWOLF_CONFIG_PREFIX = "springwolf";
 
     public static final String SPRINGWOLF_ENABLED = SPRINGWOLF_CONFIG_PREFIX + ENABLED;
+
+    public static final String SPRINGWOLF_USE_MANAGEMENT_PORT = SPRINGWOLF_CONFIG_PREFIX + USE_MANAGEMENT_PORT;
+
     public static final String SPRINGWOLF_PLUGIN_CONFIG_PREFIX = SPRINGWOLF_CONFIG_PREFIX + ".plugin";
 
     public static final String SPRINGWOLF_SCANNER_PREFIX = SPRINGWOLF_CONFIG_PREFIX + SCANNER;

@@ -7,37 +7,32 @@ import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+@Component
 @Slf4j
-@RestController
+@RestControllerEndpoint(id = "springwolf")
 @RequiredArgsConstructor
-@ConditionalOnProperty(
-        name = SpringwolfConfigConstants.SPRINGWOLF_USE_MANAGEMENT_PORT,
-        havingValue = "false",
-        matchIfMissing = true)
-public class AsyncApiController {
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_USE_MANAGEMENT_PORT, havingValue = "true")
+public class ActuatorAsyncApiController {
 
     private final AsyncApiService asyncApiService;
     private final AsyncApiSerializerService serializer;
 
     @GetMapping(
-            path = {"${springwolf.paths.docs:/springwolf/docs}", "${springwolf.paths.docs:/springwolf/docs}.json"},
+            path = {"/docs", "/docs.json"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String asyncApiJson() throws JsonProcessingException {
-        log.debug("Returning AsyncApi.json document");
-
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
         return serializer.toJsonString(asyncAPI);
     }
 
-    @GetMapping(path = "${springwolf.paths.docs:/springwolf/docs}.yaml", produces = "application/yaml")
+    @GetMapping(path = "/docs.yaml", produces = "application/yaml")
     public String asyncApiYaml() throws JsonProcessingException {
-        log.debug("Returning AsyncApi.yaml document");
-
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
         return serializer.toYaml(asyncAPI);
     }
