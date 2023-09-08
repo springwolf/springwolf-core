@@ -20,6 +20,9 @@ public class CustomWebSecurityConfigurerAdapter {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(it -> it
+                        // allow anonymous access to all actuator endpoint
+                        .requestMatchers("/actuator/**")
+                        .anonymous()
                         // anyone can read the springwolf docs + ui
                         // also, anyone can publish messages (as enabled in application.properties)
                         .requestMatchers(DOCS_ENDPOINT, UI_RESOURCES, KAFKA_PUBLISH_ENDPOINT)

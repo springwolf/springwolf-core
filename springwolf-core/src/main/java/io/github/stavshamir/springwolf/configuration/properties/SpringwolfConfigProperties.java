@@ -45,6 +45,11 @@ public class SpringwolfConfigProperties {
      */
     private InitMode initMode = InitMode.FAIL_FAST;
 
+    /**
+     * Flag to enable Springwolf on the actuator management port instead of the regular application port
+     */
+    private Boolean useManagementPort = false;
+
     @Nullable
     private ConfigDocket docket;
 
