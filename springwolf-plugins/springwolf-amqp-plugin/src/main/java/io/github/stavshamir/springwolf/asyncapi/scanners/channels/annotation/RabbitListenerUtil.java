@@ -26,6 +26,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 @Slf4j
 public class RabbitListenerUtil {
     private static final Boolean DEFAULT_AUTO_DELETE = false;
@@ -34,13 +36,12 @@ public class RabbitListenerUtil {
     private static final String DEFAULT_EXCHANGE_TYPE = ExchangeTypes.DIRECT;
 
     public static String getChannelName(RabbitListener annotation, StringValueResolver resolver) {
-        Stream<String> annotationQueueNames = Arrays.stream(annotation.queues());
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> Stream.concat(
                         Stream.of(binding.key()), // if routing key is configured, prefer it
                         Stream.of(binding.value().name())));
 
-        return Stream.concat(annotationQueueNames, annotationBindingChannelNames)
+        return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
                 .map(resolver::resolveStringValue)
                 .filter(Objects::nonNull)
                 .peek(queue -> log.debug("Resolved channel name: {}", queue))
@@ -51,11 +52,10 @@ public class RabbitListenerUtil {
     }
 
     public static String getQueueName(RabbitListener annotation, StringValueResolver resolver) {
-        Stream<String> annotationQueueNames = Arrays.stream(annotation.queues());
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> Stream.of(binding.value().name()));
 
-        return Stream.concat(annotationQueueNames, annotationBindingChannelNames)
+        return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
                 .map(resolver::resolveStringValue)
                 .filter(Objects::nonNull)
                 .peek(queue -> log.debug("Resolved queue name: {}", queue))
@@ -63,6 +63,26 @@ public class RabbitListenerUtil {
                 .orElseThrow(
                         () -> new IllegalArgumentException(
                                 "No queue name was found in @RabbitListener annotation (neither in queues nor bindings property)"));
+    }
+
+    /**
+     *
+     * @param rabbitListenerAnnotation a RabbitListener annotation
+     * @return A stream of ALL queue names as defined in the following 'locations':
+     * <UL>
+     *  <LI>{@link RabbitListener#queues()}</LI>
+     *  <LI>{@link RabbitListener#queuesToDeclare()}.name</LI>
+     * </UL>
+     */
+    private static Stream<String> streamQueueNames(RabbitListener rabbitListenerAnnotation) {
+        return Arrays.stream(
+                ArrayUtils.addAll(
+                        rabbitListenerAnnotation.queues(),
+                        Arrays.stream(rabbitListenerAnnotation.queuesToDeclare())
+                                .map(queue -> queue.name())
+                                .toArray(String[]::new)
+                )
+        );
     }
 
     public static Map<String, ? extends ChannelBinding> buildChannelBinding(
