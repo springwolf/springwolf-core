@@ -72,7 +72,9 @@ public class RabbitListenerUtil {
      *  <LI>{@link RabbitListener#queues()}</LI>
      *  <LI>{@link RabbitListener#queuesToDeclare()}.name</LI>
      * </UL>
-     */
+     * Note: queues, queuesToDeclare (and bindings) are mutually exclusive
+     * @see <a href="https://docs.spring.io/spring-amqp/api/org/springframework/amqp/rabbit/annotation/RabbitListener.html#queuesToDeclare()">RabbitListener.queuesToDeclare</a>
+     * */
     private static Stream<String> streamQueueNames(RabbitListener rabbitListenerAnnotation) {
         return Arrays.stream(ArrayUtils.addAll(
                 rabbitListenerAnnotation.queues(),
