@@ -7,6 +7,7 @@ import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -25,8 +26,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 @Slf4j
 public class RabbitListenerUtil {
@@ -75,14 +74,11 @@ public class RabbitListenerUtil {
      * </UL>
      */
     private static Stream<String> streamQueueNames(RabbitListener rabbitListenerAnnotation) {
-        return Arrays.stream(
-                ArrayUtils.addAll(
-                        rabbitListenerAnnotation.queues(),
-                        Arrays.stream(rabbitListenerAnnotation.queuesToDeclare())
-                                .map(queue -> queue.name())
-                                .toArray(String[]::new)
-                )
-        );
+        return Arrays.stream(ArrayUtils.addAll(
+                rabbitListenerAnnotation.queues(),
+                Arrays.stream(rabbitListenerAnnotation.queuesToDeclare())
+                        .map(queue -> queue.name())
+                        .toArray(String[]::new)));
     }
 
     public static Map<String, ? extends ChannelBinding> buildChannelBinding(

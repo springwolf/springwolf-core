@@ -12,13 +12,14 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -33,11 +34,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,9 +57,6 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
 
     @MockBean
     private ComponentClassScanner componentsScanner;
-
-    @MockBean
-    private AsyncApiDocket asyncApiDocket;
 
     private static final String QUEUE = "test-queue";
     private static final Map<String, Object> defaultOperationBinding =
@@ -103,10 +97,15 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
         assertThat(channels).isEmpty();
     }
 
-    @Test
-    void scan_componentHasRabbitListenerMethods_hardCodedTopic() {
+    @ParameterizedTest
+    @ValueSource(
+            classes = {
+                ClassWithRabbitListenerAnnotationHardCodedTopic.class,
+                ClassWithRabbitListenerAnnotationUsingQueuesToDeclare.class
+            })
+    void scan_componentHasRabbitListenerMethods_hardCodedTopic(Class<?> classWithRabbitListenerAnnotation) {
         // Given a class with methods annotated with RabbitListener, whose queues attribute is hard coded
-        setClassToScan(ClassWithRabbitListenerAnnotationHardCodedTopic.class);
+        setClassToScan(classWithRabbitListenerAnnotation);
 
         // When scan is called
         Map<String, ChannelItem> actualChannelItems = rabbitListenerScanner.scan();
@@ -128,7 +127,7 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("test-queue_publish_methodWithAnnotation")
+                .operationId(QUEUE + "_publish_methodWithAnnotation")
                 .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
@@ -177,7 +176,7 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("test-queue_publish_methodWithAnnotation1")
+                .operationId(QUEUE + "_publish_methodWithAnnotation1")
                 .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
@@ -223,7 +222,7 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("key_publish_methodWithAnnotation1")
+                .operationId("key_publish_methodWithAnnotation")
                 .bindings(Map.of(
                         "amqp",
                         AMQPOperationBinding.builder()
@@ -329,7 +328,7 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("test-queue_publish_methodWithAnnotation")
+                .operationId(QUEUE + "_publish_methodWithAnnotation")
                 .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
@@ -362,9 +361,18 @@ class MethodLevelRabbitListenerScannerIntegrationTest {
                     @QueueBinding(
                             exchange = @Exchange(name = "name", type = "topic"),
                             key = "key",
-                            value = @Queue(name = "test-queue"))
+                            value = @Queue(name = QUEUE))
                 })
-        private void methodWithAnnotation1(SimpleFoo payload) {}
+        private void methodWithAnnotation(SimpleFoo payload) {}
+    }
+
+    /**
+     * Note: bindings, queues, and queuesToDeclare are mutually exclusive
+     * @see <a href="https://docs.spring.io/spring-amqp/api/org/springframework/amqp/rabbit/annotation/RabbitListener.html#queuesToDeclare()">RabbitListener.queuesToDeclare</a>
+     */
+    private static class ClassWithRabbitListenerAnnotationUsingQueuesToDeclare {
+        @RabbitListener(queuesToDeclare = @Queue(name = QUEUE))
+        private void methodWithAnnotation(SimpleFoo payload) {}
     }
 
     public static class ClassWithRabbitListenerAnnotationsBindingBean {
