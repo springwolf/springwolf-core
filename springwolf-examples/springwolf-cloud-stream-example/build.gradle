@@ -25,6 +25,7 @@ dependencies {
 
     runtimeOnly project(":springwolf-ui")
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
+    runtimeOnly "org.springframework.boot:spring-boot-starter-actuator"
 
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
@@ -77,4 +78,3 @@ test {
         exceptionFormat = 'full'
     }
 }
-
