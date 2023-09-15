@@ -68,21 +68,6 @@ test {
     useJUnitPlatform()
 }
 
-spotless {
-    encoding 'UTF-8'
-
-    java {
-        palantirJavaFormat()
-
-        importOrder('', 'javax', 'java', '\\#')
-        replaceRegex("Remove wildcard imports", "import( static)?\\s+[^*\\s]+\\*;(\\r\\n|\\r|\\n)", "\$2")
-        removeUnusedImports()
-
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
