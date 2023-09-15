@@ -30,7 +30,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @TestPropertySource(
         properties = {
             "springwolf.enabled=true",
-            "springwolf.docket.info.title=Info title",
+            "springwolf.docket.info.title=Info title was loaded from spring properties",
             "springwolf.docket.info.version=1.0.0",
             "springwolf.docket.id=urn:io:github:stavshamir:springwolf:example",
             "springwolf.docket.default-content-type=application/yaml",
