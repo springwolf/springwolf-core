@@ -24,8 +24,8 @@
 
 ### About
 
-This project is inspired by [Springfox](https://github.com/springfox/springfox), but instead of documenting REST APIs,
-it documents asynchronous APIs using the [AsyncAPI specification](https://www.asyncapi.com/).
+This project is inspired by [Springfox](https://github.com/springfox/springfox).
+It documents asynchronous APIs using the [AsyncAPI specification](https://www.asyncapi.com/).
 
 `springwolf-ui` adds a web UI, much like that of Springfox, and allows easy publishing of auto-generated payload examples.
 
@@ -37,24 +37,24 @@ The documentation and quickstart is available on [springwolf.dev](https://www.sp
 
 ### Why You Should Use It
 
-#### UI Based API Testing
-In projects using async APIs, you may often find yourself needing to manually send a message to some topic, whether if
-you are manually testing a new feature, debugging or trying to understand some flow. This requires:
-
-1. Instantiating a payload object
-2. Serializing your payload object
-3. Publishing it by the CLI or some other interface.
-
-Springwolf exploits the fact you already fully described your consumer endpoint (with listener annotations, such as
-`@KafkaListner`, `@RabbitListener` etc.) and automatically generates an example payload object for the appropriate
-payload and allows you to publish it to the correct channel with a single click.
+Springwolf exploits the fact that you already fully described your consumer endpoint (with listener annotations, such as
+`@KafkaListner`, `@RabbitListener`, `@SqsListener`, etc.) and generates the documentation based on this information.
 
 #### Share API Schema Definition
 
-Also, you might want to share your API description and integrate into API hubs (like [backstage](https://backstage.io/docs/features/software-catalog/descriptor-format/)).
-Springwolf generates AsyncAPI conform documentation that can be used right away.
+The AsyncAPI conform documentation can be integrated into API hubs (like [backstage](https://backstage.io/docs/features/software-catalog/descriptor-format/))
+or be shared as a `json`/`yaml` file with others.
+
+#### UI Based API Testing
+In projects using asynchronous APIs, you may often find yourself needing to manually send a message to some topic,
+whether you are manually testing a new feature, debugging or trying to understand some flow.
+
+Using the automatically generated example payload object as a suggestion, you can publish it to the correct channel with a single click.
 
 ### Usage & Example
+
+Protocols not supported natively can still be documented using `@AsyncListener` and `@AsyncPublisher` annotation.
+More details in the documentation.
 
 | Code / Plugin / Addon                                                                                                                     | Example project                                                                                                                       | Current version                                                                                                                                                                     | SNAPSHOT version                                                                                                                                                                                                       |
 |-------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -64,9 +64,6 @@ Springwolf generates AsyncAPI conform documentation that can be used right away.
 | [Cloud Stream](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-cloud-stream-plugin)               | [Cloud Stream Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-cloud-stream-example) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-cloud-stream?color=green&label=springwolf-cloud-stream&style=plastic)                       | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-cloud-stream?label=springwolf-cloud-stream&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                       |
 | [Kafka](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-kafka-plugin)                             | [Kafka Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-kafka-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-kafka?color=green&label=springwolf-kafka&style=plastic)                                     | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-kafka?label=springwolf-kafka&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                                     |
 | [Common Model Converter](https://github.com/springwolf/springwolf-core/tree/master/springwolf-add-ons/springwolf-common-model-converters) |                                                                                                                                       | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-common-model-converters?color=green&label=springwolf-common-model-converters&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-common-model-converters?label=springwolf-common-model-converters&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic) |
-
-Protocols not supported natively can still be documented using `@AsyncListener` and `@AsyncPublisher` annotation.
-More details in the documentation.
 
 ### Development
 
