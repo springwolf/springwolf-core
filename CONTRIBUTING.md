@@ -37,9 +37,12 @@ Contributing follows mostly the following steps:
 3. Apply your changes
    - Add/Adapt tests as necessary
 4. Run the tests
-   - We use GitHub Actions. You can run them in your fork, by activating GitHub Actions in the settings of your repo. Second, open a Pull-Request against _your_ repo.
-5. Commit your changes on a new branch & Push
-6. Open a Pull-Request against the springwolf repository
-   - Use the provided template to briefly describe why the changes should be included.
-7. Update the [documentation](https://github.com/springwolf/springwolf.github.io) as necessary
+   - Run tests locally via `./gradlew test`
+5. Run the code formatter
+   - We use the palantir code style and disallow wildcard imports
+   - Run `./gradlew spotlessApply` to fix most things automatically
+6. Commit your changes & push
+7. Open a Pull-Request against the springwolf repository
+   - Use the provided template to briefly describe why the changes should be included
+8. Update the [documentation](https://github.com/springwolf/springwolf.github.io) as necessary
 
