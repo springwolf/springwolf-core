@@ -19,6 +19,7 @@ dependencies {
     annotationProcessor project(":springwolf-plugins:springwolf-kafka")
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
 
     implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
