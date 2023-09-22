@@ -55,7 +55,7 @@ ext {
 
     slf4jApiVersion = '2.0.9'
 
-    swaggerVersion = '2.2.15'
+    swaggerVersion = '2.2.16'
     swaggerInflectorVersion = '2.0.9'
 
     testcontainersVersion = '1.19.0'
