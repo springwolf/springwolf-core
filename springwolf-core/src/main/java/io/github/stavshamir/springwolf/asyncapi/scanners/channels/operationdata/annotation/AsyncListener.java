@@ -38,4 +38,6 @@ public @interface AsyncListener {
      * Mapped to {@link OperationData}
      */
     AsyncOperation operation();
+
+    AsyncGenericBinding[] bindings() default {};
 }
