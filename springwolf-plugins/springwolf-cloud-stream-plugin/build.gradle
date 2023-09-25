@@ -32,7 +32,7 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.apache.kafka:kafka-streams:${kafkaStreamsVersion}"
+    testImplementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
 

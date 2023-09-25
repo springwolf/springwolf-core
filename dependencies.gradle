@@ -37,8 +37,7 @@ ext {
 
     jsr305Version = '3.0.2'
 
-    kafkaClientsVersion = '3.5.1'
-    kafkaStreamsVersion = '3.5.1'
+    kafkaVersion = '3.5.1'
 
     jacksonVersion = '2.15.2'
     jakartaAnnotationApiVersion = '2.1.1'
@@ -58,4 +57,10 @@ ext {
     swaggerVersion = '2.2.16'
 
     testcontainersVersion = '1.19.0'
+}
+
+// spring boot managed dependency versions
+ext {
+    set('kafka.version', ext.kafkaVersion)
+    set('snakeyaml.version', '2.2')
 }
