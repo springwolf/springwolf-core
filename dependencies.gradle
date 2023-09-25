@@ -51,7 +51,7 @@ ext {
 
     junitJupiterVersion = '5.10.0'
 
-    lombokVersion = '1.18.28'
+    lombokVersion = '1.18.30'
 
     slf4jApiVersion = '2.0.9'
 
