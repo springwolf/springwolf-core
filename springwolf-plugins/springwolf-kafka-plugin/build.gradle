@@ -11,7 +11,7 @@ dependencies {
 
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "io.swagger.core.v3:swagger-models:${swaggerVersion}"
-    implementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}"
+    implementation "org.apache.kafka:kafka-clients:${kafkaVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "org.springframework:spring-beans"
