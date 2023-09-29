@@ -39,7 +39,11 @@
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
           },
-          "bindings": { }
+          "bindings": {
+            "sqs": {
+              "bindingVersion": "0.2.0"
+            }
+          }
         }
       },
       "publish": {
