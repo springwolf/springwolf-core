@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;

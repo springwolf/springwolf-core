@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 import { Schema } from "./schema.model";
 
 export const CHANNEL_ANCHOR_PREFIX = "#channel-";

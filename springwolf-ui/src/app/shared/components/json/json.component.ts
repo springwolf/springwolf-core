@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit, Input } from "@angular/core";
 
 @Component({

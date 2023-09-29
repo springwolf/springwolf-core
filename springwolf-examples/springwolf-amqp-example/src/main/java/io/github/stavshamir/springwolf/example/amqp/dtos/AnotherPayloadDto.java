@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.amqp.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;

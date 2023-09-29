@@ -49,20 +49,53 @@ java {
 spotless {
   encoding 'UTF-8'
 
-  format 'styling', {
-    target 'src/**/*.ts', 'src/**/*.js', 'src/**/*.json', 'src/**/*.html', 'src/**/*.css', 'src/**/*.scss'
+  def npmExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/npm.cmd' : '/bin/npm'
+  def nodeExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/node.exe' : '/bin/node'
 
-    def npmExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/npm.cmd' : '/bin/npm'
-    def nodeExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/node.exe' : '/bin/node'
+  format 'html', {
+    target 'src/**/*.html'
+
     prettier()
-      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}") // get the npm executable path from gradle-node-plugin
-      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+            .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
+            .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+
+    licenseHeader("<!-- SPDX-License-Identifier: Apache-2.0 -->", "<[^!].*>")
+
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
+
+  format 'json', {
+    target 'src/**/*.json'
+
+    prettier()
+            .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
+            .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
+
+  format 'styling', {
+    target 'src/**/*.ts', 'src/**/*.js', 'src/**/*.css', 'src/**/*.scss'
+
+    prettier()
+            .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
+            .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+
+    licenseHeader("/* SPDX-License-Identifier: Apache-2.0 */", "import|export|.* \\{")
 
     trimTrailingWhitespace()
     endWithNewline()
   }
 }
 tasks.named('spotlessStyling').configure {
+  it.dependsOn('nodeSetup', 'npmSetup')
+}
+tasks.named('spotlessHtml').configure {
+  it.dependsOn('nodeSetup', 'npmSetup')
+}
+tasks.named('spotlessJson').configure {
   it.dependsOn('nodeSetup', 'npmSetup')
 }
 
