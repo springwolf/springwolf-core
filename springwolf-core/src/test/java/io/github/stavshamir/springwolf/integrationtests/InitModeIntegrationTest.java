@@ -8,14 +8,12 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.test.context.TestPropertySource;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 
 /**
  * Tests the possible init modes (failfast, background)
@@ -44,15 +42,16 @@ public class InitModeIntegrationTest {
     @TestPropertySource(properties = {"springwolf.init-mode=background"})
     class TestInitModeBackground {
 
-        @MockBean
-        private TaskExecutor taskExecutor;
+        @Autowired
+        private DefaultAsyncApiService defaultAsyncApiService;
 
         @Test
         void asyncApiApplicationListenerShouldNotBeLoaded() {
             // Given initMode is 'background'
             // When application is ready
-            // Then taskExecutor.execute has been invoked.
-            verify(taskExecutor).execute(any(Runnable.class));
+            // Then a thread is started in the background and initializes the document
+            await().atMost(5, SECONDS).untilAsserted(() -> assertThat(defaultAsyncApiService.isNotInitialized())
+                    .isFalse());
         }
     }
 
