@@ -45,10 +45,8 @@ public class SpringwolfConfigProperties {
      */
     private InitMode initMode = InitMode.FAIL_FAST;
 
-    /**
-     * Flag to enable Springwolf on the actuator management port instead of the regular application port
-     */
-    private Boolean useManagementPort = false;
+    @Nullable
+    private Endpoint endpoint;
 
     @Nullable
     private ConfigDocket docket;
@@ -194,6 +192,24 @@ public class SpringwolfConfigProperties {
              * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED}
              */
             private boolean enabled = true;
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class Endpoint {
+
+        @Nullable
+        private Actuator actuator;
+
+        @Getter
+        @Setter
+        private static class Actuator {
+
+            /**
+             * Flag to move the endpoint that exposes the AsyncAPI document beneath Spring Boot’s actuator endpoint.
+             */
+            private boolean enabled = false;
         }
     }
 }
