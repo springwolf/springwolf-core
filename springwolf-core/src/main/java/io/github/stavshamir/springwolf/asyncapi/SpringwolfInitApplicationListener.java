@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpringwolfInitApplicationListener implements ApplicationListener<ApplicationReadyEvent>, InitializingBean {
 
-    private final TaskExecutor taskExecutor;
     private final AsyncApiService asyncApiService;
     private final SpringwolfConfigProperties configProperties;
 
@@ -28,7 +26,7 @@ public class SpringwolfInitApplicationListener implements ApplicationListener<Ap
     public void onApplicationEvent(ApplicationReadyEvent event) {
         if (configProperties.getInitMode() == InitMode.BACKGROUND) {
             log.debug("triggering background asyncapi creation..");
-            taskExecutor.execute(this.asyncApiService::getAsyncAPI);
+            new Thread(asyncApiService::getAsyncAPI).start();
         }
     }
 

@@ -44,6 +44,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testImplementation("org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}")
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
     testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
