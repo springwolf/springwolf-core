@@ -26,7 +26,12 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
     @ContextConfiguration(
-            classes = {DefaultAsyncApiDocketService.class, SpringwolfSqsProducer.class, SpringwolfSqsController.class})
+            classes = {
+                DefaultAsyncApiDocketService.class,
+                SpringwolfSqsProducer.class,
+                SpringwolfSqsController.class,
+                ObjectMapperTestConfiguration.class
+            })
     @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfSqsConfigProperties.class})
     @TestPropertySource(
             properties = {
@@ -56,7 +61,12 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
     @ContextConfiguration(
-            classes = {DefaultAsyncApiDocketService.class, SpringwolfSqsProducer.class, SpringwolfSqsController.class})
+            classes = {
+                DefaultAsyncApiDocketService.class,
+                SpringwolfSqsProducer.class,
+                SpringwolfSqsController.class,
+                ObjectMapperTestConfiguration.class
+            })
     @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfSqsConfigProperties.class})
     @TestPropertySource(
             properties = {

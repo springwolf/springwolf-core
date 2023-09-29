@@ -26,7 +26,8 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 DefaultAsyncApiDocketService.class,
                 SpringwolfKafkaProducerConfiguration.class,
                 SpringwolfKafkaTemplateFactory.class,
-                SpringwolfKafkaController.class
+                SpringwolfKafkaController.class,
+                ObjectMapperTestConfiguration.class
             })
     @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfKafkaConfigProperties.class})
     @TestPropertySource(
@@ -59,9 +60,14 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             classes = {
                 DefaultAsyncApiDocketService.class,
                 SpringwolfKafkaProducerConfiguration.class,
-                SpringwolfKafkaController.class
+                SpringwolfKafkaController.class,
+                ObjectMapperTestConfiguration.class
             })
-    @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfKafkaConfigProperties.class})
+    @EnableConfigurationProperties(
+            value = {
+                SpringwolfConfigProperties.class,
+                SpringwolfKafkaConfigProperties.class,
+            })
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
