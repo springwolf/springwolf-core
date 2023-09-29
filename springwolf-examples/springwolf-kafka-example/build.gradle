@@ -19,7 +19,6 @@ dependencies {
     annotationProcessor project(":springwolf-plugins:springwolf-kafka")
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.springframework.boot:spring-boot-starter-actuator"
 
     implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
@@ -57,7 +56,11 @@ dependencies {
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+
     permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaVersion}:test@jar"
+
+    testImplementation("org.springframework.boot:spring-boot-starter-actuator")
+    permitTestUnusedDeclared("org.springframework.boot:spring-boot-starter-actuator")
 }
 
 docker {
