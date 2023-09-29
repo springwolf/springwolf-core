@@ -24,6 +24,8 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+
     compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
     permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
 
