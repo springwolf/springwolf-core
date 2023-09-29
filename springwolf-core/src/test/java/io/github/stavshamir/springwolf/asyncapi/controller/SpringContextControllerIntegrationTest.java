@@ -49,7 +49,7 @@ public class SpringContextControllerIntegrationTest {
     @MinimalTestContextConfiguration
     @Import(value = {AsyncApiController.class, ActuatorAsyncApiController.class})
     @TestPropertySource(
-            properties = {"springwolf.use-management-port=true", "management.endpoints.web.exposure.include=*"})
+            properties = {"springwolf.endpoint.actuator.enabled=true", "management.endpoints.web.exposure.include=*"})
     class SpringwolfOnManagementPortConfigurationTest {
 
         @Autowired

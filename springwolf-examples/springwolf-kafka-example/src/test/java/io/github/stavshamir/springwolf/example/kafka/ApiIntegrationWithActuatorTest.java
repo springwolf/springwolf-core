@@ -18,7 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(
         classes = {SpringwolfKafkaExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"springwolf.use-management-port=true", "management.endpoints.web.exposure.include=springwolf"})
+        properties = {
+            "springwolf.endpoint.actuator.enabled=true",
+            "management.endpoints.web.exposure.include=springwolf"
+        })
 @EmbeddedKafka(
         partitions = 1,
         brokerProperties = {
