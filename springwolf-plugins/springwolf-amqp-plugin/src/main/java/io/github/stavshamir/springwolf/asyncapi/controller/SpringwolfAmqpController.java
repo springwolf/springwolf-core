@@ -32,7 +32,8 @@ public class SpringwolfAmqpController implements InitializingBean {
     private final AsyncApiDocketService asyncApiDocketService;
 
     private final SpringwolfAmqpProducer producer;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final ObjectMapper objectMapper;
 
     @PostMapping("/publish")
     public void publish(@RequestParam String topic, @RequestBody MessageDto message) {

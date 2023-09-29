@@ -33,7 +33,7 @@ public class SpringwolfSqsController implements InitializingBean {
 
     private final SpringwolfSqsProducer producer;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     @PostMapping("/publish")
     public void publish(@RequestParam String topic, @RequestBody MessageDto message) {
