@@ -20,10 +20,9 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
 
     private final AsyncApiDocketService asyncApiDocketService;
 
-    private final Optional<Environment> environment;
+    private final Environment environment;
 
-    public AbstractAnnotatedClassScanner(
-            AsyncApiDocketService asyncApiDocketService, Optional<Environment> environment) {
+    public AbstractAnnotatedClassScanner(AsyncApiDocketService asyncApiDocketService, Environment environment) {
         this.asyncApiDocketService = asyncApiDocketService;
         this.environment = environment;
     }
@@ -40,9 +39,8 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
             throw new IllegalArgumentException("Base package must not be blank");
         }
 
-        ClassPathScanningCandidateComponentProvider provider = environment
-                .map(env -> new ClassPathScanningCandidateComponentProvider(false, env))
-                .orElseGet(() -> new ClassPathScanningCandidateComponentProvider(false));
+        ClassPathScanningCandidateComponentProvider provider =
+                new ClassPathScanningCandidateComponentProvider(false, environment);
 
         provider.addIncludeFilter(new AnnotationTypeFilter(getAnnotationClass()));
 

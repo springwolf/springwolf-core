@@ -8,18 +8,14 @@ import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED;
 
 @Component
 @Slf4j
 @RestControllerEndpoint(id = "springwolf")
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED, havingValue = "true")
 public class ActuatorAsyncApiController {
 
     private final AsyncApiService asyncApiService;

@@ -6,18 +6,14 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED;
-
 @Slf4j
 @RequiredArgsConstructor
 @Component
-@ConditionalOnProperty(name = SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED, matchIfMissing = true)
 public class ProducerOperationDataScanner extends AbstractOperationDataScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;

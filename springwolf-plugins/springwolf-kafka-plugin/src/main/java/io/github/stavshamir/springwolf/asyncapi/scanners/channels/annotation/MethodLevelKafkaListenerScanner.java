@@ -4,13 +4,11 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
-import lombok.RequiredArgsConstructor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.core.annotation.Order;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
@@ -18,17 +16,16 @@ import org.springframework.util.StringValueResolver;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigConstants.SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED;
-
 @Slf4j
 @Service
-@RequiredArgsConstructor
-@Order(value = ChannelPriority.AUTO_DISCOVERED)
-@ConditionalOnProperty(name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED, matchIfMissing = true)
 public class MethodLevelKafkaListenerScanner extends AbstractMethodLevelListenerScanner<KafkaListener>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
+
+    public MethodLevelKafkaListenerScanner(ComponentClassScanner componentClassScanner, SchemasService schemasService) {
+        super(componentClassScanner, schemasService);
+    }
 
     @Override
     public void setEmbeddedValueResolver(StringValueResolver resolver) {

@@ -15,7 +15,6 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -39,16 +38,20 @@ public abstract class AbstractClassLevelListenerScanner<
                 ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
         implements ChannelsScanner {
 
-    @Autowired
-    private ComponentClassScanner componentClassScanner;
+    private final ComponentClassScanner componentClassScanner;
 
-    @Autowired
-    private SchemasService schemasService;
+    private final SchemasService schemasService;
 
     private static final Comparator<Map.Entry<String, ChannelItem>> byPublishOperationName =
             Comparator.comparing(it -> it.getValue().getPublish().getOperationId());
     private static final Supplier<Set<Map.Entry<String, ChannelItem>>> channelItemSupplier =
             () -> new TreeSet<>(byPublishOperationName);
+
+    public AbstractClassLevelListenerScanner(
+            ComponentClassScanner componentClassScanner, SchemasService schemasService) {
+        this.componentClassScanner = componentClassScanner;
+        this.schemasService = schemasService;
+    }
 
     /**
      * This annotation is used on class level

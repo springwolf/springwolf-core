@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -28,9 +27,9 @@ public class DefaultSchemasService implements SchemasService {
     private final Map<String, Schema> definitions = new HashMap<>();
     private Map<String, Schema> finalizedDefinitions = null;
 
-    public DefaultSchemasService(
-            Optional<List<ModelConverter>> externalModelConverters, ExampleGenerator exampleGenerator) {
-        externalModelConverters.ifPresent(converters -> converters.forEach(converter::addConverter));
+    public DefaultSchemasService(List<ModelConverter> externalModelConverters, ExampleGenerator exampleGenerator) {
+
+        externalModelConverters.forEach(converter::addConverter);
         this.exampleGenerator = exampleGenerator;
     }
 

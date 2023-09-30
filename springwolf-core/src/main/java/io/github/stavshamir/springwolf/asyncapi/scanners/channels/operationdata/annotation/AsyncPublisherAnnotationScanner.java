@@ -13,7 +13,6 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -25,13 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED;
-
 @Slf4j
 @RequiredArgsConstructor
 @Component
 @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-@ConditionalOnProperty(name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED, matchIfMissing = true)
 public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanner
         implements EmbeddedValueResolverAware {
     private StringValueResolver resolver;

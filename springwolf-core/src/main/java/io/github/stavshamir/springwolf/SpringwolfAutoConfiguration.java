@@ -1,29 +1,81 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf;
 
+import io.github.stavshamir.springwolf.asyncapi.AsyncApiCustomizer;
+import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
+import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
+import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
+import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
+import io.github.stavshamir.springwolf.asyncapi.SpringwolfInitApplicationListener;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
+import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
+import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.TypeExcludeFilter;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
- * Spring Boot auto-configuration which loads all spring-beans for springwolf core and eventually loaded plugins.
- * <p>
- * This configuration uses the spring @{@link ComponentScan} mechanism to detect and load the necessary beans. Both
- * the core components as well as all plugin components are located underneath the base package 'io.github.stavshamir.springwolf'
- * so existing springwolf plugins are automatically loaded together with the springwolf core beans.
+ * Spring Boot auto-configuration which loads all spring-beans for springwolf core.
  * <p>
  * To disable this auto-configuration, set the environment property {@code springwolf.enabled=false}.
  */
 @AutoConfiguration
-@ComponentScan(
-        basePackages = {"io.github.stavshamir.springwolf"},
-        excludeFilters = {
-            @ComponentScan.Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
-            @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class)
-        })
+@Import({SpringwolfWebConfiguration.class, SpringwolfScannerConfiguration.class})
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
-public class SpringwolfAutoConfiguration {}
+public class SpringwolfAutoConfiguration {
+
+    @Bean
+    public SpringwolfConfigProperties springwolfConfigProperties() {
+        return new SpringwolfConfigProperties();
+    }
+
+    @Bean
+    public SpringwolfInitApplicationListener springwolfInitApplicationListener(
+            AsyncApiService asyncApiService, SpringwolfConfigProperties configProperties) {
+        return new SpringwolfInitApplicationListener(asyncApiService, configProperties);
+    }
+
+    @Bean
+    public AsyncApiService asyncApiService(
+            AsyncApiDocketService asyncApiDocketService,
+            ChannelsService channelsService,
+            SchemasService schemasService,
+            List<AsyncApiCustomizer> customizers) {
+        return new DefaultAsyncApiService(asyncApiDocketService, channelsService, schemasService, customizers);
+    }
+
+    @Bean
+    public ChannelsService channelsService(List<? extends ChannelsScanner> channelsScanners) {
+        return new DefaultChannelsService(channelsScanners);
+    }
+
+    @Bean
+    public SchemasService schemasService(List<ModelConverter> modelConverters, ExampleGenerator exampleGenerator) {
+        return new DefaultSchemasService(modelConverters, exampleGenerator);
+    }
+
+    @Bean
+    public AsyncApiDocketService asyncApiDocketService(
+            Optional<AsyncApiDocket> optionalAsyncApiDocket, SpringwolfConfigProperties springwolfConfigProperties) {
+        return new DefaultAsyncApiDocketService(optionalAsyncApiDocket, springwolfConfigProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ExampleGenerator exampleGenerator() {
+        return new ExampleJsonGenerator();
+    }
+}

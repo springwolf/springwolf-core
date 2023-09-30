@@ -6,12 +6,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class ComponentClassScanner extends AbstractAnnotatedClassScanner<Component> implements ClassScanner {
 
-    public ComponentClassScanner(AsyncApiDocketService asyncApiDocketService, Optional<Environment> environment) {
+    public ComponentClassScanner(AsyncApiDocketService asyncApiDocketService, Environment environment) {
         super(asyncApiDocketService, environment);
     }
 

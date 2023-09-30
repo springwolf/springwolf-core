@@ -25,21 +25,17 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     /**
      * Docket definition in application.properties
      */
-    private final Optional<SpringwolfConfigProperties> configProperties;
+    private final SpringwolfConfigProperties configProperties;
 
     @Override
     public AsyncApiDocket getAsyncApiDocket() {
         if (customDocket.isPresent()) {
             log.debug("Reading springwolf configuration from custom defined @Bean AsyncApiDocket");
             return customDocket.get();
-        } else if (configProperties.isPresent()) {
+        } else {
             log.debug("Reading springwolf configuration from application.properties files");
-            return parseApplicationConfigProperties(configProperties.get());
+            return parseApplicationConfigProperties(configProperties);
         }
-        throw new IllegalArgumentException("No springwolf configuration found. "
-                + "Either define the properties in the application.properties under the "
-                + SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX + " prefix "
-                + "or add a @Bean AsyncApiDocket to the spring context");
     }
 
     private AsyncApiDocket parseApplicationConfigProperties(SpringwolfConfigProperties configProperties) {

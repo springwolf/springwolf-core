@@ -2,6 +2,7 @@
 package io.github.stavshamir.springwolf.configuration;
 
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
+import io.github.stavshamir.springwolf.producer.SpringwolfKafkaTemplateFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.kafka.core.KafkaTemplate;

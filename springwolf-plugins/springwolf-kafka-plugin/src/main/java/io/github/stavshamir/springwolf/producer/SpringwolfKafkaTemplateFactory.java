@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.configuration;
+package io.github.stavshamir.springwolf.producer;
 
+import io.github.stavshamir.springwolf.asyncapi.kafka.SpringwolfKafkaProducerConfiguration;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
