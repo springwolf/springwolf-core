@@ -1,25 +1,24 @@
-name: springwolf-kafka
+name: springwolf-plugins
 
 on:
   push:
     branches:
       - master
-    paths:
-      - '.github/workflows/springwolf-kafka.yml'
-      - 'springwolf-core/**'
-      - 'springwolf-plugins/springwolf-kafka-plugin/**'
-      - 'springwolf-examples/springwolf-kafka-example/**'
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
-
-env:
-  plugin: springwolf-plugins/springwolf-kafka-plugin
-  example: springwolf-examples/springwolf-kafka-example
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        plugin: [ "amqp", "cloud-stream", "kafka", "sqs" ]
+
+    env:
+      plugin: springwolf-plugins/springwolf-${{ matrix.plugin }}-plugin
+      example: springwolf-examples/springwolf-${{ matrix.plugin }}-example
 
     steps:
       - uses: actions/checkout@v4
