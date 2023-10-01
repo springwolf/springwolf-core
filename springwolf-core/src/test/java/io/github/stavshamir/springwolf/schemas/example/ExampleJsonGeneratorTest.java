@@ -273,7 +273,7 @@ class ExampleJsonGeneratorTest {
 
             String actual = ExampleJsonGenerator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("[{\"b\": true,\"s\": \"string\"}]");
+            assertThat(actual).isEqualTo("[{\"b\":true,\"s\":\"string\"}]");
         }
 
         @Test
@@ -284,7 +284,7 @@ class ExampleJsonGeneratorTest {
 
             String actual = ExampleJsonGenerator.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("{\"b\": true,\"s\": \"string\"}");
+            assertThat(actual).isEqualTo("{\"b\":true,\"s\":\"string\"}");
         }
 
         @Test
@@ -301,7 +301,7 @@ class ExampleJsonGeneratorTest {
             nestedSchema.addProperty("b", new BooleanSchema());
             String actual = ExampleJsonGenerator.buildSchema(compositeSchema, Map.of("Nested", nestedSchema));
 
-            assertThat(actual).isEqualTo("{\"f\": {\"b\": true,\"s\": \"string\"},\"s\": \"string\"}");
+            assertThat(actual).isEqualTo("{\"f\":{\"b\":true,\"s\":\"string\"},\"s\":\"string\"}");
         }
 
         @Test
@@ -314,7 +314,7 @@ class ExampleJsonGeneratorTest {
 
             String actual = ExampleJsonGenerator.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
 
-            assertThat(actual).isEqualTo("{\"anyOfField\": \"string\"}");
+            assertThat(actual).isEqualTo("{\"anyOfField\":\"string\"}");
         }
 
         @Test
