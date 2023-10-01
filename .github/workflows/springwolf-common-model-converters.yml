@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - '.github/workflows/springwolf-common-model-converters.yml'
-      - 'springwolf-add-ons/springwolf-common-model-converters/**'
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
 
