@@ -70,6 +70,7 @@ class AsyncAnnotationScannerUtil {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toMap(ProcessedOperationBinding::getType, ProcessedOperationBinding::getBinding));
+        // TODO: collect toMap -> handle duplicate bindings (bindingPriority, take first)
     }
 
     public static Map<String, MessageBinding> processMessageBindingFromAnnotation(

@@ -4,17 +4,24 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.OperationBindingProcessor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Stream;
 
+@Slf4j
 public abstract class AbstractOperationBindingProcessor<A>
         implements OperationBindingProcessor, EmbeddedValueResolverAware {
+
+    private final Class<A> specificAnnotationClazz =
+            (Class<A>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     private StringValueResolver resolver;
 
     @Override
@@ -24,17 +31,28 @@ public abstract class AbstractOperationBindingProcessor<A>
 
     @Override
     public Optional<ProcessedOperationBinding> process(Method method) {
-        final Class<A> clazz = getGenericAnnotationClass();
-
         return Arrays.stream(method.getAnnotations())
                 .filter(annotation -> annotation.annotationType().isAnnotationPresent(AsyncOperationBinding.class))
-                .map(clazz::cast)
+                .flatMap(this::tryCast)
                 .findAny()
                 .map(this::mapToOperationBinding);
     }
 
-    private Class<A> getGenericAnnotationClass() {
-        return (Class<A>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    /**
+     * Attempt to cast the annotation to the specific annotation
+     *
+     * Casting might fail, when multiple, different binding annotations are used,
+     * which results in an (expected) exception.
+     *
+     * If there is an option to previously test casting without casting, then lets change the code here.
+     */
+    private Stream<A> tryCast(Annotation obj) {
+        try {
+            return Stream.of(specificAnnotationClazz.cast(obj));
+        } catch (ClassCastException ex) {
+            log.trace("Method has multiple bindings defined.", ex);
+        }
+        return Stream.empty();
     }
 
     protected abstract ProcessedOperationBinding mapToOperationBinding(A bindingAnnotation);

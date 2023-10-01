@@ -37,6 +37,4 @@ public @interface AsyncPublisher {
      * Mapped to {@link OperationData}
      */
     AsyncOperation operation();
-
-    AsyncGenericBinding[] bindings() default {};
 }

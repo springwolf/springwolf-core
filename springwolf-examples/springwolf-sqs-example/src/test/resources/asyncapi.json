@@ -26,6 +26,9 @@
         "operationId": "another-queue_subscribe",
         "description": "Custom, optional description defined in the AsyncPublisher annotation",
         "bindings": {
+          "custom-sqs": {
+            "internal-field": "customValue"
+          },
           "sqs": { }
         },
         "message": {
