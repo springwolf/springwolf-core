@@ -6,6 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfAmqpController;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfAmqpConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -23,6 +24,7 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
  * Autoconfiguration for the springwolf amqp plugin.
  */
 @AutoConfiguration
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
 @Import({SpringwolfAmqpScannerConfiguration.class})
 public class SpringwolfAmqpAutoConfiguration {
 

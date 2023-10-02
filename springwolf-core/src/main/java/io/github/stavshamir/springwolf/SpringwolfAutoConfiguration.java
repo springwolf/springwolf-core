@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Spring Boot auto-configuration which loads all spring-beans for springwolf core.
+ * Spring Boot auto-configuration which loads all spring-beans for springwolf core module.
  * <p>
- * To disable this auto-configuration, set the environment property {@code springwolf.enabled=false}.
+ * To disable springwolf support, set the environment property {@code springwolf.enabled=false}.
  */
 @AutoConfiguration
 @Import({SpringwolfWebConfiguration.class, SpringwolfScannerConfiguration.class})

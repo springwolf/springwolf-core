@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Import;
  */
 @AutoConfiguration
 @Import({SpringwolfSqsScannerConfiguration.class, SpringwolfSqsWebConfiguration.class})
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
 public class SpringwolfSqsAutoConfiguration {
 
     @Bean
-    @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
     public SpringwolfSqsConfigProperties springwolfSqsConfigProperties() {
         return new SpringwolfSqsConfigProperties();
     }

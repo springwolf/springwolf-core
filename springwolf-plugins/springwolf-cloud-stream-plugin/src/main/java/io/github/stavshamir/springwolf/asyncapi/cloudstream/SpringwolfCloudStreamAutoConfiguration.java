@@ -4,8 +4,10 @@ package io.github.stavshamir.springwolf.asyncapi.cloudstream;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.CloudStreamFunctionChannelsScanner;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Bean;
  * Autoconfiguration for the springwolf cloudstream plugin.
  */
 @AutoConfiguration
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
 public class SpringwolfCloudStreamAutoConfiguration {
 
     @Bean
