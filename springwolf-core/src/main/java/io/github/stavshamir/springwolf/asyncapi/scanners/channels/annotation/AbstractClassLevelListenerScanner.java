@@ -49,7 +49,6 @@ public abstract class AbstractClassLevelListenerScanner<
     private static final Supplier<Set<Map.Entry<String, ChannelItem>>> channelItemSupplier =
             () -> new TreeSet<>(byPublishOperationName);
 
-
     /**
      * This annotation is used on class level
      *
