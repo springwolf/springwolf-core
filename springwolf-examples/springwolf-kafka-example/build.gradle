@@ -43,7 +43,7 @@ dependencies {
 
     testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
 
-    testImplementation "org.apache.kafka:kafka-clients:${kafkaVersion}@jar"
+    testImplementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
@@ -57,7 +57,7 @@ dependencies {
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 
-    permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaVersion}:test@jar"
+    permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaClientsVersion}:test@jar"
 
     testImplementation("org.springframework.boot:spring-boot-starter-actuator")
     permitTestUnusedDeclared("org.springframework.boot:spring-boot-starter-actuator")

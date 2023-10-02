@@ -28,7 +28,7 @@ dependencies {
     runtimeOnly "org.springframework.boot:spring-boot-starter-actuator"
 
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
-    implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
+    implementation "org.apache.kafka:kafka-streams:${kafkaStreamsVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
 
