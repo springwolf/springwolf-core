@@ -2,6 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -16,16 +17,12 @@ import java.util.Set;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
+@RequiredArgsConstructor
 public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implements ClassScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
 
     private final Environment environment;
-
-    public AbstractAnnotatedClassScanner(AsyncApiDocketService asyncApiDocketService, Environment environment) {
-        this.asyncApiDocketService = asyncApiDocketService;
-        this.environment = environment;
-    }
 
     /**
      * @return The class object of the annotation to scan.

@@ -14,6 +14,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
@@ -34,6 +35,7 @@ import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotat
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
+@RequiredArgsConstructor
 public abstract class AbstractClassLevelListenerScanner<
                 ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
         implements ChannelsScanner {
@@ -47,11 +49,6 @@ public abstract class AbstractClassLevelListenerScanner<
     private static final Supplier<Set<Map.Entry<String, ChannelItem>>> channelItemSupplier =
             () -> new TreeSet<>(byPublishOperationName);
 
-    public AbstractClassLevelListenerScanner(
-            ComponentClassScanner componentClassScanner, SchemasService schemasService) {
-        this.componentClassScanner = componentClassScanner;
-        this.schemasService = schemasService;
-    }
 
     /**
      * This annotation is used on class level
