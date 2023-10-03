@@ -3,6 +3,8 @@ package io.github.stavshamir.springwolf.schemas.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.RawValue;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -11,12 +13,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR;
 
@@ -126,11 +128,8 @@ public class ExampleJsonGenerator implements ExampleGenerator {
     }
 
     private static String handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        sb.append(buildSchemaInternal(schema.getItems(), definitions, visited));
-        sb.append("]");
-        return sb.toString();
+        return Arrays.asList(buildSchemaInternal(schema.getItems(), definitions, visited))
+                .toString();
     }
 
     private static String handleStringSchema(Schema schema) {
@@ -201,24 +200,14 @@ public class ExampleJsonGenerator implements ExampleGenerator {
 
     private static String handleObjectProperties(
             Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
+        ObjectNode objectNode = objectMapper.createObjectNode();
 
-        String data = properties.entrySet().stream()
-                .map(entry -> {
-                    StringBuilder propertyStringBuilder = new StringBuilder();
-                    propertyStringBuilder.append("\"");
-                    propertyStringBuilder.append(entry.getKey());
-                    propertyStringBuilder.append("\": ");
-                    propertyStringBuilder.append(buildSchemaInternal(entry.getValue(), definitions, visited));
-                    return propertyStringBuilder.toString();
-                })
-                .sorted()
-                .collect(Collectors.joining(","));
-        sb.append(data);
+        properties.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> {
+            String propertyKey = entry.getKey();
+            RawValue propertyRawValue = new RawValue(buildSchemaInternal(entry.getValue(), definitions, visited));
+            objectNode.putRawValue(propertyKey, propertyRawValue);
+        });
 
-        sb.append("}");
-
-        return sb.toString();
+        return objectNode.toString();
     }
 }
