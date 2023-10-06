@@ -2,9 +2,11 @@
 package io.github.stavshamir.springwolf.schemas;
 
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -25,10 +27,16 @@ public class DefaultSchemasService implements SchemasService {
     private final Map<String, Schema> definitions = new HashMap<>();
     private Map<String, Schema> finalizedDefinitions = null;
 
-    public DefaultSchemasService(List<ModelConverter> externalModelConverters, ExampleGenerator exampleGenerator) {
+    public DefaultSchemasService(List<ModelConverter> externalModelConverters,
+            ExampleGenerator exampleGenerator,
+            SpringwolfConfigProperties properties) {
 
         externalModelConverters.forEach(converter::addConverter);
         this.exampleGenerator = exampleGenerator;
+
+        if (properties.isUseFqn()) {
+            TypeNameResolver.std.setUseFqn(true);
+        }
     }
 
     @Override
@@ -64,7 +72,7 @@ public class DefaultSchemasService implements SchemasService {
         Map<String, Schema> schemas = converter.readAll(type);
         this.definitions.putAll(schemas);
 
-        if (schemas.size() == 0 && type.equals(String.class)) {
+        if (schemas.isEmpty() && type.equals(String.class)) {
             this.definitions.put("String", new StringSchema());
             return "String";
         }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.core.util.Json;
@@ -32,7 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DefaultSchemasServiceTest {
 
     private final ExampleGenerator exampleGenerator = new ExampleJsonGenerator();
-    private final SchemasService schemasService = new DefaultSchemasService(List.of(), exampleGenerator);
+    private final SchemasService schemasService =
+            new DefaultSchemasService(List.of(), exampleGenerator, new SpringwolfConfigProperties());
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
@@ -89,6 +91,28 @@ class DefaultSchemasServiceTest {
         String modelName = schemasService.register(ClassWithSchemaAnnotation.class);
 
         assertThat(modelName).isEqualTo("DifferentName");
+    }
+
+    @Test
+    void getDocumentedDefinitionsWithFqnForClasses() throws IOException {
+        // given
+        SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
+        properties.setUseFqn(true);
+
+        SchemasService schemasServiceWithFqn =
+                new DefaultSchemasService(Optional.empty(), exampleGenerator, properties);
+
+        // when
+        schemasServiceWithFqn.register(DocumentedSimpleFoo.class);
+        String actualDefinitions =
+                objectMapper.writer(printer).writeValueAsString(schemasServiceWithFqn.getDefinitions());
+
+        // then
+        System.out.println("Got: " + actualDefinitions);
+        String fqnClassName = DocumentedSimpleFoo.class.getName();
+        assertThat(actualDefinitions).contains(fqnClassName);
+        assertThat(fqnClassName.length())
+                .isGreaterThan(DocumentedSimpleFoo.class.getSimpleName().length());
     }
 
     private String jsonResource(String path) throws IOException {
