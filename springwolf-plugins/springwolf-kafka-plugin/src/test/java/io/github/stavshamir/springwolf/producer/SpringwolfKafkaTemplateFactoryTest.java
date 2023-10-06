@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.configuration;
+package io.github.stavshamir.springwolf.producer;
 
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
-import io.github.stavshamir.springwolf.producer.SpringwolfKafkaTemplateFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.kafka.core.KafkaTemplate;
