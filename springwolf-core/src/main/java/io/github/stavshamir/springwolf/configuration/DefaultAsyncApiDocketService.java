@@ -7,13 +7,11 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
 public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
 

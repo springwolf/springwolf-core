@@ -8,7 +8,6 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
@@ -16,7 +15,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 
-@Component
 public class KafkaMessageBindingProcessor implements MessageBindingProcessor, EmbeddedValueResolverAware {
     private StringValueResolver resolver;
 

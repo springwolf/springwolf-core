@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -27,7 +26,6 @@ import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
 @Order(value = ChannelPriority.ASYNC_ANNOTATION)
 public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
     private StringValueResolver resolver;

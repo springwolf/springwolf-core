@@ -10,14 +10,12 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassS
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Map;
 
 @Slf4j
-@Service
 public class MethodLevelSqsListenerScanner extends AbstractMethodLevelListenerScanner<SqsListener>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 

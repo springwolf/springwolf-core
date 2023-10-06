@@ -6,14 +6,12 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
 public class ProducerOperationDataScanner extends AbstractOperationDataScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
