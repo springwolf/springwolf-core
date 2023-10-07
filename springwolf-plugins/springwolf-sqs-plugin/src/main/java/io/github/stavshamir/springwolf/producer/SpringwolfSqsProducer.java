@@ -3,13 +3,11 @@ package io.github.stavshamir.springwolf.producer;
 
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Service
 public class SpringwolfSqsProducer {
 
     private final Optional<SqsTemplate> template;

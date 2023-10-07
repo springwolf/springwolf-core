@@ -20,7 +20,6 @@ import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
-import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -29,7 +28,6 @@ import java.util.Set;
 import static java.util.stream.Collectors.toMap;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
 public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 

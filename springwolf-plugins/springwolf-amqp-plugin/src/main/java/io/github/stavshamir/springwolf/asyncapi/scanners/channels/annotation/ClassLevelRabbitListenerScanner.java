@@ -17,7 +17,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -25,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Service
 @Order(value = ChannelPriority.AUTO_DISCOVERED)
 public class ClassLevelRabbitListenerScanner extends AbstractClassLevelListenerScanner<RabbitListener, RabbitHandler>
         implements ChannelsScanner, EmbeddedValueResolverAware {

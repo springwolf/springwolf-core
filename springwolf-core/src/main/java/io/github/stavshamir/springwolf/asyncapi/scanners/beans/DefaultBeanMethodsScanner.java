@@ -4,7 +4,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.beans;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -14,7 +13,6 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
 
-@Service
 @RequiredArgsConstructor
 public class DefaultBeanMethodsScanner implements BeanMethodsScanner {
 

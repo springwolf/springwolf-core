@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Service;
 
 /**
  * Spring ApplicationListener listening on {@link ApplicationReadyEvent}. Triggers the AsyncAPI creation.
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @RequiredArgsConstructor
-@Service
 public class SpringwolfInitApplicationListener implements ApplicationListener<ApplicationReadyEvent>, InitializingBean {
 
     private final AsyncApiService asyncApiService;

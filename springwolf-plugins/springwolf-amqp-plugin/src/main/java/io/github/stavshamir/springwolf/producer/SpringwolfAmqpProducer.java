@@ -9,14 +9,12 @@ import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Service
 public class SpringwolfAmqpProducer {
 
     private final AsyncApiService asyncApiService;
