@@ -24,7 +24,7 @@ Add the following dependency:
 
 ```groovy
 dependencies {
-    implementation 'io.github.springwolf:springwolf-generic-binding:0.1.1'
+    implementation 'io.github.springwolf:springwolf-generic-binding:<springwolf-version>'
 }
 ```
 

@@ -3,13 +3,10 @@
 **Automated documentation for event-driven applications built with Spring Boot**
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![springwolf-core](https://github.com/springwolf/springwolf-core/workflows/springwolf-core/badge.svg)
-![springwolf-amqp](https://github.com/springwolf/springwolf-core/workflows/springwolf-amqp/badge.svg)
-![springwolf-cloud-stream](https://github.com/springwolf/springwolf-core/workflows/springwolf-cloud-stream/badge.svg)
-![springwolf-kafka](https://github.com/springwolf/springwolf-core/workflows/springwolf-kafka/badge.svg)
-![springwolf-sqs](https://github.com/springwolf/springwolf-core/workflows/springwolf-sqs/badge.svg)
-![springwolf-common-model-converters](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-common-model-converters.yml/badge.svg)
-
+[![springwolf-core](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml)
+[![springwolf-ui](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml)
+[![springwolf-plugins](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml)
+[![springwolf-addons](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-addons.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-addons.yml)
 > We are on discord for any question, discussion, request etc.
 > Join us at https://discord.gg/HZYqd5RPTd
 
@@ -64,6 +61,7 @@ More details in the documentation.
 | [Cloud Stream](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-cloud-stream-plugin)               | [Cloud Stream Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-cloud-stream-example) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-cloud-stream?color=green&label=springwolf-cloud-stream&style=plastic)                       | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-cloud-stream?label=springwolf-cloud-stream&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                       |
 | [Kafka](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-kafka-plugin)                             | [Kafka Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-kafka-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-kafka?color=green&label=springwolf-kafka&style=plastic)                                     | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-kafka?label=springwolf-kafka&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                                     |
 | [Common Model Converter](https://github.com/springwolf/springwolf-core/tree/master/springwolf-add-ons/springwolf-common-model-converters) |                                                                                                                                       | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-common-model-converters?color=green&label=springwolf-common-model-converters&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-common-model-converters?label=springwolf-common-model-converters&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic) |
+| [Generic Binding](https://github.com/springwolf/springwolf-core/tree/master/springwolf-add-ons/springwolf-generic-binding)                |                                                                                                                                       | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-generic-binding?color=green&label=springwolf-generic-binding&style=plastic)                 | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-generic-binding?label=springwolf-generic-binding&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                 |
 
 ### Development
 
