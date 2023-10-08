@@ -2,12 +2,14 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.MessageBindingProcessor;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springframework.context.EmbeddedValueResolverAware;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
@@ -17,6 +19,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Component
+@Order(BindingProcessorPriority.PROTOCOL_BINDING)
 public class KafkaMessageBindingProcessor implements MessageBindingProcessor, EmbeddedValueResolverAware {
     private StringValueResolver resolver;
 
