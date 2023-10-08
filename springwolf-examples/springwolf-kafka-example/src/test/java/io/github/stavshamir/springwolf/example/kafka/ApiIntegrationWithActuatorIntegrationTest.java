@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
             "port=9092",
         })
 @DirtiesContext
-public class ApiIntegrationWithActuatorTest {
+public class ApiIntegrationWithActuatorIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;

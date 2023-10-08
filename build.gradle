@@ -63,6 +63,33 @@ allprojects {
         }
     }
 
+    test {
+        dependsOn spotlessApply // Automatically fix code formatting if possible
+
+        useJUnitPlatform()
+        testLogging {
+            events "passed", "skipped", "failed"
+            exceptionFormat = 'full'
+        }
+    }
+
+    tasks.register('unitTest', Test) {
+        enabled = !it.project.name.contains("-example") // Examples do not contain unit tests and would fail otherwise
+        dependsOn spotlessApply // Automatically fix code formatting if possible
+
+        description = 'Run only unit tests (excludes **IntegrationTest)'
+        group = 'verification'
+
+        useJUnitPlatform()
+        filter {
+            excludePatterns = ['*IntegrationTest']
+        }
+        testLogging {
+            events "passed", "skipped", "failed"
+            exceptionFormat = 'full'
+        }
+    }
+
     var publishingEnabled = (
             project.name == 'springwolf-core' ||
             project.name == 'springwolf-amqp' ||

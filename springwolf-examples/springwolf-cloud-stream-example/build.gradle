@@ -70,11 +70,4 @@ test {
     maxHeapSize = "1024m" // maximum heap size
 
     dependsOn dockerBuildImage
-    dependsOn spotlessApply // Automatically fix code formatting if possible
-
-    useJUnitPlatform()
-
-    testLogging {
-        exceptionFormat = 'full'
-    }
 }
