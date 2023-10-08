@@ -24,7 +24,7 @@ public class AnotherProducer {
                             description = "Custom, optional description defined in the AsyncPublisher annotation"))
     @SqsAsyncOperationBinding
     @AsyncGenericOperationBinding(
-            type = "custom-sqs",
+            type = "sqs",
             fields = {"internal-field=customValue", "nested.key=nestedValue"})
     public void sendMessage(AnotherPayloadDto msg) {
         template.send(QUEUE, msg);

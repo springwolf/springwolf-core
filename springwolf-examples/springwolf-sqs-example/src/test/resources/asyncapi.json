@@ -26,13 +26,12 @@
         "operationId": "another-queue_subscribe",
         "description": "Custom, optional description defined in the AsyncPublisher annotation",
         "bindings": {
-          "custom-sqs": {
+          "sqs": {
             "internal-field": "customValue",
             "nested": {
               "key": "nestedValue"
             }
-          },
-          "sqs": { }
+          }
         },
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
