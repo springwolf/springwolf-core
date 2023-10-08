@@ -2,10 +2,10 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.processor;
 
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.AsyncGenericOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.AbstractOperationBindingProcessor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.AsyncGenericOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AbstractOperationBindingProcessor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
