@@ -1,4 +1,4 @@
-name: springwolf-common-model-converters
+name: springwolf-addons
 
 on:
   push:
@@ -7,13 +7,17 @@ on:
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
 
-env:
-  addon: springwolf-add-ons/springwolf-common-model-converters
-
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        addon: [ "common-model-converters", "generic-binding" ]
+
+    env:
+      addon: springwolf-add-ons/springwolf-${{ matrix.addon }}
 
     steps:
       - uses: actions/checkout@v4

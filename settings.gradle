@@ -11,7 +11,8 @@ include(
         'springwolf-examples:springwolf-kafka-example',
         'springwolf-examples:springwolf-sqs-example',
         'springwolf-ui',
-        'springwolf-add-ons:springwolf-common-model-converters'
+        'springwolf-add-ons:springwolf-common-model-converters',
+        'springwolf-add-ons:springwolf-generic-binding'
 )
 
 project(':springwolf-plugins:springwolf-amqp-plugin').name = 'springwolf-amqp'

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.AsyncGenericOperationBinding;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 
 /**
@@ -20,7 +19,7 @@ public class BindingProcessorPriority {
      * <p>
      * to extend and overwrite the protocol binding - which might not support all features
      * <p>
-     * Example: {@link AsyncGenericOperationBinding}
+     * Example: AsyncGenericOperationBinding
      */
     public static final int GENERIC_BINDING = 2;
 

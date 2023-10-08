@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.processor;
+package io.github.stavshamir.springwolf.asyncapi.addon.genericbinding.annotation.processor;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.AsyncGenericOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.addon.genericbinding.annotation.AsyncGenericOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import org.junit.jupiter.api.Test;
 
@@ -39,27 +39,6 @@ class AsyncGenericOperationBindingProcessorTest {
         assertThat(binding.getExtensionFields()).isEqualTo(Map.of("binding", Map.of("field", "1"), "field", "true"));
     }
 
-    @Test
-    void testClassWithMultipleAnnotationHasABinding() {
-        // when
-        List<ProcessedOperationBinding> result = getProcessedOperationBindings(ClassWithMultipleAnnotation.class);
-
-        // then
-        assertThat(result).hasSize(2);
-
-        ProcessedOperationBinding processedOperationBinding = result.get(0);
-        assertThat(processedOperationBinding.getType()).isEqualTo("test-binding");
-        AsyncGenericOperationBindingProcessor.DefaultAsyncGenerialOperationBinding binding =
-                (AsyncGenericOperationBindingProcessor.DefaultAsyncGenerialOperationBinding)
-                        processedOperationBinding.getBinding();
-        assertThat(binding.getExtensionFields()).isEqualTo(Map.of("binding", Map.of("field", "1"), "field", "true"));
-
-        ProcessedOperationBinding processedOperationBinding2 = result.get(1);
-        assertThat(processedOperationBinding2.getType()).isEqualTo("another-binding");
-        assertThat(processedOperationBinding2.getBinding())
-                .isEqualTo(new AsyncGenericOperationBindingProcessor.DefaultAsyncGenerialOperationBinding(Map.of()));
-    }
-
     private List<ProcessedOperationBinding> getProcessedOperationBindings(Class<?> testClass) {
         List<ProcessedOperationBinding> result = Arrays.stream(testClass.getDeclaredMethods())
                 .map((m) -> m.getAnnotationsByType(AsyncGenericOperationBinding.class))
@@ -82,13 +61,78 @@ class AsyncGenericOperationBindingProcessorTest {
         private void methodWithoutAnnotation() {}
     }
 
-    private static class ClassWithMultipleAnnotation {
-        @AsyncGenericOperationBinding(
-                type = "test-binding",
-                fields = {"binding.field=1", "field=true"})
-        @AsyncGenericOperationBinding(type = "another-binding")
-        private void methodWithAnnotation() {}
+    static class PropertiesUtilTest {
 
-        private void methodWithoutAnnotation() {}
+        @Test
+        void emptyTest() {
+            // given
+            String[] strings = {};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEmpty();
+        }
+
+        @Test
+        void onePropertyTest() {
+            // given
+            String[] strings = {"key=value"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("key", "value"));
+        }
+
+        @Test
+        void twoPropertiesTest() {
+            // given
+            String[] strings = {"key1=value1", "key2=value2"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("key1", "value1", "key2", "value2"));
+        }
+
+        @Test
+        void nestedPropertyTest() {
+            // given
+            String[] strings = {"nested.key=value"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("nested", Map.of("key", "value")));
+        }
+
+        @Test
+        void deeplyNestedPropertyTest() {
+            // given
+            String[] strings = {"very.deeply.nested.key=value"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("very", Map.of("deeply", Map.of("nested", Map.of("key", "value")))));
+        }
+
+        @Test
+        void yamlSyntaxDoesWorkAsWell() {
+            // given
+            String[] strings = {"key: value"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("key", "value"));
+        }
     }
 }

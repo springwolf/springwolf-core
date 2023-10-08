@@ -70,7 +70,8 @@ allprojects {
             project.name == 'springwolf-kafka' ||
             project.name == 'springwolf-sqs' ||
             project.name == 'springwolf-ui' ||
-            project.name == 'springwolf-common-model-converters')
+            project.name == 'springwolf-common-model-converters' ||
+            project.name == 'springwolf-generic-binding')
     tasks.withType(PublishToMavenRepository).configureEach { it.enabled = publishingEnabled }
     tasks.withType(PublishToMavenLocal).configureEach { it.enabled = publishingEnabled }
     publishing {

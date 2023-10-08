@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation;
+package io.github.stavshamir.springwolf.asyncapi.addon.genericbinding.annotation;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncOperationBinding;
 
@@ -7,8 +7,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-// TODO: move classes to new bindings package
 
 /**
  * Springwolf cannot support all available protocol bindings that exist.

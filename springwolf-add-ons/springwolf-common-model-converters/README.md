@@ -22,6 +22,6 @@ Add the following dependency:
 
 ```groovy
 dependencies {
-    implementation 'io.github.springwolf:springwolf-common-model-converters:0.1.1'
+    implementation 'io.github.springwolf:springwolf-common-model-converters:<springwolf-version>'
 }
 ```
