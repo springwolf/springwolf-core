@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestAbstractOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestMessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
