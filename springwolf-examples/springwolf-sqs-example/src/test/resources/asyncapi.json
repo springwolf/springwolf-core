@@ -27,7 +27,10 @@
         "description": "Custom, optional description defined in the AsyncPublisher annotation",
         "bindings": {
           "custom-sqs": {
-            "internal-field": "customValue"
+            "internal-field": "customValue",
+            "nested": {
+              "key": "nestedValue"
+            }
           },
           "sqs": { }
         },

@@ -25,7 +25,7 @@ public class AnotherProducer {
     @SqsAsyncOperationBinding
     @AsyncGenericOperationBinding(
             type = "custom-sqs",
-            fields = {"internal-field=customValue"})
+            fields = {"internal-field=customValue", "nested.key=nestedValue"})
     public void sendMessage(AnotherPayloadDto msg) {
         template.send(QUEUE, msg);
     }
