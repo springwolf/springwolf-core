@@ -36,8 +36,11 @@ class TestClass {
             // ...
     )
     @AsyncGenericOperationBinding(
-            type = "custom-sqs",
-            fields = {"internal-field=customValue", "nested.key=nestedValue"})
+            type = "custom-binding",
+            fields = {
+                    "internal-field=customValue", 
+                    "nested.key=nestedValue"
+            })
     public void sendMessage(AnotherPayloadDto msg) {
              // ...
     }
