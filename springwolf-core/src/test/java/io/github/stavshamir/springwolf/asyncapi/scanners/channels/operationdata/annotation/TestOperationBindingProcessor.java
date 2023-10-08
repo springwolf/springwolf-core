@@ -2,18 +2,22 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
 
 import com.asyncapi.v2.binding.operation.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedOperationBinding;
+import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Optional;
 
+@Order(BindingProcessorPriority.MANUAL_DEFINED)
 public class TestOperationBindingProcessor implements OperationBindingProcessor {
     public static final String TYPE = "testType";
-    public static final OperationBinding BINDING = new OperationBinding();
+    public static final OperationBinding BINDING = new TestOperationBindingBinding();
 
     @Override
     public Optional<ProcessedOperationBinding> process(Method method) {
@@ -26,7 +30,14 @@ public class TestOperationBindingProcessor implements OperationBindingProcessor 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(value = {ElementType.METHOD})
     public @interface TestOperationBinding {
-        TestMessageBindingProcessor.TestMessageBinding messageBinding() default
+        TestMessageBindingProcessor.TestMessageBinding operationBinding() default
                 @TestMessageBindingProcessor.TestMessageBinding();
+    }
+
+    public static class TestOperationBindingBinding extends OperationBinding {
+        public TestOperationBindingBinding() {
+            this.extensionFields = new HashMap<>();
+            this.extensionFields.put("type", this.getClass().getName());
+        }
     }
 }

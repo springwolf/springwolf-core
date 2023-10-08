@@ -1,5 +1,7 @@
-package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation;
+// SPDX-License-Identifier: Apache-2.0
+package io.github.stavshamir.springwolf.asyncapi.scanners.bindings;
 
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.AsyncGenericOperationBinding;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 
 /**

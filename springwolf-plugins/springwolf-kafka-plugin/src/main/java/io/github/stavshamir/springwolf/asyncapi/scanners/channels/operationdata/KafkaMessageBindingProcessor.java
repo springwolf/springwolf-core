@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.BindingProcessorPriority;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.MessageBindingProcessor;

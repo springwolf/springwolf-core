@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.annotation.BindingProcessorPriority;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.AbstractOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AmqpAsyncOperationBinding;
 import org.springframework.core.annotation.Order;

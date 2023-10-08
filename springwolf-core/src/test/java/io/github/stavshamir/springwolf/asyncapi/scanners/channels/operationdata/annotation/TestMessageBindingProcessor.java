@@ -2,7 +2,9 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
 
 import com.asyncapi.v2.binding.message.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProcessedMessageBinding;
+import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 
+@Order(BindingProcessorPriority.MANUAL_DEFINED)
 public class TestMessageBindingProcessor implements MessageBindingProcessor {
 
     public static final String TYPE = "testType";
