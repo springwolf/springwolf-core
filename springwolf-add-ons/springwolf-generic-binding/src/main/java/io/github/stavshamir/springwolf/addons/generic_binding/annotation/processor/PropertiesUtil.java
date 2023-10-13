@@ -24,7 +24,7 @@ public class PropertiesUtil {
             try {
                 properties.load(new StringReader(bindingProperty));
             } catch (IOException e) {
-                log.warn("Unable to parse property %s".formatted(bindingProperty), e);
+                log.warn("Unable to parse property {}", bindingProperty, e);
             }
         }
         return properties;
