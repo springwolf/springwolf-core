@@ -1,13 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.fixtures;
 
-import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiSerializerService;
-import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
-import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
-import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.SpringwolfAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -17,17 +11,8 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
-@ContextConfiguration(
-        classes = {
-            DefaultAsyncApiDocketService.class,
-            DefaultAsyncApiService.class,
-            DefaultChannelsService.class,
-            DefaultSchemasService.class,
-            ExampleJsonGenerator.class,
-            DefaultAsyncApiService.class,
-            DefaultAsyncApiSerializerService.class,
-        })
-@EnableConfigurationProperties(SpringwolfConfigProperties.class)
+@ContextConfiguration(classes = {SpringwolfAutoConfiguration.class})
+@EnableConfigurationProperties
 @TestPropertySource(
         properties = {
             "springwolf.enabled=true",
