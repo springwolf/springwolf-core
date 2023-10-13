@@ -23,7 +23,7 @@ public class SpringwolfSqsScannerConfiguration {
 
     @Bean
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, matchIfMissing = true)
+    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
     public MethodLevelSqsListenerScanner methodLevelSqsListenerScanner(
             ComponentClassScanner componentClassScanner, SchemasService schemasService) {
         return new MethodLevelSqsListenerScanner(componentClassScanner, schemasService);

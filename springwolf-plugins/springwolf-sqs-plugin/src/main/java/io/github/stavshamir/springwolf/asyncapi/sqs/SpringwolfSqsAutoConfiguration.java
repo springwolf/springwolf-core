@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Import;
  * Autoconfiguration for the springwolf sqs plugin.
  */
 @AutoConfiguration
-@Import({SpringwolfSqsScannerConfiguration.class, SpringwolfSqsWebConfiguration.class})
-@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
+@Import({SpringwolfSqsScannerConfiguration.class, SpringwolfSqsProducerConfiguration.class})
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
 public class SpringwolfSqsAutoConfiguration {
 
     @Bean

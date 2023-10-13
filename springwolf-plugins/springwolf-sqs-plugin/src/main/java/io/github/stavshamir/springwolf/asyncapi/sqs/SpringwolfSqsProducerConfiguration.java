@@ -16,8 +16,11 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfSqsConfigConstants.SPRINGWOLF_SQS_PLUGIN_PUBLISHING_ENABLED;
 
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(prefix = SPRINGWOLF_SQS_CONFIG_PREFIX, name = SPRINGWOLF_SQS_PLUGIN_PUBLISHING_ENABLED)
-public class SpringwolfSqsWebConfiguration {
+@ConditionalOnProperty(
+        prefix = SPRINGWOLF_SQS_CONFIG_PREFIX,
+        name = SPRINGWOLF_SQS_PLUGIN_PUBLISHING_ENABLED,
+        havingValue = "true")
+public class SpringwolfSqsProducerConfiguration {
 
     @Bean
     public SpringwolfSqsProducer springwolfSqsProducer(List<SqsTemplate> sqsTemplates) {

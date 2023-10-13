@@ -34,7 +34,7 @@ import java.util.Optional;
  */
 @AutoConfiguration
 @Import({SpringwolfWebConfiguration.class, SpringwolfScannerConfiguration.class})
-@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
 public class SpringwolfAutoConfiguration {
 
     @Bean

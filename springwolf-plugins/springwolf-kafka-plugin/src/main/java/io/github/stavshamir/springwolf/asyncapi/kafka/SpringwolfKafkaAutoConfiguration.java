@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
  */
 @AutoConfiguration
 @Import({SpringwolfKafkaScannerConfiguration.class, SpringwolfKafkaProducerConfiguration.class})
-@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
 public class SpringwolfKafkaAutoConfiguration {
 
     @Bean

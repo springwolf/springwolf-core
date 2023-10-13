@@ -24,7 +24,10 @@ public class SpringwolfKafkaScannerConfiguration {
 
     @Bean
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED, matchIfMissing = true)
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
     public ClassLevelKafkaListenerScanner classLevelKafkaListenerScanner(
             ComponentClassScanner componentClassScanner, SchemasService schemasService) {
         return new ClassLevelKafkaListenerScanner(componentClassScanner, schemasService);
@@ -32,7 +35,10 @@ public class SpringwolfKafkaScannerConfiguration {
 
     @Bean
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED, matchIfMissing = true)
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
     public MethodLevelKafkaListenerScanner methodLevelKafkaListenerScanner(
             ComponentClassScanner componentClassScanner, SchemasService schemasService) {
         return new MethodLevelKafkaListenerScanner(componentClassScanner, schemasService);

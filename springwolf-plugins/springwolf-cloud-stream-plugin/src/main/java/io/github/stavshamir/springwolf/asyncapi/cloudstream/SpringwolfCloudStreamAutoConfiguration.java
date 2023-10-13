@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
  * Autoconfiguration for the springwolf cloudstream plugin.
  */
 @AutoConfiguration
-@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
+@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
 public class SpringwolfCloudStreamAutoConfiguration {
 
     @Bean
