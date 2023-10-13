@@ -28,7 +28,10 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 public class SpringwolfAmqpScannerConfiguration {
 
     @Bean
-    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED, matchIfMissing = true)
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ClassLevelRabbitListenerScanner classLevelRabbitListenerScanner(
             ComponentClassScanner componentClassScanner,
@@ -40,7 +43,10 @@ public class SpringwolfAmqpScannerConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED, matchIfMissing = true)
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public MethodLevelRabbitListenerScanner methodLevelRabbitListenerScanner(
             ComponentClassScanner componentClassScanner,

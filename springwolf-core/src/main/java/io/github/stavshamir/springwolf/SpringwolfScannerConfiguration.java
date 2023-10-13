@@ -51,7 +51,7 @@ public class SpringwolfScannerConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_CONSUMER_DATA_ENABLED, matchIfMissing = true)
+    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_CONSUMER_DATA_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.MANUAL_DEFINED)
     public ConsumerOperationDataScanner consumerOperationDataScanner(
             AsyncApiDocketService asyncApiDocketService, SchemasService schemasService) {
@@ -59,7 +59,7 @@ public class SpringwolfScannerConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED, matchIfMissing = true)
+    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.MANUAL_DEFINED)
     public ProducerOperationDataScanner producerOperationDataScanner(
             AsyncApiDocketService asyncApiDocketService, SchemasService schemasService) {
@@ -67,7 +67,10 @@ public class SpringwolfScannerConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED, matchIfMissing = true)
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncListenerAnnotationScanner asyncListenerAnnotationScanner(
             ComponentClassScanner componentClassScanner,
@@ -79,7 +82,10 @@ public class SpringwolfScannerConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED, matchIfMissing = true)
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncPublisherAnnotationScanner asyncPublisherAnnotationScanner(
             ComponentClassScanner componentClassScanner,
