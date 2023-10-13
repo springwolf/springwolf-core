@@ -2,14 +2,7 @@
 package io.github.stavshamir.springwolf;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiSerializerService;
-import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
-import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
-import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.fixtures.MinimalTestContextConfiguration;
-import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,15 +20,8 @@ public class SpringContextIntegrationTest {
     @Nested
     @ContextConfiguration(
             classes = {
-                SpringwolfConfigProperties.class,
+                SpringwolfAutoConfiguration.class,
                 CustomBeanAsyncApiDocketConfiguration.class, // user has defined an own AsyncApiDocket bean
-                DefaultAsyncApiDocketService.class,
-                DefaultAsyncApiService.class,
-                DefaultChannelsService.class,
-                DefaultSchemasService.class,
-                ExampleJsonGenerator.class,
-                DefaultAsyncApiService.class,
-                DefaultAsyncApiSerializerService.class,
             })
     class AsyncApiDocketTest {
 
