@@ -3,7 +3,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.AbstractOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
@@ -14,7 +13,6 @@ import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.core.annotation.Order;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -26,7 +24,6 @@ import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(value = ChannelPriority.ASYNC_ANNOTATION)
 public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
     private StringValueResolver resolver;
     private final ComponentClassScanner componentClassScanner;

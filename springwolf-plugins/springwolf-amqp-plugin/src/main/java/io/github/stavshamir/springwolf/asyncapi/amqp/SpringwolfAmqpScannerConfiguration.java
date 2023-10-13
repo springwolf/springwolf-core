@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.amqp;
 
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelRabbitListenerScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelRabbitListenerScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.AmqpMessageBindingProcessor;
@@ -13,6 +14,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class SpringwolfAmqpScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED, matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ClassLevelRabbitListenerScanner classLevelRabbitListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
@@ -37,6 +40,7 @@ public class SpringwolfAmqpScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED, matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public MethodLevelRabbitListenerScanner methodLevelRabbitListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,

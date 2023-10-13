@@ -4,7 +4,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -16,7 +15,6 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.core.annotation.Order;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -24,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Order(value = ChannelPriority.AUTO_DISCOVERED)
 public class ClassLevelRabbitListenerScanner extends AbstractClassLevelListenerScanner<RabbitListener, RabbitHandler>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
