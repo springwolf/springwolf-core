@@ -56,12 +56,6 @@ java {
     withSourcesJar()
 }
 
-test {
-    dependsOn spotlessApply // Automatically fix code formatting if possible
-
-    useJUnitPlatform()
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
