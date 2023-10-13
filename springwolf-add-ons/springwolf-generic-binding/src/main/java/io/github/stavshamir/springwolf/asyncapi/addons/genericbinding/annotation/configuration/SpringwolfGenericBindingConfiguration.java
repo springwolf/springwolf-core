@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.addon.genericbinding.configuration;
+package io.github.stavshamir.springwolf.asyncapi.addons.genericbinding.annotation.configuration;
 
-import io.github.stavshamir.springwolf.asyncapi.addon.genericbinding.annotation.processor.AsyncGenericOperationBindingProcessor;
+import io.github.stavshamir.springwolf.asyncapi.addons.genericbinding.annotation.processor.AsyncGenericOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

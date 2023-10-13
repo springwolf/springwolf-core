@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.addon.genericbinding.annotation.processor;
+package io.github.stavshamir.springwolf.asyncapi.addons.genericbinding.annotation.processor;
 
-import io.github.stavshamir.springwolf.asyncapi.addon.genericbinding.annotation.AsyncGenericOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.addons.genericbinding.annotation.AsyncGenericOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import org.junit.jupiter.api.Test;
 
