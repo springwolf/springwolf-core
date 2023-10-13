@@ -5,8 +5,11 @@ import io.github.stavshamir.springwolf.common_converters.converters.monetaryamou
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-public class CommonModelConvertersConfiguration {
+/**
+ * Spring AutoConfiguration adding an {@link MonetaryAmountConverter} Bean to the spring context.
+ */
+@Configuration(proxyBeanMethods = false)
+public class CommonModelConvertersAutoConfiguration {
 
     @Bean
     public MonetaryAmountConverter monetaryAmountConverter() {

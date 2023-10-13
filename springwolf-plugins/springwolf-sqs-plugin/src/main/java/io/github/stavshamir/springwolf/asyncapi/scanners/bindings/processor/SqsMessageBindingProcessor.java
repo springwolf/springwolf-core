@@ -2,21 +2,16 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
 import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SqsAsyncOperationBinding;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 
-@Component
-@Order(BindingProcessorPriority.PROTOCOL_BINDING)
 public class SqsMessageBindingProcessor implements MessageBindingProcessor, EmbeddedValueResolverAware {
     private StringValueResolver resolver;
 

@@ -13,9 +13,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Yaml;
 import jakarta.annotation.PostConstruct;
-import org.springframework.stereotype.Service;
 
-@Service
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
 
     private ObjectMapper jsonMapper = Json.mapper();

@@ -23,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -33,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DefaultSchemasServiceTest {
 
     private final ExampleGenerator exampleGenerator = new ExampleJsonGenerator();
-    private final SchemasService schemasService = new DefaultSchemasService(Optional.empty(), exampleGenerator);
+    private final SchemasService schemasService = new DefaultSchemasService(List.of(), exampleGenerator);
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);

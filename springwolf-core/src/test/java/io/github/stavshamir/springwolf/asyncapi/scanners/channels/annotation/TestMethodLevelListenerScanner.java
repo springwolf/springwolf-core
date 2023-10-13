@@ -4,6 +4,8 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.EqualsAndHashCode;
 
 import java.lang.reflect.Method;
@@ -11,6 +13,10 @@ import java.util.Map;
 
 public class TestMethodLevelListenerScanner
         extends AbstractMethodLevelListenerScanner<TestMethodLevelListenerScannerIntegrationTest.TestChannelListener> {
+
+    public TestMethodLevelListenerScanner(ComponentClassScanner componentClassScanner, SchemasService schemasService) {
+        super(componentClassScanner, schemasService);
+    }
 
     @Override
     protected Class<TestMethodLevelListenerScannerIntegrationTest.TestChannelListener> getListenerAnnotationClass() {

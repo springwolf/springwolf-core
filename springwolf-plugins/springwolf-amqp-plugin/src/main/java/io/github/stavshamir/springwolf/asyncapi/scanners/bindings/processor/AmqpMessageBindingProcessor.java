@@ -7,16 +7,12 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBinding
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AmqpAsyncOperationBinding;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 
-@Component
-@Order(BindingProcessorPriority.PROTOCOL_BINDING)
 public class AmqpMessageBindingProcessor implements MessageBindingProcessor, EmbeddedValueResolverAware {
     private StringValueResolver resolver;
 
