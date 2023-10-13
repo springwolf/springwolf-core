@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.addons.genericbinding.annotation.processor;
+package io.github.stavshamir.springwolf.addons.generic_binding.annotation.processor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +30,7 @@ public class PropertiesUtil {
         return properties;
     }
 
+    @SuppressWarnings("unchecked")
     private static Map<String, Object> convertPropertiesToNestedMap(Properties properties) {
         Map<String, Object> bindingData = new HashMap<>();
         for (String propertyName : properties.stringPropertyNames()) {
