@@ -5,28 +5,25 @@ import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.awspring.cloud.sqs.annotation.SqsListener;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfSqsConfigConstants.SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED;
-
 @Slf4j
-@Service
-@Order(value = ChannelPriority.AUTO_DISCOVERED)
-@ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, matchIfMissing = true)
 public class MethodLevelSqsListenerScanner extends AbstractMethodLevelListenerScanner<SqsListener>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
+
+    public MethodLevelSqsListenerScanner(ComponentClassScanner componentClassScanner, SchemasService schemasService) {
+        super(componentClassScanner, schemasService);
+    }
 
     @Override
     public void setEmbeddedValueResolver(StringValueResolver resolver) {

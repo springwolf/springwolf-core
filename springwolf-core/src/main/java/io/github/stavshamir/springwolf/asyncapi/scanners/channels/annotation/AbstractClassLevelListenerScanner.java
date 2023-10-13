@@ -14,8 +14,8 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -35,15 +35,14 @@ import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotat
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
+@RequiredArgsConstructor
 public abstract class AbstractClassLevelListenerScanner<
                 ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
         implements ChannelsScanner {
 
-    @Autowired
-    private ComponentClassScanner componentClassScanner;
+    private final ComponentClassScanner componentClassScanner;
 
-    @Autowired
-    private SchemasService schemasService;
+    private final SchemasService schemasService;
 
     private static final Comparator<Map.Entry<String, ChannelItem>> byPublishOperationName =
             Comparator.comparing(it -> it.getValue().getPublish().getOperationId());

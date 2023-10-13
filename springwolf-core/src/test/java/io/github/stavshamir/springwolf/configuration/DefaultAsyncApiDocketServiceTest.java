@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.util.Maps.newHashMap;
 
 class DefaultAsyncApiDocketServiceTest {
@@ -44,7 +43,7 @@ class DefaultAsyncApiDocketServiceTest {
 
         // when
         DefaultAsyncApiDocketService asyncApiDocketService =
-                new DefaultAsyncApiDocketService(Optional.empty(), Optional.of(properties));
+                new DefaultAsyncApiDocketService(Optional.empty(), properties);
         AsyncApiDocket asyncApiDocket = asyncApiDocketService.getAsyncApiDocket();
 
         // then
@@ -57,15 +56,5 @@ class DefaultAsyncApiDocketServiceTest {
         assertThat(asyncApiDocket.getInfo().getContact()).isEqualTo(info.getContact());
         assertThat(asyncApiDocket.getInfo().getExtensionFields().get("x-api-name"))
                 .isEqualTo("api-name");
-    }
-
-    @Test
-    void testNoConfigurationShouldThrowException() {
-        assertThatThrownBy(() -> {
-                    DefaultAsyncApiDocketService docketConfiguration =
-                            new DefaultAsyncApiDocketService(Optional.empty(), Optional.empty());
-                    docketConfiguration.getAsyncApiDocket();
-                })
-                .isInstanceOf(IllegalArgumentException.class);
     }
 }

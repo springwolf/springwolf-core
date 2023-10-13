@@ -16,6 +16,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import org.apache.kafka.streams.kstream.KStream;
@@ -48,7 +49,8 @@ import static org.mockito.Mockito.when;
             DefaultSchemasService.class,
             ExampleJsonGenerator.class,
             DefaultAsyncApiDocketService.class,
-            CloudStreamFunctionChannelsScanner.class
+            CloudStreamFunctionChannelsScanner.class,
+            SpringwolfConfigProperties.class
         })
 @Import(CloudStreamFunctionChannelsScannerIntegrationTest.Configuration.class)
 class CloudStreamFunctionChannelsScannerIntegrationTest {

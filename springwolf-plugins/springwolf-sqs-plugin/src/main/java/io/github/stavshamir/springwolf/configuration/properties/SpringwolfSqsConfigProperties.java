@@ -3,18 +3,14 @@ package io.github.stavshamir.springwolf.configuration.properties;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 
 /**
  * This class is used to create metadata for auto-completion in spring configuration properties/yaml by using
  * the spring-boot-configuration-processor.
  */
-@Configuration
 @ConfigurationProperties(prefix = SpringwolfSqsConfigConstants.SPRINGWOLF_SQS_CONFIG_PREFIX)
-@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
 @Getter
 @Setter
 public class SpringwolfSqsConfigProperties {

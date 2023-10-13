@@ -5,7 +5,7 @@ import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2._6_0.model.server.Server;
 import com.asyncapi.v2.binding.message.MessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
@@ -20,7 +20,6 @@ import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
-import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -29,12 +28,11 @@ import java.util.Set;
 import static java.util.stream.Collectors.toMap;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
 public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
-    private final DefaultBeanMethodsScanner beanMethodsScanner;
+    private final BeanMethodsScanner beanMethodsScanner;
     private final SchemasService schemasService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
 

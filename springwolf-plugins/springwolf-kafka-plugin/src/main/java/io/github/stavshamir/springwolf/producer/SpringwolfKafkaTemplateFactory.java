@@ -1,17 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.configuration;
+package io.github.stavshamir.springwolf.producer;
 
+import io.github.stavshamir.springwolf.asyncapi.kafka.SpringwolfKafkaProducerConfiguration;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Optional;
 
-@Component
 @RequiredArgsConstructor
 @ConditionalOnBean(value = SpringwolfKafkaProducerConfiguration.class)
 public class SpringwolfKafkaTemplateFactory {

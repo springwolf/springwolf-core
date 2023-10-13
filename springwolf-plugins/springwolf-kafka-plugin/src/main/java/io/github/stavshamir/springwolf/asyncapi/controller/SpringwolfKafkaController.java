@@ -9,7 +9,6 @@ import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,14 +19,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.text.MessageFormat;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX;
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigConstants.SPRINGWOLF_KAFKA_PLUGIN_PUBLISHING_ENABLED;
-
 @Slf4j
 @RestController
 @RequestMapping("/springwolf/kafka")
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = SPRINGWOLF_KAFKA_CONFIG_PREFIX, name = SPRINGWOLF_KAFKA_PLUGIN_PUBLISHING_ENABLED)
 public class SpringwolfKafkaController implements InitializingBean {
 
     private final AsyncApiDocketService asyncApiDocketService;
