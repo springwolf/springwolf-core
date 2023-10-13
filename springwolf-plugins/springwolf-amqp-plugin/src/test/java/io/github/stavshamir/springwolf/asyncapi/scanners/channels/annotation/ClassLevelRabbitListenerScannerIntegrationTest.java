@@ -12,6 +12,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.Data;
@@ -37,7 +38,12 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
-        classes = {ClassLevelRabbitListenerScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
+        classes = {
+            ClassLevelRabbitListenerScanner.class,
+            DefaultSchemasService.class,
+            ExampleJsonGenerator.class,
+            SpringwolfConfigProperties.class,
+        })
 class ClassLevelRabbitListenerScannerIntegrationTest {
 
     @Autowired
