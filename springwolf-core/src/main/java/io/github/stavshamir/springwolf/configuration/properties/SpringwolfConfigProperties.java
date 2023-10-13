@@ -7,17 +7,13 @@ import com.asyncapi.v2._6_0.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 
 import java.util.Map;
 
-@Configuration
 @ConfigurationProperties(prefix = SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX)
-@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, matchIfMissing = true)
 @Getter
 @Setter
 public class SpringwolfConfigProperties {

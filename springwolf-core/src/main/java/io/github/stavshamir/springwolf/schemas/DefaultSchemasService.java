@@ -9,17 +9,14 @@ import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
-@Service
 public class DefaultSchemasService implements SchemasService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
@@ -28,9 +25,9 @@ public class DefaultSchemasService implements SchemasService {
     private final Map<String, Schema> definitions = new HashMap<>();
     private Map<String, Schema> finalizedDefinitions = null;
 
-    public DefaultSchemasService(
-            Optional<List<ModelConverter>> externalModelConverters, ExampleGenerator exampleGenerator) {
-        externalModelConverters.ifPresent(converters -> converters.forEach(converter::addConverter));
+    public DefaultSchemasService(List<ModelConverter> externalModelConverters, ExampleGenerator exampleGenerator) {
+
+        externalModelConverters.forEach(converter::addConverter);
         this.exampleGenerator = exampleGenerator;
     }
 

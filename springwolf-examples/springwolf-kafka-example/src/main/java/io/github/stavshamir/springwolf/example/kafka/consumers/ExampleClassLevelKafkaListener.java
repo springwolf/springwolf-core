@@ -10,13 +10,13 @@ import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.money.MonetaryAmount;
 
 import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
 
-@Service
+@Component
 @Slf4j
 @KafkaListener(topics = "multi-payload-topic")
 public class ExampleClassLevelKafkaListener {

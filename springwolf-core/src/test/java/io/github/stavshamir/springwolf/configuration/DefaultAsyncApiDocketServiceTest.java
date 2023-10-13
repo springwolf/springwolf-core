@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.util.Maps.newHashMap;
 
 class DefaultAsyncApiDocketServiceTest {
@@ -42,7 +41,7 @@ class DefaultAsyncApiDocketServiceTest {
 
         // when
         DefaultAsyncApiDocketService docketConfiguration =
-                new DefaultAsyncApiDocketService(Optional.empty(), Optional.of(properties));
+                new DefaultAsyncApiDocketService(Optional.empty(), properties);
         AsyncApiDocket asyncApiDocket = docketConfiguration.getAsyncApiDocket();
 
         // then
@@ -53,15 +52,5 @@ class DefaultAsyncApiDocketServiceTest {
         assertThat(asyncApiDocket.getInfo().getDescription()).isEqualTo(info.getDescription());
         assertThat(asyncApiDocket.getInfo().getLicense()).isEqualTo(info.getLicense());
         assertThat(asyncApiDocket.getInfo().getContact()).isEqualTo(info.getContact());
-    }
-
-    @Test
-    void testNoConfigurationShouldThrowException() {
-        assertThatThrownBy(() -> {
-                    DefaultAsyncApiDocketService docketConfiguration =
-                            new DefaultAsyncApiDocketService(Optional.empty(), Optional.empty());
-                    docketConfiguration.getAsyncApiDocket();
-                })
-                .isInstanceOf(IllegalArgumentException.class);
     }
 }
