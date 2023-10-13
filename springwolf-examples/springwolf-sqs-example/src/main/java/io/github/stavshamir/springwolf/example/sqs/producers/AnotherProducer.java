@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.example.sqs.producers;
 
 import io.awspring.cloud.sqs.operations.SqsTemplate;
-import io.github.stavshamir.springwolf.asyncapi.addons.genericbinding.annotation.AsyncGenericOperationBinding;
+import io.github.stavshamir.springwolf.addons.genericbinding.annotation.AsyncGenericOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SqsAsyncOperationBinding;

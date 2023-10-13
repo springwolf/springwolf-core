@@ -1,1 +1,1 @@
-io.github.stavshamir.springwolf.asyncapi.addons.genericbinding.annotation.processor.AsyncGenericOperationBindingProcessor
+io.github.stavshamir.springwolf.addons.genericbinding.annotation.processor.AsyncGenericOperationBindingProcessor

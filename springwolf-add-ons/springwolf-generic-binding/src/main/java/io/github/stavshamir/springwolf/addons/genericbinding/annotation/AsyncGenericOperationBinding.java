@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.addons.genericbinding.annotation;
+package io.github.stavshamir.springwolf.addons.genericbinding.annotation;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncOperationBinding;
 
