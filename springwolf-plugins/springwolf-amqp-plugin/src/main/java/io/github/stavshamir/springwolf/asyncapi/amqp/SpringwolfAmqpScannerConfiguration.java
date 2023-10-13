@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.amqp;
 
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AmqpMessageBindingProcessor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AmqpOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelRabbitListenerScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelRabbitListenerScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.AmqpMessageBindingProcessor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.AmqpOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.amqp.core.Binding;
@@ -51,11 +52,13 @@ public class SpringwolfAmqpScannerConfiguration {
     }
 
     @Bean
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public AmqpMessageBindingProcessor amqpMessageBindingProcessor() {
         return new AmqpMessageBindingProcessor();
     }
 
     @Bean
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public AmqpOperationBindingProcessor amqpOperationBindingProcessor() {
         return new AmqpOperationBindingProcessor();
     }

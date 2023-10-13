@@ -3,6 +3,9 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestAbstractOperationBindingProcessor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestMessageBindingProcessor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import org.assertj.core.util.Maps;
@@ -13,9 +16,11 @@ import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -46,7 +51,7 @@ class AsyncAnnotationScannerUtilTest {
     }
 
     @Test
-    void processBindingFromAnnotation() throws NoSuchMethodException {
+    void processOperationBindingFromAnnotation() throws NoSuchMethodException {
         // given
         Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
 
@@ -60,6 +65,25 @@ class AsyncAnnotationScannerUtilTest {
     }
 
     @Test
+    void processMultipleOperationBindingFromAnnotation() throws NoSuchMethodException {
+        // given
+        Method m = ClassWithMultipleOperationBindingProcessors.class.getDeclaredMethod(
+                "methodWithAnnotation", String.class);
+
+        // when
+        Map<String, OperationBinding> bindings = AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(
+                m, List.of(new TestOperationBindingProcessor(), new TestAbstractOperationBindingProcessor()));
+
+        // then
+        assertEquals(
+                Maps.newHashMap(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING), bindings);
+        assertNotEquals(
+                Maps.newHashMap(
+                        TestAbstractOperationBindingProcessor.TYPE, TestAbstractOperationBindingProcessor.BINDING),
+                bindings);
+    }
+
+    @Test
     void processMessageBindingFromAnnotation() throws NoSuchMethodException {
         // given
         Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
@@ -67,6 +91,20 @@ class AsyncAnnotationScannerUtilTest {
         // when
         Map<String, MessageBinding> bindings = AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(
                 m, Collections.singletonList(new TestMessageBindingProcessor()));
+
+        // then
+        assertEquals(Maps.newHashMap(TestMessageBindingProcessor.TYPE, TestMessageBindingProcessor.BINDING), bindings);
+    }
+
+    @Test
+    void processMultipleMessageBindingFromAnnotation() throws NoSuchMethodException {
+        // given
+        Method m = ClassWithMultipleOperationBindingProcessors.class.getDeclaredMethod(
+                "methodWithAnnotation", String.class);
+
+        // when
+        Map<String, MessageBinding> bindings = AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(
+                m, List.of(new TestMessageBindingProcessor()));
 
         // then
         assertEquals(Maps.newHashMap(TestMessageBindingProcessor.TYPE, TestMessageBindingProcessor.BINDING), bindings);
@@ -193,5 +231,16 @@ class AsyncAnnotationScannerUtilTest {
                                                 title = "Message Title")))
         @TestAbstractOperationBindingProcessor.TestOperationBinding()
         private void methodWithAsyncMessageAnnotation(String payload) {}
+    }
+
+    private static class ClassWithMultipleOperationBindingProcessors {
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                description = "${test.property.description}"))
+        @TestOperationBindingProcessor.TestOperationBinding()
+        @TestAbstractOperationBindingProcessor.TestOperationBinding()
+        private void methodWithAnnotation(String payload) {}
     }
 }

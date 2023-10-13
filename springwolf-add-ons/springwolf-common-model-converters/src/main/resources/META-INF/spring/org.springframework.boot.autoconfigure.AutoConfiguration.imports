@@ -1,1 +1,1 @@
-io.github.stavshamir.springwolf.common_converters.configuration.CommonModelConvertersAutoConfiguration
+io.github.stavshamir.springwolf.addons.common_model_converters.configuration.CommonModelConvertersAutoConfiguration

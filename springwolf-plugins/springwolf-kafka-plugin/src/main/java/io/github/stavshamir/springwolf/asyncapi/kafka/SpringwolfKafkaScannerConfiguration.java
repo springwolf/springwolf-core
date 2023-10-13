@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.kafka;
 
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.KafkaMessageBindingProcessor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.KafkaOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelKafkaListenerScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelKafkaListenerScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.KafkaMessageBindingProcessor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.KafkaOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -38,11 +39,13 @@ public class SpringwolfKafkaScannerConfiguration {
     }
 
     @Bean
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public KafkaMessageBindingProcessor kafkaMessageBindingProcessor() {
         return new KafkaMessageBindingProcessor();
     }
 
     @Bean
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public KafkaOperationBindingProcessor kafkaOperationBindingProcessor() {
         return new KafkaOperationBindingProcessor();
     }
