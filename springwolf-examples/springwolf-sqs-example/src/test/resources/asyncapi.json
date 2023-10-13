@@ -36,10 +36,10 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
+          "title": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
           "description": "Another payload model",
           "payload": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -60,9 +60,9 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
+          "title": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
           "payload": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -83,9 +83,9 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto",
-          "title": "ExamplePayloadDto",
+          "title": "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto",
           "payload": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -102,14 +102,19 @@
   },
   "components": {
     "schemas": {
-      "AnotherPayloadDto": {
+      "HeadersNotDocumented": {
+        "type": "object",
+        "properties": { },
+        "example": { }
+      },
+      "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto": {
         "required": [
           "example"
         ],
         "type": "object",
         "properties": {
           "example": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto"
           },
           "foo": {
             "type": "string",
@@ -127,7 +132,7 @@
           "foo": "bar"
         }
       },
-      "ExamplePayloadDto": {
+      "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto": {
         "required": [
           "someEnum",
           "someString"
@@ -162,11 +167,6 @@
           "someLong": 5,
           "someString": "some string value"
         }
-      },
-      "HeadersNotDocumented": {
-        "type": "object",
-        "properties": { },
-        "example": { }
       }
     }
   },
