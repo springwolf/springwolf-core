@@ -14,6 +14,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,7 +36,12 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
-        classes = {ProducerOperationDataScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
+        classes = {
+            ProducerOperationDataScanner.class,
+            DefaultSchemasService.class,
+            ExampleJsonGenerator.class,
+            SpringwolfConfigProperties.class,
+        })
 class ProducerOperationDataScannerIntegrationTest {
 
     @Autowired
@@ -73,8 +79,8 @@ class ProducerOperationDataScannerIntegrationTest {
                 .bindings(Map.of("kafka", new KafkaOperationBinding()))
                 .message(Message.builder()
                         .name(ExamplePayloadDto.class.getName())
-                        .description(messageDescription1)
                         .title(ExamplePayloadDto.class.getSimpleName())
+                        .description(messageDescription1)
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                         .bindings(Map.of("kafka", new KafkaMessageBinding()))
@@ -144,16 +150,16 @@ class ProducerOperationDataScannerIntegrationTest {
         Set<Message> messages = Set.of(
                 Message.builder()
                         .name(ExamplePayloadDto.class.getName())
-                        .description(messageDescription1)
                         .title(ExamplePayloadDto.class.getSimpleName())
+                        .description(messageDescription1)
                         .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                         .bindings(Map.of("kafka", new KafkaMessageBinding()))
                         .build(),
                 Message.builder()
                         .name(AnotherExamplePayloadDto.class.getName())
-                        .description(messageDescription2)
                         .title(AnotherExamplePayloadDto.class.getSimpleName())
+                        .description(messageDescription2)
                         .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName()))
                         .bindings(Map.of("kafka", new KafkaMessageBinding()))

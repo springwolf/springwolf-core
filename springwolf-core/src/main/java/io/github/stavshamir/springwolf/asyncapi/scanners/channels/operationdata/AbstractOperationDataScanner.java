@@ -109,7 +109,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
         var builder = Message.builder()
                 .name(payloadType.getName())
-                .title(modelName)
+                .title(payloadType.getSimpleName())
                 .description(description)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))

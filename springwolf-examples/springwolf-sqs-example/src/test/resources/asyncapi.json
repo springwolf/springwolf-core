@@ -36,7 +36,7 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
-          "title": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
           "description": "Another payload model",
           "payload": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
@@ -60,7 +60,7 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
-          "title": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
           "payload": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
           },
@@ -83,7 +83,7 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto",
-          "title": "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
           "payload": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto"
           },

@@ -39,7 +39,7 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
-          "title": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
           "payload": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
           },
@@ -71,7 +71,7 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
-          "title": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
           "description": "Example payload model",
           "payload": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
@@ -104,7 +104,7 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
-          "title": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
           "description": "Another payload model",
           "payload": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
@@ -137,7 +137,7 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
-          "title": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
           "payload": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
           },
@@ -183,7 +183,7 @@
             {
               "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
               "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
-              "title": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
+              "title": "AnotherPayloadDto",
               "payload": {
                 "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
               },
@@ -199,7 +199,7 @@
             {
               "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
               "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
-              "title": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
+              "title": "ExamplePayloadDto",
               "payload": {
                 "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
               },
@@ -215,7 +215,7 @@
             {
               "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
               "name": "javax.money.MonetaryAmount",
-              "title": "io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount",
+              "title": "MonetaryAmount",
               "payload": {
                 "$ref": "#/components/schemas/io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
               },
@@ -255,7 +255,7 @@
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
-          "title": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
+          "title": "NestedPayloadDto",
           "description": "Payload model with nested complex types",
           "payload": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
