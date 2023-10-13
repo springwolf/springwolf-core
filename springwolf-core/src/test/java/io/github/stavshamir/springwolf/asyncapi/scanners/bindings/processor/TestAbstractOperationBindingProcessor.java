@@ -13,7 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.HashMap;
 
-@Order(BindingProcessorPriority.MANUAL_DEFINED)
+@Order(value = BindingProcessorPriority.MANUAL_DEFINED)
 public class TestAbstractOperationBindingProcessor
         extends AbstractOperationBindingProcessor<TestAbstractOperationBindingProcessor.TestOperationBinding> {
     public static final String TYPE = "testType";

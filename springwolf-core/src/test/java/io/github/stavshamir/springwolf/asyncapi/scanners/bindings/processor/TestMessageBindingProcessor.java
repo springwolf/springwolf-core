@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 
-@Order(BindingProcessorPriority.MANUAL_DEFINED)
+@Order(value = BindingProcessorPriority.MANUAL_DEFINED)
 public class TestMessageBindingProcessor implements MessageBindingProcessor {
 
     public static final String TYPE = "testType";

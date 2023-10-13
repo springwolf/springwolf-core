@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Optional;
 
-@Order(BindingProcessorPriority.MANUAL_DEFINED)
+@Order(value = BindingProcessorPriority.MANUAL_DEFINED)
 public class TestOperationBindingProcessor implements OperationBindingProcessor {
     public static final String TYPE = "testType";
     public static final OperationBinding BINDING = new TestOperationBindingBinding();

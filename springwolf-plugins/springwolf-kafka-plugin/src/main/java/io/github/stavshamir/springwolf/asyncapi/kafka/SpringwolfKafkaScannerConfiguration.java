@@ -39,13 +39,13 @@ public class SpringwolfKafkaScannerConfiguration {
     }
 
     @Bean
-    @Order(BindingProcessorPriority.PROTOCOL_BINDING)
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public KafkaMessageBindingProcessor kafkaMessageBindingProcessor() {
         return new KafkaMessageBindingProcessor();
     }
 
     @Bean
-    @Order(BindingProcessorPriority.PROTOCOL_BINDING)
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public KafkaOperationBindingProcessor kafkaOperationBindingProcessor() {
         return new KafkaOperationBindingProcessor();
     }

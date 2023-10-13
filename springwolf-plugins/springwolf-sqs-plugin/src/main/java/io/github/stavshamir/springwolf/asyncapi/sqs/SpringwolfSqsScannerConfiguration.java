@@ -30,13 +30,13 @@ public class SpringwolfSqsScannerConfiguration {
     }
 
     @Bean
-    @Order(BindingProcessorPriority.PROTOCOL_BINDING)
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public SqsMessageBindingProcessor sqsMessageBindingProcessor() {
         return new SqsMessageBindingProcessor();
     }
 
     @Bean
-    @Order(BindingProcessorPriority.PROTOCOL_BINDING)
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public SqsOperationBindingProcessor sqsOperationBindingProcessor() {
         return new SqsOperationBindingProcessor();
     }

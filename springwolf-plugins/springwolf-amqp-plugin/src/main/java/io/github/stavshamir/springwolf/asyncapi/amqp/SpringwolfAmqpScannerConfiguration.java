@@ -52,13 +52,13 @@ public class SpringwolfAmqpScannerConfiguration {
     }
 
     @Bean
-    @Order(BindingProcessorPriority.PROTOCOL_BINDING)
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public AmqpMessageBindingProcessor amqpMessageBindingProcessor() {
         return new AmqpMessageBindingProcessor();
     }
 
     @Bean
-    @Order(BindingProcessorPriority.PROTOCOL_BINDING)
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public AmqpOperationBindingProcessor amqpOperationBindingProcessor() {
         return new AmqpOperationBindingProcessor();
     }

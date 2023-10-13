@@ -15,13 +15,13 @@ import org.springframework.core.annotation.Order;
 public class SpringwolfSnsScannerConfiguration {
 
     @Bean
-    @Order(BindingProcessorPriority.PROTOCOL_BINDING)
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public SnsMessageBindingProcessor snsMessageBindingProcessor() {
         return new SnsMessageBindingProcessor();
     }
 
     @Bean
-    @Order(BindingProcessorPriority.PROTOCOL_BINDING)
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     public SnsOperationBindingProcessor snsOperationBindingProcessor() {
         return new SnsOperationBindingProcessor();
     }
