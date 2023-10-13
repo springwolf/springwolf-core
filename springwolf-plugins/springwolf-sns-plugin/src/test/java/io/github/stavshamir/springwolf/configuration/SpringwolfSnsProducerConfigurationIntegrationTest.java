@@ -5,14 +5,14 @@ import io.awspring.cloud.sns.core.SnsTemplate;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSnsController;
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfSnsConfigProperties;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.sns.SpringwolfSnsAutoConfiguration;
 import io.github.stavshamir.springwolf.producer.SpringwolfSnsProducer;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,14 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SpringwolfSnsProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(
-            classes = {
-                DefaultAsyncApiDocketService.class,
-                SpringwolfSnsProducer.class,
-                SpringwolfSnsController.class,
-                ObjectMapperTestConfiguration.class
-            })
-    @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfSnsConfigProperties.class})
+    @ContextConfiguration(classes = {SpringwolfSnsAutoConfiguration.class, ObjectMapperTestConfiguration.class})
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
@@ -44,7 +37,14 @@ public class SpringwolfSnsProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.url=some-server:1234",
                 "springwolf.plugin.sns.publishing.enabled=true"
             })
-    @MockBeans(value = {@MockBean(AsyncApiService.class), @MockBean(SnsTemplate.class)})
+    @MockBeans(
+            value = {
+                @MockBean(ComponentClassScanner.class),
+                @MockBean(SchemasService.class),
+                @MockBean(AsyncApiDocketService.class),
+                @MockBean(AsyncApiService.class),
+                @MockBean(SnsTemplate.class)
+            })
     @Nested
     class SqsProducerWillBeCreatedIfEnabledTest {
         @Autowired
@@ -61,14 +61,7 @@ public class SpringwolfSnsProducerConfigurationIntegrationTest {
     }
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(
-            classes = {
-                DefaultAsyncApiDocketService.class,
-                SpringwolfSnsProducer.class,
-                SpringwolfSnsController.class,
-                ObjectMapperTestConfiguration.class
-            })
-    @EnableConfigurationProperties(value = {SpringwolfConfigProperties.class, SpringwolfSnsConfigProperties.class})
+    @ContextConfiguration(classes = {SpringwolfSnsAutoConfiguration.class, ObjectMapperTestConfiguration.class})
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
@@ -79,7 +72,13 @@ public class SpringwolfSnsProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.url=some-server:1234",
                 "springwolf.plugin.sns.publishing.enabled=false"
             })
-    @MockBeans(value = {@MockBean(ChannelsService.class), @MockBean(SnsTemplate.class)})
+    @MockBeans(
+            value = {
+                @MockBean(ComponentClassScanner.class),
+                @MockBean(SchemasService.class),
+                @MockBean(ChannelsService.class),
+                @MockBean(SnsTemplate.class)
+            })
     @Nested
     class SqsProducerWillNotBeCreatedIfDisabledTest {
         @Autowired

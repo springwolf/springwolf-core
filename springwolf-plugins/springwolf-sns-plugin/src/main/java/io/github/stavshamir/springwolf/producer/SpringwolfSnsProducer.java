@@ -3,19 +3,12 @@ package io.github.stavshamir.springwolf.producer;
 
 import io.awspring.cloud.sns.core.SnsTemplate;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.messaging.Message;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfSnsConfigConstants.SPRINGWOLF_SNS_CONFIG_PREFIX;
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfSnsConfigConstants.SPRINGWOLF_SNS_PLUGIN_PUBLISHING_ENABLED;
-
 @Slf4j
-@Service
-@ConditionalOnProperty(prefix = SPRINGWOLF_SNS_CONFIG_PREFIX, name = SPRINGWOLF_SNS_PLUGIN_PUBLISHING_ENABLED)
 public class SpringwolfSnsProducer {
 
     private final Optional<SnsTemplate> template;

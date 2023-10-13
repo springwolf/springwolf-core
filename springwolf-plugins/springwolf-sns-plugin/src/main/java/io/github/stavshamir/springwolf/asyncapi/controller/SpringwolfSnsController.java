@@ -9,7 +9,6 @@ import io.github.stavshamir.springwolf.producer.SpringwolfSnsProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,14 +20,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.text.MessageFormat;
 
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfSnsConfigConstants.SPRINGWOLF_SNS_CONFIG_PREFIX;
-import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfSnsConfigConstants.SPRINGWOLF_SNS_PLUGIN_PUBLISHING_ENABLED;
-
 @Slf4j
 @RestController
 @RequestMapping("/springwolf/sns")
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = SPRINGWOLF_SNS_CONFIG_PREFIX, name = SPRINGWOLF_SNS_PLUGIN_PUBLISHING_ENABLED)
 public class SpringwolfSnsController implements InitializingBean {
 
     private final AsyncApiDocketService asyncApiDocketService;
