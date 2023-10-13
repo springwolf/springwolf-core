@@ -68,6 +68,7 @@ allprojects {
             project.name == 'springwolf-amqp' ||
             project.name == 'springwolf-cloud-stream' ||
             project.name == 'springwolf-kafka' ||
+            project.name == 'springwolf-sns' ||
             project.name == 'springwolf-sqs' ||
             project.name == 'springwolf-ui' ||
             project.name == 'springwolf-common-model-converters' ||
