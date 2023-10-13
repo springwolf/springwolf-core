@@ -38,7 +38,7 @@ ext {
     jsr305Version = '3.0.2'
 
     kafkaClientsVersion = '3.5.1'
-    kafkaStreamsVersion = '3.5.1'
+    kafkaStreamsVersion = '3.6.0'
 
     jacksonVersion = '2.15.3'
     jakartaAnnotationApiVersion = '2.1.1'
