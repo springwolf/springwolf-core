@@ -40,7 +40,7 @@ ext {
     kafkaClientsVersion = '3.5.1'
     kafkaStreamsVersion = '3.5.1'
 
-    jacksonVersion = '2.15.2'
+    jacksonVersion = '2.15.3'
     jakartaAnnotationApiVersion = '2.1.1'
 
     mockitoCoreVersion = '5.5.0'
