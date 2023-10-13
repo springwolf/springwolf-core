@@ -9,6 +9,7 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket.Info;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,15 +36,16 @@ class DefaultAsyncApiDocketServiceTest {
         info.setDescription("some-description");
         info.setLicense(new License("license-name", "license-url"));
         info.setContact(new Contact("contact-name", "contact-url", "contact-email"));
+        info.setExtensionFields(Map.of("x-api-name", "api-name"));
         configDocket.setInfo(info);
 
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setDocket(configDocket);
 
         // when
-        DefaultAsyncApiDocketService docketConfiguration =
+        DefaultAsyncApiDocketService asyncApiDocketService =
                 new DefaultAsyncApiDocketService(Optional.empty(), Optional.of(properties));
-        AsyncApiDocket asyncApiDocket = docketConfiguration.getAsyncApiDocket();
+        AsyncApiDocket asyncApiDocket = asyncApiDocketService.getAsyncApiDocket();
 
         // then
         assertThat(asyncApiDocket.getDefaultContentType()).isEqualTo(configDocket.getDefaultContentType());
@@ -53,6 +55,8 @@ class DefaultAsyncApiDocketServiceTest {
         assertThat(asyncApiDocket.getInfo().getDescription()).isEqualTo(info.getDescription());
         assertThat(asyncApiDocket.getInfo().getLicense()).isEqualTo(info.getLicense());
         assertThat(asyncApiDocket.getInfo().getContact()).isEqualTo(info.getContact());
+        assertThat(asyncApiDocket.getInfo().getExtensionFields().get("x-api-name"))
+                .isEqualTo("api-name");
     }
 
     @Test

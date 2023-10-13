@@ -136,6 +136,9 @@ public class SpringwolfConfigProperties {
             @NestedConfigurationProperty
             @Nullable
             private License license;
+
+            @Nullable
+            protected Map<String, Object> extensionFields;
         }
     }
 
