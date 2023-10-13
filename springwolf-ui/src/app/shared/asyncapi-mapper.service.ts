@@ -182,11 +182,13 @@ export class AsyncApiMapperService {
         description: v.description,
         payload: {
           name: v.payload.$ref,
+          title: v.payload.$ref?.split(".")?.pop(),
           anchorUrl:
             AsyncApiMapperService.BASE_URL + v.payload.$ref?.split("/")?.pop(),
         },
         headers: {
           name: v.headers.$ref,
+          title: v.headers.$ref?.split("/")?.pop(),
           anchorUrl:
             AsyncApiMapperService.BASE_URL + v.headers.$ref?.split("/")?.pop(),
         },
@@ -268,9 +270,11 @@ export class AsyncApiMapperService {
     const example =
       schema.example !== undefined ? new Example(schema.example) : undefined;
     return {
-      schemaName: schemaName.split(".")?.pop(),
+      name: schemaName,
+      title: schemaName.split(".")?.pop(),
       description: schema.description,
       refName: schema.$ref,
+      refTitle: schema.$ref?.split("/")?.pop(),
       anchorIdentifier: "#" + schemaName,
       anchorUrl: anchorUrl,
       type: schema.type,

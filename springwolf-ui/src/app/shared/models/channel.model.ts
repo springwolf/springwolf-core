@@ -23,10 +23,12 @@ export interface Message {
   description?: string;
   payload: {
     name: string;
+    title: string;
     anchorUrl: string;
   };
   headers: {
     name: string;
+    title: string;
     anchorUrl: string;
   };
   bindings?: Map<string, MessageBinding>;
