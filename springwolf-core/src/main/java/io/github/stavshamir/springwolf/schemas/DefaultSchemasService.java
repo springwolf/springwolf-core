@@ -27,7 +27,8 @@ public class DefaultSchemasService implements SchemasService {
     private final Map<String, Schema> definitions = new HashMap<>();
     private Map<String, Schema> finalizedDefinitions = null;
 
-    public DefaultSchemasService(List<ModelConverter> externalModelConverters,
+    public DefaultSchemasService(
+            List<ModelConverter> externalModelConverters,
             ExampleGenerator exampleGenerator,
             SpringwolfConfigProperties properties) {
 
