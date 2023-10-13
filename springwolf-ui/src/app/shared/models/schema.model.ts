@@ -2,9 +2,10 @@
 import { Example } from "./example.model";
 
 export interface Schema {
-  name?: string;
+  schemaName: string;
   description?: string;
 
+  refName?: string;
   anchorIdentifier?: string;
   anchorUrl?: string;
 
