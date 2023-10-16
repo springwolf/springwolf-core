@@ -7,11 +7,14 @@
     "contact": {
       "name": "springwolf",
       "url": "https://github.com/springwolf/springwolf-core",
-      "email": "example@example.com"
+      "email": "example@example.com",
+      "x-phone": "+49 123 456789"
     },
     "license": {
-      "name": "Apache License 2.0"
-    }
+      "name": "Apache License 2.0",
+      "x-desc": "some description"
+    },
+    "x-api-audience": "company-internal"
   },
   "defaultContentType": "application/json",
   "servers": {
@@ -65,88 +68,6 @@
             "durable": false,
             "exclusive": false,
             "autoDelete": false,
-            "vhost": "/"
-          },
-          "bindingVersion": "0.2.0"
-        }
-      }
-    },
-    "example-manual-consumer-channel": {
-      "publish": {
-        "operationId": "example-manual-consumer-channel_publish",
-        "description": "example-manual-consumer-channel-description",
-        "bindings": {
-          "amqp": {
-            "cc": [
-              "example-consumer-topic-routing-key"
-            ],
-            "bindingVersion": "0.2.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "description": "Another payload model",
-          "payload": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "amqp": {
-              "bindingVersion": "0.2.0"
-            }
-          }
-        }
-      },
-      "bindings": {
-        "amqp": {
-          "is": "routingKey",
-          "exchange": {
-            "name": "example-consumer-topic-exchange",
-            "vhost": "/"
-          },
-          "bindingVersion": "0.2.0"
-        }
-      }
-    },
-    "example-producer-channel": {
-      "subscribe": {
-        "operationId": "example-producer-channel_subscribe",
-        "description": "example-producer-channel-description",
-        "bindings": {
-          "amqp": {
-            "cc": [
-              "example-topic-routing-key"
-            ],
-            "bindingVersion": "0.2.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "description": "Another payload model",
-          "payload": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "amqp": {
-              "bindingVersion": "0.2.0"
-            }
-          }
-        }
-      },
-      "bindings": {
-        "amqp": {
-          "is": "routingKey",
-          "exchange": {
-            "name": "example-topic-exchange",
             "vhost": "/"
           },
           "bindingVersion": "0.2.0"
