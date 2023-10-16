@@ -6,7 +6,7 @@ plugins {
     id 'ca.cutterslade.analyze'
 
     id 'com.bmuschko.docker-spring-boot-application'
-    id 'org.springdoc.openapi-gradle-plugin' version '1.7.0'
+    id 'org.springdoc.openapi-gradle-plugin' version '1.8.0'
 }
 
 dependencies {
