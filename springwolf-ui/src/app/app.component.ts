@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+/* SPDX-License-Identifier: Apache-2.0 */
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  title = 'springwolf';
+  title = "Springwolf";
 }

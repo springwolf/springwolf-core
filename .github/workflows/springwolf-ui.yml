@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - '.github/workflows/springwolf-ui.yml'
-      - 'springwolf-examples/springwolf-amqp-example/src/test/resources/asyncapi.json'
-      - 'springwolf-examples/springwolf-cloud-stream-example/src/test/resources/asyncapi.json'
-      - 'springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json'
-      - 'springwolf-ui/**'
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
 
@@ -22,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -32,6 +26,9 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+
+      - name: Check formatting (before running tests)
+        run: ./gradlew -p ${{ env.project }} spotlessCheck
 
       - name: Build
         run: ./gradlew -p ${{ env.project }} build
@@ -45,6 +42,7 @@ jobs:
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
 
+          ORG_GRADLE_PROJECT_MAVEN_URL: https://s01.oss.sonatype.org/content/repositories/snapshots/
           ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
 import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
@@ -20,5 +21,4 @@ public class KafkaProducerData extends ProducerData {
         this.operationBinding = Map.of("kafka", new KafkaOperationBinding());
         this.messageBinding = Map.of("kafka", new KafkaMessageBinding());
     }
-
 }

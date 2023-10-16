@@ -1,4 +1,7 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
+
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncOperationBinding;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,6 +14,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD})
+@AsyncOperationBinding
 public @interface AmqpAsyncOperationBinding {
 
     String type() default "amqp";

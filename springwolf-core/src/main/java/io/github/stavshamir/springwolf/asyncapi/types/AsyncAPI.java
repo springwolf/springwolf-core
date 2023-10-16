@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
 import com.asyncapi.v2._6_0.model.Tag;
@@ -91,5 +92,4 @@ public class AsyncAPI {
     @NonNull
     @Builder.Default
     private Set<Tag> tags = Collections.emptySet();
-
 }

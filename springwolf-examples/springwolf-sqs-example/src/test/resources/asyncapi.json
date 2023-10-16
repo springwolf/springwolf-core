@@ -1,0 +1,174 @@
+{
+  "asyncapi": "2.6.0",
+  "info": {
+    "title": "Springwolf example project - SQS",
+    "version": "1.0.0",
+    "description": "Springwolf example project to demonstrate springwolfs abilities",
+    "contact": {
+      "name": "springwolf",
+      "url": "https://github.com/springwolf/springwolf-core",
+      "email": "example@example.com"
+    },
+    "license": {
+      "name": "Apache License 2.0"
+    }
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "sqs": {
+      "url": "http://localhost:4566",
+      "protocol": "sqs"
+    }
+  },
+  "channels": {
+    "another-queue": {
+      "subscribe": {
+        "operationId": "another-queue_subscribe",
+        "description": "Custom, optional description defined in the AsyncPublisher annotation",
+        "bindings": {
+          "sqs": {
+            "internal-field": "customValue",
+            "nested": {
+              "key": "nestedValue"
+            }
+          }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
+          "description": "Another payload model",
+          "payload": {
+            "$ref": "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "sqs": {
+              "bindingVersion": "0.2.0"
+            }
+          }
+        }
+      },
+      "publish": {
+        "operationId": "another-queue_publish_receiveAnotherPayload",
+        "description": "Auto-generated description",
+        "bindings": {
+          "sqs": { }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
+          "payload": {
+            "$ref": "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "sqs": { }
+          }
+        }
+      }
+    },
+    "example-queue": {
+      "publish": {
+        "operationId": "example-queue_publish_receiveExamplePayload",
+        "description": "Auto-generated description",
+        "bindings": {
+          "sqs": { }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
+          "payload": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "sqs": { }
+          }
+        }
+      },
+      "bindings": {
+        "sqs": { }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnotherPayloadDto": {
+        "required": [
+          "example"
+        ],
+        "type": "object",
+        "properties": {
+          "example": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
+          },
+          "foo": {
+            "type": "string",
+            "description": "Foo field",
+            "example": "bar"
+          }
+        },
+        "description": "Another payload model",
+        "example": {
+          "example": {
+            "someEnum": "FOO2",
+            "someLong": 5,
+            "someString": "some string value"
+          },
+          "foo": "bar"
+        }
+      },
+      "ExamplePayloadDto": {
+        "required": [
+          "someEnum",
+          "someString"
+        ],
+        "type": "object",
+        "properties": {
+          "someEnum": {
+            "type": "string",
+            "description": "Some enum field",
+            "example": "FOO2",
+            "enum": [
+              "FOO1",
+              "FOO2",
+              "FOO3"
+            ]
+          },
+          "someLong": {
+            "type": "integer",
+            "description": "Some long field",
+            "format": "int64",
+            "example": 5
+          },
+          "someString": {
+            "type": "string",
+            "description": "Some string field",
+            "example": "some string value"
+          }
+        },
+        "description": "Example payload model",
+        "example": {
+          "someEnum": "FOO2",
+          "someLong": 5,
+          "someString": "some string value"
+        }
+      },
+      "HeadersNotDocumented": {
+        "type": "object",
+        "properties": { },
+        "example": { }
+      }
+    }
+  },
+  "tags": [ ]
+}

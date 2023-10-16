@@ -1,0 +1,51 @@
+plugins {
+    id 'java-library'
+
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
+}
+
+dependencies {
+    api project(":springwolf-core")
+
+    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+
+    implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-core"
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+}
+
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+bootJar.enabled = false
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+test {
+    dependsOn spotlessApply // Automatically fix code formatting if possible
+
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'springwolf-generic-binding'
+                description = 'Document any AsyncApi binding in Springwolf using a generic way'
+            }
+        }
+    }
+}

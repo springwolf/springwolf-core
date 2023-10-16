@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.controller.dtos;
 
 import lombok.Builder;
@@ -15,5 +16,9 @@ public class MessageDto {
 
     private final Map<String, String> headers;
 
-    private final Map<String, ?> payload;
+    @Builder.Default
+    private final String payload = "";
+
+    @Builder.Default
+    private final String payloadType = String.class.getCanonicalName();
 }

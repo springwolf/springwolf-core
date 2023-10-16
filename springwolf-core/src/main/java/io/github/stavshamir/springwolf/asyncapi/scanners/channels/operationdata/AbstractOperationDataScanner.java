@@ -1,10 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -13,7 +13,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.Order;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +26,6 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
-@Order(value = ChannelPriority.MANUAL_DEFINED)
 public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
     protected abstract SchemasService getSchemaService();
@@ -61,8 +60,10 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
     private ChannelItem buildChannel(List<OperationData> operationDataList) {
         // All bindings in the group are assumed to be the same
         // AsyncApi does not support multiple bindings on a single channel
-        Map<String, ? extends ChannelBinding> channelBinding = operationDataList.get(0).getChannelBinding();
-        Map<String, ? extends OperationBinding> operationBinding = operationDataList.get(0).getOperationBinding();
+        Map<String, ? extends ChannelBinding> channelBinding =
+                operationDataList.get(0).getChannelBinding();
+        Map<String, ? extends OperationBinding> operationBinding =
+                operationDataList.get(0).getOperationBinding();
         Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
         Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         String operationId = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
@@ -80,26 +81,23 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                 .bindings(opBinding)
                 .build();
 
-        ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder()
-                .bindings(chBinding);
+        ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder().bindings(chBinding);
         channelBuilder = switch (getOperationType()) {
             case PUBLISH -> channelBuilder.publish(operation);
-            case SUBSCRIBE -> channelBuilder.subscribe(operation);
-        };
+            case SUBSCRIBE -> channelBuilder.subscribe(operation);};
 
         // Only set servers if servers are defined. Avoid setting an emtpy list
         // because this would generate empty server entries for each channel in the resulting
         // async api.
-        if(!servers.isEmpty()){
+        if (!servers.isEmpty()) {
             channelBuilder.servers(servers);
         }
         return channelBuilder.build();
     }
 
     private Object getMessageObject(List<OperationData> operationDataList) {
-        Set<Message> messages = operationDataList.stream()
-                .map(this::buildMessage)
-                .collect(toSet());
+        Set<Message> messages =
+                operationDataList.stream().map(this::buildMessage).collect(toSet());
 
         return toMessageObjectOrComposition(messages);
     }
@@ -109,17 +107,53 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         String modelName = this.getSchemaService().register(payloadType);
         String headerModelName = this.getSchemaService().register(operationData.getHeaders());
 
-        Schema schema = payloadType.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        /*
+         * Message information can be obtained via a @AsyncMessage annotation on the method parameter, the Payload
+         * itself or via the Swagger @Schema annotation on the Payload.
+         */
+
+        var schema = payloadType.getAnnotation(Schema.class);
         String description = schema != null ? schema.description() : null;
 
-        return Message.builder()
+        var builder = Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
                 .description(description)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
-                .bindings(operationData.getMessageBinding())
-                .build();
+                .bindings(operationData.getMessageBinding());
+
+        // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher
+        // priority
+        //  so if we find them, we need to override the default values.
+        processAsyncMessageAnnotation(operationData.getMessage(), builder);
+
+        return builder.build();
     }
 
+    private void processAsyncMessageAnnotation(Message annotationMessage, Message.MessageBuilder builder) {
+        if (annotationMessage != null) {
+            builder.messageId(annotationMessage.getMessageId());
+
+            var schemaFormat = annotationMessage.getSchemaFormat() != null
+                    ? annotationMessage.getSchemaFormat()
+                    : Message.DEFAULT_SCHEMA_FORMAT;
+            builder.schemaFormat(schemaFormat);
+
+            var annotationMessageDescription = annotationMessage.getDescription();
+            if (StringUtils.hasText(annotationMessageDescription)) {
+                builder.description(annotationMessageDescription);
+            }
+
+            var name = annotationMessage.getName();
+            if (StringUtils.hasText(name)) {
+                builder.name(name);
+            }
+
+            var title = annotationMessage.getTitle();
+            if (StringUtils.hasText(title)) {
+                builder.title(title);
+            }
+        }
+    }
 }

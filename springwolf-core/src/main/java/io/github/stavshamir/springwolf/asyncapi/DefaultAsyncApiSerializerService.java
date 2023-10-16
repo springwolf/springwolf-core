@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,10 +13,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Yaml;
 import jakarta.annotation.PostConstruct;
-import org.springframework.stereotype.Service;
 
-
-@Service
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
 
     private ObjectMapper jsonMapper = Json.mapper();
@@ -26,7 +24,7 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
     void postConstruct() {
         jsonMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
         yamlMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
-        ((YAMLFactory)yamlMapper.getFactory()).enable(YAMLGenerator.Feature.INDENT_ARRAYS_WITH_INDICATOR);
+        ((YAMLFactory) yamlMapper.getFactory()).enable(YAMLGenerator.Feature.INDENT_ARRAYS_WITH_INDICATOR);
     }
 
     @Override
@@ -37,17 +35,6 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
     @Override
     public String toYaml(AsyncAPI asyncAPI) throws JsonProcessingException {
         return yamlMapper.writer(printer).writeValueAsString(asyncAPI);
-    }
-
-    /**
-     * Get the current object mapper configuration.
-     *
-     * @deprecated
-     * This method is replaced by {@link DefaultAsyncApiSerializerService#getJsonObjectMapper()}
-     */
-    @Deprecated(since = "0.11.0", forRemoval = true)
-    public ObjectMapper getObjectMapper() {
-        return getJsonObjectMapper();
     }
 
     /**
@@ -62,18 +49,6 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
      */
     public ObjectMapper getYamlObjectMapper() {
         return yamlMapper;
-    }
-
-    /**
-     * Allows to customize the used objectMapper
-     * <p>
-     * Use {@link #getJsonObjectMapper()} as a starting point
-     * @deprecated
-     * This method is replaced by {@link DefaultAsyncApiSerializerService#setJsonObjectMapper(ObjectMapper)}
-     */
-    @Deprecated(since = "0.11.0", forRemoval = true)
-    public void setObjectMapper(ObjectMapper mapper) {
-        jsonMapper = mapper;
     }
 
     /**

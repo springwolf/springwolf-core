@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.amqp.configuration;
 
 import org.springframework.amqp.core.Binding;
@@ -32,7 +33,7 @@ public class RabbitConfiguration {
 
     @Bean
     public Queue exampleBindingsQueue() {
-        return new Queue("example-bindings-queue", false);
+        return new Queue("example-bindings-queue", false, true, true);
     }
 
     @Bean
@@ -52,5 +53,4 @@ public class RabbitConfiguration {
                 .with("example-topic-routing-key")
                 .noargs();
     }
-
 }

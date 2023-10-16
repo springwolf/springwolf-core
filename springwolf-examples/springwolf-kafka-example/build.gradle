@@ -5,23 +5,18 @@ plugins {
     id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
 
-    id 'com.bmuschko.docker-spring-boot-application' version '8.1.0'
-    id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
+    id 'com.bmuschko.docker-spring-boot-application'
+    id 'org.springdoc.openapi-gradle-plugin' version '1.7.0'
 }
-
-def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
-
-group 'io.github.springwolf'
-version '0.12.1' + (isSnapshot ? '-SNAPSHOT' : '')
 
 dependencies {
     implementation project(":springwolf-core")
-    implementation project(":springwolf-plugins:springwolf-kafka-plugin")
+    implementation project(":springwolf-plugins:springwolf-kafka")
 
     runtimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
     runtimeOnly project(":springwolf-ui")
 
-    annotationProcessor project(":springwolf-plugins:springwolf-kafka-plugin")
+    annotationProcessor project(":springwolf-plugins:springwolf-kafka")
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 
@@ -38,7 +33,7 @@ dependencies {
     implementation "org.springframework.security:spring-security-web"
 
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
-    implementation "io.swagger.core.v3:swagger-annotations:${swaggerCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "javax.money:money-api:${moneyApiVersion}"
@@ -46,7 +41,6 @@ dependencies {
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 
-    testImplementation "commons-io:commons-io:${commonsIoVersion}"
     testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
 
     testImplementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
@@ -62,7 +56,11 @@ dependencies {
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+
     permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaClientsVersion}:test@jar"
+
+    testImplementation("org.springframework.boot:spring-boot-starter-actuator")
+    permitTestUnusedDeclared("org.springframework.boot:spring-boot-starter-actuator")
 }
 
 docker {
@@ -79,18 +77,8 @@ docker {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
 test {
     dependsOn dockerBuildImage
-
-    useJUnitPlatform()
-
-    testLogging {
-        exceptionFormat = 'full'
-    }
 }
 
 openApi {

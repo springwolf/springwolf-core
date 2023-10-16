@@ -1,18 +1,17 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.configuration;
-
 
 import com.asyncapi.v2._6_0.model.info.Contact;
 import com.asyncapi.v2._6_0.model.info.License;
 import com.asyncapi.v2._6_0.model.server.Server;
-import io.github.stavshamir.springwolf.SpringWolfConfigProperties;
-import io.github.stavshamir.springwolf.SpringWolfConfigProperties.ConfigDocket;
-import io.github.stavshamir.springwolf.SpringWolfConfigProperties.ConfigDocket.Info;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket.Info;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.util.Maps.newHashMap;
 
 class DefaultAsyncApiDocketServiceTest {
@@ -25,10 +24,8 @@ class DefaultAsyncApiDocketServiceTest {
 
         configDocket.setDefaultContentType("application/json");
 
-        Server server = Server.builder()
-                .protocol("some-protocol")
-                .url("some-url")
-                .build();
+        Server server =
+                Server.builder().protocol("some-protocol").url("some-url").build();
         configDocket.setServers(newHashMap("some-protocol", server));
 
         Info info = new Info();
@@ -39,12 +36,12 @@ class DefaultAsyncApiDocketServiceTest {
         info.setContact(new Contact("contact-name", "contact-url", "contact-email"));
         configDocket.setInfo(info);
 
-
-        SpringWolfConfigProperties properties = new SpringWolfConfigProperties();
+        SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setDocket(configDocket);
 
         // when
-        DefaultAsyncApiDocketService docketConfiguration = new DefaultAsyncApiDocketService(Optional.empty(), Optional.of(properties));
+        DefaultAsyncApiDocketService docketConfiguration =
+                new DefaultAsyncApiDocketService(Optional.empty(), properties);
         AsyncApiDocket asyncApiDocket = docketConfiguration.getAsyncApiDocket();
 
         // then
@@ -55,14 +52,5 @@ class DefaultAsyncApiDocketServiceTest {
         assertThat(asyncApiDocket.getInfo().getDescription()).isEqualTo(info.getDescription());
         assertThat(asyncApiDocket.getInfo().getLicense()).isEqualTo(info.getLicense());
         assertThat(asyncApiDocket.getInfo().getContact()).isEqualTo(info.getContact());
-    }
-
-    @Test
-    void testNoConfigurationShouldThrowException() {
-        assertThatThrownBy(() -> {
-            DefaultAsyncApiDocketService docketConfiguration = new DefaultAsyncApiDocketService(Optional.empty(), Optional.empty());
-            docketConfiguration.getAsyncApiDocket();
-        })
-                .isInstanceOf(IllegalArgumentException.class);
     }
 }

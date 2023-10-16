@@ -1,35 +1,36 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 textarea {
-    width: calc(100% - 16px);
-    padding: 8px;
-    margin-top: 16px;
-    border-radius: 4px;
-    border-width: 0;
-    line-height: 24px;
-    background-color: #282c34;
-    color: #abb2bf;
+  width: calc(100% - 16px);
+  padding: 8px;
+  margin-top: 16px;
+  border-radius: 4px;
+  border-width: 0;
+  line-height: 24px;
+  background-color: #282c34;
+  color: #abb2bf;
 }
 
 button {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 .property-badge {
-    background-color: #C5CAE9;
-    border-radius: 4px;
-    padding: 6px;
-    font-size: small;
-    font-weight: bold;
+  background-color: #c5cae9;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: small;
+  font-weight: bold;
 }
 
 .payload-name {
-    background-color: #E0E0E0;
-    border-radius: 4px;
-    padding: 6px;
-    font-weight: normal;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  padding: 6px;
+  font-weight: normal;
 }
 
 .header-name {
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   border-radius: 4px;
   padding: 6px;
   font-weight: normal;

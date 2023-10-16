@@ -12,25 +12,25 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/cdk": "^16.1.1",
-    "@angular/common": "^16.1.1",
-    "@angular/core": "^16.1.1",
-    "@angular/forms": "^16.1.1",
-    "@angular/material": "^16.1.1",
-    "@angular/platform-browser": "^16.1.1",
-    "@angular/platform-browser-dynamic": "^16.1.1",
-    "@angular/router": "^16.1.1",
+    "@angular/cdk": "^16.2.0",
+    "@angular/common": "^16.2.0",
+    "@angular/core": "^16.2.0",
+    "@angular/forms": "^16.2.0",
+    "@angular/material": "^16.2.0",
+    "@angular/platform-browser": "^16.2.0",
+    "@angular/platform-browser-dynamic": "^16.2.0",
+    "@angular/router": "^16.2.0",
     "font-awesome": "^4.7.0",
     "ngx-highlightjs": "^10.0.0",
     "rxjs": "^7.8.1",
-    "zone.js": "^0.13.0"
+    "zone.js": "^0.13.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.1.0",
-    "@angular/cli": "^16.1.0",
-    "@angular/compiler-cli": "^16.1.1",
-    "@types/node": "^18.16.18",
+    "@angular-devkit/build-angular": "^16.2.0",
+    "@angular/cli": "^16.2.0",
+    "@angular/compiler-cli": "^16.2.0",
+    "@types/node": "^18.18.0",
     "angular-in-memory-web-api": "^0.16.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.1.6"
   }
 }

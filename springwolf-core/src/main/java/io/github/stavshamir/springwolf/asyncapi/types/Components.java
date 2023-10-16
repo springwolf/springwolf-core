@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
 import io.swagger.v3.oas.models.media.Schema;
@@ -22,5 +23,4 @@ import java.util.Map;
 public class Components {
 
     private Map<String, Schema> schemas;
-
 }

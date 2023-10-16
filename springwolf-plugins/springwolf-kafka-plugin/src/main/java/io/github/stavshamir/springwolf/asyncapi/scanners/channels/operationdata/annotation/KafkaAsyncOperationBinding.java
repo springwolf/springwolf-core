@@ -1,4 +1,7 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
+
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncOperationBinding;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +13,8 @@ import java.lang.annotation.Target;
  * It configures the operation binding for the Kafka protocol.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value={ElementType.METHOD})
+@Target(value = {ElementType.METHOD})
+@AsyncOperationBinding
 public @interface KafkaAsyncOperationBinding {
 
     String type() default "kafka";
@@ -18,6 +22,7 @@ public @interface KafkaAsyncOperationBinding {
     String groupId() default "";
 
     String clientId() default "";
+
     String bindingVersion() default "";
 
     KafkaAsyncMessageBinding messageBinding() default @KafkaAsyncMessageBinding();
@@ -30,6 +35,7 @@ public @interface KafkaAsyncOperationBinding {
 
         String bindingVersion() default "";
     }
+
     @Retention(RetentionPolicy.CLASS)
     @Target({})
     @interface KafkaAsyncKey {

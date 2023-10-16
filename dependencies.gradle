@@ -13,44 +13,49 @@
  *  - add a 'Version' suffix
  *
  *  e.g.: com.asyncapi:asyncapi-core' will be 'asyncapiCoreVersion'
- *  e.g.: 'io.swagger.core.v3:swagger-core-jakarta' will be 'swaggerCoreVersion'
+ *  e.g.: 'io.swagger.core.v3:swagger-core-jakarta' will be 'swaggerCoreJakartaVersion'
+ *
+ *
+ *  For multiple dependencies that are released together, we reduce the artifactId to the common prefix.
+ *  The above rules still apply.
+ *
+ *  e.g.: 'jackson-core', 'jackson-annotations' is combined to 'jacksonVersion'
+ *
  *
  * The dependencies are sorted alphabetically.
  */
 ext {
     androidJsonVersion = '0.0.20131108.vaadin1'
+
     assertjCoreVersion = '3.24.2'
+
     asyncapiCoreVersion = '1.0.0-EAP-2'
+
     awaitilityVersion = '4.2.0'
-    commonsIoVersion = '2.13.0'
 
-    findbugsJSR305Version = '3.0.2'
+    commonsLang3Version = '3.13.0'
 
-    kafkaClientsVersion = '3.5.0'
-    kafkaStreamsVersion = '3.5.0'
+    jsr305Version = '3.0.2'
 
-    jacksonCoreVersion = '2.15.2'
+    kafkaClientsVersion = '3.6.0'
+    kafkaStreamsVersion = '3.6.0'
 
+    jacksonVersion = '2.15.3'
     jakartaAnnotationApiVersion = '2.1.1'
 
-    mockitoCoreVersion = '5.4.0'
-    mockitoJunitJupiterVersion = '5.4.0'
+    mockitoCoreVersion = '5.6.0'
+    mockitoJunitJupiterVersion = '5.5.0'
 
     monetaVersion = '1.4.2'
-
     moneyApiVersion = '1.1'
 
-    junitJupiterVersion = '5.9.3'
-    junitPlatformVersion = '1.9.3'
+    junitJupiterVersion = '5.10.0'
 
-    lombokVersion = '1.18.28'
+    lombokVersion = '1.18.30'
 
-    slf4jApiVersion = '2.0.7'
+    slf4jApiVersion = '2.0.9'
 
-    swaggerCoreVersion = '2.2.14'
+    swaggerVersion = '2.2.17'
 
-    swaggerInflectorVersion = '2.0.9'
-    swaggerParserCoreVersion = '2.1.15'
-
-    testcontainersVersion = '1.18.3'
+    testcontainersVersion = '1.19.1'
 }

@@ -1,5 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
-
 
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -24,7 +24,8 @@ class SpringPayloadAnnotationTypeExtractorTest {
 
     @Test
     void getPayloadTypeWithPayloadAnnotation() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithStringAndPayloadAnnotation", String.class, Integer.class);
+        Method m =
+                TestClass.class.getDeclaredMethod("consumeWithStringAndPayloadAnnotation", String.class, Integer.class);
 
         Class<?> result = SpringPayloadAnnotationTypeExtractor.getPayloadType(m);
 
@@ -80,13 +81,19 @@ class SpringPayloadAnnotationTypeExtractorTest {
 
     public static class TestClass {
         public void consumeWithStringAndPayloadAnnotation(@Payload String value, Integer value2) {}
+
         public void consumeWithString(String value) {}
+
         public void consumeWithGenericClass(Optional<String> value) {}
+
         public void consumeWithListOfStrings(List<String> value) {}
+
         public void consumeWithListOfGenericClasses(List<Optional<String>> value) {}
+
         public void consumeWithListOfStringExtends(List<? extends String> value) {}
+
         public void consumeWithCustomType(MyType value) {}
 
-        public static class MyType extends ArrayList<String> { }
+        public static class MyType extends ArrayList<String> {}
     }
 }

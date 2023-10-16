@@ -1,54 +1,48 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.swagger.oas.inflector.examples.ExampleBuilder;
-import io.swagger.oas.inflector.examples.models.Example;
-import io.swagger.oas.inflector.processors.JsonNodeExampleSerializer;
+import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
-@Service
 public class DefaultSchemasService implements SchemasService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
-    private final ObjectMapper objectMapper = Json.mapper();
+    private final ExampleGenerator exampleGenerator;
 
     private final Map<String, Schema> definitions = new HashMap<>();
+    private Map<String, Schema> finalizedDefinitions = null;
 
-    public DefaultSchemasService(Optional<List<ModelConverter>> externalModelConverters) {
-        externalModelConverters.ifPresent(converters -> converters.forEach(converter::addConverter));
+    public DefaultSchemasService(List<ModelConverter> externalModelConverters, ExampleGenerator exampleGenerator) {
 
-        SimpleModule simpleModule = new SimpleModule().addSerializer(new JsonNodeExampleSerializer());
-        objectMapper.registerModule(simpleModule);
+        externalModelConverters.forEach(converter::addConverter);
+        this.exampleGenerator = exampleGenerator;
     }
 
     @Override
-    public Map<String, Schema> getDefinitions() {
-        // The examples must first be set as JSON strings (the inflector does not work otherwise)
-        definitions.forEach(this::buildExampleAsString);
+    public synchronized Map<String, Schema> getDefinitions() {
+        if (finalizedDefinitions == null) {
+            finalizeDefinitions();
+        }
+        return finalizedDefinitions;
+    }
 
-        // Then they must be deserialized to map, or they will be serialized as reguler string and not json by the
-        // object mapper
-        definitions.forEach(this::deserializeExampleToMap);
-        return definitions;
+    private void finalizeDefinitions() {
+        definitions.forEach(this::generateExampleWhenMissing);
+        definitions.forEach(this::removeSwaggerSchemaFields);
+        finalizedDefinitions = definitions;
     }
 
     @Override
@@ -87,24 +81,21 @@ public class DefaultSchemasService implements SchemasService {
         return type.getSimpleName();
     }
 
-    private void buildExampleAsString(String k, Schema schema) {
-        log.debug("Setting example for {}", schema.getName());
+    private void removeSwaggerSchemaFields(String schemaName, Schema schema) {
+        schema.setAdditionalProperties(null);
 
-        Example example = ExampleBuilder.fromSchema(schema, definitions);
-        try {
-            String exampleAsJson = objectMapper.writeValueAsString(example);
-            schema.setExample(exampleAsJson);
-        } catch (JsonProcessingException e) {
-            log.error("Failed to write example value as a string");
+        Map<String, Schema> properties = schema.getProperties();
+        if (properties != null) {
+            properties.forEach(this::removeSwaggerSchemaFields);
         }
     }
 
-    private void deserializeExampleToMap(String k, Schema schema) {
-        try {
-            schema.setExample(objectMapper.readValue((String) schema.getExample(), Object.class));
-        } catch (IOException e) {
-            log.error("Failed to convert example object of {} to map", schema.getName());
+    private void generateExampleWhenMissing(String k, Schema schema) {
+        if (schema.getExample() == null) {
+            log.debug("Generate example for {}", schema.getName());
+
+            Object example = exampleGenerator.fromSchema(schema, definitions);
+            schema.setExample(example);
         }
     }
-
 }

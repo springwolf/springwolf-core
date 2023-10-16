@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
@@ -13,8 +14,8 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -34,16 +35,19 @@ import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotat
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
-public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends Annotation, MethodAnnotation extends Annotation> implements ChannelsScanner {
+@RequiredArgsConstructor
+public abstract class AbstractClassLevelListenerScanner<
+                ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
+        implements ChannelsScanner {
 
-    @Autowired
-    private ComponentClassScanner componentClassScanner;
+    private final ComponentClassScanner componentClassScanner;
 
-    @Autowired
-    private SchemasService schemasService;
+    private final SchemasService schemasService;
 
-    private static final Comparator<Map.Entry<String, ChannelItem>> byPublishOperationName = Comparator.comparing(it -> it.getValue().getPublish().getOperationId());
-    private static final Supplier<Set<Map.Entry<String, ChannelItem>>> channelItemSupplier = () -> new TreeSet<>(byPublishOperationName);
+    private static final Comparator<Map.Entry<String, ChannelItem>> byPublishOperationName =
+            Comparator.comparing(it -> it.getValue().getPublish().getOperationId());
+    private static final Supplier<Set<Map.Entry<String, ChannelItem>>> channelItemSupplier =
+            () -> new TreeSet<>(byPublishOperationName);
 
     /**
      * This annotation is used on class level
@@ -104,7 +108,8 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
         return components.stream()
                 .filter(this::isClassAnnotated)
                 .map(this::mapClassToChannel)
-                .filter(Optional::isPresent).map(Optional::get)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toCollection(channelItemSupplier));
     }
 
@@ -125,20 +130,26 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
             return Optional.empty();
         }
 
-        ChannelItem channelItem = buildChannel(component.getSimpleName(), annotatedMethods, channelBinding, operationBinding);
+        ChannelItem channelItem =
+                buildChannel(component.getSimpleName(), annotatedMethods, channelBinding, operationBinding);
         return Optional.of(Map.entry(channelName, channelItem));
     }
 
     private Set<Method> getAnnotatedMethods(Class<?> component) {
         Class<MethodAnnotation> methodAnnotation = getHandlerAnnotationClass();
-        log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", component.getName(), methodAnnotation.getName());
+        log.debug(
+                "Scanning class \"{}\" for @\"{}\" annotated methods", component.getName(), methodAnnotation.getName());
 
         return Arrays.stream(component.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(methodAnnotation))
                 .collect(toSet());
     }
 
-    private ChannelItem buildChannel(String simpleName, Set<Method> methods, Map<String, ? extends ChannelBinding> channelBinding, Map<String, ? extends OperationBinding> operationBinding) {
+    private ChannelItem buildChannel(
+            String simpleName,
+            Set<Method> methods,
+            Map<String, ? extends ChannelBinding> channelBinding,
+            Map<String, ? extends OperationBinding> operationBinding) {
         String operationId = simpleName + "_publish";
 
         Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
@@ -151,16 +162,11 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
                 .bindings(opBinding)
                 .build();
 
-        return ChannelItem.builder()
-                .bindings(chBinding)
-                .publish(operation)
-                .build();
+        return ChannelItem.builder().bindings(chBinding).publish(operation).build();
     }
 
     private Object getMessageObject(Set<Method> methods) {
-        Set<Message> messages = methods.stream()
-                .map(this::buildMessage)
-                .collect(toSet());
+        Set<Message> messages = methods.stream().map(this::buildMessage).collect(toSet());
 
         return toMessageObjectOrComposition(messages);
     }
@@ -178,5 +184,4 @@ public abstract class AbstractClassLevelListenerScanner<ClassAnnotation extends 
                 .bindings(buildMessageBinding(method))
                 .build();
     }
-
 }

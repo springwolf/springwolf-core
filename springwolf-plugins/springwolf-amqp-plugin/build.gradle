@@ -1,17 +1,10 @@
 plugins {
     id 'java-library'
-    id 'signing'
-    id 'maven-publish'
 
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
 }
-
-def isSnapshot = Boolean.valueOf(project.findProperty('SNAPSHOT'))
-
-group 'io.github.springwolf'
-version '0.8.1' + (isSnapshot ? '-SNAPSHOT' : '')
 
 dependencies {
     api project(":springwolf-core")
@@ -19,6 +12,7 @@ dependencies {
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
+    implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-core"
     implementation "org.springframework:spring-web"
@@ -27,14 +21,20 @@ dependencies {
     implementation "org.springframework.amqp:spring-amqp"
     implementation "org.springframework.amqp:spring-rabbit"
 
-    compileOnly "com.google.code.findbugs:jsr305:${findbugsJSR305Version}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
+    permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
+
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}")
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-test"
@@ -54,78 +54,15 @@ bootJar.enabled = false
 java {
     withJavadocJar()
     withSourcesJar()
-
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
-test {
-    useJUnitPlatform()
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
-
-            artifactId 'springwolf-amqp'
-            groupId project.group
-            version project.version
-
             pom {
                 name = 'springwolf-amqp'
                 description = 'Automated JSON API documentation for AMQP (RabbitMQ) Listeners built with Spring'
-                url = 'https://www.springwolf.dev'
-
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'stavshamir'
-                        name = 'Stav Shamir'
-                        email = 'shamir.stav@gmail.com'
-                    }
-
-                    developer {
-                        id = 'timonback'
-                        name = 'Timon Back'
-                        email = 'timon.back+springwolf@gmail.com'
-                    }
-
-                    developer {
-                        id = 'sam0r040'
-                        name = 'David Müller'
-                        email = 'david.mueller@codecentric.de'
-                    }
-                }
-
-                scm {
-                    url = 'https://github.com/springwolf/springwolf-core'
-                }
             }
         }
     }
-
-    repositories {
-        maven {
-            def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-            url = isSnapshot ? snapshotsRepoUrl : releasesRepoUrl
-            credentials {
-                username = project.findProperty('MAVEN_USERNAME') ?: ''
-                password = project.findProperty('MAVEN_PASSWORD') ?: ''
-            }
-        }
-    }
-}
-
-signing {
-    def signingKey = project.findProperty("SIGNINGKEY")
-    def signingPassword = project.findProperty("SIGNINGPASSWORD")
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign publishing.publications.mavenJava
 }

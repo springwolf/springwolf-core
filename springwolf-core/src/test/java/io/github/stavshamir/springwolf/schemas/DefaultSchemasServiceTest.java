@@ -1,76 +1,43 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas;
 
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.core.util.Json;
-import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.io.IOUtils;
-import org.json.JSONException;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DefaultSchemasServiceTest {
 
-    private final SchemasService schemasService = new DefaultSchemasService(Optional.empty());
+    private final ExampleGenerator exampleGenerator = new ExampleJsonGenerator();
+    private final SchemasService schemasService = new DefaultSchemasService(List.of(), exampleGenerator);
 
-    private static final String EXAMPLES_PATH = "/schemas/examples";
-    private static final ObjectMapper objectMapper = Json.mapper();
-    private static final PrettyPrinter printer = new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
-
-    @Test
-    void string() throws IOException {
-        String modelName = schemasService.register(String.class);
-
-        assertThat(modelName)
-                .isEqualTo("String");
-
-        assertNotNull(schemasService.getDefinitions().get(modelName));
-
-        Schema schema = schemasService.getDefinitions().get(modelName);
-        String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
-        String expectedExample = "\"string\"";
-
-        assertThat(example).isEqualTo(expectedExample);
-    }
-
-    @Test
-    void simpleObject() throws IOException {
-        String modelName = schemasService.register(SimpleFoo.class);
-
-        assertThat(modelName)
-                .isEqualTo("SimpleFoo");
-
-        Schema schema = schemasService.getDefinitions().get(modelName);
-        String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
-        String expectedExample = jsonResource(EXAMPLES_PATH + "/simple-foo.json");
-
-        assertEquals(expectedExample, example);
-    }
-
-    @Test
-    void compositeObject() throws IOException {
-        String modelName = schemasService.register(CompositeFoo.class);
-
-        Schema schema = schemasService.getDefinitions().get(modelName);
-        String example = objectMapper.writer(printer).writeValueAsString(schema.getExample());
-
-        String expectedExample = jsonResource(EXAMPLES_PATH + "/composite-foo.json");
-
-        // Then it returns the correct example object as json
-        assertEquals(expectedExample, example);
-    }
+    private static final ObjectMapper objectMapper =
+            Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+    private static final PrettyPrinter printer =
+            new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @Test
     void getDefinitions() throws IOException {
@@ -85,7 +52,7 @@ class DefaultSchemasServiceTest {
     }
 
     @Test
-    void getDocumentedDefinitions() throws IOException, JSONException {
+    void getDocumentedDefinitions() throws IOException {
         schemasService.register(DocumentedSimpleFoo.class);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
@@ -96,16 +63,37 @@ class DefaultSchemasServiceTest {
     }
 
     @Test
+    void getArrayDefinitions() throws IOException {
+        schemasService.register(ArrayFoo.class);
+
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String expected = jsonResource("/schemas/array-definitions.json");
+
+        System.out.println("Got: " + actualDefinitions);
+        assertEquals(expected, actualDefinitions);
+    }
+
+    @Test
+    void getComplexDefinitions() throws IOException {
+        schemasService.register(ComplexFoo.class);
+
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String expected = jsonResource("/schemas/complex-definitions.json");
+
+        System.out.println("Got: " + actualDefinitions);
+        assertEquals(expected, actualDefinitions);
+    }
+
+    @Test
     void classWithSchemaAnnotation() {
         String modelName = schemasService.register(ClassWithSchemaAnnotation.class);
 
-        assertThat(modelName)
-                .isEqualTo("DifferentName");
+        assertThat(modelName).isEqualTo("DifferentName");
     }
 
     private String jsonResource(String path) throws IOException {
         InputStream s = this.getClass().getResourceAsStream(path);
-        return IOUtils.toString(s, StandardCharsets.UTF_8);
+        return new String(s.readAllBytes(), StandardCharsets.UTF_8);
     }
 
     @Data
@@ -117,10 +105,25 @@ class DefaultSchemasServiceTest {
 
     @Data
     @NoArgsConstructor
-    @io.swagger.v3.oas.annotations.media.Schema(description = "foo model")
+    @Schema(description = "foo model")
     private static class DocumentedSimpleFoo {
-        @io.swagger.v3.oas.annotations.media.Schema(description = "s field", example = "s value", requiredMode = io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED)
+        @Schema(description = "s field", example = "s value", requiredMode = Schema.RequiredMode.REQUIRED)
         private String s;
+
+        @Schema(example = "1.432", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private BigInteger bi;
+
+        @Schema(example = "2000-01-01T02:00:00+02:00", requiredMode = Schema.RequiredMode.REQUIRED)
+        private OffsetDateTime dt;
+
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        private SimpleFoo f;
+
+        @Schema(description = "Map with example", example = "{\"key1\": \"value1\"}")
+        private Map<String, String> mss;
+
+        @Schema(description = "Map without example")
+        private Map<String, String> mss_plain;
     }
 
     @Data
@@ -132,21 +135,111 @@ class DefaultSchemasServiceTest {
 
     @Data
     @NoArgsConstructor
+    private static class ArrayFoo {
+        private List<SimpleFoo> fList;
+    }
+
+    @Data
+    @NoArgsConstructor
     private static class FooWithEnum {
         private String s;
         private Bar b;
 
         private enum Bar {
-            BAR1, BAR2
+            BAR1,
+            BAR2
         }
     }
 
     @Data
     @NoArgsConstructor
-    @io.swagger.v3.oas.annotations.media.Schema(name = "DifferentName")
+    @Schema(name = "DifferentName")
     private static class ClassWithSchemaAnnotation {
         private String s;
         private boolean b;
     }
 
+    @Data
+    @NoArgsConstructor
+    private static class ComplexFoo {
+        private String s;
+        private Boolean b;
+        private Integer i;
+        private Float f;
+        private Double d;
+        private OffsetDateTime dt;
+        private Nested n;
+
+        @Data
+        @NoArgsConstructor
+        private static class Nested {
+            private String ns;
+            private List<Integer> nli;
+            private Set<MyClass> nsm;
+            private Map<Float, MyClass> nmfm;
+            private UUID nu;
+            private byte[] nba;
+            private Cyclic nc;
+
+            @Data
+            @NoArgsConstructor
+            private static class Cyclic {
+
+                @Nullable
+                private Cyclic cyclic;
+            }
+
+            @Data
+            @NoArgsConstructor
+            private static class MyClass {
+                private String s;
+            }
+        }
+    }
+
+    @Nested
+    class SchemaWithOneOf {
+        @Test
+        void testSchemaWithOneOf() throws IOException {
+            schemasService.register(SchemaAnnotationFoo.class);
+
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+            String expected = jsonResource("/schemas/annotation-definitions.json");
+
+            System.out.println("Got: " + actualDefinitions);
+            assertEquals(expected, actualDefinitions);
+        }
+
+        @Data
+        @NoArgsConstructor
+        public class SchemaAnnotationFoo {
+            private String field;
+            private AnyOf anyOf;
+            private AllOf allOf;
+            private OneOf oneOf;
+        }
+
+        @Schema(anyOf = {ImplementationOne.class, ImplementationTwo.class})
+        public interface AnyOf {}
+
+        @Schema(allOf = {ImplementationOne.class, ImplementationTwo.class})
+        public interface AllOf {}
+
+        @Schema(oneOf = {ImplementationOne.class, ImplementationTwo.class})
+        public interface OneOf {}
+
+        @Data
+        @NoArgsConstructor
+        public class ImplementationOne {
+            private String firstOne;
+            private String secondOne;
+        }
+
+        @Data
+        @NoArgsConstructor
+        public class ImplementationTwo {
+            private Integer firstTwo;
+            private Boolean secondTwo;
+        }
+    }
 }

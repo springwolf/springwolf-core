@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,15 +13,15 @@ import java.util.List;
 
 @Slf4j
 public class SpringPayloadAnnotationTypeExtractor {
-    public SpringPayloadAnnotationTypeExtractor() {
-    }
+    public SpringPayloadAnnotationTypeExtractor() {}
 
     public static Class<?> getPayloadType(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
         log.debug("Finding payload type for {}", methodName);
 
         Class<?>[] parameterTypes = method.getParameterTypes();
-        int parameterPayloadIndex = getPayloadParameterIndex(parameterTypes, method.getParameterAnnotations(), methodName);
+        int parameterPayloadIndex =
+                getPayloadParameterIndex(parameterTypes, method.getParameterAnnotations(), methodName);
 
         return getPayloadParameterClass(method, parameterTypes, parameterPayloadIndex);
     }
@@ -31,7 +32,8 @@ public class SpringPayloadAnnotationTypeExtractor {
         try {
             // Resolve generic type for batch listeners
             if (parameterClass == List.class) {
-                Type type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex]).getActualTypeArguments()[0];
+                Type type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex])
+                        .getActualTypeArguments()[0];
                 return Class.forName(type.getTypeName());
             }
         } catch (Exception ex) {
@@ -41,7 +43,8 @@ public class SpringPayloadAnnotationTypeExtractor {
         return parameterClass;
     }
 
-    static int getPayloadParameterIndex(Class<?>[] parameterTypes, Annotation[][] parameterAnnotations, String methodName) {
+    static int getPayloadParameterIndex(
+            Class<?>[] parameterTypes, Annotation[][] parameterAnnotations, String methodName) {
         switch (parameterTypes.length) {
             case 0 -> throw new IllegalArgumentException("Listener methods must not have 0 parameters: " + methodName);
             case 1 -> {
@@ -50,9 +53,10 @@ public class SpringPayloadAnnotationTypeExtractor {
             default -> {
                 int payloadAnnotatedParameterIndex = getPayloadAnnotatedParameterIndex(parameterAnnotations);
                 if (payloadAnnotatedParameterIndex == -1) {
-                    String msg = "Multi-parameter KafkaListener methods must have one parameter annotated with @Payload, "
-                            + "but none was found: "
-                            + methodName;
+                    String msg =
+                            "Multi-parameter KafkaListener methods must have one parameter annotated with @Payload, "
+                                    + "but none was found: "
+                                    + methodName;
 
                     throw new IllegalArgumentException(msg);
                 }
@@ -64,8 +68,8 @@ public class SpringPayloadAnnotationTypeExtractor {
     static int getPayloadAnnotatedParameterIndex(Annotation[][] parameterAnnotations) {
         for (int i = 0, length = parameterAnnotations.length; i < length; i++) {
             Annotation[] annotations = parameterAnnotations[i];
-            boolean hasPayloadAnnotation = Arrays.stream(annotations)
-                    .anyMatch(annotation -> annotation instanceof Payload);
+            boolean hasPayloadAnnotation =
+                    Arrays.stream(annotations).anyMatch(annotation -> annotation instanceof Payload);
 
             if (hasPayloadAnnotation) {
                 return i;

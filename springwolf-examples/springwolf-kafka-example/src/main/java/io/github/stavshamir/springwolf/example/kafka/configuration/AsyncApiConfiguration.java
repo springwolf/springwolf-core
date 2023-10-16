@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.kafka.configuration;
 
 import com.asyncapi.v2._6_0.model.info.Contact;
@@ -44,7 +45,11 @@ public class AsyncApiConfiguration {
         Info info = Info.builder()
                 .version("1.0.0")
                 .title("Springwolf example project - Kafka")
-                .contact(Contact.builder().name("springwolf").url("https://github.com/springwolf/springwolf-core").email("example@example.com").build())
+                .contact(Contact.builder()
+                        .name("springwolf")
+                        .url("https://github.com/springwolf/springwolf-core")
+                        .email("example@example.com")
+                        .build())
                 .description("Springwolf example project to demonstrate springwolfs abilities")
                 .license(License.builder().name("Apache License 2.0").build())
                 .build();
@@ -65,7 +70,12 @@ public class AsyncApiConfiguration {
         return AsyncApiDocket.builder()
                 .basePackage("io.github.stavshamir.springwolf.example")
                 .info(info)
-                .server("kafka", Server.builder().protocol("kafka").url(BOOTSTRAP_SERVERS).build())
+                .server(
+                        "kafka",
+                        Server.builder()
+                                .protocol("kafka")
+                                .url(BOOTSTRAP_SERVERS)
+                                .build())
                 .producer(anotherProducerData)
                 .consumer(manuallyConfiguredConsumer)
                 .build();
@@ -89,5 +99,4 @@ public class AsyncApiConfiguration {
                 .withTimeHeader("2015-07-20T15:49:04-07:00")
                 .build();
     }
-
 }

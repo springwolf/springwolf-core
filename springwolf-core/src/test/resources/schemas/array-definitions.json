@@ -1,0 +1,34 @@
+{
+  "ArrayFoo" : {
+    "type" : "object",
+    "properties" : {
+      "flist" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/SimpleFoo"
+        }
+      }
+    },
+    "example" : {
+      "flist" : [ {
+        "b" : true,
+        "s" : "string"
+      } ]
+    }
+  },
+  "SimpleFoo" : {
+    "type" : "object",
+    "properties" : {
+      "b" : {
+        "type" : "boolean"
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "example" : {
+      "b" : true,
+      "s" : "string"
+    }
+  }
+}

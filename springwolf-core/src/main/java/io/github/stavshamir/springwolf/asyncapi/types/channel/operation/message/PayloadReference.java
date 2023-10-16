@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message;
 
 import lombok.EqualsAndHashCode;
@@ -22,5 +23,4 @@ public class PayloadReference {
     public static PayloadReference fromModelName(String modelName) {
         return new PayloadReference("#/components/schemas/" + modelName);
     }
-
 }

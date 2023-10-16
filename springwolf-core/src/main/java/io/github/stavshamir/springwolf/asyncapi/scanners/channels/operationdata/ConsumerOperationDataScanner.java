@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
@@ -5,18 +6,12 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.stavshamir.springwolf.SpringWolfConfigConstants.*;
-
 @Slf4j
 @RequiredArgsConstructor
-@Component
-@ConditionalOnProperty(name = SPRINGWOLF_SCANNER_CONSUMER_DATA_ENABLED, matchIfMissing = true)
 public class ConsumerOperationDataScanner extends AbstractOperationDataScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;

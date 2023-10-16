@@ -4,3 +4,4 @@
 1. Copy the `docker-compose.yml` file to your machine.
 2. Run `$ docker-compose up`.
 3. Visit `localhost:8080/springwolf/asyncapi-ui.html` or try the API: `$ curl localhost:8080/springwolf/docs`.
+4. RabbitMQ Management: `http://localhost:15672` using `guest:guest` as login

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
@@ -15,7 +16,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
-
 
 /**
  * Util to merge multiple {@link ChannelItem}s
@@ -40,8 +40,10 @@ public class ChannelMerger {
                 mergedChannels.put(entry.getKey(), entry.getValue());
             } else {
                 ChannelItem channelItem = mergedChannels.get(entry.getKey());
-                channelItem.setPublish(mergeOperation(channelItem.getPublish(), entry.getValue().getPublish()));
-                channelItem.setSubscribe(mergeOperation(channelItem.getSubscribe(), entry.getValue().getSubscribe()));
+                channelItem.setPublish(mergeOperation(
+                        channelItem.getPublish(), entry.getValue().getPublish()));
+                channelItem.setSubscribe(mergeOperation(
+                        channelItem.getSubscribe(), entry.getValue().getSubscribe()));
             }
         }
 
@@ -59,7 +61,8 @@ public class ChannelMerger {
     }
 
     private static Set<Message> mergeMessages(Set<Message> messages, Set<Message> otherMessages) {
-        Map<String, Message> nameToMessage = messages.stream().collect(Collectors.toMap(Message::getName, Function.identity()));
+        Map<String, Message> nameToMessage =
+                messages.stream().collect(Collectors.toMap(Message::getName, Function.identity()));
 
         for (Message otherMessage : otherMessages) {
             nameToMessage.putIfAbsent(otherMessage.getName(), otherMessage);
@@ -69,8 +72,7 @@ public class ChannelMerger {
     }
 
     private static Set<Message> getMessages(Operation operation) {
-        return Optional
-                .ofNullable(operation)
+        return Optional.ofNullable(operation)
                 .map(Operation::getMessage)
                 .map(MessageHelper::messageObjectToSet)
                 .orElseGet(HashSet::new);

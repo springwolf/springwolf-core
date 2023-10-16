@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -26,8 +27,8 @@ public class MessageHelper {
         return switch (messages.size()) {
             case 0 -> throw new IllegalArgumentException("messages must not be empty");
             case 1 -> messages.toArray()[0];
-            default ->
-                    Map.of(ONE_OF, new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier))));
+            default -> Map.of(
+                    ONE_OF, new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier))));
         };
     }
 
@@ -42,7 +43,9 @@ public class MessageHelper {
             return new HashSet<>(messages);
         }
 
-        log.warn("Message object must contain either a Message or a Map<String, Set<Message>, but contained: {}", messageObject.getClass());
+        log.warn(
+                "Message object must contain either a Message or a Map<String, Set<Message>, but contained: {}",
+                messageObject.getClass());
         return new HashSet<>();
     }
 }

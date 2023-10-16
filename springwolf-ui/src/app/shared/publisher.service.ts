@@ -1,19 +1,34 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Endpoints} from './endpoints';
+/* SPDX-License-Identifier: Apache-2.0 */
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Endpoints } from "./endpoints";
 
 @Injectable()
 export class PublisherService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  publish(protocol: string, topic: string, payload: object, headers: object, bindings: object): Observable<unknown> {
+  publish(
+    protocol: string,
+    topic: string,
+    payload: string,
+    payloadType: string,
+    headers: object,
+    bindings: object
+  ): Observable<unknown> {
     const url = Endpoints.getPublishEndpoint(protocol);
-    const params = new HttpParams().set('topic', topic);
-    const body = {payload, headers, bindings};
-    console.log(`Publishing to ${url} with messageBinding ${JSON.stringify(bindings)} and headers ${JSON.stringify(headers)}: ${JSON.stringify(body)}`);
+    const params = new HttpParams().set("topic", topic);
+    const body = {
+      payload,
+      payloadType,
+      headers,
+      bindings,
+    };
+    console.log(
+      `Publishing to ${url} with messageBinding ${JSON.stringify(
+        bindings
+      )} and headers ${JSON.stringify(headers)}: ${JSON.stringify(body)}`
+    );
     return this.http.post(url, body, { params });
   }
-
 }

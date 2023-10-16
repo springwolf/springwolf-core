@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas;
 
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -10,6 +11,6 @@ public interface SchemasService {
     Map<String, Schema> getDefinitions();
 
     String register(AsyncHeaders headers);
-    String register(Class<?> type);
 
+    String register(Class<?> type);
 }

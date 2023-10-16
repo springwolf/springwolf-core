@@ -1,10 +1,11 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import lombok.*;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,6 @@ public class ConsumerData implements OperationData {
      * Optional, additional information about the channel and/or its message
      */
     protected String description;
-
 
     /**
      * Optional, List of server names the channel is assigned to. If empty, the
@@ -77,4 +77,9 @@ public class ConsumerData implements OperationData {
      * </code>
      */
     protected Map<String, ? extends MessageBinding> messageBinding;
+
+    /**
+     * Operation message.
+     */
+    protected Message message;
 }

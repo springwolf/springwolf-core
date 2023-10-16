@@ -1,37 +1,48 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.EqualsAndHashCode;
 
 import java.lang.reflect.Method;
 import java.util.Map;
 
-public class TestMethodLevelListenerScanner extends AbstractMethodLevelListenerScanner<TestMethodLevelListenerScannerTest.TestChannelListener> {
+public class TestMethodLevelListenerScanner
+        extends AbstractMethodLevelListenerScanner<TestMethodLevelListenerScannerIntegrationTest.TestChannelListener> {
 
-    @Override
-    protected Class<TestMethodLevelListenerScannerTest.TestChannelListener> getListenerAnnotationClass() {
-        return TestMethodLevelListenerScannerTest.TestChannelListener.class;
+    public TestMethodLevelListenerScanner(ComponentClassScanner componentClassScanner, SchemasService schemasService) {
+        super(componentClassScanner, schemasService);
     }
 
     @Override
-    protected String getChannelName(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+    protected Class<TestMethodLevelListenerScannerIntegrationTest.TestChannelListener> getListenerAnnotationClass() {
+        return TestMethodLevelListenerScannerIntegrationTest.TestChannelListener.class;
+    }
+
+    @Override
+    protected String getChannelName(TestMethodLevelListenerScannerIntegrationTest.TestChannelListener annotation) {
         return "test-channel";
     }
 
     @Override
-    protected Map<String, ? extends ChannelBinding> buildChannelBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends ChannelBinding> buildChannelBinding(
+            TestMethodLevelListenerScannerIntegrationTest.TestChannelListener annotation) {
         return Map.of("test-channel-binding", new TestChannelBinding());
     }
 
     @Override
-    protected Map<String, ? extends OperationBinding> buildOperationBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends OperationBinding> buildOperationBinding(
+            TestMethodLevelListenerScannerIntegrationTest.TestChannelListener annotation) {
         return Map.of("test-operation-binding", new TestOperationBinding());
     }
 
     @Override
-    protected Map<String, ? extends MessageBinding> buildMessageBinding(TestMethodLevelListenerScannerTest.TestChannelListener annotation) {
+    protected Map<String, ? extends MessageBinding> buildMessageBinding(
+            TestMethodLevelListenerScannerIntegrationTest.TestChannelListener annotation) {
         return Map.of("test-message-binding", new TestMessageBinding());
     }
 
@@ -46,16 +57,11 @@ public class TestMethodLevelListenerScanner extends AbstractMethodLevelListenerS
     }
 
     @EqualsAndHashCode(callSuper = true)
-    public static class TestChannelBinding extends ChannelBinding {
-    }
-
+    public static class TestChannelBinding extends ChannelBinding {}
 
     @EqualsAndHashCode(callSuper = true)
-    public static class TestOperationBinding extends OperationBinding {
-    }
+    public static class TestOperationBinding extends OperationBinding {}
 
     @EqualsAndHashCode(callSuper = true)
-    public static class TestMessageBinding extends MessageBinding {
-    }
-
+    public static class TestMessageBinding extends MessageBinding {}
 }
