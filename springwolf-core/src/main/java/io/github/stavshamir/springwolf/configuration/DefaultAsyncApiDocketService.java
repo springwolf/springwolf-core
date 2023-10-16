@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -92,7 +93,11 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
                 .license(configDocketInfo.getLicense())
                 .build();
 
-        asyncapiInfo.setExtensionFields(configDocketInfo.getExtensionFields());
+        // copy extension fields from configDocketInfo to asyncapiInfo.
+        if (configDocketInfo.getExtensionFields() != null) {
+            Map<String, Object> extFieldsMap = Map.copyOf(configDocketInfo.getExtensionFields());
+            asyncapiInfo.setExtensionFields(extFieldsMap);
+        }
 
         return asyncapiInfo;
     }
