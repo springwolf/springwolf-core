@@ -75,10 +75,15 @@ public class SpringwolfScannerConfiguration {
     public AsyncListenerAnnotationScanner asyncListenerAnnotationScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
+            AsyncApiDocketService asyncApiDocketService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncListenerAnnotationScanner(
-                componentClassScanner, schemasService, operationBindingProcessors, messageBindingProcessors);
+                componentClassScanner,
+                schemasService,
+                asyncApiDocketService,
+                operationBindingProcessors,
+                messageBindingProcessors);
     }
 
     @Bean

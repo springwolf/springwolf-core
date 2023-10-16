@@ -10,6 +10,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedOpera
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
@@ -131,6 +132,7 @@ class AsyncAnnotationScannerUtil {
      * @param resolver the StringValueResolver to resolve placeholders
      * @return List of server names
      */
+    @NonNull
     public static List<String> getServers(AsyncOperation op, StringValueResolver resolver) {
         return Arrays.stream(op.servers()).map(resolver::resolveStringValue).collect(Collectors.toList());
     }
