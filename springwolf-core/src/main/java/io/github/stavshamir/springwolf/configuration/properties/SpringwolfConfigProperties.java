@@ -133,8 +133,11 @@ public class SpringwolfConfigProperties {
             @Nullable
             private License license;
 
+            /**
+             * Extension properties for the Info block.
+             */
             @Nullable
-            protected Map<String, Object> extensionFields;
+            private Map<String, String> extensionFields;
         }
     }
 
