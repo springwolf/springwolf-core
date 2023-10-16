@@ -12,6 +12,6 @@ public class ApiWithDocketBeanIntegrationTest extends BaseApiIntegrationTest {
 
     @Override
     protected String getExpectedApiFileName() {
-        return "/asyncapi_withdocketbean.json";
+        return "/asyncapi.json";
     }
 }
