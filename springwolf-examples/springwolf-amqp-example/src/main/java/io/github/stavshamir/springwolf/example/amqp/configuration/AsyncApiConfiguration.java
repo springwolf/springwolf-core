@@ -16,6 +16,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 @Configuration
 public class AsyncApiConfiguration {
 
@@ -49,6 +51,12 @@ public class AsyncApiConfiguration {
                 .description("Springwolf example project to demonstrate springwolfs abilities")
                 .license(License.builder().name("Apache License 2.0").build())
                 .build();
+
+        // the builder for asyncapi info, contact and license doesn't support setting/adding extensions, so
+        // we add text extension explicitely
+        info.setExtensionFields(Map.of("x-api-audience", "company-internal"));
+        info.getContact().setExtensionFields(Map.of("x-phone", "+49 123 456789"));
+        info.getLicense().setExtensionFields(Map.of("x-desc", "some description"));
 
         Server amqp = Server.builder()
                 .protocol("amqp")

@@ -14,10 +14,16 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Api integrationtest base class defining a SpringBootTest and a test method which asserts the resulting asyncapi.
+ * Subclasses can customize this test with @TestPropertySources and custom expectation file names.
+ * @see ApiWithDocketBeanIntegrationTest
+ * @see ApiWithDocketFromEnvironmentIntegrationTest
+ */
 @SpringBootTest(
         classes = {SpringwolfAmqpExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ApiIntegrationTest {
+public abstract class BaseApiIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -31,9 +37,12 @@ public class ApiIntegrationTest {
         String actual = restTemplate.getForObject(url, String.class);
         System.out.println("Got: " + actual);
 
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
+        String expectedApiFileName = getExpectedApiFileName();
+        InputStream s = this.getClass().getResourceAsStream(expectedApiFileName);
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
 
         assertEquals(expected, actual);
     }
+
+    protected abstract String getExpectedApiFileName();
 }

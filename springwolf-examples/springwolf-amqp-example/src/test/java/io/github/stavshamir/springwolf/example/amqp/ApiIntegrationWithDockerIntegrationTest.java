@@ -60,7 +60,7 @@ public class ApiIntegrationWithDockerIntegrationTest {
         String actual = restTemplate.getForObject(url, String.class);
         System.out.println("Got: " + actual);
 
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
+        InputStream s = this.getClass().getResourceAsStream("/asyncapi_withdocketbean.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
 
         assertEquals(expected, actual);
