@@ -57,8 +57,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
     private boolean allFieldsAreNonNull(OperationData operationData) {
         boolean allNonNull = operationData.getChannelName() != null
                 && operationData.getPayloadType() != null
-                && operationData.getOperationBinding() != null
-                && operationData.getServers() != null;
+                && operationData.getOperationBinding() != null;
 
         if (!allNonNull) {
             log.warn("Some data fields are null - this producer will not be documented: {}", operationData);
@@ -108,7 +107,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         // Only set servers if servers are defined. Avoid setting an emtpy list
         // because this would generate empty server entries for each channel in the resulting
         // async api.
-        if (!servers.isEmpty()) {
+        if (servers != null && !servers.isEmpty()) {
             validateServers(servers, operationId);
             channelBuilder.servers(servers);
         }

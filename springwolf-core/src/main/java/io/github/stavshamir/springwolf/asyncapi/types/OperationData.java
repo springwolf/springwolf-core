@@ -6,6 +6,7 @@ import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,9 @@ public interface OperationData {
 
     /**
      * Optional, List of server names the channel is assigned to. If empty, the
-     * channel is available on all defined servers.
+     * channel is available on all defined servers. May be null.
      */
+    @Nullable
     List<String> getServers();
 
     /**
