@@ -127,7 +127,7 @@ class AsyncListenerAnnotationScannerTest {
         assertThatThrownBy(() -> channelScanner.scan())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(
-                        "Channel 'test-channel' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
+                        "Operation 'test-channel_publish' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
     }
 
     @Test

@@ -23,6 +23,11 @@ public class ProducerOperationDataScanner extends AbstractOperationDataScanner {
     }
 
     @Override
+    protected AsyncApiDocketService getAsyncApiDocketService() {
+        return this.asyncApiDocketService;
+    }
+
+    @Override
     protected List<OperationData> getOperationData() {
         return new ArrayList<>(asyncApiDocketService.getAsyncApiDocket().getProducers());
     }

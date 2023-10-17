@@ -28,6 +28,11 @@ public class ConsumerOperationDataScanner extends AbstractOperationDataScanner {
     }
 
     @Override
+    protected AsyncApiDocketService getAsyncApiDocketService() {
+        return this.asyncApiDocketService;
+    }
+
+    @Override
     protected OperationData.OperationType getOperationType() {
         return OperationData.OperationType.PUBLISH;
     }

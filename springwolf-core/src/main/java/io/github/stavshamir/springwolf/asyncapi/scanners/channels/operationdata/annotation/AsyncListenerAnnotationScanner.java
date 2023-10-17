@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
 
-import com.asyncapi.v2._6_0.model.server.Server;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
@@ -17,7 +16,6 @@ import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.lang.NonNull;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -47,6 +45,11 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
     @Override
     protected SchemasService getSchemaService() {
         return this.schemasService;
+    }
+
+    @Override
+    protected AsyncApiDocketService getAsyncApiDocketService() {
+        return asyncApiDocketService;
     }
 
     @Override
@@ -92,50 +95,16 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
                 ? op.payloadType()
                 : SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
 
-        String channelName = resolver.resolveStringValue(op.channelName());
-        List<String> servers = AsyncAnnotationScannerUtil.getServers(op, resolver);
-
-        validateServers(servers, channelName);
-
         return ConsumerData.builder()
-                .channelName(channelName)
+                .channelName(resolver.resolveStringValue(op.channelName()))
                 .description(resolver.resolveStringValue(op.description()))
-                .servers(servers)
+                .servers(AsyncAnnotationScannerUtil.getServers(op, resolver))
                 .headers(AsyncAnnotationScannerUtil.getAsyncHeaders(op, resolver))
                 .payloadType(payloadType)
                 .operationBinding(operationBindings)
                 .messageBinding(messageBindings)
                 .message(message)
                 .build();
-    }
-
-    /**
-     * retrieves the 'servers' parameter from the given {@link AsyncOperation} and validates the servers list
-     * with the defined servers in the current AsyncApi.
-     *
-     * @param op          the AsyncOperation which provides the servers for the current operation
-     * @param channelname resolved channel name for this AsyncOperation - used for exception messages
-     * @return List of server names, may be empty.
-     * @throws IllegalArgumentException if server from {@link AsyncOperation} is not present in AsyncApi's servers definition.
-     */
-    @NonNull
-    private void validateServers(List<String> serversFromAnnotation, String channelname) {
-        if (!serversFromAnnotation.isEmpty()) {
-            Map<String, Server> asyncApiServers =
-                    asyncApiDocketService.getAsyncApiDocket().getServers();
-            if (asyncApiServers == null || asyncApiServers.isEmpty()) {
-                throw new IllegalArgumentException(String.format(
-                        "Channel '%s' defines server refs (%s) but there are no servers defined in this AsyncAPI.",
-                        channelname, serversFromAnnotation));
-            }
-            for (String server : serversFromAnnotation) {
-                if (!asyncApiServers.containsKey(server)) {
-                    throw new IllegalArgumentException(String.format(
-                            "Channel '%s' defines unknown server ref '%s'. This AsyncApi defines these server(s): %s",
-                            channelname, server, asyncApiServers.keySet()));
-                }
-            }
-        }
     }
 
     @Override

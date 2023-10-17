@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2._6_0.model.info.Info;
+import com.asyncapi.v2._6_0.model.server.Server;
 import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
@@ -17,6 +18,7 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import java.util.Set;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -43,6 +46,20 @@ class ConsumerOperationDataScannerIntegrationTest {
 
     @MockBean
     private AsyncApiDocketService asyncApiDocketService;
+
+    @BeforeEach
+    public void defaultDocketSetup() {
+        AsyncApiDocket docket = AsyncApiDocket.builder()
+                .info(Info.builder()
+                        .title("Default Asyncapi Title")
+                        .version("1.0.0")
+                        .build())
+                .server("kafka1", new Server())
+                .server("kafka2", new Server())
+                .build();
+
+        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(docket);
+    }
 
     @Test
     void allFieldsConsumerData() {
@@ -183,8 +200,12 @@ class ConsumerOperationDataScannerIntegrationTest {
                         .title("ConsumerOperationDataScannerTest-title")
                         .version("ConsumerOperationDataScannerTest-version")
                         .build())
+                .server("kafka1", new Server())
+                .server("kafka2", new Server())
                 .consumers(consumers)
                 .build();
+
+        reset(asyncApiDocketService);
         when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(asyncApiDocket);
     }
 

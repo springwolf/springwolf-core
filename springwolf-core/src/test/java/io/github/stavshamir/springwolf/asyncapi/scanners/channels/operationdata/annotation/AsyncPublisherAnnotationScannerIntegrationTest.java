@@ -9,6 +9,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.Data;
@@ -45,6 +46,9 @@ class AsyncPublisherAnnotationScannerIntegrationTest {
 
     @MockBean
     private ComponentClassScanner componentClassScanner;
+
+    @MockBean
+    private AsyncApiDocketService asyncApiDocketService;
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
