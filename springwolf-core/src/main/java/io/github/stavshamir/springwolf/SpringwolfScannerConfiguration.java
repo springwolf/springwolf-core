@@ -7,6 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBinding
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ConsumerOperationDataScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.OperationDataScannerUtils;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProducerOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListenerAnnotationScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisherAnnotationScanner;
@@ -51,19 +52,24 @@ public class SpringwolfScannerConfiguration {
     }
 
     @Bean
+    public OperationDataScannerUtils operationDataScannerUtils(SchemasService schemasService) {
+        return new OperationDataScannerUtils(schemasService);
+    }
+
+    @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_CONSUMER_DATA_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.MANUAL_DEFINED)
     public ConsumerOperationDataScanner consumerOperationDataScanner(
-            AsyncApiDocketService asyncApiDocketService, SchemasService schemasService) {
-        return new ConsumerOperationDataScanner(asyncApiDocketService, schemasService);
+            AsyncApiDocketService asyncApiDocketService, OperationDataScannerUtils operationDataScannerUtils) {
+        return new ConsumerOperationDataScanner(asyncApiDocketService, operationDataScannerUtils);
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.MANUAL_DEFINED)
     public ProducerOperationDataScanner producerOperationDataScanner(
-            AsyncApiDocketService asyncApiDocketService, SchemasService schemasService) {
-        return new ProducerOperationDataScanner(asyncApiDocketService, schemasService);
+            AsyncApiDocketService asyncApiDocketService, OperationDataScannerUtils operationDataScannerUtils) {
+        return new ProducerOperationDataScanner(asyncApiDocketService, operationDataScannerUtils);
     }
 
     @Bean
@@ -74,11 +80,11 @@ public class SpringwolfScannerConfiguration {
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncListenerAnnotationScanner asyncListenerAnnotationScanner(
             ComponentClassScanner componentClassScanner,
-            SchemasService schemasService,
+            OperationDataScannerUtils operationDataScannerUtils,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncListenerAnnotationScanner(
-                componentClassScanner, schemasService, operationBindingProcessors, messageBindingProcessors);
+                componentClassScanner, operationDataScannerUtils, operationBindingProcessors, messageBindingProcessors);
     }
 
     @Bean
@@ -89,10 +95,10 @@ public class SpringwolfScannerConfiguration {
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncPublisherAnnotationScanner asyncPublisherAnnotationScanner(
             ComponentClassScanner componentClassScanner,
-            SchemasService schemasService,
+            OperationDataScannerUtils operationDataScannerUtils,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncPublisherAnnotationScanner(
-                componentClassScanner, schemasService, operationBindingProcessors, messageBindingProcessors);
+                componentClassScanner, operationDataScannerUtils, operationBindingProcessors, messageBindingProcessors);
     }
 }

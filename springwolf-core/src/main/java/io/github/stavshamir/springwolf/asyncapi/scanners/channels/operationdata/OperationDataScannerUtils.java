@@ -5,13 +5,13 @@ import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -26,22 +26,27 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
-public abstract class AbstractOperationDataScanner implements ChannelsScanner {
+@RequiredArgsConstructor
+public final class OperationDataScannerUtils {
 
-    protected abstract SchemasService getSchemaService();
+    private final SchemasService schemasService;
 
-    protected abstract List<OperationData> getOperationData();
-
-    protected abstract OperationData.OperationType getOperationType();
-
-    @Override
-    public Map<String, ChannelItem> scan() {
-        Map<String, List<OperationData>> operationDataGroupedByChannelName = this.getOperationData().stream()
+    /**
+     * groups the given List of {@link OperationData} by channeName and creates a Collection of ChannelItems. Returns
+     * a map of these ChannelItems with channelName as key.
+     *
+     * @param operationDataList List of {@link OperationData}
+     * @param operationType     the operationType to use (PUBLISH or SUBSCRIBE)
+     * @return Map of created ChannelItems
+     */
+    public Map<String, ChannelItem> buildChannelsFromOperationData(
+            List<OperationData> operationDataList, OperationData.OperationType operationType) {
+        Map<String, List<OperationData>> operationDataGroupedByChannelName = operationDataList.stream()
                 .filter(this::allFieldsAreNonNull)
                 .collect(groupingBy(OperationData::getChannelName));
 
         return operationDataGroupedByChannelName.entrySet().stream()
-                .collect(toMap(Map.Entry::getKey, entry -> buildChannel(entry.getValue())));
+                .collect(toMap(Map.Entry::getKey, entry -> buildChannel(entry.getValue(), operationType)));
     }
 
     private boolean allFieldsAreNonNull(OperationData operationData) {
@@ -56,7 +61,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         return allNonNull;
     }
 
-    private ChannelItem buildChannel(List<OperationData> operationDataList) {
+    private ChannelItem buildChannel(List<OperationData> operationDataList, OperationData.OperationType operationType) {
         // All bindings in the group are assumed to be the same
         // AsyncApi does not support multiple bindings on a single channel
         Map<String, ? extends ChannelBinding> channelBinding =
@@ -65,7 +70,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                 operationDataList.get(0).getOperationBinding();
         Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
         Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-        String operationId = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
+        String operationId = operationDataList.get(0).getChannelName() + "_" + operationType.operationName;
         String description = operationDataList.get(0).getDescription();
 
         if (description.isEmpty()) {
@@ -80,7 +85,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                 .build();
 
         ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder().bindings(chBinding);
-        channelBuilder = switch (getOperationType()) {
+        channelBuilder = switch (operationType) {
             case PUBLISH -> channelBuilder.publish(operation);
             case SUBSCRIBE -> channelBuilder.subscribe(operation);};
         return channelBuilder.build();
@@ -95,8 +100,8 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
     private Message buildMessage(OperationData operationData) {
         Class<?> payloadType = operationData.getPayloadType();
-        String modelName = this.getSchemaService().register(payloadType);
-        String headerModelName = this.getSchemaService().register(operationData.getHeaders());
+        String modelName = schemasService.register(payloadType);
+        String headerModelName = schemasService.register(operationData.getHeaders());
 
         /*
          * Message information can be obtained via a @AsyncMessage annotation on the method parameter, the Payload

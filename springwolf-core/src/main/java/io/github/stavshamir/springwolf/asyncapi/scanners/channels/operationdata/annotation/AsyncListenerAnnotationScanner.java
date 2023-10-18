@@ -1,17 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
 
+import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.AbstractOperationDataScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.OperationDataScannerUtils;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
@@ -26,10 +27,10 @@ import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
+public class AsyncListenerAnnotationScanner implements EmbeddedValueResolverAware, ChannelsScanner {
     private StringValueResolver resolver;
     private final ComponentClassScanner componentClassScanner;
-    private final SchemasService schemasService;
+    private final OperationDataScannerUtils operationDataScannerUtils;
 
     private final List<OperationBindingProcessor> operationBindingProcessors;
 
@@ -41,16 +42,13 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
     }
 
     @Override
-    protected SchemasService getSchemaService() {
-        return this.schemasService;
-    }
-
-    @Override
-    protected List<OperationData> getOperationData() {
-        return componentClassScanner.scan().stream()
+    public Map<String, ChannelItem> scan() {
+        List<OperationData> operationData = componentClassScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
                 .flatMap(this::toOperationData)
                 .collect(Collectors.toList());
+        return operationDataScannerUtils.buildChannelsFromOperationData(
+                operationData, OperationData.OperationType.PUBLISH);
     }
 
     private Stream<Method> getAnnotatedMethods(Class<?> type) {
@@ -96,10 +94,5 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
                 .messageBinding(messageBindings)
                 .message(message)
                 .build();
-    }
-
-    @Override
-    protected OperationData.OperationType getOperationType() {
-        return OperationData.OperationType.PUBLISH;
     }
 }

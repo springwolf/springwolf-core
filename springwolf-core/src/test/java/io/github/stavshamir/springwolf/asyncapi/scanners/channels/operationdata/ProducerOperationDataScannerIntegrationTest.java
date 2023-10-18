@@ -35,7 +35,12 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
-        classes = {ProducerOperationDataScanner.class, DefaultSchemasService.class, ExampleJsonGenerator.class})
+        classes = {
+            ProducerOperationDataScanner.class,
+            DefaultSchemasService.class,
+            ExampleJsonGenerator.class,
+            OperationDataScannerUtils.class
+        })
 class ProducerOperationDataScannerIntegrationTest {
 
     @Autowired

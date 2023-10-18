@@ -7,6 +7,7 @@ import com.asyncapi.v2._6_0.model.server.Server;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ConsumerOperationDataScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.OperationDataScannerUtils;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProducerOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
@@ -42,6 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             ExampleJsonGenerator.class,
             ProducerOperationDataScanner.class,
             ConsumerOperationDataScanner.class,
+            OperationDataScannerUtils.class
         })
 @Import({
     DefaultAsyncApiServiceIntegrationTest.DefaultAsyncApiServiceTestConfiguration.class,
