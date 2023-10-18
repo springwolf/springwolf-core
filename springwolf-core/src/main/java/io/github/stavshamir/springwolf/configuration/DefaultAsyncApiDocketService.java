@@ -25,18 +25,27 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
      */
     private final SpringwolfConfigProperties configProperties;
 
+    /**
+     * valid Docket instance, either reference to customDocket (if set) or environment based Docket.
+     * Lazy initialized on first invocation of getAsyncApiDocket().
+     */
+    private AsyncApiDocket effectiveDocket;
+
     @Override
     public AsyncApiDocket getAsyncApiDocket() {
-        if (customDocket.isPresent()) {
-            log.debug("Reading springwolf configuration from custom defined @Bean AsyncApiDocket");
-            return customDocket.get();
-        } else {
-            log.debug("Reading springwolf configuration from application.properties files");
-            return parseApplicationConfigProperties(configProperties);
+        if (effectiveDocket == null) {
+            if (customDocket.isPresent()) {
+                log.debug("Reading springwolf configuration from custom defined @Bean AsyncApiDocket");
+                effectiveDocket = customDocket.get();
+            } else {
+                log.debug("Reading springwolf configuration from application.properties files");
+                effectiveDocket = parseApplicationConfigProperties();
+            }
         }
+        return effectiveDocket;
     }
 
-    private AsyncApiDocket parseApplicationConfigProperties(SpringwolfConfigProperties configProperties) {
+    private AsyncApiDocket parseApplicationConfigProperties() {
         if (configProperties.getDocket() == null || configProperties.getDocket().getBasePackage() == null) {
             throw new IllegalArgumentException(
                     "One or more required fields (docket, basePackage) " + "in application.properties with path prefix "
