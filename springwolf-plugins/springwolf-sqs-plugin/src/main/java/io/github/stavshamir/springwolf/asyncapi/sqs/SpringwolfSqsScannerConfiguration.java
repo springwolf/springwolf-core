@@ -8,6 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriorit
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelSqsListenerScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,12 +32,14 @@ public class SpringwolfSqsScannerConfiguration {
 
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
+    @ConditionalOnMissingBean
     public SqsMessageBindingProcessor sqsMessageBindingProcessor() {
         return new SqsMessageBindingProcessor();
     }
 
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
+    @ConditionalOnMissingBean
     public SqsOperationBindingProcessor sqsOperationBindingProcessor() {
         return new SqsOperationBindingProcessor();
     }

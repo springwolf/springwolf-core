@@ -6,6 +6,7 @@ import io.awspring.cloud.sns.core.SnsTemplate;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSnsController;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.producer.SpringwolfSnsProducer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 public class SpringwolfSnsProducerConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     public SpringwolfSnsController springwolfSnsController(
             AsyncApiDocketService asyncApiDocketService,
             SpringwolfSnsProducer springwolfSnsProducer,
@@ -31,6 +33,7 @@ public class SpringwolfSnsProducerConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public SpringwolfSnsProducer springwolfSnsProducer(List<SnsTemplate> snsTemplate) {
         return new SpringwolfSnsProducer(snsTemplate);
     }

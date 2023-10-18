@@ -9,6 +9,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.Cla
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelKafkaListenerScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,12 +47,14 @@ public class SpringwolfKafkaScannerConfiguration {
 
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
+    @ConditionalOnMissingBean
     public KafkaMessageBindingProcessor kafkaMessageBindingProcessor() {
         return new KafkaMessageBindingProcessor();
     }
 
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
+    @ConditionalOnMissingBean
     public KafkaOperationBindingProcessor kafkaOperationBindingProcessor() {
         return new KafkaOperationBindingProcessor();
     }
