@@ -19,3 +19,7 @@ springwolf-plugins/springwolf-sqs-plugin/build/
 .idea/
 /gradle.properties
 
+# Eclipse IDE
+.classpath
+.project
+.settings/

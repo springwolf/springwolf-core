@@ -2,7 +2,13 @@
 package io.github.stavshamir.springwolf.schemas.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.BooleanNode;
+import com.fasterxml.jackson.databind.node.DoubleNode;
+import com.fasterxml.jackson.databind.node.IntNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.RawValue;
 import io.swagger.v3.core.util.Json;
@@ -26,25 +32,25 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 public class ExampleJsonGenerator implements ExampleGenerator {
 
     private static final ObjectMapper objectMapper = Json.mapper();
-    private static final String DEFAULT_NUMBER_EXAMPLE = "1.1";
-    private static final String DEFAULT_INTEGER_EXAMPLE = "0";
-    private static final String DEFAULT_BOOLEAN_EXAMPLE = "true";
-    private static final String DEFAULT_DATE_EXAMPLE = "\"2015-07-20\"";
-    private static final String DEFAULT_DATE_TIME_EXAMPLE = "\"2015-07-20T15:49:04-07:00\"";
-    private static final String DEFAULT_PASSWORD_EXAMPLE = "\"string-password\"";
-    private static final String DEFAULT_BYTE_EXAMPLE = "\"YmFzZTY0LWV4YW1wbGU=\"";
+    private static final Double DEFAULT_NUMBER_EXAMPLE = 1.1;
+    private static final Integer DEFAULT_INTEGER_EXAMPLE = 0;
+    private static final BooleanNode DEFAULT_BOOLEAN_EXAMPLE = BooleanNode.TRUE;
+    private static final String DEFAULT_DATE_EXAMPLE = "2015-07-20";
+    private static final String DEFAULT_DATE_TIME_EXAMPLE = "2015-07-20T15:49:04-07:00";
+    private static final String DEFAULT_PASSWORD_EXAMPLE = "string-password";
+    private static final String DEFAULT_BYTE_EXAMPLE = "YmFzZTY0LWV4YW1wbGU=";
     private static final String DEFAULT_BINARY_EXAMPLE =
-            "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"";
-    private static final String DEFAULT_STRING_EXAMPLE = "\"string\"";
-    private static final String DEFAULT_EMAIL_EXAMPLE = "\"example@example.com\"";
-    private static final String DEFAULT_UUID_EXAMPLE = "\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"";
+            "0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001";
+    private static final String DEFAULT_STRING_EXAMPLE = "string";
+    private static final String DEFAULT_EMAIL_EXAMPLE = "example@example.com";
+    private static final String DEFAULT_UUID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 
     private static String DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(String type) {
-        return "\"unknown schema type: " + type + "\"";
+        return "unknown schema type: " + type;
     }
 
     private static String DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(String format) {
-        return "\"unknown string schema format: " + format + "\"";
+        return "unknown string schema format: " + format;
     }
 
     @Override
@@ -59,11 +65,11 @@ public class ExampleJsonGenerator implements ExampleGenerator {
     }
 
     static String buildSchema(Schema schema, Map<String, Schema> definitions) {
-        return buildSchemaInternal(schema, definitions, new HashSet<>());
+        return buildSchemaInternal(schema, definitions, new HashSet<>()).toString();
     }
 
-    private static String buildSchemaInternal(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        String exampleValue = ExampleJsonGenerator.getExampleValueFromSchemaAnnotation(schema);
+    private static JsonNode buildSchemaInternal(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+        JsonNode exampleValue = ExampleJsonGenerator.getExampleValueFromSchemaAnnotation(schema);
         if (exampleValue != null) {
             return exampleValue;
         }
@@ -80,21 +86,26 @@ public class ExampleJsonGenerator implements ExampleGenerator {
 
         String type = schema.getType();
         return switch (type) {
-            case "array" -> ExampleJsonGenerator.handleArraySchema(schema, definitions, visited);
+            case "array" -> ExampleJsonGenerator.handleArraySchema(schema, definitions, visited); // Handle array schema
             case "boolean" -> DEFAULT_BOOLEAN_EXAMPLE;
-            case "integer" -> DEFAULT_INTEGER_EXAMPLE;
-            case "number" -> DEFAULT_NUMBER_EXAMPLE;
-            case "object" -> ExampleJsonGenerator.handleObject(schema, definitions, visited);
-            case "string" -> ExampleJsonGenerator.handleStringSchema(schema);
-            default -> DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(type);
+            case "integer" -> new IntNode(DEFAULT_INTEGER_EXAMPLE);
+            case "number" -> new DoubleNode(DEFAULT_NUMBER_EXAMPLE);
+            case "object" -> ExampleJsonGenerator.handleObject(schema, definitions, visited); // Handle object schema
+            case "string" -> JsonNodeFactory.instance.textNode(handleStringSchema(schema)); // Handle string schema
+            default -> JsonNodeFactory.instance.textNode(DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(type));
         };
     }
 
-    private static String getExampleValueFromSchemaAnnotation(Schema schema) {
+    private static JsonNode getExampleValueFromSchemaAnnotation(Schema schema) {
         Object exampleValue = schema.getExample();
+
+        // schema is a map of properties from a nested object, whose example cannot be inferred
         if (exampleValue == null) {
             return null;
         }
+
+        // Create an ObjectNode to hold the example JSON
+        JsonNode exampleNode = objectMapper.createObjectNode();
 
         // Handle special types (i.e. map) with custom @Schema annotation and specified example value
         Object additionalProperties = schema.getAdditionalProperties();
@@ -102,7 +113,12 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             StringSchema additionalPropertiesSchema = (StringSchema) additionalProperties;
             Object exampleValueString = additionalPropertiesSchema.getExample();
             if (exampleValueString != null) {
-                return (String) exampleValueString;
+                try {
+                    exampleNode = objectMapper.readTree(exampleValueString.toString());
+                } catch (JsonProcessingException ex) {
+                    log.debug("Unable to convert example to JSON: %s".formatted(exampleValue.toString()), ex);
+                }
+                return exampleNode;
             }
         }
 
@@ -112,28 +128,43 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         }
 
         // exampleValue is represented in their native type
-        if (exampleValue instanceof Boolean || exampleValue instanceof Number) {
-            return exampleValue.toString();
+        if (exampleValue instanceof Boolean) {
+            return (Boolean) exampleValue ? BooleanNode.TRUE : BooleanNode.FALSE;
+        } else if (exampleValue instanceof Number) {
+            double doubleValue = ((Number) exampleValue).doubleValue();
+
+            // Check if it's an integer (whole number)
+            if (doubleValue == (int) doubleValue) {
+                return new IntNode((int) doubleValue);
+            }
+
+            return new DoubleNode(doubleValue);
         }
 
         try {
             // exampleValue (i.e. OffsetDateTime) is represented as string
-            return objectMapper.writeValueAsString(exampleValue.toString());
-        } catch (JsonProcessingException ex) {
-            log.debug("Unable to convert example to string: %s".formatted(exampleValue.toString()), ex);
+            exampleNode = JsonNodeFactory.instance.textNode(exampleValue.toString());
+        } catch (IllegalArgumentException ex) {
+            log.debug("Unable to convert example to JSON: %s".formatted(exampleValue.toString()), ex);
         }
-        return "\"\"";
+
+        return exampleNode;
     }
 
-    private static String handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        return Arrays.asList(buildSchemaInternal(schema.getItems(), definitions, visited))
-                .toString();
+    private static ArrayNode handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+        ArrayNode arrayNode = JsonNodeFactory.instance.arrayNode();
+
+        List<JsonNode> list = Arrays.asList(buildSchemaInternal(schema.getItems(), definitions, visited));
+
+        for (JsonNode node : list) arrayNode.add(node);
+
+        return arrayNode;
     }
 
     private static String handleStringSchema(Schema schema) {
         String firstEnumValue = getFirstEnumValue(schema);
         if (firstEnumValue != null) {
-            return "\"" + firstEnumValue + "\"";
+            return firstEnumValue;
         }
 
         String format = schema.getFormat();
@@ -165,13 +196,14 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         return null;
     }
 
-    private static String handleObject(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+    private static JsonNode handleObject(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+
         Map<String, Schema> properties = schema.getProperties();
         if (properties != null) {
 
             if (!visited.contains(schema)) {
                 visited.add(schema);
-                String example = handleObjectProperties(properties, definitions, visited);
+                ObjectNode example = handleObjectProperties(properties, definitions, visited);
                 visited.remove(schema);
 
                 return example;
@@ -193,11 +225,12 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         }
 
         // i.e. A MapSchema is type=object, but has properties=null
-        return "{}";
+        return objectMapper.createObjectNode();
     }
 
-    private static String handleObjectProperties(
+    private static ObjectNode handleObjectProperties(
             Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
+
         ObjectNode objectNode = objectMapper.createObjectNode();
 
         properties.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> {
@@ -206,6 +239,6 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             objectNode.putRawValue(propertyKey, propertyRawValue);
         });
 
-        return objectNode.toString();
+        return objectNode;
     }
 }
