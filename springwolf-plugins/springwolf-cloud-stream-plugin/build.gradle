@@ -41,6 +41,7 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-beans"
     testImplementation "org.springframework:spring-test"
+    testImplementation "org.springframework:spring-messaging"
 }
 
 jar {

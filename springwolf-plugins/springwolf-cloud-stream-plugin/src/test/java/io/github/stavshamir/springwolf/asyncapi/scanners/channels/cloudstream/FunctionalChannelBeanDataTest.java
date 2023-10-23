@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.Message;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -116,5 +117,39 @@ class FunctionalChannelBeanDataTest {
 
     private static Method getMethod(String methodName) throws NoSuchMethodException {
         return FunctionalChannelBeanDataTest.class.getDeclaredMethod(methodName);
+    }
+
+    @Bean
+    private Consumer<Message<String>> springMessagingConsumerBean() {
+        return System.out::println;
+    }
+
+    @Test
+    void testSpringMessagingConsumerBean() throws NoSuchMethodException {
+        String methodName = "springMessagingConsumerBean";
+        Method method = getMethod(methodName);
+
+        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+
+        assertThat(data)
+                .containsExactly(
+                        new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
+    }
+
+    @Bean
+    private Consumer<List<Message<String>>> springMessagingBatchConsumerBean() {
+        return System.out::println;
+    }
+
+    @Test
+    void testSpringMessagingBatchConsumerBean() throws NoSuchMethodException {
+        String methodName = "springMessagingBatchConsumerBean";
+        Method method = getMethod(methodName);
+
+        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+
+        assertThat(data)
+                .containsExactly(
+                        new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
     }
 }
