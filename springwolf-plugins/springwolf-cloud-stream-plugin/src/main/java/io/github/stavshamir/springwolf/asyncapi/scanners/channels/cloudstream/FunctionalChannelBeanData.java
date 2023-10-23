@@ -79,8 +79,16 @@ class FunctionalChannelBeanData {
             if ("org.apache.kafka.streams.kstream.KStream".equals(rawType.getTypeName())) {
                 return (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[1];
             }
+            // Resolve generic type for batch listeners
+            if (rawType == List.class) {
+                Type innerType = ((ParameterizedType) type).getActualTypeArguments()[0];
+                if (innerType instanceof ParameterizedType) {
+                    return (Class<?>) ((ParameterizedType) innerType).getActualTypeArguments()[0];
+                }
+                return (Class<?>) innerType;
+            }
 
-            return (Class<?>) rawType;
+            return (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[0];
         }
 
         throw new IllegalArgumentException(

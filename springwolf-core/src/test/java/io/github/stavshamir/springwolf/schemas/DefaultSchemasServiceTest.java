@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.core.util.Json;
@@ -32,7 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DefaultSchemasServiceTest {
 
     private final ExampleGenerator exampleGenerator = new ExampleJsonGenerator();
-    private final SchemasService schemasService = new DefaultSchemasService(List.of(), exampleGenerator);
+    private final SchemasService schemasService =
+            new DefaultSchemasService(List.of(), exampleGenerator, new SpringwolfConfigProperties());
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
@@ -91,6 +93,28 @@ class DefaultSchemasServiceTest {
         assertThat(modelName).isEqualTo("DifferentName");
     }
 
+    @Test
+    void getDefinitionWithFqnClassName() throws IOException {
+        // given
+        SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
+        properties.setUseFqn(true);
+
+        SchemasService schemasServiceWithFqn = new DefaultSchemasService(List.of(), exampleGenerator, properties);
+
+        // when
+        Class<?> clazz =
+                OneFieldFooWithFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
+        schemasServiceWithFqn.register(clazz);
+        String actualDefinitions =
+                objectMapper.writer(printer).writeValueAsString(schemasServiceWithFqn.getDefinitions());
+
+        // then
+        System.out.println("Got: " + actualDefinitions);
+        String fqnClassName = clazz.getName();
+        assertThat(actualDefinitions).contains(fqnClassName);
+        assertThat(fqnClassName.length()).isGreaterThan(clazz.getSimpleName().length());
+    }
+
     private String jsonResource(String path) throws IOException {
         InputStream s = this.getClass().getResourceAsStream(path);
         return new String(s.readAllBytes(), StandardCharsets.UTF_8);
@@ -101,6 +125,12 @@ class DefaultSchemasServiceTest {
     private static class SimpleFoo {
         private String s;
         private boolean b;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class OneFieldFooWithFqn {
+        private String s;
     }
 
     @Data

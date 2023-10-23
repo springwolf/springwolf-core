@@ -9,6 +9,7 @@ import lombok.Builder;
 
 import java.util.Map;
 
+@Deprecated(forRemoval = true)
 public class KafkaProducerData extends ProducerData {
 
     @Builder(builderMethodName = "kafkaProducerDataBuilder")

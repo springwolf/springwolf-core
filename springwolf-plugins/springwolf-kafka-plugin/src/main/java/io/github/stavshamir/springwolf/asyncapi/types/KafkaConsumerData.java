@@ -9,6 +9,7 @@ import lombok.Builder;
 
 import java.util.Map;
 
+@Deprecated(forRemoval = true)
 public class KafkaConsumerData extends ConsumerData {
     @Builder(builderMethodName = "kafkaConsumerDataBuilder")
     public KafkaConsumerData(String topicName, Class<?> payloadType, String description, AsyncHeaders headers) {

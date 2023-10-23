@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
+@Deprecated(forRemoval = true)
 public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
     protected abstract SchemasService getSchemaService();
@@ -108,7 +109,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
         var builder = Message.builder()
                 .name(payloadType.getName())
-                .title(modelName)
+                .title(payloadType.getSimpleName())
                 .description(description)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))

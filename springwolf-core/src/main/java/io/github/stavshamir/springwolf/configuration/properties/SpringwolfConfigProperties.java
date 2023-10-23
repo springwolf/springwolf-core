@@ -42,6 +42,15 @@ public class SpringwolfConfigProperties {
      */
     private InitMode initMode = InitMode.FAIL_FAST;
 
+    /**
+     * Use fully qualified names for the schema classes
+     *
+     * Example:
+     * useFqn = true  -> java.lang.String
+     * useFqn = false -> String
+     */
+    private boolean useFqn = false;
+
     @Nullable
     private Endpoint endpoint;
 
@@ -132,6 +141,12 @@ public class SpringwolfConfigProperties {
             @NestedConfigurationProperty
             @Nullable
             private License license;
+
+            /**
+             * Extension properties for the Info block.
+             */
+            @Nullable
+            private Map<String, String> extensionFields;
         }
     }
 
@@ -178,6 +193,7 @@ public class SpringwolfConfigProperties {
             /**
              * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED}
              */
+            @Deprecated(forRemoval = true)
             private boolean enabled = true;
         }
 
@@ -188,6 +204,7 @@ public class SpringwolfConfigProperties {
             /**
              * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED}
              */
+            @Deprecated(forRemoval = true)
             private boolean enabled = true;
         }
     }
@@ -204,7 +221,7 @@ public class SpringwolfConfigProperties {
         private static class Actuator {
 
             /**
-             * Flag to move the endpoint that exposes the AsyncAPI document beneath Spring Boot’s actuator endpoint.
+             * Flag to move the endpoint that exposes the AsyncAPI document beneath Spring Boot's actuator endpoint.
              */
             private boolean enabled = false;
         }

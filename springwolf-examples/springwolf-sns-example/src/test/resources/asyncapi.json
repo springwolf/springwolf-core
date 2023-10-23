@@ -34,7 +34,7 @@
           "title": "AnotherPayloadDto",
           "description": "Another payload model",
           "payload": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -56,7 +56,7 @@
           "title": "AnotherPayloadDto",
           "description": "Another payload model",
           "payload": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -80,7 +80,7 @@
           "title": "ExamplePayloadDto",
           "description": "Example payload model",
           "payload": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -94,14 +94,19 @@
   },
   "components": {
     "schemas": {
-      "AnotherPayloadDto": {
+      "HeadersNotDocumented": {
+        "type": "object",
+        "properties": { },
+        "example": { }
+      },
+      "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto": {
         "required": [
           "example"
         ],
         "type": "object",
         "properties": {
           "example": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
           },
           "foo": {
             "type": "string",
@@ -119,7 +124,7 @@
           "foo": "bar"
         }
       },
-      "ExamplePayloadDto": {
+      "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto": {
         "required": [
           "someEnum",
           "someString"
@@ -154,11 +159,6 @@
           "someLong": 5,
           "someString": "some string value"
         }
-      },
-      "HeadersNotDocumented": {
-        "type": "object",
-        "properties": { },
-        "example": { }
       }
     }
   },
