@@ -48,9 +48,11 @@ public class AsyncApiDocket {
      * Provides information about the producers.
      */
     @Singular
+    @Deprecated(forRemoval = true)
     private final List<ProducerData> producers;
 
     @Singular
+    @Deprecated(forRemoval = true)
     private final List<ConsumerData> consumers;
 
     /**

@@ -178,6 +178,7 @@ public class SpringwolfConfigProperties {
             /**
              * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED}
              */
+            @Deprecated(forRemoval = true)
             private boolean enabled = true;
         }
 
@@ -188,6 +189,7 @@ public class SpringwolfConfigProperties {
             /**
              * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED}
              */
+            @Deprecated(forRemoval = true)
             private boolean enabled = true;
         }
     }
@@ -204,7 +206,7 @@ public class SpringwolfConfigProperties {
         private static class Actuator {
 
             /**
-             * Flag to move the endpoint that exposes the AsyncAPI document beneath Spring Boot’s actuator endpoint.
+             * Flag to move the endpoint that exposes the AsyncAPI document beneath Spring Boot's actuator endpoint.
              */
             private boolean enabled = false;
         }
