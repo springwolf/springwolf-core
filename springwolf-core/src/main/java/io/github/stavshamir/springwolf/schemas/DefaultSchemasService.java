@@ -58,6 +58,7 @@ public class DefaultSchemasService implements SchemasService {
         log.debug("Registering schema for {}", headers.getSchemaName());
 
         MapSchema headerSchema = new MapSchema();
+        headerSchema.setName(headers.getSchemaName());
         headerSchema.properties(headers);
 
         this.definitions.put(headers.getSchemaName(), headerSchema);
