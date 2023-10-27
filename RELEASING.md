@@ -9,8 +9,9 @@ The following list describe the steps necessary to release a new version.
    3. Kafka: https://kafka.demo.springwolf.dev/
    4. SNS: https://sns.demo.springwolf.dev/
    5. SQS: https://sqs.demo.springwolf.dev/
-3. Remove the `-SNAPHSOT` postfix in `.env`, create a new branch `release/0.X.X` (version number), commit & push
-4. Run GitHub `Publish releases` pipeline from the newly created release branch
-5. Release version in nexus
-6. Update version number on website
-7. Update the version number in `.env` for next snapshot on branch `master`, commit & push
+3. Update `all-contributors` in [README.md](README.md)
+4. Remove the `-SNAPHSOT` postfix in `.env`, create a new branch `release/0.X.X` (version number), commit & push
+5. Run GitHub `Publish releases` pipeline from the newly created release branch
+6. Release version in nexus
+7. Update version number on website
+8. Update the version number in `.env` for next snapshot on branch `master`, commit & push
