@@ -138,6 +138,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://dipeshsingh253.github.io/"><img src="https://avatars.githubusercontent.com/u/84814627?v=4?s=100" width="100px;" alt="Dipesh Singh"/><br /><sub><b>Dipesh Singh</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=dipeshsingh253" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sakshi-75"><img src="https://avatars.githubusercontent.com/u/20265098?v=4?s=100" width="100px;" alt="Sakshi Jain"/><br /><sub><b>Sakshi Jain</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=Sakshi-75" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SheheryarAamir"><img src="https://avatars.githubusercontent.com/u/684528?v=4?s=100" width="100px;" alt="Sheheryar Aamir"/><br /><sub><b>Sheheryar Aamir</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=SheheryarAamir" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
