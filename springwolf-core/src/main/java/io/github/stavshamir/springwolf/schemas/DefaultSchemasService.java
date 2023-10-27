@@ -17,12 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 @Slf4j
 public class DefaultSchemasService implements SchemasService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
     private final ExampleGenerator exampleGenerator;
+    private final SpringwolfConfigProperties properties;
 
     private final Map<String, Schema> definitions = new HashMap<>();
     private Map<String, Schema> finalizedDefinitions = null;
@@ -34,10 +36,7 @@ public class DefaultSchemasService implements SchemasService {
 
         externalModelConverters.forEach(converter::addConverter);
         this.exampleGenerator = exampleGenerator;
-
-        if (properties.isUseFqn()) {
-            TypeNameResolver.std.setUseFqn(true);
-        }
+        this.properties = properties;
     }
 
     @Override
@@ -70,7 +69,7 @@ public class DefaultSchemasService implements SchemasService {
     public String register(Class<?> type) {
         log.debug("Registering schema for {}", type.getSimpleName());
 
-        Map<String, Schema> schemas = converter.readAll(type);
+        Map<String, Schema> schemas = runWithFqnSetting((unused) -> converter.readAll(type));
         this.definitions.putAll(schemas);
 
         if (schemas.isEmpty() && type.equals(String.class)) {
@@ -88,6 +87,20 @@ public class DefaultSchemasService implements SchemasService {
         }
 
         return type.getSimpleName();
+    }
+
+    private <R> R runWithFqnSetting(Function<Void, R> callable) {
+        boolean previousUseFqn = TypeNameResolver.std.getUseFqn();
+        if (properties.isUseFqn()) {
+            TypeNameResolver.std.setUseFqn(true);
+        }
+
+        R result = callable.apply(null);
+
+        if (properties.isUseFqn()) {
+            TypeNameResolver.std.setUseFqn(previousUseFqn);
+        }
+        return result;
     }
 
     private void removeSwaggerSchemaFields(String schemaName, Schema schema) {

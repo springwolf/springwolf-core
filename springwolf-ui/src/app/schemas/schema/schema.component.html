@@ -24,7 +24,7 @@
         <span class="type" *ngIf="property.value.type != 'array'">{{
           property.value.type
         }}</span>
-        <span class="type" *ngIf="property.value.refName">
+        <span class="type" *ngIf="property.value.refTitle">
           <a [href]="property.value.anchorUrl">{{ property.value.refTitle }}</a>
         </span>
         <span class="format" *ngIf="property.value.format"
