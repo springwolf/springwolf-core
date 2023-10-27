@@ -4,8 +4,8 @@ package io.github.stavshamir.springwolf.asyncapi.sns;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.awspring.cloud.sns.core.SnsTemplate;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSnsController;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.producer.SpringwolfSnsProducer;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -26,10 +26,8 @@ public class SpringwolfSnsProducerConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public SpringwolfSnsController springwolfSnsController(
-            AsyncApiDocketService asyncApiDocketService,
-            SpringwolfSnsProducer springwolfSnsProducer,
-            ObjectMapper objectMapper) {
-        return new SpringwolfSnsController(asyncApiDocketService, springwolfSnsProducer, objectMapper);
+            SchemasService schemasService, SpringwolfSnsProducer springwolfSnsProducer, ObjectMapper objectMapper) {
+        return new SpringwolfSnsController(schemasService, springwolfSnsProducer, objectMapper);
     }
 
     @Bean

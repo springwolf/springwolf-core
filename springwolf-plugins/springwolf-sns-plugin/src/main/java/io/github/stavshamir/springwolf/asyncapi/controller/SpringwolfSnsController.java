@@ -4,8 +4,9 @@ package io.github.stavshamir.springwolf.asyncapi.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.producer.SpringwolfSnsProducer;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -26,7 +27,7 @@ import java.text.MessageFormat;
 @RequiredArgsConstructor
 public class SpringwolfSnsController implements InitializingBean {
 
-    private final AsyncApiDocketService asyncApiDocketService;
+    private final SchemasService schemasService;
 
     private final SpringwolfSnsProducer producer;
 
@@ -39,22 +40,37 @@ public class SpringwolfSnsController implements InitializingBean {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SNS producer is not enabled");
         }
 
-        String payloadType = message.getPayloadType();
-        if (payloadType.startsWith(asyncApiDocketService.getAsyncApiDocket().getBasePackage())) {
-            try {
-                Class<?> payloadClass = Class.forName(payloadType);
-                Object payload = objectMapper.readValue(message.getPayload(), payloadClass);
+        boolean foundDefinition = false;
+        String messagePayloadType = message.getPayloadType();
+        for (Schema<?> value : schemasService.getDefinitions().values()) {
+            String schemaPayloadType = value.getName();
+            // security: match against user input, but always use our controlled data from the DefaultSchemaService
+            if (schemaPayloadType.equals(messagePayloadType)) {
+                publishMessage(topic, message, schemaPayloadType);
 
-                log.debug("Publishing to sns queue {}: {}", topic, payload);
-                producer.send(topic, MessageBuilder.withPayload(payload).build());
-            } catch (ClassNotFoundException | JsonProcessingException ex) {
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        MessageFormat.format(
-                                "Unable to create payload {0} from data: {1}", payloadType, message.getPayload()));
+                foundDefinition = true;
+                break;
             }
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No payloadType specified.");
+        }
+
+        if (!foundDefinition) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Specified payloadType is not a registered springwolf schema.");
+        }
+    }
+
+    private void publishMessage(String topic, MessageDto message, String schemaPayloadType) {
+        try {
+            Class<?> payloadClass = Class.forName(schemaPayloadType);
+            Object payload = objectMapper.readValue(message.getPayload(), payloadClass);
+
+            log.debug("Publishing to sns topic {}: {}", topic, message);
+            producer.send(topic, MessageBuilder.withPayload(payload).build());
+        } catch (ClassNotFoundException | JsonProcessingException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    MessageFormat.format(
+                            "Unable to create payload {0} from data: {1}", schemaPayloadType, message.getPayload()));
         }
     }
 

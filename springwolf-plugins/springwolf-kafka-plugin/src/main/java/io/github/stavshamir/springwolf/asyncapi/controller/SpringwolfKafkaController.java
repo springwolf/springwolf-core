@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
-import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.text.MessageFormat;
 @RequiredArgsConstructor
 public class SpringwolfKafkaController implements InitializingBean {
 
-    private final DefaultSchemasService schemasService;
+    private final SchemasService schemasService;
 
     private final SpringwolfKafkaProducer producer;
 
