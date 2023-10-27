@@ -178,7 +178,7 @@ public abstract class AbstractClassLevelListenerScanner<
 
         return Message.builder()
                 .name(payloadType.getName())
-                .title(modelName)
+                .title(payloadType.getSimpleName())
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .bindings(buildMessageBinding(method))

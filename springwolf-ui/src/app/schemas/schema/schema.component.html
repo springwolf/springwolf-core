@@ -17,15 +17,15 @@
           >
           <span class="type" *ngIf="property.value.items.anchorUrl">
             <a [href]="property.value.items.anchorUrl"
-              >{{ property.value.items.name }}[]</a
+              >{{ property.value.items.refTitle }}[]</a
             >
           </span>
         </ng-container>
         <span class="type" *ngIf="property.value.type != 'array'">{{
           property.value.type
         }}</span>
-        <span class="type" *ngIf="property.value.name">
-          <a [href]="property.value.anchorUrl">{{ property.value.name }}</a>
+        <span class="type" *ngIf="property.value.refTitle">
+          <a [href]="property.value.anchorUrl">{{ property.value.refTitle }}</a>
         </span>
         <span class="format" *ngIf="property.value.format"
           >({{ property.value.format }})</span

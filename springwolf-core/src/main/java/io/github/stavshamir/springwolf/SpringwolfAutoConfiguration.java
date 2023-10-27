@@ -67,8 +67,11 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SchemasService schemasService(List<ModelConverter> modelConverters, ExampleGenerator exampleGenerator) {
-        return new DefaultSchemasService(modelConverters, exampleGenerator);
+    public SchemasService schemasService(
+            List<ModelConverter> modelConverters,
+            ExampleGenerator exampleGenerator,
+            SpringwolfConfigProperties springwolfConfigProperties) {
+        return new DefaultSchemasService(modelConverters, exampleGenerator, springwolfConfigProperties);
     }
 
     @Bean

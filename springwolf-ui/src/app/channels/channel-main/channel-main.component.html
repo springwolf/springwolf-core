@@ -94,23 +94,19 @@
     </mat-tab>
     <mat-tab label="Schema">
       <h4>
-        {{ schemaName }}
-        <span class="payload-name">
-          <a [href]="operation.message.payload.anchorUrl">{{
-            operation.message.payload.name
-          }}</a>
-        </span>
+        Schema:
+        <a [href]="operation.message.payload.anchorUrl">{{
+          operation.message.payload.name
+        }}</a>
       </h4>
       <app-schema *ngIf="schema" [schema]="schema"></app-schema>
     </mat-tab>
     <mat-tab label="Headers">
       <h4>
-        {{ headersSchemaName }}
-        <span class="header-name">
-          <a [href]="operation.message.headers.anchorUrl">{{
-            operation.message.headers.name
-          }}</a>
-        </span>
+        Schema:
+        <a [href]="operation.message.headers.anchorUrl">{{
+          operation.message.headers.name
+        }}</a>
       </h4>
       <app-schema *ngIf="headers" [schema]="headers"></app-schema>
       <div class="flex-column">

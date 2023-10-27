@@ -42,6 +42,15 @@ public class SpringwolfConfigProperties {
      */
     private InitMode initMode = InitMode.FAIL_FAST;
 
+    /**
+     * Use fully qualified names for the schema classes
+     *
+     * Example:
+     * useFqn = true  -> java.lang.String
+     * useFqn = false -> String
+     */
+    private boolean useFqn = false;
+
     @Nullable
     private Endpoint endpoint;
 
