@@ -135,6 +135,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/biergit"><img src="https://avatars.githubusercontent.com/u/1071968?v=4?s=100" width="100px;" alt="biergit"/><br /><sub><b>biergit</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=biergit" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kalarani"><img src="https://avatars.githubusercontent.com/u/318466?v=4?s=100" width="100px;" alt="kalarani"/><br /><sub><b>kalarani</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=kalarani" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://dipeshsingh253.github.io/"><img src="https://avatars.githubusercontent.com/u/84814627?v=4?s=100" width="100px;" alt="Dipesh Singh"/><br /><sub><b>Dipesh Singh</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=dipeshsingh253" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 
@@ -144,6 +147,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 To add yourself as a contributor, install the [all-contributors CLI](https://allcontributors.org/docs/en/cli/installation) and run:
-1. `all-contributors check` 
-2. `all-contributors add <username> code`
-3. `all-contributors generate`
+1. `all-contributors-cli check` 
+2. `all-contributors-cli add <username> code`
+3. `all-contributors-cli generate`
