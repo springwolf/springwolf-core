@@ -39,8 +39,9 @@ class DefaultAsyncApiDocketServiceTest {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setDocket(configDocket);
 
+        AsyncApiDocketService docketService = new DefaultAsyncApiDocketService(Optional.empty(), properties);
+
         // when
-        DefaultAsyncApiDocketService docketService = new DefaultAsyncApiDocketService(Optional.empty(), properties);
         AsyncApiDocket asyncApiDocket = docketService.getAsyncApiDocket();
 
         // then
@@ -69,18 +70,19 @@ class DefaultAsyncApiDocketServiceTest {
 
         SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
 
-        // when
         AsyncApiDocketService docketService =
                 new DefaultAsyncApiDocketService(Optional.of(customDocket), configProperties);
 
+        // when
+        AsyncApiDocket asyncApiDocket = docketService.getAsyncApiDocket();
+
         // then
-        assertThat(docketService.getAsyncApiDocket()).isSameAs(customDocket);
         // second invocation should again return same instance
-        assertThat(docketService.getAsyncApiDocket()).isSameAs(customDocket);
+        assertThat(docketService.getAsyncApiDocket()).isSameAs(asyncApiDocket);
     }
 
     @Test
-    void docketServiceShouldDeliverCachedEnvironmentBasedDocket() {
+    void docketServiceShouldDeliverCachedSpringPropertiesBasedDocket() {
         // repeatable invocations of AsyncApiDocketService.getAsyncApiDocket() should return the same docket instance
         // if docket is based on environment properties.
 
@@ -101,8 +103,9 @@ class DefaultAsyncApiDocketServiceTest {
         SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
         configProperties.setDocket(configDocket);
 
-        // when
         AsyncApiDocketService docketService = new DefaultAsyncApiDocketService(Optional.empty(), configProperties);
+
+        // when
         AsyncApiDocket asyncApiDocket = docketService.getAsyncApiDocket();
 
         // then

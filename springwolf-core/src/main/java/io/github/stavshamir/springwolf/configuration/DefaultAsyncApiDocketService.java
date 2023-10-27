@@ -29,20 +29,25 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
      * valid Docket instance, either reference to customDocket (if set) or environment based Docket.
      * Lazy initialized on first invocation of getAsyncApiDocket().
      */
-    private AsyncApiDocket effectiveDocket;
+    @Nullable
+    private AsyncApiDocket docket;
 
     @Override
     public AsyncApiDocket getAsyncApiDocket() {
-        if (effectiveDocket == null) {
-            if (customDocket.isPresent()) {
-                log.debug("Reading springwolf configuration from custom defined @Bean AsyncApiDocket");
-                effectiveDocket = customDocket.get();
-            } else {
-                log.debug("Reading springwolf configuration from application.properties files");
-                effectiveDocket = parseApplicationConfigProperties();
-            }
+        if (docket == null) {
+            createDocket();
         }
-        return effectiveDocket;
+        return docket;
+    }
+
+    private void createDocket() {
+        if (customDocket.isPresent()) {
+            log.debug("Reading springwolf configuration from custom defined @Bean AsyncApiDocket");
+            docket = customDocket.get();
+        } else {
+            log.debug("Reading springwolf configuration from application.properties files");
+            docket = parseApplicationConfigProperties();
+        }
     }
 
     private AsyncApiDocket parseApplicationConfigProperties() {
