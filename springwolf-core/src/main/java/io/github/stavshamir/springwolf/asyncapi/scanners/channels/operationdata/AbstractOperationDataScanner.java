@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
+@Deprecated(forRemoval = true)
 public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
     protected abstract SchemasService getSchemaService();

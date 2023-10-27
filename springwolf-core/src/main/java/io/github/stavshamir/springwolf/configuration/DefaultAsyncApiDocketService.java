@@ -43,6 +43,9 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     private void createDocket() {
         if (customDocket.isPresent()) {
             log.debug("Reading springwolf configuration from custom defined @Bean AsyncApiDocket");
+            log.warn("The usage of the @Bean AsyncApiDocket is deprecated and scheduled to be deleted. "
+                    + "Use the spring properties file instead. "
+                    + "More details: https://www.springwolf.dev/docs/quickstart");
             docket = customDocket.get();
         } else {
             log.debug("Reading springwolf configuration from application.properties files");
