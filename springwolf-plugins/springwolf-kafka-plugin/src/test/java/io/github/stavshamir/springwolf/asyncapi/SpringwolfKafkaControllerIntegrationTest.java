@@ -3,9 +3,11 @@ package io.github.stavshamir.springwolf.asyncapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
-import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
+import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,7 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         classes = {
             SpringwolfKafkaController.class,
             SpringwolfKafkaProducer.class,
-            DefaultAsyncApiDocketService.class,
+            DefaultSchemasService.class,
+            ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
         })
 @TestPropertySource(
@@ -49,12 +52,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             "springwolf.docket.info.version=1.0",
             "springwolf.docket.servers.kafka.protocol=kafka",
             "springwolf.docket.servers.kafka.url=127.0.0.1",
-            "springwolf.plugin.kafka.publishing.enabled=true"
+            "springwolf.plugin.kafka.publishing.enabled=true",
+            "springwolf.use-fqn=true"
         })
 class SpringwolfKafkaControllerIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private SchemasService schemasService;
 
     @MockBean
     private SpringwolfKafkaProducer springwolfKafkaProducer;
@@ -68,6 +75,8 @@ class SpringwolfKafkaControllerIntegrationTest {
     @BeforeEach
     void setup() {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
+
+        schemasService.register(PayloadDto.class);
     }
 
     @Test

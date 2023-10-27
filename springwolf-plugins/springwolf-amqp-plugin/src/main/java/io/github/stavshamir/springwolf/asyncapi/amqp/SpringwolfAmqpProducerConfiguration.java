@@ -4,8 +4,8 @@ package io.github.stavshamir.springwolf.asyncapi.amqp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfAmqpController;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -37,9 +37,7 @@ public class SpringwolfAmqpProducerConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public SpringwolfAmqpController springwolfAmqpController(
-            AsyncApiDocketService asyncApiDocketService,
-            SpringwolfAmqpProducer springwolfAmqpProducer,
-            ObjectMapper objectMapper) {
-        return new SpringwolfAmqpController(asyncApiDocketService, springwolfAmqpProducer, objectMapper);
+            SchemasService schemasService, SpringwolfAmqpProducer springwolfAmqpProducer, ObjectMapper objectMapper) {
+        return new SpringwolfAmqpController(schemasService, springwolfAmqpProducer, objectMapper);
     }
 }
