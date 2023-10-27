@@ -9,6 +9,7 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket.Info;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,6 +35,7 @@ class DefaultAsyncApiDocketServiceTest {
         info.setDescription("some-description");
         info.setLicense(new License("license-name", "license-url"));
         info.setContact(new Contact("contact-name", "contact-url", "contact-email"));
+        info.setExtensionFields(Map.of("x-api-name", "api-name"));
         configDocket.setInfo(info);
 
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
@@ -52,6 +54,8 @@ class DefaultAsyncApiDocketServiceTest {
         assertThat(asyncApiDocket.getInfo().getDescription()).isEqualTo(info.getDescription());
         assertThat(asyncApiDocket.getInfo().getLicense()).isEqualTo(info.getLicense());
         assertThat(asyncApiDocket.getInfo().getContact()).isEqualTo(info.getContact());
+        assertThat(asyncApiDocket.getInfo().getExtensionFields().get("x-api-name"))
+                .isEqualTo("api-name");
     }
 
     @Test

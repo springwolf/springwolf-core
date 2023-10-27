@@ -132,6 +132,12 @@ public class SpringwolfConfigProperties {
             @NestedConfigurationProperty
             @Nullable
             private License license;
+
+            /**
+             * Extension properties for the Info block.
+             */
+            @Nullable
+            private Map<String, String> extensionFields;
         }
     }
 

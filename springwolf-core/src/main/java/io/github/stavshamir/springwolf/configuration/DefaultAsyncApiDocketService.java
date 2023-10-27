@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -75,19 +76,29 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
         return builder.build();
     }
 
-    private static Info buildInfo(@Nullable SpringwolfConfigProperties.ConfigDocket.Info info) {
-        if (info == null || !StringUtils.hasText(info.getVersion()) || !StringUtils.hasText(info.getTitle())) {
+    private static Info buildInfo(@Nullable SpringwolfConfigProperties.ConfigDocket.Info configDocketInfo) {
+        if (configDocketInfo == null
+                || !StringUtils.hasText(configDocketInfo.getVersion())
+                || !StringUtils.hasText(configDocketInfo.getTitle())) {
             throw new IllegalArgumentException("One or more required fields of the info object (title, version) "
                     + "in application.properties with path prefix " + SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX
                     + " is not set.");
         }
 
-        return Info.builder()
-                .version(info.getVersion())
-                .title(info.getTitle())
-                .description(info.getDescription())
-                .contact(info.getContact())
-                .license(info.getLicense())
+        Info asyncapiInfo = Info.builder()
+                .version(configDocketInfo.getVersion())
+                .title(configDocketInfo.getTitle())
+                .description(configDocketInfo.getDescription())
+                .contact(configDocketInfo.getContact())
+                .license(configDocketInfo.getLicense())
                 .build();
+
+        // copy extension fields from configDocketInfo to asyncapiInfo.
+        if (configDocketInfo.getExtensionFields() != null) {
+            Map<String, Object> extFieldsMap = Map.copyOf(configDocketInfo.getExtensionFields());
+            asyncapiInfo.setExtensionFields(extFieldsMap);
+        }
+
+        return asyncapiInfo;
     }
 }
