@@ -2,6 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
@@ -40,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(
         classes = {
             SpringwolfKafkaController.class,
+            PublishingPayloadCreator.class,
             SpringwolfKafkaProducer.class,
             DefaultSchemasService.class,
             ExampleJsonGenerator.class,
