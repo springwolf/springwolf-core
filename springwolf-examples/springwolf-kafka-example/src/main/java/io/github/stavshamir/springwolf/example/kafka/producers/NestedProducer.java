@@ -29,7 +29,7 @@ public class NestedProducer {
                             description = "Custom, optional description defined in the AsyncPublisher annotation",
                             headers =
                                     @AsyncOperation.Headers(
-                                            schemaName = "SpringKafkaDefaultHeaders",
+                                            schemaName = "SpringDefaultHeaderAndCloudEvent",
                                             values = {
                                                 @AsyncOperation.Headers.Header(
                                                         name = DEFAULT_CLASSID_FIELD_NAME,

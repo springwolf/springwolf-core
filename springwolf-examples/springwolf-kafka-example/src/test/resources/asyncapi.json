@@ -261,7 +261,7 @@
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
           },
           "headers": {
-            "$ref": "#/components/schemas/SpringKafkaDefaultHeaders"
+            "$ref": "#/components/schemas/SpringDefaultHeaderAndCloudEvent"
           },
           "bindings": {
             "kafka": {
@@ -354,7 +354,7 @@
         "properties": { },
         "example": { }
       },
-      "SpringKafkaDefaultHeaders": {
+      "SpringDefaultHeaderAndCloudEvent": {
         "type": "object",
         "properties": {
           "__TypeId__": {
