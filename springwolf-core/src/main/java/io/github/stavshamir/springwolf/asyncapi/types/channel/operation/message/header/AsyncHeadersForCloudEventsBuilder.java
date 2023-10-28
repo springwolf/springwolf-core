@@ -6,6 +6,11 @@ import org.springframework.util.MimeType;
 
 import java.util.List;
 
+/**
+ * Only used in combination with AsyncApiDocket bean
+ * If not, let us know by raising a GitHub issue
+ */
+@Deprecated
 public class AsyncHeadersForCloudEventsBuilder {
 
     private final AsyncHeaders headers;
@@ -31,10 +36,10 @@ public class AsyncHeadersForCloudEventsBuilder {
         List<String> contentTypeStringValues =
                 contentTypeValues.stream().map(MimeType::toString).toList();
         return withHeader(
-                "content-type",
+                AsyncHeadersCloudEventConstants.CONTENT_TYPE,
                 contentTypeStringValues,
                 exampleContentType.toString(),
-                "CloudEvent Content-Type Header");
+                AsyncHeadersCloudEventConstants.CONTENT_TYPE_DESC);
     }
 
     public AsyncHeadersForCloudEventsBuilder withSpecVersionHeader(String specVersion) {
@@ -42,7 +47,11 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withSpecVersionHeader(String specVersion, List<String> specValues) {
-        return withHeader("ce_specversion", specValues, specVersion, "CloudEvent Spec Version Header");
+        return withHeader(
+                AsyncHeadersCloudEventConstants.SPECVERSION,
+                specValues,
+                specVersion,
+                AsyncHeadersCloudEventConstants.SPECVERSION_DESC);
     }
 
     public AsyncHeadersForCloudEventsBuilder withIdHeader(String idExample) {
@@ -50,7 +59,8 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withIdHeader(String idExample, List<String> idValues) {
-        return withHeader("ce_id", idValues, idExample, "CloudEvent Id Header");
+        return withHeader(
+                AsyncHeadersCloudEventConstants.ID, idValues, idExample, AsyncHeadersCloudEventConstants.ID_DESC);
     }
 
     public AsyncHeadersForCloudEventsBuilder withTimeHeader(String timeExample) {
@@ -58,7 +68,11 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withTimeHeader(String timeExample, List<String> timeValues) {
-        return withHeader("ce_time", timeValues, timeExample, "CloudEvent Time Header");
+        return withHeader(
+                AsyncHeadersCloudEventConstants.TIME,
+                timeValues,
+                timeExample,
+                AsyncHeadersCloudEventConstants.TIME_DESC);
     }
 
     public AsyncHeadersForCloudEventsBuilder withTypeHeader(String typeExample) {
@@ -66,7 +80,11 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withTypeHeader(String typeExample, List<String> typeValues) {
-        return withHeader("ce_type", typeValues, typeExample, "CloudEvent Payload Type Header");
+        return withHeader(
+                AsyncHeadersCloudEventConstants.TYPE,
+                typeValues,
+                typeExample,
+                AsyncHeadersCloudEventConstants.TYPE_DESC);
     }
 
     public AsyncHeadersForCloudEventsBuilder withSourceHeader(String sourceExample) {
@@ -74,7 +92,11 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withSourceHeader(String sourceExample, List<String> sourceValues) {
-        return withHeader("ce_source", sourceValues, sourceExample, "CloudEvent Source Header");
+        return withHeader(
+                AsyncHeadersCloudEventConstants.SOURCE,
+                sourceValues,
+                sourceExample,
+                AsyncHeadersCloudEventConstants.SOURCE_DESC);
     }
 
     public AsyncHeadersForCloudEventsBuilder withSubjectHeader(String subjectExample) {
@@ -82,7 +104,11 @@ public class AsyncHeadersForCloudEventsBuilder {
     }
 
     public AsyncHeadersForCloudEventsBuilder withSubjectHeader(String subjectExample, List<String> subjectValues) {
-        return withHeader("ce_subject", subjectValues, subjectExample, "CloudEvent Subject Header");
+        return withHeader(
+                AsyncHeadersCloudEventConstants.SUBJECT,
+                subjectValues,
+                subjectExample,
+                AsyncHeadersCloudEventConstants.SUBJECT_DESC);
     }
 
     public AsyncHeadersForCloudEventsBuilder withExtension(

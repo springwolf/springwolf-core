@@ -364,10 +364,73 @@
             "enum": [
               "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
             ]
+          },
+          "ce_id": {
+            "type": "string",
+            "description": "CloudEvent Id Header",
+            "example": "2c60089e-6f39-459d-8ced-2d6df7e4c03a",
+            "enum": [
+              "2c60089e-6f39-459d-8ced-2d6df7e4c03a"
+            ]
+          },
+          "ce_source": {
+            "type": "string",
+            "description": "CloudEvent Source Header",
+            "example": "http://localhost",
+            "enum": [
+              "http://localhost"
+            ]
+          },
+          "ce_specversion": {
+            "type": "string",
+            "description": "CloudEvent Spec Version Header",
+            "example": "1.0",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "ce_subject": {
+            "type": "string",
+            "description": "CloudEvent Subject Header",
+            "example": "Springwolf example project - Kafka",
+            "enum": [
+              "Springwolf example project - Kafka"
+            ]
+          },
+          "ce_time": {
+            "type": "string",
+            "description": "CloudEvent Time Header",
+            "example": "2023-10-28 20:01:23+00:00",
+            "enum": [
+              "2023-10-28 20:01:23+00:00"
+            ]
+          },
+          "ce_type": {
+            "type": "string",
+            "description": "CloudEvent Payload Type Header",
+            "example": "NestedPayloadDto.v1",
+            "enum": [
+              "NestedPayloadDto.v1"
+            ]
+          },
+          "content-type": {
+            "type": "string",
+            "description": "CloudEvent Content-Type Header",
+            "example": "application/json",
+            "enum": [
+              "application/json"
+            ]
           }
         },
         "example": {
-          "__TypeId__": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
+          "__TypeId__": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
+          "ce_id": "2c60089e-6f39-459d-8ced-2d6df7e4c03a",
+          "ce_source": "http://localhost",
+          "ce_specversion": "1.0",
+          "ce_subject": "Springwolf example project - Kafka",
+          "ce_time": "2023-10-28 20:01:23+00:00",
+          "ce_type": "NestedPayloadDto.v1",
+          "content-type": "application/json"
         }
       },
       "SpringKafkaDefaultHeaders-AnotherPayloadDto": {
