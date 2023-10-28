@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.kafka;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaTemplateFactory;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +24,8 @@ public class SpringwolfKafkaProducerConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public SpringwolfKafkaController springwolfKafkaController(
-            SchemasService schemasService, SpringwolfKafkaProducer springwolfKafkaProducer, ObjectMapper objectMapper) {
-        return new SpringwolfKafkaController(schemasService, springwolfKafkaProducer, objectMapper);
+            PublishingPayloadCreator publishingPayloadCreator, SpringwolfKafkaProducer springwolfKafkaProducer) {
+        return new SpringwolfKafkaController(publishingPayloadCreator, springwolfKafkaProducer);
     }
 
     @Bean

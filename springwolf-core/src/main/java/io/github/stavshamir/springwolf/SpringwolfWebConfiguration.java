@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiSerializerService;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiSerializerService;
 import io.github.stavshamir.springwolf.asyncapi.controller.ActuatorAsyncApiController;
 import io.github.stavshamir.springwolf.asyncapi.controller.AsyncApiController;
+import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +28,13 @@ public class SpringwolfWebConfiguration {
     public AsyncApiController asyncApiController(
             AsyncApiService asyncApiService, AsyncApiSerializerService asyncApiSerializerService) {
         return new AsyncApiController(asyncApiService, asyncApiSerializerService);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED, havingValue = "false", matchIfMissing = true)
+    @ConditionalOnMissingBean
+    public PublishingPayloadCreator publishingPayloadCreator(SchemasService schemasService, ObjectMapper objectMapper) {
+        return new PublishingPayloadCreator(schemasService, objectMapper);
     }
 
     @Bean
