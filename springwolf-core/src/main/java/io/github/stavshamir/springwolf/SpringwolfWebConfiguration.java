@@ -31,7 +31,6 @@ public class SpringwolfWebConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED, havingValue = "false", matchIfMissing = true)
     @ConditionalOnMissingBean
     public PublishingPayloadCreator publishingPayloadCreator(SchemasService schemasService, ObjectMapper objectMapper) {
         return new PublishingPayloadCreator(schemasService, objectMapper);
