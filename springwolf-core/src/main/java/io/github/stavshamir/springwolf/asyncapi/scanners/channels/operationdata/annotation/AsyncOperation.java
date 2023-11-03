@@ -59,7 +59,7 @@ public @interface AsyncOperation {
             String name();
 
             /**
-             * Mapped to {@link AsyncHeaderSchema#getDescription()} ()}
+             * Mapped to {@link AsyncHeaderSchema#getDescription()}
              */
             String description() default "";
 
