@@ -14,7 +14,8 @@
       "name": "Apache License 2.0",
       "x-desc": "some description"
     },
-    "x-api-audience": "company-internal"
+    "x-api-audience": "company-internal",
+    "x-generator": "springwolf"
   },
   "defaultContentType": "application/json",
   "servers": {
