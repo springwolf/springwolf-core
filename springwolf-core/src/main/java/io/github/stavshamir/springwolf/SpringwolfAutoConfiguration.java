@@ -43,12 +43,14 @@ public class SpringwolfAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public SpringwolfInitApplicationListener springwolfInitApplicationListener(
             AsyncApiService asyncApiService, SpringwolfConfigProperties configProperties) {
         return new SpringwolfInitApplicationListener(asyncApiService, configProperties);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public AsyncApiService asyncApiService(
             AsyncApiDocketService asyncApiDocketService,
             ChannelsService channelsService,
@@ -58,16 +60,22 @@ public class SpringwolfAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public ChannelsService channelsService(List<? extends ChannelsScanner> channelsScanners) {
         return new DefaultChannelsService(channelsScanners);
     }
 
     @Bean
-    public SchemasService schemasService(List<ModelConverter> modelConverters, ExampleGenerator exampleGenerator) {
-        return new DefaultSchemasService(modelConverters, exampleGenerator);
+    @ConditionalOnMissingBean
+    public SchemasService schemasService(
+            List<ModelConverter> modelConverters,
+            ExampleGenerator exampleGenerator,
+            SpringwolfConfigProperties springwolfConfigProperties) {
+        return new DefaultSchemasService(modelConverters, exampleGenerator, springwolfConfigProperties);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public AsyncApiDocketService asyncApiDocketService(
             Optional<AsyncApiDocket> optionalAsyncApiDocket, SpringwolfConfigProperties springwolfConfigProperties) {
         return new DefaultAsyncApiDocketService(optionalAsyncApiDocket, springwolfConfigProperties);

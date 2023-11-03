@@ -6,6 +6,7 @@ import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2._6_0.model.server.Server;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.BeanMethodsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
@@ -24,8 +25,7 @@ import org.springframework.cloud.stream.config.BindingServiceProperties;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toMap;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,12 +39,12 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     @Override
     public Map<String, ChannelItem> scan() {
         Set<Method> beanMethods = beanMethodsScanner.getBeanMethods();
-        return beanMethods.stream()
+        return ChannelMerger.merge(beanMethods.stream()
                 .map(FunctionalChannelBeanData::fromMethodBean)
                 .flatMap(Set::stream)
                 .filter(this::isChannelBean)
                 .map(this::toChannelEntry)
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toList()));
     }
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {

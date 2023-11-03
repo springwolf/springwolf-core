@@ -3,8 +3,11 @@ import { Example } from "./example.model";
 
 export interface Schema {
   name?: string;
+  title: string;
   description?: string;
 
+  refName?: string;
+  refTitle?: string;
   anchorIdentifier?: string;
   anchorUrl?: string;
 

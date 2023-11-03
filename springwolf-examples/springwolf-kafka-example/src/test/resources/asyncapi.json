@@ -41,7 +41,7 @@
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
           "payload": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -74,7 +74,7 @@
           "title": "ExamplePayloadDto",
           "description": "Example payload model",
           "payload": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -107,7 +107,7 @@
           "title": "AnotherPayloadDto",
           "description": "Another payload model",
           "payload": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/CloudEventHeadersForAnotherPayloadDtoEndpoint"
@@ -139,7 +139,7 @@
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
           "title": "ExamplePayloadDto",
           "payload": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -185,7 +185,7 @@
               "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
               "title": "AnotherPayloadDto",
               "payload": {
-                "$ref": "#/components/schemas/AnotherPayloadDto"
+                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
               },
               "headers": {
                 "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-AnotherPayloadDto"
@@ -201,7 +201,7 @@
               "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
               "title": "ExamplePayloadDto",
               "payload": {
-                "$ref": "#/components/schemas/ExamplePayloadDto"
+                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
               },
               "headers": {
                 "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto"
@@ -217,7 +217,7 @@
               "name": "javax.money.MonetaryAmount",
               "title": "MonetaryAmount",
               "payload": {
-                "$ref": "#/components/schemas/MonetaryAmount"
+                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
               },
               "headers": {
                 "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-MonetaryAmount"
@@ -258,10 +258,10 @@
           "title": "NestedPayloadDto",
           "description": "Payload model with nested complex types",
           "payload": {
-            "$ref": "#/components/schemas/NestedPayloadDto"
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
           },
           "headers": {
-            "$ref": "#/components/schemas/SpringKafkaDefaultHeaders"
+            "$ref": "#/components/schemas/SpringDefaultHeaderAndCloudEvent"
           },
           "bindings": {
             "kafka": {
@@ -279,31 +279,6 @@
   },
   "components": {
     "schemas": {
-      "AnotherPayloadDto": {
-        "required": [
-          "example"
-        ],
-        "type": "object",
-        "properties": {
-          "example": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
-          },
-          "foo": {
-            "type": "string",
-            "description": "Foo field",
-            "example": "bar"
-          }
-        },
-        "description": "Another payload model",
-        "example": {
-          "example": {
-            "someEnum": "FOO2",
-            "someLong": 5,
-            "someString": "some string value"
-          },
-          "foo": "bar"
-        }
-      },
       "CloudEventHeadersForAnotherPayloadDtoEndpoint": {
         "type": "object",
         "properties": {
@@ -374,98 +349,12 @@
           "content-type": "application/json"
         }
       },
-      "ExamplePayloadDto": {
-        "required": [
-          "someEnum",
-          "someString"
-        ],
-        "type": "object",
-        "properties": {
-          "someEnum": {
-            "type": "string",
-            "description": "Some enum field",
-            "example": "FOO2",
-            "enum": [
-              "FOO1",
-              "FOO2",
-              "FOO3"
-            ]
-          },
-          "someLong": {
-            "type": "integer",
-            "description": "Some long field",
-            "format": "int64",
-            "example": 5
-          },
-          "someString": {
-            "type": "string",
-            "description": "Some string field",
-            "example": "some string value"
-          }
-        },
-        "description": "Example payload model",
-        "example": {
-          "someEnum": "FOO2",
-          "someLong": 5,
-          "someString": "some string value"
-        }
-      },
       "HeadersNotDocumented": {
         "type": "object",
         "properties": { },
         "example": { }
       },
-      "MonetaryAmount": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number",
-            "example": 99.99
-          },
-          "currency": {
-            "type": "string",
-            "example": "USD"
-          }
-        },
-        "example": {
-          "amount": 99.99,
-          "currency": "USD"
-        }
-      },
-      "NestedPayloadDto": {
-        "type": "object",
-        "properties": {
-          "examplePayloads": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ExamplePayloadDto"
-            }
-          },
-          "someStrings": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "description": "Some string field",
-              "example": "some string value"
-            }
-          }
-        },
-        "description": "Payload model with nested complex types",
-        "example": {
-          "examplePayloads": [
-            {
-              "someEnum": "FOO2",
-              "someLong": 5,
-              "someString": "some string value"
-            }
-          ],
-          "someStrings": [
-            "some string value"
-          ]
-        }
-      },
-      "SpringKafkaDefaultHeaders": {
+      "SpringDefaultHeaderAndCloudEvent": {
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -475,10 +364,73 @@
             "enum": [
               "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
             ]
+          },
+          "ce_id": {
+            "type": "string",
+            "description": "CloudEvent Id Header",
+            "example": "2c60089e-6f39-459d-8ced-2d6df7e4c03a",
+            "enum": [
+              "2c60089e-6f39-459d-8ced-2d6df7e4c03a"
+            ]
+          },
+          "ce_source": {
+            "type": "string",
+            "description": "CloudEvent Source Header",
+            "example": "http://localhost",
+            "enum": [
+              "http://localhost"
+            ]
+          },
+          "ce_specversion": {
+            "type": "string",
+            "description": "CloudEvent Spec Version Header",
+            "example": "1.0",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "ce_subject": {
+            "type": "string",
+            "description": "CloudEvent Subject Header",
+            "example": "Springwolf example project - Kafka",
+            "enum": [
+              "Springwolf example project - Kafka"
+            ]
+          },
+          "ce_time": {
+            "type": "string",
+            "description": "CloudEvent Time Header",
+            "example": "2023-10-28 20:01:23+00:00",
+            "enum": [
+              "2023-10-28 20:01:23+00:00"
+            ]
+          },
+          "ce_type": {
+            "type": "string",
+            "description": "CloudEvent Payload Type Header",
+            "example": "NestedPayloadDto.v1",
+            "enum": [
+              "NestedPayloadDto.v1"
+            ]
+          },
+          "content-type": {
+            "type": "string",
+            "description": "CloudEvent Content-Type Header",
+            "example": "application/json",
+            "enum": [
+              "application/json"
+            ]
           }
         },
         "example": {
-          "__TypeId__": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
+          "__TypeId__": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
+          "ce_id": "2c60089e-6f39-459d-8ced-2d6df7e4c03a",
+          "ce_source": "http://localhost",
+          "ce_specversion": "1.0",
+          "ce_subject": "Springwolf example project - Kafka",
+          "ce_time": "2023-10-28 20:01:23+00:00",
+          "ce_type": "NestedPayloadDto.v1",
+          "content-type": "application/json"
         }
       },
       "SpringKafkaDefaultHeaders-AnotherPayloadDto": {
@@ -527,6 +479,117 @@
         },
         "example": {
           "__TypeId__": "javax.money.MonetaryAmount"
+        }
+      },
+      "io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "example": 99.99
+          },
+          "currency": {
+            "type": "string",
+            "example": "USD"
+          }
+        },
+        "example": {
+          "amount": 99.99,
+          "currency": "USD"
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto": {
+        "required": [
+          "example"
+        ],
+        "type": "object",
+        "properties": {
+          "example": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+          },
+          "foo": {
+            "type": "string",
+            "description": "Foo field",
+            "example": "bar"
+          }
+        },
+        "description": "Another payload model",
+        "example": {
+          "example": {
+            "someEnum": "FOO2",
+            "someLong": 5,
+            "someString": "some string value"
+          },
+          "foo": "bar"
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto": {
+        "required": [
+          "someEnum",
+          "someString"
+        ],
+        "type": "object",
+        "properties": {
+          "someEnum": {
+            "type": "string",
+            "description": "Some enum field",
+            "example": "FOO2",
+            "enum": [
+              "FOO1",
+              "FOO2",
+              "FOO3"
+            ]
+          },
+          "someLong": {
+            "type": "integer",
+            "description": "Some long field",
+            "format": "int64",
+            "example": 5
+          },
+          "someString": {
+            "type": "string",
+            "description": "Some string field",
+            "example": "some string value"
+          }
+        },
+        "description": "Example payload model",
+        "example": {
+          "someEnum": "FOO2",
+          "someLong": 5,
+          "someString": "some string value"
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto": {
+        "type": "object",
+        "properties": {
+          "examplePayloads": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+            }
+          },
+          "someStrings": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Some string field",
+              "example": "some string value"
+            }
+          }
+        },
+        "description": "Payload model with nested complex types",
+        "example": {
+          "examplePayloads": [
+            {
+              "someEnum": "FOO2",
+              "someLong": 5,
+              "someString": "some string value"
+            }
+          ],
+          "someStrings": [
+            "some string value"
+          ]
         }
       }
     }

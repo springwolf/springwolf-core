@@ -271,6 +271,64 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
     }
 
+    @Test
+    void testFunctionBindingWithSameTopicName() {
+        // Given a binding "spring.cloud.stream.bindings.testFunction-in-0.destination=test-topic"
+        // And a binding "spring.cloud.stream.bindings.testFunction-out-0.destination=test-topic"
+        String topicName = "test-topic";
+        BindingProperties testFunctionInBinding = new BindingProperties();
+        testFunctionInBinding.setDestination(topicName);
+
+        BindingProperties testFunctionOutBinding = new BindingProperties();
+        testFunctionOutBinding.setDestination(topicName);
+        when(bindingServiceProperties.getBindings())
+                .thenReturn(Map.of(
+                        "testFunction-in-0", testFunctionInBinding,
+                        "testFunction-out-0", testFunctionOutBinding));
+
+        // When scan is called
+        Map<String, ChannelItem> channels = scanner.scan();
+
+        // Then the returned merged channels contain a publish operation and  a subscribe operation
+        Message subscribeMessage = Message.builder()
+                .name(Integer.class.getName())
+                .title(Integer.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(Integer.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(messageBinding)
+                .build();
+
+        Operation subscribeOperation = Operation.builder()
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .operationId("test-topic_subscribe_testFunction")
+                .message(subscribeMessage)
+                .build();
+
+        Message publishMessage = Message.builder()
+                .name(String.class.getName())
+                .title(String.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(messageBinding)
+                .build();
+
+        Operation publishOperation = Operation.builder()
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .operationId("test-topic_publish_testFunction")
+                .message(publishMessage)
+                .build();
+
+        ChannelItem mergedChannel = ChannelItem.builder()
+                .bindings(channelBinding)
+                .publish(publishOperation)
+                .subscribe(subscribeOperation)
+                .build();
+
+        assertThat(channels).contains(Map.entry(topicName, mergedChannel));
+    }
+
     @TestConfiguration
     public static class Configuration {
 

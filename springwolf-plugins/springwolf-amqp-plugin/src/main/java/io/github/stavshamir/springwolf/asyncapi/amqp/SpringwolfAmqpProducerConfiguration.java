@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.amqp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
+import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfAmqpController;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,16 +27,16 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 public class SpringwolfAmqpProducerConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     public SpringwolfAmqpProducer springwolfAmqpProducer(
             AsyncApiService asyncApiService, @NonNull List<RabbitTemplate> rabbitTemplates) {
         return new SpringwolfAmqpProducer(asyncApiService, rabbitTemplates);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public SpringwolfAmqpController springwolfAmqpController(
-            AsyncApiDocketService asyncApiDocketService,
-            SpringwolfAmqpProducer springwolfAmqpProducer,
-            ObjectMapper objectMapper) {
-        return new SpringwolfAmqpController(asyncApiDocketService, springwolfAmqpProducer, objectMapper);
+            PublishingPayloadCreator publishingPayloadCreator, SpringwolfAmqpProducer springwolfAmqpProducer) {
+        return new SpringwolfAmqpController(publishingPayloadCreator, springwolfAmqpProducer);
     }
 }

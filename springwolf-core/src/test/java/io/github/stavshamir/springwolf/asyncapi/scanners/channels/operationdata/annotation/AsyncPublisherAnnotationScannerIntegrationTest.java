@@ -10,6 +10,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.Data;
@@ -36,6 +37,7 @@ import static org.mockito.Mockito.when;
             AsyncPublisherAnnotationScanner.class,
             DefaultSchemasService.class,
             ExampleJsonGenerator.class,
+            SpringwolfConfigProperties.class,
             TestOperationBindingProcessor.class
         })
 @TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
@@ -76,8 +78,7 @@ class AsyncPublisherAnnotationScannerIntegrationTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                // Message description is not supported yet
-                //                .description("")
+                .description(null)
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP)
@@ -108,8 +109,7 @@ class AsyncPublisherAnnotationScannerIntegrationTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                // Message description is not supported yet
-                //                .description("description")
+                .description(null)
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("TestSchema"))
                 .bindings(EMPTY_MAP)
@@ -140,8 +140,7 @@ class AsyncPublisherAnnotationScannerIntegrationTest {
         Message message = Message.builder()
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                // Message description is not supported yet
-                //                .description("")
+                .description(null)
                 .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
                 .bindings(EMPTY_MAP)

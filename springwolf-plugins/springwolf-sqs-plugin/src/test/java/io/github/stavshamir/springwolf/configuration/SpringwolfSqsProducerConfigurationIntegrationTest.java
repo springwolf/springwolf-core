@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.configuration;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
+import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSqsController;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.sqs.SpringwolfSqsAutoConfiguration;
@@ -26,7 +27,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SpringwolfSqsProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(classes = {SpringwolfSqsAutoConfiguration.class, ObjectMapperTestConfiguration.class})
+    @ContextConfiguration(
+            classes = {
+                SpringwolfSqsAutoConfiguration.class,
+                PublishingPayloadCreator.class,
+                ObjectMapperTestConfiguration.class
+            })
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
@@ -61,7 +67,12 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
     }
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(classes = {SpringwolfSqsAutoConfiguration.class, ObjectMapperTestConfiguration.class})
+    @ContextConfiguration(
+            classes = {
+                SpringwolfSqsAutoConfiguration.class,
+                PublishingPayloadCreator.class,
+                ObjectMapperTestConfiguration.class
+            })
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",

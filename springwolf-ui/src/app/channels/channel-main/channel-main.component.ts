@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { AsyncApiService } from "src/app/shared/asyncapi.service";
 import { Example } from "src/app/shared/models/example.model";
 import { Schema } from "src/app/shared/models/schema.model";
@@ -19,12 +19,12 @@ export class ChannelMainComponent implements OnInit {
   @Input() operation: Operation;
 
   schema: Schema;
-  schemaName: string;
+  schemaIdentifier: string;
   defaultExample: Example;
   defaultExampleType: string;
   exampleTextAreaLineCount: number;
   headers: Schema;
-  headersSchemaName: string;
+  headersSchemaIdentifier: string;
   headersExample: Example;
   headersTextAreaLineCount: number;
   protocolName: string;
@@ -40,19 +40,19 @@ export class ChannelMainComponent implements OnInit {
   ngOnInit(): void {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       const schemas: Map<string, Schema> = asyncapi.components.schemas;
-      this.schemaName = this.operation.message.payload.name.slice(
+      this.schemaIdentifier = this.operation.message.payload.name.slice(
         this.operation.message.payload.name.lastIndexOf("/") + 1
       );
-      this.schema = schemas.get(this.schemaName);
+      this.schema = schemas.get(this.schemaIdentifier);
 
       this.defaultExample = this.schema.example;
       this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 0;
       this.defaultExampleType = this.operation.message.name;
 
-      this.headersSchemaName = this.operation.message.headers.name.slice(
+      this.headersSchemaIdentifier = this.operation.message.headers.name.slice(
         this.operation.message.headers.name.lastIndexOf("/") + 1
       );
-      this.headers = schemas.get(this.headersSchemaName);
+      this.headers = schemas.get(this.headersSchemaIdentifier);
       this.headersExample = this.headers.example;
       this.headersTextAreaLineCount = this.headersExample?.lineCount || 0;
       this.messageBindingExampleTextAreaLineCount =

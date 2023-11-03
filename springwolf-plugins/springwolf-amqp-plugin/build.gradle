@@ -12,7 +12,6 @@ dependencies {
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
-    implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-core"
     implementation "org.springframework:spring-web"
@@ -20,9 +19,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.amqp:spring-amqp"
     implementation "org.springframework.amqp:spring-rabbit"
-
-    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
     permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"

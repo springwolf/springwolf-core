@@ -12,6 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true)
 public class ProducerOperationDataScanner extends AbstractOperationDataScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;

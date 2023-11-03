@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.fixtures.MinimalTestContextConfiguration;
+import io.github.stavshamir.springwolf.fixtures.ObjectMapperTestConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,7 @@ public class SpringContextIntegrationTest {
     @ContextConfiguration(
             classes = {
                 SpringwolfAutoConfiguration.class,
+                ObjectMapperTestConfiguration.class,
                 CustomBeanAsyncApiDocketConfiguration.class, // user has defined an own AsyncApiDocket bean
             })
     class AsyncApiDocketTest {

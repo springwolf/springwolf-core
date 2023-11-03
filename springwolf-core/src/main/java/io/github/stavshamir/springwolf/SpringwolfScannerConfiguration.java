@@ -14,6 +14,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassS
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,18 +35,21 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 public class SpringwolfScannerConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     public ComponentClassScanner componentClassScanner(
             AsyncApiDocketService asyncApiDocketService, Environment environment) {
         return new ComponentClassScanner(asyncApiDocketService, environment);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public ConfigurationClassScanner configurationClassScanner(
             AsyncApiDocketService asyncApiDocketService, Environment environment) {
         return new ConfigurationClassScanner(asyncApiDocketService, environment);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public BeanMethodsScanner beanMethodsScanner(ConfigurationClassScanner configurationClassScanner) {
         return new DefaultBeanMethodsScanner(configurationClassScanner);
     }

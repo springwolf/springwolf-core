@@ -10,6 +10,7 @@ import lombok.Builder;
 import java.util.Collections;
 import java.util.Map;
 
+@Deprecated(forRemoval = true)
 public class AmqpProducerData extends ProducerData {
 
     @Builder(builderMethodName = "amqpProducerDataBuilder")
