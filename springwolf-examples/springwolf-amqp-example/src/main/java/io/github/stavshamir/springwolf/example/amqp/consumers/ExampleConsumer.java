@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.example.amqp.consumers;
 
 import io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.example.amqp.producers.ExampleProducer;
+import io.github.stavshamir.springwolf.example.amqp.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -18,12 +18,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ExampleConsumer {
 
-    private final ExampleProducer exampleProducer;
+    private final AnotherProducer anotherProducer;
 
     @RabbitListener(queues = "example-queue")
     public void receiveExamplePayload(ExamplePayloadDto payload) {
         log.info("Received new message in example-queue: {}", payload.toString());
-        exampleProducer.sendMessage(payload);
+
+        AnotherPayloadDto example = new AnotherPayloadDto();
+        example.setExample(payload);
+        example.setFoo("foo");
+
+        anotherProducer.sendMessage(example);
     }
 
     @RabbitListener(queues = "another-queue")

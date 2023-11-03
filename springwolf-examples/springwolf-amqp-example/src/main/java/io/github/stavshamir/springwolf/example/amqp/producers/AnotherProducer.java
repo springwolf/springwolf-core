@@ -5,14 +5,13 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ExampleProducer {
+public class AnotherProducer {
     private final RabbitTemplate rabbitTemplate;
 
     @AsyncPublisher(
@@ -21,9 +20,8 @@ public class ExampleProducer {
                             channelName = "example-producer-channel-publisher",
                             description = "Custom, optional description defined in the AsyncPublisher annotation"))
     @AmqpAsyncOperationBinding()
-    public void sendMessage(ExamplePayloadDto msg) {
+    public void sendMessage(AnotherPayloadDto msg) {
         // send
-        AnotherPayloadDto dto = new AnotherPayloadDto("fooValue", msg);
-        rabbitTemplate.convertAndSend("example-topic-exchange", "example-topic-routing-key", dto);
+        rabbitTemplate.convertAndSend("example-topic-exchange", "example-topic-routing-key", msg);
     }
 }
