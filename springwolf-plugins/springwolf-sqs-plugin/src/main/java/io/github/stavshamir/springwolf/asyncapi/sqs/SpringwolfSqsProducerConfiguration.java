@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.sqs;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
+import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSqsController;
 import io.github.stavshamir.springwolf.producer.SpringwolfSqsProducer;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +31,7 @@ public class SpringwolfSqsProducerConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public SpringwolfSqsController springwolfSqsController(
-            SchemasService schemasService, SpringwolfSqsProducer springwolfSqsProducer, ObjectMapper objectMapper) {
-        return new SpringwolfSqsController(schemasService, springwolfSqsProducer, objectMapper);
+            PublishingPayloadCreator publishingPayloadCreator, SpringwolfSqsProducer springwolfSqsProducer) {
+        return new SpringwolfSqsController(publishingPayloadCreator, springwolfSqsProducer);
     }
 }

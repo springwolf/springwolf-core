@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.configuration;
 
+import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.asyncapi.kafka.SpringwolfKafkaAutoConfiguration;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
@@ -20,11 +21,16 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SpringWolfKafkaProducerConfigurationIntegrationTest {
+public class SpringwolfKafkaProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
     @Nested
-    @ContextConfiguration(classes = {SpringwolfKafkaAutoConfiguration.class, ObjectMapperTestConfiguration.class})
+    @ContextConfiguration(
+            classes = {
+                SpringwolfKafkaAutoConfiguration.class,
+                PublishingPayloadCreator.class,
+                ObjectMapperTestConfiguration.class
+            })
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
@@ -57,7 +63,12 @@ public class SpringWolfKafkaProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
     @Nested
-    @ContextConfiguration(classes = {SpringwolfKafkaAutoConfiguration.class, ObjectMapperTestConfiguration.class})
+    @ContextConfiguration(
+            classes = {
+                SpringwolfKafkaAutoConfiguration.class,
+                PublishingPayloadCreator.class,
+                ObjectMapperTestConfiguration.class
+            })
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",

@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.configuration;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.amqp.SpringwolfAmqpAutoConfiguration;
+import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfAmqpController;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
@@ -25,7 +26,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SpringwolfAmqpProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(classes = {SpringwolfAmqpAutoConfiguration.class, ObjectMapperTestConfiguration.class})
+    @ContextConfiguration(
+            classes = {
+                SpringwolfAmqpAutoConfiguration.class,
+                PublishingPayloadCreator.class,
+                ObjectMapperTestConfiguration.class
+            })
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
@@ -60,7 +66,12 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
     }
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(classes = {SpringwolfAmqpAutoConfiguration.class, ObjectMapperTestConfiguration.class})
+    @ContextConfiguration(
+            classes = {
+                SpringwolfAmqpAutoConfiguration.class,
+                PublishingPayloadCreator.class,
+                ObjectMapperTestConfiguration.class
+            })
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",

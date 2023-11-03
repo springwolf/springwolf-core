@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.configuration;
 import io.awspring.cloud.sns.core.SnsTemplate;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
+import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSnsController;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.sns.SpringwolfSnsAutoConfiguration;
@@ -26,7 +27,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SpringwolfSnsProducerConfigurationIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(classes = {SpringwolfSnsAutoConfiguration.class, ObjectMapperTestConfiguration.class})
+    @ContextConfiguration(
+            classes = {
+                SpringwolfSnsAutoConfiguration.class,
+                PublishingPayloadCreator.class,
+                ObjectMapperTestConfiguration.class
+            })
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
@@ -61,7 +67,12 @@ public class SpringwolfSnsProducerConfigurationIntegrationTest {
     }
 
     @ExtendWith(SpringExtension.class)
-    @ContextConfiguration(classes = {SpringwolfSnsAutoConfiguration.class, ObjectMapperTestConfiguration.class})
+    @ContextConfiguration(
+            classes = {
+                SpringwolfSnsAutoConfiguration.class,
+                PublishingPayloadCreator.class,
+                ObjectMapperTestConfiguration.class
+            })
     @TestPropertySource(
             properties = {
                 "springwolf.enabled=true",
