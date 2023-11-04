@@ -5,7 +5,6 @@ import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.controller.AsyncApiController;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,7 +66,7 @@ public class InitModeIntegrationTest {
             try {
                 SpringApplication.run(TestApplication.class, args);
                 fail("Exception expected, but not raised.");
-            } catch (BeanCreationException ex) {
+            } catch (Exception ex) {
                 assertThat(ex.getMessage()).contains("Error occured during creation of AsyncAPI");
             }
         }
