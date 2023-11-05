@@ -1,0 +1,16 @@
+version: '3'
+services:
+  app:
+    image: stavshamir/springwolf-jms-example:${SPRINGWOLF_VERSION}
+    links:
+      - activemq
+    ports:
+      - "8080:8080"
+    depends_on:
+      - activemq
+
+  activemq:
+    image: apache/activemq-artemis:2.31.2
+    ports:
+      - "61616:61616"
+      - "8161:8161"

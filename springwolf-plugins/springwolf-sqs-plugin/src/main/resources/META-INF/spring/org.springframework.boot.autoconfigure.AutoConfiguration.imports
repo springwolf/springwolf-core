@@ -1,1 +1,1 @@
-io.github.stavshamir.springwolf.asyncapi.sqs.SpringwolfSqsAutoConfiguration
+io.github.stavshamir.springwolf.asyncapi.sqs.SpringwolfJmsAutoConfiguration
