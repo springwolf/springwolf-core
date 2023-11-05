@@ -6,8 +6,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
 /**
@@ -22,7 +20,7 @@ public class JmsTestContainerExtension implements BeforeAllCallback, ExtensionCo
             new GenericContainer<>(DockerImageName.parse("apache/activemq-artemis:2.31.2")).withExposedPorts(61616);
 
     @Override
-    public void beforeAll(ExtensionContext extensionContext) throws Exception {
+    public void beforeAll(ExtensionContext extensionContext) {
         if (!started) {
             started = true;
 

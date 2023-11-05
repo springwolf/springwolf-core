@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.jms;
 
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.DockerComposeContainer;
@@ -55,15 +54,13 @@ public class ApiIntegrationWithDockerIntegrationTest {
     }
 
     @Test
-    void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException, JSONException {
+    void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException {
         String url = baseUrl() + "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
-        System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).replace("\r\n", "\n");
 
-        // assertEquals(expected.replaceAll("\\s+", ""), actual.replaceAll("\\s+", ""));
         assertEquals(expected, actual);
     }
 }

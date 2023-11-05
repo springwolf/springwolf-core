@@ -54,7 +54,6 @@ public class ProducerIntegrationWithDockerIntegrationTest {
         payload.setSomeEnum(FOO1);
 
         // when
-        Thread.sleep(30000);
         springwolfJmsProducer.send("example-queue", payload);
 
         // then
