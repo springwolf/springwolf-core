@@ -33,24 +33,8 @@ public class JmsTestContainerExtension implements BeforeAllCallback, ExtensionCo
         }
     }
 
-    private static void beforeAllOnce() throws IOException, InterruptedException {
+    private static void beforeAllOnce() {
         activeMq.start();
-
-        //        String brokerUrl = "tcp://localhost:" + activeMq.getMappedPort(61616);
-        //        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerUrl);
-        //        Connection connection = connectionFactory.createConnection();
-        //        connection.start();
-        //
-        //        // Creating session for sending messages
-        //        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        //
-        //        // Getting the queue
-        //        var queue = session.createQueue("example-queue");
-        //        var queue2 = session.createQueue("another-queue");
-
-        // Creating the producer & consumer
-        // session.createProducer(queue);
-        // session.createConsumer(queue2);
     }
 
     @Override
