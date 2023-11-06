@@ -49,7 +49,7 @@ ext {
     monetaVersion = '1.4.2'
     moneyApiVersion = '1.1'
 
-    junitJupiterVersion = '5.10.0'
+    junitJupiterVersion = '5.10.1'
 
     lombokVersion = '1.18.30'
 
