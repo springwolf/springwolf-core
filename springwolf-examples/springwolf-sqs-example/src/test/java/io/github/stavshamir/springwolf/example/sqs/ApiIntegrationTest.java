@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         classes = {SpringwolfSqsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith({SqsTestContainerExtension.class})
-public class ApiIntegrationTest {
+class ApiIntegrationTest {
 
     @DynamicPropertySource
     static void setUpTestContainers(DynamicPropertyRegistry registry) {

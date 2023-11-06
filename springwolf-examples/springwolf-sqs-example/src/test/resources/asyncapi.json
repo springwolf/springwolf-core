@@ -45,9 +45,7 @@
             "$ref": "#/components/schemas/HeadersNotDocumented"
           },
           "bindings": {
-            "sqs": {
-              "bindingVersion": "0.2.0"
-            }
+            "sqs": { }
           }
         }
       },

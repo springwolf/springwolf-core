@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
-import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
+import com.asyncapi.v2.binding.message.sqs.SQSMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SqsAsyncOperationBinding;
@@ -23,15 +23,15 @@ public class SqsMessageBindingProcessor implements MessageBindingProcessor, Embe
     @Override
     public Optional<ProcessedMessageBinding> process(Method method) {
         return Arrays.stream(method.getAnnotations())
-                .filter(annotation -> annotation instanceof SqsAsyncOperationBinding)
-                .map(annotation -> (SqsAsyncOperationBinding) annotation)
+                .filter(SqsAsyncOperationBinding.class::isInstance)
+                .map(SqsAsyncOperationBinding.class::cast)
                 .findAny()
                 .map(this::mapToMessageBinding);
     }
 
     private ProcessedMessageBinding mapToMessageBinding(SqsAsyncOperationBinding bindingAnnotation) {
-        AMQPMessageBinding amqpMessageBinding = AMQPMessageBinding.builder().build();
+        SQSMessageBinding sqsMessageBinding = new SQSMessageBinding();
 
-        return new ProcessedMessageBinding(bindingAnnotation.type(), amqpMessageBinding);
+        return new ProcessedMessageBinding(bindingAnnotation.type(), sqsMessageBinding);
     }
 }
