@@ -79,6 +79,8 @@ docker {
 
 test {
     dependsOn dockerBuildImage
+    // generate the open api docs before tests are executed so that if it works, the json is already there
+    dependsOn generateOpenApiDocs
 }
 
 openApi {
@@ -88,5 +90,18 @@ openApi {
     outputFileName = "openapi-generated.json"
 }
 
-// generate the open api docs before tests are executed so that if it works, the json is already there
-test.dependsOn("generateOpenApiDocs")
+afterEvaluate {
+    tasks {
+        forkedSpringBootRun {
+            dependsOn bootJar
+            dependsOn compileTestJava
+            dependsOn dockerCreateDockerfile
+            dependsOn dockerBuildImage
+            dependsOn dockerSyncBuildContext
+            dependsOn jar
+            dependsOn processTestResources
+            dependsOn spotlessJava
+            doNotTrackState("See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102")
+        }
+    }
+}
