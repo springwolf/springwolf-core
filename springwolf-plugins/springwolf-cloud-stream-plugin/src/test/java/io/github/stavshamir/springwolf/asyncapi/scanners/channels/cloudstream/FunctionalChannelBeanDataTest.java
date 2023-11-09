@@ -90,7 +90,8 @@ class FunctionalChannelBeanDataTest {
         Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
 
         assertThat(data)
-                .containsExactly(new FunctionalChannelBeanData(methodName, List.class, CONSUMER, methodName + "-in-0"));
+                .containsExactly(
+                        new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
     }
 
     @Bean

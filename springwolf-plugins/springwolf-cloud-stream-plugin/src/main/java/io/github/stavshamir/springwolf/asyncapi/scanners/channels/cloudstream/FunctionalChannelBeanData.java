@@ -74,13 +74,14 @@ class FunctionalChannelBeanData {
         }
 
         if (type instanceof ParameterizedType) {
-            Type rawType = ((ParameterizedType) type).getRawType();
+            Type rawType = ((ParameterizedType) type).getActualTypeArguments()[0];
 
-            if ("org.apache.kafka.streams.kstream.KStream".equals(rawType.getTypeName())) {
-                return (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[1];
+            if ("org.apache.kafka.streams.kstream.KStream"
+                    .equals(((ParameterizedType) type).getRawType().getTypeName())) {
+                rawType = ((ParameterizedType) type).getActualTypeArguments()[1];
             }
 
-            return (Class<?>) rawType;
+            return toClassObject(rawType);
         }
 
         throw new IllegalArgumentException(
