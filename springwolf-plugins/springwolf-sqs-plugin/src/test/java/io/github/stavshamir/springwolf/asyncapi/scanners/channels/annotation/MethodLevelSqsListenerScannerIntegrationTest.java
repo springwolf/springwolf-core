@@ -9,6 +9,7 @@ import com.asyncapi.v2.binding.message.sqs.SQSMessageBinding;
 import com.asyncapi.v2.binding.operation.sqs.SQSOperationBinding;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;

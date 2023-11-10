@@ -1,19 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Payload;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 public class SpringPayloadAnnotationTypeExtractor {
-    public SpringPayloadAnnotationTypeExtractor() {}
+
+    private final List<PayloadTypeExtractor> payloadTypeExtractors;
 
     public Class<?> getPayloadType(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
@@ -30,12 +32,16 @@ public class SpringPayloadAnnotationTypeExtractor {
         Class<?> parameterClass = parameterTypes[parameterPayloadIndex];
 
         try {
-            // Resolve generic type for batch listeners
-            if (parameterClass == List.class) {
-                Type type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex])
-                        .getActualTypeArguments()[0];
-                return Class.forName(type.getTypeName());
+
+            ParameterizedType type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex]);
+
+            for (PayloadTypeExtractor payloadTypeExtractor : payloadTypeExtractors) {
+                if (payloadTypeExtractor.canExtract(type)) {
+                    type = payloadTypeExtractor.extractType(type);
+                }
             }
+
+            return Class.forName(type.getTypeName());
         } catch (Exception ex) {
             log.info("Found payload type List<?>, but was unable to extract generic data type", ex);
         }

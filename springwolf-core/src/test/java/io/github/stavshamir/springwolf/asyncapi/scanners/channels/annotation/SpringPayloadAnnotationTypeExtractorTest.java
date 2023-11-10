@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.handler.annotation.Payload;
 
@@ -11,9 +12,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// TODO move to correct package
 class SpringPayloadAnnotationTypeExtractorTest {
 
-    private final SpringPayloadAnnotationTypeExtractor extractor = new SpringPayloadAnnotationTypeExtractor();
+    private final SpringPayloadAnnotationTypeExtractor extractor = new SpringPayloadAnnotationTypeExtractor(List.of());
 
     @Test
     void getPayloadType() throws NoSuchMethodException {
