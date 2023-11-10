@@ -64,18 +64,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "springwolf-ui:build"
+            "buildTarget": "springwolf-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "springwolf-ui:build:production"
+              "buildTarget": "springwolf-ui:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "springwolf-ui:build"
+            "buildTarget": "springwolf-ui:build"
           }
         },
         "test": {
