@@ -54,7 +54,7 @@ public class SpringPayloadAnnotationTypeExtractor {
                 int payloadAnnotatedParameterIndex = getPayloadAnnotatedParameterIndex(parameterAnnotations);
                 if (payloadAnnotatedParameterIndex == -1) {
                     String msg =
-                            "Multi-parameter KafkaListener methods must have one parameter annotated with @Payload, "
+                            "Multi-parameter AsyncListener methods must have one parameter annotated with @Payload, "
                                     + "but none was found: "
                                     + methodName;
 
@@ -68,8 +68,7 @@ public class SpringPayloadAnnotationTypeExtractor {
     static int getPayloadAnnotatedParameterIndex(Annotation[][] parameterAnnotations) {
         for (int i = 0, length = parameterAnnotations.length; i < length; i++) {
             Annotation[] annotations = parameterAnnotations[i];
-            boolean hasPayloadAnnotation =
-                    Arrays.stream(annotations).anyMatch(annotation -> annotation instanceof Payload);
+            boolean hasPayloadAnnotation = Arrays.stream(annotations).anyMatch(Payload.class::isInstance);
 
             if (hasPayloadAnnotation) {
                 return i;
