@@ -16,7 +16,7 @@
   "defaultContentType": "application/json",
   "servers": {
     "jms": {
-      "url": "http://localhost:61616",
+      "url": "tcp://activemq:61616",
       "protocol": "jms"
     }
   },

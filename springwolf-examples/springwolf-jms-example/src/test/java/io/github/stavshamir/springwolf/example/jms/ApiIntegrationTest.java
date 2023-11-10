@@ -32,7 +32,9 @@ public class ApiIntegrationTest {
         String actual = restTemplate.getForObject(url, String.class);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
+        String expectedWithoutServersJmsUrlPatch =
+                new String(s.readAllBytes(), StandardCharsets.UTF_8).replace("\r\n", "\n");
+        String expected = expectedWithoutServersJmsUrlPatch.replace("activemq:61616", "localhost:61616");
 
         assertEquals(expected, actual);
     }

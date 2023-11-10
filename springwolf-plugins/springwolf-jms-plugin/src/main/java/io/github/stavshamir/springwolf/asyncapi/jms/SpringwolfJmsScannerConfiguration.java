@@ -17,7 +17,7 @@ import org.springframework.core.annotation.Order;
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfJmsConfigConstants.SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED;
 
 /**
- * spring configuration defining the scanner beans for the kafka plugin
+ * spring configuration defining the scanner beans for the jms plugin
  */
 @Configuration(proxyBeanMethods = false)
 public class SpringwolfJmsScannerConfiguration {
