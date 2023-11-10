@@ -20,7 +20,7 @@ npm_run_build {
   outputs.dir 'build'
 }
 
-task buildPages(type: NpmTask) {
+tasks.register('buildPages', NpmTask) {
   args = ['run', 'build_pages']
 
   inputs.files fileTree("src")
@@ -89,6 +89,9 @@ spotless {
     endWithNewline()
   }
 }
+
+sourcesJar.dependsOn(npm_run_build)
+
 tasks.named('spotlessStyling').configure {
   it.dependsOn('nodeSetup', 'npmSetup')
 }
