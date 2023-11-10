@@ -87,6 +87,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
         ChannelItem newUserChannel = ChannelItem.builder()
                 .description("This channel is used to exchange messages about users signing up")
+                .servers(List.of("production"))
                 .subscribe(newUserOperation)
                 .build();
 

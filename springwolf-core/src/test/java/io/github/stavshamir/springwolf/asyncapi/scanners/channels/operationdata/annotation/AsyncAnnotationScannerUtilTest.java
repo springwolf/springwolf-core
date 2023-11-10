@@ -147,12 +147,27 @@ class AsyncAnnotationScannerUtilTest {
         assertEquals(expectedMessage, message);
     }
 
+    @Test
+    void getServers() throws NoSuchMethodException {
+        Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
+        AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
+
+        StringValueResolver resolver = mock(StringValueResolver.class);
+
+        // when
+        when(resolver.resolveStringValue("${test.property.server1}")).thenReturn("server1");
+
+        List<String> servers = AsyncAnnotationScannerUtil.getServers(operation, resolver);
+        assertEquals(List.of("server1"), servers);
+    }
+
     private static class ClassWithOperationBindingProcessor {
         @AsyncListener(
                 operation =
                         @AsyncOperation(
                                 channelName = "${test.property.test-channel}",
                                 description = "${test.property.description}",
+                                servers = {"${test.property.server1}"},
                                 headers =
                                         @AsyncOperation.Headers(
                                                 schemaName = "TestSchema",

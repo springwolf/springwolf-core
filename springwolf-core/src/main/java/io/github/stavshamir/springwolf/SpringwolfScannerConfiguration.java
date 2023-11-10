@@ -79,10 +79,15 @@ public class SpringwolfScannerConfiguration {
     public AsyncListenerAnnotationScanner asyncListenerAnnotationScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
+            AsyncApiDocketService asyncApiDocketService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncListenerAnnotationScanner(
-                componentClassScanner, schemasService, operationBindingProcessors, messageBindingProcessors);
+                componentClassScanner,
+                schemasService,
+                asyncApiDocketService,
+                operationBindingProcessors,
+                messageBindingProcessors);
     }
 
     @Bean
@@ -94,9 +99,14 @@ public class SpringwolfScannerConfiguration {
     public AsyncPublisherAnnotationScanner asyncPublisherAnnotationScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
+            AsyncApiDocketService asyncApiDocketService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncPublisherAnnotationScanner(
-                componentClassScanner, schemasService, operationBindingProcessors, messageBindingProcessors);
+                componentClassScanner,
+                schemasService,
+                asyncApiDocketService,
+                operationBindingProcessors,
+                messageBindingProcessors);
     }
 }

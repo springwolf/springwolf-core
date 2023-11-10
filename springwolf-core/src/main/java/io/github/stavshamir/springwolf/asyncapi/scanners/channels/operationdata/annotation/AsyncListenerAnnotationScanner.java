@@ -11,6 +11,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassS
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
     private StringValueResolver resolver;
     private final ComponentClassScanner componentClassScanner;
     private final SchemasService schemasService;
+    private final AsyncApiDocketService asyncApiDocketService;
 
     private final List<OperationBindingProcessor> operationBindingProcessors;
 
@@ -43,6 +45,11 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
     @Override
     protected SchemasService getSchemaService() {
         return this.schemasService;
+    }
+
+    @Override
+    protected AsyncApiDocketService getAsyncApiDocketService() {
+        return asyncApiDocketService;
     }
 
     @Override
@@ -87,9 +94,11 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
         Class<?> payloadType = op.payloadType() != Object.class
                 ? op.payloadType()
                 : SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
+
         return ConsumerData.builder()
                 .channelName(resolver.resolveStringValue(op.channelName()))
                 .description(resolver.resolveStringValue(op.description()))
+                .servers(AsyncAnnotationScannerUtil.getServers(op, resolver))
                 .headers(AsyncAnnotationScannerUtil.getAsyncHeaders(op, resolver))
                 .payloadType(payloadType)
                 .operationBinding(operationBindings)

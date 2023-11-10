@@ -3,18 +3,23 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
+import com.asyncapi.v2._6_0.model.info.Info;
+import com.asyncapi.v2._6_0.model.server.Server;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +28,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static java.util.Collections.EMPTY_MAP;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -40,8 +47,14 @@ import static org.mockito.Mockito.when;
             SpringwolfConfigProperties.class,
             TestOperationBindingProcessor.class
         })
-@TestPropertySource(properties = {"test.property.test-channel=test-channel", "test.property.description=description"})
-class AsyncListenerAnnotationScannerIntegrationTest {
+@TestPropertySource(
+        properties = {
+            "test.property.test-channel=test-channel",
+            "test.property.description=description",
+            "test.property.server1=server1",
+            "test.property.server2=server2"
+        })
+class AsyncListenerAnnotationScannerTest {
 
     @Autowired
     private AsyncListenerAnnotationScanner channelScanner;
@@ -49,9 +62,22 @@ class AsyncListenerAnnotationScannerIntegrationTest {
     @MockBean
     private ComponentClassScanner componentClassScanner;
 
+    @MockBean
+    private AsyncApiDocketService asyncApiDocketService;
+
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
         when(componentClassScanner.scan()).thenReturn(classesToScan);
+    }
+
+    @BeforeEach
+    public void setup() {
+        when(asyncApiDocketService.getAsyncApiDocket())
+                .thenReturn(AsyncApiDocket.builder()
+                        .info(new Info())
+                        .server("server1", new Server())
+                        .server("server2", new Server())
+                        .build());
     }
 
     @Test
@@ -96,6 +122,17 @@ class AsyncListenerAnnotationScannerIntegrationTest {
     }
 
     @Test
+    void scan_componentHasListenerMethodWithUnknownServer() {
+        // Given a class with method annotated with AsyncListener, with an unknown servername
+        setClassToScan(ClassWithListenerAnnotationWithInvalidServer.class);
+
+        assertThatThrownBy(() -> channelScanner.scan())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(
+                        "Operation 'test-channel_publish' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
+    }
+
+    @Test
     void scan_componentHasListenerMethodWithAllAttributes() {
         // Given a class with method annotated with AsyncListener, where all attributes are set
         setClassToScan(ClassWithListenerAnnotationWithAllAttributes.class);
@@ -121,8 +158,11 @@ class AsyncListenerAnnotationScannerIntegrationTest {
                 .message(message)
                 .build();
 
-        ChannelItem expectedChannel =
-                ChannelItem.builder().bindings(null).publish(operation).build();
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(null)
+                .servers(List.of("server1", "server2"))
+                .publish(operation)
+                .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
@@ -220,6 +260,17 @@ class AsyncListenerAnnotationScannerIntegrationTest {
         private void methodWithoutAnnotation() {}
     }
 
+    private static class ClassWithListenerAnnotationWithInvalidServer {
+
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description",
+                                servers = {"server3"}))
+        private void methodWithAnnotation(SimpleFoo payload) {}
+    }
+
     private static class ClassWithListenerAnnotationWithAllAttributes {
 
         @AsyncListener(
@@ -227,6 +278,7 @@ class AsyncListenerAnnotationScannerIntegrationTest {
                         @AsyncOperation(
                                 channelName = "${test.property.test-channel}",
                                 description = "${test.property.description}",
+                                servers = {"${test.property.server1}", "${test.property.server2}"},
                                 headers =
                                         @AsyncOperation.Headers(
                                                 schemaName = "TestSchema",

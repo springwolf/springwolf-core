@@ -10,7 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
+import org.springframework.lang.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +35,14 @@ public class ConsumerData implements OperationData {
      * Optional, additional information about the channel and/or its message
      */
     protected String description;
+
+    /**
+     * Optional, List of server names the channel is assigned to. If empty, the
+     * channel is available on all defined servers.
+     */
+    @Nullable
+    @Singular("server")
+    protected List<String> servers;
 
     /**
      * The channel binding of the producer.
