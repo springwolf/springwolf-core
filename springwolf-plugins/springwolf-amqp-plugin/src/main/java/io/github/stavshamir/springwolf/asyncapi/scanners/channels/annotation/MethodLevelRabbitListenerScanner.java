@@ -26,14 +26,18 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
     private final RabbitListenerUtil.RabbitListenerUtilContext context;
     private StringValueResolver resolver;
 
+    private final SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor;
+
     public MethodLevelRabbitListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor,
             List<Queue> queues,
             List<Exchange> exchanges,
             List<Binding> bindings) {
         super(componentClassScanner, schemasService);
-        context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
+        this.context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
+        this.springPayloadAnnotationTypeExtractor = springPayloadAnnotationTypeExtractor;
     }
 
     @Override
@@ -67,6 +71,6 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
     }
 
     protected Class<?> getPayloadType(Method method) {
-        return SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
+        return springPayloadAnnotationTypeExtractor.getPayloadType(method);
     }
 }

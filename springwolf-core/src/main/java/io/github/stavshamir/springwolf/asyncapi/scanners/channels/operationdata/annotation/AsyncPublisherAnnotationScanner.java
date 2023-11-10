@@ -40,8 +40,9 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
     private final SchemasService schemasService;
     private final AsyncApiDocketService asyncApiDocketService;
 
-    private final List<OperationBindingProcessor> operationBindingProcessors;
+    private final SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor;
 
+    private final List<OperationBindingProcessor> operationBindingProcessors;
     private final List<MessageBindingProcessor> messageBindingProcessors;
 
     @Override
@@ -110,7 +111,7 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
         AsyncOperation op = annotation.operation();
         Class<?> payloadType = op.payloadType() != Object.class
                 ? op.payloadType()
-                : SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
+                : springPayloadAnnotationTypeExtractor.getPayloadType(method);
         return ProducerData.builder()
                 .channelName(resolver.resolveStringValue(op.channelName()))
                 .description(resolver.resolveStringValue(op.description()))

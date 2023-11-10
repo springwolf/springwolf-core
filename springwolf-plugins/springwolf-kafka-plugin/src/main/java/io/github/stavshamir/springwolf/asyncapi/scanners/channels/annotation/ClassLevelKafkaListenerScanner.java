@@ -18,16 +18,17 @@ import org.springframework.util.StringValueResolver;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor.getPayloadType;
-
 @Slf4j
 public class ClassLevelKafkaListenerScanner extends AbstractClassLevelListenerScanner<KafkaListener, KafkaHandler>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
 
-    public ClassLevelKafkaListenerScanner(ComponentClassScanner componentClassScanner, SchemasService schemasService) {
-        super(componentClassScanner, schemasService);
+    public ClassLevelKafkaListenerScanner(
+            ComponentClassScanner componentClassScanner,
+            SchemasService schemasService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor) {
+        super(componentClassScanner, schemasService, springPayloadAnnotationTypeExtractor);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class ClassLevelKafkaListenerScanner extends AbstractClassLevelListenerSc
 
     @Override
     protected AsyncHeaders buildHeaders(Method method) {
-        Class<?> payloadType = getPayloadType(method);
+        Class<?> payloadType = this.springPayloadAnnotationTypeExtractor.getPayloadType(method);
         return new AsyncHeadersForSpringKafkaBuilder("SpringKafkaDefaultHeaders-" + payloadType.getSimpleName())
                 .withTypeIdHeader(payloadType.getTypeName())
                 .build();

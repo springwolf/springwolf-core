@@ -8,6 +8,7 @@ import com.asyncapi.v2._6_0.model.server.Server;
 import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor;
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -42,6 +43,7 @@ import static org.mockito.Mockito.when;
         classes = {
             ConsumerOperationDataScanner.class,
             DefaultSchemasService.class,
+            SpringPayloadAnnotationTypeExtractor.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
         })

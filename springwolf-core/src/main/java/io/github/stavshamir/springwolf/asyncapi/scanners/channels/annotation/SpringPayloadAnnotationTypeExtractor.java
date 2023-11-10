@@ -15,7 +15,7 @@ import java.util.List;
 public class SpringPayloadAnnotationTypeExtractor {
     public SpringPayloadAnnotationTypeExtractor() {}
 
-    public static Class<?> getPayloadType(Method method) {
+    public Class<?> getPayloadType(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
         log.debug("Finding payload type for {}", methodName);
 
@@ -26,7 +26,7 @@ public class SpringPayloadAnnotationTypeExtractor {
         return getPayloadParameterClass(method, parameterTypes, parameterPayloadIndex);
     }
 
-    static Class<?> getPayloadParameterClass(Method method, Class<?>[] parameterTypes, int parameterPayloadIndex) {
+    private Class<?> getPayloadParameterClass(Method method, Class<?>[] parameterTypes, int parameterPayloadIndex) {
         Class<?> parameterClass = parameterTypes[parameterPayloadIndex];
 
         try {
@@ -43,7 +43,7 @@ public class SpringPayloadAnnotationTypeExtractor {
         return parameterClass;
     }
 
-    static int getPayloadParameterIndex(
+    private int getPayloadParameterIndex(
             Class<?>[] parameterTypes, Annotation[][] parameterAnnotations, String methodName) {
         switch (parameterTypes.length) {
             case 0 -> throw new IllegalArgumentException("Listener methods must not have 0 parameters: " + methodName);
@@ -65,7 +65,7 @@ public class SpringPayloadAnnotationTypeExtractor {
         }
     }
 
-    static int getPayloadAnnotatedParameterIndex(Annotation[][] parameterAnnotations) {
+    private int getPayloadAnnotatedParameterIndex(Annotation[][] parameterAnnotations) {
         for (int i = 0, length = parameterAnnotations.length; i < length; i++) {
             Annotation[] annotations = parameterAnnotations[i];
             boolean hasPayloadAnnotation = Arrays.stream(annotations).anyMatch(Payload.class::isInstance);

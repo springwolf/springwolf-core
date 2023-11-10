@@ -7,6 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.Kafk
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelKafkaListenerScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelKafkaListenerScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -30,8 +31,11 @@ public class SpringwolfKafkaScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     public ClassLevelKafkaListenerScanner classLevelKafkaListenerScanner(
-            ComponentClassScanner componentClassScanner, SchemasService schemasService) {
-        return new ClassLevelKafkaListenerScanner(componentClassScanner, schemasService);
+            ComponentClassScanner componentClassScanner,
+            SchemasService schemasService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor) {
+        return new ClassLevelKafkaListenerScanner(
+                componentClassScanner, schemasService, springPayloadAnnotationTypeExtractor);
     }
 
     @Bean
@@ -41,8 +45,11 @@ public class SpringwolfKafkaScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     public MethodLevelKafkaListenerScanner methodLevelKafkaListenerScanner(
-            ComponentClassScanner componentClassScanner, SchemasService schemasService) {
-        return new MethodLevelKafkaListenerScanner(componentClassScanner, schemasService);
+            ComponentClassScanner componentClassScanner,
+            SchemasService schemasService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor) {
+        return new MethodLevelKafkaListenerScanner(
+                componentClassScanner, schemasService, springPayloadAnnotationTypeExtractor);
     }
 
     @Bean

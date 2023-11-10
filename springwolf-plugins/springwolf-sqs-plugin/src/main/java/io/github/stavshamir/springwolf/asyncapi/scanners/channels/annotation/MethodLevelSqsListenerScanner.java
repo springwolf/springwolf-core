@@ -21,8 +21,14 @@ public class MethodLevelSqsListenerScanner extends AbstractMethodLevelListenerSc
 
     private StringValueResolver resolver;
 
-    public MethodLevelSqsListenerScanner(ComponentClassScanner componentClassScanner, SchemasService schemasService) {
+    private final SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor;
+
+    public MethodLevelSqsListenerScanner(
+            ComponentClassScanner componentClassScanner,
+            SchemasService schemasService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor) {
         super(componentClassScanner, schemasService);
+        this.springPayloadAnnotationTypeExtractor = springPayloadAnnotationTypeExtractor;
     }
 
     @Override
@@ -56,6 +62,6 @@ public class MethodLevelSqsListenerScanner extends AbstractMethodLevelListenerSc
     }
 
     protected Class<?> getPayloadType(Method method) {
-        return SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
+        return springPayloadAnnotationTypeExtractor.getPayloadType(method);
     }
 }

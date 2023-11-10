@@ -6,6 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethod
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ConsumerOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProducerOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListenerAnnotationScanner;
@@ -80,12 +81,14 @@ public class SpringwolfScannerConfiguration {
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncListenerAnnotationScanner(
                 componentClassScanner,
                 schemasService,
                 asyncApiDocketService,
+                springPayloadAnnotationTypeExtractor,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }
@@ -100,12 +103,14 @@ public class SpringwolfScannerConfiguration {
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncPublisherAnnotationScanner(
                 componentClassScanner,
                 schemasService,
                 asyncApiDocketService,
+                springPayloadAnnotationTypeExtractor,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }

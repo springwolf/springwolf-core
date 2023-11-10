@@ -31,10 +31,11 @@ public class ClassLevelRabbitListenerScanner extends AbstractClassLevelListenerS
     public ClassLevelRabbitListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor,
             List<Queue> queues,
             List<Exchange> exchanges,
             List<Binding> bindings) {
-        super(componentClassScanner, schemasService);
+        super(componentClassScanner, schemasService, springPayloadAnnotationTypeExtractor);
         context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
     }
 

@@ -43,6 +43,7 @@ import static org.mockito.Mockito.when;
         classes = {
             ClassLevelRabbitListenerScanner.class,
             DefaultSchemasService.class,
+            SpringPayloadAnnotationTypeExtractor.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
         })

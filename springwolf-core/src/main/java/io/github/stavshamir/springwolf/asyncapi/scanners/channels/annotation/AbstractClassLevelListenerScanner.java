@@ -29,7 +29,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
-import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor.getPayloadType;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
@@ -41,6 +40,8 @@ public abstract class AbstractClassLevelListenerScanner<
     private final ComponentClassScanner componentClassScanner;
 
     private final SchemasService schemasService;
+
+    protected final SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor;
 
     /**
      * This annotation is used on class level
@@ -165,7 +166,7 @@ public abstract class AbstractClassLevelListenerScanner<
     }
 
     private Message buildMessage(Method method) {
-        Class<?> payloadType = getPayloadType(method);
+        Class<?> payloadType = springPayloadAnnotationTypeExtractor.getPayloadType(method);
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(this.buildHeaders(method));
 

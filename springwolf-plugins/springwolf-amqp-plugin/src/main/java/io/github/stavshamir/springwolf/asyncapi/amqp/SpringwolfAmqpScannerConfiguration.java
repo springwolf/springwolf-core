@@ -7,6 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.Amqp
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelRabbitListenerScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelRabbitListenerScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.amqp.core.Binding;
@@ -37,10 +38,17 @@ public class SpringwolfAmqpScannerConfiguration {
     public ClassLevelRabbitListenerScanner classLevelRabbitListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor,
             List<Queue> queues,
             List<Exchange> exchanges,
             List<Binding> bindings) {
-        return new ClassLevelRabbitListenerScanner(componentClassScanner, schemasService, queues, exchanges, bindings);
+        return new ClassLevelRabbitListenerScanner(
+                componentClassScanner,
+                schemasService,
+                springPayloadAnnotationTypeExtractor,
+                queues,
+                exchanges,
+                bindings);
     }
 
     @Bean
@@ -52,10 +60,17 @@ public class SpringwolfAmqpScannerConfiguration {
     public MethodLevelRabbitListenerScanner methodLevelRabbitListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor,
             List<Queue> queues,
             List<Exchange> exchanges,
             List<Binding> bindings) {
-        return new MethodLevelRabbitListenerScanner(componentClassScanner, schemasService, queues, exchanges, bindings);
+        return new MethodLevelRabbitListenerScanner(
+                componentClassScanner,
+                schemasService,
+                springPayloadAnnotationTypeExtractor,
+                queues,
+                exchanges,
+                bindings);
     }
 
     @Bean
