@@ -19,6 +19,7 @@ dependencies {
     implementation project(":springwolf-plugins:springwolf-sns")
 
     annotationProcessor project(":springwolf-plugins:springwolf-sns")
+    runtimeOnly project(":springwolf-add-ons:springwolf-json-schema")
     runtimeOnly project(":springwolf-ui")
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
