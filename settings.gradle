@@ -14,7 +14,8 @@ include(
         'springwolf-examples:springwolf-sqs-example',
         'springwolf-ui',
         'springwolf-add-ons:springwolf-common-model-converters',
-        'springwolf-add-ons:springwolf-generic-binding'
+        'springwolf-add-ons:springwolf-generic-binding',
+        'springwolf-add-ons:springwolf-json-schema'
 )
 
 project(':springwolf-plugins:springwolf-amqp-plugin').name = 'springwolf-amqp'

@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        addon: [ "common-model-converters", "generic-binding" ]
+        addon: [ "common-model-converters", "generic-binding", "json-schema" ]
     timeout-minutes: 10
 
     env:
