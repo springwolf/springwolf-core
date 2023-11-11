@@ -21,7 +21,8 @@ public class JsonSchemaGenerator {
     public Object fromSchema(Schema<?> schema, Map<String, Schema> definitions) throws JsonProcessingException {
         ObjectNode node = fromSchemaInternal(schema, definitions, new HashSet<>());
         node.put("$schema", "https://json-schema.org/draft-04/schema#");
-        return node;
+
+        return objectMapper.readValue(node.toString(), Object.class);
     }
 
     private ObjectNode fromSchemaInternal(Schema<?> schema, Map<String, Schema> definitions, Set<Schema> visited) {

@@ -55,25 +55,24 @@ class JsonSchemaGeneratorTest {
         pongSchema.setProperties(Map.of("pongField", pongFieldSchema));
 
         // when
-        String jsonSchema = jsonSchemaGenerator
-                .fromSchema(
-                        asyncApiSchema.get(),
-                        Map.of(
-                                "StringRef",
-                                new StringSchema(),
-                                "PingSchema",
-                                pingSchema,
-                                "PingFieldSchema",
-                                pingFieldSchema,
-                                "PongSchema",
-                                pongSchema,
-                                "PongFieldSchema",
-                                pongFieldSchema))
-                .toString();
+        Object jsonSchema = jsonSchemaGenerator.fromSchema(
+                asyncApiSchema.get(),
+                Map.of(
+                        "StringRef",
+                        new StringSchema(),
+                        "PingSchema",
+                        pingSchema,
+                        "PingFieldSchema",
+                        pingFieldSchema,
+                        "PongSchema",
+                        pongSchema,
+                        "PongFieldSchema",
+                        pongFieldSchema));
+        String jsonSchemaString = mapper.writeValueAsString(jsonSchema);
 
         // then
-        verifyValidJsonSchema(jsonSchema);
-        assertThat(jsonSchema).isEqualToIgnoringWhitespace(expectedJsonSchema);
+        verifyValidJsonSchema(jsonSchemaString);
+        assertThat(jsonSchemaString).isEqualToIgnoringWhitespace(expectedJsonSchema);
     }
 
     public static Stream<Arguments> validateJsonSchemaTest() {

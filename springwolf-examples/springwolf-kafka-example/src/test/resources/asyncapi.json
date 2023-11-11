@@ -352,10 +352,10 @@
           "$schema": "https://json-schema.org/draft-04/schema#",
           "name": "CloudEventHeadersForAnotherPayloadDtoEndpoint",
           "properties": {
-            "ce_type": {
-              "description": "CloudEvent Payload Type Header",
+            "ce_id": {
+              "description": "CloudEvent Id Header",
               "enum": [
-                "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint"
+                "1234-1234-1234"
               ],
               "type": "string"
             },
@@ -373,6 +373,13 @@
               ],
               "type": "string"
             },
+            "ce_subject": {
+              "description": "CloudEvent Subject Header",
+              "enum": [
+                "Test Subject"
+              ],
+              "type": "string"
+            },
             "ce_time": {
               "description": "CloudEvent Time Header",
               "enum": [
@@ -380,24 +387,17 @@
               ],
               "type": "string"
             },
+            "ce_type": {
+              "description": "CloudEvent Payload Type Header",
+              "enum": [
+                "io.github.stavshamir.springwolf.CloudEventHeadersForAnotherPayloadDtoEndpoint"
+              ],
+              "type": "string"
+            },
             "content-type": {
               "description": "CloudEvent Content-Type Header",
               "enum": [
                 "application/json"
-              ],
-              "type": "string"
-            },
-            "ce_id": {
-              "description": "CloudEvent Id Header",
-              "enum": [
-                "1234-1234-1234"
-              ],
-              "type": "string"
-            },
-            "ce_subject": {
-              "description": "CloudEvent Subject Header",
-              "enum": [
-                "Test Subject"
               ],
               "type": "string"
             }
@@ -497,31 +497,10 @@
           "$schema": "https://json-schema.org/draft-04/schema#",
           "name": "SpringDefaultHeaderAndCloudEvent",
           "properties": {
-            "ce_type": {
-              "description": "CloudEvent Payload Type Header",
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
               "enum": [
-                "NestedPayloadDto.v1"
-              ],
-              "type": "string"
-            },
-            "ce_source": {
-              "description": "CloudEvent Source Header",
-              "enum": [
-                "http://localhost"
-              ],
-              "type": "string"
-            },
-            "ce_time": {
-              "description": "CloudEvent Time Header",
-              "enum": [
-                "2023-10-28 20:01:23+00:00"
-              ],
-              "type": "string"
-            },
-            "ce_specversion": {
-              "description": "CloudEvent Spec Version Header",
-              "enum": [
-                "1.0"
+                "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
               ],
               "type": "string"
             },
@@ -532,17 +511,17 @@
               ],
               "type": "string"
             },
-            "content-type": {
-              "description": "CloudEvent Content-Type Header",
+            "ce_source": {
+              "description": "CloudEvent Source Header",
               "enum": [
-                "application/json"
+                "http://localhost"
               ],
               "type": "string"
             },
-            "__TypeId__": {
-              "description": "Spring Type Id Header",
+            "ce_specversion": {
+              "description": "CloudEvent Spec Version Header",
               "enum": [
-                "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
+                "1.0"
               ],
               "type": "string"
             },
@@ -550,6 +529,27 @@
               "description": "CloudEvent Subject Header",
               "enum": [
                 "Springwolf example project - Kafka"
+              ],
+              "type": "string"
+            },
+            "ce_time": {
+              "description": "CloudEvent Time Header",
+              "enum": [
+                "2023-10-28 20:01:23+00:00"
+              ],
+              "type": "string"
+            },
+            "ce_type": {
+              "description": "CloudEvent Payload Type Header",
+              "enum": [
+                "NestedPayloadDto.v1"
+              ],
+              "type": "string"
+            },
+            "content-type": {
+              "description": "CloudEvent Content-Type Header",
+              "enum": [
+                "application/json"
               ],
               "type": "string"
             }
@@ -708,26 +708,10 @@
           "description": "Another payload model",
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
           "properties": {
-            "foo": {
-              "description": "Foo field",
-              "name": "foo",
-              "type": "string"
-            },
             "example": {
               "description": "Example payload model",
               "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
               "properties": {
-                "someString": {
-                  "description": "Some string field",
-                  "name": "someString",
-                  "type": "string"
-                },
-                "someLong": {
-                  "description": "Some long field",
-                  "format": "int64",
-                  "name": "someLong",
-                  "type": "integer"
-                },
                 "someEnum": {
                   "description": "Some enum field",
                   "enum": [
@@ -737,6 +721,17 @@
                   ],
                   "name": "someEnum",
                   "type": "string"
+                },
+                "someLong": {
+                  "description": "Some long field",
+                  "format": "int64",
+                  "name": "someLong",
+                  "type": "integer"
+                },
+                "someString": {
+                  "description": "Some string field",
+                  "name": "someString",
+                  "type": "string"
                 }
               },
               "required": [
@@ -744,6 +739,11 @@
                 "someString"
               ],
               "type": "object"
+            },
+            "foo": {
+              "description": "Foo field",
+              "name": "foo",
+              "type": "string"
             }
           },
           "required": [
@@ -792,17 +792,6 @@
           "description": "Example payload model",
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
           "properties": {
-            "someString": {
-              "description": "Some string field",
-              "name": "someString",
-              "type": "string"
-            },
-            "someLong": {
-              "description": "Some long field",
-              "format": "int64",
-              "name": "someLong",
-              "type": "integer"
-            },
             "someEnum": {
               "description": "Some enum field",
               "enum": [
@@ -811,6 +800,17 @@
                 "FOO3"
               ],
               "name": "someEnum",
+              "type": "string"
+            },
+            "someLong": {
+              "description": "Some long field",
+              "format": "int64",
+              "name": "someLong",
+              "type": "integer"
+            },
+            "someString": {
+              "description": "Some string field",
+              "name": "someString",
               "type": "string"
             }
           },
@@ -858,6 +858,11 @@
           "description": "Payload model with nested complex types",
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
           "properties": {
+            "examplePayloads": {
+              "items": { },
+              "name": "examplePayloads",
+              "type": "array"
+            },
             "someStrings": {
               "items": {
                 "description": "Some string field",
@@ -866,11 +871,6 @@
               "name": "someStrings",
               "type": "array",
               "uniqueItems": true
-            },
-            "examplePayloads": {
-              "items": { },
-              "name": "examplePayloads",
-              "type": "array"
             }
           },
           "type": "object"
