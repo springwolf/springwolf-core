@@ -23,7 +23,7 @@ Add the following dependency:
 
 ```groovy
 dependencies {
-    implementation 'io.github.springwolf:springwolf-json-schema:<springwolf-version>'
+    runtimeOnly 'io.github.springwolf:springwolf-json-schema:<springwolf-version>'
 }
 ```
 
