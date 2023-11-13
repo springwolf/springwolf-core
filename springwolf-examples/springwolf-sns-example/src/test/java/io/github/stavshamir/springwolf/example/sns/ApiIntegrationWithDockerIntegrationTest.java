@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.sns;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * the setup uses a full docker-compose context with a real sns instance.
  */
 @Testcontainers
+@Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ApiIntegrationWithDockerIntegrationTest {
 
@@ -46,7 +48,8 @@ public class ApiIntegrationWithDockerIntegrationTest {
     @Container
     public DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withExposedService(APP_NAME, APP_PORT)
-            .withEnv(ENV);
+            .withEnv(ENV)
+            .withLogConsumer(APP_NAME, l -> log.warn("APP: %s".formatted(l.getUtf8StringWithoutLineEnding())));
 
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);
