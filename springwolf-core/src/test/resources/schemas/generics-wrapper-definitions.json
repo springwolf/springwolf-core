@@ -1,0 +1,14 @@
+{
+  "ListWrapper" : {
+    "type" : "array",
+    "properties" : {
+      "empty" : {
+        "type" : "boolean"
+      }
+    },
+    "example" : [ "string" ],
+    "items" : {
+      "type" : "string"
+    }
+  }
+}

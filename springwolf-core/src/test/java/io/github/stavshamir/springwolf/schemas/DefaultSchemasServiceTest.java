@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,6 +82,17 @@ class DefaultSchemasServiceTest {
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
         String expected = jsonResource("/schemas/complex-definitions.json");
+
+        System.out.println("Got: " + actualDefinitions);
+        assertEquals(expected, actualDefinitions);
+    }
+
+    @Test
+    void getListWrapperDefinitions() throws IOException {
+        schemasService.register(ListWrapper.class);
+
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String expected = jsonResource("/schemas/generics-wrapper-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -149,6 +161,9 @@ class DefaultSchemasServiceTest {
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         private SimpleFoo f;
 
+        @Schema(description = "List without example")
+        private List<String> ls_plain;
+
         @Schema(description = "Map with example", example = "{\"key1\": \"value1\"}")
         private Map<String, String> mss;
 
@@ -168,6 +183,10 @@ class DefaultSchemasServiceTest {
     private static class ArrayFoo {
         private List<SimpleFoo> fList;
     }
+
+    @Data
+    @NoArgsConstructor
+    private static class ListWrapper extends ArrayList<String> {}
 
     @Data
     @NoArgsConstructor
