@@ -68,7 +68,9 @@ allprojects {
 
         useJUnitPlatform()
         testLogging {
-            events "passed", "skipped", "failed"
+            showStandardStreams = true
+
+            events "skipped", "failed"
             exceptionFormat = 'full'
         }
     }
@@ -85,7 +87,9 @@ allprojects {
             excludePatterns = ['*IntegrationTest']
         }
         testLogging {
-            events "passed", "skipped", "failed"
+            showStandardStreams = true
+
+            events "skipped", "failed"
             exceptionFormat = 'full'
         }
     }
