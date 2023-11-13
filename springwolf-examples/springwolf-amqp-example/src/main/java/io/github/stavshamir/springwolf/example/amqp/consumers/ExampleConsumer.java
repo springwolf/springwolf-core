@@ -52,8 +52,13 @@ public class ExampleConsumer {
         log.info("Received new message in example-bindings-queue: {}", payload.toString());
     }
 
-    @RabbitListener(queues = "example-topic-queue")
+    @RabbitListener(queues = "multi-payload-queue")
     public void bindingsBeanExample(AnotherPayloadDto payload) {
-        log.info("Received new message in example-topic-queue: {}", payload.toString());
+        log.info("Received new message in multi-payload-queue (AnotherPayloadDto): {}", payload.toString());
+    }
+
+    @RabbitListener(queues = "multi-payload-queue")
+    public void bindingsBeanExample(ExamplePayloadDto payload) {
+        log.info("Received new message in multi-payload-queue (ExamplePayloadDto): {}", payload.toString());
     }
 }

@@ -43,7 +43,7 @@ public class RabbitConfiguration {
 
     @Bean
     public Queue exampleTopicQueue() {
-        return new Queue("example-topic-queue");
+        return new Queue("multi-payload-queue");
     }
 
     @Bean

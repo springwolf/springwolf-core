@@ -7,6 +7,7 @@ import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -231,6 +232,46 @@ class MethodLevelKafkaListenerScannerIntegrationTest {
     }
 
     @Test
+    void scan_componentHasKafkaListenerMethods_multiplePayloads() {
+        // Given a class with two method annotated with KafkaListener:
+        // - Both methods have the same queue
+        setClassToScan(ClassWithKafkaListenerAnnotationMultiplePayloads.class);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
+
+        // Then the returned collection contains the channel, and the message contains both payload options using anyOf
+        Message messageSimpleFoo = Message.builder()
+                .name(SimpleFoo.class.getName())
+                .title(SimpleFoo.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(defaultMessageBinding)
+                .build();
+        Message messageString = Message.builder()
+                .name(String.class.getName())
+                .title(String.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(defaultMessageBinding)
+                .build();
+
+        Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-topic_publish_methodWithAnnotation")
+                .bindings(defaultOperationBinding)
+                .message(MessageHelper.toMessageObjectOrComposition(Set.of(messageSimpleFoo, messageString)))
+                .build();
+
+        ChannelItem expectedChannel = ChannelItem.builder()
+                .bindings(defaultChannelBinding)
+                .publish(operation)
+                .build();
+
+        assertThat(actualChannels).containsExactly(Map.entry(TOPIC, expectedChannel));
+    }
+
+    @Test
     void scan_componentHasKafkaListenerMethods_batchPayload() {
         // Given a class with a method annotated with KafkaListener with a payload of type List<?>
         setClassToScan(ClassWithKafkaListenerWithBatchPayload.class);
@@ -312,6 +353,15 @@ class MethodLevelKafkaListenerScannerIntegrationTest {
 
         @KafkaListener(topics = TOPIC)
         private void methodWithAnnotation(String anotherParam, @Payload SimpleFoo payload) {}
+    }
+
+    private static class ClassWithKafkaListenerAnnotationMultiplePayloads {
+
+        @KafkaListener(topics = TOPIC)
+        private void methodWithAnnotation(SimpleFoo payload) {}
+
+        @KafkaListener(topics = TOPIC)
+        private void methodWithAnnotation(String payload) {}
     }
 
     private static class ClassWithKafkaListenerWithBatchPayload {
