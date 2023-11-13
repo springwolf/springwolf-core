@@ -21,11 +21,13 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
@@ -41,6 +43,11 @@ public abstract class AbstractClassLevelListenerScanner<
     private final ComponentClassScanner componentClassScanner;
 
     private final SchemasService schemasService;
+
+    private static final Comparator<Map.Entry<String, ChannelItem>> byPublishOperationName =
+            Comparator.comparing(it -> it.getValue().getPublish().getOperationId());
+    private static final Supplier<Set<Map.Entry<String, ChannelItem>>> channelItemSupplier =
+            () -> new TreeSet<>(byPublishOperationName);
 
     /**
      * This annotation is used on class level
@@ -93,17 +100,17 @@ public abstract class AbstractClassLevelListenerScanner<
     @Override
     public Map<String, ChannelItem> scan() {
         Set<Class<?>> components = componentClassScanner.scan();
-        List<Map.Entry<String, ChannelItem>> channels = mapToChannels(components);
+        Set<Map.Entry<String, ChannelItem>> channels = mapToChannels(components);
         return ChannelMerger.merge(new ArrayList<>(channels));
     }
 
-    private List<Map.Entry<String, ChannelItem>> mapToChannels(Set<Class<?>> components) {
+    private Set<Map.Entry<String, ChannelItem>> mapToChannels(Set<Class<?>> components) {
         return components.stream()
                 .filter(this::isClassAnnotated)
                 .map(this::mapClassToChannel)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(channelItemSupplier));
     }
 
     private boolean isClassAnnotated(Class<?> component) {
