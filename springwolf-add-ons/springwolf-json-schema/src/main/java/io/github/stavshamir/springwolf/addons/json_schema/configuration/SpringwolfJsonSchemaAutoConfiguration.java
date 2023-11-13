@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.addons.json_schema.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.addons.json_schema.JsonSchemaCustomizer;
 import io.github.stavshamir.springwolf.addons.json_schema.JsonSchemaGenerator;
+import io.github.stavshamir.springwolf.asyncapi.AsyncApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +17,7 @@ public class SpringwolfJsonSchemaAutoConfiguration {
     }
 
     @Bean
-    public JsonSchemaCustomizer jsonSchemaCustomizer(JsonSchemaGenerator jsonSchemaGenerator) {
+    public AsyncApiCustomizer jsonSchemaCustomizer(JsonSchemaGenerator jsonSchemaGenerator) {
         return new JsonSchemaCustomizer(jsonSchemaGenerator);
     }
 }
