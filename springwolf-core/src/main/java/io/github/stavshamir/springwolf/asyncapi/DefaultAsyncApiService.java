@@ -78,7 +78,8 @@ public class DefaultAsyncApiService implements AsyncApiService {
                     .build();
 
             for (AsyncApiCustomizer customizer : customizers) {
-                log.debug("Starting customizer %s".formatted(customizer.getClass().getName()));
+                log.debug(
+                        "Starting customizer %s".formatted(customizer.getClass().getName()));
                 customizer.customize(asyncAPI);
             }
             this.asyncAPIResult = new AsyncAPIResult(asyncAPI, null);
