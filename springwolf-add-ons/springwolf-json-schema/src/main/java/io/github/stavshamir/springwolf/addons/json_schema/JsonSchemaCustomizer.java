@@ -20,16 +20,19 @@ public class JsonSchemaCustomizer implements AsyncApiCustomizer {
     @Override
     public void customize(AsyncAPI asyncAPI) {
         Map<String, Schema> schemas = asyncAPI.getComponents().getSchemas();
-        for (Schema<?> schema : schemas.values()) {
+        for (Map.Entry<String, Schema> entry : schemas.entrySet()) {
+            Schema schema = entry.getValue();
             if (schema.getExtensions() == null) {
                 schema.setExtensions(new HashMap<>());
             }
 
             try {
+                log.debug("Generate json-schema for %s".formatted(entry.getKey()));
+
                 Object jsonSchema = jsonSchemaGenerator.fromSchema(schema, schemas);
-                schema.getExtensions().computeIfAbsent(EXTENSION_JSON_SCHEMA, (key) -> jsonSchema);
+                schema.getExtensions().putIfAbsent(EXTENSION_JSON_SCHEMA,  jsonSchema);
             } catch (Exception ex) {
-                log.debug("Unable to create json schema for %s".formatted(schema.getName()), ex);
+                log.debug("Unable to create json-schema for %s".formatted(schema.getName()), ex);
             }
         }
     }
