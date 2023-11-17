@@ -5,6 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -12,8 +13,9 @@ import java.lang.annotation.Target;
 /**
  * Annotation is mapped to {@link OperationData}
  */
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 @Target({})
+@Inherited
 public @interface AsyncOperation {
     /**
      * Mapped to {@link OperationData#getChannelName()}
@@ -50,7 +52,8 @@ public @interface AsyncOperation {
 
     @Retention(RetentionPolicy.CLASS)
     @Target({})
-    @interface Headers {
+    @Inherited
+    public @interface Headers {
         /**
          * Mapped to {@link AsyncHeaders#getSchemaName()}
          */
@@ -60,7 +63,8 @@ public @interface AsyncOperation {
 
         @Retention(RetentionPolicy.CLASS)
         @Target({})
-        @interface Header {
+        @Inherited
+        public @interface Header {
             /**
              * Mapped to {@link AsyncHeaderSchema#getHeaderName()}
              */

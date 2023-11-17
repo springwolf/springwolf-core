@@ -16,12 +16,19 @@ import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.MergedAnnotation;
+import org.springframework.core.annotation.MergedAnnotationCollectors;
+import org.springframework.core.annotation.MergedAnnotationPredicates;
+import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.core.annotation.RepeatableContainers;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,8 +73,9 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(annotationClass)
-                        || method.isAnnotationPresent(annotationClassRepeatable));
+                .filter(method -> !method.isBridge())
+                .filter(method -> AnnotationUtils.findAnnotation(method, annotationClass) != null
+                        || AnnotationUtils.findAnnotation(method, annotationClassRepeatable) != null);
     }
 
     private Stream<OperationData> toOperationData(Method method) {
@@ -80,7 +88,16 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
         Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
 
         Class<AsyncListener> annotationClass = AsyncListener.class;
-        return Arrays.stream(method.getAnnotationsByType(annotationClass))
+        Set<AsyncListener> annotations = MergedAnnotations.from(
+                        method,
+                        MergedAnnotations.SearchStrategy.TYPE_HIERARCHY,
+                        RepeatableContainers.standardRepeatables())
+                .stream(annotationClass)
+                .filter(MergedAnnotationPredicates.firstRunOf(MergedAnnotation::getAggregateIndex))
+                .map(MergedAnnotation::withNonMergedAttributes)
+                .collect(MergedAnnotationCollectors.toAnnotationSet());
+
+        return annotations.stream()
                 .map(annotation -> toConsumerData(method, operationBindings, messageBindings, message, annotation));
     }
 

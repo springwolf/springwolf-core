@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncOperationBinding;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -15,6 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD})
 @AsyncOperationBinding
+@Inherited
 public @interface KafkaAsyncOperationBinding {
 
     String type() default "kafka";
@@ -29,7 +31,7 @@ public @interface KafkaAsyncOperationBinding {
 
     @Retention(RetentionPolicy.CLASS)
     @Target({})
-    @interface KafkaAsyncMessageBinding {
+    public @interface KafkaAsyncMessageBinding {
 
         KafkaAsyncKey key() default @KafkaAsyncKey(type = KafkaAsyncKey.KafkaKeyTypes.UNDEFINED_KEY);
 
@@ -38,7 +40,7 @@ public @interface KafkaAsyncOperationBinding {
 
     @Retention(RetentionPolicy.CLASS)
     @Target({})
-    @interface KafkaAsyncKey {
+    public @interface KafkaAsyncKey {
 
         KafkaKeyTypes type() default KafkaKeyTypes.STRING_KEY;
 

@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -54,7 +56,7 @@ import static org.mockito.Mockito.when;
             "test.property.server1=server1",
             "test.property.server2=server2"
         })
-class AsyncListenerAnnotationScannerTest {
+class AsyncListenerAnnotationScannerIntegrationTest {
 
     @Autowired
     private AsyncListenerAnnotationScanner channelScanner;
@@ -243,6 +245,39 @@ class AsyncListenerAnnotationScannerTest {
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
+    @ParameterizedTest
+    @ValueSource(classes = {ClassImplementingInterfaceWithAnnotation.class})
+    void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) {
+        // Given a class with a method, which is declared in a generic interface
+        setClassToScan(clazz);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannels = channelScanner.scan();
+
+        // Then the returned collection contains the channel with the actual method, excluding type erased methods
+        Message message = Message.builder()
+                .name(String.class.getName())
+                .title(String.class.getSimpleName())
+                .description(null)
+                .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
+                .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(EMPTY_MAP)
+                .build();
+
+        Operation operation = Operation.builder()
+                .description("test channel operation description")
+                .operationId("test-channel_publish")
+                .bindings(EMPTY_MAP)
+                .message(message)
+                .build();
+
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).publish(operation).build();
+
+        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+    }
+
     private static class ClassWithoutListenerAnnotation {
 
         private void methodWithoutAnnotation() {}
@@ -317,6 +352,36 @@ class AsyncListenerAnnotationScannerTest {
         private void methodWithAnnotation(SimpleFoo payload) {}
 
         private void methodWithoutAnnotation() {}
+    }
+
+    private static class ClassImplementingInterface implements ClassInterface<String> {
+
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description"))
+        @Override
+        public void methodFromInterface(String payload) {}
+    }
+
+    interface ClassInterface<T> {
+        void methodFromInterface(T payload);
+    }
+
+    private static class ClassImplementingInterfaceWithAnnotation implements ClassInterfaceWithAnnotation<String> {
+
+        @Override
+        public void methodFromInterface(String payload) {}
+    }
+
+    interface ClassInterfaceWithAnnotation<T> {
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description"))
+        void methodFromInterface(T payload);
     }
 
     @Data
