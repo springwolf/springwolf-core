@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -33,6 +34,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD})
 @Repeatable(AsyncListeners.class)
+@Inherited
 public @interface AsyncListener {
     /**
      * Mapped to {@link OperationData}

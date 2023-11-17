@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -15,6 +16,7 @@ import static io.github.stavshamir.springwolf.asyncapi.types.channel.operation.m
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})
+@Inherited
 public @interface AsyncMessage {
     /**
      * Mapped to {@link Message#getDescription()}

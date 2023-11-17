@@ -8,6 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessa
 import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -37,5 +38,6 @@ public class TestMessageBindingProcessor implements MessageBindingProcessor {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(value = {ElementType.METHOD})
+    @Inherited
     public @interface TestMessageBinding {}
 }
