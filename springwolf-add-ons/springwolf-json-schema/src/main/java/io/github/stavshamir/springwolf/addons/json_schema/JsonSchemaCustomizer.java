@@ -32,7 +32,7 @@ public class JsonSchemaCustomizer implements AsyncApiCustomizer {
                 Object jsonSchema = jsonSchemaGenerator.fromSchema(schema, schemas);
                 schema.getExtensions().putIfAbsent(EXTENSION_JSON_SCHEMA, jsonSchema);
             } catch (Exception ex) {
-                log.debug("Unable to create json-schema for %s".formatted(schema.getName()), ex);
+                log.warn("Unable to create json-schema for %s".formatted(schema.getName()), ex);
             }
         }
     }

@@ -59,7 +59,7 @@ public class ExampleJsonGenerator implements ExampleGenerator {
             String exampleString = buildSchema(schema, definitions);
             return objectMapper.readValue(exampleString, Object.class);
         } catch (JsonProcessingException | ExampleGeneratingException ex) {
-            log.error("Failed to build json example for schema {}", schema.getName());
+            log.warn("Failed to build json example for schema {}", schema.getName());
         }
         return null;
     }
