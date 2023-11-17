@@ -48,8 +48,6 @@ public class DefaultAsyncApiService implements AsyncApiService {
     /**
      * Does the 'heavy work' of building the AsyncAPI documents once. Stores the resulting
      * AsyncAPI document or alternativly a catched exception/error in the instance variable asyncAPIResult.
-     *
-     * @return
      */
     protected synchronized void initAsyncAPI() {
         if (this.asyncAPIResult != null) {
@@ -80,10 +78,15 @@ public class DefaultAsyncApiService implements AsyncApiService {
                     .build();
 
             for (AsyncApiCustomizer customizer : customizers) {
+                log.debug(
+                        "Starting customizer %s".formatted(customizer.getClass().getName()));
                 customizer.customize(asyncAPI);
             }
             this.asyncAPIResult = new AsyncAPIResult(asyncAPI, null);
+
+            log.debug("AsyncAPI document was build");
         } catch (Throwable t) {
+            log.debug("Failed to build AsyncAPI document", t);
             this.asyncAPIResult = new AsyncAPIResult(null, t);
         }
     }

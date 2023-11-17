@@ -14,6 +14,7 @@ dependencies {
     implementation project(":springwolf-plugins:springwolf-kafka")
 
     runtimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
+    runtimeOnly project(":springwolf-add-ons:springwolf-json-schema")
     runtimeOnly project(":springwolf-ui")
 
     annotationProcessor project(":springwolf-plugins:springwolf-kafka")

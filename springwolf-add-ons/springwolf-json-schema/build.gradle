@@ -9,17 +9,27 @@ plugins {
 dependencies {
     api project(":springwolf-core")
 
-    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+
+    testImplementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+
+    implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
+
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-core"
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+
+    testImplementation "com.networknt:json-schema-validator:${jsonSchemaValidator}"
 }
 
 jar {
@@ -37,8 +47,8 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             pom {
-                name = 'springwolf-generic-binding'
-                description = 'Document any AsyncApi binding in Springwolf using a generic way'
+                name = 'springwolf-json-schema'
+                description = 'Extends Springwolf schemas with json-schema'
             }
         }
     }
