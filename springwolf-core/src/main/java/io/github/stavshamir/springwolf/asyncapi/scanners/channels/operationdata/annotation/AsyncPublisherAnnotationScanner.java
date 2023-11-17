@@ -66,9 +66,10 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(annotationClass)
-                        || method.isAnnotationPresent(annotationClassRepeatable))
-                .filter(method -> !AsyncAnnotationScannerUtil.isMethodInherited(method, type));
+                .filter(method -> !method.isBridge())
+                .filter(method ->org.springframework.core.annotation.AnnotationsUtils.getAnnotation(method, annotationClass) != null);
+//                .filter(method -> method.isAnnotationPresent(annotationClass)
+//                        || method.isAnnotationPresent(annotationClassRepeatable));
     }
 
     private Stream<OperationData> toOperationData(Method method) {

@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -149,23 +148,6 @@ class AsyncAnnotationScannerUtilTest {
     }
 
     @Test
-    void isMethodInInterfaces() throws NoSuchMethodException {
-        // given
-        Class<ClassImplementingInterface> clazz = ClassImplementingInterface.class;
-        var expectedMethod = clazz.getDeclaredMethod("methodFromInterface", String.class);
-        var methodAfterTypeErasureOfInterface = clazz.getDeclaredMethod("methodFromInterface", Object.class);
-
-        // when + then
-        assertThat(expectedMethod).isNotNull();
-        assertThat(methodAfterTypeErasureOfInterface).isNotNull();
-
-        assertThat(AsyncAnnotationScannerUtil.isMethodInherited(expectedMethod, clazz))
-                .isFalse();
-        assertThat(AsyncAnnotationScannerUtil.isMethodInherited(methodAfterTypeErasureOfInterface, clazz))
-                .isTrue();
-    }
-
-    @Test
     void getServers() throws NoSuchMethodException {
         Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
@@ -275,21 +257,5 @@ class AsyncAnnotationScannerUtilTest {
         @TestOperationBindingProcessor.TestOperationBinding()
         @TestAbstractOperationBindingProcessor.TestOperationBinding()
         private void methodWithAnnotation(String payload) {}
-    }
-
-    private static class ClassImplementingInterface implements ClassInterface<String> {
-
-        @AsyncListener(
-                operation =
-                        @AsyncOperation(
-                                channelName = "${test.property.test-channel}",
-                                description = "${test.property.description}"))
-        @TestOperationBindingProcessor.TestOperationBinding()
-        @Override
-        public void methodFromInterface(String payload) {}
-    }
-
-    public static interface ClassInterface<T> {
-        void methodFromInterface(T payload);
     }
 }

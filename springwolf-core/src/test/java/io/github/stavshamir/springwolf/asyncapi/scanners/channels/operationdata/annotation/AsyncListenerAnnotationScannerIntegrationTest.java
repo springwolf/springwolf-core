@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -243,10 +245,11 @@ class AsyncListenerAnnotationScannerIntegrationTest {
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
-    @Test
-    void scan_componentHasOnlyDeclaredMethods() {
+    @ParameterizedTest
+    @ValueSource(classes = {ClassImplementingInterface.class, ClassImplementingInterfaceWithAnnotation.class})
+    void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) {
         // Given a class with a method, which is declared in a generic interface
-        setClassToScan(ClassImplementingInterface.class);
+        setClassToScan(clazz);
 
         // When scan is called
         Map<String, ChannelItem> actualChannels = channelScanner.scan();
@@ -351,7 +354,7 @@ class AsyncListenerAnnotationScannerIntegrationTest {
         private void methodWithoutAnnotation() {}
     }
 
-    private static class ClassImplementingInterface implements AsyncAnnotationScannerUtilTest.ClassInterface<String> {
+    private static class ClassImplementingInterface implements ClassInterface<String> {
 
         @AsyncListener(
                 operation =
@@ -360,6 +363,26 @@ class AsyncListenerAnnotationScannerIntegrationTest {
                                 description = "test channel operation description"))
         @Override
         public void methodFromInterface(String payload) {}
+    }
+
+    interface ClassInterface<T> {
+        void methodFromInterface(T payload);
+    }
+
+    private static class ClassImplementingInterfaceWithAnnotation
+            implements AsyncPublisherAnnotationScannerIntegrationTest.ClassInterfaceWithAnnotation<String> {
+
+        @Override
+        public void methodFromInterface(String payload) {}
+    }
+
+    interface ClassInterfaceWithAnnotation<T> {
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description"))
+        void methodFromInterface(T payload);
     }
 
     @Data

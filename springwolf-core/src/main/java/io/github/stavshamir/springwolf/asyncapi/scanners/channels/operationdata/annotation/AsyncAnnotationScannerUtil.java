@@ -125,30 +125,6 @@ class AsyncAnnotationScannerUtil {
     }
 
     /**
-     * Checks whether the method is an actual method on the class
-     * <br/>
-     * When generic are used in interfaces, after type erasure class will have an additional method (with object as parameter)
-     *
-     * @param method The method in question
-     * @param type The original class, which may implement interface
-     * @return true, when the method was created due to type erasure
-     */
-    public static boolean isMethodInherited(Method method, Class<?> type) {
-        List<Method> methodsFromInterfaces = Arrays.stream(type.getInterfaces())
-                .flatMap((c) -> Arrays.stream(c.getMethods()))
-                .toList();
-
-        for (Method methodFromInterface : methodsFromInterfaces) {
-            if (method.getName().equals(methodFromInterface.getName())
-                    && method.getReturnType().equals(methodFromInterface.getReturnType())
-                    && Arrays.equals(method.getParameterTypes(), methodFromInterface.getParameterTypes())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * extracts servers array from the given AsyncOperation, resolves placeholdes with spring variables and
      * return a List of server names.
      *
