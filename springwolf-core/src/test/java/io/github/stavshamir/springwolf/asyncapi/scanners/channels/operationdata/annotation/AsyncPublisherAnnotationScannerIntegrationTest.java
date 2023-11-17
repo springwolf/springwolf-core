@@ -205,6 +205,38 @@ class AsyncPublisherAnnotationScannerIntegrationTest {
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
+    @Test
+    void scan_componentHasOnlyDeclaredMethods() {
+        // Given a class with a method, which is declared in a generic interface
+        setClassToScan(ClassImplementingInterface.class);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannels = channelScanner.scan();
+
+        // Then the returned collection contains the channel with the actual method, excluding type erased methods
+        Message message = Message.builder()
+                .name(String.class.getName())
+                .title(String.class.getSimpleName())
+                .description(null)
+                .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
+                .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(EMPTY_MAP)
+                .build();
+
+        Operation operation = Operation.builder()
+                .description("test channel operation description")
+                .operationId("test-channel_subscribe")
+                .bindings(EMPTY_MAP)
+                .message(message)
+                .build();
+
+        ChannelItem expectedChannel =
+                ChannelItem.builder().bindings(null).subscribe(operation).build();
+
+        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+    }
+
     private static class ClassWithoutPublisherAnnotation {
 
         private void methodWithoutAnnotation() {}
@@ -242,6 +274,17 @@ class AsyncPublisherAnnotationScannerIntegrationTest {
         @AsyncPublisher(operation = @AsyncOperation(channelName = "test-channel-1"))
         @AsyncPublisher(operation = @AsyncOperation(channelName = "test-channel-2"))
         private void methodWithMultipleAnnotation(SimpleFoo payload) {}
+    }
+
+    private static class ClassImplementingInterface implements AsyncAnnotationScannerUtilTest.ClassInterface<String> {
+
+        @AsyncPublisher(
+                operation =
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description"))
+        @Override
+        public void methodFromInterface(String payload) {}
     }
 
     @Data

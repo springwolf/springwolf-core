@@ -67,7 +67,8 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
 
         return Arrays.stream(type.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(annotationClass)
-                        || method.isAnnotationPresent(annotationClassRepeatable));
+                        || method.isAnnotationPresent(annotationClassRepeatable))
+                .filter(method -> !AsyncAnnotationScannerUtil.isMethodInherited(method, type));
     }
 
     private Stream<OperationData> toOperationData(Method method) {
