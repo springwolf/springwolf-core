@@ -14,6 +14,14 @@
       "f" : {
         "$ref" : "#/components/schemas/SimpleFoo"
       },
+      "ls_plain" : {
+        "type" : "array",
+        "description" : "List without example",
+        "items" : {
+          "type" : "string",
+          "description" : "List without example"
+        }
+      },
       "mss" : {
         "type" : "object",
         "description" : "Map with example",
@@ -39,6 +47,7 @@
         "b" : true,
         "s" : "string"
       },
+      "ls_plain" : [ "string" ],
       "mss" : {
         "key1" : "value1"
       },
