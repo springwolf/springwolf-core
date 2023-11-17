@@ -246,7 +246,7 @@ class AsyncListenerAnnotationScannerIntegrationTest {
     }
 
     @ParameterizedTest
-    @ValueSource(classes = {ClassImplementingInterface.class, ClassImplementingInterfaceWithAnnotation.class})
+    @ValueSource(classes = {ClassImplementingInterfaceWithAnnotation.class})
     void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) {
         // Given a class with a method, which is declared in a generic interface
         setClassToScan(clazz);
@@ -369,8 +369,7 @@ class AsyncListenerAnnotationScannerIntegrationTest {
         void methodFromInterface(T payload);
     }
 
-    private static class ClassImplementingInterfaceWithAnnotation
-            implements AsyncPublisherAnnotationScannerIntegrationTest.ClassInterfaceWithAnnotation<String> {
+    private static class ClassImplementingInterfaceWithAnnotation implements ClassInterfaceWithAnnotation<String> {
 
         @Override
         public void methodFromInterface(String payload) {}
