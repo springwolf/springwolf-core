@@ -103,7 +103,8 @@ allprojects {
             project.name == 'springwolf-sqs' ||
             project.name == 'springwolf-ui' ||
             project.name == 'springwolf-common-model-converters' ||
-            project.name == 'springwolf-generic-binding')
+            project.name == 'springwolf-generic-binding' ||
+            project.name == 'springwolf-json-schema')
     tasks.withType(PublishToMavenRepository).configureEach { it.enabled = publishingEnabled }
     tasks.withType(PublishToMavenLocal).configureEach { it.enabled = publishingEnabled }
     publishing {
