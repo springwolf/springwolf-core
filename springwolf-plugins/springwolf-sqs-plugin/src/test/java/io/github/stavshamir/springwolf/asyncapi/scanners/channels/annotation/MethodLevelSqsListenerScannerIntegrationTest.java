@@ -8,6 +8,7 @@ import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.message.sqs.SQSMessageBinding;
 import com.asyncapi.v2.binding.operation.sqs.SQSOperationBinding;
 import io.awspring.cloud.sqs.annotation.SqsListener;
+import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -216,6 +217,46 @@ class MethodLevelSqsListenerScannerIntegrationTest {
         assertThat(actualChannelItems).containsExactly(Map.entry(QUEUE, expectedChannelItem));
     }
 
+    @Test
+    void scan_componentHasSqsListenerMethods_multiplePayloads() {
+        // Given a class with two method annotated with SqsListener:
+        // - Both methods have the same queue
+        setClassToScan(ClassWithSqsListenerAnnotationMultiplePayloads.class);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannelItems = scanner.scan();
+
+        // Then the returned collection contains the channel, and the message contains both payload options using anyOf
+        Message messageSimpleFoo = Message.builder()
+                .name(SimpleFoo.class.getName())
+                .title(SimpleFoo.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(defaultMessageBinding)
+                .build();
+        Message messageString = Message.builder()
+                .name(String.class.getName())
+                .title(String.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(defaultMessageBinding)
+                .build();
+
+        Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-queue_publish_methodWithAnnotation")
+                .bindings(defaultOperationBinding)
+                .message(MessageHelper.toMessageObjectOrComposition(Set.of(messageSimpleFoo, messageString)))
+                .build();
+
+        ChannelItem expectedChannelItem = ChannelItem.builder()
+                .bindings(defaultChannelBinding)
+                .publish(operation)
+                .build();
+
+        assertThat(actualChannelItems).containsExactly(Map.entry(QUEUE, expectedChannelItem));
+    }
+
     private static class ClassWithoutSqsListenerAnnotations {
 
         private void methodWithoutAnnotation() {}
@@ -251,6 +292,15 @@ class MethodLevelSqsListenerScannerIntegrationTest {
 
         @SqsListener(queueNames = {QUEUE, "ignored-name"})
         private void methodWithMultipleQueueNames(String anotherParam, @Payload SimpleFoo payload) {}
+    }
+
+    private static class ClassWithSqsListenerAnnotationMultiplePayloads {
+
+        @SqsListener(value = QUEUE)
+        private void methodWithAnnotation(SimpleFoo payload) {}
+
+        @SqsListener(value = QUEUE)
+        private void methodWithAnnotation(String payload) {}
     }
 
     @Data

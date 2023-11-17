@@ -159,56 +159,6 @@
         }
       }
     },
-    "example-topic-queue": {
-      "publish": {
-        "operationId": "example-topic-queue_publish_bindingsBeanExample",
-        "description": "Auto-generated description",
-        "bindings": {
-          "amqp": {
-            "cc": [
-              "example-topic-routing-key"
-            ],
-            "bindingVersion": "0.2.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "amqp": {
-              "bindingVersion": "0.2.0"
-            }
-          }
-        }
-      },
-      "bindings": {
-        "amqp": {
-          "is": "routingKey",
-          "exchange": {
-            "name": "example-topic-exchange",
-            "type": "topic",
-            "durable": true,
-            "autoDelete": false,
-            "vhost": "/"
-          },
-          "queue": {
-            "name": "example-topic-queue",
-            "durable": true,
-            "exclusive": false,
-            "autoDelete": false,
-            "vhost": "/"
-          },
-          "bindingVersion": "0.2.0"
-        }
-      }
-    },
     "example-topic-routing-key": {
       "publish": {
         "operationId": "example-topic-routing-key_publish_bindingsExample",
@@ -253,6 +203,76 @@
             "durable": false,
             "exclusive": true,
             "autoDelete": true,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.2.0"
+        }
+      }
+    },
+    "multi-payload-queue": {
+      "publish": {
+        "operationId": "multi-payload-queue_publish_bindingsBeanExample",
+        "description": "Auto-generated description",
+        "bindings": {
+          "amqp": {
+            "cc": [
+              "example-topic-routing-key"
+            ],
+            "bindingVersion": "0.2.0"
+          }
+        },
+        "message": {
+          "oneOf": [
+            {
+              "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+              "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
+              "title": "AnotherPayloadDto",
+              "payload": {
+                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+              },
+              "headers": {
+                "$ref": "#/components/schemas/HeadersNotDocumented"
+              },
+              "bindings": {
+                "amqp": {
+                  "bindingVersion": "0.2.0"
+                }
+              }
+            },
+            {
+              "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+              "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
+              "title": "ExamplePayloadDto",
+              "payload": {
+                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+              },
+              "headers": {
+                "$ref": "#/components/schemas/HeadersNotDocumented"
+              },
+              "bindings": {
+                "amqp": {
+                  "bindingVersion": "0.2.0"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "routingKey",
+          "exchange": {
+            "name": "example-topic-exchange",
+            "type": "topic",
+            "durable": true,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "queue": {
+            "name": "multi-payload-queue",
+            "durable": true,
+            "exclusive": false,
+            "autoDelete": false,
             "vhost": "/"
           },
           "bindingVersion": "0.2.0"

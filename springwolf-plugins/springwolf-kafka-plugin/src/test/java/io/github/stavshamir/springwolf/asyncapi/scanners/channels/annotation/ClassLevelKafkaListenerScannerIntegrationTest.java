@@ -27,9 +27,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 import static java.util.Collections.singleton;
@@ -68,7 +70,9 @@ class ClassLevelKafkaListenerScannerIntegrationTest {
     }
 
     private void setClassesToScan(Set<Class<?>> classesToScan) {
-        when(componentsScanner.scan()).thenReturn(classesToScan);
+        Set<Class<?>> orderedClasses = new TreeSet<>(Comparator.comparing(Class::getName));
+        orderedClasses.addAll(classesToScan);
+        when(componentsScanner.scan()).thenReturn(orderedClasses);
     }
 
     @Test
