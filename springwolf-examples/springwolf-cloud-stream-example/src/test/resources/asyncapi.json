@@ -21,71 +21,69 @@
     }
   },
   "channels": {
-    "consumer-method-input-topic": {
-      "publish": {
-        "operationId": "consumer-method-input-topic_publish_consumerMethod",
-        "description": "Auto-generated description",
-        "bindings": {
-          "kafka": { }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.cloudstream.payload.ConsumerPayload",
-          "title": "ConsumerPayload",
-          "payload": {
-            "$ref": "#/components/schemas/ConsumerPayload"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "kafka": { }
-          }
-        }
-      },
-      "bindings": {
-        "kafka": { }
-      }
-    },
-    "input-topic": {
-      "publish": {
-        "operationId": "input-topic_publish_process",
-        "description": "Auto-generated description",
-        "bindings": {
-          "kafka": { }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.cloudstream.payload.InputPayload",
-          "title": "InputPayload",
-          "payload": {
-            "$ref": "#/components/schemas/InputPayload"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "kafka": { }
-          }
-        }
-      },
-      "bindings": {
-        "kafka": { }
-      }
-    },
-    "output-topic": {
+    "another-topic": {
       "subscribe": {
-        "operationId": "output-topic_subscribe_process",
+        "operationId": "another-topic_subscribe_process",
         "description": "Auto-generated description",
         "bindings": {
           "kafka": { }
         },
         "message": {
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.cloudstream.payload.OutputPayload",
-          "title": "OutputPayload",
+          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
+          "description": "Another payload model",
           "payload": {
-            "$ref": "#/components/schemas/OutputPayload"
+            "$ref": "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "kafka": { }
+          }
+        }
+      },
+      "publish": {
+        "operationId": "another-topic_publish_consumerMethod",
+        "description": "Auto-generated description",
+        "bindings": {
+          "kafka": { }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
+          "description": "Another payload model",
+          "payload": {
+            "$ref": "#/components/schemas/AnotherPayloadDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "kafka": { }
+          }
+        }
+      },
+      "bindings": {
+        "kafka": { }
+      }
+    },
+    "example-topic": {
+      "publish": {
+        "operationId": "example-topic_publish_process",
+        "description": "Auto-generated description",
+        "bindings": {
+          "kafka": { }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
+          "description": "Example payload model",
+          "payload": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -102,50 +100,48 @@
   },
   "components": {
     "schemas": {
-      "ConsumerPayload": {
+      "AnotherPayloadDto": {
+        "required": [
+          "example"
+        ],
         "type": "object",
         "properties": {
-          "payloadString": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "payloadString": "string"
-        }
-      },
-      "HeadersNotDocumented": {
-        "type": "object",
-        "properties": { },
-        "example": { }
-      },
-      "InputPayload": {
-        "type": "object",
-        "properties": {
-          "bar": {
-            "type": "integer",
-            "format": "int32"
+          "example": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
           },
           "foo": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string",
+            "description": "Foo field",
+            "example": "bar"
           }
         },
-        "description": "Input payload model",
+        "description": "Another payload model",
         "example": {
-          "bar": 0,
-          "foo": [
-            "string"
-          ]
+          "example": {
+            "someEnum": "FOO2",
+            "someLong": 5,
+            "someString": "some string value"
+          },
+          "foo": "bar"
         }
       },
-      "OutputPayload": {
+      "ExamplePayloadDto": {
         "required": [
+          "someEnum",
           "someString"
         ],
         "type": "object",
         "properties": {
+          "someEnum": {
+            "type": "string",
+            "description": "Some enum field",
+            "example": "FOO2",
+            "enum": [
+              "FOO1",
+              "FOO2",
+              "FOO3"
+            ]
+          },
           "someLong": {
             "type": "integer",
             "description": "Some long field",
@@ -158,11 +154,17 @@
             "example": "some string value"
           }
         },
-        "description": "Output payload model",
+        "description": "Example payload model",
         "example": {
+          "someEnum": "FOO2",
           "someLong": 5,
           "someString": "some string value"
         }
+      },
+      "HeadersNotDocumented": {
+        "type": "object",
+        "properties": { },
+        "example": { }
       }
     }
   },
