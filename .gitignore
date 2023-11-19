@@ -19,6 +19,8 @@ springwolf-plugins/springwolf-sqs-plugin/build/
 .idea/
 /gradle.properties
 
+asyncapi.actual.json
+
 # Eclipse IDE
 .classpath
 .project

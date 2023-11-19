@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.sqs;
+package io.github.stavshamir.springwolf.example.kafka;
 
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -21,11 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * While the assertion of this test is identical to ApiIntegrationTests,
- * the setup uses a full docker-compose context with a real sqs instance.
+ * the setup uses a full docker-compose context with a real kafka instance.
  */
 @Testcontainers
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ApiIntegrationWithDockerIntegrationTest {
+public class ApiSystemTest {
 
     private static final RestTemplate restTemplate = new RestTemplate();
     private static final String APP_NAME = "app_1";
@@ -44,7 +44,7 @@ public class ApiIntegrationWithDockerIntegrationTest {
     }
 
     @Container
-    public DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withExposedService(APP_NAME, APP_PORT)
             .withEnv(ENV);
 
@@ -58,7 +58,6 @@ public class ApiIntegrationWithDockerIntegrationTest {
     void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException, JSONException {
         String url = baseUrl() + "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
-        System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);

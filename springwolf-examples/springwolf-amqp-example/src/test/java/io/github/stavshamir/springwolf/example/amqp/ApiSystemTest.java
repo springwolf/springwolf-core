@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.cloudstream;
+package io.github.stavshamir.springwolf.example.amqp;
 
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @Testcontainers
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ApiIntegrationWithDockerIntegrationTest {
+public class ApiSystemTest {
 
     private static final RestTemplate restTemplate = new RestTemplate();
     private static final String APP_NAME = "app_1";
@@ -58,7 +58,6 @@ public class ApiIntegrationWithDockerIntegrationTest {
     void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException, JSONException {
         String url = baseUrl() + "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
-        System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
