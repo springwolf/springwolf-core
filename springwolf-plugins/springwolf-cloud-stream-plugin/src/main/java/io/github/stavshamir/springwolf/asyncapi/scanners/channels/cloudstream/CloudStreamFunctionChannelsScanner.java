@@ -21,7 +21,6 @@ import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -69,13 +68,10 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
-        var schema = payloadType.getAnnotation(Schema.class);
-        String description = schema != null ? schema.description() : null;
-
         Message message = Message.builder()
                 .name(payloadType.getName())
                 .title(modelName)
-                .description(description)
+                .description(null)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .bindings(buildMessageBinding())

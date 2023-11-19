@@ -32,7 +32,6 @@
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
-          "description": "Another payload model",
           "payload": {
             "$ref": "#/components/schemas/AnotherPayloadDto"
           },
@@ -54,7 +53,6 @@
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
-          "description": "Another payload model",
           "payload": {
             "$ref": "#/components/schemas/AnotherPayloadDto"
           },
@@ -81,7 +79,6 @@
           "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
           "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto",
           "title": "ExamplePayloadDto",
-          "description": "Example payload model",
           "payload": {
             "$ref": "#/components/schemas/ExamplePayloadDto"
           },

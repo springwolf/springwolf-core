@@ -132,6 +132,7 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
         Message message = Message.builder()
                 .name(payloadType.getName())
                 .title(payloadType.getSimpleName())
+                .description(null)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .bindings(messageBinding)
