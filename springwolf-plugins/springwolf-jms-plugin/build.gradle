@@ -9,15 +9,18 @@ plugins {
 dependencies {
     api project(":springwolf-core")
 
+    implementation "jakarta.jms:jakarta.jms-api"
+
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
-    implementation 'org.springframework:spring-jms'
-    compileOnly 'org.apache.activemq:activemq-broker'
+    runtimeOnly "org.apache.activemq:activemq-broker"
 
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-core"
+    implementation "org.springframework:spring-jms"
     implementation "org.springframework:spring-web"
+
     implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
 
@@ -27,18 +30,21 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testRuntimeOnly "org.springframework.boot:spring-boot-starter-web"
 
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
 
-    testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-beans"
     testImplementation "org.springframework:spring-test"
-    testImplementation 'org.apache.activemq:activemq-broker'
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation "org.springframework.boot:spring-boot-test"
+    testImplementation "org.springframework.boot:spring-boot-test-autoconfigure"
+
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 

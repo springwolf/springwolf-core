@@ -16,20 +16,19 @@ dependencies {
     annotationProcessor project(":springwolf-plugins:springwolf-jms")
     runtimeOnly project(":springwolf-ui")
 
-    implementation 'org.springframework.boot:spring-boot-starter-activemq'
-
-    runtimeOnly "org.springframework.boot:spring-boot-starter-web"
+    compileOnly "jakarta.jms:jakarta.jms-api"
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
 
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-jms"
+    implementation "org.springframework.boot:spring-boot"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-
-    testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 

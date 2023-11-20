@@ -4,11 +4,13 @@ package io.github.stavshamir.springwolf.producer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessagePostProcessor;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
@@ -29,8 +31,8 @@ class SpringwolfJmsProducerTest {
     @Test
     void send_defaultExchangeAndChannelNameAsRoutingKey() {
         Map<String, Object> payload = new HashMap<>();
-        springwolfJmsProducer.send("channel-name", payload);
+        springwolfJmsProducer.send("channel-name", Map.of(), payload);
 
-        verify(template).convertAndSend(eq("channel-name"), same(payload));
+        verify(template).convertAndSend(eq("channel-name"), same(payload), any(MessagePostProcessor.class));
     }
 }

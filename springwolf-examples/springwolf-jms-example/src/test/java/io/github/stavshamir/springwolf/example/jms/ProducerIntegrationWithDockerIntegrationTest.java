@@ -18,6 +18,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
+import java.util.Map;
 
 import static io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.mockito.Mockito.timeout;
@@ -49,7 +50,7 @@ public class ProducerIntegrationWithDockerIntegrationTest {
 
     @Test
     @Order(2)
-    void producerCanUseSpringwolfConfigurationToSendMessage() throws InterruptedException {
+    void producerCanUseSpringwolfConfigurationToSendMessage() {
         // given
         ExamplePayloadDto payload = new ExamplePayloadDto();
         payload.setSomeString("foo");
@@ -57,7 +58,7 @@ public class ProducerIntegrationWithDockerIntegrationTest {
         payload.setSomeEnum(FOO1);
 
         // when
-        springwolfJmsProducer.send("example-queue", payload);
+        springwolfJmsProducer.send("example-queue", Map.of(), payload);
 
         // then
         verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);

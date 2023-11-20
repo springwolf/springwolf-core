@@ -27,6 +27,6 @@ public class SpringwolfJmsController extends PublishingBaseController {
     @Override
     protected void publishMessage(String topic, MessageDto message, Object payload) {
         log.debug("Publishing to JMS queue {}: {}", topic, message);
-        producer.send(topic, payload);
+        producer.send(topic, message.getHeaders(), payload);
     }
 }
