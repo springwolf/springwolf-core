@@ -16,13 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SpringPayloadAnnotationTypeExtractor {
 
-    private final Map<String, Integer> genericClassesToExtract = Map.of(
-            "java.util.List",
-            0,
-            "org.springframework.messaging.Message",
-            0,
-            "org.apache.kafka.streams.kstream.KStream",
-            1);
+    private final TypeToClassConverter typeToClassConverter = new TypeToClassConverter();
 
     public Class<?> getPayloadType(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
@@ -31,60 +25,13 @@ public class SpringPayloadAnnotationTypeExtractor {
         int parameterPayloadIndex =
                 getPayloadParameterIndex(method.getParameterTypes(), method.getParameterAnnotations(), methodName);
 
-        return getActualPayloadClass(method.getGenericParameterTypes()[parameterPayloadIndex]);
+        return typeToClassConverter.extractClass(method.getGenericParameterTypes()[parameterPayloadIndex]);
     }
 
     public Class<?> typeToClass(Type type) {
-        return getActualPayloadClass(type);
+        return typeToClassConverter.extractClass(type);
     }
 
-    private Class<?> getActualPayloadClass(Type parameterType) {
-        try {
-            if (parameterType instanceof ParameterizedType) {
-                Type rawParameterType = ((ParameterizedType) parameterType).getRawType();
-                String rawParameterTypeName = rawParameterType.getTypeName();
-
-                Class<?> actualPayloadClass =
-                        getActualNestedPayloadClass((ParameterizedType) parameterType, rawParameterTypeName);
-                if (actualPayloadClass != Void.class) {
-                    return actualPayloadClass;
-                }
-
-                // nested generic class - fallback to most outer container
-                return Class.forName(rawParameterTypeName);
-            }
-
-            // no generics used - just a normal type
-            return Class.forName(parameterType.getTypeName());
-        } catch (Exception ex) {
-            log.info("Unable to extract generic data type of %s".formatted(parameterType), ex);
-        }
-        return Void.class;
-    }
-
-    private Class<?> getActualNestedPayloadClass(ParameterizedType parameterType, String rawParameterTypeName) {
-        Type type = parameterType;
-        String typeName = rawParameterTypeName;
-
-        while (type instanceof ParameterizedType && genericClassesToExtract.containsKey(typeName)) {
-            Integer index = genericClassesToExtract.get(rawParameterTypeName);
-
-            type = ((ParameterizedType) type).getActualTypeArguments()[index];
-
-            typeName = type.getTypeName();
-            if (type instanceof ParameterizedType) {
-                typeName = ((ParameterizedType) type).getRawType().getTypeName();
-            }
-        }
-
-        try {
-            return Class.forName(typeName);
-        } catch (ClassNotFoundException ex) {
-            log.debug("Unable to find class for type %s".formatted(typeName), ex);
-        }
-
-        return Void.class;
-    }
 
     private int getPayloadParameterIndex(
             Class<?>[] parameterClasses, Annotation[][] parameterAnnotations, String methodName) {
@@ -119,5 +66,63 @@ public class SpringPayloadAnnotationTypeExtractor {
         }
 
         return -1;
+    }
+
+    private static class TypeToClassConverter {
+        private final Map<String, Integer> extractableClassToArgumentIndex = Map.of(
+                "java.util.List",
+                0,
+                "org.springframework.messaging.Message",
+                0,
+                "org.apache.kafka.streams.kstream.KStream",
+                1);
+
+        private Class<?> extractClass(Type parameterType) {
+            try {
+                if (parameterType instanceof ParameterizedType) {
+                    Type rawParameterType = ((ParameterizedType) parameterType).getRawType();
+                    String rawParameterTypeName = rawParameterType.getTypeName();
+
+                    Class<?> actualPayloadClass =
+                            extractActualGenericClass((ParameterizedType) parameterType, rawParameterTypeName);
+                    if (actualPayloadClass != Void.class) {
+                        return actualPayloadClass;
+                    }
+
+                    // nested generic class - fallback to most outer container
+                    return Class.forName(rawParameterTypeName);
+                }
+
+                // no generics used - just a normal type
+                return Class.forName(parameterType.getTypeName());
+            } catch (Exception ex) {
+                log.info("Unable to extract generic data type of %s".formatted(parameterType), ex);
+            }
+            return Void.class;
+        }
+
+        private Class<?> extractActualGenericClass(ParameterizedType parameterType, String rawParameterTypeName) {
+            Type type = parameterType;
+            String typeName = rawParameterTypeName;
+
+            while (type instanceof ParameterizedType && extractableClassToArgumentIndex.containsKey(typeName)) {
+                Integer index = extractableClassToArgumentIndex.get(rawParameterTypeName);
+
+                type = ((ParameterizedType) type).getActualTypeArguments()[index];
+
+                typeName = type.getTypeName();
+                if (type instanceof ParameterizedType) {
+                    typeName = ((ParameterizedType) type).getRawType().getTypeName();
+                }
+            }
+
+            try {
+                return Class.forName(typeName);
+            } catch (ClassNotFoundException ex) {
+                log.debug("Unable to find class for type %s".formatted(typeName), ex);
+            }
+
+            return Void.class;
+        }
     }
 }
