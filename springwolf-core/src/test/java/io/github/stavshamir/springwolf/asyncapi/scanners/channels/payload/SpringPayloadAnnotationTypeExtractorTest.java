@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
 import org.junit.jupiter.api.Test;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Payload;
 
 import java.lang.reflect.Method;
@@ -12,10 +12,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-// TODO move to correct package
 class SpringPayloadAnnotationTypeExtractorTest {
 
-    private final SpringPayloadAnnotationTypeExtractor extractor = new SpringPayloadAnnotationTypeExtractor(List.of());
+    private final SpringPayloadAnnotationTypeExtractor extractor = new SpringPayloadAnnotationTypeExtractor();
 
     @Test
     void getPayloadType() throws NoSuchMethodException {
@@ -51,8 +50,7 @@ class SpringPayloadAnnotationTypeExtractorTest {
 
         Class<?> result = extractor.getPayloadType(m);
 
-        // Unable to resolve optional<String>, fallback to root type list
-        assertEquals(List.class, result);
+        assertEquals(Optional.class, result);
     }
 
     @Test
@@ -71,6 +69,33 @@ class SpringPayloadAnnotationTypeExtractorTest {
         Class<?> result = extractor.getPayloadType(m);
 
         // Unable to resolve optional<String>, fallback to root type list
+        assertEquals(List.class, result);
+    }
+
+    @Test
+    void getPayloadTypeWithListOfListOfString() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithListOfListOfString", List.class);
+
+        Class<?> result = extractor.getPayloadType(m);
+
+        assertEquals(List.class, result);
+    }
+
+    @Test
+    void getPayloadTypeWithMessageOfString() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfString", Message.class);
+
+        Class<?> result = extractor.getPayloadType(m);
+
+        assertEquals(String.class, result);
+    }
+
+    @Test
+    void getPayloadTypeWithMessageOfListOfString() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfListOfString", Message.class);
+
+        Class<?> result = extractor.getPayloadType(m);
+
         assertEquals(List.class, result);
     }
 
@@ -95,6 +120,12 @@ class SpringPayloadAnnotationTypeExtractorTest {
         public void consumeWithListOfGenericClasses(List<Optional<String>> value) {}
 
         public void consumeWithListOfStringExtends(List<? extends String> value) {}
+
+        public void consumeWithListOfListOfString(List<List<String>> value) {}
+
+        public void consumeWithMessageOfString(Message<String> value) {}
+
+        public void consumeWithMessageOfListOfString(Message<List<String>> value) {}
 
         public void consumeWithCustomType(MyType value) {}
 

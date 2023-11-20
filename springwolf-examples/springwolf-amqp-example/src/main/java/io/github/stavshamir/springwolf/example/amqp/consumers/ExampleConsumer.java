@@ -11,7 +11,11 @@ import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -29,6 +33,11 @@ public class ExampleConsumer {
         example.setFoo("foo");
 
         anotherProducer.sendMessage(example);
+    }
+
+    @RabbitListener(queues = "another-queue-test")
+    public void receiveAnotherPayloadTEst(Message<List<Optional<ExamplePayloadDto>>> payload) {
+        log.info("Received new message in another-queue: {}", payload.toString());
     }
 
     @RabbitListener(queues = "another-queue")

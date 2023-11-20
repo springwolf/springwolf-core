@@ -8,9 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfInitApplicationListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadTypeExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.extractors.ListExtractor;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
@@ -92,14 +90,7 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor(
-            List<PayloadTypeExtractor> payloadTypeExtractors) {
-        return new SpringPayloadAnnotationTypeExtractor(payloadTypeExtractors);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public ListExtractor listExtractor() {
-        return new ListExtractor();
+    public SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor() {
+        return new SpringPayloadAnnotationTypeExtractor();
     }
 }

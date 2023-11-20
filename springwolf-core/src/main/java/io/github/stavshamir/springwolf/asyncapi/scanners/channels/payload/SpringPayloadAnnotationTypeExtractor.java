@@ -8,14 +8,16 @@ import org.springframework.messaging.handler.annotation.Payload;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
 public class SpringPayloadAnnotationTypeExtractor {
 
-    private final List<PayloadTypeExtractor> payloadTypeExtractors;
+    private final Set<String> genericClassesToExtract = Set.of(
+            "java.util.List", "org.springframework.messaging.Message", "org.apache.kafka.streams.kstream.KStream");
 
     public Class<?> getPayloadType(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
@@ -25,33 +27,37 @@ public class SpringPayloadAnnotationTypeExtractor {
         int parameterPayloadIndex =
                 getPayloadParameterIndex(parameterTypes, method.getParameterAnnotations(), methodName);
 
-        return getPayloadParameterClass(method, parameterTypes, parameterPayloadIndex);
+        return getActualPayloadClass(
+                parameterTypes[parameterPayloadIndex], method.getGenericParameterTypes()[parameterPayloadIndex]);
     }
 
-    private Class<?> getPayloadParameterClass(Method method, Class<?>[] parameterTypes, int parameterPayloadIndex) {
-        Class<?> parameterClass = parameterTypes[parameterPayloadIndex];
+    private Class<?> getActualPayloadClass(Class<?> parameterClass, Type parameterType) {
+        String parameterClassName = parameterClass.getName();
 
-        try {
+        if (genericClassesToExtract.contains(parameterClassName)) {
+            try {
+                ParameterizedType genericTypeArgument = ((ParameterizedType) parameterType);
+                Type actualTypeArgument = genericTypeArgument.getActualTypeArguments()[0];
 
-            ParameterizedType type = ((ParameterizedType) method.getGenericParameterTypes()[parameterPayloadIndex]);
-
-            for (PayloadTypeExtractor payloadTypeExtractor : payloadTypeExtractors) {
-                if (payloadTypeExtractor.canExtract(type)) {
-                    type = payloadTypeExtractor.extractType(type);
+                String actualTypeName = actualTypeArgument.getTypeName();
+                if (actualTypeArgument instanceof ParameterizedType) {
+                    actualTypeName = ((ParameterizedType) actualTypeArgument)
+                            .getRawType()
+                            .getTypeName();
                 }
-            }
 
-            return Class.forName(type.getTypeName());
-        } catch (Exception ex) {
-            log.info("Found payload type List<?>, but was unable to extract generic data type", ex);
+                parameterClass = Class.forName(actualTypeName);
+            } catch (Exception ex) {
+                log.info("Unable to extract generic data type of %s".formatted(parameterClassName), ex);
+            }
         }
 
         return parameterClass;
     }
 
     private int getPayloadParameterIndex(
-            Class<?>[] parameterTypes, Annotation[][] parameterAnnotations, String methodName) {
-        switch (parameterTypes.length) {
+            Class<?>[] parameterClasses, Annotation[][] parameterAnnotations, String methodName) {
+        switch (parameterClasses.length) {
             case 0 -> throw new IllegalArgumentException("Listener methods must not have 0 parameters: " + methodName);
             case 1 -> {
                 return 0;
