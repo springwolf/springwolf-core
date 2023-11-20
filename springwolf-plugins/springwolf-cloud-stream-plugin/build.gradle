@@ -21,14 +21,11 @@ dependencies {
 
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
 
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
-
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "org.springframework:spring-context"
     implementation "org.springframework.cloud:spring-cloud-stream"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
-
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
