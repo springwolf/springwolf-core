@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Method;
@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 public class FunctionalChannelBeanBuilder {
-    private final SpringPayloadAnnotationTypeExtractor extractor;
+    private final PayloadClassExtractor extractor;
 
     public Set<FunctionalChannelBeanData> fromMethodBean(Method methodBean) {
         Class<?> returnType = methodBean.getReturnType();

@@ -6,7 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.SqsM
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.SqsOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelSqsListenerScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -29,9 +29,9 @@ public class SpringwolfSqsScannerConfiguration {
     public MethodLevelSqsListenerScanner methodLevelSqsListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
-            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor) {
+            PayloadClassExtractor payloadClassExtractor) {
         return new MethodLevelSqsListenerScanner(
-                componentClassScanner, schemasService, springPayloadAnnotationTypeExtractor);
+                componentClassScanner, schemasService, payloadClassExtractor);
     }
 
     @Bean

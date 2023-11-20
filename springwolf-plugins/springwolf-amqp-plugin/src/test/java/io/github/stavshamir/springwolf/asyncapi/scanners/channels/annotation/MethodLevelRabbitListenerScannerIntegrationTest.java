@@ -8,7 +8,7 @@ import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -54,7 +54,7 @@ import static org.mockito.Mockito.when;
         classes = {
             MethodLevelRabbitListenerScanner.class,
             DefaultSchemasService.class,
-            SpringPayloadAnnotationTypeExtractor.class,
+            PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
             MethodLevelRabbitListenerScannerIntegrationTest.ClassWithRabbitListenerAnnotationsBindingBean.class

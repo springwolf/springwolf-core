@@ -6,7 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSnsController;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.sns.SpringwolfSnsAutoConfiguration;
 import io.github.stavshamir.springwolf.producer.SpringwolfSnsProducer;
@@ -48,7 +48,7 @@ public class SpringwolfSnsProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(ComponentClassScanner.class),
                 @MockBean(SchemasService.class),
-                @MockBean(SpringPayloadAnnotationTypeExtractor.class),
+                @MockBean(PayloadClassExtractor.class),
                 @MockBean(AsyncApiDocketService.class),
                 @MockBean(AsyncApiService.class),
                 @MockBean(SnsTemplate.class)
@@ -89,7 +89,7 @@ public class SpringwolfSnsProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(ComponentClassScanner.class),
                 @MockBean(SchemasService.class),
-                @MockBean(SpringPayloadAnnotationTypeExtractor.class),
+                @MockBean(PayloadClassExtractor.class),
                 @MockBean(ChannelsService.class),
                 @MockBean(SnsTemplate.class)
             })

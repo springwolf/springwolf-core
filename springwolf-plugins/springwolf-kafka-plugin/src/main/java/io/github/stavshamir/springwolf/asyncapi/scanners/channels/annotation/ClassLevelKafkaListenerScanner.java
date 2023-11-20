@@ -5,7 +5,7 @@ import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForSpringKafkaBuilder;
@@ -28,8 +28,8 @@ public class ClassLevelKafkaListenerScanner extends AbstractClassLevelListenerSc
     public ClassLevelKafkaListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
-            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor) {
-        super(componentClassScanner, schemasService, springPayloadAnnotationTypeExtractor);
+            PayloadClassExtractor payloadClassExtractor) {
+        super(componentClassScanner, schemasService, payloadClassExtractor);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ClassLevelKafkaListenerScanner extends AbstractClassLevelListenerSc
 
     @Override
     protected AsyncHeaders buildHeaders(Method method) {
-        Class<?> payloadType = this.springPayloadAnnotationTypeExtractor.getPayloadType(method);
+        Class<?> payloadType = this.payloadClassExtractor.extractFrom(method);
         return new AsyncHeadersForSpringKafkaBuilder("SpringKafkaDefaultHeaders-" + payloadType.getSimpleName())
                 .withTypeIdHeader(payloadType.getTypeName())
                 .build();

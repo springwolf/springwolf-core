@@ -7,7 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.Kafk
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelKafkaListenerScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelKafkaListenerScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,9 +33,9 @@ public class SpringwolfKafkaScannerConfiguration {
     public ClassLevelKafkaListenerScanner classLevelKafkaListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
-            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor) {
+            PayloadClassExtractor payloadClassExtractor) {
         return new ClassLevelKafkaListenerScanner(
-                componentClassScanner, schemasService, springPayloadAnnotationTypeExtractor);
+                componentClassScanner, schemasService, payloadClassExtractor);
     }
 
     @Bean
@@ -47,9 +47,9 @@ public class SpringwolfKafkaScannerConfiguration {
     public MethodLevelKafkaListenerScanner methodLevelKafkaListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
-            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor) {
+            PayloadClassExtractor payloadClassExtractor) {
         return new MethodLevelKafkaListenerScanner(
-                componentClassScanner, schemasService, springPayloadAnnotationTypeExtractor);
+                componentClassScanner, schemasService, payloadClassExtractor);
     }
 
     @Bean

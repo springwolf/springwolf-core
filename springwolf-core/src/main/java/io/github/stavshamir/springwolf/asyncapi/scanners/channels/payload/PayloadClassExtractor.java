@@ -14,11 +14,11 @@ import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
-public class SpringPayloadAnnotationTypeExtractor {
+public class PayloadClassExtractor {
 
     private final TypeToClassConverter typeToClassConverter = new TypeToClassConverter();
 
-    public Class<?> getPayloadType(Method method) {
+    public Class<?> extractFrom(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
         log.debug("Finding payload type for {}", methodName);
 
@@ -31,7 +31,6 @@ public class SpringPayloadAnnotationTypeExtractor {
     public Class<?> typeToClass(Type type) {
         return typeToClassConverter.extractClass(type);
     }
-
 
     private int getPayloadParameterIndex(
             Class<?>[] parameterClasses, Annotation[][] parameterAnnotations, String methodName) {

@@ -6,7 +6,7 @@ import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2._6_0.model.info.Info;
 import com.asyncapi.v2._6_0.model.server.Server;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
             ConfigurationClassScanner.class,
             DefaultBeanMethodsScanner.class,
             DefaultSchemasService.class,
-            SpringPayloadAnnotationTypeExtractor.class,
+            PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
             DefaultAsyncApiDocketService.class,
             CloudStreamFunctionChannelsScanner.class,
