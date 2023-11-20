@@ -16,32 +16,8 @@ public class SpringContextIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = SpringwolfAmqpExampleApplication.class)
-    class AsyncApiDocketTest {
-
-        @Autowired
-        private ApplicationContext context;
-
-        @Autowired
-        private AsyncApiService asyncApiService;
-
-        @Test
-        void testContextWithAsyncApiDocketBean() {
-            assertNotNull(context);
-
-            assertThat(asyncApiService.getAsyncAPI()).isNotNull();
-        }
-
-        @Test
-        void testAllChannelsAreFound() {
-            assertThat(asyncApiService.getAsyncAPI().getChannels()).hasSize(7);
-        }
-    }
-
-    @Nested
-    @SpringBootTest(classes = SpringwolfAmqpExampleApplication.class)
     @TestPropertySource(
             properties = {
-                "customAsyncApiDocketBean=false",
                 "springwolf.enabled=true",
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
@@ -66,7 +42,6 @@ public class SpringContextIntegrationTest {
 
         @Test
         void testAllChannelsAreFound() {
-            // 2 channels defined in the AsyncDocket are not found (7 - 2 = 5)
             assertThat(asyncApiService.getAsyncAPI().getChannels()).hasSize(5);
         }
     }

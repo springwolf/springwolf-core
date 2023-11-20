@@ -22,36 +22,8 @@ public class SpringContextIntegrationTest {
             brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
     @Nested
     @DirtiesContext
-    class AsyncApiDocketTest {
-
-        @Autowired
-        private ApplicationContext context;
-
-        @Autowired
-        private AsyncApiService asyncApiService;
-
-        @Test
-        void testContextWithAsyncApiDocketBean() {
-            assertNotNull(context);
-
-            assertThat(asyncApiService.getAsyncAPI()).isNotNull();
-        }
-
-        @Test
-        void testAllChannelsAreFound() {
-            assertThat(asyncApiService.getAsyncAPI().getChannels()).hasSize(6);
-        }
-    }
-
-    @SpringBootTest(classes = SpringwolfKafkaExampleApplication.class)
-    @EmbeddedKafka(
-            partitions = 1,
-            brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
-    @Nested
-    @DirtiesContext
     @TestPropertySource(
             properties = {
-                "customAsyncApiDocketBean=false",
                 "springwolf.enabled=true",
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
@@ -76,8 +48,6 @@ public class SpringContextIntegrationTest {
 
         @Test
         void testAllChannelsAreFound() {
-            // 2 channels defined in the AsyncDocket are not found,
-            // however PRODUCER_TOPIC is also used in ExampleProducer (5 - 2 + 1 = 4)
             assertThat(asyncApiService.getAsyncAPI().getChannels()).hasSize(4);
         }
     }
