@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.amqp;
+package io.github.stavshamir.springwolf.example.sns;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
@@ -21,11 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * While the assertion of this test is identical to ApiIntegrationTests,
- * the setup uses a full docker-compose context with a real kafka instance.
+ * the setup uses a full docker-compose context with a real sns instance.
  */
 @Testcontainers
+@Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ApiIntegrationWithDockerIntegrationTest {
+public class ApiSystemTest {
 
     private static final RestTemplate restTemplate = new RestTemplate();
     private static final String APP_NAME = "app_1";
@@ -44,9 +46,10 @@ public class ApiIntegrationWithDockerIntegrationTest {
     }
 
     @Container
-    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+    public DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withExposedService(APP_NAME, APP_PORT)
-            .withEnv(ENV);
+            .withEnv(ENV)
+            .withLogConsumer(APP_NAME, l -> log.debug("APP: %s".formatted(l.getUtf8StringWithoutLineEnding())));
 
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);
@@ -58,7 +61,6 @@ public class ApiIntegrationWithDockerIntegrationTest {
     void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException, JSONException {
         String url = baseUrl() + "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
-        System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);

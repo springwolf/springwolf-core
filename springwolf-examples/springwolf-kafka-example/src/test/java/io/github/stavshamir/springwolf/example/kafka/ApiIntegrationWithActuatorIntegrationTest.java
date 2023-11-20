@@ -42,7 +42,6 @@ public class ApiIntegrationWithActuatorIntegrationTest {
     void asyncApiResourceArtifactTest() throws JSONException, IOException {
         String url = "http://localhost:" + managementPort + "/actuator/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
-        System.out.println("Got: " + actual);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expectedWithoutServersKafkaUrlPatch = new String(s.readAllBytes(), StandardCharsets.UTF_8);

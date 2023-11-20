@@ -79,12 +79,31 @@ allprojects {
         enabled = !it.project.name.contains("-example") // Examples do not contain unit tests and would fail otherwise
         dependsOn spotlessApply // Automatically fix code formatting if possible
 
-        description = 'Run only unit tests (excludes **IntegrationTest)'
+        description = 'Run only unit tests (excludes **IntegrationTest and **SystemTest)'
         group = 'verification'
 
         useJUnitPlatform()
         filter {
-            excludePatterns = ['*IntegrationTest']
+            excludePatterns = ['*IntegrationTest', '*SystemTest']
+        }
+        testLogging {
+            // showStandardStreams = true
+
+            events "skipped", "failed"
+            exceptionFormat = 'full'
+        }
+    }
+
+
+    tasks.register('integrationTest', Test) {
+        dependsOn spotlessApply // Automatically fix code formatting if possible
+
+        description = 'Run integration tests (excludes **SystemTest)'
+        group = 'verification'
+
+        useJUnitPlatform()
+        filter {
+            excludePatterns = ['*SystemTest']
         }
         testLogging {
             // showStandardStreams = true

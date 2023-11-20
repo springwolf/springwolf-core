@@ -41,7 +41,7 @@ import static org.mockito.Mockito.verify;
 @DirtiesContext
 @TestMethodOrder(OrderAnnotation.class)
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ProducerIntegrationWithDockerIntegrationTest {
+public class ProducerSystemTest {
 
     @Autowired
     SpringwolfKafkaProducer springwolfKafkaProducer;

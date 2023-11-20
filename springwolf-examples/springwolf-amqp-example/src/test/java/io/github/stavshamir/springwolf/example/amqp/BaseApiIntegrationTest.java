@@ -11,6 +11,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,7 +37,7 @@ public abstract class BaseApiIntegrationTest {
     void asyncApiResourceArtifactTest() throws JSONException, IOException {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
-        System.out.println("Got: " + actual);
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actual);
 
         String expectedApiFileName = getExpectedApiFileName();
         InputStream s = this.getClass().getResourceAsStream(expectedApiFileName);

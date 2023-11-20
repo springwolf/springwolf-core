@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * The generateOpenApiDocs task will generate the openapi-generated.json into the test-resources so that
  * this test can pick up the openapi-generated.json afterwards and compare it to the reference asyncapi.json
  */
-class OpenApiGeneratorTest {
+class OpenApiGeneratorSystemTest {
 
     @Test
     void asyncApiResourceArtifactTest() throws IOException {
