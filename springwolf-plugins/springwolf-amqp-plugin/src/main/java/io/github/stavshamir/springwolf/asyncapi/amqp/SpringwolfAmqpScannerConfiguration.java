@@ -43,12 +43,7 @@ public class SpringwolfAmqpScannerConfiguration {
             List<Exchange> exchanges,
             List<Binding> bindings) {
         return new ClassLevelRabbitListenerScanner(
-                componentClassScanner,
-                schemasService,
-                payloadClassExtractor,
-                queues,
-                exchanges,
-                bindings);
+                componentClassScanner, schemasService, payloadClassExtractor, queues, exchanges, bindings);
     }
 
     @Bean
@@ -65,12 +60,7 @@ public class SpringwolfAmqpScannerConfiguration {
             List<Exchange> exchanges,
             List<Binding> bindings) {
         return new MethodLevelRabbitListenerScanner(
-                componentClassScanner,
-                schemasService,
-                payloadClassExtractor,
-                queues,
-                exchanges,
-                bindings);
+                componentClassScanner, schemasService, payloadClassExtractor, queues, exchanges, bindings);
     }
 
     @Bean

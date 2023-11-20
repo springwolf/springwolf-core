@@ -81,14 +81,14 @@ public class SpringwolfScannerConfiguration {
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
-            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor,
+            PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncListenerAnnotationScanner(
                 componentClassScanner,
                 schemasService,
                 asyncApiDocketService,
-                springPayloadAnnotationTypeExtractor,
+                payloadClassExtractor,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }
@@ -103,14 +103,14 @@ public class SpringwolfScannerConfiguration {
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
-            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor,
+            PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncPublisherAnnotationScanner(
                 componentClassScanner,
                 schemasService,
                 asyncApiDocketService,
-                springPayloadAnnotationTypeExtractor,
+                payloadClassExtractor,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }

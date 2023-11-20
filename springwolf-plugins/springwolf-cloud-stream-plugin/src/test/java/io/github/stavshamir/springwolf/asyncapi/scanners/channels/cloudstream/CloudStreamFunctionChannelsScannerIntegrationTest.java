@@ -52,6 +52,7 @@ import static org.mockito.Mockito.when;
             ExampleJsonGenerator.class,
             DefaultAsyncApiDocketService.class,
             CloudStreamFunctionChannelsScanner.class,
+            FunctionalChannelBeanBuilder.class,
             SpringwolfConfigProperties.class
         })
 @Import(CloudStreamFunctionChannelsScannerIntegrationTest.Configuration.class)

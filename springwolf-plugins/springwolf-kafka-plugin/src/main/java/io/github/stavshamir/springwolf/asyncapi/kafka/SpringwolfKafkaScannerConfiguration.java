@@ -34,8 +34,7 @@ public class SpringwolfKafkaScannerConfiguration {
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
             PayloadClassExtractor payloadClassExtractor) {
-        return new ClassLevelKafkaListenerScanner(
-                componentClassScanner, schemasService, payloadClassExtractor);
+        return new ClassLevelKafkaListenerScanner(componentClassScanner, schemasService, payloadClassExtractor);
     }
 
     @Bean
@@ -48,8 +47,7 @@ public class SpringwolfKafkaScannerConfiguration {
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
             PayloadClassExtractor payloadClassExtractor) {
-        return new MethodLevelKafkaListenerScanner(
-                componentClassScanner, schemasService, payloadClassExtractor);
+        return new MethodLevelKafkaListenerScanner(componentClassScanner, schemasService, payloadClassExtractor);
     }
 
     @Bean

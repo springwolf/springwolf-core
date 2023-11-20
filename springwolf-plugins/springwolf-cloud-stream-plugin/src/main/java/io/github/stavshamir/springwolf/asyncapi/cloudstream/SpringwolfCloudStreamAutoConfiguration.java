@@ -36,8 +36,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
     }
 
     @Bean
-    public FunctionalChannelBeanBuilder functionalChannelBeanBuilder(
-            PayloadClassExtractor payloadClassExtractor) {
+    public FunctionalChannelBeanBuilder functionalChannelBeanBuilder(PayloadClassExtractor payloadClassExtractor) {
         return new FunctionalChannelBeanBuilder(payloadClassExtractor);
     }
 }

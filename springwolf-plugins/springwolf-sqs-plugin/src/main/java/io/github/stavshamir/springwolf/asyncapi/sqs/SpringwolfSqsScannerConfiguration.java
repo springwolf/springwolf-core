@@ -30,8 +30,7 @@ public class SpringwolfSqsScannerConfiguration {
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
             PayloadClassExtractor payloadClassExtractor) {
-        return new MethodLevelSqsListenerScanner(
-                componentClassScanner, schemasService, payloadClassExtractor);
+        return new MethodLevelSqsListenerScanner(componentClassScanner, schemasService, payloadClassExtractor);
     }
 
     @Bean
