@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  * Use the {@link AsyncGenericOperationBinding#fields()} to define the attributes
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.METHOD})
+@Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @AsyncOperationBinding
 @Inherited
 public @interface AsyncGenericOperationBinding {

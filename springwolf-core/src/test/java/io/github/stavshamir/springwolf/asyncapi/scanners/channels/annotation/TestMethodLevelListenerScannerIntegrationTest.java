@@ -14,6 +14,7 @@ import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,56 @@ class TestMethodLevelListenerScannerIntegrationTest {
         private void methodWithAnnotation(SimpleFoo payload) {}
 
         private void methodWithoutAnnotation() {}
+    }
+
+    @Nested
+    class MetaAnnotation {
+        @Test
+        void scan_componentHasListenerMetaMethod() {
+            // Given a class with methods annotated with TestChannelListenerMetaAnnotatation
+            setClassToScan(ClassWithListenerMetaAnnotation.class);
+
+            // When scan is called
+            Map<String, ChannelItem> actualChannels = channelScanner.scan();
+
+            // Then the returned collection contains the channel
+            Message message = Message.builder()
+                    .name(SimpleFoo.class.getName())
+                    .title(SimpleFoo.class.getSimpleName())
+                    .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                    .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                    .bindings(Map.of("test-message-binding", new TestMethodLevelListenerScanner.TestMessageBinding()))
+                    .build();
+
+            Operation operation = Operation.builder()
+                    .description("Auto-generated description")
+                    .operationId("test-channel_publish_methodWithAnnotation")
+                    .bindings(
+                            Map.of("test-operation-binding", new TestMethodLevelListenerScanner.TestOperationBinding()))
+                    .message(message)
+                    .build();
+
+            ChannelItem expectedChannel = ChannelItem.builder()
+                    .bindings(Map.of("test-channel-binding", new TestMethodLevelListenerScanner.TestChannelBinding()))
+                    .publish(operation)
+                    .build();
+
+            assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+        }
+
+        private static class ClassWithListenerMetaAnnotation {
+
+            @TestChannelListenerMetaAnnotation
+            private void methodWithAnnotation(SimpleFoo payload) {}
+
+            private void methodWithoutAnnotation() {}
+        }
+
+        @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+        @Retention(RetentionPolicy.RUNTIME)
+        @Inherited
+        @TestChannelListener
+        public @interface TestChannelListenerMetaAnnotation {}
     }
 
     @Data

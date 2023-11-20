@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,6 +31,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -245,39 +251,6 @@ class AsyncListenerAnnotationScannerIntegrationTest {
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
     }
 
-    @ParameterizedTest
-    @ValueSource(classes = {ClassImplementingInterfaceWithAnnotation.class})
-    void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) {
-        // Given a class with a method, which is declared in a generic interface
-        setClassToScan(clazz);
-
-        // When scan is called
-        Map<String, ChannelItem> actualChannels = channelScanner.scan();
-
-        // Then the returned collection contains the channel with the actual method, excluding type erased methods
-        Message message = Message.builder()
-                .name(String.class.getName())
-                .title(String.class.getSimpleName())
-                .description(null)
-                .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
-                .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                .bindings(EMPTY_MAP)
-                .build();
-
-        Operation operation = Operation.builder()
-                .description("test channel operation description")
-                .operationId("test-channel_publish")
-                .bindings(EMPTY_MAP)
-                .message(message)
-                .build();
-
-        ChannelItem expectedChannel =
-                ChannelItem.builder().bindings(null).publish(operation).build();
-
-        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
-    }
-
     private static class ClassWithoutListenerAnnotation {
 
         private void methodWithoutAnnotation() {}
@@ -354,34 +327,120 @@ class AsyncListenerAnnotationScannerIntegrationTest {
         private void methodWithoutAnnotation() {}
     }
 
-    private static class ClassImplementingInterface implements ClassInterface<String> {
+    @Nested
+    class ImplementingInterface {
+        @ParameterizedTest
+        @ValueSource(classes = {ClassImplementingInterface.class, ClassImplementingInterfaceWithAnnotation.class})
+        void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) {
+            // Given a class with a method, which is declared in a generic interface
+            setClassToScan(clazz);
 
+            // When scan is called
+            Map<String, ChannelItem> actualChannels = channelScanner.scan();
+
+            // Then the returned collection contains the channel with the actual method, excluding type erased methods
+            Message message = Message.builder()
+                    .name(String.class.getName())
+                    .title(String.class.getSimpleName())
+                    .description(null)
+                    .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
+                    .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
+                    .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                    .bindings(EMPTY_MAP)
+                    .build();
+
+            Operation operation = Operation.builder()
+                    .description("test channel operation description")
+                    .operationId("test-channel_publish")
+                    .bindings(EMPTY_MAP)
+                    .message(message)
+                    .build();
+
+            ChannelItem expectedChannel =
+                    ChannelItem.builder().bindings(null).publish(operation).build();
+
+            assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+        }
+
+        private static class ClassImplementingInterface implements ClassInterface<String> {
+
+            @AsyncListener(
+                    operation =
+                            @AsyncOperation(
+                                    channelName = "test-channel",
+                                    description = "test channel operation description"))
+            @Override
+            public void methodFromInterface(String payload) {}
+        }
+
+        interface ClassInterface<T> {
+            void methodFromInterface(T payload);
+        }
+
+        private static class ClassImplementingInterfaceWithAnnotation implements ClassInterfaceWithAnnotation<String> {
+
+            @Override
+            public void methodFromInterface(String payload) {}
+        }
+
+        interface ClassInterfaceWithAnnotation<T> {
+            @AsyncListener(
+                    operation =
+                            @AsyncOperation(
+                                    channelName = "test-channel",
+                                    description = "test channel operation description"))
+            void methodFromInterface(T payload);
+        }
+    }
+
+    @Nested
+    class MetaAnnotation {
+        @Test
+        void scan_componentHasListenerMethodWithMetaAnnotation() {
+            // Given a class with methods annotated with a AsyncListener meta annotation
+            setClassToScan(ClassWithMetaAnnotation.class);
+
+            // When scan is called
+            Map<String, ChannelItem> actualChannels = channelScanner.scan();
+
+            // Then the returned collection contains the channel
+            Message message = Message.builder()
+                    .name(String.class.getName())
+                    .title(String.class.getSimpleName())
+                    .description(null)
+                    .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
+                    .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
+                    .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                    .bindings(EMPTY_MAP)
+                    .build();
+
+            Operation operation = Operation.builder()
+                    .description("test channel operation description")
+                    .operationId("test-channel_publish")
+                    .bindings(EMPTY_MAP)
+                    .message(message)
+                    .build();
+
+            ChannelItem expectedChannel =
+                    ChannelItem.builder().bindings(null).publish(operation).build();
+
+            assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+        }
+
+        public static class ClassWithMetaAnnotation {
+            @AsyncListenerMetaAnnotation
+            void methodFromInterface(String payload) {}
+        }
+
+        @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+        @Retention(RetentionPolicy.RUNTIME)
+        @Inherited
         @AsyncListener(
                 operation =
                         @AsyncOperation(
                                 channelName = "test-channel",
                                 description = "test channel operation description"))
-        @Override
-        public void methodFromInterface(String payload) {}
-    }
-
-    interface ClassInterface<T> {
-        void methodFromInterface(T payload);
-    }
-
-    private static class ClassImplementingInterfaceWithAnnotation implements ClassInterfaceWithAnnotation<String> {
-
-        @Override
-        public void methodFromInterface(String payload) {}
-    }
-
-    interface ClassInterfaceWithAnnotation<T> {
-        @AsyncListener(
-                operation =
-                        @AsyncOperation(
-                                channelName = "test-channel",
-                                description = "test channel operation description"))
-        void methodFromInterface(T payload);
+        public @interface AsyncListenerMetaAnnotation {}
     }
 
     @Data
