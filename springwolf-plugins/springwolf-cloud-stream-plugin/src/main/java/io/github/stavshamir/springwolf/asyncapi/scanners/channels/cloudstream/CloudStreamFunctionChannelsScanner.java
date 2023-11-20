@@ -64,12 +64,14 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     }
 
     private ChannelItem buildChannel(FunctionalChannelBeanData beanData, String operationId) {
-        String modelName = schemasService.register(beanData.getPayloadType());
+        Class<?> payloadType = beanData.getPayloadType();
+        String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
         Message message = Message.builder()
-                .name(beanData.getPayloadType().getName())
+                .name(payloadType.getName())
                 .title(modelName)
+                .description(null)
                 .payload(PayloadReference.fromModelName(modelName))
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .bindings(buildMessageBinding())

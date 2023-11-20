@@ -20,6 +20,7 @@ dependencies {
     api project(":springwolf-core")
 
     implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
+
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "org.springframework:spring-context"
