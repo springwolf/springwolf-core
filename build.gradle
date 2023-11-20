@@ -98,7 +98,7 @@ allprojects {
     tasks.register('integrationTest', Test) {
         dependsOn spotlessApply // Automatically fix code formatting if possible
 
-        description = 'Run only unit tests (excludes **SystemTest)'
+        description = 'Run integration tests (excludes **SystemTest)'
         group = 'verification'
 
         useJUnitPlatform()
