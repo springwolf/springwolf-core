@@ -2,6 +2,7 @@
 
 **Automated documentation for event-driven applications built with Spring Boot**
 
+![Last Version](https://img.shields.io/github/tag-pre/springwolf/springwolf-core.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![springwolf-core](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml)
 [![springwolf-ui](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml)
@@ -16,6 +17,7 @@
 - [Demo & Documentation](#demo--documentation)
 - [Why You Should Use It](#why-you-should-use-it)
 - [Usage & Example](#usage--example)
+- [Who's Using Springwolf](#whos-using-springwolf)
 - [Development](#development)
 - [Contributors](#contributors)
 
@@ -37,12 +39,12 @@ The documentation and quickstart is available on [springwolf.dev](https://www.sp
 Springwolf exploits the fact that you already fully described your consumer endpoint (with listener annotations, such as
 `@KafkaListener`, `@RabbitListener`, `@SqsListener`, etc.) and generates the documentation based on this information.
 
-#### Share API Schema Definition
+#### 1. Share API Schema Definition
 
 The AsyncAPI conform documentation can be integrated into API hubs (like [backstage](https://backstage.io/docs/features/software-catalog/descriptor-format/))
 or be shared as a `json`/`yaml` file with others.
 
-#### UI Based API Testing
+#### 2. UI Based API Testing
 In projects using asynchronous APIs, you may often find yourself needing to manually send a message to some topic,
 whether you are manually testing a new feature, debugging or trying to understand some flow.
 
@@ -65,7 +67,21 @@ More details in the documentation.
 | [Generic Binding](https://github.com/springwolf/springwolf-core/tree/master/springwolf-add-ons/springwolf-generic-binding)                |                                                                                                                                       | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-generic-binding?color=green&label=springwolf-generic-binding&style=plastic)                 | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-generic-binding?label=springwolf-generic-binding&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                 |
 | [Json Schema](https://github.com/springwolf/springwolf-core/tree/master/springwolf-add-ons/springwolf-json-schema)                        |                                                                                                                                       | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-json-schema?color=green&label=springwolf-json-schema&style=plastic)                         | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-json-schema?label=springwolf-json-schema&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                         |
 
+### Who's Using Springwolf
+
+- [b.well Connected Health](https://www.icanbwell.com/)
+- [LVM Versicherung](https://www.lvm.de/privatkunden/)
+- [OTTO](https://www.otto.de)
+- [Teambank](https://www.teambank.de)
+
+Comment in [this PR](https://github.com/springwolf/springwolf-core/issues/342) to add your company and spread the word
+
 ### Development
+
+Check out our [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+
+<details>
+<summary>Using SNAPSHOT version</summary>
 
 #### Sonatype snapshots
 
@@ -99,6 +115,7 @@ Or add the `repository` to your `pom.xml` if you are using maven:
 #### Local Snapshot Build
 
 To work with local builds, run the `publishToMavenLocal` task. The current version number is set in [`.env`](.env) file.
+</details>
 
 ### Contributors
 
