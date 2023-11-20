@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
@@ -17,13 +18,15 @@ import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudst
 import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.FunctionalChannelBeanData.BeanType.SUPPLIER;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FunctionalChannelBeanDataTest {
+class FunctionalChannelBeanBuilderTest {
+    private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder =
+            new FunctionalChannelBeanBuilder(new SpringPayloadAnnotationTypeExtractor());
 
     @Test
     void testNotAFunctionalChannelBean() throws NoSuchMethodException {
         Method method = getMethod("notAFunctionalChannelBean");
 
-        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
         assertThat(data).isEmpty();
     }
@@ -37,7 +40,7 @@ class FunctionalChannelBeanDataTest {
     void testConsumerBean() throws NoSuchMethodException {
         Method method = getMethod("consumerBean");
 
-        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
         assertThat(data)
                 .containsExactly(
@@ -53,7 +56,7 @@ class FunctionalChannelBeanDataTest {
     void testSupplierBean() throws NoSuchMethodException {
         Method method = getMethod("supplierBean");
 
-        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
         assertThat(data)
                 .containsExactly(
@@ -69,7 +72,7 @@ class FunctionalChannelBeanDataTest {
     void testFunctionBean() throws NoSuchMethodException {
         Method method = getMethod("functionBean");
 
-        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
         assertThat(data)
                 .containsExactlyInAnyOrder(
@@ -87,7 +90,7 @@ class FunctionalChannelBeanDataTest {
         String methodName = "consumerBeanWithGenericPayload";
         Method method = getMethod(methodName);
 
-        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
         assertThat(data)
                 .containsExactly(
@@ -104,7 +107,7 @@ class FunctionalChannelBeanDataTest {
         String methodName = "kafkaStreamsConsumerBean";
         Method method = getMethod(methodName);
 
-        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
         assertThat(data)
                 .containsExactly(
@@ -117,7 +120,7 @@ class FunctionalChannelBeanDataTest {
     }
 
     private static Method getMethod(String methodName) throws NoSuchMethodException {
-        return FunctionalChannelBeanDataTest.class.getDeclaredMethod(methodName);
+        return FunctionalChannelBeanBuilderTest.class.getDeclaredMethod(methodName);
     }
 
     @Bean
@@ -130,7 +133,7 @@ class FunctionalChannelBeanDataTest {
         String methodName = "springMessagingConsumerBean";
         Method method = getMethod(methodName);
 
-        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
         assertThat(data)
                 .containsExactly(
@@ -147,7 +150,7 @@ class FunctionalChannelBeanDataTest {
         String methodName = "springMessagingBatchConsumerBean";
         Method method = getMethod(methodName);
 
-        Set<FunctionalChannelBeanData> data = FunctionalChannelBeanData.fromMethodBean(method);
+        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
         assertThat(data)
                 .containsExactly(

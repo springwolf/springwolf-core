@@ -3,6 +3,8 @@ package io.github.stavshamir.springwolf.asyncapi.cloudstream;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.CloudStreamFunctionChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.FunctionalChannelBeanBuilder;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -23,8 +25,19 @@ public class SpringwolfCloudStreamAutoConfiguration {
             AsyncApiDocketService asyncApiDocketService,
             BeanMethodsScanner beanMethodsScanner,
             SchemasService schemasService,
-            BindingServiceProperties cloudstreamBindingServiceProperties) {
+            BindingServiceProperties cloudstreamBindingServiceProperties,
+            FunctionalChannelBeanBuilder functionalChannelBeanBuilder) {
         return new CloudStreamFunctionChannelsScanner(
-                asyncApiDocketService, beanMethodsScanner, schemasService, cloudstreamBindingServiceProperties);
+                asyncApiDocketService,
+                beanMethodsScanner,
+                schemasService,
+                cloudstreamBindingServiceProperties,
+                functionalChannelBeanBuilder);
+    }
+
+    @Bean
+    public FunctionalChannelBeanBuilder functionalChannelBeanBuilder(
+            SpringPayloadAnnotationTypeExtractor springPayloadAnnotationTypeExtractor) {
+        return new FunctionalChannelBeanBuilder(springPayloadAnnotationTypeExtractor);
     }
 }
