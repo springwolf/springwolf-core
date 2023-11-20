@@ -78,7 +78,7 @@ class SpringPayloadAnnotationTypeExtractorTest {
 
         Class<?> result = extractor.getPayloadType(m);
 
-        assertEquals(List.class, result);
+        assertEquals(String.class, result);
     }
 
     @Test

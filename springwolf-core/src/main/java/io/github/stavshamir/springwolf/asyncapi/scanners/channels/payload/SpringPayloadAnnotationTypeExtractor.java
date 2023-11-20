@@ -44,29 +44,45 @@ public class SpringPayloadAnnotationTypeExtractor {
                 Type rawParameterType = ((ParameterizedType) parameterType).getRawType();
                 String rawParameterTypeName = rawParameterType.getTypeName();
 
-                if (genericClassesToExtract.keySet().contains(rawParameterTypeName)) {
-                    Integer index = genericClassesToExtract.get(rawParameterTypeName);
-                    Type actualTypeArgument = ((ParameterizedType) parameterType).getActualTypeArguments()[index];
-
-                    String actualTypeName = actualTypeArgument.getTypeName();
-                    if (actualTypeArgument instanceof ParameterizedType) {
-                        actualTypeName = ((ParameterizedType) actualTypeArgument)
-                                .getRawType()
-                                .getTypeName();
-                    }
-
-                    try {
-                        return Class.forName(actualTypeName);
-                    } catch (ClassNotFoundException ex) {
-                        log.debug("Unable to find class for type %s".formatted(actualTypeName), ex);
-                    }
+                Class<?> actualPayloadClass =
+                        getActualNestedPayloadClass((ParameterizedType) parameterType, rawParameterTypeName);
+                if (actualPayloadClass != Void.class) {
+                    return actualPayloadClass;
                 }
+
+                // nested generic class - fallback to most outer container
                 return Class.forName(rawParameterTypeName);
             }
+
+            // no generics used - just a normal type
             return Class.forName(parameterType.getTypeName());
         } catch (Exception ex) {
             log.info("Unable to extract generic data type of %s".formatted(parameterType), ex);
         }
+        return Void.class;
+    }
+
+    private Class<?> getActualNestedPayloadClass(ParameterizedType parameterType, String rawParameterTypeName) {
+        Type type = parameterType;
+        String typeName = rawParameterTypeName;
+
+        while (type instanceof ParameterizedType && genericClassesToExtract.containsKey(typeName)) {
+            Integer index = genericClassesToExtract.get(rawParameterTypeName);
+
+            type = ((ParameterizedType) type).getActualTypeArguments()[index];
+
+            typeName = type.getTypeName();
+            if (type instanceof ParameterizedType) {
+                typeName = ((ParameterizedType) type).getRawType().getTypeName();
+            }
+        }
+
+        try {
+            return Class.forName(typeName);
+        } catch (ClassNotFoundException ex) {
+            log.debug("Unable to find class for type %s".formatted(typeName), ex);
+        }
+
         return Void.class;
     }
 
