@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @Testcontainers
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ApiIntegrationWithDockerIntegrationTest {
+public class ApiSystemTest {
 
     private static final RestTemplate restTemplate = new RestTemplate();
     private static final String APP_NAME = "app_1";
