@@ -10,49 +10,64 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 public class SpringPayloadAnnotationTypeExtractor {
 
-    private final Set<String> genericClassesToExtract = Set.of(
-            "java.util.List", "org.springframework.messaging.Message", "org.apache.kafka.streams.kstream.KStream");
+    private final Map<String, Integer> genericClassesToExtract = Map.of(
+            "java.util.List",
+            0,
+            "org.springframework.messaging.Message",
+            0,
+            "org.apache.kafka.streams.kstream.KStream",
+            1);
 
     public Class<?> getPayloadType(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
         log.debug("Finding payload type for {}", methodName);
 
-        Class<?>[] parameterTypes = method.getParameterTypes();
         int parameterPayloadIndex =
-                getPayloadParameterIndex(parameterTypes, method.getParameterAnnotations(), methodName);
+                getPayloadParameterIndex(method.getParameterTypes(), method.getParameterAnnotations(), methodName);
 
-        return getActualPayloadClass(
-                parameterTypes[parameterPayloadIndex], method.getGenericParameterTypes()[parameterPayloadIndex]);
+        return getActualPayloadClass(method.getGenericParameterTypes()[parameterPayloadIndex]);
     }
 
-    private Class<?> getActualPayloadClass(Class<?> parameterClass, Type parameterType) {
-        String parameterClassName = parameterClass.getName();
+    public Class<?> typeToClass(Type type) {
+        return getActualPayloadClass(type);
+    }
 
-        if (genericClassesToExtract.contains(parameterClassName)) {
-            try {
-                ParameterizedType genericTypeArgument = ((ParameterizedType) parameterType);
-                Type actualTypeArgument = genericTypeArgument.getActualTypeArguments()[0];
+    private Class<?> getActualPayloadClass(Type parameterType) {
+        try {
+            if (parameterType instanceof ParameterizedType) {
+                Type rawParameterType = ((ParameterizedType) parameterType).getRawType();
+                String rawParameterTypeName = rawParameterType.getTypeName();
 
-                String actualTypeName = actualTypeArgument.getTypeName();
-                if (actualTypeArgument instanceof ParameterizedType) {
-                    actualTypeName = ((ParameterizedType) actualTypeArgument)
-                            .getRawType()
-                            .getTypeName();
+                if (genericClassesToExtract.keySet().contains(rawParameterTypeName)) {
+                    Integer index = genericClassesToExtract.get(rawParameterTypeName);
+                    Type actualTypeArgument = ((ParameterizedType) parameterType).getActualTypeArguments()[index];
+
+                    String actualTypeName = actualTypeArgument.getTypeName();
+                    if (actualTypeArgument instanceof ParameterizedType) {
+                        actualTypeName = ((ParameterizedType) actualTypeArgument)
+                                .getRawType()
+                                .getTypeName();
+                    }
+
+                    try {
+                        return Class.forName(actualTypeName);
+                    } catch (ClassNotFoundException ex) {
+                        log.debug("Unable to find class for type %s".formatted(actualTypeName), ex);
+                    }
                 }
-
-                parameterClass = Class.forName(actualTypeName);
-            } catch (Exception ex) {
-                log.info("Unable to extract generic data type of %s".formatted(parameterClassName), ex);
+                return Class.forName(rawParameterTypeName);
             }
+            return Class.forName(parameterType.getTypeName());
+        } catch (Exception ex) {
+            log.info("Unable to extract generic data type of %s".formatted(parameterType), ex);
         }
-
-        return parameterClass;
+        return Void.class;
     }
 
     private int getPayloadParameterIndex(

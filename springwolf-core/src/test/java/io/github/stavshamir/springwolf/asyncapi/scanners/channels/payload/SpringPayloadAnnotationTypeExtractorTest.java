@@ -91,12 +91,12 @@ class SpringPayloadAnnotationTypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithMessageOfListOfString() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfListOfString", Message.class);
+    void getPayloadTypeWithListOfMessageOfString() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithListOfMessageOfString", List.class);
 
         Class<?> result = extractor.getPayloadType(m);
 
-        assertEquals(List.class, result);
+        assertEquals(String.class, result);
     }
 
     @Test
@@ -125,7 +125,7 @@ class SpringPayloadAnnotationTypeExtractorTest {
 
         public void consumeWithMessageOfString(Message<String> value) {}
 
-        public void consumeWithMessageOfListOfString(Message<List<String>> value) {}
+        public void consumeWithListOfMessageOfString(List<Message<String>> value) {}
 
         public void consumeWithCustomType(MyType value) {}
 

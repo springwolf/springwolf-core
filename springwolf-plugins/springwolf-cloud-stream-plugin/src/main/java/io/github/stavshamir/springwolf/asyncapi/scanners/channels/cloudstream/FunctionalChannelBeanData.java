@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.SpringPayloadAnnotationTypeExtractor;
 import lombok.Data;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +23,8 @@ class FunctionalChannelBeanData {
     private final Class<?> payloadType;
     private final BeanType beanType;
     private final String cloudStreamBinding;
+    private static final SpringPayloadAnnotationTypeExtractor extractor =
+            new SpringPayloadAnnotationTypeExtractor(); // TODO: move
 
     static Set<FunctionalChannelBeanData> fromMethodBean(Method methodBean) {
         Class<?> returnType = methodBean.getReturnType();
@@ -64,28 +66,8 @@ class FunctionalChannelBeanData {
     private static List<Class<?>> getReturnTypeGenerics(Method methodBean) {
         ParameterizedType genericReturnType = (ParameterizedType) methodBean.getGenericReturnType();
         return Arrays.stream(genericReturnType.getActualTypeArguments())
-                .map(FunctionalChannelBeanData::toClassObject)
+                .map(extractor::typeToClass)
                 .collect(toList());
-    }
-
-    private static Class<?> toClassObject(Type type) {
-        if (type instanceof Class<?>) {
-            return (Class<?>) type;
-        }
-
-        if (type instanceof ParameterizedType) {
-            Type rawType = ((ParameterizedType) type).getActualTypeArguments()[0];
-
-            if ("org.apache.kafka.streams.kstream.KStream"
-                    .equals(((ParameterizedType) type).getRawType().getTypeName())) {
-                rawType = ((ParameterizedType) type).getActualTypeArguments()[1];
-            }
-
-            return toClassObject(rawType);
-        }
-
-        throw new IllegalArgumentException(
-                "Cannot handle Type which is not Class or ParameterizedType, but was given: " + type.getClass());
     }
 
     enum BeanType {
