@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
-import com.asyncapi.v2.binding.operation.sqs.SQSOperationBinding;
+import com.asyncapi.v2.binding.operation.sns.SNSOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AbstractOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
@@ -10,6 +10,6 @@ public class SnsOperationBindingProcessor extends AbstractOperationBindingProces
 
     @Override
     protected ProcessedOperationBinding mapToOperationBinding(SnsAsyncOperationBinding bindingAnnotation) {
-        return new ProcessedOperationBinding(bindingAnnotation.type(), new SQSOperationBinding());
+        return new ProcessedOperationBinding(bindingAnnotation.type(), new SNSOperationBinding());
     }
 }

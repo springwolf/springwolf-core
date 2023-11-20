@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi;
+package io.github.stavshamir.springwolf.asyncapi.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
-import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
