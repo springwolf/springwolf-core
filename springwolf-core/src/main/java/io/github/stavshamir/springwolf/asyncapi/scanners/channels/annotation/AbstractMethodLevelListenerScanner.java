@@ -16,6 +16,12 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.MergedAnnotation;
+import org.springframework.core.annotation.MergedAnnotationCollectors;
+import org.springframework.core.annotation.MergedAnnotationPredicates;
+import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.core.annotation.RepeatableContainers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -24,11 +30,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -94,15 +97,25 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(annotationClass))
-                .collect(toSet());
+                .filter(method -> !method.isBridge())
+                .filter(method -> AnnotationUtils.findAnnotation(method, annotationClass) != null)
+                .collect(Collectors.toSet());
     }
 
     private Map.Entry<String, ChannelItem> mapMethodToChannel(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
         Class<T> listenerAnnotationClass = getListenerAnnotationClass();
-        T annotation = Optional.of(method.getAnnotation(listenerAnnotationClass))
+        Set<T> annotations = MergedAnnotations.from(
+                        method,
+                        MergedAnnotations.SearchStrategy.TYPE_HIERARCHY,
+                        RepeatableContainers.standardRepeatables())
+                .stream(listenerAnnotationClass)
+                .filter(MergedAnnotationPredicates.firstRunOf(MergedAnnotation::getAggregateIndex))
+                .map(MergedAnnotation::withNonMergedAttributes)
+                .collect(MergedAnnotationCollectors.toAnnotationSet());
+        T annotation = annotations.stream()
+                .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Method must be annotated with " + listenerAnnotationClass.getName()));
 

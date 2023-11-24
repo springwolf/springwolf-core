@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  * </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.METHOD})
+@Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Repeatable(AsyncPublishers.class)
 @Inherited
 public @interface AsyncPublisher {

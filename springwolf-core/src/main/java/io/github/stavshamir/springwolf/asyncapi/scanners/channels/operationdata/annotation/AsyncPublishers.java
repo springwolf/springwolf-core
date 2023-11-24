@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.METHOD})
+@Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Inherited
 public @interface AsyncPublishers {
     AsyncPublisher[] value();

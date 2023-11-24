@@ -26,7 +26,7 @@ public class TestAbstractOperationBindingProcessor
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @Target(value = {ElementType.METHOD})
+    @Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
     @AsyncOperationBinding
     @Inherited
     public @interface TestOperationBinding {

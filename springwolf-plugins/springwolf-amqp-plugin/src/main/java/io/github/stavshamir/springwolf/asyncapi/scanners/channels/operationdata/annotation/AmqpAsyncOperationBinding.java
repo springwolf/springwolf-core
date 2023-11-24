@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * It configures the operation binding for the AMQP protocol.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.METHOD})
+@Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @AsyncOperationBinding
 @Inherited
 public @interface AmqpAsyncOperationBinding {

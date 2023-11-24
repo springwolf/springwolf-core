@@ -17,6 +17,12 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.MergedAnnotation;
+import org.springframework.core.annotation.MergedAnnotationCollectors;
+import org.springframework.core.annotation.MergedAnnotationPredicates;
+import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.core.annotation.RepeatableContainers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -109,14 +115,28 @@ public abstract class AbstractClassLevelListenerScanner<
     }
 
     private boolean isClassAnnotated(Class<?> component) {
-        return component.isAnnotationPresent(getListenerAnnotationClass());
+        return AnnotationUtils.findAnnotation(component, getListenerAnnotationClass()) != null;
     }
 
     private Optional<Map.Entry<String, ChannelItem>> mapClassToChannel(Class<?> component) {
         log.debug("Mapping class \"{}\" to channel", component.getName());
 
-        ClassAnnotation annotation = component.getAnnotation(getListenerAnnotationClass());
+        Class<ClassAnnotation> listenerAnnotationClass = getListenerAnnotationClass();
+        Set<ClassAnnotation> annotations = MergedAnnotations.from(
+                        component,
+                        MergedAnnotations.SearchStrategy.TYPE_HIERARCHY,
+                        RepeatableContainers.standardRepeatables())
+                .stream(listenerAnnotationClass)
+                .filter(MergedAnnotationPredicates.firstRunOf(MergedAnnotation::getAggregateIndex))
+                .map(MergedAnnotation::withNonMergedAttributes)
+                .collect(MergedAnnotationCollectors.toAnnotationSet());
+        ClassAnnotation annotation = annotations.stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Method must be annotated with " + listenerAnnotationClass.getName()));
+
         String channelName = getChannelName(annotation);
+
         Map<String, ? extends OperationBinding> operationBinding = buildOperationBinding(annotation);
         Map<String, ? extends ChannelBinding> channelBinding = buildChannelBinding(annotation);
         Set<Method> annotatedMethods = getAnnotatedMethods(component);
@@ -136,7 +156,7 @@ public abstract class AbstractClassLevelListenerScanner<
                 "Scanning class \"{}\" for @\"{}\" annotated methods", component.getName(), methodAnnotation.getName());
 
         return Arrays.stream(component.getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(methodAnnotation))
+                .filter(method -> AnnotationUtils.findAnnotation(method, methodAnnotation) != null)
                 .collect(toSet());
     }
 
