@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
@@ -60,7 +61,7 @@ public class ProducerSystemTest {
     @Order(1)
     void verifyKafkaIsAvailable() {
         Map<String, Object> consumerProperties =
-                properties.getPublishing().getProducer().buildProperties();
+                properties.getPublishing().getProducer().buildProperties(new DefaultSslBundleRegistry());
         AdminClient adminClient = KafkaAdminClient.create(consumerProperties);
         await().atMost(60, SECONDS)
                 .untilAsserted(

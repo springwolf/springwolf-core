@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.sqs;
 
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -33,11 +31,8 @@ class ApiIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Value("${server.port}")
-    public Integer serverPort;
-
     @Test
-    void asyncApiResourceArtifactTest() throws JSONException, IOException {
+    void asyncApiResourceArtifactTest() throws IOException {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actual);

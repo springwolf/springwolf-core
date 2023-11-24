@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.sqs;
 
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.DockerComposeContainer;
@@ -55,7 +54,7 @@ public class ApiSystemTest {
     }
 
     @Test
-    void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException, JSONException {
+    void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException {
         String url = baseUrl() + "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
 
