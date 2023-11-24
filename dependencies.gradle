@@ -33,7 +33,7 @@ ext {
 
     awaitilityVersion = '4.2.0'
 
-    commonsLang3Version = '3.13.0'
+    commonsLang3Version = '3.14.0'
 
     jsr305Version = '3.0.2'
 
