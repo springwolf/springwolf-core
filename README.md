@@ -39,7 +39,7 @@ It documents asynchronous APIs using the [AsyncAPI specification](https://www.as
 
 Take a look at the Springwolf [live demo](https://demo.springwolf.dev/) and a [generated AsyncAPI document](springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json).
 
-[springwolf.dev](https://www.springwolf.dev/docs/quickstart) includes the quickstart guide and full documentation.
+[springwolf.dev](https://www.springwolf.dev) includes the [quickstart guide](https://www.springwolf.dev/docs/quickstart) and full documentation.
 
 ### ✨ Why You Should Use Springwolf
 
