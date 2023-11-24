@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload;
 
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -13,10 +14,16 @@ import java.util.Arrays;
 import java.util.Map;
 
 @Slf4j
-@RequiredArgsConstructor
 public class PayloadClassExtractor {
+    private final TypeToClassConverter typeToClassConverter;
 
-    private final TypeToClassConverter typeToClassConverter = new TypeToClassConverter();
+    public PayloadClassExtractor(SpringwolfConfigProperties properties) {
+        Map<String, Integer> extractableClasses = Map.of();
+        if (properties.getPayload() != null) {
+            extractableClasses = properties.getPayload().getExtractableClasses();
+        }
+        typeToClassConverter = new TypeToClassConverter(extractableClasses);
+    }
 
     public Class<?> extractFrom(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
@@ -67,14 +74,10 @@ public class PayloadClassExtractor {
         return -1;
     }
 
+    @RequiredArgsConstructor
     private static class TypeToClassConverter {
-        private final Map<String, Integer> extractableClassToArgumentIndex = Map.of(
-                "java.util.List",
-                0,
-                "org.springframework.messaging.Message",
-                0,
-                "org.apache.kafka.streams.kstream.KStream",
-                1);
+
+        private final Map<String, Integer> extractableClassToArgumentIndex;
 
         private Class<?> extractClass(Type parameterType) {
             try {

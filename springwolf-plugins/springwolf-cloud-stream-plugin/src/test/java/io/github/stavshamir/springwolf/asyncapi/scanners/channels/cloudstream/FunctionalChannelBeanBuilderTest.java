@@ -2,6 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class FunctionalChannelBeanBuilderTest {
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder =
-            new FunctionalChannelBeanBuilder(new PayloadClassExtractor());
+            new FunctionalChannelBeanBuilder(new PayloadClassExtractor(new SpringwolfConfigProperties()));
 
     @Test
     void testNotAFunctionalChannelBean() throws NoSuchMethodException {

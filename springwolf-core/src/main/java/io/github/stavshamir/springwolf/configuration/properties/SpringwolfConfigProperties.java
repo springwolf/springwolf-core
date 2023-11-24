@@ -60,6 +60,9 @@ public class SpringwolfConfigProperties {
     @Nullable
     private Scanner scanner;
 
+    @Nullable
+    private Payload payload;
+
     @Getter
     @Setter
     public static class ConfigDocket {
@@ -225,5 +228,27 @@ public class SpringwolfConfigProperties {
              */
             private boolean enabled = false;
         }
+    }
+
+    @Getter
+    @Setter
+    public static class Payload {
+        /**
+         * In case the payload is wrapped, Springwolf will try to unwrap the specified generic classes.
+         *
+         * The format is: canonicalClassName=generic-argument-index
+         *
+         * In case you do have a batch listener, you want to add:
+         * springwolf.payload.extractable-classes.java.util.List=0
+         */
+        private Map<String, Integer> extractableClasses = Map.of(
+                "java.util.function.Consumer",
+                0,
+                "java.util.function.Supplier",
+                0,
+                "org.springframework.messaging.Message",
+                0,
+                "org.apache.kafka.streams.kstream.KStream",
+                1);
     }
 }

@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload;
 
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.support.GenericMessage;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PayloadClassExtractorTest {
 
-    private final PayloadClassExtractor extractor = new PayloadClassExtractor();
+    private final PayloadClassExtractor extractor;
+
+    {
+        SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
+        properties.setPayload(new SpringwolfConfigProperties.Payload());
+        extractor = new PayloadClassExtractor(properties);
+    }
 
     @Test
     void getPayloadType() throws NoSuchMethodException {
@@ -36,17 +43,8 @@ class PayloadClassExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithListOfStrings() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithListOfStrings", List.class);
-
-        Class<?> result = extractor.extractFrom(m);
-
-        assertEquals(String.class, result);
-    }
-
-    @Test
-    void getPayloadTypeWithListOfInterfaces() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithListOfGenericClasses", List.class);
+    void getPayloadTypeWithMessageOfInterfaces() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfGenericClasses", Message.class);
 
         Class<?> result = extractor.extractFrom(m);
 
@@ -63,36 +61,27 @@ class PayloadClassExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithListOfStringExtends() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithListOfStringExtends", List.class);
+    void getPayloadTypeWithMessageOfStringExtends() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfStringExtends", Message.class);
 
         Class<?> result = extractor.extractFrom(m);
 
-        // Unable to resolve optional<String>, fallback to root type list
-        assertEquals(List.class, result);
+        // Unable to resolve optional<String>, fallback to root type Message
+        assertEquals(Message.class, result);
     }
 
     @Test
-    void getPayloadTypeWithListOfListOfString() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithListOfListOfString", List.class);
+    void getPayloadTypeWithMessageOfListOfString() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfListOfString", Message.class);
 
         Class<?> result = extractor.extractFrom(m);
 
-        assertEquals(String.class, result);
+        assertEquals(List.class, result);
     }
 
     @Test
     void getPayloadTypeWithMessageOfString() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfString", Message.class);
-
-        Class<?> result = extractor.extractFrom(m);
-
-        assertEquals(String.class, result);
-    }
-
-    @Test
-    void getPayloadTypeWithListOfMessageOfString() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithListOfMessageOfString", List.class);
 
         Class<?> result = extractor.extractFrom(m);
 
@@ -115,20 +104,20 @@ class PayloadClassExtractorTest {
 
         public void consumeWithGenericClass(Optional<String> value) {}
 
-        public void consumeWithListOfStrings(List<String> value) {}
+        public void consumeWithMessageOfGenericClasses(Message<Optional<String>> value) {}
 
-        public void consumeWithListOfGenericClasses(List<Optional<String>> value) {}
+        public void consumeWithMessageOfStringExtends(Message<? extends String> value) {}
 
-        public void consumeWithListOfStringExtends(List<? extends String> value) {}
-
-        public void consumeWithListOfListOfString(List<List<String>> value) {}
+        public void consumeWithMessageOfListOfString(Message<List<String>> value) {}
 
         public void consumeWithMessageOfString(Message<String> value) {}
 
-        public void consumeWithListOfMessageOfString(List<Message<String>> value) {}
-
         public void consumeWithCustomType(MyType value) {}
 
-        public static class MyType extends ArrayList<String> {}
+        public static class MyType extends GenericMessage<String> {
+            public MyType(String payload) {
+                super(payload);
+            }
+        }
     }
 }
