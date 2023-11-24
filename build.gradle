@@ -66,6 +66,9 @@ allprojects {
     test {
         dependsOn spotlessApply // Automatically fix code formatting if possible
 
+        minHeapSize = "128m" // initial heap size
+        maxHeapSize = "1024m" // maximum heap size
+
         useJUnitPlatform()
         testLogging {
             // showStandardStreams = true

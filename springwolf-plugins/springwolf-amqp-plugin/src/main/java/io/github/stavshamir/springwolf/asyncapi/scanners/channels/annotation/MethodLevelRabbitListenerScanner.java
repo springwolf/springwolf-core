@@ -5,6 +5,7 @@ import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +27,18 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
     private final RabbitListenerUtil.RabbitListenerUtilContext context;
     private StringValueResolver resolver;
 
+    private final PayloadClassExtractor payloadClassExtractor;
+
     public MethodLevelRabbitListenerScanner(
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
+            PayloadClassExtractor payloadClassExtractor,
             List<Queue> queues,
             List<Exchange> exchanges,
             List<Binding> bindings) {
         super(componentClassScanner, schemasService);
-        context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
+        this.context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
+        this.payloadClassExtractor = payloadClassExtractor;
     }
 
     @Override
@@ -67,6 +72,6 @@ public class MethodLevelRabbitListenerScanner extends AbstractMethodLevelListene
     }
 
     protected Class<?> getPayloadType(Method method) {
-        return SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
+        return payloadClassExtractor.extractFrom(method);
     }
 }

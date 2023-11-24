@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.configuration;
 import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.asyncapi.kafka.SpringwolfKafkaAutoConfiguration;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -45,6 +46,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(ComponentClassScanner.class),
                 @MockBean(SchemasService.class),
+                @MockBean(PayloadClassExtractor.class),
                 @MockBean(AsyncApiDocketService.class)
             })
     class KafkaProducerWillBeCreatedIfEnabledTest {
@@ -79,7 +81,12 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.url=some-server:1234",
                 "springwolf.plugin.kafka.publishing.enabled=false"
             })
-    @MockBeans(value = {@MockBean(ComponentClassScanner.class), @MockBean(SchemasService.class)})
+    @MockBeans(
+            value = {
+                @MockBean(ComponentClassScanner.class),
+                @MockBean(SchemasService.class),
+                @MockBean(PayloadClassExtractor.class)
+            })
     class KafkaProducerWillNotBeCreatedIfDisabledTest {
         @Autowired
         private Optional<SpringwolfKafkaProducer> springwolfKafkaProducer;

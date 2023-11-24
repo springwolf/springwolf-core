@@ -8,6 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfInitApplicationListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
@@ -85,5 +86,11 @@ public class SpringwolfAutoConfiguration {
     @ConditionalOnMissingBean
     public ExampleGenerator exampleGenerator() {
         return new ExampleJsonGenerator();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PayloadClassExtractor payloadClassExtractor(SpringwolfConfigProperties springwolfConfigProperties) {
+        return new PayloadClassExtractor(springwolfConfigProperties);
     }
 }

@@ -68,11 +68,4 @@ docker {
 
 test {
     dependsOn dockerBuildImage
-    dependsOn spotlessApply // Automatically fix code formatting if possible
-
-    useJUnitPlatform()
-
-    testLogging {
-        exceptionFormat = 'full'
-    }
 }

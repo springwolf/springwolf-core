@@ -6,6 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfJmsController;
 import io.github.stavshamir.springwolf.asyncapi.jms.SpringwolfJmsAutoConfiguration;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.producer.SpringwolfJmsProducer;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -49,6 +50,7 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 @MockBean(SchemasService.class),
                 @MockBean(AsyncApiDocketService.class),
                 @MockBean(AsyncApiService.class),
+                @MockBean(PayloadClassExtractor.class),
                 @MockBean(JmsTemplate.class)
             })
     @Nested
@@ -88,6 +90,7 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 @MockBean(ComponentClassScanner.class),
                 @MockBean(SchemasService.class),
                 @MockBean(ChannelsService.class),
+                @MockBean(PayloadClassExtractor.class),
                 @MockBean(JmsTemplate.class)
             })
     @Nested
