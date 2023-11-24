@@ -34,10 +34,11 @@ Contributing follows mostly the following steps:
 
 1. For bigger changes, open an [issue](https://github.com/springwolf/springwolf-core/issues) and/or drop by on our discord so that we can coordinate.
 2. Fork the repository
+   - Create a new branch
 3. Apply your changes
    - Add/Adapt tests as necessary
 4. Run the tests
-   - Run tests locally via `./gradlew test`
+   - Run tests locally via `./gradlew test` (includes `unitTest` and `integrationTest` targets, which executes faster)
 5. Run the code formatter
    - We use the palantir code style and disallow wildcard imports
    - Run `./gradlew spotlessApply` to fix most things automatically
@@ -45,4 +46,5 @@ Contributing follows mostly the following steps:
 7. Open a Pull-Request against the springwolf repository
    - Use the provided template to briefly describe why the changes should be included
 8. Update the [documentation](https://github.com/springwolf/springwolf.github.io) as necessary
+9. Add yourself to the contributors and your company to the users in [README.md](README.md)
 

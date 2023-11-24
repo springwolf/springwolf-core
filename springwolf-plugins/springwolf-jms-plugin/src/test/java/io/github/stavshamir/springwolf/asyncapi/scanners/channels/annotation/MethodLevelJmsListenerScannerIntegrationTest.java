@@ -7,6 +7,7 @@ import com.asyncapi.v2.binding.channel.jms.JMSChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.message.jms.JMSMessageBinding;
 import com.asyncapi.v2.binding.operation.jms.JMSOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -41,6 +42,7 @@ import static org.mockito.Mockito.when;
         classes = {
             MethodLevelJmsListenerScanner.class,
             DefaultSchemasService.class,
+            PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
         })
@@ -187,6 +189,39 @@ class MethodLevelJmsListenerScannerIntegrationTest {
         assertThat(actualChannelItems).containsExactly(Map.entry(QUEUE, expectedChannelItem));
     }
 
+    @Test
+    void scan_componentWithSingleRabbitHandlerMethod_genericPayload() {
+        // Given a @JmsListener annotated class with one method annotated with @RabbitHandler
+        // - There is a payload of type Message<?>
+        setClassToScan(ClassWithJmsListenerAnnotationWithGenericPayload.class);
+
+        // When scan is called
+        Map<String, ChannelItem> actualChannelItems = scanner.scan();
+
+        // Then the returned collection contains the channel, and the payload is the generic type of the list
+        Message message = Message.builder()
+                .name(SimpleFoo.class.getName())
+                .title(SimpleFoo.class.getSimpleName())
+                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .bindings(defaultMessageBinding)
+                .build();
+
+        Operation operation = Operation.builder()
+                .description("Auto-generated description")
+                .operationId("test-queue_publish_methodWithAnnotation")
+                .bindings(defaultOperationBinding)
+                .message(message)
+                .build();
+
+        ChannelItem expectedChannelItem = ChannelItem.builder()
+                .bindings(defaultChannelBinding)
+                .publish(operation)
+                .build();
+
+        assertThat(actualChannelItems).containsExactly(Map.entry(QUEUE, expectedChannelItem));
+    }
+
     private static class ClassWithoutJmsListenerAnnotations {
 
         private void methodWithoutAnnotation() {}
@@ -216,6 +251,12 @@ class MethodLevelJmsListenerScannerIntegrationTest {
 
         @JmsListener(destination = QUEUE)
         private void methodWithAnnotation(String anotherParam, @Payload SimpleFoo payload) {}
+    }
+
+    private static class ClassWithJmsListenerAnnotationWithGenericPayload {
+
+        @JmsListener(destination = QUEUE)
+        private void methodWithAnnotation(org.springframework.messaging.Message<SimpleFoo> payload) {}
     }
 
     @Data

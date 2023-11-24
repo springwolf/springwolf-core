@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.lang.Nullable;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ConfigurationProperties(prefix = SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX)
 @Getter
@@ -59,6 +60,9 @@ public class SpringwolfConfigProperties {
 
     @Nullable
     private Scanner scanner;
+
+    @Nullable
+    private Payload payload = new Payload();
 
     @Getter
     @Setter
@@ -224,6 +228,32 @@ public class SpringwolfConfigProperties {
              * Flag to move the endpoint that exposes the AsyncAPI document beneath Spring Boot's actuator endpoint.
              */
             private boolean enabled = false;
+        }
+    }
+
+    @Getter
+    public static class Payload {
+        /**
+         * In case the payload is wrapped, Springwolf will try to unwrap the specified generic classes.
+         *
+         * The format is: canonicalClassName=generic-argument-index
+         */
+        private Map<String, Integer> extractableClasses = Map.of(
+                "java.util.function.Consumer",
+                0,
+                "java.util.function.Supplier",
+                0,
+                "org.springframework.messaging.Message",
+                0,
+                "org.apache.kafka.streams.kstream.KStream",
+                1,
+                "java.util.List",
+                0);
+
+        public void setExtractableClasses(Map<String, Integer> extractableClasses) {
+            this.extractableClasses = extractableClasses.entrySet().stream()
+                    .filter(entry -> entry.getValue() >= 0)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         }
     }
 }

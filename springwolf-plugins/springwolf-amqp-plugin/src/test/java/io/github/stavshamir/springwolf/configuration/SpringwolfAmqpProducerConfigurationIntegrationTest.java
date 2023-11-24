@@ -5,6 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.amqp.SpringwolfAmqpAutoConfiguration;
 import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfAmqpController;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -48,6 +49,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 @MockBean(RabbitTemplate.class),
                 @MockBean(ComponentClassScanner.class),
                 @MockBean(SchemasService.class),
+                @MockBean(PayloadClassExtractor.class),
                 @MockBean(AsyncApiDocketService.class)
             })
     @Nested
@@ -87,7 +89,8 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 @MockBean(AsyncApiService.class),
                 @MockBean(RabbitTemplate.class),
                 @MockBean(ComponentClassScanner.class),
-                @MockBean(SchemasService.class)
+                @MockBean(SchemasService.class),
+                @MockBean(PayloadClassExtractor.class),
             })
     @Nested
     class AmqpProducerWillNotBeCreatedIfDisabledTest {

@@ -10,6 +10,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProducerOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListenerAnnotationScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisherAnnotationScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
@@ -80,12 +81,14 @@ public class SpringwolfScannerConfiguration {
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
+            PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncListenerAnnotationScanner(
                 componentClassScanner,
                 schemasService,
                 asyncApiDocketService,
+                payloadClassExtractor,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }
@@ -100,12 +103,14 @@ public class SpringwolfScannerConfiguration {
             ComponentClassScanner componentClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
+            PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncPublisherAnnotationScanner(
                 componentClassScanner,
                 schemasService,
                 asyncApiDocketService,
+                payloadClassExtractor,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }

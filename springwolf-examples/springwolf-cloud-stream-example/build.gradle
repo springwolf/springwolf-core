@@ -18,7 +18,7 @@ dependencyManagement {
 }
 
 dependencies {
-    implementation project(":springwolf-core")
+    testImplementation project(":springwolf-core")
 
     runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream")
     annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream")
@@ -27,28 +27,33 @@ dependencies {
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
     runtimeOnly "org.springframework.boot:spring-boot-starter-actuator"
 
-    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "org.apache.kafka:kafka-streams:${kafkaStreamsVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
 
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 
-    testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
 
+    testImplementation "org.springframework:spring-beans"
     testImplementation "org.springframework:spring-web"
     testImplementation "org.springframework.kafka:spring-kafka-test"
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
 docker {
@@ -66,8 +71,5 @@ docker {
 }
 
 test {
-    minHeapSize = "128m" // initial heap size
-    maxHeapSize = "1024m" // maximum heap size
-
     dependsOn dockerBuildImage
 }

@@ -2,6 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfJmsProducer;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -41,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             SpringwolfJmsController.class,
             PublishingPayloadCreator.class,
             SpringwolfJmsProducer.class,
+            PayloadClassExtractor.class,
             DefaultSchemasService.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,

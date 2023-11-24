@@ -7,6 +7,7 @@ import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -28,7 +29,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -43,6 +43,7 @@ import static org.mockito.Mockito.when;
         classes = {
             ClassLevelKafkaListenerScanner.class,
             DefaultSchemasService.class,
+            PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
         })
@@ -211,10 +212,10 @@ class ClassLevelKafkaListenerScannerIntegrationTest {
     }
 
     @Test
-    void scan_componentWithSingleKafkaHandlerMethod_batchPayload() {
+    void scan_componentWithSingleKafkaHandlerMethod_genericPayload() {
         // Given a @KafkaListener annotated class with one method annotated with @KafkaHandler
-        // - There is a payload of type List<?>
-        setClassToScan(KafkaListenerClassWithKafkaHandlerWithBatchPayload.class);
+        // - There is a payload of type Message<?>
+        setClassToScan(KafkaListenerClassWithKafkaHandlerWithGenericPayload.class);
 
         // When scan is called
         Map<String, ChannelItem> actualChannels = classLevelKafkaListenerScanner.scan();
@@ -230,7 +231,7 @@ class ClassLevelKafkaListenerScannerIntegrationTest {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("KafkaListenerClassWithKafkaHandlerWithBatchPayload_publish")
+                .operationId("KafkaListenerClassWithKafkaHandlerWithGenericPayload_publish")
                 .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
@@ -275,10 +276,10 @@ class ClassLevelKafkaListenerScannerIntegrationTest {
     }
 
     @KafkaListener(topics = TOPIC)
-    private static class KafkaListenerClassWithKafkaHandlerWithBatchPayload {
+    private static class KafkaListenerClassWithKafkaHandlerWithGenericPayload {
 
         @KafkaHandler
-        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {}
+        private void methodWithAnnotation(org.springframework.messaging.Message<SimpleFoo> payload) {}
     }
 
     @Data

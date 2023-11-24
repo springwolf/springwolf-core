@@ -23,7 +23,6 @@ dependencies {
 
     implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-web"
 
     implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
@@ -33,7 +32,6 @@ dependencies {
     implementation "org.springframework.security:spring-security-config"
     implementation "org.springframework.security:spring-security-web"
 
-    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
@@ -41,8 +39,6 @@ dependencies {
     implementation "org.javamoney:moneta:${monetaVersion}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-
-    testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
 
     testImplementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
@@ -62,6 +58,9 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-actuator")
     permitTestUnusedDeclared("org.springframework.boot:spring-boot-starter-actuator")
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
 docker {

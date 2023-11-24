@@ -5,8 +5,8 @@ import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.AbstractOperationDataScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
@@ -40,8 +40,9 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
     private final SchemasService schemasService;
     private final AsyncApiDocketService asyncApiDocketService;
 
-    private final List<OperationBindingProcessor> operationBindingProcessors;
+    private final PayloadClassExtractor payloadClassExtractor;
 
+    private final List<OperationBindingProcessor> operationBindingProcessors;
     private final List<MessageBindingProcessor> messageBindingProcessors;
 
     @Override
@@ -108,9 +109,8 @@ public class AsyncPublisherAnnotationScanner extends AbstractOperationDataScanne
             Message message,
             AsyncPublisher annotation) {
         AsyncOperation op = annotation.operation();
-        Class<?> payloadType = op.payloadType() != Object.class
-                ? op.payloadType()
-                : SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
+        Class<?> payloadType =
+                op.payloadType() != Object.class ? op.payloadType() : payloadClassExtractor.extractFrom(method);
         return ProducerData.builder()
                 .channelName(resolver.resolveStringValue(op.channelName()))
                 .description(resolver.resolveStringValue(op.description()))

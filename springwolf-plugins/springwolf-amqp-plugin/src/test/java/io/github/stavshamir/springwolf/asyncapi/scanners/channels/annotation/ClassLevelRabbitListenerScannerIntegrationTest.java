@@ -7,6 +7,7 @@ import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -43,6 +44,7 @@ import static org.mockito.Mockito.when;
         classes = {
             ClassLevelRabbitListenerScanner.class,
             DefaultSchemasService.class,
+            PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
         })
@@ -229,10 +231,10 @@ class ClassLevelRabbitListenerScannerIntegrationTest {
     }
 
     @Test
-    void scan_componentWithSingleRabbitHandlerMethod_batchPayload() {
+    void scan_componentWithSingleRabbitHandlerMethod_genericPayload() {
         // Given a @RabbitListener annotated class with one method annotated with @RabbitHandler
-        // - There is a payload of type List<?>
-        setClassToScan(RabbitListenerClassWithRabbitHandlerWithBatchPayload.class);
+        // - There is a payload of type Message<?>
+        setClassToScan(RabbitListenerClassWithRabbitHandlerWithGenericPayload.class);
 
         // When scan is called
         Map<String, ChannelItem> actualChannels = classLevelRabbitListenerScanner.scan();
@@ -248,7 +250,7 @@ class ClassLevelRabbitListenerScannerIntegrationTest {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("RabbitListenerClassWithRabbitHandlerWithBatchPayload_publish")
+                .operationId("RabbitListenerClassWithRabbitHandlerWithGenericPayload_publish")
                 .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
@@ -293,10 +295,10 @@ class ClassLevelRabbitListenerScannerIntegrationTest {
     }
 
     @RabbitListener(queues = QUEUE)
-    private static class RabbitListenerClassWithRabbitHandlerWithBatchPayload {
+    private static class RabbitListenerClassWithRabbitHandlerWithGenericPayload {
 
         @RabbitHandler
-        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {}
+        private void methodWithAnnotation(org.springframework.messaging.Message<SimpleFoo> payload) {}
     }
 
     @Data

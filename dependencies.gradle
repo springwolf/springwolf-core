@@ -25,22 +25,20 @@
  * The dependencies are sorted alphabetically.
  */
 ext {
-    androidJsonVersion = '0.0.20131108.vaadin1'
-
     assertjCoreVersion = '3.24.2'
 
     asyncapiCoreVersion = '1.0.0-EAP-2'
 
     awaitilityVersion = '4.2.0'
 
-    commonsLang3Version = '3.13.0'
+    commonsLang3Version = '3.14.0'
 
     jsr305Version = '3.0.2'
 
     kafkaClientsVersion = '3.6.0'
     kafkaStreamsVersion = '3.6.0'
 
-    jacksonVersion = '2.15.3'
+    jacksonVersion = '2.16.0'
     jakartaAnnotationApiVersion = '2.1.1'
 
     jsonSchemaValidator = '1.0.87'
@@ -59,5 +57,5 @@ ext {
 
     swaggerVersion = '2.2.19'
 
-    testcontainersVersion = '1.19.1'
+    testcontainersVersion = '1.19.3'
 }

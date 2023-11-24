@@ -89,6 +89,7 @@ public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> i
      * @param method The listener method.
      * @return The class object of the payload received by the listener.
      */
+    // TODO: Inject SpringPayloadAnnotationTypeExtractor here with default implementation?
     protected abstract Class<?> getPayloadType(Method method);
 
     private Set<Method> getAnnotatedMethods(Class<?> type) {

@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.producer;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Map;
@@ -53,6 +54,7 @@ class SpringwolfKafkaTemplateFactoryTest {
         Map<String, Object> configurationProperties =
                 kafkaTemplate.get().getProducerFactory().getConfigurationProperties();
 
-        assertThat(configurationProperties).isEqualTo(new KafkaProperties.Producer().buildProperties());
+        assertThat(configurationProperties)
+                .isEqualTo(new KafkaProperties.Producer().buildProperties(new DefaultSslBundleRegistry()));
     }
 }

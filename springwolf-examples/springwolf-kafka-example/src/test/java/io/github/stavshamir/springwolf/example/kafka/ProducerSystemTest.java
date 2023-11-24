@@ -12,9 +12,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.verify;
         classes = {SpringwolfKafkaExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-@DirtiesContext
+@TestPropertySource(properties = {"spring.kafka.bootstrap-servers=localhost:9092"})
 @TestMethodOrder(OrderAnnotation.class)
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ProducerSystemTest {
@@ -60,7 +61,7 @@ public class ProducerSystemTest {
     @Order(1)
     void verifyKafkaIsAvailable() {
         Map<String, Object> consumerProperties =
-                properties.getPublishing().getProducer().buildProperties();
+                properties.getPublishing().getProducer().buildProperties(new DefaultSslBundleRegistry());
         AdminClient adminClient = KafkaAdminClient.create(consumerProperties);
         await().atMost(60, SECONDS)
                 .untilAsserted(

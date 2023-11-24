@@ -5,6 +5,7 @@ import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForSpringKafkaBuilder;
@@ -18,16 +19,17 @@ import org.springframework.util.StringValueResolver;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SpringPayloadAnnotationTypeExtractor.getPayloadType;
-
 @Slf4j
 public class ClassLevelKafkaListenerScanner extends AbstractClassLevelListenerScanner<KafkaListener, KafkaHandler>
         implements ChannelsScanner, EmbeddedValueResolverAware {
 
     private StringValueResolver resolver;
 
-    public ClassLevelKafkaListenerScanner(ComponentClassScanner componentClassScanner, SchemasService schemasService) {
-        super(componentClassScanner, schemasService);
+    public ClassLevelKafkaListenerScanner(
+            ComponentClassScanner componentClassScanner,
+            SchemasService schemasService,
+            PayloadClassExtractor payloadClassExtractor) {
+        super(componentClassScanner, schemasService, payloadClassExtractor);
     }
 
     @Override
@@ -69,7 +71,7 @@ public class ClassLevelKafkaListenerScanner extends AbstractClassLevelListenerSc
 
     @Override
     protected AsyncHeaders buildHeaders(Method method) {
-        Class<?> payloadType = getPayloadType(method);
+        Class<?> payloadType = this.payloadClassExtractor.extractFrom(method);
         return new AsyncHeadersForSpringKafkaBuilder("SpringKafkaDefaultHeaders-" + payloadType.getSimpleName())
                 .withTypeIdHeader(payloadType.getTypeName())
                 .build();

@@ -35,12 +35,13 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private final BeanMethodsScanner beanMethodsScanner;
     private final SchemasService schemasService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
+    private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
 
     @Override
     public Map<String, ChannelItem> scan() {
         Set<Method> beanMethods = beanMethodsScanner.getBeanMethods();
         return ChannelMerger.merge(beanMethods.stream()
-                .map(FunctionalChannelBeanData::fromMethodBean)
+                .map(functionalChannelBeanBuilder::fromMethodBean)
                 .flatMap(Set::stream)
                 .filter(this::isChannelBean)
                 .map(this::toChannelEntry)
@@ -48,13 +49,13 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     }
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {
-        return cloudStreamBindingsProperties.getBindings().containsKey(beanData.getCloudStreamBinding());
+        return cloudStreamBindingsProperties.getBindings().containsKey(beanData.cloudStreamBinding());
     }
 
     private Map.Entry<String, ChannelItem> toChannelEntry(FunctionalChannelBeanData beanData) {
         String channelName = cloudStreamBindingsProperties
                 .getBindings()
-                .get(beanData.getCloudStreamBinding())
+                .get(beanData.cloudStreamBinding())
                 .getDestination();
 
         String operationId = buildOperationId(beanData, channelName);
@@ -64,7 +65,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     }
 
     private ChannelItem buildChannel(FunctionalChannelBeanData beanData, String operationId) {
-        Class<?> payloadType = beanData.getPayloadType();
+        Class<?> payloadType = beanData.payloadType();
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
@@ -85,7 +86,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .build();
 
         Map<String, Object> channelBinding = buildChannelBinding();
-        return beanData.getBeanType() == FunctionalChannelBeanData.BeanType.CONSUMER
+        return beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER
                 ? ChannelItem.builder()
                         .bindings(channelBinding)
                         .publish(operation)
@@ -128,8 +129,8 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     private String buildOperationId(FunctionalChannelBeanData beanData, String channelName) {
         String operationName =
-                beanData.getBeanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
+                beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
 
-        return String.format("%s_%s_%s", channelName, operationName, beanData.getBeanName());
+        return String.format("%s_%s_%s", channelName, operationName, beanData.beanName());
     }
 }

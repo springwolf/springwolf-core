@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.sns;
 
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ class ApiIntegrationTest {
     public Integer serverPort;
 
     @Test
-    void asyncApiResourceArtifactTest() throws JSONException, IOException {
+    void asyncApiResourceArtifactTest() throws IOException {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actual);
