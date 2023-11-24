@@ -19,7 +19,6 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.Data;
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +105,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
     }
 
     @Test
-    void AsyncAPI_should_map_to_a_valid_asyncapi_json() throws IOException, JSONException {
+    void AsyncAPI_should_map_to_a_valid_asyncapi_json() throws IOException {
         var asyncapi = getAsyncAPITestObject();
         String actual = serializer.toJsonString(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
@@ -115,7 +114,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
     }
 
     @Test
-    void AsyncAPI_should_map_to_a_valid_asyncapi_yaml() throws IOException, JSONException {
+    void AsyncAPI_should_map_to_a_valid_asyncapi_yaml() throws IOException {
         var asyncapi = getAsyncAPITestObject();
         String actual = serializer.toYaml(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.yaml");
