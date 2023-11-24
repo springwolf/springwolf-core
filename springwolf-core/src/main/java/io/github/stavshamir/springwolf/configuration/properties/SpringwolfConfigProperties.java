@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.lang.Nullable;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ConfigurationProperties(prefix = SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX)
 @Getter
@@ -231,15 +232,11 @@ public class SpringwolfConfigProperties {
     }
 
     @Getter
-    @Setter
     public static class Payload {
         /**
          * In case the payload is wrapped, Springwolf will try to unwrap the specified generic classes.
          *
          * The format is: canonicalClassName=generic-argument-index
-         *
-         * In case you do have a batch listener, you want to add:
-         * springwolf.payload.extractable-classes.java.util.List=0
          */
         private Map<String, Integer> extractableClasses = Map.of(
                 "java.util.function.Consumer",
@@ -249,6 +246,14 @@ public class SpringwolfConfigProperties {
                 "org.springframework.messaging.Message",
                 0,
                 "org.apache.kafka.streams.kstream.KStream",
-                1);
+                1,
+                "java.util.List",
+                0);
+
+        public void setExtractableClasses(Map<String, Integer> extractableClasses) {
+            this.extractableClasses = extractableClasses.entrySet().stream()
+                    .filter(entry -> entry.getValue() >= 0)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
     }
 }

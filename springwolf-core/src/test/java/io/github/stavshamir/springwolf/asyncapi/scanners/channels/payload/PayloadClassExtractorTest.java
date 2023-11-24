@@ -76,7 +76,7 @@ class PayloadClassExtractorTest {
 
         Class<?> result = extractor.extractFrom(m);
 
-        assertEquals(List.class, result);
+        assertEquals(String.class, result);
     }
 
     @Test
