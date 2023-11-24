@@ -1,9 +1,15 @@
-# <img src="logo.png" alt="Logo" width="100"/> Springwolf
+<h1 align="center">
+<img src="logo.png" alt="Logo" width="100"/> Springwolf
+</h1>
 
-**Automated documentation for event-driven applications built with Spring Boot**
+<p align="center">
+<strong>Automated documentation for event-driven applications built with Spring Boot</strong>
+</p>
 
 ![Last Version](https://img.shields.io/github/tag-pre/springwolf/springwolf-core.svg)
+![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/springwolf/springwolf-core/latest)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 [![springwolf-core](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml)
 [![springwolf-asyncapi](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-asyncapi.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-asyncapi.yml)
 [![springwolf-ui](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml)
@@ -12,15 +18,15 @@
 > We are on discord for any question, discussion, request etc.
 > Join us at https://discord.gg/HZYqd5RPTd
 
-### Table Of Contents
+### Contents
 
 - [About](#about)
-- [Demo & Documentation](#demo--documentation)
-- [Why You Should Use It](#why-you-should-use-it)
-- [Usage & Example](#usage--example)
-- [Who's Using Springwolf](#whos-using-springwolf)
-- [Development](#development)
-- [Contributors](#contributors)
+- [Demo & Documentation](#-demo---documentation)
+- [Why You Should Use Springwolf](#-why-you-should-use-springwolf)
+- [Usage & Example](#-usage--example)
+- [Who's Using Springwolf](#-whos-using-springwolf)
+- [How To Participate](#-how-to-participate)
+- [Contributors](#-contributors)
 
 ### About
 
@@ -29,29 +35,32 @@ It documents asynchronous APIs using the [AsyncAPI specification](https://www.as
 
 `springwolf-ui` adds a web UI, much like that of Springfox, and allows easy publishing of auto-generated payload examples.
 
-### Demo & Documentation
+### 🪇 Demo & 📖 Documentation
 
-Take a look at the Springwolf [live demo](https://demo.springwolf.dev/).
+Take a look at the Springwolf [live demo](https://demo.springwolf.dev/) and a [generated AsyncAPI document](springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json).
 
-The documentation and quickstart is available on [springwolf.dev](https://www.springwolf.dev/docs/quickstart).
+[springwolf.dev](https://www.springwolf.dev/docs/quickstart) includes the quickstart guide and full documentation.
 
-### Why You Should Use It
+### ✨ Why You Should Use Springwolf
 
 Springwolf exploits the fact that you already fully described your consumer endpoint (with listener annotations, such as
 `@KafkaListener`, `@RabbitListener`, `@SqsListener`, etc.) and generates the documentation based on this information.
 
-#### 1. Share API Schema Definition
+<details><summary>Share API Schema Definition</summary>
 
 The AsyncAPI conform documentation can be integrated into API hubs (like [backstage](https://backstage.io/docs/features/software-catalog/descriptor-format/))
 or be shared as a `json`/`yaml` file with others.
+</details>
 
-#### 2. UI Based API Testing
+<details><summary>UI Based API Testing</summary>
+
 In projects using asynchronous APIs, you may often find yourself needing to manually send a message to some topic,
 whether you are manually testing a new feature, debugging or trying to understand some flow.
 
 Using the automatically generated example payload object as a suggestion, you can publish it to the correct channel with a single click.
+</details>
 
-### Usage & Example
+### 🔬 Usage & Example
 
 Protocols not supported natively can still be documented using `@AsyncListener` and `@AsyncPublisher` annotation.
 More details in the documentation.
@@ -60,7 +69,7 @@ More details in the documentation.
 |-------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Core](https://github.com/springwolf/springwolf-core/tree/master/springwolf-core)                                                         |                                                                                                                                       | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-core?color=green&label=springwolf-core&style=plastic)                                       | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-core?label=springwolf-core&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                                       |
 | [AMQP](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-amqp-plugin)                               | [AMQP Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-amqp-example)                 | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-amqp?color=green&label=springwolf-amqp&style=plastic)                                       | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-amqp?label=springwolf-amqp&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                                       |
-| [AWS SNS](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-sns-plugin)                             | [AWS SNS Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-sns-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-sns?color=green&label=springwolf-sqs&style=plastic)                                         | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-sns?label=springwolf-sns&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                                         |
+| [AWS SNS](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-sns-plugin)                             | [AWS SNS Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-sns-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-sns?color=green&label=springwolf-sns&style=plastic)                                         | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-sns?label=springwolf-sns&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                                         |
 | [AWS SQS](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-sqs-plugin)                             | [AWS SQS Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-sqs-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-sqs?color=green&label=springwolf-sqs&style=plastic)                                         | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-sqs?label=springwolf-sqs&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                                         |
 | [Cloud Stream](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-cloud-stream-plugin)               | [Cloud Stream Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-cloud-stream-example) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-cloud-stream?color=green&label=springwolf-cloud-stream&style=plastic)                       | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-cloud-stream?label=springwolf-cloud-stream&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                       |
 | [JMS](https://github.com/springwolf/springwolf-core/tree/master/springwolf-plugins/springwolf-jms-plugin)                                 | [JMS Example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-jms-example)                   | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-jms?color=green&label=springwolf-jms&style=plastic)                                         | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-jms?label=springwolf-jms&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                                         |
@@ -69,7 +78,7 @@ More details in the documentation.
 | [Generic Binding](https://github.com/springwolf/springwolf-core/tree/master/springwolf-add-ons/springwolf-generic-binding)                |                                                                                                                                       | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-generic-binding?color=green&label=springwolf-generic-binding&style=plastic)                 | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-generic-binding?label=springwolf-generic-binding&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                 |
 | [Json Schema](https://github.com/springwolf/springwolf-core/tree/master/springwolf-add-ons/springwolf-json-schema)                        |                                                                                                                                       | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-json-schema?color=green&label=springwolf-json-schema&style=plastic)                         | ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.springwolf/springwolf-json-schema?label=springwolf-json-schema&server=https%3A%2F%2Fs01.oss.sonatype.org&style=plastic)                         |
 
-### Who's Using Springwolf
+### 🚀 Who's Using Springwolf
 
 - [b.well Connected Health](https://www.icanbwell.com/)
 - [LVM Versicherung](https://www.lvm.de/privatkunden/)
@@ -79,12 +88,11 @@ More details in the documentation.
 
 Comment in [this PR](https://github.com/springwolf/springwolf-core/issues/342) to add your company and spread the word
 
-### Development
+### ✏️ How To Participate
 
 Check out our [CONTRIBUTING.md](CONTRIBUTING.md) guide.
 
-<details>
-<summary>Using SNAPSHOT version</summary>
+<details><summary>Testing SNAPSHOT version</summary>
 
 #### Sonatype snapshots
 
@@ -120,7 +128,7 @@ Or add the `repository` to your `pom.xml` if you are using maven:
 To work with local builds, run the `publishToMavenLocal` task. The current version number is set in [`.env`](.env) file.
 </details>
 
-### Contributors
+### 👏  Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
@@ -173,6 +181,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 To add yourself as a contributor, install the [all-contributors CLI](https://allcontributors.org/docs/en/cli/installation) and run:
-1. `all-contributors-cli check` 
-2. `all-contributors-cli add <username> code`
-3. `all-contributors-cli generate`
+1. `all-contributors check` 
+2. `all-contributors add <username> code`
+3. `all-contributors generate`
