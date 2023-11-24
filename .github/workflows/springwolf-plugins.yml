@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        plugin: [ "amqp", "cloud-stream", "kafka", "sns", "sqs" ]
+        plugin: [ "amqp", "cloud-stream", "jms", "kafka", "sns", "sqs" ]
 
     env:
       plugin: springwolf-plugins/springwolf-${{ matrix.plugin }}-plugin

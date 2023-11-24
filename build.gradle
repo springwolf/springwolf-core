@@ -117,6 +117,7 @@ allprojects {
             project.name == 'springwolf-core' ||
             project.name == 'springwolf-amqp' ||
             project.name == 'springwolf-cloud-stream' ||
+            project.name == 'springwolf-jms' ||
             project.name == 'springwolf-kafka' ||
             project.name == 'springwolf-sns' ||
             project.name == 'springwolf-sqs' ||

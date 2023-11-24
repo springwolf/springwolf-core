@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi;
+package io.github.stavshamir.springwolf.asyncapi.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
-import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -145,7 +143,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                   "bindings": null,
                   "headers": null,
                   "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
+                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
                 }""";
 
         mvc.perform(post("/springwolf/kafka/publish")
@@ -171,7 +169,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                     "some-header-key": "some-header-value"
                   },
                   "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
+                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
                 }
                 """;
 
@@ -201,7 +199,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                     "some-header-key": "some-header-value"
                   },
                   "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
+                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
                 }""";
 
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
