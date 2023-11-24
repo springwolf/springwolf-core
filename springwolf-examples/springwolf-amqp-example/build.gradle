@@ -20,12 +20,10 @@ dependencies {
     implementation "org.springframework.amqp:spring-rabbit"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
-    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
 
     implementation "org.springframework.amqp:spring-amqp"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
@@ -38,6 +36,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-test"
+    testImplementation "org.springframework:spring-beans"
     testImplementation "org.springframework:spring-web"
     testImplementation "org.springframework:spring-test"
 

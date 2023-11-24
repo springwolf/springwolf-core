@@ -22,31 +22,8 @@ public class SpringContextIntegrationTest {
             brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
     @Nested
     @DirtiesContext
-    class AsyncApiDocketTest {
-
-        @Autowired
-        private ApplicationContext context;
-
-        @Autowired
-        private AsyncApiService asyncApiService;
-
-        @Test
-        void testContextWithAsyncApiDocketBean() {
-            assertNotNull(context);
-
-            assertThat(asyncApiService.getAsyncAPI()).isNotNull();
-        }
-    }
-
-    @SpringBootTest(classes = SpringwolfCloudstreamExampleApplication.class)
-    @EmbeddedKafka(
-            partitions = 1,
-            brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
-    @Nested
-    @DirtiesContext
     @TestPropertySource(
             properties = {
-                "customAsyncApiDocketBean=false",
                 "springwolf.enabled=true",
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
