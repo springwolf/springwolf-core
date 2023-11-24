@@ -58,6 +58,9 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-actuator")
     permitTestUnusedDeclared("org.springframework.boot:spring-boot-starter-actuator")
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
 docker {
