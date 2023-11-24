@@ -150,7 +150,7 @@ public class SpringwolfConfigProperties {
              * Extension properties for the Info block.
              */
             @Nullable
-            private Map<String, String> extensionFields;
+            private Map<String, String> extensionFields = Map.of("x-generator", "springwolf");
         }
     }
 

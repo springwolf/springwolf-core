@@ -11,7 +11,8 @@
     },
     "license": {
       "name": "Apache License 2.0"
-    }
+    },
+    "x-generator": "springwolf"
   },
   "defaultContentType": "application/json",
   "servers": {
