@@ -40,8 +40,6 @@ dependencies {
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 
-    testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
-
     testImplementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
@@ -60,6 +58,9 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-actuator")
     permitTestUnusedDeclared("org.springframework.boot:spring-boot-starter-actuator")
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
 docker {

@@ -5,6 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.kafka.SpringwolfKafkaProducerCon
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 
@@ -25,7 +26,7 @@ public class SpringwolfKafkaTemplateFactory {
             Map<String, Object> producerProperties = springWolfKafkaConfigProperties
                     .getPublishing()
                     .getProducer()
-                    .buildProperties();
+                    .buildProperties(new DefaultSslBundleRegistry());
             DefaultKafkaProducerFactory<Object, Object> producerFactory =
                     new DefaultKafkaProducerFactory<>(producerProperties);
             kafkaTemplate = Optional.of(new KafkaTemplate<>(producerFactory));

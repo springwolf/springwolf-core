@@ -25,8 +25,6 @@
  * The dependencies are sorted alphabetically.
  */
 ext {
-    androidJsonVersion = '0.0.20131108.vaadin1'
-
     assertjCoreVersion = '3.24.2'
 
     asyncapiCoreVersion = '1.0.0-EAP-2'
