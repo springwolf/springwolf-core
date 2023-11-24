@@ -5,7 +5,6 @@ import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.test.context.EmbeddedKafka;
@@ -22,7 +21,6 @@ public class SpringContextIntegrationTest {
             partitions = 1,
             brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
     @Nested
-    @EnableConfigurationProperties
     @DirtiesContext
     @TestPropertySource(
             properties = {

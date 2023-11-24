@@ -5,6 +5,7 @@ import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,15 @@ public class MethodLevelJmsListenerScanner extends AbstractMethodLevelListenerSc
 
     private StringValueResolver resolver;
 
-    public MethodLevelJmsListenerScanner(ComponentClassScanner componentClassScanner, SchemasService schemasService) {
+    private final PayloadClassExtractor payloadClassExtractor;
+
+    public MethodLevelJmsListenerScanner(
+            ComponentClassScanner componentClassScanner,
+            SchemasService schemasService,
+            PayloadClassExtractor payloadClassExtractor) {
         super(componentClassScanner, schemasService);
+
+        this.payloadClassExtractor = payloadClassExtractor;
     }
 
     @Override
@@ -56,6 +64,6 @@ public class MethodLevelJmsListenerScanner extends AbstractMethodLevelListenerSc
     }
 
     protected Class<?> getPayloadType(Method method) {
-        return SpringPayloadAnnotationTypeExtractor.getPayloadType(method);
+        return payloadClassExtractor.extractFrom(method);
     }
 }

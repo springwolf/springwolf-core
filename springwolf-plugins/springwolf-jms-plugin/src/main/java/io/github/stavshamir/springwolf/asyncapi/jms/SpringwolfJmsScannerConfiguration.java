@@ -6,6 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.JmsM
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.JmsOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelJmsListenerScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -26,8 +27,10 @@ public class SpringwolfJmsScannerConfiguration {
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
     public MethodLevelJmsListenerScanner methodLevelJmsListenerScanner(
-            ComponentClassScanner componentClassScanner, SchemasService schemasService) {
-        return new MethodLevelJmsListenerScanner(componentClassScanner, schemasService);
+            ComponentClassScanner componentClassScanner,
+            SchemasService schemasService,
+            PayloadClassExtractor payloadClassExtractor) {
+        return new MethodLevelJmsListenerScanner(componentClassScanner, schemasService, payloadClassExtractor);
     }
 
     @Bean

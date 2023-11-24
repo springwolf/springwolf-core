@@ -231,10 +231,10 @@ class ClassLevelRabbitListenerScannerIntegrationTest {
     }
 
     @Test
-    void scan_componentWithSingleRabbitHandlerMethod_batchPayload() {
+    void scan_componentWithSingleRabbitHandlerMethod_genericPayload() {
         // Given a @RabbitListener annotated class with one method annotated with @RabbitHandler
-        // - There is a payload of type List<?>
-        setClassToScan(RabbitListenerClassWithRabbitHandlerWithBatchPayload.class);
+        // - There is a payload of type Message<?>
+        setClassToScan(RabbitListenerClassWithRabbitHandlerWithGenericPayload.class);
 
         // When scan is called
         Map<String, ChannelItem> actualChannels = classLevelRabbitListenerScanner.scan();
@@ -250,7 +250,7 @@ class ClassLevelRabbitListenerScannerIntegrationTest {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId("RabbitListenerClassWithRabbitHandlerWithBatchPayload_publish")
+                .operationId("RabbitListenerClassWithRabbitHandlerWithGenericPayload_publish")
                 .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
@@ -295,10 +295,10 @@ class ClassLevelRabbitListenerScannerIntegrationTest {
     }
 
     @RabbitListener(queues = QUEUE)
-    private static class RabbitListenerClassWithRabbitHandlerWithBatchPayload {
+    private static class RabbitListenerClassWithRabbitHandlerWithGenericPayload {
 
         @RabbitHandler
-        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {}
+        private void methodWithAnnotation(org.springframework.messaging.Message<SimpleFoo> payload) {}
     }
 
     @Data

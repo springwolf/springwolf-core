@@ -30,7 +30,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -274,9 +273,9 @@ class MethodLevelKafkaListenerScannerIntegrationTest {
     }
 
     @Test
-    void scan_componentHasKafkaListenerMethods_batchPayload() {
-        // Given a class with a method annotated with KafkaListener with a payload of type List<?>
-        setClassToScan(ClassWithKafkaListenerWithBatchPayload.class);
+    void scan_componentHasKafkaListenerMethods_genericPayload() {
+        // Given a class with a method annotated with KafkaListener with a payload of type Message<?>
+        setClassToScan(ClassWithKafkaListenerWithGenericPayload.class);
 
         // When scan is called
         Map<String, ChannelItem> actualChannels = methodLevelKafkaListenerScanner.scan();
@@ -366,10 +365,10 @@ class MethodLevelKafkaListenerScannerIntegrationTest {
         private void methodWithAnnotation(String payload) {}
     }
 
-    private static class ClassWithKafkaListenerWithBatchPayload {
+    private static class ClassWithKafkaListenerWithGenericPayload {
 
         @KafkaListener(topics = TOPIC)
-        private void methodWithAnnotation(List<SimpleFoo> batchPayload) {}
+        private void methodWithAnnotation(org.springframework.messaging.Message<SimpleFoo> payload) {}
     }
 
     @Data

@@ -61,7 +61,7 @@ public class SpringwolfConfigProperties {
     private Scanner scanner;
 
     @Nullable
-    private Payload payload;
+    private Payload payload = new Payload();
 
     @Getter
     @Setter

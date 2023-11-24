@@ -4,12 +4,12 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import org.apache.kafka.streams.kstream.KStream;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -20,141 +20,129 @@ import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudst
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FunctionalChannelBeanBuilderTest {
+    private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder =
-            new FunctionalChannelBeanBuilder(new PayloadClassExtractor(new SpringwolfConfigProperties()));
+            new FunctionalChannelBeanBuilder(new PayloadClassExtractor(properties));
 
-    @Test
-    void testNotAFunctionalChannelBean() throws NoSuchMethodException {
-        Method method = getMethod("notAFunctionalChannelBean");
+    @Nested
+    class NoBean {
+        @Test
+        void testNotAFunctionalChannelBean() throws NoSuchMethodException {
+            Method method = getMethod(this.getClass(), "notAFunctionalChannelBean");
 
-        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
+            Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
-        assertThat(data).isEmpty();
+            assertThat(data).isEmpty();
+        }
+
+        @Bean
+        private String notAFunctionalChannelBean() {
+            return "foo";
+        }
     }
 
-    @Bean
-    private String notAFunctionalChannelBean() {
-        return "foo";
+    @Nested
+    class consumerBean {
+        @Test
+        void testConsumerBean() throws NoSuchMethodException {
+            Method method = getMethod(this.getClass(), "consumerBean");
+
+            Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
+
+            assertThat(data)
+                    .containsExactly(
+                            new FunctionalChannelBeanData("consumerBean", String.class, CONSUMER, "consumerBean-in-0"));
+        }
+
+        @Bean
+        private Consumer<String> consumerBean() {
+            return System.out::println;
+        }
     }
 
-    @Test
-    void testConsumerBean() throws NoSuchMethodException {
-        Method method = getMethod("consumerBean");
+    @Nested
+    class SupplierBean {
+        @Test
+        void testSupplierBean() throws NoSuchMethodException {
+            Method method = getMethod(this.getClass(), "supplierBean");
 
-        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
+            Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
-        assertThat(data)
-                .containsExactly(
-                        new FunctionalChannelBeanData("consumerBean", String.class, CONSUMER, "consumerBean-in-0"));
+            assertThat(data)
+                    .containsExactly(new FunctionalChannelBeanData(
+                            "supplierBean", String.class, SUPPLIER, "supplierBean-out-0"));
+        }
+
+        @Bean
+        private Supplier<String> supplierBean() {
+            return () -> "foo";
+        }
     }
 
-    @Bean
-    private Consumer<String> consumerBean() {
-        return System.out::println;
+    @Nested
+    class FunctionBean {
+        @Test
+        void testFunctionBean() throws NoSuchMethodException {
+            Method method = getMethod(this.getClass(), "functionBean");
+
+            Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
+
+            assertThat(data)
+                    .containsExactlyInAnyOrder(
+                            new FunctionalChannelBeanData("functionBean", String.class, CONSUMER, "functionBean-in-0"),
+                            new FunctionalChannelBeanData(
+                                    "functionBean", Integer.class, SUPPLIER, "functionBean-out-0"));
+        }
+
+        @Bean
+        private Function<String, Integer> functionBean() {
+            return s -> 1;
+        }
     }
 
-    @Test
-    void testSupplierBean() throws NoSuchMethodException {
-        Method method = getMethod("supplierBean");
+    @Nested
+    class ConsumerBeanWithGenericPayload {
 
-        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
+        @Test
+        void testConsumerBeanWithGenericPayload() throws NoSuchMethodException {
+            String methodName = "consumerBeanWithGenericPayload";
+            Method method = getMethod(this.getClass(), methodName);
 
-        assertThat(data)
-                .containsExactly(
-                        new FunctionalChannelBeanData("supplierBean", String.class, SUPPLIER, "supplierBean-out-0"));
+            Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
+
+            assertThat(data)
+                    .containsExactly(
+                            new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
+        }
+
+        @Bean
+        private Consumer<Message<String>> consumerBeanWithGenericPayload() {
+            return System.out::println;
+        }
     }
 
-    @Bean
-    private Supplier<String> supplierBean() {
-        return () -> "foo";
+    @Nested
+    class KStreamBean {
+
+        @Test
+        void testKafkaStreamsConsumerBean() throws NoSuchMethodException {
+            String methodName = "kafkaStreamsConsumerBean";
+            Method method = getMethod(this.getClass(), methodName);
+
+            Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
+
+            assertThat(data)
+                    .containsExactly(
+                            new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
+        }
+
+        @Bean
+        private Consumer<KStream<Void, String>> kafkaStreamsConsumerBean() {
+            return System.out::println;
+        }
     }
 
-    @Test
-    void testFunctionBean() throws NoSuchMethodException {
-        Method method = getMethod("functionBean");
-
-        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
-
-        assertThat(data)
-                .containsExactlyInAnyOrder(
-                        new FunctionalChannelBeanData("functionBean", String.class, CONSUMER, "functionBean-in-0"),
-                        new FunctionalChannelBeanData("functionBean", Integer.class, SUPPLIER, "functionBean-out-0"));
-    }
-
-    @Bean
-    private Function<String, Integer> functionBean() {
-        return s -> 1;
-    }
-
-    @Test
-    void testConsumerBeanWithGenericPayload() throws NoSuchMethodException {
-        String methodName = "consumerBeanWithGenericPayload";
-        Method method = getMethod(methodName);
-
-        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
-
-        assertThat(data)
-                .containsExactly(
-                        new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
-    }
-
-    @Bean
-    private Consumer<List<String>> consumerBeanWithGenericPayload() {
-        return System.out::println;
-    }
-
-    @Test
-    void testKafkaStreamsConsumerBean() throws NoSuchMethodException {
-        String methodName = "kafkaStreamsConsumerBean";
-        Method method = getMethod(methodName);
-
-        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
-
-        assertThat(data)
-                .containsExactly(
-                        new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
-    }
-
-    @Bean
-    private Consumer<KStream<Void, String>> kafkaStreamsConsumerBean() {
-        return System.out::println;
-    }
-
-    private static Method getMethod(String methodName) throws NoSuchMethodException {
-        return FunctionalChannelBeanBuilderTest.class.getDeclaredMethod(methodName);
-    }
-
-    @Bean
-    private Consumer<Message<String>> springMessagingConsumerBean() {
-        return System.out::println;
-    }
-
-    @Test
-    void testSpringMessagingConsumerBean() throws NoSuchMethodException {
-        String methodName = "springMessagingConsumerBean";
-        Method method = getMethod(methodName);
-
-        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
-
-        assertThat(data)
-                .containsExactly(
-                        new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
-    }
-
-    @Bean
-    private Consumer<List<Message<String>>> springMessagingBatchConsumerBean() {
-        return System.out::println;
-    }
-
-    @Test
-    void testSpringMessagingBatchConsumerBean() throws NoSuchMethodException {
-        String methodName = "springMessagingBatchConsumerBean";
-        Method method = getMethod(methodName);
-
-        Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
-
-        assertThat(data)
-                .containsExactly(
-                        new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
+    private static Method getMethod(Class<?> clazz, String methodName) throws NoSuchMethodException {
+        return clazz.getDeclaredMethod(methodName);
     }
 }

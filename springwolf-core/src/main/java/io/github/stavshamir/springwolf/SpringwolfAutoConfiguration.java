@@ -90,8 +90,7 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public PayloadClassExtractor springPayloadAnnotationTypeExtractor(
-            SpringwolfConfigProperties springwolfConfigProperties) {
+    public PayloadClassExtractor payloadClassExtractor(SpringwolfConfigProperties springwolfConfigProperties) {
         return new PayloadClassExtractor(springwolfConfigProperties);
     }
 }

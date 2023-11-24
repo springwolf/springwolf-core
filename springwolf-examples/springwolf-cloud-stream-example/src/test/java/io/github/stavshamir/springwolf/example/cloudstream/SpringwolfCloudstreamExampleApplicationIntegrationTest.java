@@ -3,7 +3,6 @@ package io.github.stavshamir.springwolf.example.cloudstream;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.test.context.EmbeddedKafka;
@@ -17,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @EmbeddedKafka(
         partitions = 1,
         brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
-@EnableConfigurationProperties
 @DirtiesContext
 class SpringwolfCloudstreamExampleApplicationIntegrationTest {
 
