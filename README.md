@@ -74,6 +74,7 @@ More details in the documentation.
 - [LVM Versicherung](https://www.lvm.de/privatkunden/)
 - [OTTO](https://www.otto.de)
 - [Teambank](https://www.teambank.de)
+- [2bPrecise](https://2bprecisehealth.com/)
 
 Comment in [this PR](https://github.com/springwolf/springwolf-core/issues/342) to add your company and spread the word
 
