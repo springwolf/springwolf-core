@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.stavshamir.springwolf.SpringwolfWebConfiguration;
-import io.github.stavshamir.springwolf.fixtures.MinimalTestContextConfiguration;
+import io.github.stavshamir.springwolf.fixtures.MinimalIntegrationTestContextConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ public class SpringContextControllerIntegrationTest {
     @ExtendWith(SpringExtension.class)
     @Nested
     @Import(SpringwolfWebConfiguration.class)
-    @MinimalTestContextConfiguration
+    @MinimalIntegrationTestContextConfiguration
     class SpringwolfOnApplicationPortConfigurationTest {
 
         @Autowired
@@ -48,7 +48,7 @@ public class SpringContextControllerIntegrationTest {
 
     @Nested
     @ExtendWith(SpringExtension.class)
-    @MinimalTestContextConfiguration
+    @MinimalIntegrationTestContextConfiguration
     @Import(SpringwolfWebConfiguration.class)
     @TestPropertySource(
             properties = {"springwolf.endpoint.actuator.enabled=true", "management.endpoints.web.exposure.include=*"})

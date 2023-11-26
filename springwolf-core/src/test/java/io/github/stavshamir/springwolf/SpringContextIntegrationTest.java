@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import io.github.stavshamir.springwolf.fixtures.MinimalTestContextConfiguration;
+import io.github.stavshamir.springwolf.fixtures.MinimalIntegrationTestContextConfiguration;
 import io.github.stavshamir.springwolf.fixtures.ObjectMapperTestConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ public class SpringContextIntegrationTest {
 
     @ExtendWith(SpringExtension.class)
     @Nested
-    @MinimalTestContextConfiguration
+    @MinimalIntegrationTestContextConfiguration
     class ApplicationPropertiesConfigurationTest {
 
         @Autowired
