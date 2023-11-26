@@ -237,7 +237,7 @@ public class RabbitListenerUtil {
             Map<String, Exchange> exchangeMap,
             Map<String, Binding> bindingMap) {
 
-        static RabbitListenerUtilContext create(
+        public static RabbitListenerUtilContext create(
                 List<org.springframework.amqp.core.Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
             Map<String, org.springframework.amqp.core.Queue> queueMap = queues.stream()
                     .collect(Collectors.toMap(

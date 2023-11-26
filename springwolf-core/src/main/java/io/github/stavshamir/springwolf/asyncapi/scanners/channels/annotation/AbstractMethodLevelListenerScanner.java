@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
+@Deprecated
 public abstract class AbstractMethodLevelListenerScanner<T extends Annotation> implements ChannelsScanner {
 
     private final ComponentClassScanner componentClassScanner;

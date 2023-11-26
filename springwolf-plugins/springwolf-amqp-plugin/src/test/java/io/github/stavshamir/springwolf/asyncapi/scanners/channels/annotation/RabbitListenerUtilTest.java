@@ -10,6 +10,8 @@ import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -37,10 +39,11 @@ class RabbitListenerUtilTest {
     @Nested
     public class QueuesConfiguration {
 
-        @Test
-        void getChannelName() {
+        @ParameterizedTest
+        @ValueSource(classes = {ClassWithQueuesConfiguration.class, ClassWithQueuesToDeclare.class})
+        void getChannelName(Class<?> clazz) {
             // given
-            RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
+            RabbitListener annotation = getAnnotation(clazz);
             StringValueResolver resolver = mock(StringValueResolver.class);
             when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
@@ -51,10 +54,11 @@ class RabbitListenerUtilTest {
             assertEquals("queue-1", channelName);
         }
 
-        @Test
-        void buildChannelBinding() {
+        @ParameterizedTest
+        @ValueSource(classes = {ClassWithQueuesConfiguration.class, ClassWithQueuesToDeclare.class})
+        void buildChannelBinding(Class<?> clazz) {
             // given
-            RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
+            RabbitListener annotation = getAnnotation(clazz);
             StringValueResolver resolver = mock(StringValueResolver.class);
             when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
@@ -86,10 +90,11 @@ class RabbitListenerUtilTest {
                     channelBinding.get("amqp"));
         }
 
-        @Test
-        void buildOperationBinding() {
+        @ParameterizedTest
+        @ValueSource(classes = {ClassWithQueuesConfiguration.class, ClassWithQueuesToDeclare.class})
+        void buildOperationBinding(Class<?> clazz) {
             // given
-            RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
+            RabbitListener annotation = getAnnotation(clazz);
             StringValueResolver resolver = mock(StringValueResolver.class);
             when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
@@ -117,6 +122,15 @@ class RabbitListenerUtilTest {
         private static class ClassWithQueuesConfiguration {
 
             @RabbitListener(queues = "${queue-1}")
+            private void methodWithAnnotation(String payload) {}
+        }
+
+        /**
+         * Note: bindings, queues, and queuesToDeclare are mutually exclusive
+         * @see <a href="https://docs.spring.io/spring-amqp/api/org/springframework/amqp/rabbit/annotation/RabbitListener.html#queuesToDeclare()">RabbitListener.queuesToDeclare</a>
+         */
+        private static class ClassWithQueuesToDeclare {
+            @RabbitListener(queuesToDeclare = @Queue(name = "${queue-1}"))
             private void methodWithAnnotation(String payload) {}
         }
     }
@@ -156,7 +170,7 @@ class RabbitListenerUtilTest {
                             .is("routingKey")
                             .exchange(AMQPChannelBinding.ExchangeProperties.builder()
                                     .name("exchange-name")
-                                    .type(ExchangeTypes.DIRECT)
+                                    .type(ExchangeTypes.TOPIC)
                                     .durable(true)
                                     .autoDelete(false)
                                     .build())
@@ -203,7 +217,9 @@ class RabbitListenerUtilTest {
 
             @RabbitListener(
                     bindings = {
-                        @QueueBinding(exchange = @Exchange(name = "exchange-name"), value = @Queue(name = "${queue-1}"))
+                        @QueueBinding(
+                                exchange = @Exchange(name = "exchange-name", type = "topic"),
+                                value = @Queue(name = "${queue-1}"))
                     })
             private void methodWithAnnotation(String payload) {}
         }

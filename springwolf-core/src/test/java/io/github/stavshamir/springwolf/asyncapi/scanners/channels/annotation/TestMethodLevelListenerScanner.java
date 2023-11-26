@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+@Deprecated
 public class TestMethodLevelListenerScanner
         extends AbstractMethodLevelListenerScanner<TestMethodLevelListenerScannerIntegrationTest.TestChannelListener> {
 

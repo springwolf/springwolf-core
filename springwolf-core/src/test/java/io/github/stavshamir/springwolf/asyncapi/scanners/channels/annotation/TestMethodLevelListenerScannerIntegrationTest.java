@@ -44,6 +44,7 @@ import static org.mockito.Mockito.when;
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class
         })
+@Deprecated
 class TestMethodLevelListenerScannerIntegrationTest {
 
     @Autowired
