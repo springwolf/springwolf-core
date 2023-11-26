@@ -31,7 +31,6 @@ import static java.util.stream.Collectors.toSet;
 
 @RequiredArgsConstructor
 @Slf4j
-// TODO: test
 public class ClassLevelAnnotationChannelsScanner<
                 ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
         implements SimpleChannelsScanner.ClassProcessor {
