@@ -16,19 +16,12 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.MergedAnnotation;
-import org.springframework.core.annotation.MergedAnnotationCollectors;
-import org.springframework.core.annotation.MergedAnnotationPredicates;
-import org.springframework.core.annotation.MergedAnnotations;
-import org.springframework.core.annotation.RepeatableContainers;
-import org.springframework.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -47,39 +40,36 @@ public class MethodLevelAnnotationChannelsScanner<A extends Annotation>
 
         return Arrays.stream(clazz.getDeclaredMethods())
                 .filter(method -> !method.isBridge())
-                .filter(method -> findAnnotation(method) != null)
+                .filter(method -> AnnotationUtil.findAnnotation(method, annotationClass) != null)
                 .map(this::mapMethodToChannel);
     }
 
     private Map.Entry<String, ChannelItem> mapMethodToChannel(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
-        A annotation = findAnnotationOrThrow(method);
+        A annotation = AnnotationUtil.findAnnotationOrThrow(method, annotationClass);
 
         String channelName = bindingBuilder.getChannelName(annotation);
         String operationId = channelName + "_publish_" + method.getName();
         Class<?> payload = payloadClassExtractor.extractFrom(method);
-        Map<String, ? extends ChannelBinding> channelBinding = bindingBuilder.buildChannelBinding(annotation);
-        Map<String, ? extends OperationBinding> operationBinding = bindingBuilder.buildOperationBinding(annotation);
-        Map<String, ? extends MessageBinding> messageBinding = bindingBuilder.buildMessageBinding(annotation);
-        ChannelItem channel = buildChannel(operationId, payload, channelBinding, operationBinding, messageBinding);
 
-        return Map.entry(channelName, channel);
+        ChannelItem channelItem = buildChannel(annotation, operationId, payload);
+
+        return Map.entry(channelName, channelItem);
     }
 
-    private ChannelItem buildChannel(
-            String operationId,
-            Class<?> payloadType,
-            Map<String, ? extends ChannelBinding> channelBinding,
-            Map<String, ? extends OperationBinding> operationBinding,
-            Map<String, ? extends MessageBinding> messageBinding) {
+    private ChannelItem buildChannel(A annotation, String operationId, Class<?> payloadType) {
+        Message message = buildMessage(annotation, payloadType);
+        Operation operation = buildOperation(annotation, operationId, message);
+        return buildChannelItem(annotation, operation);
+    }
+
+    private Message buildMessage(A annotation, Class<?> payloadType) {
+        Map<String, ? extends MessageBinding> messageBinding = bindingBuilder.buildMessageBinding(annotation);
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
-        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-
-        Message message = Message.builder()
+        return Message.builder()
                 .name(payloadType.getName())
                 .title(payloadType.getSimpleName())
                 .description(null)
@@ -87,36 +77,23 @@ public class MethodLevelAnnotationChannelsScanner<A extends Annotation>
                 .headers(HeaderReference.fromModelName(headerModelName))
                 .bindings(messageBinding)
                 .build();
+    }
 
-        Operation operation = Operation.builder()
+    private Operation buildOperation(A annotation, String operationId, Message message) {
+        Map<String, ? extends OperationBinding> operationBinding = bindingBuilder.buildOperationBinding(annotation);
+        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+
+        return Operation.builder()
                 .description("Auto-generated description")
                 .operationId(operationId)
                 .message(message)
                 .bindings(opBinding)
                 .build();
+    }
 
+    private ChannelItem buildChannelItem(A annotation, Operation operation) {
+        Map<String, ? extends ChannelBinding> channelBinding = bindingBuilder.buildChannelBinding(annotation);
+        Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         return ChannelItem.builder().bindings(chBinding).publish(operation).build();
-    }
-
-    private A findAnnotationOrThrow(Method method) {
-        A annotation = findAnnotation(method);
-        if (annotation == null) {
-            throw new IllegalArgumentException("Method must be annotated with " + annotationClass.getName());
-        }
-        return annotation;
-    }
-
-    @Nullable
-    private A findAnnotation(Method method) {
-        Set<A> annotations = MergedAnnotations.from(
-                        method,
-                        MergedAnnotations.SearchStrategy.TYPE_HIERARCHY,
-                        RepeatableContainers.standardRepeatables())
-                .stream(annotationClass)
-                .filter(MergedAnnotationPredicates.firstRunOf(MergedAnnotation::getAggregateIndex))
-                .map(MergedAnnotation::withNonMergedAttributes)
-                .collect(MergedAnnotationCollectors.toAnnotationSet());
-
-        return annotations.stream().findFirst().orElse(null);
     }
 }

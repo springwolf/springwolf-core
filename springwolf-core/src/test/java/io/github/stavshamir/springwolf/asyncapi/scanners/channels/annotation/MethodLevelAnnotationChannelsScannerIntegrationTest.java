@@ -113,7 +113,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
                     .publish(operation)
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingBuilder.QUEUE, expectedChannel));
+            assertThat(actualChannels).containsExactly(Map.entry(TestBindingBuilder.CHANNEL, expectedChannel));
         }
 
         private static class ClassWithListenerAnnotation {
@@ -154,7 +154,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
                     .bindings(defaultChannelBinding)
                     .publish(Operation.builder()
                             .description("Auto-generated description")
-                            .operationId(TestBindingBuilder.QUEUE + "_publish_methodWithAnnotation")
+                            .operationId(TestBindingBuilder.CHANNEL + "_publish_methodWithAnnotation")
                             .bindings(TestBindingBuilder.defaultOperationBinding)
                             .message(messageSimpleFoo)
                             .build())
@@ -164,7 +164,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
                     .bindings(defaultChannelBinding)
                     .publish(Operation.builder()
                             .description("Auto-generated description")
-                            .operationId(TestBindingBuilder.QUEUE + "_publish_methodWithAnnotation")
+                            .operationId(TestBindingBuilder.CHANNEL + "_publish_methodWithAnnotation")
                             .bindings(TestBindingBuilder.defaultOperationBinding)
                             .message(messageString)
                             .build())
@@ -172,8 +172,8 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
 
             assertThat(channels)
                     .containsExactly(
-                            Map.entry(TestBindingBuilder.QUEUE, expectedChannelItem),
-                            Map.entry(TestBindingBuilder.QUEUE, expectedChannelItem2));
+                            Map.entry(TestBindingBuilder.CHANNEL, expectedChannelItem),
+                            Map.entry(TestBindingBuilder.CHANNEL, expectedChannelItem2));
         }
 
         private static class ClassWithTestListenerAnnotationMultiplePayloads {
@@ -215,7 +215,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
                     .publish(operation)
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingBuilder.QUEUE, expectedChannel));
+            assertThat(actualChannels).containsExactly(Map.entry(TestBindingBuilder.CHANNEL, expectedChannel));
         }
 
         private static class ClassWithListenerMetaAnnotation {
@@ -247,17 +247,17 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
 
     static class TestBindingBuilder implements BindingBuilder<TestChannelListener> {
 
-        public static final String QUEUE = "test-channel";
+        public static final String CHANNEL = "test-channel";
         public static final Map<String, ? extends MessageBinding> defaultMessageBinding =
-                Map.of(QUEUE, new TestBindingBuilder.TestMessageBinding());
+                Map.of(CHANNEL, new TestBindingBuilder.TestMessageBinding());
         public static final Map<String, Object> defaultChannelBinding =
-                Map.of(QUEUE, new TestBindingBuilder.TestChannelBinding());
+                Map.of(CHANNEL, new TestBindingBuilder.TestChannelBinding());
         public static final Map<String, Object> defaultOperationBinding =
-                Map.of(QUEUE, new TestBindingBuilder.TestOperationBinding());
+                Map.of(CHANNEL, new TestBindingBuilder.TestOperationBinding());
 
         @Override
         public String getChannelName(TestChannelListener annotation) {
-            return QUEUE;
+            return CHANNEL;
         }
 
         @Override
