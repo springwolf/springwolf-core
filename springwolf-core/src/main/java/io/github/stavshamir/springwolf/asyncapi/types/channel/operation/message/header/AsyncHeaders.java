@@ -13,7 +13,6 @@ public class AsyncHeaders extends HashMap<String, Schema> {
     /**
      * Explicitly document that no headers are used.
      */
-    @Deprecated
     public static final AsyncHeaders NOT_USED = new AsyncHeaders("HeadersNotUsed");
 
     private final String schemaName;

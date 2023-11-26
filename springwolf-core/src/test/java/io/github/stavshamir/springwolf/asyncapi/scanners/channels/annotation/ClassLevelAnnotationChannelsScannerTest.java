@@ -47,16 +47,16 @@ class ClassLevelAnnotationChannelsScannerTest {
                     payloadClassExtractor,
                     schemasService);
 
-    private static final String QUEUE = "test-queue";
-    private static final Map<String, Object> defaultOperationBinding = Map.of("amqp", new AMQPOperationBinding());
+    private static final String CHANNEL = "test-channel";
+    private static final Map<String, Object> defaultOperationBinding = Map.of("protocol", new AMQPOperationBinding());
     private static final Map<String, ? extends MessageBinding> defaultMessageBinding =
-            Map.of("amqp", new AMQPMessageBinding());
-    private static final Map<String, Object> defaultChannelBinding = Map.of("amqp", new AMQPChannelBinding());
+            Map.of("protocol", new AMQPMessageBinding());
+    private static final Map<String, Object> defaultChannelBinding = Map.of("protocol", new AMQPChannelBinding());
 
     @BeforeEach
     void setUp() {
         // when
-        when(bindingBuilder.getChannelName(any())).thenReturn(QUEUE);
+        when(bindingBuilder.getChannelName(any())).thenReturn(CHANNEL);
 
         doReturn(defaultOperationBinding).when(bindingBuilder).buildOperationBinding(any());
         doReturn(defaultChannelBinding).when(bindingBuilder).buildChannelBinding(any());
@@ -88,7 +88,7 @@ class ClassLevelAnnotationChannelsScannerTest {
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                .operationId(QUEUE + "_publish_ClassWithTestListenerAnnotation")
+                .operationId(CHANNEL + "_publish_ClassWithTestListenerAnnotation")
                 .bindings(defaultOperationBinding)
                 .message(message)
                 .build();
@@ -98,7 +98,7 @@ class ClassLevelAnnotationChannelsScannerTest {
                 .publish(operation)
                 .build();
 
-        assertThat(channels).containsExactly(Map.entry(QUEUE, expectedChannelItem));
+        assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));
     }
 
     @TestClassListener

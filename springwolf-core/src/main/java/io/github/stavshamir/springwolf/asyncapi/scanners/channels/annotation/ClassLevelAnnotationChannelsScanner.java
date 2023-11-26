@@ -54,6 +54,18 @@ public class ClassLevelAnnotationChannelsScanner<
         return AnnotationUtil.findAnnotation(component, classAnnotationClass) != null;
     }
 
+    private Set<Method> getAnnotatedMethods(Class<?> clazz) {
+        log.debug(
+                "Scanning class \"{}\" for @\"{}\" annotated methods",
+                clazz.getName(),
+                methodAnnotationClass.getName());
+
+        return Arrays.stream(clazz.getDeclaredMethods())
+                .filter(method -> !method.isBridge())
+                .filter(method -> AnnotationUtils.findAnnotation(method, methodAnnotationClass) != null)
+                .collect(toSet());
+    }
+
     private Stream<Map.Entry<String, ChannelItem>> mapClassToChannel(Class<?> component) {
         log.debug("Mapping class \"{}\" to channels", component.getName());
 
@@ -70,17 +82,6 @@ public class ClassLevelAnnotationChannelsScanner<
         ChannelItem channelItem = buildChannel(classAnnotation, operationId, annotatedMethods);
 
         return Stream.of(Map.entry(channelName, channelItem));
-    }
-
-    private Set<Method> getAnnotatedMethods(Class<?> component) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods",
-                component.getName(),
-                methodAnnotationClass.getName());
-
-        return Arrays.stream(component.getDeclaredMethods())
-                .filter(method -> AnnotationUtils.findAnnotation(method, methodAnnotationClass) != null)
-                .collect(toSet());
     }
 
     private ChannelItem buildChannel(ClassAnnotation classAnnotation, String operationId, Set<Method> methods) {

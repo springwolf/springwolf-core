@@ -26,28 +26,31 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
-public class MethodLevelAnnotationChannelsScanner<A extends Annotation>
+public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annotation>
         implements SimpleChannelsScanner.ClassProcessor {
 
-    private final Class<A> annotationClass;
-    private final BindingBuilder<A> bindingBuilder;
+    private final Class<MethodAnnotation> methodAnnotationClass;
+    private final BindingBuilder<MethodAnnotation> bindingBuilder;
     private final PayloadClassExtractor payloadClassExtractor;
     private final SchemasService schemasService;
 
     @Override
     public Stream<Map.Entry<String, ChannelItem>> process(Class<?> clazz) {
-        log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", clazz.getName(), annotationClass.getName());
+        log.debug(
+                "Scanning class \"{}\" for @\"{}\" annotated methods",
+                clazz.getName(),
+                methodAnnotationClass.getName());
 
         return Arrays.stream(clazz.getDeclaredMethods())
                 .filter(method -> !method.isBridge())
-                .filter(method -> AnnotationUtil.findAnnotation(method, annotationClass) != null)
+                .filter(method -> AnnotationUtil.findAnnotation(method, methodAnnotationClass) != null)
                 .map(this::mapMethodToChannel);
     }
 
     private Map.Entry<String, ChannelItem> mapMethodToChannel(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
-        A annotation = AnnotationUtil.findAnnotationOrThrow(method, annotationClass);
+        MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(method, methodAnnotationClass);
 
         String channelName = bindingBuilder.getChannelName(annotation);
         String operationId = channelName + "_publish_" + method.getName();
@@ -58,13 +61,13 @@ public class MethodLevelAnnotationChannelsScanner<A extends Annotation>
         return Map.entry(channelName, channelItem);
     }
 
-    private ChannelItem buildChannel(A annotation, String operationId, Class<?> payloadType) {
+    private ChannelItem buildChannel(MethodAnnotation annotation, String operationId, Class<?> payloadType) {
         Message message = buildMessage(annotation, payloadType);
         Operation operation = buildOperation(annotation, operationId, message);
         return buildChannelItem(annotation, operation);
     }
 
-    private Message buildMessage(A annotation, Class<?> payloadType) {
+    private Message buildMessage(MethodAnnotation annotation, Class<?> payloadType) {
         Map<String, ? extends MessageBinding> messageBinding = bindingBuilder.buildMessageBinding(annotation);
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
@@ -79,7 +82,7 @@ public class MethodLevelAnnotationChannelsScanner<A extends Annotation>
                 .build();
     }
 
-    private Operation buildOperation(A annotation, String operationId, Message message) {
+    private Operation buildOperation(MethodAnnotation annotation, String operationId, Message message) {
         Map<String, ? extends OperationBinding> operationBinding = bindingBuilder.buildOperationBinding(annotation);
         Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
 
@@ -91,7 +94,7 @@ public class MethodLevelAnnotationChannelsScanner<A extends Annotation>
                 .build();
     }
 
-    private ChannelItem buildChannelItem(A annotation, Operation operation) {
+    private ChannelItem buildChannelItem(MethodAnnotation annotation, Operation operation) {
         Map<String, ? extends ChannelBinding> channelBinding = bindingBuilder.buildChannelBinding(annotation);
         Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         return ChannelItem.builder().bindings(chBinding).publish(operation).build();
