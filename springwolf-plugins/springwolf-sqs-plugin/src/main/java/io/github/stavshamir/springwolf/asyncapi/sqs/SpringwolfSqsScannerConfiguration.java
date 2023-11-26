@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.sqs;
 
+import io.awspring.cloud.sqs.annotation.SqsListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.SqsBindingBuilder;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.SqsMessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.SqsOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelSqsListenerScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -24,13 +27,23 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 public class SpringwolfSqsScannerConfiguration {
 
     @Bean
-    @Order(value = ChannelPriority.AUTO_DISCOVERED)
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
-    public MethodLevelSqsListenerScanner methodLevelSqsListenerScanner(
-            ComponentClassScanner componentClassScanner,
-            SchemasService schemasService,
-            PayloadClassExtractor payloadClassExtractor) {
-        return new MethodLevelSqsListenerScanner(componentClassScanner, schemasService, payloadClassExtractor);
+    public SqsBindingBuilder sqsBindingBuilder() {
+        return new SqsBindingBuilder();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
+    public SimpleChannelsScanner simpleSqsMethodLevelListenerAnnotationChannelsScanner(
+            ComponentClassScanner classScanner,
+            SqsBindingBuilder sqsBindingBuilder,
+            PayloadClassExtractor payloadClassExtractor,
+            SchemasService schemasService) {
+        MethodLevelAnnotationChannelsScanner<SqsListener> strategy = new MethodLevelAnnotationChannelsScanner<>(
+                SqsListener.class, sqsBindingBuilder, payloadClassExtractor, schemasService);
+
+        return new SimpleChannelsScanner(classScanner, strategy);
     }
 
     @Bean
