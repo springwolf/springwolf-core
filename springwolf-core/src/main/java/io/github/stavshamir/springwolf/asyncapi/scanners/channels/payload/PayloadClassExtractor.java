@@ -42,17 +42,18 @@ public class PayloadClassExtractor {
     private int getPayloadParameterIndex(
             Class<?>[] parameterClasses, Annotation[][] parameterAnnotations, String methodName) {
         switch (parameterClasses.length) {
-            case 0 -> throw new IllegalArgumentException("Listener methods must not have 0 parameters: " + methodName);
+            case 0 -> throw new IllegalArgumentException(
+                    "Payload cannot be detected. Method must not have 0 parameters: " + methodName);
             case 1 -> {
                 return 0;
             }
             default -> {
                 int payloadAnnotatedParameterIndex = getPayloadAnnotatedParameterIndex(parameterAnnotations);
                 if (payloadAnnotatedParameterIndex == -1) {
-                    String msg =
-                            "Multi-parameter AsyncListener methods must have one parameter annotated with @Payload, "
-                                    + "but none was found: "
-                                    + methodName;
+                    String msg = "Payload cannot be detected. "
+                            + " Multi-parameter method must have one parameter annotated with @Payload,"
+                            + " but none was found: "
+                            + methodName;
 
                     throw new IllegalArgumentException(msg);
                 }

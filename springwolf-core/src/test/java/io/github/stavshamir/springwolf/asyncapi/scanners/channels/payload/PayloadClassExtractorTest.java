@@ -11,7 +11,9 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class PayloadClassExtractorTest {
 
@@ -34,12 +36,24 @@ class PayloadClassExtractorTest {
 
     @Test
     void getPayloadTypeWithPayloadAnnotation() throws NoSuchMethodException {
-        Method m =
-                TestClass.class.getDeclaredMethod("consumeWithStringAndPayloadAnnotation", String.class, Integer.class);
+        Method m = TestClass.class.getDeclaredMethod("consumeWithPayloadAnnotation", String.class, Integer.class);
 
         Class<?> result = extractor.extractFrom(m);
 
         assertEquals(String.class, result);
+    }
+
+    @Test
+    void getPayloadTypeWithoutPayloadAnnotation() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithoutPayloadAnnotation", String.class, Integer.class);
+
+        try {
+            extractor.extractFrom(m);
+            fail();
+        } catch (Exception ex) {
+            assertThat(ex).isInstanceOf(IllegalArgumentException.class);
+            assertThat(ex).hasMessageContaining("@Payload");
+        }
     }
 
     @Test
@@ -98,7 +112,9 @@ class PayloadClassExtractorTest {
     }
 
     public static class TestClass {
-        public void consumeWithStringAndPayloadAnnotation(@Payload String value, Integer value2) {}
+        public void consumeWithPayloadAnnotation(@Payload String value, Integer value2) {}
+
+        public void consumeWithoutPayloadAnnotation(String value, Integer value2) {}
 
         public void consumeWithString(String value) {}
 

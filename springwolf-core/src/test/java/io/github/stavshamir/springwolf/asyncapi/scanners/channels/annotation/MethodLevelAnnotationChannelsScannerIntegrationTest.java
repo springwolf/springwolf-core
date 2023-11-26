@@ -103,7 +103,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
 
             Operation operation = Operation.builder()
                     .description("Auto-generated description")
-                    .operationId("test-queue_publish_methodWithAnnotation")
+                    .operationId("test-channel_publish_methodWithAnnotation")
                     .bindings(TestBindingBuilder.defaultOperationBinding)
                     .message(message)
                     .build();
@@ -126,7 +126,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
     }
 
     @Nested
-    class MultipleListeners {
+    class OneChannelTwoPayloads {
         @Test
         void scan_componentHasTestListenerMethods_multiplePayloads() {
             // when
@@ -205,7 +205,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
 
             Operation operation = Operation.builder()
                     .description("Auto-generated description")
-                    .operationId("test-queue_publish_methodWithAnnotation")
+                    .operationId("test-channel_publish_methodWithAnnotation")
                     .bindings(defaultOperationBinding)
                     .message(message)
                     .build();
@@ -247,7 +247,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
 
     static class TestBindingBuilder implements BindingBuilder<TestChannelListener> {
 
-        public static final String QUEUE = "test-queue";
+        public static final String QUEUE = "test-channel";
         public static final Map<String, ? extends MessageBinding> defaultMessageBinding =
                 Map.of(QUEUE, new TestBindingBuilder.TestMessageBinding());
         public static final Map<String, Object> defaultChannelBinding =
