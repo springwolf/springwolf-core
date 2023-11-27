@@ -25,7 +25,13 @@ public class AnnotationUtil {
 
     @Nullable
     public static <T extends Annotation> T findAnnotation(AnnotatedElement element, Class<T> annotationClass) {
-        Set<T> annotations = MergedAnnotations.from(
+        Set<T> annotations = findAnnotations(element, annotationClass);
+
+        return annotations.stream().findFirst().orElse(null);
+    }
+
+    public static <T extends Annotation> Set<T> findAnnotations(AnnotatedElement element, Class<T> annotationClass) {
+        return MergedAnnotations.from(
                         element,
                         MergedAnnotations.SearchStrategy.TYPE_HIERARCHY,
                         RepeatableContainers.standardRepeatables())
@@ -33,7 +39,5 @@ public class AnnotationUtil {
                 .filter(MergedAnnotationPredicates.firstRunOf(MergedAnnotation::getAggregateIndex))
                 .map(MergedAnnotation::withNonMergedAttributes)
                 .collect(MergedAnnotationCollectors.toAnnotationSet());
-
-        return annotations.stream().findFirst().orElse(null);
     }
 }
