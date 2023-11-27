@@ -14,8 +14,8 @@ import java.util.Set;
 
 public class AnnotationUtil {
 
-    public static <T extends Annotation> T findAnnotationOrThrow(AnnotatedElement element, Class<T> annotationClass) {
-        T annotation = findAnnotation(element, annotationClass);
+    public static <T extends Annotation> T findAnnotationOrThrow(Class<T> annotationClass, AnnotatedElement element) {
+        T annotation = findAnnotation(annotationClass, element);
         if (annotation == null) {
             throw new IllegalArgumentException(
                     "Method must be annotated with " + element.getClass().getName());
@@ -24,13 +24,13 @@ public class AnnotationUtil {
     }
 
     @Nullable
-    public static <T extends Annotation> T findAnnotation(AnnotatedElement element, Class<T> annotationClass) {
-        Set<T> annotations = findAnnotations(element, annotationClass);
+    public static <T extends Annotation> T findAnnotation(Class<T> annotationClass, AnnotatedElement element) {
+        Set<T> annotations = findAnnotations(annotationClass, element);
 
         return annotations.stream().findFirst().orElse(null);
     }
 
-    public static <T extends Annotation> Set<T> findAnnotations(AnnotatedElement element, Class<T> annotationClass) {
+    public static <T extends Annotation> Set<T> findAnnotations(Class<T> annotationClass, AnnotatedElement element) {
         return MergedAnnotations.from(
                         element,
                         MergedAnnotations.SearchStrategy.TYPE_HIERARCHY,

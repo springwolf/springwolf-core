@@ -51,7 +51,7 @@ public class ClassLevelAnnotationChannelsScanner<
     }
 
     private boolean isClassAnnotated(Class<?> component) {
-        return AnnotationUtil.findAnnotation(component, classAnnotationClass) != null;
+        return AnnotationUtil.findAnnotation(classAnnotationClass, component) != null;
     }
 
     private Set<Method> getAnnotatedMethods(Class<?> clazz) {
@@ -69,7 +69,7 @@ public class ClassLevelAnnotationChannelsScanner<
     private Stream<Map.Entry<String, ChannelItem>> mapClassToChannel(Class<?> component) {
         log.debug("Mapping class \"{}\" to channels", component.getName());
 
-        ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(component, classAnnotationClass);
+        ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
 
         Set<Method> annotatedMethods = getAnnotatedMethods(component);
         if (annotatedMethods.isEmpty()) {

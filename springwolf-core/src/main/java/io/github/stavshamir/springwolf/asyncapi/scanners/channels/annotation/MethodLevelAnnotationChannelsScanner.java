@@ -43,14 +43,14 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
 
         return Arrays.stream(clazz.getDeclaredMethods())
                 .filter(method -> !method.isBridge())
-                .filter(method -> AnnotationUtil.findAnnotation(method, methodAnnotationClass) != null)
+                .filter(method -> AnnotationUtil.findAnnotation(methodAnnotationClass, method) != null)
                 .map(this::mapMethodToChannel);
     }
 
     private Map.Entry<String, ChannelItem> mapMethodToChannel(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
-        MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(method, methodAnnotationClass);
+        MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         String channelName = bindingBuilder.getChannelName(annotation);
         String operationId = channelName + "_publish_" + method.getName();

@@ -17,7 +17,6 @@ import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -69,7 +68,7 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
 
         return Arrays.stream(type.getDeclaredMethods())
                 .filter(method -> !method.isBridge())
-                .filter(method -> AnnotationUtils.findAnnotation(method, annotationClass) != null);
+                .filter(method -> AnnotationUtil.findAnnotation(annotationClass, method) != null);
     }
 
     private Stream<OperationData> toOperationData(Method method) {
@@ -81,7 +80,7 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
                 AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
         Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
 
-        Set<AsyncListener> annotations = AnnotationUtil.findAnnotations(method, AsyncListener.class);
+        Set<AsyncListener> annotations = AnnotationUtil.findAnnotations(AsyncListener.class, method);
         return annotations.stream()
                 .map(annotation -> toConsumerData(method, operationBindings, messageBindings, message, annotation));
     }
