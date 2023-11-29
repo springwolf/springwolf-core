@@ -18,16 +18,12 @@ import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implements ClassScanner {
+public class AnnotationClassScanner<T extends Annotation> implements ClassScanner {
 
+    private final Class<T> annotation;
     private final AsyncApiDocketService asyncApiDocketService;
 
     private final Environment environment;
-
-    /**
-     * @return The class object of the annotation to scan.
-     */
-    protected abstract Class<T> getAnnotationClass();
 
     @Override
     public Set<Class<?>> scan() {
@@ -39,9 +35,9 @@ public abstract class AbstractAnnotatedClassScanner<T extends Annotation> implem
         ClassPathScanningCandidateComponentProvider provider =
                 new ClassPathScanningCandidateComponentProvider(false, environment);
 
-        provider.addIncludeFilter(new AnnotationTypeFilter(getAnnotationClass()));
+        provider.addIncludeFilter(new AnnotationTypeFilter(annotation));
 
-        log.debug("Scanning for {} classes in {}", getAnnotationClass().getSimpleName(), basePackage);
+        log.debug("Scanning for {} classes in {}", annotation.getSimpleName(), basePackage);
         return provider.findCandidateComponents(basePackage).stream()
                 .map(BeanDefinition::getBeanClassName)
                 .map(this::getClass)

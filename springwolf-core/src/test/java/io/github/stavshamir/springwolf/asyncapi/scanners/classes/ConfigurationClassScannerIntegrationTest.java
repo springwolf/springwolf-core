@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ConfigurationClassScanner.class})
+@ContextConfiguration(classes = {ConfigurationClassScanner.class, ComponentClassScanner.class})
 class ConfigurationClassScannerIntegrationTest {
 
     @MockBean

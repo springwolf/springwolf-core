@@ -5,7 +5,7 @@ import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
@@ -57,14 +57,14 @@ class AsyncPublisherAnnotationScannerIntegrationTest {
     private AsyncPublisherAnnotationScanner channelScanner;
 
     @MockBean
-    private ComponentClassScanner componentClassScanner;
+    private ClassScanner classScanner;
 
     @MockBean
     private AsyncApiDocketService asyncApiDocketService;
 
     private void setClassToScan(Class<?> classToScan) {
         Set<Class<?>> classesToScan = singleton(classToScan);
-        when(componentClassScanner.scan()).thenReturn(classesToScan);
+        when(classScanner.scan()).thenReturn(classesToScan);
     }
 
     @Test
