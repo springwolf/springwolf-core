@@ -7,7 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSqsController;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.sqs.SpringwolfSqsAutoConfiguration;
 import io.github.stavshamir.springwolf.producer.SpringwolfSqsProducer;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -46,7 +46,7 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
             })
     @MockBeans(
             value = {
-                @MockBean(ComponentClassScanner.class),
+                @MockBean(SpringwolfClassScanner.class),
                 @MockBean(SchemasService.class),
                 @MockBean(PayloadClassExtractor.class),
                 @MockBean(AsyncApiDocketService.class),
@@ -87,7 +87,7 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
             })
     @MockBeans(
             value = {
-                @MockBean(ComponentClassScanner.class),
+                @MockBean(SpringwolfClassScanner.class),
                 @MockBean(SchemasService.class),
                 @MockBean(PayloadClassExtractor.class),
                 @MockBean(ChannelsService.class),

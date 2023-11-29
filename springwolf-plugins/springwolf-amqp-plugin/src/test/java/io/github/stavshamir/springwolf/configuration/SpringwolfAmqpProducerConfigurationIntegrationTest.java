@@ -6,7 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.amqp.SpringwolfAmqpAutoConfigura
 import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfAmqpController;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.junit.jupiter.api.Nested;
@@ -47,7 +47,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(AsyncApiService.class),
                 @MockBean(RabbitTemplate.class),
-                @MockBean(ComponentClassScanner.class),
+                @MockBean(SpringwolfClassScanner.class),
                 @MockBean(SchemasService.class),
                 @MockBean(PayloadClassExtractor.class),
                 @MockBean(AsyncApiDocketService.class)
@@ -88,7 +88,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(AsyncApiService.class),
                 @MockBean(RabbitTemplate.class),
-                @MockBean(ComponentClassScanner.class),
+                @MockBean(SpringwolfClassScanner.class),
                 @MockBean(SchemasService.class),
                 @MockBean(PayloadClassExtractor.class),
             })
