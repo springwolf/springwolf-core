@@ -1,0 +1,34 @@
+# ...
+components:
+  messages:
+    messageAvro:
+      bindings:
+        googlepubsub:
+          schema:
+            name: projects/your-project/schemas/message-avro
+      contentType: application/json
+      name: MessageAvro
+      payload:
+        schema:
+          fields:
+            - name: message
+              type: string
+          name: Message
+          type: record
+        schemaFormat: application/vnd.apache.avro+yaml;version=1.9.0
+    messageProto:
+      bindings:
+        googlepubsub:
+          schema:
+            name: projects/your-project/schemas/message-proto
+      contentType: application/octet-stream
+      name: MessageProto
+      payload:
+        schema: |
+          syntax = "proto3";
+
+          message Message {
+            required string message = 1;
+          }
+        schemaFormat: application/vnd.google.protobuf;version=3
+# ...

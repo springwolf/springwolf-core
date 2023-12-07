@@ -1,0 +1,14 @@
+channels:
+  test:
+    address: test-topic
+    messages:
+      testMessage:
+        bindings:
+          kafka:
+            key:
+              type: string
+              enum: ['myKey']
+            schemaIdLocation: 'payload'
+            schemaIdPayloadEncoding: 'apicurio-new'
+            schemaLookupStrategy: 'TopicIdStrategy'
+            bindingVersion: '0.4.0'

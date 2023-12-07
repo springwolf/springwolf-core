@@ -1,0 +1,10 @@
+channels:
+  userSignup:
+    address: 'user/signup'
+    messages:
+      userSignupMessage:
+        bindings:
+          amqp:
+            contentEncoding: gzip
+            messageType: 'user.signup'
+            bindingVersion: 0.3.0

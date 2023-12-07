@@ -1,0 +1,16 @@
+channels:
+  user-signedup:
+    bindings:
+      pulsar:
+        namespace: 'staging'
+        persistence: 'persistent'
+        compaction: 1000
+        geo-replication:
+          - 'us-east1'
+          - 'us-west1'
+        retention:
+          time: 7
+          size: 1000
+        ttl: 360
+        deduplication: false
+        bindingVersion: '0.1.0'

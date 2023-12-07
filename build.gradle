@@ -117,6 +117,7 @@ allprojects {
     }
 
     var publishingEnabled = (
+            project.name == 'springwolf-asyncapi' ||
             project.name == 'springwolf-core' ||
             project.name == 'springwolf-amqp' ||
             project.name == 'springwolf-cloud-stream' ||

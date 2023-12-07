@@ -1,0 +1,10 @@
+channels:
+  user-signedup:
+    description:  A user has signed up to our service
+    bindings:
+      sns:
+        policy:
+          statements:
+            - effect : Allow
+              principal: '*'
+              action: SNS:Publish

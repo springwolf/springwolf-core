@@ -1,0 +1,15 @@
+channels:
+  user-signedup:
+    description:  A user has signed up for our service
+    binding :
+      sns: {}     # Indicates that the channel is an SNS Topic
+    subscribe:
+      operationId: sendMessage
+      description: send messages to the topic
+      bindings:
+        sns:
+          policy:
+            statements:
+              - effect : Allow
+                principal: *
+                action: SNS:Publish

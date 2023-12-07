@@ -1,0 +1,10 @@
+channels:
+  user.signup:
+    description: This application receives command messages from this channel about users to sign up.
+    bindings:
+      jms:
+        destination:     user-sign-up
+        destinationType: fifo-queue
+        bindingVersion:  '0.0.1'
+    publish:
+    #...

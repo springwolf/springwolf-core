@@ -1,0 +1,31 @@
+message:
+  messageId: my-message-1
+  bindings:
+    jms:
+      headers:
+        # JMS protocol specific message headers
+        required:
+          - JMSMessageID
+      properties:
+        JMSMessageID:
+          name: JMSMessageID
+          description: A unique message identifier. This may be set by your JMS Provider on your behalf.
+          type: string
+        JMSReplyTo:
+          name: JMSReplyTo
+          description: The queue or topic that the message sender expects replies to.
+          type: string
+  headers:
+    # Application specific message headers
+    required:
+      - MyToken
+      - MyOperationID
+    properties:
+      MyToken:
+        name: MyToken
+        description: Some sort of identificaton token for the publishing application.
+        type: string
+      MyOperationID:
+        name: MyOperationID
+        description: Some sort of unique identifier for the application operation to perform.
+        type: string

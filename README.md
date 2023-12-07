@@ -5,6 +5,7 @@
 ![Last Version](https://img.shields.io/github/tag-pre/springwolf/springwolf-core.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![springwolf-core](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml)
+[![springwolf-asyncapi](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-asyncapi.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-asyncapi.yml)
 [![springwolf-ui](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml)
 [![springwolf-plugins](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml)
 [![springwolf-addons](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-addons.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-addons.yml)

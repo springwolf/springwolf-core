@@ -1,0 +1,14 @@
+servers:
+  production:
+    host: jms://my-activemq-broker:61616
+    protocol: jms
+    protocolVersion: '1.1'
+    description: The production ActiveMQ broker accessed via JMS.
+    bindings:
+      jms:
+        # JMS protocol specific server details
+        jmsConnectionFactory: org.apache.activemq.ActiveMQConnectionFactory
+        properties:
+          - name: disableTimeStampsByDefault
+            value: false
+        clientID: my-application-1

@@ -1,0 +1,15 @@
+servers:
+  production:
+    bindings:
+      mqtt:
+        clientId: guest
+        cleanSession: true
+        lastWill:
+          topic: /last-wills
+          qos: 2
+          message: Guest gone offline.
+          retain: false
+        keepAlive: 60
+        sessionExpiryInterval: 600
+        maximumPacketSize: 1200
+        bindingVersion: 0.2.0
