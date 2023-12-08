@@ -24,4 +24,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.url=some-server:1234",
         })
-public @interface MinimalTestContextConfiguration {}
+public @interface MinimalIntegrationTestContextConfiguration {}

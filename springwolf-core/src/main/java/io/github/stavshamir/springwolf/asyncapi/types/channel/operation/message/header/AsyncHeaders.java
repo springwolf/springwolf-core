@@ -7,10 +7,9 @@ import java.util.HashMap;
 
 public class AsyncHeaders extends HashMap<String, Schema> {
     /**
-     * Per default, if no headers are explicitly defined, NOT_DOCUMENTED is used.
-     * There can be headers, but don't have to be.
+     * Alias to stay backwards-compatible
      */
-    public static final AsyncHeaders NOT_DOCUMENTED = new AsyncHeaders("HeadersNotDocumented");
+    public static final AsyncHeaders NOT_DOCUMENTED = AsyncHeadersNotDocumented.NOT_DOCUMENTED;
     /**
      * Explicitly document that no headers are used.
      */

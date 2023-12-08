@@ -5,6 +5,7 @@ import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AnnotationUtil;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.AbstractOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
@@ -16,12 +17,6 @@ import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.annotation.MergedAnnotation;
-import org.springframework.core.annotation.MergedAnnotationCollectors;
-import org.springframework.core.annotation.MergedAnnotationPredicates;
-import org.springframework.core.annotation.MergedAnnotations;
-import org.springframework.core.annotation.RepeatableContainers;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -29,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -65,18 +59,16 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
         return componentClassScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
                 .flatMap(this::toOperationData)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Stream<Method> getAnnotatedMethods(Class<?> type) {
         Class<AsyncListener> annotationClass = AsyncListener.class;
-        Class<AsyncListeners> annotationClassRepeatable = AsyncListeners.class;
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
         return Arrays.stream(type.getDeclaredMethods())
                 .filter(method -> !method.isBridge())
-                .filter(method -> AnnotationUtils.findAnnotation(method, annotationClass) != null
-                        || AnnotationUtils.findAnnotation(method, annotationClassRepeatable) != null);
+                .filter(method -> AnnotationUtil.findAnnotation(annotationClass, method) != null);
     }
 
     private Stream<OperationData> toOperationData(Method method) {
@@ -88,16 +80,7 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
                 AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
         Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
 
-        Class<AsyncListener> annotationClass = AsyncListener.class;
-        Set<AsyncListener> annotations = MergedAnnotations.from(
-                        method,
-                        MergedAnnotations.SearchStrategy.TYPE_HIERARCHY,
-                        RepeatableContainers.standardRepeatables())
-                .stream(annotationClass)
-                .filter(MergedAnnotationPredicates.firstRunOf(MergedAnnotation::getAggregateIndex))
-                .map(MergedAnnotation::withNonMergedAttributes)
-                .collect(MergedAnnotationCollectors.toAnnotationSet());
-
+        Set<AsyncListener> annotations = AnnotationUtil.findAnnotations(AsyncListener.class, method);
         return annotations.stream()
                 .map(annotation -> toConsumerData(method, operationBindings, messageBindings, message, annotation));
     }

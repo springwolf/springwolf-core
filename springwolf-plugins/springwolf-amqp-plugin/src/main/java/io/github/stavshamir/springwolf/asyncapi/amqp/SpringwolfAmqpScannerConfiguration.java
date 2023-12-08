@@ -1,18 +1,23 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.amqp;
 
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.AmqpBindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AmqpMessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AmqpOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelRabbitListenerScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelRabbitListenerScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelAnnotationChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForAmqpBuilder;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -34,16 +39,17 @@ public class SpringwolfAmqpScannerConfiguration {
             name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public ClassLevelRabbitListenerScanner classLevelRabbitListenerScanner(
-            ComponentClassScanner componentClassScanner,
-            SchemasService schemasService,
-            PayloadClassExtractor payloadClassExtractor,
-            List<Queue> queues,
-            List<Exchange> exchanges,
-            List<Binding> bindings) {
-        return new ClassLevelRabbitListenerScanner(
-                componentClassScanner, schemasService, payloadClassExtractor, queues, exchanges, bindings);
+    public AmqpBindingFactory amqpBindingBuilder(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
+        return new AmqpBindingFactory(queues, exchanges, bindings);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    public AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder() {
+        return new AsyncHeadersForAmqpBuilder();
     }
 
     @Bean
@@ -52,15 +58,39 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public MethodLevelRabbitListenerScanner methodLevelRabbitListenerScanner(
-            ComponentClassScanner componentClassScanner,
-            SchemasService schemasService,
+    public SimpleChannelsScanner simpleRabbitClassLevelListenerAnnotationChannelsScanner(
+            ComponentClassScanner classScanner,
+            AmqpBindingFactory amqpBindingBuilder,
+            AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            List<Queue> queues,
-            List<Exchange> exchanges,
-            List<Binding> bindings) {
-        return new MethodLevelRabbitListenerScanner(
-                componentClassScanner, schemasService, payloadClassExtractor, queues, exchanges, bindings);
+            SchemasService schemasService) {
+        ClassLevelAnnotationChannelsScanner<RabbitListener, RabbitHandler> strategy =
+                new ClassLevelAnnotationChannelsScanner<>(
+                        RabbitListener.class,
+                        RabbitHandler.class,
+                        amqpBindingBuilder,
+                        asyncHeadersForAmqpBuilder,
+                        payloadClassExtractor,
+                        schemasService);
+
+        return new SimpleChannelsScanner(classScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
+    public SimpleChannelsScanner simpleRabbitMethodLevelListenerAnnotationChannelsScanner(
+            ComponentClassScanner classScanner,
+            AmqpBindingFactory amqpBindingBuilder,
+            PayloadClassExtractor payloadClassExtractor,
+            SchemasService schemasService) {
+        MethodLevelAnnotationChannelsScanner<RabbitListener> strategy = new MethodLevelAnnotationChannelsScanner<>(
+                RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, schemasService);
+
+        return new SimpleChannelsScanner(classScanner, strategy);
     }
 
     @Bean

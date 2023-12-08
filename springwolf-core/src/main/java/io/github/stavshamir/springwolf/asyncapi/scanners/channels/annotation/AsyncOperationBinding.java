@@ -13,6 +13,8 @@ import java.lang.annotation.Target;
  * The annotations annotated with {@code @AsyncOperationBinding} are intended to provide the Operation Bindings
  * Object documentation. Those implementations are usually available in its own plugin, like {@code springwolf-kafka-plugin}
  * or {@code springwolf-amqp-plugin}
+ *
+ * Maintainer note: Move to io.github.stavshamir.springwolf.asyncapi.scanners.bindings
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.ANNOTATION_TYPE})
