@@ -7,7 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCrea
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfJmsController;
 import io.github.stavshamir.springwolf.asyncapi.jms.SpringwolfJmsAutoConfiguration;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.producer.SpringwolfJmsProducer;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.junit.jupiter.api.Nested;
@@ -46,7 +46,7 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
             })
     @MockBeans(
             value = {
-                @MockBean(ComponentClassScanner.class),
+                @MockBean(SpringwolfClassScanner.class),
                 @MockBean(SchemasService.class),
                 @MockBean(AsyncApiDocketService.class),
                 @MockBean(AsyncApiService.class),
@@ -87,7 +87,7 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
             })
     @MockBeans(
             value = {
-                @MockBean(ComponentClassScanner.class),
+                @MockBean(SpringwolfClassScanner.class),
                 @MockBean(SchemasService.class),
                 @MockBean(ChannelsService.class),
                 @MockBean(PayloadClassExtractor.class),

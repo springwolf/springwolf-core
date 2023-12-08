@@ -5,7 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCrea
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.asyncapi.kafka.SpringwolfKafkaAutoConfiguration;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.junit.jupiter.api.Nested;
@@ -44,7 +44,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             })
     @MockBeans(
             value = {
-                @MockBean(ComponentClassScanner.class),
+                @MockBean(SpringwolfClassScanner.class),
                 @MockBean(SchemasService.class),
                 @MockBean(PayloadClassExtractor.class),
                 @MockBean(AsyncApiDocketService.class)
@@ -83,7 +83,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             })
     @MockBeans(
             value = {
-                @MockBean(ComponentClassScanner.class),
+                @MockBean(SpringwolfClassScanner.class),
                 @MockBean(SchemasService.class),
                 @MockBean(PayloadClassExtractor.class)
             })

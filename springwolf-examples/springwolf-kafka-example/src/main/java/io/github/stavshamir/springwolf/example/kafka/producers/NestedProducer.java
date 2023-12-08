@@ -12,11 +12,9 @@ import io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
 
 import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
 
-@Component
 public class NestedProducer {
 
     @Autowired

@@ -10,7 +10,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannels
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelAnnotationChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForKafkaBuilder;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -54,7 +54,7 @@ public class SpringwolfKafkaScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SimpleChannelsScanner simpleKafkaClassLevelListenerAnnotationChannelsScanner(
-            ComponentClassScanner classScanner,
+            SpringwolfClassScanner classScanner,
             KafkaBindingFactory kafkaBindingBuilder,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadClassExtractor payloadClassExtractor,
@@ -78,7 +78,7 @@ public class SpringwolfKafkaScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SimpleChannelsScanner simpleKafkaMethodLevelListenerAnnotationChannelsScanner(
-            ComponentClassScanner classScanner,
+            SpringwolfClassScanner classScanner,
             KafkaBindingFactory kafkaBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
             SchemasService schemasService) {

@@ -5,14 +5,18 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-public class ComponentClassScanner extends AbstractAnnotatedClassScanner<Component> implements ClassScanner {
+import java.util.Set;
+
+public class ComponentClassScanner implements ClassScanner {
+
+    private final AnnotationClassScanner<Component> scanner;
 
     public ComponentClassScanner(AsyncApiDocketService asyncApiDocketService, Environment environment) {
-        super(asyncApiDocketService, environment);
+        this.scanner = new AnnotationClassScanner<>(Component.class, asyncApiDocketService, environment);
     }
 
     @Override
-    protected Class<Component> getAnnotationClass() {
-        return Component.class;
+    public Set<Class<?>> scan() {
+        return scanner.scan();
     }
 }

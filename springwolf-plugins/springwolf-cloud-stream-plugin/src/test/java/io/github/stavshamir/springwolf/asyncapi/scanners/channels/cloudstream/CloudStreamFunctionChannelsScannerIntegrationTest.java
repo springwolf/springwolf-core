@@ -7,6 +7,7 @@ import com.asyncapi.v2._6_0.model.info.Info;
 import com.asyncapi.v2._6_0.model.server.Server;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
@@ -46,6 +47,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(
         classes = {
             ConfigurationClassScanner.class,
+            ComponentClassScanner.class,
             DefaultBeanMethodsScanner.class,
             DefaultSchemasService.class,
             PayloadClassExtractor.class,

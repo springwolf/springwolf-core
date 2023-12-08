@@ -13,6 +13,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -44,15 +45,21 @@ public class SpringwolfScannerConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ConfigurationClassScanner configurationClassScanner(
-            AsyncApiDocketService asyncApiDocketService, Environment environment) {
-        return new ConfigurationClassScanner(asyncApiDocketService, environment);
+    public ConfigurationClassScanner configurationClassScanner(ComponentClassScanner componentClassScanner) {
+        return new ConfigurationClassScanner(componentClassScanner);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public BeanMethodsScanner beanMethodsScanner(ConfigurationClassScanner configurationClassScanner) {
         return new DefaultBeanMethodsScanner(configurationClassScanner);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SpringwolfClassScanner springwolfClassScanner(
+            ComponentClassScanner componentClassScanner, BeanMethodsScanner beanMethodsScanner) {
+        return new SpringwolfClassScanner(componentClassScanner, beanMethodsScanner);
     }
 
     @Bean
@@ -78,14 +85,14 @@ public class SpringwolfScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncListenerAnnotationScanner asyncListenerAnnotationScanner(
-            ComponentClassScanner componentClassScanner,
+            SpringwolfClassScanner springwolfClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
             PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncListenerAnnotationScanner(
-                componentClassScanner,
+                springwolfClassScanner,
                 schemasService,
                 asyncApiDocketService,
                 payloadClassExtractor,
@@ -100,14 +107,14 @@ public class SpringwolfScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncPublisherAnnotationScanner asyncPublisherAnnotationScanner(
-            ComponentClassScanner componentClassScanner,
+            SpringwolfClassScanner springwolfClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
             PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncPublisherAnnotationScanner(
-                componentClassScanner,
+                springwolfClassScanner,
                 schemasService,
                 asyncApiDocketService,
                 payloadClassExtractor,

@@ -2,6 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.classes;
 
 import com.asyncapi.v2._6_0.model.info.Info;
+import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Set;
@@ -23,18 +23,20 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @ContextConfiguration(
         classes = {
+            SpringwolfClassScanner.class,
+            ConfigurationClassScanner.class,
             ComponentClassScanner.class,
+            DefaultBeanMethodsScanner.class,
             TestComponent.class,
             TestConditionalComponent.class,
             TestOtherConditionalComponent.class
         })
-@DirtiesContext
-class ComponentClassScannerIntegrationTest {
+class SpringwolfClassScannerIntegrationTest {
     @MockBean
     private AsyncApiDocketService asyncApiDocketService;
 
     @Autowired
-    private ComponentClassScanner componentsScanner;
+    private SpringwolfClassScanner springwolfClassScanner;
 
     @Autowired
     ConfigurableBeanFactory beanFactory;
@@ -56,10 +58,10 @@ class ComponentClassScannerIntegrationTest {
         StandardEnvironment environment = (StandardEnvironment) beanFactory.getBean(Environment.class);
         environment.getSystemProperties().put(TestConditionalComponent.CONDITIONAL_PROPERTY, false);
 
-        Set<Class<?>> components = componentsScanner.scan();
+        Set<Class<?>> components = springwolfClassScanner.scan();
 
         assertThat(components)
-                .doesNotContain(TestBeanConfiguration.TestBean.class)
+                .contains(TestBeanConfiguration.TestBean.class)
                 .contains(TestComponent.class)
                 .doesNotContain(TestConditionalComponent.class)
                 .doesNotContain(TestOtherConditionalComponent.class);
@@ -70,10 +72,10 @@ class ComponentClassScannerIntegrationTest {
         StandardEnvironment environment = (StandardEnvironment) beanFactory.getBean(Environment.class);
         environment.getSystemProperties().put(TestConditionalComponent.CONDITIONAL_PROPERTY, true);
 
-        Set<Class<?>> components = componentsScanner.scan();
+        Set<Class<?>> components = springwolfClassScanner.scan();
 
         assertThat(components)
-                .doesNotContain(TestBeanConfiguration.TestBean.class)
+                .contains(TestBeanConfiguration.TestBean.class)
                 .contains(TestComponent.class)
                 .contains(TestConditionalComponent.class)
                 .doesNotContain(TestOtherConditionalComponent.class);

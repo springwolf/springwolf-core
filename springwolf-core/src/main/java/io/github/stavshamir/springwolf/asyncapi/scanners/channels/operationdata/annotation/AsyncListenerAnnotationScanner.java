@@ -8,7 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindi
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AnnotationUtil;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.AbstractOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner implements EmbeddedValueResolverAware {
     private StringValueResolver resolver;
-    private final ComponentClassScanner componentClassScanner;
+    private final ClassScanner classScanner;
     private final SchemasService schemasService;
     private final AsyncApiDocketService asyncApiDocketService;
 
@@ -56,7 +56,7 @@ public class AsyncListenerAnnotationScanner extends AbstractOperationDataScanner
 
     @Override
     protected List<OperationData> getOperationData() {
-        return componentClassScanner.scan().stream()
+        return classScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
                 .flatMap(this::toOperationData)
                 .toList();
