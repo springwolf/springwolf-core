@@ -15,11 +15,11 @@ import org.springframework.util.StringValueResolver;
 import java.util.List;
 import java.util.Map;
 
-public class AmqpBindingBuilder implements BindingBuilder<RabbitListener>, EmbeddedValueResolverAware {
+public class AmqpBindingFactory implements BindingFactory<RabbitListener>, EmbeddedValueResolverAware {
     private final RabbitListenerUtil.RabbitListenerUtilContext context;
     private StringValueResolver stringValueResolver;
 
-    public AmqpBindingBuilder(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
+    public AmqpBindingFactory(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
         this.context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
     }
 

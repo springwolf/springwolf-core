@@ -7,7 +7,7 @@ import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
 import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingBuilder;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -36,13 +36,13 @@ import static org.mockito.Mockito.when;
 class ClassLevelAnnotationChannelsScannerTest {
 
     private final PayloadClassExtractor payloadClassExtractor = mock(PayloadClassExtractor.class);
-    private final BindingBuilder<TestClassListener> bindingBuilder = mock(BindingBuilder.class);
+    private final BindingFactory<TestClassListener> bindingFactory = mock(BindingFactory.class);
     private final SchemasService schemasService = mock(SchemasService.class);
     ClassLevelAnnotationChannelsScanner<TestClassListener, TestMethodListener> scanner =
             new ClassLevelAnnotationChannelsScanner<>(
                     TestClassListener.class,
                     TestMethodListener.class,
-                    bindingBuilder,
+                    bindingFactory,
                     new AsyncHeadersNotDocumented(),
                     payloadClassExtractor,
                     schemasService);
@@ -56,11 +56,11 @@ class ClassLevelAnnotationChannelsScannerTest {
     @BeforeEach
     void setUp() {
         // when
-        when(bindingBuilder.getChannelName(any())).thenReturn(CHANNEL);
+        when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL);
 
-        doReturn(defaultOperationBinding).when(bindingBuilder).buildOperationBinding(any());
-        doReturn(defaultChannelBinding).when(bindingBuilder).buildChannelBinding(any());
-        doReturn(defaultMessageBinding).when(bindingBuilder).buildMessageBinding(any());
+        doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any());
+        doReturn(defaultChannelBinding).when(bindingFactory).buildChannelBinding(any());
+        doReturn(defaultMessageBinding).when(bindingFactory).buildMessageBinding(any());
 
         doReturn(String.class).when(payloadClassExtractor).extractFrom(any());
         doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())

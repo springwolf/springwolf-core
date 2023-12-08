@@ -13,7 +13,7 @@ import org.springframework.util.StringValueResolver;
 import java.util.Map;
 
 @NoArgsConstructor
-public class JmsBindingBuilder implements BindingBuilder<JmsListener>, EmbeddedValueResolverAware {
+public class JmsBindingFactory implements BindingFactory<JmsListener>, EmbeddedValueResolverAware {
     private StringValueResolver stringValueResolver;
 
     @Override

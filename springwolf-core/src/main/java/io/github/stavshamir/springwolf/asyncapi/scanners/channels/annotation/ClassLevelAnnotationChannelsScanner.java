@@ -6,7 +6,7 @@ import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingBuilder;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
@@ -37,7 +37,7 @@ public class ClassLevelAnnotationChannelsScanner<
 
     private final Class<ClassAnnotation> classAnnotationClass;
     private final Class<MethodAnnotation> methodAnnotationClass;
-    private final BindingBuilder<ClassAnnotation> bindingBuilder;
+    private final BindingFactory<ClassAnnotation> bindingFactory;
     private final AsyncHeadersBuilder asyncHeadersBuilder;
     private final PayloadClassExtractor payloadClassExtractor;
     private final SchemasService schemasService;
@@ -76,7 +76,7 @@ public class ClassLevelAnnotationChannelsScanner<
             return Stream.empty();
         }
 
-        String channelName = bindingBuilder.getChannelName(classAnnotation);
+        String channelName = bindingFactory.getChannelName(classAnnotation);
         String operationId = channelName + "_publish_" + component.getSimpleName();
 
         ChannelItem channelItem = buildChannel(classAnnotation, operationId, annotatedMethods);
@@ -102,7 +102,7 @@ public class ClassLevelAnnotationChannelsScanner<
     }
 
     private Message buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
-        Map<String, ? extends MessageBinding> messageBinding = bindingBuilder.buildMessageBinding(classAnnotation);
+        Map<String, ? extends MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(asyncHeadersBuilder.buildHeaders(payloadType));
 
@@ -118,7 +118,7 @@ public class ClassLevelAnnotationChannelsScanner<
 
     private Operation buildOperation(ClassAnnotation classAnnotation, String operationId, Object message) {
         Map<String, ? extends OperationBinding> operationBinding =
-                bindingBuilder.buildOperationBinding(classAnnotation);
+                bindingFactory.buildOperationBinding(classAnnotation);
         Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
 
         return Operation.builder()
@@ -130,7 +130,7 @@ public class ClassLevelAnnotationChannelsScanner<
     }
 
     private ChannelItem buildChannelItem(ClassAnnotation classAnnotation, Operation operation) {
-        Map<String, ? extends ChannelBinding> channelBinding = bindingBuilder.buildChannelBinding(classAnnotation);
+        Map<String, ? extends ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(classAnnotation);
         Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         return ChannelItem.builder().bindings(chBinding).publish(operation).build();
     }

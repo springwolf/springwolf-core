@@ -6,7 +6,7 @@ import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2.binding.channel.ChannelBinding;
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingBuilder;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {
-            ClassLevelAnnotationChannelsScannerIntegrationTest.TestBindingBuilder.class,
+            ClassLevelAnnotationChannelsScannerIntegrationTest.TestBindingFactory.class,
             DefaultSchemasService.class,
             PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
@@ -51,7 +51,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ClassLevelAnnotationChannelsScannerIntegrationTest {
 
     @Autowired
-    BindingBuilder<TestClassListener> bindingBuilder;
+    BindingFactory<TestClassListener> bindingFactory;
 
     @Autowired
     PayloadClassExtractor payloadClassExtractor;
@@ -66,7 +66,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         scanner = new ClassLevelAnnotationChannelsScanner<>(
                 TestClassListener.class,
                 TestMethodListener.class,
-                this.bindingBuilder,
+                this.bindingFactory,
                 new AsyncHeadersNotDocumented(),
                 payloadClassExtractor,
                 schemasService);
@@ -124,22 +124,22 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                     .headers(HeaderReference.fromModelName(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName()))
-                    .bindings(TestBindingBuilder.defaultMessageBinding)
+                    .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
             Operation operation = Operation.builder()
                     .description("Auto-generated description")
                     .operationId("test-channel_publish_ClassWithOneMethodLevelHandler")
-                    .bindings(TestBindingBuilder.defaultOperationBinding)
+                    .bindings(TestBindingFactory.defaultOperationBinding)
                     .message(message)
                     .build();
 
             ChannelItem expectedChannel = ChannelItem.builder()
-                    .bindings(TestBindingBuilder.defaultChannelBinding)
+                    .bindings(TestBindingFactory.defaultChannelBinding)
                     .publish(operation)
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingBuilder.CHANNEL, expectedChannel));
+            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
         }
 
         @TestClassListener
@@ -167,7 +167,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                     .headers(HeaderReference.fromModelName(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName()))
-                    .bindings(TestBindingBuilder.defaultMessageBinding)
+                    .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
             Message barMessage = Message.builder()
@@ -175,22 +175,22 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                     .title(String.class.getSimpleName())
                     .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                     .headers(HeaderReference.fromModelName(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName()))
-                    .bindings(TestBindingBuilder.defaultMessageBinding)
+                    .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
             Operation operation = Operation.builder()
                     .description("Auto-generated description")
                     .operationId("test-channel_publish_ClassWithMultipleMethodLevelHandlers")
-                    .bindings(TestBindingBuilder.defaultOperationBinding)
+                    .bindings(TestBindingFactory.defaultOperationBinding)
                     .message(toMessageObjectOrComposition(Set.of(fooMessage, barMessage)))
                     .build();
 
             ChannelItem expectedChannel = ChannelItem.builder()
-                    .bindings(TestBindingBuilder.defaultChannelBinding)
+                    .bindings(TestBindingFactory.defaultChannelBinding)
                     .publish(operation)
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingBuilder.CHANNEL, expectedChannel));
+            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
         }
 
         @TestClassListener
@@ -221,15 +221,15 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
     @Inherited
     public @interface TestMethodListener {}
 
-    static class TestBindingBuilder implements BindingBuilder<TestClassListener> {
+    static class TestBindingFactory implements BindingFactory<TestClassListener> {
 
         public static final String CHANNEL = "test-channel";
         public static final Map<String, ? extends MessageBinding> defaultMessageBinding =
-                Map.of(CHANNEL, new TestBindingBuilder.TestMessageBinding());
+                Map.of(CHANNEL, new TestBindingFactory.TestMessageBinding());
         public static final Map<String, Object> defaultChannelBinding =
-                Map.of(CHANNEL, new TestBindingBuilder.TestChannelBinding());
+                Map.of(CHANNEL, new TestBindingFactory.TestChannelBinding());
         public static final Map<String, Object> defaultOperationBinding =
-                Map.of(CHANNEL, new TestBindingBuilder.TestOperationBinding());
+                Map.of(CHANNEL, new TestBindingFactory.TestOperationBinding());
 
         @Override
         public String getChannelName(TestClassListener annotation) {

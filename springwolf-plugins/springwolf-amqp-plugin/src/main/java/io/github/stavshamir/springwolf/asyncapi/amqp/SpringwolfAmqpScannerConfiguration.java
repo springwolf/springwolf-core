@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.amqp;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.AmqpBindingBuilder;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.AmqpBindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AmqpMessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AmqpOperationBindingProcessor;
@@ -39,8 +39,8 @@ public class SpringwolfAmqpScannerConfiguration {
             name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    public AmqpBindingBuilder amqpBindingBuilder(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
-        return new AmqpBindingBuilder(queues, exchanges, bindings);
+    public AmqpBindingFactory amqpBindingBuilder(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
+        return new AmqpBindingFactory(queues, exchanges, bindings);
     }
 
     @Bean
@@ -60,7 +60,7 @@ public class SpringwolfAmqpScannerConfiguration {
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SimpleChannelsScanner simpleRabbitClassLevelListenerAnnotationChannelsScanner(
             ComponentClassScanner classScanner,
-            AmqpBindingBuilder amqpBindingBuilder,
+            AmqpBindingFactory amqpBindingBuilder,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadClassExtractor payloadClassExtractor,
             SchemasService schemasService) {
@@ -84,7 +84,7 @@ public class SpringwolfAmqpScannerConfiguration {
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SimpleChannelsScanner simpleRabbitMethodLevelListenerAnnotationChannelsScanner(
             ComponentClassScanner classScanner,
-            AmqpBindingBuilder amqpBindingBuilder,
+            AmqpBindingFactory amqpBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
             SchemasService schemasService) {
         MethodLevelAnnotationChannelsScanner<RabbitListener> strategy = new MethodLevelAnnotationChannelsScanner<>(

@@ -13,7 +13,7 @@ import org.springframework.util.StringValueResolver;
 import java.util.Map;
 
 @NoArgsConstructor
-public class KafkaBindingBuilder implements BindingBuilder<KafkaListener>, EmbeddedValueResolverAware {
+public class KafkaBindingFactory implements BindingFactory<KafkaListener>, EmbeddedValueResolverAware {
     private StringValueResolver stringValueResolver;
 
     @Override

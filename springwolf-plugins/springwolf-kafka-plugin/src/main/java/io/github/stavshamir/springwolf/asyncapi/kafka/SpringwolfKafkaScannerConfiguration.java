@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.kafka;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.KafkaBindingBuilder;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.KafkaBindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.KafkaMessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.KafkaOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
@@ -34,8 +34,8 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    public KafkaBindingBuilder kafkaBindingBuilder() {
-        return new KafkaBindingBuilder();
+    public KafkaBindingFactory kafkaBindingBuilder() {
+        return new KafkaBindingFactory();
     }
 
     @Bean
@@ -55,7 +55,7 @@ public class SpringwolfKafkaScannerConfiguration {
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SimpleChannelsScanner simpleKafkaClassLevelListenerAnnotationChannelsScanner(
             ComponentClassScanner classScanner,
-            KafkaBindingBuilder kafkaBindingBuilder,
+            KafkaBindingFactory kafkaBindingBuilder,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadClassExtractor payloadClassExtractor,
             SchemasService schemasService) {
@@ -79,7 +79,7 @@ public class SpringwolfKafkaScannerConfiguration {
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SimpleChannelsScanner simpleKafkaMethodLevelListenerAnnotationChannelsScanner(
             ComponentClassScanner classScanner,
-            KafkaBindingBuilder kafkaBindingBuilder,
+            KafkaBindingFactory kafkaBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
             SchemasService schemasService) {
         MethodLevelAnnotationChannelsScanner<KafkaListener> strategy = new MethodLevelAnnotationChannelsScanner<>(

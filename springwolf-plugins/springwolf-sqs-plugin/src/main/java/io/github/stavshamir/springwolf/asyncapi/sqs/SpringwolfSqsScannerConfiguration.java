@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.sqs;
 
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.SqsBindingBuilder;
+import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.SqsBindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.SqsMessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.SqsOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
@@ -28,8 +28,8 @@ public class SpringwolfSqsScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
-    public SqsBindingBuilder sqsBindingBuilder() {
-        return new SqsBindingBuilder();
+    public SqsBindingFactory sqsBindingBuilder() {
+        return new SqsBindingFactory();
     }
 
     @Bean
@@ -37,7 +37,7 @@ public class SpringwolfSqsScannerConfiguration {
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SimpleChannelsScanner simpleSqsMethodLevelListenerAnnotationChannelsScanner(
             ComponentClassScanner classScanner,
-            SqsBindingBuilder sqsBindingBuilder,
+            SqsBindingFactory sqsBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
             SchemasService schemasService) {
         MethodLevelAnnotationChannelsScanner<SqsListener> strategy = new MethodLevelAnnotationChannelsScanner<>(

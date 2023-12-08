@@ -7,7 +7,7 @@ import com.asyncapi.v2.binding.operation.OperationBinding;
 
 import java.util.Map;
 
-public interface BindingBuilder<T> {
+public interface BindingFactory<T> {
     String getChannelName(T annotation);
 
     Map<String, ? extends ChannelBinding> buildChannelBinding(T annotation);
