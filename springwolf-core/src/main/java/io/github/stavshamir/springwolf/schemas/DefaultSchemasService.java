@@ -27,7 +27,6 @@ public class DefaultSchemasService implements SchemasService {
     private final SpringwolfConfigProperties properties;
 
     private final Map<String, Schema> definitions = new HashMap<>();
-    private Map<String, Schema> finalizedDefinitions = null;
 
     public DefaultSchemasService(
             List<ModelConverter> externalModelConverters,
@@ -40,17 +39,8 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     @Override
-    public synchronized Map<String, Schema> getDefinitions() {
-        if (finalizedDefinitions == null) {
-            finalizeDefinitions();
-        }
-        return finalizedDefinitions;
-    }
-
-    private void finalizeDefinitions() {
-        definitions.forEach(this::generateExampleWhenMissing);
-        definitions.forEach(this::removeSwaggerSchemaFields);
-        finalizedDefinitions = definitions;
+    public Map<String, Schema> getDefinitions() {
+        return definitions;
     }
 
     @Override
@@ -62,6 +52,7 @@ public class DefaultSchemasService implements SchemasService {
         headerSchema.properties(headers);
 
         this.definitions.put(headers.getSchemaName(), headerSchema);
+        postProcessSchema(headerSchema);
 
         return headers.getSchemaName();
     }
@@ -71,11 +62,12 @@ public class DefaultSchemasService implements SchemasService {
         log.debug("Registering schema for {}", type.getSimpleName());
 
         Map<String, Schema> schemas = runWithFqnSetting((unused) -> converter.readAll(type));
+
         this.definitions.putAll(schemas);
+        schemas.values().forEach(this::postProcessSchema);
 
         if (schemas.isEmpty() && type.equals(String.class)) {
-            this.definitions.put("String", new StringSchema());
-            return "String";
+            return registerString();
         }
 
         if (schemas.size() == 1) {
@@ -88,6 +80,16 @@ public class DefaultSchemasService implements SchemasService {
         }
 
         return type.getSimpleName();
+    }
+
+    private String registerString() {
+        String schemaName = "String";
+        StringSchema schema = new StringSchema();
+
+        this.definitions.put(schemaName, schema);
+        postProcessSchema(schema);
+
+        return schemaName;
     }
 
     private <R> R runWithFqnSetting(Function<Void, R> callable) {
@@ -104,16 +106,21 @@ public class DefaultSchemasService implements SchemasService {
         return result;
     }
 
-    private void removeSwaggerSchemaFields(String schemaName, Schema schema) {
+    private void postProcessSchema(Schema schema) {
+        generateExampleWhenMissing(schema);
+        removeSwaggerSchemaFields(schema);
+    }
+
+    private void removeSwaggerSchemaFields(Schema schema) {
         schema.setAdditionalProperties(null);
 
         Map<String, Schema> properties = schema.getProperties();
         if (properties != null) {
-            properties.forEach(this::removeSwaggerSchemaFields);
+            properties.values().forEach(this::removeSwaggerSchemaFields);
         }
     }
 
-    private void generateExampleWhenMissing(String k, Schema schema) {
+    private void generateExampleWhenMissing(Schema schema) {
         if (schema.getExample() == null) {
             log.debug("Generate example for {}", schema.getName());
 
