@@ -35,7 +35,7 @@ ext {
 
     jsr305Version = '3.0.2'
 
-    kafkaClientsVersion = '3.6.0'
+    kafkaClientsVersion = '3.6.1'
     kafkaStreamsVersion = '3.6.0'
 
     jacksonVersion = '2.16.0'
