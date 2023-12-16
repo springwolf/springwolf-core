@@ -56,12 +56,12 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
         String operationId = channelName + "_publish_" + method.getName();
         Class<?> payload = payloadClassExtractor.extractFrom(method);
 
-        ChannelItem channelItem = buildChannel(annotation, operationId, payload);
+        ChannelItem channelItem = buildChannelItem(annotation, operationId, payload);
 
         return Map.entry(channelName, channelItem);
     }
 
-    private ChannelItem buildChannel(MethodAnnotation annotation, String operationId, Class<?> payloadType) {
+    private ChannelItem buildChannelItem(MethodAnnotation annotation, String operationId, Class<?> payloadType) {
         Message message = buildMessage(annotation, payloadType);
         Operation operation = buildOperation(annotation, operationId, message);
         return buildChannelItem(annotation, operation);

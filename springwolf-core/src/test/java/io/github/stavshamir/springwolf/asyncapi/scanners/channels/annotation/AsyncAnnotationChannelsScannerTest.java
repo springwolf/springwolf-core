@@ -52,24 +52,25 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AsyncAnnotationScannerIntegrationTest {
+class AsyncAnnotationChannelsScannerTest {
 
-    private AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider = new AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<>() {
-        @Override
-        public Class<AsyncListener> getAnnotation() {
-            return AsyncListener.class;
-        }
+    private AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
+            new AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<>() {
+                @Override
+                public Class<AsyncListener> getAnnotation() {
+                    return AsyncListener.class;
+                }
 
-        @Override
-        public AsyncOperation getAsyncOperation(AsyncListener annotation) {
-            return annotation.operation();
-        }
+                @Override
+                public AsyncOperation getAsyncOperation(AsyncListener annotation) {
+                    return annotation.operation();
+                }
 
-        @Override
-        public OperationData.OperationType getOperationType() {
-            return OperationData.OperationType.PUBLISH;
-        }
-    };
+                @Override
+                public OperationData.OperationType getOperationType() {
+                    return OperationData.OperationType.PUBLISH;
+                }
+            };
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
     private final ClassScanner classScanner = mock(ClassScanner.class);
     private final SchemasService schemasService =
@@ -146,7 +147,7 @@ class AsyncAnnotationScannerIntegrationTest {
                 .build();
 
         Operation operation = Operation.builder()
-                .description("test channel operation description")
+                .description("Auto-generated description")
                 .operationId("test-channel_publish")
                 .bindings(EMPTY_MAP)
                 .message(message)
@@ -179,11 +180,11 @@ class AsyncAnnotationScannerIntegrationTest {
 
         // Then the returned collection contains the channel
         Message message = Message.builder()
-                .name(SimpleFoo.class.getName())
-                .title(SimpleFoo.class.getSimpleName())
-                .description("SimpleFoo Message Description")
+                .name(String.class.getName())
+                .title(String.class.getSimpleName())
+                .description(null)
                 .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
-                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
+                .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
                 .headers(HeaderReference.fromModelName("TestSchema"))
                 .bindings(EMPTY_MAP)
                 .build();
@@ -287,11 +288,7 @@ class AsyncAnnotationScannerIntegrationTest {
 
     private static class ClassWithListenerAnnotation {
 
-        @AsyncListener(
-                operation =
-                        @AsyncOperation(
-                                channelName = "test-channel",
-                                description = "test channel operation description"))
+        @AsyncListener(operation = @AsyncOperation(channelName = "test-channel"))
         private void methodWithAnnotation(SimpleFoo payload) {}
 
         private void methodWithoutAnnotation() {}
@@ -315,6 +312,7 @@ class AsyncAnnotationScannerIntegrationTest {
                         @AsyncOperation(
                                 channelName = "${test.property.test-channel}",
                                 description = "${test.property.description}",
+                                payloadType = String.class,
                                 servers = {"${test.property.server1}", "${test.property.server2}"},
                                 headers =
                                         @AsyncOperation.Headers(

@@ -119,13 +119,20 @@ class AsyncAnnotationScannerUtilTest {
             throws NoSuchMethodException {
         // given
         Method method = classWithOperationBindingProcessor.getDeclaredMethod("methodWithAnnotation", String.class);
+        AsyncMessage message =
+                method.getAnnotation(AsyncListener.class).operation().message();
+
+        StringValueResolver stringResolver = mock(StringValueResolver.class);
+        when(stringResolver.resolveStringValue(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString());
 
         // when
-        Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
+        Message.MessageBuilder actual = Message.builder();
+        AsyncAnnotationScannerUtil.processAsyncMessageAnnotation(actual, message, stringResolver);
 
         // then
         var expectedMessage = Message.builder().build();
-        assertEquals(expectedMessage, message);
+        assertEquals(expectedMessage, actual.build());
     }
 
     @ParameterizedTest
@@ -135,9 +142,16 @@ class AsyncAnnotationScannerUtilTest {
         // given
         Method method =
                 classWithOperationBindingProcessor.getDeclaredMethod("methodWithAsyncMessageAnnotation", String.class);
+        AsyncMessage message =
+                method.getAnnotation(AsyncListener.class).operation().message();
+
+        StringValueResolver stringResolver = mock(StringValueResolver.class);
+        when(stringResolver.resolveStringValue(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString());
 
         // when
-        Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
+        Message.MessageBuilder actual = Message.builder();
+        AsyncAnnotationScannerUtil.processAsyncMessageAnnotation(actual, message, stringResolver);
 
         // then
         var expectedMessage = Message.builder()
@@ -147,7 +161,7 @@ class AsyncAnnotationScannerUtilTest {
                 .schemaFormat("application/schema+json;version=draft-07")
                 .title("Message Title")
                 .build();
-        assertEquals(expectedMessage, message);
+        assertEquals(expectedMessage, actual.build());
     }
 
     @Test

@@ -7,17 +7,14 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBinding
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncMessage;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -89,42 +86,31 @@ class AsyncAnnotationScannerUtil {
                         ProcessedMessageBinding::getType, ProcessedMessageBinding::getBinding, (e1, e2) -> e2));
     }
 
-    public static Message processMessageFromAnnotation(Method method) {
-        var messageBuilder = Message.builder();
-
-        Annotation[] annotations = method.getAnnotations();
-        for (Annotation annotation : annotations) {
-            if (annotation instanceof AsyncListener asyncListener) {
-                return parseMessage(asyncListener.operation());
-            } else if (annotation instanceof AsyncPublisher asyncPublisher) {
-                return parseMessage(asyncPublisher.operation());
-            }
+    public static void processAsyncMessageAnnotation(
+            Message.MessageBuilder messageBuilder, AsyncMessage asyncMessage, StringValueResolver resolver) {
+        String annotationMessageDescription = resolver.resolveStringValue(asyncMessage.description());
+        if (StringUtils.hasText(annotationMessageDescription)) {
+            messageBuilder.description(annotationMessageDescription);
         }
 
-        return messageBuilder.build();
-    }
-
-    private static Message parseMessage(AsyncOperation asyncOperation) {
-        var messageBuilder = Message.builder();
-
-        var asyncMessage = asyncOperation.message();
-        if (StringUtils.hasText(asyncMessage.description())) {
-            messageBuilder.description(asyncMessage.description());
-        }
-        if (StringUtils.hasText(asyncMessage.messageId())) {
-            messageBuilder.messageId(asyncMessage.messageId());
-        }
-        if (StringUtils.hasText(asyncMessage.name())) {
-            messageBuilder.name(asyncMessage.name());
-        }
-        if (StringUtils.hasText(asyncMessage.schemaFormat())) {
-            messageBuilder.schemaFormat(asyncMessage.schemaFormat());
-        }
-        if (StringUtils.hasText(asyncMessage.title())) {
-            messageBuilder.title(asyncMessage.title());
+        String annotationMessageId = resolver.resolveStringValue(asyncMessage.messageId());
+        if (StringUtils.hasText(annotationMessageId)) {
+            messageBuilder.messageId(annotationMessageId);
         }
 
-        return messageBuilder.build();
+        String annotationName = resolver.resolveStringValue(asyncMessage.name());
+        if (StringUtils.hasText(annotationName)) {
+            messageBuilder.name(annotationName);
+        }
+
+        String annotationSchemaFormat = asyncMessage.schemaFormat();
+        var schemaFormat = annotationSchemaFormat != null ? annotationSchemaFormat : Message.DEFAULT_SCHEMA_FORMAT;
+        messageBuilder.schemaFormat(schemaFormat);
+
+        String annotationTitle = resolver.resolveStringValue(asyncMessage.title());
+        if (StringUtils.hasText(annotationTitle)) {
+            messageBuilder.title(annotationTitle);
+        }
     }
 
     /**
@@ -135,7 +121,6 @@ class AsyncAnnotationScannerUtil {
      * @param resolver the StringValueResolver to resolve placeholders
      * @return List of server names
      */
-    @NonNull
     public static List<String> getServers(AsyncOperation op, StringValueResolver resolver) {
         return Arrays.stream(op.servers()).map(resolver::resolveStringValue).collect(Collectors.toList());
     }
