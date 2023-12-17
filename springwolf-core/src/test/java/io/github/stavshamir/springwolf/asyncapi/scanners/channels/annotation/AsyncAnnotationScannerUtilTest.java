@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
+package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import com.asyncapi.v2.binding.message.MessageBinding;
 import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestAbstractOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestMessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncMessage;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import org.assertj.core.util.Maps;
@@ -116,13 +119,20 @@ class AsyncAnnotationScannerUtilTest {
             throws NoSuchMethodException {
         // given
         Method method = classWithOperationBindingProcessor.getDeclaredMethod("methodWithAnnotation", String.class);
+        AsyncMessage message =
+                method.getAnnotation(AsyncListener.class).operation().message();
+
+        StringValueResolver stringResolver = mock(StringValueResolver.class);
+        when(stringResolver.resolveStringValue(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString());
 
         // when
-        Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
+        Message.MessageBuilder actual = Message.builder();
+        AsyncAnnotationScannerUtil.processAsyncMessageAnnotation(actual, message, stringResolver);
 
         // then
         var expectedMessage = Message.builder().build();
-        assertEquals(expectedMessage, message);
+        assertEquals(expectedMessage, actual.build());
     }
 
     @ParameterizedTest
@@ -132,9 +142,16 @@ class AsyncAnnotationScannerUtilTest {
         // given
         Method method =
                 classWithOperationBindingProcessor.getDeclaredMethod("methodWithAsyncMessageAnnotation", String.class);
+        AsyncMessage message =
+                method.getAnnotation(AsyncListener.class).operation().message();
+
+        StringValueResolver stringResolver = mock(StringValueResolver.class);
+        when(stringResolver.resolveStringValue(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString());
 
         // when
-        Message message = AsyncAnnotationScannerUtil.processMessageFromAnnotation(method);
+        Message.MessageBuilder actual = Message.builder();
+        AsyncAnnotationScannerUtil.processAsyncMessageAnnotation(actual, message, stringResolver);
 
         // then
         var expectedMessage = Message.builder()
@@ -144,7 +161,7 @@ class AsyncAnnotationScannerUtilTest {
                 .schemaFormat("application/schema+json;version=draft-07")
                 .title("Message Title")
                 .build();
-        assertEquals(expectedMessage, message);
+        assertEquals(expectedMessage, actual.build());
     }
 
     @Test
