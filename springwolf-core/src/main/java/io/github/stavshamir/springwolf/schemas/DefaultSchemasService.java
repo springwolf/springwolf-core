@@ -11,6 +11,7 @@ import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,6 +108,8 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     private void postProcessSchema(Schema schema) {
+        AvroSchemaPostProcessor.process(schema, definitions);
+
         generateExampleWhenMissing(schema);
         removeSwaggerSchemaFields(schema);
     }
@@ -126,6 +129,39 @@ public class DefaultSchemasService implements SchemasService {
 
             Object example = exampleGenerator.fromSchema(schema, definitions);
             schema.setExample(example);
+        }
+    }
+
+    static class AvroSchemaPostProcessor {
+        private static final String SCHEMA_PROPERTY = "schema";
+        private static final String SPECIFIC_DATA_PROPERTY = "specificData";
+        private static final String SCHEMA_REF = "org.apache.avro.Schema";
+        private static final String SPECIFIC_DAT_REF = "org.apache.avro.specific.SpecificData";
+
+        public static void process(Schema schema, Map<String, Schema> definitions) {
+            removeAvroSchemas(definitions);
+            removeAvroProperties(schema);
+        }
+
+        private static void removeAvroProperties(Schema schema) {
+            Map<String, Schema> properties = schema.getProperties();
+            if (properties != null) {
+                Schema schemaPropertySchema = properties.getOrDefault(SCHEMA_PROPERTY, null);
+                Schema specificDataPropertySchema = (Schema) properties.getOrDefault(SPECIFIC_DATA_PROPERTY, null);
+                if (schemaPropertySchema != null && specificDataPropertySchema != null) {
+                    if (StringUtils.endsWithIgnoreCase(schemaPropertySchema.get$ref(), SCHEMA_REF)
+                            && StringUtils.endsWithIgnoreCase(specificDataPropertySchema.get$ref(), SPECIFIC_DAT_REF)) {
+                        properties.remove(SCHEMA_PROPERTY);
+                        properties.remove(SPECIFIC_DATA_PROPERTY);
+                    }
+                }
+            }
+        }
+
+        private static void removeAvroSchemas(Map<String, Schema> definitions) {
+            definitions
+                    .entrySet()
+                    .removeIf(entry -> StringUtils.startsWithIgnoreCase(entry.getKey(), "org.apache.avro"));
         }
     }
 }
