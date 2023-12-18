@@ -35,13 +35,13 @@ ext {
 
     jsr305Version = '3.0.2'
 
-    kafkaClientsVersion = '3.6.0'
-    kafkaStreamsVersion = '3.6.0'
+    kafkaClientsVersion = '3.6.1'
+    kafkaStreamsVersion = '3.6.1'
 
     jacksonVersion = '2.16.0'
     jakartaAnnotationApiVersion = '2.1.1'
 
-    jsonSchemaValidator = '1.0.87'
+    jsonSchemaValidator = '1.0.88'
 
     mockitoCoreVersion = '5.8.0'
     mockitoJunitJupiterVersion = '5.8.0'

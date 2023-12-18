@@ -79,12 +79,12 @@ public class ClassLevelAnnotationChannelsScanner<
         String channelName = bindingFactory.getChannelName(classAnnotation);
         String operationId = channelName + "_publish_" + component.getSimpleName();
 
-        ChannelItem channelItem = buildChannel(classAnnotation, operationId, annotatedMethods);
+        ChannelItem channelItem = buildChannelItem(classAnnotation, operationId, annotatedMethods);
 
         return Stream.of(Map.entry(channelName, channelItem));
     }
 
-    private ChannelItem buildChannel(ClassAnnotation classAnnotation, String operationId, Set<Method> methods) {
+    private ChannelItem buildChannelItem(ClassAnnotation classAnnotation, String operationId, Set<Method> methods) {
         Object message = buildMessageObject(classAnnotation, methods);
         Operation operation = buildOperation(classAnnotation, operationId, message);
         return buildChannelItem(classAnnotation, operation);
