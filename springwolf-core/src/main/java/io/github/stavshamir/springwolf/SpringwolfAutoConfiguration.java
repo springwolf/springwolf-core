@@ -107,6 +107,27 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @Order(0)
+    public AvroSchemaPostProcessor avroSchemaPostProcessor() {
+        return new AvroSchemaPostProcessor();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @Order(10)
+    public ExampleGeneratorPostProcessor exampleGeneratorPostProcessor(ExampleGenerator exampleGenerator) {
+        return new ExampleGeneratorPostProcessor(exampleGenerator);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @Order(100)
+    public SwaggerSchemaPostProcessor swaggerSchemaPostProcessor() {
+        return new SwaggerSchemaPostProcessor();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public ExampleGenerator exampleGenerator() {
         return new ExampleJsonGenerator();
     }
