@@ -3,6 +3,7 @@ import {ServerAsyncApiInfo} from "./info.models";
 import { ServerServers} from "./servers.model";
 import { ServerChannels} from "./channels.model";
 import { ServerComponents} from "./components.model";
+import {ServerOperations} from "./operations.model";
 
 export type ServerAsyncApiChannelMessage =
   | ServerAsyncApiMessage
@@ -13,6 +14,7 @@ export interface ServerAsyncApi {
   info: ServerAsyncApiInfo;
   servers: ServerServers;
   channels: ServerChannels;
+  operations: ServerOperations;
   components: ServerComponents ;
 }
 

@@ -1,15 +1,10 @@
 import {ServerAsyncApiChannelMessage} from "./asyncapi.model";
+import {ServerAsyncApiMessage} from "./message.model";
 
 export interface ServerChannels {
   [key: string]: {
+    address: string;
     description?: string;
-    subscribe?: {
-      message: ServerAsyncApiChannelMessage;
-      bindings?: { [protocol: string]: object }; // TODO ServerBindings?
-    };
-    publish?: {
-      message: ServerAsyncApiChannelMessage;
-      bindings?: { [protocol: string]: object };
-    };
+    messages: Map<string, ServerAsyncApiMessage>;
   };
 }

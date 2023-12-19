@@ -1,6 +1,7 @@
 export interface ServerServers {
   [server: string]: {
-    url: string;
+    host: string;
     protocol: string;
+    description?: string;
   };
 }
