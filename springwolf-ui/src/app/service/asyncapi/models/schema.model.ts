@@ -1,24 +1,13 @@
-/* SPDX-License-Identifier: Apache-2.0 */
-import { Example } from "./example.model";
-
-export interface Schema {
-  name?: string;
-  title: string;
+export interface ServerAsyncApiSchema {
   description?: string;
-
-  refName?: string;
-  refTitle?: string;
-  anchorIdentifier?: string;
-  anchorUrl?: string;
-
-  type?: string;
-  // type == object
-  properties?: Map<string, Schema>;
-  // type == array
-  items?: Schema;
-
-  format?: string;
+  type: string;
+  format: string;
+  enum: string[];
+  properties?: Map<string, ServerAsyncApiSchema>;
+  items?: ServerAsyncApiSchema;
+  example?: {
+    [key: string]: object;
+  } | string;
   required?: string[];
-  enum?: string[];
-  example?: Example;
+  $ref?: string;
 }

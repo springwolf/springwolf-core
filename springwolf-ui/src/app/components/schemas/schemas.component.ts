@@ -2,7 +2,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Location } from "@angular/common";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
-import { Schema } from "../../service/asyncapi/models/schema.model";
+import { Schema } from "../../models/schema.model";
 
 @Component({
   selector: "app-schemas",

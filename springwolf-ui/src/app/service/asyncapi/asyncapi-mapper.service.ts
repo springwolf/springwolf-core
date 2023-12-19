@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { AsyncApi } from "./models/asyncapi.model";
-import { Server } from "./models/server.model";
+import {AsyncApi} from "../../models/asyncapi.model";
+import {Server} from "../../models/server.model";
 import {
   Channel,
   CHANNEL_ANCHOR_PREFIX,
@@ -8,73 +8,17 @@ import {
   MessageBinding,
   Operation,
   OperationType,
-} from "./models/channel.model";
-import { Schema } from "./models/schema.model";
-import { Injectable } from "@angular/core";
-import { Example } from "./models/example.model";
-import { Info } from "./models/info.model";
+} from "../../models/channel.model";
+import {Schema} from "../../models/schema.model";
+import {Injectable} from "@angular/core";
+import {Example} from "../../models/example.model";
+import {Info} from "../../models/info.model";
+import {ServerAsyncApi, ServerAsyncApiChannelMessage} from "./models/asyncapi.model";
+import {ServerAsyncApiMessage} from "./models/message.model";
+import {ServerAsyncApiSchema} from "./models/schema.model";
+import {ServerBindings} from "./models/bindings.model";
 
-interface ServerAsyncApiSchema {
-  description?: string;
-  type: string;
-  format: string;
-  enum: string[];
-  properties?: Map<string, ServerAsyncApiSchema>;
-  items?: ServerAsyncApiSchema;
-  example?: {
-    [key: string]: object;
-  };
-  required?: string[];
-  $ref?: string;
-}
 
-interface ServerAsyncApiMessage {
-  name: string;
-  title: string;
-  description?: string;
-  payload: { $ref: string };
-  headers: { $ref: string };
-  bindings: { [protocol: string]: ServerAsyncApiMessageBinding };
-}
-interface ServerAsyncApiMessageBinding {
-  [protocol: string]: ServerAsyncApiSchema | string;
-}
-
-interface ServerAsyncApiInfo {
-  title: string;
-  version: string;
-  description?: string;
-}
-
-export type ServerAsyncApiChannelMessage =
-  | ServerAsyncApiMessage
-  | { oneOf: ServerAsyncApiMessage[] };
-export interface ServerAsyncApi {
-  asyncapi: string;
-  info: ServerAsyncApiInfo;
-  servers: {
-    [server: string]: {
-      url: string;
-      protocol: string;
-    };
-  };
-  channels: {
-    [key: string]: {
-      description?: string;
-      subscribe?: {
-        message: ServerAsyncApiChannelMessage;
-        bindings?: { [protocol: string]: object };
-      };
-      publish?: {
-        message: ServerAsyncApiChannelMessage;
-        bindings?: { [protocol: string]: object };
-      };
-    };
-  };
-  components: {
-    schemas: Map<string, ServerAsyncApiSchema>;
-  };
-}
 
 @Injectable()
 export class AsyncApiMapperService {
@@ -199,7 +143,7 @@ export class AsyncApiMapperService {
   }
 
   private mapServerAsyncApiMessageBindings(serverMessageBindings?: {
-    [protocol: string]: ServerAsyncApiMessageBinding;
+    [protocol: string]: ServerBindings;
   }): Map<string, MessageBinding> {
     const messageBindings = new Map<string, MessageBinding>();
     if (serverMessageBindings !== undefined) {
@@ -214,7 +158,7 @@ export class AsyncApiMapperService {
   }
 
   private mapServerAsyncApiMessageBinding(
-    serverMessageBinding: ServerAsyncApiMessageBinding
+    serverMessageBinding: ServerBindings
   ): MessageBinding {
     const messageBinding: MessageBinding = {};
 

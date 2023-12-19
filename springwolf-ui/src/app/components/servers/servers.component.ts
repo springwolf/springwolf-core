@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
-import { Server } from "../../service/asyncapi/models/server.model";
+import { Server } from "../../models/server.model";
 
 @Component({
   selector: "app-servers",
