@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, Input, OnInit } from "@angular/core";
-import { AsyncApiService } from "src/app/shared/asyncapi.service";
-import { Example } from "src/app/shared/models/example.model";
-import { Schema } from "src/app/shared/models/schema.model";
-import { PublisherService } from "src/app/shared/publisher.service";
+import { AsyncApiService } from "src/app/service/asyncapi/asyncapi.service";
+import { Example } from "src/app/service/asyncapi/models/example.model";
+import { Schema } from "src/app/service/asyncapi/models/schema.model";
+import { PublisherService } from "src/app/service/publisher.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { MessageBinding, Operation } from "src/app/shared/models/channel.model";
+import { MessageBinding, Operation } from "src/app/service/asyncapi/models/channel.model";
 import { STATUS } from "angular-in-memory-web-api";
 
 @Component({

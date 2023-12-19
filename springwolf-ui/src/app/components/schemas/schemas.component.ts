@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
 import { Location } from "@angular/common";
-import { AsyncApiService } from "../shared/asyncapi.service";
-import { Schema } from "../shared/models/schema.model";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import { Schema } from "../../service/asyncapi/models/schema.model";
 
 @Component({
   selector: "app-schemas",

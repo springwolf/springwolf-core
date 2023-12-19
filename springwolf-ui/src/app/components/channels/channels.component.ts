@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
-import { AsyncApiService } from "../shared/asyncapi.service";
-import { Channel, CHANNEL_ANCHOR_PREFIX } from "../shared/models/channel.model";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import { Channel, CHANNEL_ANCHOR_PREFIX } from "../../service/asyncapi/models/channel.model";
 import { Location } from "@angular/common";
 
 @Component({

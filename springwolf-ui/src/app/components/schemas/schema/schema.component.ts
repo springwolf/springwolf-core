@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, Input } from "@angular/core";
-import { Schema } from "src/app/shared/models/schema.model";
+import { Schema } from "src/app/service/asyncapi/models/schema.model";
 
 @Component({
   selector: "app-schema",

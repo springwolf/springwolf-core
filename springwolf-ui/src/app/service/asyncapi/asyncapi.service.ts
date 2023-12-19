@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
-import { Endpoints } from "./endpoints";
+import { EndpointService } from "../endpoint.service";
 import {
   AsyncApiMapperService,
   ServerAsyncApi,
@@ -24,7 +24,7 @@ export class AsyncApiService {
       return of(this.docs);
     }
 
-    return this.http.get<ServerAsyncApi>(Endpoints.docs).pipe(
+    return this.http.get<ServerAsyncApi>(EndpointService.docs).pipe(
       map((item) => {
         this.docs = this.asyncApiMapperService.toAsyncApi(item);
         return this.docs;

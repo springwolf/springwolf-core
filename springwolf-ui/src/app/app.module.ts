@@ -7,20 +7,20 @@ import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
 import { HighlightModule, HIGHLIGHT_OPTIONS } from "ngx-highlightjs";
 import { environment } from "./../environments/environment";
 import { AppComponent } from "./app.component";
-import { ChannelMainComponent } from "./channels/channel-main/channel-main.component";
-import { ChannelsComponent } from "./channels/channels.component";
-import { HeaderComponent } from "./header/header.component";
-import { InfoComponent } from "./info/info.component";
+import { ChannelMainComponent } from "./components/channels/channel-main/channel-main.component";
+import { ChannelsComponent } from "./components/channels/channels.component";
+import { HeaderComponent } from "./components/header/header.component";
+import { InfoComponent } from "./components/info/info.component";
 import { MaterialModule } from "./material.module";
-import { SchemaComponent } from "./schemas/schema/schema.component";
-import { SchemasComponent } from "./schemas/schemas.component";
-import { ServersComponent } from "./servers/servers.component";
-import { AsyncApiService } from "./shared/asyncapi.service";
-import { MockServer } from "./shared/mock/mock-server";
-import { PublisherService } from "./shared/publisher.service";
+import { SchemaComponent } from "./components/schemas/schema/schema.component";
+import { SchemasComponent } from "./components/schemas/schemas.component";
+import { ServersComponent } from "./components/servers/servers.component";
+import { AsyncApiService } from "./service/asyncapi/asyncapi.service";
+import { MockServer } from "./service/mock/mock-server";
+import { PublisherService } from "./service/publisher.service";
 import { FormsModule } from "@angular/forms";
-import { JsonComponent } from "./shared/components/json/json.component";
-import { AsyncApiMapperService } from "./shared/asyncapi-mapper.service";
+import { JsonComponent } from "./components/json/json.component";
+import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
 
 @NgModule({
   declarations: [
