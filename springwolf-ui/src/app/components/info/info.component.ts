@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
-import { AsyncApi } from "../shared/models/asyncapi.model";
-import { Info } from "../shared/models/info.model";
-import { AsyncApiService } from "../shared/asyncapi.service";
+import { AsyncApi } from "../../models/asyncapi.model";
+import { Info } from "../../models/info.model";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 
 @Component({
   selector: "app-info",

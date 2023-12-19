@@ -1,7 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
-import { AsyncApiService } from "../shared/asyncapi.service";
-import { Channel, CHANNEL_ANCHOR_PREFIX } from "../shared/models/channel.model";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import {
+  ChannelOperation,
+  CHANNEL_ANCHOR_PREFIX,
+} from "../../models/channel.model";
 import { Location } from "@angular/common";
 
 @Component({
@@ -10,7 +13,7 @@ import { Location } from "@angular/common";
   styleUrls: ["./channels.component.css"],
 })
 export class ChannelsComponent implements OnInit {
-  channels: Channel[];
+  channels: ChannelOperation[];
   selectedChannel: string;
   docName: string;
 
@@ -25,14 +28,16 @@ export class ChannelsComponent implements OnInit {
     this.location.subscribe((): void => this.setChannelSelectionFromLocation());
 
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
-      this.channels = this.sortChannels(asyncapi.channels);
+      this.channels = this.sortChannels(asyncapi.channelOperations);
     });
   }
 
-  private sortChannels(channels: Array<Channel>): Array<Channel> {
+  private sortChannels(
+    channels: Array<ChannelOperation>
+  ): Array<ChannelOperation> {
     return channels.sort((a, b) => {
       if (a.operation.protocol === b.operation.protocol) {
-        if (a.operation.operation === b.operation.operation) {
+        if (a.operation.operationType === b.operation.operationType) {
           if (a.name === b.name) {
             return a.operation.message.name.localeCompare(
               b.operation.message.name
@@ -41,7 +46,9 @@ export class ChannelsComponent implements OnInit {
             return a.name.localeCompare(b.name);
           }
         } else {
-          return a.operation.operation.localeCompare(b.operation.operation);
+          return a.operation.operationType.localeCompare(
+            b.operation.operationType
+          );
         }
       } else {
         return a.operation.protocol.localeCompare(b.operation.protocol);
@@ -49,7 +56,7 @@ export class ChannelsComponent implements OnInit {
     });
   }
 
-  setChannelSelection(channel: Channel): void {
+  setChannelSelection(channel: ChannelOperation): void {
     window.location.hash = channel.anchorIdentifier;
   }
   setChannelSelectionFromLocation(): void {

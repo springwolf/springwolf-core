@@ -12,6 +12,7 @@ import { ClipboardModule } from "@angular/cdk/clipboard";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
+import { MatChipsModule } from "@angular/material/chips";
 
 const modules = [
   MatButtonModule,
@@ -25,6 +26,7 @@ const modules = [
   MatSnackBarModule,
   MatFormFieldModule,
   MatSelectModule,
+  MatChipsModule,
 ];
 
 @NgModule({
