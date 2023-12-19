@@ -2,7 +2,7 @@
 import { AsyncApi } from "./models/asyncapi.model";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Observable, share } from "rxjs";
 import { map } from "rxjs/operators";
 import { EndpointService } from "../endpoint.service";
 import {
@@ -12,23 +12,21 @@ import {
 
 @Injectable()
 export class AsyncApiService {
-  private docs: AsyncApi;
+  private readonly docs: Observable<AsyncApi>;
 
   constructor(
     private http: HttpClient,
     private asyncApiMapperService: AsyncApiMapperService
-  ) {}
+  ) {
+    this.docs = this.http.get<ServerAsyncApi>(EndpointService.docs).pipe(
+      map((item) => {
+        return this.asyncApiMapperService.toAsyncApi(item);
+      }),
+      share()
+    )
+  }
 
   public getAsyncApi(): Observable<AsyncApi> {
-    if (this.docs) {
-      return of(this.docs);
-    }
-
-    return this.http.get<ServerAsyncApi>(EndpointService.docs).pipe(
-      map((item) => {
-        this.docs = this.asyncApiMapperService.toAsyncApi(item);
-        return this.docs;
-      })
-    );
+    return this.docs;
   }
 }
