@@ -16,6 +16,12 @@ dependencies {
 
 After starting the application, visit: `localhost:8080/springwolf/asyncapi-ui.html`.
 
+## TODOs:
+
+- Migrate to AsyncApi 3
+- Review Angular compoents - adapt to latest angular guidelines
+- Migrate tslint to eslint
+
 ## Development
 1. Run `npm i`
 2. Run `ng serve`
@@ -24,8 +30,6 @@ After starting the application, visit: `localhost:8080/springwolf/asyncapi-ui.ht
 
 The application renders content based on mock data in `src/app/shared/mock`.
 It contains multiple mocks - including the ones from the springwolf-core examples projects.
-
-To update the mock data, run `npm run update-mocks`.
 
 ## Release
 
