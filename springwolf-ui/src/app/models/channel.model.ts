@@ -1,20 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Schema } from "./schema.model";
+import { Binding, Bindings } from "./bindings.model";
 
 export const CHANNEL_ANCHOR_PREFIX = "#channel-";
-export interface Channel {
+export interface ChannelOperation {
   name: string;
   anchorIdentifier: string;
   description?: string;
   operation: Operation;
 }
 
-export type OperationType = "publish" | "subscribe";
+export type OperationType = "receive" | "send";
 export interface Operation {
   message: Message;
-  bindings?: { [protocol: string]: any };
+  bindings?: Bindings;
   protocol: string;
-  operation: OperationType;
+  operationType: OperationType;
 }
 
 export interface Message {
@@ -31,10 +31,6 @@ export interface Message {
     title: string;
     anchorUrl: string;
   };
-  bindings?: Map<string, MessageBinding>;
+  bindings?: Map<string, Binding>;
   rawBindings?: { [protocol: string]: object };
-}
-
-export interface MessageBinding {
-  [protocol: string]: string | Schema;
 }
