@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, Input, OnInit } from "@angular/core";
-import { AsyncApiService } from "src/app/shared/asyncapi.service";
-import { Example } from "src/app/shared/models/example.model";
-import { Schema } from "src/app/shared/models/schema.model";
-import { PublisherService } from "src/app/shared/publisher.service";
+import { AsyncApiService } from "src/app/service/asyncapi/asyncapi.service";
+import { Example } from "src/app/models/example.model";
+import { Schema } from "src/app/models/schema.model";
+import { PublisherService } from "src/app/service/publisher.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { MessageBinding, Operation } from "src/app/shared/models/channel.model";
+import { Operation } from "src/app/models/channel.model";
+import { Binding } from "src/app/models/bindings.model";
 import { STATUS } from "angular-in-memory-web-api";
 
 @Component({
@@ -70,9 +71,7 @@ export class ChannelMainComponent implements OnInit {
     );
   }
 
-  createMessageBindingExample(
-    messageBinding?: MessageBinding
-  ): Example | undefined {
+  createMessageBindingExample(messageBinding?: Binding): Example | undefined {
     if (messageBinding === undefined || messageBinding === null) {
       return undefined;
     }
@@ -93,12 +92,13 @@ export class ChannelMainComponent implements OnInit {
     return bindingExample;
   }
 
-  getExampleValue(bindingValue: string | Schema): any {
+  getExampleValue(bindingValue: string | Binding): any {
     if (typeof bindingValue === "string") {
       return bindingValue;
-    } else {
+    } else if (typeof bindingValue.example === "object") {
       return bindingValue.example.value;
     }
+    return undefined;
   }
 
   recalculateLineCount(field: string, text: string): void {
