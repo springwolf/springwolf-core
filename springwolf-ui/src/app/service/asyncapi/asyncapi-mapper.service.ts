@@ -17,6 +17,9 @@ import {ServerAsyncApi, ServerAsyncApiChannelMessage} from "./models/asyncapi.mo
 import {ServerAsyncApiMessage} from "./models/message.model";
 import {ServerAsyncApiSchema} from "./models/schema.model";
 import {ServerBindings} from "./models/bindings.model";
+import {ServerOperations} from "./models/operations.model";
+import {ServerServers} from "./models/servers.model";
+import {ServerChannel, ServerChannels} from "./models/channels.model";
 
 
 
@@ -30,7 +33,7 @@ export class AsyncApiMapperService {
     return {
       info: this.mapInfo(item),
       servers: this.mapServers(item.servers),
-      channels: this.mapChannels(item.channels),
+      channels: this.mapChannels(item.channels, item.operations),
       components: {
         schemas: this.mapSchemas(item.components.schemas),
       },
@@ -46,50 +49,35 @@ export class AsyncApiMapperService {
     };
   }
 
-  private mapServers(servers: ServerAsyncApi["servers"]): Map<string, Server> {
+  private mapServers(servers: ServerServers): Map<string, Server> {
     const s = new Map<string, Server>();
     Object.entries(servers).forEach(([k, v]) => s.set(k, v));
     return s;
   }
 
-  private mapChannels(channels: ServerAsyncApi["channels"]): Channel[] {
+  private mapChannels(channels: ServerChannels, operations: ServerOperations): Channel[] {
     const s = new Array<Channel>();
-    Object.entries(channels).forEach(([k, v]) => {
-      const subscriberChannels = this.mapChannel(
-        k,
-        v.description,
-        v.subscribe,
-        "subscribe"
-      );
-      subscriberChannels.forEach((channel) => s.push(channel));
-
-      const publisherChannels = this.mapChannel(
-        k,
-        v.description,
-        v.publish,
-        "publish"
-      );
-      publisherChannels.forEach((channel) => s.push(channel));
-    });
+    for (let operationsKey in operations) {
+      const operation = operations[operationsKey];
+      const channelName = this.resolveRef(operation.channel.$ref)
+      s.push(this.mapChannel(channelName, channels[channelName], operation.messages, operation.action));
+    }
     return s;
   }
 
   private mapChannel(
     topicName: string,
-    description: ServerAsyncApi["channels"][""]["description"],
-    serverOperation:
-      | ServerAsyncApi["channels"][""]["subscribe"]
-      | ServerAsyncApi["channels"][""]["publish"],
-    operationType: OperationType
-  ): Channel[] {
-    if (serverOperation !== undefined) {
-      const messages: Message[] = this.mapMessages(serverOperation.message);
+    channel: ServerChannel,
+    messages: ServerAsyncApiMessage[],
+    operationType: ServerOperations["action"]
+  ): Channel {
+      const message: Message[] = this.mapServerAsyncApiMessages(messages);
+// TODO: foreach for each message?
 
-      return messages.map((message) => {
         const operation = this.mapOperation(
           operationType,
-          message,
-          serverOperation.bindings
+          message[0],
+          channel.bindings
         );
         return {
           name: topicName,
@@ -101,19 +89,9 @@ export class AsyncApiMapperService {
               operation.operation,
               operation.message.title,
             ].join("-"),
-          description,
+          description: channel.description,
           operation,
         };
-      });
-    }
-    return [];
-  }
-
-  private mapMessages(message: ServerAsyncApiChannelMessage): Message[] {
-    if ("oneOf" in message) {
-      return this.mapServerAsyncApiMessages(message.oneOf);
-    }
-    return this.mapServerAsyncApiMessages([message]);
   }
 
   private mapServerAsyncApiMessages(
@@ -126,15 +104,15 @@ export class AsyncApiMapperService {
         description: v.description,
         payload: {
           name: v.payload.$ref,
-          title: v.payload.$ref?.split(".")?.pop(),
+          title: this.resolveRef(v.payload.$ref),
           anchorUrl:
-            AsyncApiMapperService.BASE_URL + v.payload.$ref?.split("/")?.pop(),
+            AsyncApiMapperService.BASE_URL + this.resolveRef(v.payload.$ref),
         },
         headers: {
           name: v.headers.$ref,
           title: v.headers.$ref?.split("/")?.pop(),
           anchorUrl:
-            AsyncApiMapperService.BASE_URL + v.headers.$ref?.split("/")?.pop(),
+            AsyncApiMapperService.BASE_URL + this.resolveRef(v.headers.$ref),
         },
         bindings: this.mapServerAsyncApiMessageBindings(v.bindings),
         rawBindings: v.bindings,
@@ -175,13 +153,13 @@ export class AsyncApiMapperService {
   }
 
   private mapOperation(
-    operationType: OperationType,
+    operationType: ServerOperations["action"],
     message: Message,
     bindings?: { [protocol: string]: object }
   ): Operation {
     return {
       protocol: this.getProtocol(bindings),
-      operation: operationType,
+      operation: operationType == "send" ? "subscribe" : "publish", // TODO
       message,
       bindings,
     };
@@ -201,7 +179,7 @@ export class AsyncApiMapperService {
 
   private mapSchema(schemaName: string, schema: ServerAsyncApiSchema): Schema {
     const anchorUrl = schema.$ref
-      ? AsyncApiMapperService.BASE_URL + schema.$ref?.split("/")?.pop()
+      ? AsyncApiMapperService.BASE_URL + this.resolveRef(schema.$ref)
       : undefined;
     const properties =
       schema.properties !== undefined
@@ -218,7 +196,7 @@ export class AsyncApiMapperService {
       title: schemaName.split(".")?.pop(),
       description: schema.description,
       refName: schema.$ref,
-      refTitle: schema.$ref?.split("/")?.pop(),
+      refTitle: this.resolveRef(schema.$ref),
       anchorIdentifier: "#" + schemaName,
       anchorUrl: anchorUrl,
       type: schema.type,
@@ -229,5 +207,11 @@ export class AsyncApiMapperService {
       required: schema.required,
       example,
     };
+  }
+
+
+
+  private resolveRef(ref: string) {
+    return ref?.split("/")?.pop();
   }
 }
