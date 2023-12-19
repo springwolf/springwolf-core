@@ -47,7 +47,7 @@ export class MockServer implements InMemoryDbService {
   private selectMockData() {
     const hostname = window.location.hostname;
 
-    return mockTemporarilyV3;
+    return mockTemporarilyV3; // TODO: remove after testing
 
     if (hostname.includes("amqp")) {
       return mockSpringwolfAmqp;

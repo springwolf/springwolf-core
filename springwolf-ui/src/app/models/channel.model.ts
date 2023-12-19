@@ -9,7 +9,7 @@ export interface Channel {
   operation: Operation;
 }
 
-export type OperationType = "publish" | "subscribe";
+export type OperationType = "publish" | "subscribe"; // TODO: rename
 export interface Operation {
   message: Message;
   bindings?: { [protocol: string]: any };
