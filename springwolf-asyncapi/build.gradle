@@ -47,7 +47,7 @@ publishing {
         mavenJava(MavenPublication) {
             pom {
                 name = 'springwolf-asyncapi'
-                description = 'AsyncAPI schema generator'
+                description = 'Springwolf implementation of the AsyncApi specification'
             }
         }
     }
