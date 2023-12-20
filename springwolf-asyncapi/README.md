@@ -51,6 +51,7 @@ dependencies {
 
 See https://github.com/asyncapi/converter-js#conversion-2xx-to-3xx
 
+
 # Contributions
 
 Any contributions are welcome, including, but not limited to:
