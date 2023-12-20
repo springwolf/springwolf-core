@@ -40,6 +40,10 @@ dependencies {
 
 ## TODO:
 
+* Improve readme description
+* Review package name
+  * core
+  * serializer vs jackson
 * Test that the serialization is always respecting the case format
 * Test that the validations are applied
 * Finish to implement and test all the Bindings
