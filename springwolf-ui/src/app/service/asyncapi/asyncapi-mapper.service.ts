@@ -84,14 +84,20 @@ export class AsyncApiMapperService {
         operation.messages
       );
       messages.forEach((message) => {
-        s.push(
-          this.mapChannel(
-            channelName,
-            channels[channelName],
-            message,
-            operation.action
-          )
+        const channelOperation = this.parsingErrorBoundary(
+          "channel with name " + channelName,
+          () =>
+            this.mapChannel(
+              channelName,
+              channels[channelName],
+              message,
+              operation.action
+            )
         );
+
+        if (channelOperation != undefined) {
+          s.push(channelOperation);
+        }
       });
     }
     return s;
@@ -136,27 +142,38 @@ export class AsyncApiMapperService {
   private mapServerAsyncApiMessages(
     messages: ServerAsyncApiMessage[]
   ): Message[] {
-    return messages.map((v) => {
-      return {
-        name: v.name,
-        title: v.title,
-        description: v.description,
-        payload: {
-          name: v.payload.$ref,
-          title: this.resolveRef(v.payload.$ref),
-          anchorUrl:
-            AsyncApiMapperService.BASE_URL + this.resolveRef(v.payload.$ref),
-        },
-        headers: {
-          name: v.headers.$ref,
-          title: v.headers.$ref?.split("/")?.pop(),
-          anchorUrl:
-            AsyncApiMapperService.BASE_URL + this.resolveRef(v.headers.$ref),
-        },
-        bindings: this.mapServerAsyncApiMessageBindings(v.bindings),
-        rawBindings: v.bindings,
-      };
-    });
+    return messages
+      .map((v) => {
+        const message = this.parsingErrorBoundary(
+          "message with name " + v.name,
+          () => {
+            return {
+              name: v.name,
+              title: v.title,
+              description: v.description,
+              payload: {
+                name: v.payload.$ref,
+                title: this.resolveRef(v.payload.$ref),
+                anchorUrl:
+                  AsyncApiMapperService.BASE_URL +
+                  this.resolveRef(v.payload.$ref),
+              },
+              headers: {
+                name: v.headers.$ref,
+                title: v.headers.$ref?.split("/")?.pop(),
+                anchorUrl:
+                  AsyncApiMapperService.BASE_URL +
+                  this.resolveRef(v.headers.$ref),
+              },
+              bindings: this.mapServerAsyncApiMessageBindings(v.bindings),
+              rawBindings: v.bindings,
+            };
+          }
+        );
+
+        return message;
+      })
+      .filter((el) => el != undefined);
   }
 
   private mapServerAsyncApiMessageBindings(
@@ -212,7 +229,15 @@ export class AsyncApiMapperService {
     schemas: Map<string, ServerAsyncApiSchema>
   ): Map<string, Schema> {
     const s = new Map<string, Schema>();
-    Object.entries(schemas).forEach(([k, v]) => s.set(k, this.mapSchema(k, v)));
+    Object.entries(schemas).forEach(([k, v]) => {
+      const schema = this.parsingErrorBoundary("schema with name " + k, () =>
+        this.mapSchema(k, v)
+      );
+
+      if (schema != undefined) {
+        s.set(k, schema);
+      }
+    });
     return s;
   }
 
@@ -250,5 +275,16 @@ export class AsyncApiMapperService {
 
   private resolveRef(ref: string) {
     return ref?.split("/")?.pop();
+  }
+
+  private parsingErrorBoundary<T>(path: string, f: () => T): T | undefined {
+    try {
+      return f();
+    } catch (e) {
+      this.notificationService.showError(
+        "Error parsing AsyncAPI " + path + ": " + e.message
+      );
+      return undefined;
+    }
   }
 }

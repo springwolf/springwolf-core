@@ -8,10 +8,11 @@
   >
 </h5>
 <p *ngIf="info?.license?.name">
-  <mat-chip disabled>
+  <mat-chip>
     <a
       *ngIf="info?.license?.url; else licenseElseBlock"
       [href]="info.license.url"
+      target="_blank"
     >
       {{ info.license.name }}
     </a>
