@@ -4,7 +4,6 @@ import {
   RequestInfo,
   STATUS,
 } from "angular-in-memory-web-api";
-import mockTemporarilyV3 from "../../../../../springwolf-asyncapi/src/test/resources/v3/model/streetlights-kafka-asyncapi.json";
 import mockSpringwolfAmqp from "../../../../../springwolf-examples/springwolf-amqp-example/src/test/resources/asyncapi.json";
 import mockSpringwolfCloudStream from "../../../../../springwolf-examples/springwolf-cloud-stream-example/src/test/resources/asyncapi.json";
 import mockSpringwolfKafka from "../../../../../springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json";
@@ -46,8 +45,6 @@ export class MockServer implements InMemoryDbService {
 
   private selectMockData() {
     const hostname = window.location.hostname;
-
-    return mockTemporarilyV3; // TODO: remove after testing
 
     if (hostname.includes("amqp")) {
       return mockSpringwolfAmqp;
