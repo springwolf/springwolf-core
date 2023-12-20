@@ -1,4 +1,5 @@
-import {ServerBindings} from "./bindings.model";
+/* SPDX-License-Identifier: Apache-2.0 */
+import { ServerBindings } from "./bindings.model";
 
 export interface ServerAsyncApiMessage {
   name: string;

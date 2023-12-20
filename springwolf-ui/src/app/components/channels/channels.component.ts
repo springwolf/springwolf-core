@@ -1,7 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
-import { ChannelOperation, CHANNEL_ANCHOR_PREFIX } from "../../models/channel.model";
+import {
+  ChannelOperation,
+  CHANNEL_ANCHOR_PREFIX,
+} from "../../models/channel.model";
 import { Location } from "@angular/common";
 
 @Component({
@@ -29,10 +32,12 @@ export class ChannelsComponent implements OnInit {
     });
   }
 
-  private sortChannels(channels: Array<ChannelOperation>): Array<ChannelOperation> {
+  private sortChannels(
+    channels: Array<ChannelOperation>
+  ): Array<ChannelOperation> {
     return channels.sort((a, b) => {
       if (a.operation.protocol === b.operation.protocol) {
-        if (a.operation.operation === b.operation.operation) {
+        if (a.operation.operationType === b.operation.operationType) {
           if (a.name === b.name) {
             return a.operation.message.name.localeCompare(
               b.operation.message.name
@@ -41,7 +46,9 @@ export class ChannelsComponent implements OnInit {
             return a.name.localeCompare(b.name);
           }
         } else {
-          return a.operation.operation.localeCompare(b.operation.operation);
+          return a.operation.operationType.localeCompare(
+            b.operation.operationType
+          );
         }
       } else {
         return a.operation.protocol.localeCompare(b.operation.protocol);

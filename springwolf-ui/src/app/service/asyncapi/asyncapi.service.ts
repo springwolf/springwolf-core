@@ -5,10 +5,8 @@ import { Injectable } from "@angular/core";
 import { Observable, share } from "rxjs";
 import { map } from "rxjs/operators";
 import { EndpointService } from "../endpoint.service";
-import {
-  AsyncApiMapperService,
-} from "./asyncapi-mapper.service";
-import {ServerAsyncApi} from "./models/asyncapi.model";
+import { AsyncApiMapperService } from "./asyncapi-mapper.service";
+import { ServerAsyncApi } from "./models/asyncapi.model";
 
 @Injectable()
 export class AsyncApiService {
@@ -23,7 +21,7 @@ export class AsyncApiService {
         return this.asyncApiMapperService.toAsyncApi(item);
       }),
       share()
-    )
+    );
   }
 
   public getAsyncApi(): Observable<AsyncApi> {

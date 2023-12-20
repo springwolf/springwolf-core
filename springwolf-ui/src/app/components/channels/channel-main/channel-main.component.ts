@@ -5,7 +5,8 @@ import { Example } from "src/app/models/example.model";
 import { Schema } from "src/app/models/schema.model";
 import { PublisherService } from "src/app/service/publisher.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Binding, Operation } from "src/app/models/channel.model";
+import { Operation } from "src/app/models/channel.model";
+import { Binding } from "src/app/models/bindings.model";
 import { STATUS } from "angular-in-memory-web-api";
 
 @Component({
@@ -70,9 +71,7 @@ export class ChannelMainComponent implements OnInit {
     );
   }
 
-  createMessageBindingExample(
-    messageBinding?: Binding
-  ): Example | undefined {
+  createMessageBindingExample(messageBinding?: Binding): Example | undefined {
     if (messageBinding === undefined || messageBinding === null) {
       return undefined;
     }
@@ -96,10 +95,10 @@ export class ChannelMainComponent implements OnInit {
   getExampleValue(bindingValue: string | Binding): any {
     if (typeof bindingValue === "string") {
       return bindingValue;
-    } else  if(typeof bindingValue.example === "object") {
+    } else if (typeof bindingValue.example === "object") {
       return bindingValue.example.value;
     }
-    return undefined
+    return undefined;
   }
 
   recalculateLineCount(field: string, text: string): void {

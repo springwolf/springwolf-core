@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Schema } from "./schema.model";
+import { Binding, Bindings } from "./bindings.model";
 
 export const CHANNEL_ANCHOR_PREFIX = "#channel-";
 export interface ChannelOperation {
@@ -9,12 +9,12 @@ export interface ChannelOperation {
   operation: Operation;
 }
 
-export type OperationType = "publish" | "subscribe"; // TODO: rename
+export type OperationType = "receive" | "send";
 export interface Operation {
   message: Message;
-  bindings?: { [protocol: string]: any };
+  bindings?: Bindings;
   protocol: string;
-  operation: OperationType;
+  operationType: OperationType;
 }
 
 export interface Message {
@@ -33,8 +33,4 @@ export interface Message {
   };
   bindings?: Map<string, Binding>;
   rawBindings?: { [protocol: string]: object };
-}
-
-export interface Binding {
-  [protocol: string]: string | Binding;
 }

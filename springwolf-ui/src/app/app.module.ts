@@ -18,6 +18,7 @@ import { ServersComponent } from "./components/servers/servers.component";
 import { AsyncApiService } from "./service/asyncapi/asyncapi.service";
 import { MockServer } from "./service/mock/mock-server";
 import { PublisherService } from "./service/publisher.service";
+import { NotificationService } from "./service/notification.service";
 import { FormsModule } from "@angular/forms";
 import { JsonComponent } from "./components/json/json.component";
 import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
@@ -48,6 +49,7 @@ import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.servic
   providers: [
     AsyncApiService,
     AsyncApiMapperService,
+    NotificationService,
     PublisherService,
     {
       provide: HIGHLIGHT_OPTIONS,
