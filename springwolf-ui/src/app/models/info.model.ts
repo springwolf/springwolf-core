@@ -3,5 +3,9 @@ export interface Info {
   title: string;
   version: string;
   description?: string;
+  license: {
+    name?: string;
+    url?: string;
+  };
   asyncApiJson: object;
 }

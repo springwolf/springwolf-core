@@ -57,6 +57,10 @@ export class AsyncApiMapperService {
       title: item.info.title,
       version: item.info.version,
       description: item.info.description,
+      license: {
+        name: item.info.license?.name,
+        url: item.info.license?.url,
+      },
       asyncApiJson: item,
     };
   }

@@ -3,6 +3,19 @@
 <h5>
   API VERSION {{ info?.version }}
   -
-  <a href="javascript:void(0);" (click)="download()">AsyncAPI JSON file</a>
+  <a href="javascript:void(0);" (click)="download()"
+    >Download AsyncAPI JSON file</a
+  >
 </h5>
+<p *ngIf="info?.license?.name">
+  <mat-chip disabled>
+    <a
+      *ngIf="info?.license?.url; else licenseElseBlock"
+      [href]="info.license.url"
+    >
+      {{ info.license.name }}
+    </a>
+    <ng-template #licenseElseBlock>>{{ info.license.name }}</ng-template>
+  </mat-chip>
+</p>
 <p *ngIf="info?.description">{{ info.description }}</p>
