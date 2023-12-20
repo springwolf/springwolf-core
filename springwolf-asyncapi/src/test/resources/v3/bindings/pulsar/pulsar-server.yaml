@@ -1,0 +1,6 @@
+servers:
+  production:
+    bindings:
+      pulsar:
+        tenant: contoso
+        bindingVersion: '0.1.0'

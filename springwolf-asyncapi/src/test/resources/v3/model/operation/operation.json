@@ -1,0 +1,56 @@
+{
+  "title": "User sign up",
+  "summary": "Action to sign a user up.",
+  "description": "A longer description",
+  "channel": {
+    "$ref": "#/channels/userSignup"
+  },
+  "action": "send",
+  "security": [
+    {
+      "petstore_auth": [
+        "write:pets",
+        "read:pets"
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "user"
+    },
+    {
+      "name": "signup"
+    },
+    {
+      "name": "register"
+    }
+  ],
+  "bindings": {
+    "amqp": {
+      "ack": false
+    }
+  },
+  "traits": [
+    {
+      "$ref": "#/components/operationTraits/kafka"
+    }
+  ],
+  "messages": [
+    {
+      "$ref": "/components/messages/userSignedUp"
+    }
+  ],
+  "reply": {
+    "address": {
+      "location": "$message.header#/replyTo"
+    },
+    "channel": {
+      "$ref": "#/channels/userSignupReply"
+    },
+    "messages": [
+      {
+        "$ref": "/components/messages/userSignedUpReply"
+      }
+    ]
+  }
+}

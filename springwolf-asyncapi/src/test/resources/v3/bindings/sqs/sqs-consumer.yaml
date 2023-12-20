@@ -1,0 +1,36 @@
+channels:
+  user-signedup:
+    description:  A user has signed up for our service
+    publish:
+      operationId: receiveMessage
+      description: receive messages from the topic
+      bindings:
+        sns:
+          consumers:
+            - protocol: sqs
+              endpoint:
+              name: user-signedup-queue
+              rawMessageDelivery: true
+              filterPolicy:
+                attributes:
+                  reason:
+                    anything-but: password-reset
+              redrivePolicy:
+                deadLetterQueue:
+                name: user-signedup-queue-dlq
+        sqs:
+          queues:
+            - name: user-signedup-queue
+              fifoQueue: false
+              receiveMessageWaitTime: 4
+              policy:
+                statements:
+                  - effect : Allow
+                    principal: *
+                    action: Sqs:SendMessage
+                  - effect : Allow
+                    principal: *
+                    action: Sqs:ReceiveMessage
+            - name: user-signedup-dlq
+              messageRetentionPeriod: 1209600
+              fifoQueue: false

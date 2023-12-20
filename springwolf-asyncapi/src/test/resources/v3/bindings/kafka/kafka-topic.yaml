@@ -1,0 +1,6 @@
+topicConfiguration:
+  cleanup.policy: ["delete", "compact"]
+  retention.ms: 604800000
+  retention.bytes: 1000000000
+  delete.retention.ms: 86400000
+  max.message.bytes: 1048588

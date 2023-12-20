@@ -1,0 +1,12 @@
+{
+  "host": "localhost:5672",
+  "description": "Development AMQP broker.",
+  "protocol": "amqp",
+  "protocolVersion": "0-9-1",
+  "tags": [
+    {
+      "name": "env:development",
+      "description": "This environment is meant for developers to run their own tests."
+    }
+  ]
+}

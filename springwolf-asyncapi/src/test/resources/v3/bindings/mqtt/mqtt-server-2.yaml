@@ -1,0 +1,12 @@
+servers:
+  production:
+    bindings:
+      mqtt:
+        sessionExpiryInterval:
+          type: integer
+          minimum: 30
+          maximum: 1200
+        maximumPacketSize:
+          type: integer
+          minimum: 256
+        bindingVersion: 0.2.0

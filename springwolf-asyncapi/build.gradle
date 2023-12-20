@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+    id 'java-library'
+
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
+}
+
+dependencies {
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    implementation "jakarta.validation:jakarta.validation-api"
+
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    testImplementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}"
+    testImplementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    testImplementation "net.javacrumbs.json-unit:json-unit-assertj:3.2.2"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+}
+
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+bootJar.enabled = false
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'springwolf-asyncapi'
+                description = 'AsyncAPI schema generator'
+            }
+        }
+    }
+}
