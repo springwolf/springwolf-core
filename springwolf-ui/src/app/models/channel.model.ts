@@ -2,7 +2,7 @@
 import { Schema } from "./schema.model";
 
 export const CHANNEL_ANCHOR_PREFIX = "#channel-";
-export interface Channel {
+export interface ChannelOperation {
   name: string;
   anchorIdentifier: string;
   description?: string;
@@ -31,10 +31,10 @@ export interface Message {
     title: string;
     anchorUrl: string;
   };
-  bindings?: Map<string, MessageBinding>;
+  bindings?: Map<string, Binding>;
   rawBindings?: { [protocol: string]: object };
 }
 
-export interface MessageBinding {
-  [protocol: string]: string | Schema;
+export interface Binding {
+  [protocol: string]: string | Binding;
 }

@@ -2,10 +2,10 @@
 import {AsyncApi} from "../../models/asyncapi.model";
 import {Server} from "../../models/server.model";
 import {
-  Channel,
+  ChannelOperation,
   CHANNEL_ANCHOR_PREFIX,
   Message,
-  MessageBinding,
+  Binding,
   Operation,
   OperationType,
 } from "../../models/channel.model";
@@ -16,7 +16,7 @@ import {Info} from "../../models/info.model";
 import {ServerAsyncApi, ServerAsyncApiChannelMessage} from "./models/asyncapi.model";
 import {ServerAsyncApiMessage} from "./models/message.model";
 import {ServerAsyncApiSchema} from "./models/schema.model";
-import {ServerBindings} from "./models/bindings.model";
+import {ServerBinding, ServerBindings} from "./models/bindings.model";
 import {ServerOperations} from "./models/operations.model";
 import {ServerServers} from "./models/servers.model";
 import {ServerChannel, ServerChannels} from "./models/channels.model";
@@ -33,7 +33,7 @@ export class AsyncApiMapperService {
     return {
       info: this.mapInfo(item),
       servers: this.mapServers(item.servers),
-      channels: this.mapChannels(item.channels, item.operations),
+      channelOperations: this.mapChannelOperations(item.channels, item.operations),
       components: {
         schemas: this.mapSchemas(item.components.schemas),
       },
@@ -55,12 +55,17 @@ export class AsyncApiMapperService {
     return s;
   }
 
-  private mapChannels(channels: ServerChannels, operations: ServerOperations): Channel[] {
-    const s = new Array<Channel>();
+  private mapChannelOperations(channels: ServerChannels, operations: ServerOperations): ChannelOperation[] {
+    const s = new Array<ChannelOperation>();
     for (let operationsKey in operations) {
       const operation = operations[operationsKey];
       const channelName = this.resolveRef(operation.channel.$ref)
-      s.push(this.mapChannel(channelName, channels[channelName], operation.messages, operation.action));
+    
+      const messages: Message[] = this.mapServerAsyncApiMessages(operation.messages);
+      messages.forEach((message) => {
+        s.push(this.mapChannel(channelName, channels[channelName], message, operation.action));
+      })
+
     }
     return s;
   }
@@ -68,17 +73,15 @@ export class AsyncApiMapperService {
   private mapChannel(
     topicName: string,
     channel: ServerChannel,
-    messages: ServerAsyncApiMessage[],
+    message: Message,
     operationType: ServerOperations["action"]
-  ): Channel {
-      const message: Message[] = this.mapServerAsyncApiMessages(messages);
-// TODO: foreach for each message?
-
+  ): ChannelOperation {
         const operation = this.mapOperation(
           operationType,
-          message[0],
+          message,
           channel.bindings
         );
+
         return {
           name: topicName,
           anchorIdentifier:
@@ -120,10 +123,8 @@ export class AsyncApiMapperService {
     });
   }
 
-  private mapServerAsyncApiMessageBindings(serverMessageBindings?: {
-    [protocol: string]: ServerBindings;
-  }): Map<string, MessageBinding> {
-    const messageBindings = new Map<string, MessageBinding>();
+  private mapServerAsyncApiMessageBindings(serverMessageBindings?: ServerBindings): Map<string, Binding> {
+    const messageBindings = new Map<string, Binding>();
     if (serverMessageBindings !== undefined) {
       Object.keys(serverMessageBindings).forEach((protocol) => {
         messageBindings.set(
@@ -136,14 +137,14 @@ export class AsyncApiMapperService {
   }
 
   private mapServerAsyncApiMessageBinding(
-    serverMessageBinding: ServerBindings
-  ): MessageBinding {
-    const messageBinding: MessageBinding = {};
+    serverMessageBinding: ServerBinding
+  ): Binding {
+    const messageBinding: Binding = {};
 
     Object.keys(serverMessageBinding).forEach((key) => {
       const value = serverMessageBinding[key];
       if (typeof value === "object") {
-        messageBinding[key] = this.mapSchema("MessageBinding", value);
+        messageBinding[key] = this.mapServerAsyncApiMessageBinding( value);
       } else {
         messageBinding[key] = value;
       }

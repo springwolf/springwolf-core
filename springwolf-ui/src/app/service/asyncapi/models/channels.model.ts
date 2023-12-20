@@ -10,5 +10,5 @@ export interface ServerChannel {
   address: string;
   description?: string;
   messages: Map<string, ServerAsyncApiMessage>;
-  bindings: { [protocol: string]: ServerBindings };
+  bindings: ServerBindings; 
 }

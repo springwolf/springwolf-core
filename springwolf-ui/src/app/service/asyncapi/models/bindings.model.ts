@@ -1,5 +1,9 @@
 import {ServerAsyncApiSchema} from "./schema.model";
 
 export interface ServerBindings {
-  [protocol: string]: ServerAsyncApiSchema | string; // TODO: review
+  [protocol: string]: ServerBinding;
+}
+
+export interface ServerBinding {
+  [bindingProperty: string]: string | ServerBinding;
 }

@@ -6,5 +6,5 @@ export interface ServerAsyncApiMessage {
   description?: string;
   payload: { $ref: string };
   headers: { $ref: string };
-  bindings: { [protocol: string]: ServerBindings };
+  bindings: ServerBindings;
 }

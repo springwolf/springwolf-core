@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
-import { Channel, CHANNEL_ANCHOR_PREFIX } from "../../models/channel.model";
+import { ChannelOperation, CHANNEL_ANCHOR_PREFIX } from "../../models/channel.model";
 import { Location } from "@angular/common";
 
 @Component({
@@ -10,7 +10,7 @@ import { Location } from "@angular/common";
   styleUrls: ["./channels.component.css"],
 })
 export class ChannelsComponent implements OnInit {
-  channels: Channel[];
+  channels: ChannelOperation[];
   selectedChannel: string;
   docName: string;
 
@@ -25,11 +25,11 @@ export class ChannelsComponent implements OnInit {
     this.location.subscribe((): void => this.setChannelSelectionFromLocation());
 
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
-      this.channels = this.sortChannels(asyncapi.channels);
+      this.channels = this.sortChannels(asyncapi.channelOperations);
     });
   }
 
-  private sortChannels(channels: Array<Channel>): Array<Channel> {
+  private sortChannels(channels: Array<ChannelOperation>): Array<ChannelOperation> {
     return channels.sort((a, b) => {
       if (a.operation.protocol === b.operation.protocol) {
         if (a.operation.operation === b.operation.operation) {
@@ -49,7 +49,7 @@ export class ChannelsComponent implements OnInit {
     });
   }
 
-  setChannelSelection(channel: Channel): void {
+  setChannelSelection(channel: ChannelOperation): void {
     window.location.hash = channel.anchorIdentifier;
   }
   setChannelSelectionFromLocation(): void {

@@ -21,6 +21,7 @@ After starting the application, visit: `localhost:8080/springwolf/asyncapi-ui.ht
 - Migrate to AsyncApi 3
 - Review Angular compoents - adapt to latest angular guidelines
 - Migrate tslint to eslint
+- Validate existing documents using parser-js?
 
 ## Development
 1. Run `npm i`
