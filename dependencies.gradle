@@ -41,7 +41,7 @@ ext {
     jacksonVersion = '2.16.0'
     jakartaAnnotationApiVersion = '2.1.1'
 
-    jsonSchemaValidator = '1.0.88'
+    jsonSchemaValidator = '1.1.0'
 
     mockitoCoreVersion = '5.8.0'
     mockitoJunitJupiterVersion = '5.8.0'
