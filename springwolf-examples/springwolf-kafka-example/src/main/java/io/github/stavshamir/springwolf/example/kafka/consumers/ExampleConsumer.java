@@ -36,7 +36,7 @@ public class ExampleConsumer {
     }
 
     @KafkaListener(
-            topics = "avro-topic-to-demo-payload-and-publish-not-supported",
+            topics = "avro-topic-without-publishing-support",
             properties = {
                 "specific.avro.reader=true",
                 "schema.registry.url=http://localhost:8081",
