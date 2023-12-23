@@ -18,12 +18,17 @@ import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.postprocessor.AvroSchemaPostProcessor;
+import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
+import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
+import io.github.stavshamir.springwolf.schemas.postprocessor.SwaggerSchemaPostProcessor;
 import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,9 +75,9 @@ public class SpringwolfAutoConfiguration {
     @ConditionalOnMissingBean
     public SchemasService schemasService(
             List<ModelConverter> modelConverters,
-            ExampleGenerator exampleGenerator,
+            List<SchemasPostProcessor> schemaPostProcessors,
             SpringwolfConfigProperties springwolfConfigProperties) {
-        return new DefaultSchemasService(modelConverters, exampleGenerator, springwolfConfigProperties);
+        return new DefaultSchemasService(modelConverters, schemaPostProcessors, springwolfConfigProperties);
     }
 
     @Bean
@@ -80,6 +85,27 @@ public class SpringwolfAutoConfiguration {
     public AsyncApiDocketService asyncApiDocketService(
             Optional<AsyncApiDocket> optionalAsyncApiDocket, SpringwolfConfigProperties springwolfConfigProperties) {
         return new DefaultAsyncApiDocketService(optionalAsyncApiDocket, springwolfConfigProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @Order(0)
+    public AvroSchemaPostProcessor avroSchemaPostProcessor() {
+        return new AvroSchemaPostProcessor();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @Order(10)
+    public ExampleGeneratorPostProcessor exampleGeneratorPostProcessor(ExampleGenerator exampleGenerator) {
+        return new ExampleGeneratorPostProcessor(exampleGenerator);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @Order(100)
+    public SwaggerSchemaPostProcessor swaggerSchemaPostProcessor() {
+        return new SwaggerSchemaPostProcessor();
     }
 
     @Bean

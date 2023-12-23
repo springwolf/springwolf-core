@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.schemas;
 
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
+import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.TypeNameResolver;
@@ -11,7 +11,6 @@ import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,18 +23,18 @@ import java.util.function.Function;
 public class DefaultSchemasService implements SchemasService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
-    private final ExampleGenerator exampleGenerator;
+    private final List<SchemasPostProcessor> schemaPostProcessors;
     private final SpringwolfConfigProperties properties;
 
     private final Map<String, Schema> definitions = new HashMap<>();
 
     public DefaultSchemasService(
             List<ModelConverter> externalModelConverters,
-            ExampleGenerator exampleGenerator,
+            List<SchemasPostProcessor> schemaPostProcessors,
             SpringwolfConfigProperties properties) {
 
         externalModelConverters.forEach(converter::addConverter);
-        this.exampleGenerator = exampleGenerator;
+        this.schemaPostProcessors = schemaPostProcessors;
         this.properties = properties;
     }
 
@@ -108,60 +107,6 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     private void postProcessSchema(Schema schema) {
-        AvroSchemaPostProcessor.process(schema, definitions);
-
-        generateExampleWhenMissing(schema);
-        removeSwaggerSchemaFields(schema);
-    }
-
-    private void removeSwaggerSchemaFields(Schema schema) {
-        schema.setAdditionalProperties(null);
-
-        Map<String, Schema> properties = schema.getProperties();
-        if (properties != null) {
-            properties.values().forEach(this::removeSwaggerSchemaFields);
-        }
-    }
-
-    private void generateExampleWhenMissing(Schema schema) {
-        if (schema.getExample() == null) {
-            log.debug("Generate example for {}", schema.getName());
-
-            Object example = exampleGenerator.fromSchema(schema, definitions);
-            schema.setExample(example);
-        }
-    }
-
-    static class AvroSchemaPostProcessor {
-        private static final String SCHEMA_PROPERTY = "schema";
-        private static final String SPECIFIC_DATA_PROPERTY = "specificData";
-        private static final String SCHEMA_REF = "org.apache.avro.Schema";
-        private static final String SPECIFIC_DAT_REF = "org.apache.avro.specific.SpecificData";
-
-        public static void process(Schema schema, Map<String, Schema> definitions) {
-            removeAvroSchemas(definitions);
-            removeAvroProperties(schema);
-        }
-
-        private static void removeAvroProperties(Schema schema) {
-            Map<String, Schema> properties = schema.getProperties();
-            if (properties != null) {
-                Schema schemaPropertySchema = properties.getOrDefault(SCHEMA_PROPERTY, null);
-                Schema specificDataPropertySchema = (Schema) properties.getOrDefault(SPECIFIC_DATA_PROPERTY, null);
-                if (schemaPropertySchema != null && specificDataPropertySchema != null) {
-                    if (StringUtils.endsWithIgnoreCase(schemaPropertySchema.get$ref(), SCHEMA_REF)
-                            && StringUtils.endsWithIgnoreCase(specificDataPropertySchema.get$ref(), SPECIFIC_DAT_REF)) {
-                        properties.remove(SCHEMA_PROPERTY);
-                        properties.remove(SPECIFIC_DATA_PROPERTY);
-                    }
-                }
-            }
-        }
-
-        private static void removeAvroSchemas(Map<String, Schema> definitions) {
-            definitions
-                    .entrySet()
-                    .removeIf(entry -> StringUtils.startsWithIgnoreCase(entry.getKey(), "org.apache.avro"));
-        }
+        schemaPostProcessors.forEach(processor -> processor.process(schema, definitions));
     }
 }

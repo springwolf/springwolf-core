@@ -7,16 +7,18 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
+import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
+import io.github.stavshamir.springwolf.schemas.postprocessor.SwaggerSchemaPostProcessor;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +26,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,12 +33,18 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 class DefaultSchemasServiceTest {
-
-    private final ExampleGenerator exampleGenerator = new ExampleJsonGenerator();
-    private final SchemasService schemasService =
-            new DefaultSchemasService(List.of(), exampleGenerator, new SpringwolfConfigProperties());
+    private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
+    private final SchemasService schemasService = new DefaultSchemasService(
+            List.of(),
+            List.of(
+                    new ExampleGeneratorPostProcessor(new ExampleJsonGenerator()),
+                    schemasPostProcessor,
+                    new SwaggerSchemaPostProcessor()),
+            new SpringwolfConfigProperties());
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
@@ -113,7 +120,7 @@ class DefaultSchemasServiceTest {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setUseFqn(true);
 
-        SchemasService schemasServiceWithFqn = new DefaultSchemasService(List.of(), exampleGenerator, properties);
+        SchemasService schemasServiceWithFqn = new DefaultSchemasService(List.of(), List.of(), properties);
 
         // when
         Class<?> clazz =
@@ -130,29 +137,10 @@ class DefaultSchemasServiceTest {
     }
 
     @Test
-    void avroSchemasAreRemoved() throws IOException {
-        // given
-        var avroSchema = new io.swagger.v3.oas.models.media.Schema();
-        avroSchema.set$ref("#/components/schemas/org.apache.avro.Schema");
+    void postProcessorsAreCalled() {
+        schemasService.register(FooWithEnum.class);
 
-        var avroSpecificData = new io.swagger.v3.oas.models.media.Schema();
-        avroSpecificData.set$ref("#/components/schemas/org.apache.avro.specific.SpecificData");
-
-        var schema = new io.swagger.v3.oas.models.media.Schema();
-        schema.setProperties(new HashMap<>(
-                Map.of("foo", new StringSchema(), "schema", avroSchema, "specificData", avroSpecificData)));
-
-        var definitions = new HashMap<String, io.swagger.v3.oas.models.media.Schema>();
-        definitions.put("customClassRefUnusedInThisTest", new StringSchema());
-        definitions.put("org.apache.avro.Schema", new io.swagger.v3.oas.models.media.Schema());
-        definitions.put("org.apache.avro.ConversionJava.lang.Object", new io.swagger.v3.oas.models.media.Schema());
-
-        // when
-        DefaultSchemasService.AvroSchemaPostProcessor.process(schema, definitions);
-
-        // then
-        assertThat(schema.getProperties()).isEqualTo(Map.of("foo", new StringSchema()));
-        assertThat(definitions).isEqualTo(Map.of("customClassRefUnusedInThisTest", new StringSchema()));
+        verify(schemasPostProcessor).process(any(), any());
     }
 
     private String jsonResource(String path) throws IOException {
