@@ -1,0 +1,19 @@
+// SPDX-License-Identifier: Apache-2.0
+package io.github.stavshamir.springwolf.asyncapi.v3.bindings.mercure;
+
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+/**
+ * This object MUST NOT contain any properties. Its name is reserved for future use.
+ *
+ * @see <a href="https://github.com/asyncapi/bindings/blob/master/mercure/README.md#message-binding-object">Mercure Message</a>
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class MercureMessageBinding extends ChannelBinding {}
