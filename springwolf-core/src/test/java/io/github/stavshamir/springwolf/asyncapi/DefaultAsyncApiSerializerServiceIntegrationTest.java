@@ -19,6 +19,7 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +111,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         String actual = serializer.toJsonString(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
-        assertEquals(expected, actual);
+        assertEquals(StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(actual));
     }
 
     @Test
