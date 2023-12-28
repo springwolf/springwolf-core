@@ -16,7 +16,7 @@ class SchemaTest {
 
     @Test
     void shouldSerializePrimitiveSample() throws JsonProcessingException {
-        var schema = Schema.builder().type("string").format("email").build();
+        var schema = SchemaObject.builder().type("string").format("email").build();
 
         String example =
                 """
@@ -30,17 +30,14 @@ class SchemaTest {
 
     @Test
     void shouldSerializeSimpleModel() throws JsonProcessingException {
-        var schema = Schema.builder()
+        var schema = SchemaObject.builder()
                 .type("object")
                 .required(List.of("name"))
                 .properties(Map.of(
-                        "name", Schema.builder().type("string").build(),
-                        "address",
-                                Schema.builder()
-                                        .ref("#/components/schemas/Address")
-                                        .build(),
+                        "name", SchemaObject.builder().type("string").build(),
+                        "address", SchemaReference.fromSchema("Address"),
                         "age",
-                                Schema.builder()
+                                SchemaObject.builder()
                                         .type("integer")
                                         .format("int32")
                                         .minimum(0)
@@ -74,9 +71,9 @@ class SchemaTest {
 
     @Test
     void shouldSerializeStringToStringMapping() throws JsonProcessingException {
-        var schema = Schema.builder()
+        var schema = SchemaObject.builder()
                 .type("object")
-                .additionalProperties(Schema.builder().type("string").build())
+                .additionalProperties(SchemaObject.builder().type("string").build())
                 .build();
 
         var example =
@@ -93,11 +90,9 @@ class SchemaTest {
 
     @Test
     void shouldSerializeModelMapping() throws JsonProcessingException {
-        var schema = Schema.builder()
+        var schema = SchemaObject.builder()
                 .type("object")
-                .additionalProperties(Schema.builder()
-                        .ref("#/components/schemas/ComplexModel")
-                        .build())
+                .additionalProperties(SchemaReference.fromSchema("ComplexModel"))
                 .build();
 
         var example =
@@ -114,11 +109,15 @@ class SchemaTest {
 
     @Test
     void shouldSerializeModelWithExample() throws JsonProcessingException {
-        var schema = Schema.builder()
+        var schema = SchemaObject.builder()
                 .type("object")
                 .properties(Map.of(
-                        "id", Schema.builder().type("integer").format("int64").build(),
-                        "name", Schema.builder().type("string").build()))
+                        "id",
+                                SchemaObject.builder()
+                                        .type("integer")
+                                        .format("int64")
+                                        .build(),
+                        "name", SchemaObject.builder().type("string").build()))
                 .required(List.of("name"))
                 .examples(List.of(Map.of("name", "Puma", "id", 1)))
                 .build();
@@ -154,7 +153,7 @@ class SchemaTest {
     @Disabled("MODEL WITH BOOLEAN SCHEMAS is not supported yet")
     // FIXME: See https://www.asyncapi.com/docs/reference/specification/v3.0.0#schemaObject
     void shouldSerializeModelWithBooleans() throws JsonProcessingException {
-        var schema = Schema.builder()
+        var schema = SchemaObject.builder()
                 .type("object")
                 //                .properties(Map.of(
                 //                        "anySchema", true,
@@ -184,31 +183,31 @@ class SchemaTest {
                 "schemas",
                 Map.of(
                         "ErrorModel",
-                        Schema.builder()
+                        SchemaObject.builder()
                                 .type("object")
                                 .required(List.of("message", "code"))
                                 .properties(Map.of(
                                         "message",
-                                                Schema.builder().type("string").build(),
+                                                SchemaObject.builder()
+                                                        .type("string")
+                                                        .build(),
                                         "code",
-                                                Schema.builder()
+                                                SchemaObject.builder()
                                                         .type("integer")
                                                         .minimum(100)
                                                         .maximum(600)
                                                         .build()))
                                 .build(),
                         "ExtendedErrorModel",
-                        Schema.builder()
+                        SchemaObject.builder()
                                 .allOf(List.of(
-                                        Schema.builder()
-                                                .ref("#/components/schemas/ErrorModel")
-                                                .build(),
-                                        Schema.builder()
+                                        SchemaReference.fromSchema("ErrorModel"),
+                                        SchemaObject.builder()
                                                 .type("object")
                                                 .required(List.of("rootCause"))
                                                 .properties(Map.of(
                                                         "rootCause",
-                                                        Schema.builder()
+                                                        SchemaObject.builder()
                                                                 .type("string")
                                                                 .build()))
                                                 .build()))
@@ -265,29 +264,27 @@ class SchemaTest {
                 "schemas",
                 Map.of(
                         "Pet",
-                        Schema.builder()
+                        SchemaObject.builder()
                                 .type("object")
                                 .discriminator("petType")
                                 .properties(Map.of(
                                         "name",
-                                        Schema.builder().type("string").build(),
+                                        SchemaObject.builder().type("string").build(),
                                         "petType",
-                                        Schema.builder().type("string").build()))
+                                        SchemaObject.builder().type("string").build()))
                                 .required(List.of("name", "petType"))
                                 .build(),
                         "Cat",
-                        Schema.builder()
+                        SchemaObject.builder()
                                 .description(
                                         "A representation of a cat. Note that `Cat` will be used as the discriminator value.")
                                 .allOf(List.of(
-                                        Schema.builder()
-                                                .ref("#/components/schemas/Pet")
-                                                .build(),
-                                        Schema.builder()
+                                        SchemaReference.fromSchema("Pet"),
+                                        SchemaObject.builder()
                                                 .type("object")
                                                 .properties(Map.of(
                                                         "huntingSkill",
-                                                        Schema.builder()
+                                                        SchemaObject.builder()
                                                                 .type("string")
                                                                 .description("The measured skill for hunting")
                                                                 .enumValues(
@@ -301,18 +298,16 @@ class SchemaTest {
                                                 .build()))
                                 .build(),
                         "Dog",
-                        Schema.builder()
+                        SchemaObject.builder()
                                 .description(
                                         "A representation of a dog. Note that `Dog` will be used as the discriminator value.")
                                 .allOf(List.of(
-                                        Schema.builder()
-                                                .ref("#/components/schemas/Pet")
-                                                .build(),
-                                        Schema.builder()
+                                        SchemaReference.fromSchema("Pet"),
+                                        SchemaObject.builder()
                                                 .type("object")
                                                 .properties(Map.of(
                                                         "packSize",
-                                                        Schema.builder()
+                                                        SchemaObject.builder()
                                                                 .type("integer")
                                                                 .format("int32")
                                                                 .description("the size of the pack the dog is from")
@@ -322,22 +317,20 @@ class SchemaTest {
                                                 .build()))
                                 .build(),
                         "StickInsect",
-                        Schema.builder()
+                        SchemaObject.builder()
                                 .description(
                                         "A representation of an Australian walking stick. Note that `StickBug` will be used as the discriminator value.")
                                 .allOf(List.of(
-                                        Schema.builder()
-                                                .ref("#/components/schemas/Pet")
-                                                .build(),
-                                        Schema.builder()
+                                        SchemaReference.fromSchema("Pet"),
+                                        SchemaObject.builder()
                                                 .type("object")
                                                 .properties(Map.of(
                                                         "petType",
-                                                        Schema.builder()
+                                                        SchemaObject.builder()
                                                                 .constValue("StickBug")
                                                                 .build(),
                                                         "color",
-                                                        Schema.builder()
+                                                        SchemaObject.builder()
                                                                 .type("string")
                                                                 .build()))
                                                 .required(List.of("color"))

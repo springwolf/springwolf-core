@@ -7,7 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -83,9 +83,9 @@ class JMSBindingTest {
                         .bindings(Map.of(
                                 "jms",
                                 JMSMessageBinding.builder()
-                                        .headers(Schema.builder().build())
+                                        .headers(SchemaObject.builder().build())
                                         .build()))
-                        .headers(MessageHeaders.of(Schema.builder().build()))
+                        .headers(MessageHeaders.of(SchemaObject.builder().build()))
                         .build());
 
         // https://github.com/asyncapi/bindings/blob/master/jms/README.md#examples

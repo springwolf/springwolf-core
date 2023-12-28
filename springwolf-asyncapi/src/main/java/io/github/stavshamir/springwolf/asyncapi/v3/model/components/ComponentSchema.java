@@ -5,21 +5,21 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.model.channel.message.ComponentSchemaSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import lombok.Getter;
 
 @Getter
 @JsonSerialize(using = ComponentSchemaSerializer.class)
 public class ComponentSchema {
     private MultiFormatSchema multiFormatSchema;
-    private Schema schema;
+    private SchemaObject schema;
     private MessageReference reference;
 
     private ComponentSchema(MultiFormatSchema multiFormatSchema) {
         this.multiFormatSchema = multiFormatSchema;
     }
 
-    private ComponentSchema(Schema schema) {
+    private ComponentSchema(SchemaObject schema) {
         this.schema = schema;
     }
 
@@ -31,7 +31,7 @@ public class ComponentSchema {
         return new ComponentSchema(multiFormatSchema);
     }
 
-    public static ComponentSchema of(Schema schema) {
+    public static ComponentSchema of(SchemaObject schema) {
         return new ComponentSchema(schema);
     }
 

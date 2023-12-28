@@ -9,7 +9,8 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageTrait;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -33,32 +34,26 @@ class MessageTest {
                         Tag.builder().name("user").build(),
                         Tag.builder().name("signup").build(),
                         Tag.builder().name("register").build()))
-                .headers(MessageHeaders.of(Schema.builder()
+                .headers(MessageHeaders.of(SchemaObject.builder()
                         .type("object")
                         .properties(Map.of(
                                 "correlationId",
-                                        Schema.builder()
+                                        SchemaObject.builder()
                                                 .description("Correlation ID set by application")
                                                 .type("string")
                                                 .build(),
                                 "applicationInstanceId",
-                                        Schema.builder()
+                                        SchemaObject.builder()
                                                 .description(
                                                         "Unique identifier for a given instance of the publishing application")
                                                 .type("string")
                                                 .build()))
                         .build()))
-                .payload(MessagePayload.of(Schema.builder()
+                .payload(MessagePayload.of(SchemaObject.builder()
                         .type("object")
                         .properties(Map.of(
-                                "user",
-                                        Schema.builder()
-                                                .ref("#/components/schemas/userCreate")
-                                                .build(),
-                                "signup",
-                                        Schema.builder()
-                                                .ref("#/components/schemas/signup")
-                                                .build()))
+                                "user", SchemaReference.fromSchema("userCreate"),
+                                "signup", SchemaReference.fromSchema("signup")))
                         .build()))
                 .correlationId(CorrelationID.builder()
                         .description("Default Correlation ID")

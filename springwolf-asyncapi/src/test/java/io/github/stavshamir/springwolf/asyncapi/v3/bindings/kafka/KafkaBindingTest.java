@@ -8,7 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
@@ -51,11 +51,11 @@ class KafkaBindingTest {
                                 .bindings(Map.of(
                                         "kafka",
                                         KafkaOperationBinding.builder()
-                                                .groupId(Schema.builder()
+                                                .groupId(SchemaObject.builder()
                                                         .type("string")
                                                         .enumValues(List.of("myGroupId"))
                                                         .build())
-                                                .clientId(Schema.builder()
+                                                .clientId(SchemaObject.builder()
                                                         .type("string")
                                                         .enumValues(List.of("myClientId"))
                                                         .build())
@@ -135,7 +135,7 @@ class KafkaBindingTest {
                                                         "kafka",
                                                         KafkaMessageBinding.builder()
                                                                 .key(
-                                                                        Schema.builder()
+                                                                        SchemaObject.builder()
                                                                                 .type("string")
                                                                                 .enumValues(List.of("myKey"))
                                                                                 .build())

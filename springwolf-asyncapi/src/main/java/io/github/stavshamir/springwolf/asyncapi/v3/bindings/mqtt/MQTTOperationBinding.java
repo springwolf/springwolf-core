@@ -3,7 +3,6 @@ package io.github.stavshamir.springwolf.asyncapi.v3.bindings.mqtt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.Reference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -74,11 +73,6 @@ public class MQTTOperationBinding extends ChannelBinding {
 
         public MQTTOperationBindingBuilder messageExpiryInterval(Schema schema) {
             this.messageExpiryInterval = schema;
-            return this;
-        }
-
-        public MQTTOperationBindingBuilder messageExpiryInterval(Reference reference) {
-            this.messageExpiryInterval = reference;
             return this;
         }
     }
