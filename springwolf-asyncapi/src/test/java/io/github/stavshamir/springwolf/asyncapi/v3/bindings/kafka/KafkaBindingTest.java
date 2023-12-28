@@ -5,7 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
@@ -130,7 +130,7 @@ class KafkaBindingTest {
                                 .address("test-topic")
                                 .messages(Map.of(
                                         "testMessage",
-                                        Message.builder()
+                                        MessageObject.builder()
                                                 .bindings(Map.of(
                                                         "kafka",
                                                         KafkaMessageBinding.builder()

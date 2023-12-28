@@ -5,8 +5,8 @@ import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Disabled;
@@ -79,7 +79,7 @@ class JMSBindingTest {
     void shouldSerializeJMSMessageBinding() throws IOException {
         var message = Map.of(
                 "message",
-                Message.builder()
+                MessageObject.builder()
                         .bindings(Map.of(
                                 "jms",
                                 JMSMessageBinding.builder()

@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.v3.model.schema;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExtendableObject;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,8 +36,10 @@ public class MultiFormatSchema extends ExtendableObject {
      * When using Reference Objects within the schema, the schemaFormat of the referenced resource MUST match the
      * schemaFormat of the schema containing the reference.
      */
+    @Builder.Default
+    @NotNull
     @JsonProperty(value = "schemaFormat")
-    private String schemaFormat;
+    private String schemaFormat = SchemaFormat.DEFAULT.toString();
 
     /**
      * Required. Definition of the message payload. It can be of any type but defaults to Schema Object. It MUST match

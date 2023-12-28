@@ -37,9 +37,7 @@ class OperationTest {
                 .traits(List.of(OperationTraits.builder()
                         .ref("#/components/operationTraits/kafka")
                         .build()))
-                .messages(List.of(MessageReference.builder()
-                        .ref("/components/messages/userSignedUp")
-                        .build()))
+                .messages(List.of(MessageReference.fromMessage("userSignedUp")))
                 .reply(OperationReply.builder()
                         .address(OperationReplyAddress.builder()
                                 .location("$message.header#/replyTo")
@@ -47,9 +45,7 @@ class OperationTest {
                         .channel(ChannelReference.builder()
                                 .ref("#/channels/userSignupReply")
                                 .build())
-                        .messages(List.of(MessageReference.builder()
-                                .ref("/components/messages/userSignedUpReply")
-                                .build()))
+                        .messages(List.of(MessageReference.fromMessage("userSignedUpReply")))
                         .build())
                 .build();
 

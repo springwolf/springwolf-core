@@ -84,6 +84,27 @@ public class Schema extends ExtendableObject implements Reference {
     @JsonProperty("enum")
     private List<String> enumValues;
 
+    @JsonProperty(value = "examples")
+    public List<Object> examples;
+
+    @JsonProperty(value = "additionalProperties")
+    public Schema additionalProperties;
+
+    @JsonProperty(value = "required")
+    public List<String> required;
+
+    @JsonProperty(value = "allOf")
+    public List<Schema> allOf;
+
+    @JsonProperty(value = "oneOf")
+    public List<Schema> oneOf;
+
+    @JsonProperty(value = "anyOf")
+    public List<Schema> anyOf;
+
+    @JsonProperty(value = "const")
+    public Object constValue;
+
     @JsonIgnore
     private String ref;
 

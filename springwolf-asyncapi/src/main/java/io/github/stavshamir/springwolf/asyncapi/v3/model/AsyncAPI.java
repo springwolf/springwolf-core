@@ -29,6 +29,8 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 public class AsyncAPI extends ExtendableObject {
 
+    public static final String ASYNCAPI_DEFAULT_VERSION = "3.0.0";
+
     /**
      * REQUIRED. Specifies the AsyncAPI Specification version being used. It can be used by tooling Specifications and
      * clients to interpret the version. The structure shall be major.minor.patch, where patch versions must be
@@ -39,7 +41,7 @@ public class AsyncAPI extends ExtendableObject {
     @NotNull
     @Builder.Default
     @JsonProperty(value = "asyncapi")
-    private String asyncapi = "3.0.0";
+    private String asyncapi = ASYNCAPI_DEFAULT_VERSION;
 
     /**
      * Identifier of the

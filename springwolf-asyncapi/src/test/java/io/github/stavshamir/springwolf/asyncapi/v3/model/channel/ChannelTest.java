@@ -8,7 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.Tag;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -28,13 +28,9 @@ class ChannelTest {
                 .description("This channel is used to exchange messages about user events.")
                 .messages(Map.of(
                         "userSignedUp",
-                        Message.builder()
-                                .ref("#/components/messages/userSignedUp")
-                                .build(),
+                        MessageReference.fromMessage("userSignedUp"),
                         "userCompletedOrder",
-                        Message.builder()
-                                .ref("#/components/messages/userCompletedOrder")
-                                .build()))
+                        MessageReference.fromMessage("userCompletedOrder")))
                 .parameters(Map.of(
                         "userId",
                         ChannelParameter.builder()

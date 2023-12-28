@@ -4,9 +4,9 @@ package io.github.stavshamir.springwolf.asyncapi.v3.model.channel;
 import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.Tag;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageExample;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageTrait;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
@@ -23,7 +23,7 @@ class MessageTest {
 
     @Test
     void shouldSerializeMessage() throws IOException {
-        Message message = Message.builder()
+        MessageObject message = MessageObject.builder()
                 .name("UserSignup")
                 .title("User signup")
                 .summary("Action to sign a user up.")

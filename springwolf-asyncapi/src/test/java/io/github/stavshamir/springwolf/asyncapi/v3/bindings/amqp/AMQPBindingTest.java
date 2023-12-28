@@ -6,7 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerial
 import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import org.junit.jupiter.api.Test;
 
@@ -96,7 +96,7 @@ class AMQPBindingTest {
                                 .address("user/signup")
                                 .messages(Map.of(
                                         "userSignupMessage",
-                                        Message.builder()
+                                        MessageObject.builder()
                                                 .bindings(Map.of(
                                                         "amqp",
                                                         AMQPMessageBinding.builder()
