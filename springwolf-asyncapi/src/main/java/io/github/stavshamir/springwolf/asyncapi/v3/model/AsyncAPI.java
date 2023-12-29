@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.v3.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
@@ -91,7 +91,7 @@ public class AsyncAPI extends ExtendableObject {
      * naming conventions.
      */
     @JsonProperty(value = "channels")
-    private Map<String, Channel> channels;
+    private Map<String, ChannelObject> channels;
 
     /**
      * Holds a dictionary with all the operations this application MUST implement.

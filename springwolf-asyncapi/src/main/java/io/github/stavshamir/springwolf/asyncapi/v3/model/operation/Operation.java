@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExtendableObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExternalDocumentation;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.Reference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.Tag;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.security_scheme.SecurityScheme;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -114,7 +114,7 @@ public class Operation extends ExtendableObject {
      * dereference this property for a better development experience.
      */
     @JsonProperty(value = "messages")
-    private List<Reference> messages;
+    private List<MessageReference> messages;
 
     /**
      * The definition of the reply in a request-reply operation.

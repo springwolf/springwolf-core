@@ -4,7 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.v3.model;
 import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelParameter;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
@@ -56,27 +56,24 @@ class AsyncAPITest {
                         .build()))
                 .build();
 
+        var channelUserSignedup = ChannelObject.builder()
+                .channelId("userSignedup")
+                .address("user/signedup")
+                .messages(Map.of(userSignUpMessage.getMessageId(), MessageReference.fromMessage(userSignUpMessage)))
+                .build();
+
         AsyncAPI asyncAPI = AsyncAPI.builder()
                 .info(Info.builder()
                         .title("Account Service")
                         .version("1.0.0")
                         .description("This service is in charge of processing user signups")
                         .build())
-                .channels(Map.of(
-                        "userSignedup",
-                        Channel.builder()
-                                .address("user/signedup")
-                                .messages(Map.of(
-                                        userSignUpMessage.getMessageId(),
-                                        MessageReference.fromMessage(userSignUpMessage)))
-                                .build()))
+                .channels(Map.of(channelUserSignedup.getChannelId(), channelUserSignedup))
                 .operations(Map.of(
                         "sendUserSignedup",
                         Operation.builder()
                                 .action(OperationAction.SEND)
-                                .channel(ChannelReference.builder()
-                                        .ref("#/channels/userSignedup")
-                                        .build())
+                                .channel(ChannelReference.fromChannel(channelUserSignedup))
                                 .messages(
                                         List.of(new MessageReference("#/channels/userSignedup/messages/UserSignedUp")))
                                 .build()))
@@ -191,7 +188,7 @@ class AsyncAPITest {
                                 .build()))
                 .channels(Map.of(
                         "lightingMeasured",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.event.{streetlightId}.lighting.measured")
                                 .messages(Map.of("lightMeasured", MessageReference.fromMessage(lightMeasuredMessage)))
                                 .description("The topic on which measured values may be produced and consumed.")
@@ -202,7 +199,7 @@ class AsyncAPITest {
                                                 .build()))
                                 .build(),
                         "lightTurnOn",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.action.{streetlightId}.turn.on")
                                 .messages(Map.of("turnOn", MessageReference.fromMessage(turnOnOffMessage)))
                                 .parameters(Map.of(
@@ -212,7 +209,7 @@ class AsyncAPITest {
                                                 .build()))
                                 .build(),
                         "lightTurnOff",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.action.{streetlightId}.turn.off")
                                 .messages(Map.of("turnOff", MessageReference.fromMessage(turnOnOffMessage)))
                                 .parameters(Map.of(
@@ -222,7 +219,7 @@ class AsyncAPITest {
                                                 .build()))
                                 .build(),
                         "lightsDim",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.action.{streetlightId}.dim")
                                 .messages(Map.of("dimLight", MessageReference.fromMessage(dimLightMessage)))
                                 .parameters(Map.of(

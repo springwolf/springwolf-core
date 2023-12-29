@@ -4,7 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.v3.bindings.googlepubsub;
 import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
@@ -88,7 +88,7 @@ class GooglePubSubBindingTest {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "topic-avro-schema",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("projects/your-project/topics/topic-avro-schema")
                                 .bindings(Map.of(
                                         "googlepubsub",
@@ -100,7 +100,7 @@ class GooglePubSubBindingTest {
                                                 .build()))
                                 .build(),
                         "topic-proto-schema",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("projects/your-project/topics/topic-proto-schema")
                                 .bindings(Map.of(
                                         "googlepubsub",

@@ -4,7 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms;
 import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
@@ -26,7 +26,7 @@ class JMSBindingTest {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "user.signup",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .description(
                                         "This application receives command messages from this channel about users to sign up.")
                                 .bindings(Map.of(
