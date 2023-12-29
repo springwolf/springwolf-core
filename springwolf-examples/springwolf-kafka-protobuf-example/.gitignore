@@ -1,0 +1,5 @@
+# ignore all directories with the name target
+target/
+.idea/
+build/
+.gradle/
