@@ -1,5 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.kafka.protobuf.configuration;
-
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,8 +12,6 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.PropertyNamingStrategyBase;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
-import com.fasterxml.jackson.databind.introspect.*;
-import com.fasterxml.jackson.databind.type.SimpleType;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -48,14 +46,12 @@ public class ProtobufPropertiesModule extends Module {
         return VersionUtil.packageVersionFor(getClass());
     }
 
-
     @Override
     public void setupModule(SetupContext context) {
 
         context.setClassIntrospector(new ProtobufClassIntrospector());
 
         context.insertAnnotationIntrospector(annotationIntrospector);
-
     }
 
     NopAnnotationIntrospector annotationIntrospector = new NopAnnotationIntrospector() {
@@ -63,12 +59,10 @@ public class ProtobufPropertiesModule extends Module {
         @Override
         public VisibilityChecker<?> findAutoDetectVisibility(AnnotatedClass ac, VisibilityChecker<?> checker) {
             if (Message.class.isAssignableFrom(ac.getRawType())) {
-                return checker.withGetterVisibility(Visibility.PUBLIC_ONLY)
-                        .withFieldVisibility(Visibility.ANY);
+                return checker.withGetterVisibility(Visibility.PUBLIC_ONLY).withFieldVisibility(Visibility.ANY);
             }
             return super.findAutoDetectVisibility(ac, checker);
         }
-
 
         @Override
         public Object findNamingStrategy(AnnotatedClass ac) {
@@ -86,9 +80,7 @@ public class ProtobufPropertiesModule extends Module {
                 }
             };
         }
-
     };
-
 
     class ProtobufClassIntrospector extends BasicClassIntrospector {
 
@@ -102,7 +94,6 @@ public class ProtobufPropertiesModule extends Module {
 
             return desc;
         }
-
 
         @Override
         public BasicBeanDescription forSerialization(SerializationConfig cfg, JavaType type, MixInResolver r) {
@@ -118,13 +109,13 @@ public class ProtobufPropertiesModule extends Module {
             return desc;
         }
 
-        private BasicBeanDescription protobufBeanDescription(MapperConfig<?> cfg, JavaType type, MixInResolver r, BasicBeanDescription baseDesc) {
+        private BasicBeanDescription protobufBeanDescription(
+                MapperConfig<?> cfg, JavaType type, MixInResolver r, BasicBeanDescription baseDesc) {
             Map<String, FieldDescriptor> types = cache.computeIfAbsent(type.getRawClass(), this::getDescriptorForType);
 
             AnnotatedClass ac = AnnotatedClassResolver.resolve(cfg, type, r);
 
             List<BeanPropertyDefinition> props = new ArrayList<>();
-
 
             for (BeanPropertyDefinition p : baseDesc.findProperties()) {
                 String name = p.getName();
@@ -132,7 +123,8 @@ public class ProtobufPropertiesModule extends Module {
                     continue;
                 }
 
-                if (p.hasField() && p.getField().getType().isJavaLangObject()
+                if (p.hasField()
+                        && p.getField().getType().isJavaLangObject()
                         && types.get(name).getType().equals(FieldDescriptor.Type.STRING)) {
                     addStringFormatAnnotation(p);
                 }
@@ -140,41 +132,30 @@ public class ProtobufPropertiesModule extends Module {
                 props.add(p.withSimpleName(name));
             }
 
-
-            return new BasicBeanDescription(cfg, type, ac, new ArrayList<>(props)) {
-            };
+            return new BasicBeanDescription(cfg, type, ac, new ArrayList<>(props)) {};
         }
 
         @JsonFormat(shape = Shape.STRING)
-        class AnnotationHelper {
-
-        }
+        class AnnotationHelper {}
 
         private void addStringFormatAnnotation(BeanPropertyDefinition p) {
             JsonFormat annotation = AnnotationHelper.class.getAnnotation(JsonFormat.class);
-            p.getField().getAllAnnotations()
-                    .addIfNotPresent(annotation);
+            p.getField().getAllAnnotations().addIfNotPresent(annotation);
         }
-
 
         private Map<String, FieldDescriptor> getDescriptorForType(Class<?> type) {
             try {
                 Descriptor invoke = (Descriptor) type.getMethod("getDescriptor").invoke(null);
                 Map<String, FieldDescriptor> descriptorsForType = new HashMap<>();
-                invoke
-                        .getFields()
-                        .stream()
-                        .forEach(
-                                fieldDescriptor -> {
-                                    descriptorsForType.put(fieldDescriptor.getName(), fieldDescriptor);
-                                    descriptorsForType.put(fieldDescriptor.getJsonName(), fieldDescriptor);
-                                });
+                invoke.getFields().stream().forEach(fieldDescriptor -> {
+                    descriptorsForType.put(fieldDescriptor.getName(), fieldDescriptor);
+                    descriptorsForType.put(fieldDescriptor.getJsonName(), fieldDescriptor);
+                });
                 return descriptorsForType;
             } catch (Exception e) {
                 log.error("Error getting protobuf descriptor for swagger.", e);
                 return new HashMap<>();
             }
         }
-
     }
 }
