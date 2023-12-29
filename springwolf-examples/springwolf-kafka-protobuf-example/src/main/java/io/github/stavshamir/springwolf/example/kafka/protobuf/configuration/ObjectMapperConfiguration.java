@@ -1,7 +1,7 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.kafka.protobuf.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.hubspot.jackson.datatype.protobuf.ProtobufJacksonConfig;
 import com.hubspot.jackson.datatype.protobuf.ProtobufModule;
 import io.swagger.v3.core.jackson.ModelResolver;
@@ -22,7 +22,11 @@ public class ObjectMapperConfiguration {
     @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = builder.build();
-        objectMapper.registerModules(new ProtobufModule(ProtobufJacksonConfig.builder().acceptLiteralFieldnames(true).build()), new ProtobufPropertiesModule());
+        objectMapper.registerModules(
+                new ProtobufModule(ProtobufJacksonConfig.builder()
+                        .acceptLiteralFieldnames(true)
+                        .build()),
+                new ProtobufPropertiesModule());
         return objectMapper;
     }
 
