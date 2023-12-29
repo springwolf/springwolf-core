@@ -1,0 +1,137 @@
+plugins {
+    id 'java'
+
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
+
+    id 'com.bmuschko.docker-spring-boot-application'
+    id 'org.springdoc.openapi-gradle-plugin' version '1.8.0'
+    id 'com.google.protobuf' version '0.8.17'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://packages.confluent.io/maven/'
+        name = 'confluent'
+    }
+}
+
+dependencies {
+
+    runtimeOnly  project(":springwolf-core")
+    runtimeOnly  project(":springwolf-plugins:springwolf-kafka")
+
+    runtimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
+    runtimeOnly project(":springwolf-add-ons:springwolf-json-schema")
+    runtimeOnly project(":springwolf-ui")
+
+    annotationProcessor project(":springwolf-plugins:springwolf-kafka")
+
+    runtimeOnly "org.springframework.boot:spring-boot-starter-web"
+
+    implementation "org.springframework:spring-beans"
+    implementation "org.springframework:spring-context"
+
+    implementation "org.springframework.boot:spring-boot"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+
+    implementation "org.springframework.kafka:spring-kafka"
+
+    implementation "org.springframework.security:spring-security-config"
+    implementation "org.springframework.security:spring-security-web"
+
+    implementation  'org.apache.kafka:kafka-clients:3.6.1'
+    runtimeOnly 'io.confluent:kafka-protobuf-serializer:7.4.0'
+
+    runtimeOnly  "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
+    implementation  "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+
+//    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+
+//    testImplementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
+//    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+//    testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
+//    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+//
+//    testImplementation "org.springframework.boot:spring-boot-test"
+//    testImplementation "org.springframework.kafka:spring-kafka-test"
+//    testImplementation "org.springframework:spring-test"
+//
+//    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
+//    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+
+//    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+
+//    permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaClientsVersion}:test@jar"
+
+//    testImplementation("org.springframework.boot:spring-boot-starter-actuator")
+//    permitTestUnusedDeclared("org.springframework.boot:spring-boot-starter-actuator")
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation 'com.google.protobuf:protobuf-java:3.23.1'
+
+    implementation 'com.hubspot.jackson:jackson-datatype-protobuf:0.9.14'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+    implementation 'com.hubspot.jackson:jackson-datatype-protobuf:0.9.14'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.21.1'
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java { }
+            }
+        }
+    }
+}
+
+docker {
+    springBootApplication {
+        maintainer = 'shamir.stav@gmail.com'
+        baseImage = 'eclipse-temurin:17-jre-focal'
+        ports = [8080]
+        images = ["stavshamir/springwolf-kafka-protobuf-example:${project.version}"]
+    }
+
+    registryCredentials {
+        username = project.findProperty('DOCKERHUB_USERNAME') ?: ''
+        password = project.findProperty('DOCKERHUB_TOKEN') ?: ''
+    }
+}
+
+test {
+    dependsOn dockerBuildImage
+    // generate the open api docs before tests are executed so that if it works, the json is already there
+    dependsOn generateOpenApiDocs
+}
+
+openApi {
+    apiDocsUrl = "http://localhost:8080/springwolf/docs"
+    // For testing purposes we put the generated json into the test resources, but it could be any other directory
+    outputDir = file("$buildDir/resources/test")
+    outputFileName = "openapi-generated.json"
+}
+
+afterEvaluate {
+    tasks {
+        forkedSpringBootRun {
+            dependsOn bootJar
+            dependsOn compileTestJava
+            dependsOn dockerCreateDockerfile
+            dependsOn dockerBuildImage
+            dependsOn dockerSyncBuildContext
+            dependsOn jar
+            dependsOn processTestResources
+            dependsOn spotlessJava
+            doNotTrackState("See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102")
+        }
+    }
+}

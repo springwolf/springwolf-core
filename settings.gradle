@@ -13,6 +13,7 @@ include(
         'springwolf-examples:springwolf-cloud-stream-example',
         'springwolf-examples:springwolf-jms-example',
         'springwolf-examples:springwolf-kafka-example',
+        'springwolf-examples:springwolf-kafka-protobuf-example',
         'springwolf-examples:springwolf-sns-example',
         'springwolf-examples:springwolf-sqs-example',
         'springwolf-ui',
