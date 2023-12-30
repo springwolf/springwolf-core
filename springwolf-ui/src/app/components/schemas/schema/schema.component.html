@@ -1,6 +1,15 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <table class="schema">
   <tbody>
+    <!--  Primitive types  -->
+    <tr *ngIf="schema.type !== 'object'">
+      <ng-container
+        [ngTemplateOutlet]="valueContent"
+        [ngTemplateOutletContext]="{ value: schema }"
+      >
+      </ng-container>
+    </tr>
+    <!--  Objects  -->
     <tr *ngFor="let property of schema?.properties | keyvalue">
       <td class="key">
         {{ property.key }}
