@@ -38,7 +38,7 @@ class SNSBindingTest {
                                 .build()))
                 .build();
 
-        // https://github.com/asyncapi/bindings/blob/master/kafka/README.md#example-1
+        // https://github.com/asyncapi/bindings/tree/master/sns
         var example = ClasspathUtil.parseYamlFile("/v3/bindings/sns/sns-channel.yaml");
         assertThatJson(serializer.toJsonString(asyncapi))
                 .whenIgnoringPaths("asyncapi", "channels.user-signedup.bindings.sns.bindingVersion")
@@ -59,7 +59,7 @@ class SNSBindingTest {
                                 .build()))
                 .build();
 
-        // https://github.com/asyncapi/bindings/blob/master/kafka/README.md#example-1
+        // https://github.com/asyncapi/bindings/tree/master/sns
         var example = ClasspathUtil.parseYamlFile("/v3/bindings/sns/sns-sendMessage.yaml");
         assertThatJson(serializer.toJsonString(asyncapi))
                 .whenIgnoringPaths("asyncapi", "channels.user-signedup.bindings.sns.bindingVersion")
