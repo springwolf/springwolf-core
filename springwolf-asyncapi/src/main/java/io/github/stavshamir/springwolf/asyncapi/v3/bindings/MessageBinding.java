@@ -5,4 +5,4 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.ExtendableObject;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
-public class MessageBinding extends ExtendableObject {}
+public abstract class MessageBinding extends ExtendableObject {}
