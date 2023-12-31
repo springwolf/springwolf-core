@@ -50,6 +50,7 @@ ext {
     moneyApiVersion = '1.1'
 
     junitJupiterVersion = '5.10.1'
+    jsonUnitAssertJVersion = '3.2.2'
 
     lombokVersion = '1.18.30'
 
