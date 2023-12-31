@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class SQSOperationBinding extends ChannelBinding {
+public class SQSOperationBinding extends OperationBinding {
     /**
      * Required. Queue objects that are either the endpoint for an SNS Operation Binding Object, or the deadLetterQueue
      * of the SQS Operation Binding Object
