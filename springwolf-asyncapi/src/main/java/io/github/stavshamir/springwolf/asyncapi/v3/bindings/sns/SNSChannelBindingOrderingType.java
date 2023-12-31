@@ -1,11 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.v3.bindings.sns;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public enum SNSChannelBindingOrderingType {
-    @JsonProperty("standard")
-    STANDARD,
-    @JsonProperty("FIFO")
-    FIFO
+    STANDARD("standard"),
+    FIFO("FIFO");
+
+    public final String type;
+
+    SNSChannelBindingOrderingType(String type) {
+        this.type = type;
+    }
+
+    public static SNSChannelBindingOrderingType fromString(String type) {
+        return valueOf(type.toUpperCase());
+    }
+
+    @Override
+    public String toString() {
+        return this.type;
+    }
 }

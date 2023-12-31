@@ -20,7 +20,7 @@ public enum SchemaFormat {
 
     public final String value;
 
-    private SchemaFormat(String schemaFormat) {
+    SchemaFormat(String schemaFormat) {
         this.value = schemaFormat;
     }
 

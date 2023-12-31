@@ -1,33 +1,33 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.v3.model.security_scheme;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public enum SecurityType {
-    @JsonProperty("userPassword")
-    USER_PASSWORD,
-    @JsonProperty("apiKey")
-    API_KEY,
-    @JsonProperty("X509")
-    X509,
-    @JsonProperty("symmetricEncryption")
-    SYMMETRIC_ENCRYPTION,
-    @JsonProperty("asymmetricEncryption")
-    ASYMMETRIC_ENCRYPTION,
-    @JsonProperty("httpApiKey")
-    HTTP_API_KEY,
-    @JsonProperty("http")
-    HTTP,
-    @JsonProperty("oauth2")
-    OAUTH2,
-    @JsonProperty("openIdConnect")
-    OPEN_ID_CONNECT,
-    @JsonProperty("plain")
-    PLAIN,
-    @JsonProperty("scramSha256")
-    SCRAM_SHA256,
-    @JsonProperty("scramSha512")
-    SCRAM_SHA512,
-    @JsonProperty("gssapi")
-    GSSAPI
+    USER_PASSWORD("userPassword"),
+    API_KEY("apiKey"),
+    X509("X509"),
+    SYMMETRIC_ENCRYPTION("symmetricEncryption"),
+    ASYMMETRIC_ENCRYPTION("asymmetricEncryption"),
+    HTTP_API_KEY("httpApiKey"),
+    HTTP("http"),
+    OAUTH2("oauth2"),
+    OPEN_ID_CONNECT("openIdConnect"),
+    PLAIN("plain"),
+    SCRAM_SHA256("scramSha256"),
+    SCRAM_SHA512("scramSha512"),
+    GSSAPI("gssapi");
+
+    public final String type;
+
+    SecurityType(String type) {
+        this.type = type;
+    }
+
+    public static SecurityType fromString(String type) {
+        return valueOf(type.toUpperCase());
+    }
+
+    @Override
+    public String toString() {
+        return this.type;
+    }
 }

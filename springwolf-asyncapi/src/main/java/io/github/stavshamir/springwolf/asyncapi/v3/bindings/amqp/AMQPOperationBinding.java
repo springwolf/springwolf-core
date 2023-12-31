@@ -31,9 +31,10 @@ public class AMQPOperationBinding extends OperationBinding {
      * </p>
      * Applies to: receive, send
      */
+    @Builder.Default
     @PositiveOrZero
     @JsonProperty("expiration")
-    private Integer expiration;
+    private Integer expiration = 0;
 
     /**
      * Identifies the user who has sent the message.

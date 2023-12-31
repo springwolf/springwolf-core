@@ -1,21 +1,25 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public enum AMQPChannelExchangeType {
-    @JsonProperty("topic")
-    TOPIC,
+    TOPIC("topic"),
+    DIRECT("direct"),
+    FANOUT("fanout"),
+    DEFAULT("default"),
+    HEADERS("headers");
 
-    @JsonProperty("direct")
-    DIRECT,
+    public final String type;
 
-    @JsonProperty("fanout")
-    FANOUT,
+    AMQPChannelExchangeType(String type) {
+        this.type = type;
+    }
 
-    @JsonProperty("default")
-    DEFAULT,
+    public static AMQPChannelExchangeType fromString(String type) {
+        return valueOf(type.toUpperCase());
+    }
 
-    @JsonProperty("headers")
-    HEADERS
+    @Override
+    public String toString() {
+        return this.type;
+    }
 }

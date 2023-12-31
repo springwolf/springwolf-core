@@ -29,9 +29,22 @@ public class ApiKeySecurityScheme extends SecurityScheme {
     }
 
     public enum ApiKeyLocation {
-        @JsonProperty("user")
-        USER,
-        @JsonProperty("password")
-        PASSWORD
+        USER("user"),
+        PASSWORD("password");
+
+        public final String type;
+
+        ApiKeyLocation(String type) {
+            this.type = type;
+        }
+
+        public static ApiKeyLocation fromString(String type) {
+            return valueOf(type.toUpperCase());
+        }
+
+        @Override
+        public String toString() {
+            return this.type;
+        }
     }
 }

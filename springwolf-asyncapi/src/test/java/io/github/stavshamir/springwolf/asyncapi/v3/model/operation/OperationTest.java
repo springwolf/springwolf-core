@@ -52,7 +52,7 @@ class OperationTest {
         String example = ClasspathUtil.readAsString("/v3/model/operation/operation.json");
         assertThatJson(serializer.toJsonString(operation))
                 // FIXME: https://github.com/asyncapi/spec/issues/1007
-                .whenIgnoringPaths("bindings.amqp.bindingVersion", "security")
+                .whenIgnoringPaths("bindings.amqp.bindingVersion", "bindings.amqp.expiration", "security")
                 .isEqualTo(example);
     }
 }

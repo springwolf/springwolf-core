@@ -1,12 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public enum JMSChannelBindingDestinationType {
-    @JsonProperty("queue")
-    QUEUE,
+    QUEUE("queue"),
+    FIFO_QUEUE("fifo-queue");
 
-    @JsonProperty("fifo-queue")
-    FIFO_QUEUE
+    public final String type;
+
+    JMSChannelBindingDestinationType(String type) {
+        this.type = type;
+    }
+
+    public static JMSChannelBindingDestinationType fromString(String type) {
+        return valueOf(type.toUpperCase());
+    }
+
+    @Override
+    public String toString() {
+        return this.type;
+    }
 }

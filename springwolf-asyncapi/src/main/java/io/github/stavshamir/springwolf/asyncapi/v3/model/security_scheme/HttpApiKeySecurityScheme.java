@@ -36,11 +36,23 @@ public class HttpApiKeySecurityScheme extends SecurityScheme {
     }
 
     public enum HttpApiKeyLocation {
-        @JsonProperty("query")
-        QUERY,
-        @JsonProperty("header")
-        HEADER,
-        @JsonProperty("cookie")
-        COOKIE
+        QUERY("query"),
+        HEADER("header"),
+        COOKIE("cookie");
+
+        public final String type;
+
+        HttpApiKeyLocation(String type) {
+            this.type = type;
+        }
+
+        public static HttpApiKeyLocation fromString(String type) {
+            return valueOf(type.toUpperCase());
+        }
+
+        @Override
+        public String toString() {
+            return this.type;
+        }
     }
 }
