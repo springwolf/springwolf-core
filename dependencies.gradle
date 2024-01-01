@@ -53,7 +53,7 @@ ext {
 
     lombokVersion = '1.18.30'
 
-    slf4jApiVersion = '2.0.9'
+    slf4jApiVersion = '2.0.10'
 
     swaggerVersion = '2.2.20'
 
