@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
@@ -305,6 +306,53 @@ class DefaultSchemasServiceTest {
         public class ImplementationTwo {
             private Integer firstTwo;
             private Boolean secondTwo;
+        }
+    }
+
+    @Nested
+    class AsyncApiPayloadTest {
+        @Test
+        void stringEnvelopTest() throws IOException {
+            schemasService.register(StringEnvelop.class);
+
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+            String expected = jsonResource("/schemas/api-payload.json");
+
+            System.out.println("Got: " + actualDefinitions);
+            assertEquals(expected, actualDefinitions);
+
+            assertThat(actualDefinitions).doesNotContain("otherField");
+        }
+
+        @Test
+        void illegalEnvelopTest() throws IOException {
+            schemasService.register(EnvelopWithMultipleAsyncApiPayloadAnnotations.class);
+
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+
+            // fallback to EnvelopWithMultipleAsyncApiPayloadAnnotations, which contains the field
+            assertThat(actualDefinitions).contains("otherField");
+        }
+
+        @Data
+        @NoArgsConstructor
+        public class StringEnvelop {
+            Integer otherField;
+
+            @AsyncApiPayload
+            @Schema(description = "The payload in the envelop", maxLength = 10)
+            String payload;
+        }
+
+        @Data
+        @NoArgsConstructor
+        public class EnvelopWithMultipleAsyncApiPayloadAnnotations {
+            @AsyncApiPayload
+            Integer otherField;
+
+            @AsyncApiPayload
+            @Schema(description = "The payload in the envelop", maxLength = 10)
+            String payload;
         }
     }
 }
