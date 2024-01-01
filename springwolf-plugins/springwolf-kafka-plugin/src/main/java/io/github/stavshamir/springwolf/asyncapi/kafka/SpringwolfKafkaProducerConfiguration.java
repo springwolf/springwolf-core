@@ -5,7 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCrea
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaController;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
-import io.github.stavshamir.springwolf.producer.SpringwolfKafkaTemplateFactory;
+import io.github.stavshamir.springwolf.producer.SpringwolfKafkaTemplateFromProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -30,14 +30,15 @@ public class SpringwolfKafkaProducerConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SpringwolfKafkaProducer springwolfKafkaProducer(SpringwolfKafkaTemplateFactory producerTemplateFactory) {
-        return new SpringwolfKafkaProducer(producerTemplateFactory.buildKafkaTemplate());
+    public SpringwolfKafkaProducer springwolfKafkaProducer(
+            SpringwolfKafkaTemplateFromProperties springwolfKafkaTemplateFromProperties) {
+        return new SpringwolfKafkaProducer(springwolfKafkaTemplateFromProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public SpringwolfKafkaTemplateFactory springwolfKafkaTemplateFactory(
+    public SpringwolfKafkaTemplateFromProperties springwolfKafkaTemplateFromProperties(
             SpringwolfKafkaConfigProperties springwolfKafkaConfigProperties) {
-        return new SpringwolfKafkaTemplateFactory(springwolfKafkaConfigProperties);
+        return new SpringwolfKafkaTemplateFromProperties(springwolfKafkaConfigProperties);
     }
 }

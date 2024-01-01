@@ -20,13 +20,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @RequiredArgsConstructor
 public class SpringwolfKafkaProducer {
 
-    private final Optional<KafkaTemplate<Object, Object>> kafkaTemplate;
+    private final SpringwolfKafkaTemplateProvider kafkaTemplateProvider;
 
     public boolean isEnabled() {
-        return kafkaTemplate.isPresent();
+        return kafkaTemplateProvider.isPresent();
     }
 
     public void send(String topic, String key, Map<String, String> headers, Object payload) {
+        Optional<KafkaTemplate<Object, Object>> kafkaTemplate = kafkaTemplateProvider.get(topic);
         if (kafkaTemplate.isPresent()) {
             kafkaTemplate
                     .get()
@@ -34,7 +35,7 @@ public class SpringwolfKafkaProducer {
                     .toCompletableFuture()
                     .join();
         } else {
-            log.warn("Kafka producer is not configured");
+            log.warn("Kafka producer for topic %s is not configured".formatted(topic));
         }
     }
 

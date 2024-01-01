@@ -14,13 +14,11 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @ConditionalOnBean(value = SpringwolfKafkaProducerConfiguration.class)
-public class SpringwolfKafkaTemplateFactory {
+public class SpringwolfKafkaTemplateFromProperties implements SpringwolfKafkaTemplateProvider {
 
-    private final SpringwolfKafkaConfigProperties springWolfKafkaConfigProperties;
+    private final Optional<KafkaTemplate<Object, Object>> kafkaTemplate;
 
-    public Optional<KafkaTemplate<Object, Object>> buildKafkaTemplate() {
-        Optional<KafkaTemplate<Object, Object>> kafkaTemplate = Optional.empty();
-
+    public SpringwolfKafkaTemplateFromProperties(SpringwolfKafkaConfigProperties springWolfKafkaConfigProperties) {
         if (springWolfKafkaConfigProperties.getPublishing() != null
                 && springWolfKafkaConfigProperties.getPublishing().getProducer() != null) {
             Map<String, Object> producerProperties = springWolfKafkaConfigProperties
@@ -30,8 +28,18 @@ public class SpringwolfKafkaTemplateFactory {
             DefaultKafkaProducerFactory<Object, Object> producerFactory =
                     new DefaultKafkaProducerFactory<>(producerProperties);
             kafkaTemplate = Optional.of(new KafkaTemplate<>(producerFactory));
+        } else {
+            kafkaTemplate = Optional.empty();
         }
+    }
 
+    @Override
+    public boolean isPresent() {
+        return kafkaTemplate.isPresent();
+    }
+
+    @Override
+    public Optional<KafkaTemplate<Object, Object>> get(String topic) {
         return kafkaTemplate;
     }
 }
