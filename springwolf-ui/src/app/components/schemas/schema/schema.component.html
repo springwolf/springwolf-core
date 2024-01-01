@@ -41,7 +41,19 @@
 </table>
 
 <ng-template #valueContent let-value="value">
-  <span class="type" *ngIf="value.type != 'array'">{{ value.type }}</span>
+  <div class="type-content">
+    <span class="type" *ngIf="value.type != 'array'">{{ value.type }}</span>
+
+    <ng-container
+      [ngTemplateOutlet]="rangeContent"
+      [ngTemplateOutletContext]="{
+        minimum: value.minimum,
+        maximum: value.maximum
+      }"
+    >
+    </ng-container>
+  </div>
+
   <span class="type" *ngIf="value.refTitle">
     <a [href]="value.anchorUrl">{{ value.refTitle }}</a>
   </span>
@@ -55,4 +67,16 @@
       >{{ enum }}
     </mat-option>
   </mat-select>
+</ng-template>
+
+<ng-template #rangeContent let-minimum="minimum" let-maximum="maximum">
+  <span class="range" *ngIf="minimum !== undefined && maximum === undefined">
+    &gt;= {{ minimum }}
+  </span>
+  <span class="range" *ngIf="minimum === undefined && maximum !== undefined">
+    &lt;= {{ maximum }}
+  </span>
+  <span class="range" *ngIf="minimum !== undefined && maximum !== undefined">
+    [ {{ minimum }} .. {{ maximum }} ]
+  </span>
 </ng-template>
