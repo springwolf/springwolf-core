@@ -37,7 +37,6 @@ public class AnnotationUtil {
                         RepeatableContainers.standardRepeatables())
                 .stream(annotationClass)
                 .filter(MergedAnnotationPredicates.firstRunOf(MergedAnnotation::getAggregateIndex))
-                .map(MergedAnnotation::withNonMergedAttributes)
                 .collect(MergedAnnotationCollectors.toAnnotationSet());
     }
 }
