@@ -12,5 +12,7 @@ export interface ServerAsyncApiSchema {
       }
     | string;
   required?: string[];
+  minimum?: number;
+  maximum?: number;
   $ref?: string;
 }
