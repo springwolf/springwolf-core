@@ -1,11 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public enum SQSChannelBindingDeduplicationScope {
-    @JsonProperty("messageGroup")
-    MESSAGE_GROUP,
-    @JsonProperty("queue")
-    QUEUE
+    MESSAGE_GROUP("messageGroup"),
+    QUEUE("queue");
+
+    public final String type;
+
+    SQSChannelBindingDeduplicationScope(String type) {
+        this.type = type;
+    }
+
+    public static SQSChannelBindingDeduplicationScope fromString(String type) {
+        return valueOf(type.toUpperCase());
+    }
+
+    @Override
+    public String toString() {
+        return this.type;
+    }
 }

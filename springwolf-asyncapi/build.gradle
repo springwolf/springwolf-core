@@ -26,7 +26,7 @@ dependencies {
     testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     testImplementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}"
     testImplementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
-    testImplementation "net.javacrumbs.json-unit:json-unit-assertj:3.2.2"
+    testImplementation "net.javacrumbs.json-unit:json-unit-assertj:${jsonUnitAssertJVersion}"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 }

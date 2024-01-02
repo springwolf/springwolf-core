@@ -4,11 +4,11 @@ package io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka;
 import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
@@ -51,11 +51,11 @@ class KafkaBindingTest {
                                 .bindings(Map.of(
                                         "kafka",
                                         KafkaOperationBinding.builder()
-                                                .groupId(Schema.builder()
+                                                .groupId(SchemaObject.builder()
                                                         .type("string")
                                                         .enumValues(List.of("myGroupId"))
                                                         .build())
-                                                .clientId(Schema.builder()
+                                                .clientId(SchemaObject.builder()
                                                         .type("string")
                                                         .enumValues(List.of("myClientId"))
                                                         .build())
@@ -75,7 +75,7 @@ class KafkaBindingTest {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "user-signedup",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .bindings(Map.of(
                                         "kafka",
                                         KafkaChannelBinding.builder()
@@ -126,16 +126,16 @@ class KafkaBindingTest {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "test",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("test-topic")
                                 .messages(Map.of(
                                         "testMessage",
-                                        Message.builder()
+                                        MessageObject.builder()
                                                 .bindings(Map.of(
                                                         "kafka",
                                                         KafkaMessageBinding.builder()
                                                                 .key(
-                                                                        Schema.builder()
+                                                                        SchemaObject.builder()
                                                                                 .type("string")
                                                                                 .enumValues(List.of("myKey"))
                                                                                 .build())

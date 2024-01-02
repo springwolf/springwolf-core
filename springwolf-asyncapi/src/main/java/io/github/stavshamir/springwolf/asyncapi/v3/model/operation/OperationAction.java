@@ -1,11 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.v3.model.operation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public enum OperationAction {
-    @JsonProperty("send")
-    SEND,
-    @JsonProperty("receive")
-    RECEIVE
+    SEND("send"),
+    RECEIVE("receive");
+
+    public final String type;
+
+    OperationAction(String type) {
+        this.type = type;
+    }
+
+    public static OperationAction fromString(String type) {
+        return valueOf(type.toUpperCase());
+    }
+
+    @Override
+    public String toString() {
+        return this.type;
+    }
 }

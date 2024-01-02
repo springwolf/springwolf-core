@@ -4,9 +4,9 @@ package io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp;
 import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +25,7 @@ class AMQPBindingTest {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "userSignup",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("user/signup")
                                 .bindings(Map.of(
                                         "amqp",
@@ -92,11 +92,11 @@ class AMQPBindingTest {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "userSignup",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("user/signup")
                                 .messages(Map.of(
                                         "userSignupMessage",
-                                        Message.builder()
+                                        MessageObject.builder()
                                                 .bindings(Map.of(
                                                         "amqp",
                                                         AMQPMessageBinding.builder()

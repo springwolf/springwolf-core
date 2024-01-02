@@ -15,7 +15,7 @@ class ChannelParameterTest {
 
     @Test
     void shouldSerializeChannelParameter() throws IOException {
-        var channel = Channel.builder()
+        var channel = ChannelObject.builder()
                 .address("user/{userId}/signedup")
                 .parameters(Map.of(
                         "userId",

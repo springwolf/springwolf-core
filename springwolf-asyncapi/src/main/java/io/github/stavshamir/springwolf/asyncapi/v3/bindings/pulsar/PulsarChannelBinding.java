@@ -78,10 +78,22 @@ public class PulsarChannelBinding extends ChannelBinding {
     private String bindingVersion = "0.1.0";
 
     public enum PulsarPesistenceType {
-        @JsonProperty("persistent")
-        PERSISTENCE,
+        PERSISTENCE("persistent"),
+        NON_PERSISTENCE("non-persistent");
 
-        @JsonProperty("non-persistent")
-        NON_PERSISTENCE
+        public final String type;
+
+        PulsarPesistenceType(String type) {
+            this.type = type;
+        }
+
+        public static PulsarPesistenceType fromString(String type) {
+            return valueOf(type.toUpperCase());
+        }
+
+        @Override
+        public String toString() {
+            return this.type;
+        }
     }
 }

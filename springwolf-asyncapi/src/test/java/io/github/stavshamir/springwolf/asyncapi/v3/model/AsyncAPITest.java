@@ -4,11 +4,11 @@ package io.github.stavshamir.springwolf.asyncapi.v3.model;
 import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelParameter;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageTrait;
@@ -19,7 +19,8 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationTraits;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.security_scheme.SecurityScheme;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.security_scheme.SecurityType;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
@@ -36,53 +37,48 @@ class AsyncAPITest {
 
     @Test
     void shouldCreateSimpleAsyncAPI() throws IOException {
+        var userSignUpMessage = MessageObject.builder()
+                .messageId("UserSignedUp")
+                .payload(MessagePayload.of(SchemaObject.builder()
+                        .type("object")
+                        .properties(Map.of(
+                                "displayName",
+                                SchemaObject.builder()
+                                        .type("string")
+                                        .description("Name of the user")
+                                        .build(),
+                                "email",
+                                SchemaObject.builder()
+                                        .type("string")
+                                        .format("email")
+                                        .description("Email of the user")
+                                        .build()))
+                        .build()))
+                .build();
+
+        var channelUserSignedup = ChannelObject.builder()
+                .channelId("userSignedup")
+                .address("user/signedup")
+                .messages(Map.of(userSignUpMessage.getMessageId(), MessageReference.fromMessage(userSignUpMessage)))
+                .build();
+
         AsyncAPI asyncAPI = AsyncAPI.builder()
                 .info(Info.builder()
                         .title("Account Service")
                         .version("1.0.0")
                         .description("This service is in charge of processing user signups")
                         .build())
-                .channels(Map.of(
-                        "userSignedup",
-                        Channel.builder()
-                                .address("user/signedup")
-                                .messages(Map.of(
-                                        "UserSignedUp",
-                                        Message.builder()
-                                                .ref("#/components/messages/UserSignedUp")
-                                                .build()))
-                                .build()))
+                .channels(Map.of(channelUserSignedup.getChannelId(), channelUserSignedup))
                 .operations(Map.of(
                         "sendUserSignedup",
                         Operation.builder()
                                 .action(OperationAction.SEND)
-                                .channel(ChannelReference.builder()
-                                        .ref("#/channels/userSignedup")
-                                        .build())
-                                .messages(List.of(MessageReference.builder()
-                                        .ref("#/channels/userSignedup/messages/UserSignedUp")
-                                        .build()))
+                                .channel(ChannelReference.fromChannel(channelUserSignedup))
+                                .messages(
+                                        List.of(new MessageReference("#/channels/userSignedup/messages/UserSignedUp")))
                                 .build()))
                 .components(Components.builder()
-                        .messages(Map.of(
-                                "UserSignedUp",
-                                Message.builder()
-                                        .payload(MessagePayload.of(Schema.builder()
-                                                .type("object")
-                                                .properties(Map.of(
-                                                        "displayName",
-                                                        Schema.builder()
-                                                                .type("string")
-                                                                .description("Name of the user")
-                                                                .build(),
-                                                        "email",
-                                                        Schema.builder()
-                                                                .type("string")
-                                                                .format("email")
-                                                                .description("Email of the user")
-                                                                .build()))
-                                                .build()))
-                                        .build()))
+                        .messages(Map.of(userSignUpMessage.getMessageId(), userSignUpMessage))
                         .build())
                 .build();
 
@@ -93,6 +89,40 @@ class AsyncAPITest {
 
     @Test
     void shouldCreateStreetlightsKafkaAsyncAPI() throws IOException {
+        var lightMeasuredMessage = MessageObject.builder()
+                .messageId("lightMeasured")
+                .name("lightMeasured")
+                .title("Light measured")
+                .summary("Inform about environmental lighting conditions of a particular streetlight.")
+                .contentType("application/json")
+                .traits(List.of(MessageTrait.builder()
+                        .ref("#/components/messageTraits/commonHeaders")
+                        .build()))
+                .payload(MessagePayload.of(MessageReference.fromSchema("lightMeasuredPayload")))
+                .build();
+
+        var turnOnOffMessage = MessageObject.builder()
+                .messageId("turnOnOff")
+                .name("turnOnOff")
+                .title("Turn on/off")
+                .summary("Command a particular streetlight to turn the lights on or off.")
+                .traits(List.of(MessageTrait.builder()
+                        .ref("#/components/messageTraits/commonHeaders")
+                        .build()))
+                .payload(MessagePayload.of(MessageReference.fromSchema("turnOnOffPayload")))
+                .build();
+
+        var dimLightMessage = MessageObject.builder()
+                .messageId("dimLight")
+                .name("dimLight")
+                .title("Dim light")
+                .summary("Command a particular streetlight to dim the lights.")
+                .traits(List.of(MessageTrait.builder()
+                        .ref("#/components/messageTraits/commonHeaders")
+                        .build()))
+                .payload(MessagePayload.of(MessageReference.fromSchema("dimLightPayload")))
+                .build();
+
         AsyncAPI asyncAPI = AsyncAPI.builder()
                 .info(Info.builder()
                         .title("Streetlights Kafka API")
@@ -158,13 +188,9 @@ class AsyncAPITest {
                                 .build()))
                 .channels(Map.of(
                         "lightingMeasured",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.event.{streetlightId}.lighting.measured")
-                                .messages(Map.of(
-                                        "lightMeasured",
-                                        Message.builder()
-                                                .ref("#/components/messages/lightMeasured")
-                                                .build()))
+                                .messages(Map.of("lightMeasured", MessageReference.fromMessage(lightMeasuredMessage)))
                                 .description("The topic on which measured values may be produced and consumed.")
                                 .parameters(Map.of(
                                         "streetlightId",
@@ -173,13 +199,9 @@ class AsyncAPITest {
                                                 .build()))
                                 .build(),
                         "lightTurnOn",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.action.{streetlightId}.turn.on")
-                                .messages(Map.of(
-                                        "turnOn",
-                                        Message.builder()
-                                                .ref("#/components/messages/turnOnOff")
-                                                .build()))
+                                .messages(Map.of("turnOn", MessageReference.fromMessage(turnOnOffMessage)))
                                 .parameters(Map.of(
                                         "streetlightId",
                                         ChannelParameter.builder()
@@ -187,13 +209,9 @@ class AsyncAPITest {
                                                 .build()))
                                 .build(),
                         "lightTurnOff",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.action.{streetlightId}.turn.off")
-                                .messages(Map.of(
-                                        "turnOff",
-                                        Message.builder()
-                                                .ref("#/components/messages/turnOnOff")
-                                                .build()))
+                                .messages(Map.of("turnOff", MessageReference.fromMessage(turnOnOffMessage)))
                                 .parameters(Map.of(
                                         "streetlightId",
                                         ChannelParameter.builder()
@@ -201,13 +219,9 @@ class AsyncAPITest {
                                                 .build()))
                                 .build(),
                         "lightsDim",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.action.{streetlightId}.dim")
-                                .messages(Map.of(
-                                        "dimLight",
-                                        Message.builder()
-                                                .ref("#/components/messages/dimLight")
-                                                .build()))
+                                .messages(Map.of("dimLight", MessageReference.fromMessage(dimLightMessage)))
                                 .parameters(Map.of(
                                         "streetlightId",
                                         ChannelParameter.builder()
@@ -225,9 +239,8 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(MessageReference.builder()
-                                        .ref("#/channels/lightingMeasured/messages/lightMeasured")
-                                        .build()))
+                                .messages(List.of(
+                                        new MessageReference("#/channels/lightingMeasured/messages/lightMeasured")))
                                 .build(),
                         "turnOn",
                         Operation.builder()
@@ -238,9 +251,7 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(MessageReference.builder()
-                                        .ref("#/channels/lightTurnOn/messages/turnOn")
-                                        .build()))
+                                .messages(List.of(new MessageReference("#/channels/lightTurnOn/messages/turnOn")))
                                 .build(),
                         "turnOff",
                         Operation.builder()
@@ -251,9 +262,7 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(MessageReference.builder()
-                                        .ref("#/channels/lightTurnOff/messages/turnOff")
-                                        .build()))
+                                .messages(List.of(new MessageReference("#/channels/lightTurnOff/messages/turnOff")))
                                 .build(),
                         "dimLight",
                         Operation.builder()
@@ -264,87 +273,46 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(MessageReference.builder()
-                                        .ref("#/channels/lightsDim/messages/dimLight")
-                                        .build()))
+                                .messages(List.of(new MessageReference("#/channels/lightsDim/messages/dimLight")))
                                 .build()))
                 .components(Components.builder()
                         .messages(Map.of(
-                                "lightMeasured",
-                                Message.builder()
-                                        .name("lightMeasured")
-                                        .title("Light measured")
-                                        .summary(
-                                                "Inform about environmental lighting conditions of a particular streetlight.")
-                                        .contentType("application/json")
-                                        .traits(List.of(MessageTrait.builder()
-                                                .ref("#/components/messageTraits/commonHeaders")
-                                                .build()))
-                                        .payload(MessagePayload.of(MessageReference.builder()
-                                                .ref("#/components/schemas/lightMeasuredPayload")
-                                                .build()))
-                                        .build(),
-                                "turnOnOff",
-                                Message.builder()
-                                        .name("turnOnOff")
-                                        .title("Turn on/off")
-                                        .summary("Command a particular streetlight to turn the lights on or off.")
-                                        .traits(List.of(MessageTrait.builder()
-                                                .ref("#/components/messageTraits/commonHeaders")
-                                                .build()))
-                                        .payload(MessagePayload.of(MessageReference.builder()
-                                                .ref("#/components/schemas/turnOnOffPayload")
-                                                .build()))
-                                        .build(),
-                                "dimLight",
-                                Message.builder()
-                                        .name("dimLight")
-                                        .title("Dim light")
-                                        .summary("Command a particular streetlight to dim the lights.")
-                                        .traits(List.of(MessageTrait.builder()
-                                                .ref("#/components/messageTraits/commonHeaders")
-                                                .build()))
-                                        .payload(MessagePayload.of(MessageReference.builder()
-                                                .ref("#/components/schemas/dimLightPayload")
-                                                .build()))
-                                        .build()))
+                                lightMeasuredMessage.getMessageId(), lightMeasuredMessage,
+                                turnOnOffMessage.getMessageId(), turnOnOffMessage,
+                                dimLightMessage.getMessageId(), dimLightMessage))
                         .schemas(Map.of(
                                 "lightMeasuredPayload",
-                                ComponentSchema.of(Schema.builder()
+                                ComponentSchema.of(SchemaObject.builder()
                                         .type("object")
                                         .properties(Map.of(
                                                 "lumens",
-                                                Schema.builder()
+                                                SchemaObject.builder()
                                                         .type("integer")
                                                         .minimum(0)
                                                         .description("Light intensity measured in lumens.")
                                                         .build(),
                                                 "sentAt",
-                                                Schema.builder()
-                                                        .ref("#/components/schemas/sentAt")
-                                                        .build()))
+                                                SchemaReference.fromSchema("sentAt")))
                                         .build()),
                                 "turnOnOffPayload",
-                                ComponentSchema.of(Schema.builder()
+                                ComponentSchema.of(SchemaObject.builder()
                                         .type("object")
                                         .properties(Map.of(
                                                 "command",
-                                                Schema.builder()
+                                                SchemaObject.builder()
                                                         .type("string")
                                                         .enumValues(List.of("on", "off"))
                                                         .description("Whether to turn on or off the light.")
                                                         .build(),
                                                 "sentAt",
-                                                Schema.builder()
-                                                        .ref("#/components/schemas/sentAt")
-                                                        .build()))
+                                                SchemaReference.fromSchema("sentAt")))
                                         .build()),
                                 "dimLightPayload",
-                                ComponentSchema.of(Schema.builder()
+                                ComponentSchema.of(SchemaObject.builder()
                                         .type("object")
                                         .properties(Map.of(
                                                 "percentage",
-                                                Schema.builder()
+                                                SchemaObject.builder()
                                                         .type("integer")
                                                         .description(
                                                                 "Percentage to which the light should be dimmed to.")
@@ -352,12 +320,10 @@ class AsyncAPITest {
                                                         .maximum(100)
                                                         .build(),
                                                 "sentAt",
-                                                Schema.builder()
-                                                        .ref("#/components/schemas/sentAt")
-                                                        .build()))
+                                                SchemaReference.fromSchema("sentAt")))
                                         .build()),
                                 "sentAt",
-                                ComponentSchema.of(Schema.builder()
+                                ComponentSchema.of(SchemaObject.builder()
                                         .type("string")
                                         .format("date-time")
                                         .description("Date and time when the message was sent.")
@@ -381,11 +347,11 @@ class AsyncAPITest {
                         .messageTraits(Map.of(
                                 "commonHeaders",
                                 MessageTrait.builder()
-                                        .headers(MessageHeaders.of(Schema.builder()
+                                        .headers(MessageHeaders.of(SchemaObject.builder()
                                                 .type("object")
                                                 .properties(Map.of(
                                                         "my-app-header",
-                                                        Schema.builder()
+                                                        SchemaObject.builder()
                                                                 .type("integer")
                                                                 .minimum(0)
                                                                 .maximum(100)
@@ -398,7 +364,7 @@ class AsyncAPITest {
                                         .bindings(Map.of(
                                                 "kafka",
                                                 KafkaOperationBinding.builder()
-                                                        .clientId(Schema.builder()
+                                                        .clientId(SchemaObject.builder()
                                                                 .type("string")
                                                                 .enumValues(List.of("my-app-id"))
                                                                 .build())

@@ -9,7 +9,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ServerBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExtendableObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.Tag;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelParameter;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.CorrelationID;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
@@ -57,7 +57,7 @@ public class Components extends ExtendableObject {
      * An object to hold reusable Channel Objects.
      */
     @JsonProperty(value = "channels")
-    private Map<String, Channel> channels;
+    private Map<String, ChannelObject> channels;
 
     /**
      * An object to hold reusable Operation Objects.

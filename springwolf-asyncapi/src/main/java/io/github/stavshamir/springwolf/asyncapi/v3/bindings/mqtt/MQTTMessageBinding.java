@@ -3,7 +3,6 @@ package io.github.stavshamir.springwolf.asyncapi.v3.bindings.mqtt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.Reference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -38,7 +37,7 @@ public class MQTTMessageBinding extends ChannelBinding {
      * for when it is received.
      */
     @JsonProperty("correlationData")
-    private Object correlationData;
+    private Schema correlationData;
 
     /**
      * String describing the content type of the message payload. This should not conflict with the contentType field
@@ -67,26 +66,10 @@ public class MQTTMessageBinding extends ChannelBinding {
     }
 
     public static class CustomMQTTMessageBinding extends MQTTMessageBindingBuilder {
-        private Object correlationData;
         private Object responseTopic;
-
-        public MQTTMessageBindingBuilder correlationData(Schema schema) {
-            this.correlationData = schema;
-            return this;
-        }
-
-        public MQTTMessageBindingBuilder correlationData(Reference reference) {
-            this.correlationData = reference;
-            return this;
-        }
 
         public MQTTMessageBindingBuilder responseTopic(Schema schema) {
             this.responseTopic = schema;
-            return this;
-        }
-
-        public MQTTMessageBindingBuilder responseTopic(Reference reference) {
-            this.responseTopic = reference;
             return this;
         }
 

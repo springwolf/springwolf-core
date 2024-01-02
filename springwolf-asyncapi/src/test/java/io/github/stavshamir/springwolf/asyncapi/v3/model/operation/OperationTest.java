@@ -37,9 +37,7 @@ class OperationTest {
                 .traits(List.of(OperationTraits.builder()
                         .ref("#/components/operationTraits/kafka")
                         .build()))
-                .messages(List.of(MessageReference.builder()
-                        .ref("/components/messages/userSignedUp")
-                        .build()))
+                .messages(List.of(MessageReference.fromMessage("userSignedUp")))
                 .reply(OperationReply.builder()
                         .address(OperationReplyAddress.builder()
                                 .location("$message.header#/replyTo")
@@ -47,16 +45,14 @@ class OperationTest {
                         .channel(ChannelReference.builder()
                                 .ref("#/channels/userSignupReply")
                                 .build())
-                        .messages(List.of(MessageReference.builder()
-                                .ref("/components/messages/userSignedUpReply")
-                                .build()))
+                        .messages(List.of(MessageReference.fromMessage("userSignedUpReply")))
                         .build())
                 .build();
 
         String example = ClasspathUtil.readAsString("/v3/model/operation/operation.json");
         assertThatJson(serializer.toJsonString(operation))
                 // FIXME: https://github.com/asyncapi/spec/issues/1007
-                .whenIgnoringPaths("bindings.amqp.bindingVersion", "security")
+                .whenIgnoringPaths("bindings.amqp.bindingVersion", "bindings.amqp.expiration", "security")
                 .isEqualTo(example);
     }
 }

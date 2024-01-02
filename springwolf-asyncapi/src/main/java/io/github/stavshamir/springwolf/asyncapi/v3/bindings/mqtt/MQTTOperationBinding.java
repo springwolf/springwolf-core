@@ -2,8 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.v3.bindings.mqtt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.Reference;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -23,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MQTTOperationBinding extends ChannelBinding {
+public class MQTTOperationBinding extends OperationBinding {
     /**
      * Defines the Quality of Service (QoS) levels for the message flow between client and server.
      * Its value MUST be either 0 (At most once delivery), 1 (At least once delivery), or 2 (Exactly once delivery).
@@ -74,11 +73,6 @@ public class MQTTOperationBinding extends ChannelBinding {
 
         public MQTTOperationBindingBuilder messageExpiryInterval(Schema schema) {
             this.messageExpiryInterval = schema;
-            return this;
-        }
-
-        public MQTTOperationBindingBuilder messageExpiryInterval(Reference reference) {
-            this.messageExpiryInterval = reference;
             return this;
         }
     }

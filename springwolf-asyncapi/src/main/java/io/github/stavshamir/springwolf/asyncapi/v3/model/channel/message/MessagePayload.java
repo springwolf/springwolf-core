@@ -4,21 +4,21 @@ package io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.model.channel.message.MessagePayloadSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import lombok.Getter;
 
 @Getter
 @JsonSerialize(using = MessagePayloadSerializer.class)
 public class MessagePayload {
     private MultiFormatSchema multiFormatSchema;
-    private Schema schema;
+    private SchemaObject schema;
     private MessageReference reference;
 
     private MessagePayload(MultiFormatSchema multiFormatSchema) {
         this.multiFormatSchema = multiFormatSchema;
     }
 
-    private MessagePayload(Schema schema) {
+    private MessagePayload(SchemaObject schema) {
         this.schema = schema;
     }
 
@@ -30,7 +30,7 @@ public class MessagePayload {
         return new MessagePayload(multiFormatSchema);
     }
 
-    public static MessagePayload of(Schema schema) {
+    public static MessagePayload of(SchemaObject schema) {
         return new MessagePayload(schema);
     }
 

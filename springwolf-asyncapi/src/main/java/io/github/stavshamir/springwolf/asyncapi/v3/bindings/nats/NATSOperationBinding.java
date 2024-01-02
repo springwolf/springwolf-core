@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.v3.bindings.nats;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class NATSOperationBinding extends ChannelBinding {
+public class NATSOperationBinding extends OperationBinding {
     /**
      * Defines the name of the queue to use. It MUST NOT exceed 255 characters.
      */

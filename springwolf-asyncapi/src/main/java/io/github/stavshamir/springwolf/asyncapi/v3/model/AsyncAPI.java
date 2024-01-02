@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.v3.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
@@ -29,6 +29,8 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 public class AsyncAPI extends ExtendableObject {
 
+    public static final String ASYNCAPI_DEFAULT_VERSION = "3.0.0";
+
     /**
      * REQUIRED. Specifies the AsyncAPI Specification version being used. It can be used by tooling Specifications and
      * clients to interpret the version. The structure shall be major.minor.patch, where patch versions must be
@@ -39,7 +41,7 @@ public class AsyncAPI extends ExtendableObject {
     @NotNull
     @Builder.Default
     @JsonProperty(value = "asyncapi")
-    private String asyncapi = "3.0.0";
+    private String asyncapi = ASYNCAPI_DEFAULT_VERSION;
 
     /**
      * Identifier of the
@@ -89,7 +91,7 @@ public class AsyncAPI extends ExtendableObject {
      * naming conventions.
      */
     @JsonProperty(value = "channels")
-    private Map<String, Channel> channels;
+    private Map<String, ChannelObject> channels;
 
     /**
      * Holds a dictionary with all the operations this application MUST implement.

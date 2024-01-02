@@ -4,7 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs;
 import io.github.stavshamir.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ class SQSBindingTest {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "user-signedup",
-                        Channel.builder()
+                        ChannelObject.builder()
                                 .description("A user has signed up for our service")
                                 .build()))
                 .build();
