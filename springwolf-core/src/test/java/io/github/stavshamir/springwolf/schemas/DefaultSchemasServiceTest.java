@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -52,7 +51,7 @@ class DefaultSchemasServiceTest {
         String expected = jsonResource("/schemas/definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(actualDefinitions));
+        assertEquals(expected, actualDefinitions);
     }
 
     @Test
@@ -63,7 +62,7 @@ class DefaultSchemasServiceTest {
         String expected = jsonResource("/schemas/documented-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(actualDefinitions));
+        assertEquals(expected, actualDefinitions);
     }
 
     @Test
@@ -74,7 +73,7 @@ class DefaultSchemasServiceTest {
         String expected = jsonResource("/schemas/array-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(actualDefinitions));
+        assertEquals(expected, actualDefinitions);
     }
 
     @Test
@@ -85,7 +84,7 @@ class DefaultSchemasServiceTest {
         String expected = jsonResource("/schemas/complex-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(actualDefinitions));
+        assertEquals(expected, actualDefinitions);
     }
 
     @Test
@@ -96,7 +95,7 @@ class DefaultSchemasServiceTest {
         String expected = jsonResource("/schemas/generics-wrapper-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(actualDefinitions));
+        assertEquals(expected, actualDefinitions);
     }
 
     @Test
@@ -257,7 +256,7 @@ class DefaultSchemasServiceTest {
             String expected = jsonResource("/schemas/annotation-definitions.json");
 
             System.out.println("Got: " + actualDefinitions);
-            assertEquals(StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(actualDefinitions));
+            assertEquals(expected, actualDefinitions);
         }
 
         @Data
