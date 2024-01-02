@@ -21,4 +21,6 @@ export interface Schema {
   required?: string[];
   enum?: string[];
   example?: Example;
+  minimum?: number;
+  maximum?: number;
 }

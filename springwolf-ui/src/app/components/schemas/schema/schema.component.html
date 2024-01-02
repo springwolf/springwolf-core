@@ -1,6 +1,15 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <table class="schema">
   <tbody>
+    <!--  Primitive types  -->
+    <tr *ngIf="schema.type !== 'object'">
+      <ng-container
+        [ngTemplateOutlet]="valueContent"
+        [ngTemplateOutletContext]="{ value: schema }"
+      >
+      </ng-container>
+    </tr>
+    <!--  Objects  -->
     <tr *ngFor="let property of schema?.properties | keyvalue">
       <td class="key">
         {{ property.key }}
@@ -21,25 +30,53 @@
             >
           </span>
         </ng-container>
-        <span class="type" *ngIf="property.value.type != 'array'">{{
-          property.value.type
-        }}</span>
-        <span class="type" *ngIf="property.value.refTitle">
-          <a [href]="property.value.anchorUrl">{{ property.value.refTitle }}</a>
-        </span>
-        <span class="format" *ngIf="property.value.format"
-          >({{ property.value.format }})</span
+        <ng-container
+          [ngTemplateOutlet]="valueContent"
+          [ngTemplateOutletContext]="{ value: property.value }"
         >
-        <div class="description">{{ property.value.description }}</div>
-        <span class="example" *ngIf="property.value.example"
-          >example: {{ property.value.example.value }}</span
-        >
-        <mat-select *ngIf="property.value.enum" placeholder="Enum">
-          <mat-option *ngFor="let enum of property.value.enum" [value]="enum">{{
-            enum
-          }}</mat-option>
-        </mat-select>
+        </ng-container>
       </td>
     </tr>
   </tbody>
 </table>
+
+<ng-template #valueContent let-value="value">
+  <div class="type-content">
+    <span class="type" *ngIf="value.type != 'array'">{{ value.type }}</span>
+
+    <ng-container
+      [ngTemplateOutlet]="rangeContent"
+      [ngTemplateOutletContext]="{
+        minimum: value.minimum,
+        maximum: value.maximum
+      }"
+    >
+    </ng-container>
+  </div>
+
+  <span class="type" *ngIf="value.refTitle">
+    <a [href]="value.anchorUrl">{{ value.refTitle }}</a>
+  </span>
+  <span class="format" *ngIf="value.format">({{ value.format }})</span>
+  <div class="description">{{ value.description }}</div>
+  <span class="example" *ngIf="value.example"
+    >example: {{ value.example.value }}</span
+  >
+  <mat-select *ngIf="value.enum" placeholder="Enum">
+    <mat-option *ngFor="let enum of value.enum" [value]="enum"
+      >{{ enum }}
+    </mat-option>
+  </mat-select>
+</ng-template>
+
+<ng-template #rangeContent let-minimum="minimum" let-maximum="maximum">
+  <span class="range" *ngIf="minimum !== undefined && maximum === undefined">
+    &gt;= {{ minimum }}
+  </span>
+  <span class="range" *ngIf="minimum === undefined && maximum !== undefined">
+    &lt;= {{ maximum }}
+  </span>
+  <span class="range" *ngIf="minimum !== undefined && maximum !== undefined">
+    [ {{ minimum }} .. {{ maximum }} ]
+  </span>
+</ng-template>
