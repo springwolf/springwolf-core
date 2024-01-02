@@ -278,6 +278,38 @@
         }
       }
     },
+    "primitive-topic": {
+      "publish": {
+        "operationId": "primitive-topic_publish_receivePrimitivePayload",
+        "description": "Auto-generated description",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "java.lang.String",
+          "title": "String",
+          "payload": {
+            "$ref": "#/components/schemas/String"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "kafka": {
+              "bindingVersion": "0.4.0"
+            }
+          }
+        }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.4.0"
+        }
+      }
+    },
     "topic-defined-via-asyncPublisher-annotation": {
       "subscribe": {
         "operationId": "topic-defined-via-asyncPublisher-annotation_subscribe",
@@ -575,6 +607,7 @@
         "type": "object",
         "properties": {
           "amount": {
+            "minimum": 0.1,
             "type": "number",
             "example": 99.99
           },
@@ -592,6 +625,7 @@
           "name": "io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount",
           "properties": {
             "amount": {
+              "minimum": 0.1,
               "name": "amount",
               "type": "number"
             },

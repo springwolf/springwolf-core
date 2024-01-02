@@ -11,8 +11,12 @@
       <mat-panel-title>
         <h3>{{ schema.value.title }}</h3>
       </mat-panel-title>
-      <mat-panel-description>
-        {{ schema.value.description }}
+      <mat-panel-description
+        class="flex-column flex-start items-center"
+        [ngClass]="{ 'gap-16': schema.value.description }"
+      >
+        <div>{{ schema.value.description }}</div>
+        <div class="badge type-badge">{{ schema.value.type }}</div>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <h4>
