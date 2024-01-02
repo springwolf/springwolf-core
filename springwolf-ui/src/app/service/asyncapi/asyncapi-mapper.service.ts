@@ -270,6 +270,8 @@ export class AsyncApiMapperService {
       properties,
       required: schema.required,
       example,
+      minimum: schema.minimum,
+      maximum: schema.maximum,
     };
   }
 
