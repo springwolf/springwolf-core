@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -24,7 +25,7 @@ class MessageHelperTest {
 
     @Test
     void toMessageObjectOrComposition_oneMessage() {
-        Message message = Message.builder().name("foo").build();
+        MessageObject message = MessageObject.builder().name("foo").build();
 
         Object asObject = toMessageObjectOrComposition(Set.of(message));
 
@@ -33,9 +34,9 @@ class MessageHelperTest {
 
     @Test
     void toMessageObjectOrComposition_multipleMessages() {
-        Message message1 = Message.builder().name("foo").build();
+        MessageObject message1 = MessageObject.builder().name("foo").build();
 
-        Message message2 = Message.builder().name("bar").build();
+        MessageObject message2 = MessageObject.builder().name("bar").build();
 
         Object asObject = toMessageObjectOrComposition(Set.of(message1, message2));
 
@@ -44,13 +45,17 @@ class MessageHelperTest {
 
     @Test
     void toMessageObjectOrComposition_multipleMessages_remove_duplicates() {
-        Message message1 =
-                Message.builder().name("foo").description("This is message 1").build();
+        MessageObject message1 = MessageObject.builder()
+                .name("foo")
+                .description("This is message 1")
+                .build();
 
-        Message message2 =
-                Message.builder().name("bar").description("This is message 2").build();
+        MessageObject message2 = MessageObject.builder()
+                .name("bar")
+                .description("This is message 2")
+                .build();
 
-        Message message3 = Message.builder()
+        MessageObject message3 = MessageObject.builder()
                 .name("bar")
                 .description("This is message 3, but in essence the same payload type as message 2")
                 .build();
@@ -66,24 +71,24 @@ class MessageHelperTest {
 
     @Test
     void toMessageObjectOrComposition_multipleMessages_should_not_break_deep_equals() {
-        Message actualMessage1 = Message.builder()
+        MessageObject actualMessage1 = MessageObject.builder()
                 .name("foo")
                 .description("This is actual message 1")
                 .build();
 
-        Message actualMessage2 = Message.builder()
+        MessageObject actualMessage2 = MessageObject.builder()
                 .name("bar")
                 .description("This is actual message 2")
                 .build();
 
         Object actualObject = toMessageObjectOrComposition(Set.of(actualMessage1, actualMessage2));
 
-        Message expectedMessage1 = Message.builder()
+        MessageObject expectedMessage1 = MessageObject.builder()
                 .name("foo")
                 .description("This is expected message 1")
                 .build();
 
-        Message expectedMessage2 = Message.builder()
+        MessageObject expectedMessage2 = MessageObject.builder()
                 .name("bar")
                 .description("This is expected message 2")
                 .build();
@@ -97,30 +102,30 @@ class MessageHelperTest {
     void messageObjectToSet_notAMessageOrAMap() {
         Object string = "foo";
 
-        Set<Message> messages = messageObjectToSet(string);
+        Set<MessageObject> messages = messageObjectToSet(string);
 
         assertThat(messages).isEmpty();
     }
 
     @Test
     void messageObjectToSet_Message() {
-        Message message = Message.builder().name("foo").build();
+        MessageObject message = MessageObject.builder().name("foo").build();
         Object asObject = toMessageObjectOrComposition(Set.of(message));
 
-        Set<Message> messages = messageObjectToSet(asObject);
+        Set<MessageObject> messages = messageObjectToSet(asObject);
 
         assertThat(messages).containsExactly(message);
     }
 
     @Test
     void messageObjectToSet_SetOfMessage() {
-        Message message1 = Message.builder().name("foo").build();
+        MessageObject message1 = MessageObject.builder().name("foo").build();
 
-        Message message2 = Message.builder().name("bar").build();
+        MessageObject message2 = MessageObject.builder().name("bar").build();
 
         Object asObject = toMessageObjectOrComposition(Set.of(message1, message2));
 
-        Set<Message> messages = messageObjectToSet(asObject);
+        Set<MessageObject> messages = messageObjectToSet(asObject);
 
         assertThat(messages).containsExactlyInAnyOrder(message1, message2);
     }

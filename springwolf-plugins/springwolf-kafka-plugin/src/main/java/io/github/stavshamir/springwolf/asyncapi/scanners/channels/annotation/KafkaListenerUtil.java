@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
-import com.asyncapi.v2.schema.Schema;
-import com.asyncapi.v2.schema.Type;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.lang.Nullable;
@@ -32,11 +33,11 @@ public class KafkaListenerUtil {
         return resolvedTopics.get(0);
     }
 
-    public static Map<String, ? extends ChannelBinding> buildChannelBinding() {
+    public static Map<String, ChannelBinding> buildChannelBinding() {
         return Map.of("kafka", new KafkaChannelBinding());
     }
 
-    public static Map<String, ? extends OperationBinding> buildOperationBinding(
+    public static Map<String, OperationBinding> buildOperationBinding(
             KafkaListener annotation, StringValueResolver resolver) {
         String groupId = resolver.resolveStringValue(annotation.groupId());
         Schema groupIdSchema = buildKafkaGroupIdSchema(groupId);
@@ -47,8 +48,8 @@ public class KafkaListenerUtil {
     }
 
     @Nullable
-    public static Schema buildKafkaClientIdSchema(String clientId) {
-        Schema schema = createStringSchema(clientId);
+    public static SchemaObject buildKafkaClientIdSchema(String clientId) {
+        SchemaObject schema = createStringSchema(clientId);
 
         if (schema != null) {
             log.debug("Found client id: {}", clientId);
@@ -60,8 +61,8 @@ public class KafkaListenerUtil {
     }
 
     @Nullable
-    public static Schema buildKafkaGroupIdSchema(String groupId) {
-        Schema schema = createStringSchema(groupId);
+    public static SchemaObject buildKafkaGroupIdSchema(String groupId) {
+        SchemaObject schema = createStringSchema(groupId);
 
         if (schema != null) {
             log.debug("Found group id: {}", groupId);
@@ -73,17 +74,17 @@ public class KafkaListenerUtil {
     }
 
     @Nullable
-    private static Schema createStringSchema(String value) {
+    private static SchemaObject createStringSchema(String value) {
         if (value != null && !value.isEmpty()) {
-            Schema schema = new Schema();
-            schema.setEnumValue(List.of(value));
-            schema.setType(Type.STRING);
+            SchemaObject schema = new SchemaObject();
+            schema.setEnumValues(List.of(value));
+            schema.setType(SchemaType.STRING);
             return schema;
         }
         return null;
     }
 
-    public static Map<String, ? extends MessageBinding> buildMessageBinding() {
+    public static Map<String, MessageBinding> buildMessageBinding() {
         return Map.of("kafka", new KafkaMessageBinding());
     }
 }

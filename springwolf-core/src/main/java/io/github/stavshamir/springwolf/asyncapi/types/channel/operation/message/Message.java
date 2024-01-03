@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message;
 
-import com.asyncapi.v2.binding.message.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +15,7 @@ import java.util.Map;
  *
  * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#messageObject">Message specification</a>
  */
+// FIXME: DELETE THIS CLASS
 @Data
 @Builder
 @NoArgsConstructor
@@ -54,7 +55,7 @@ public class Message {
 
     private HeaderReference headers;
 
-    private Map<String, ? extends MessageBinding> bindings;
+    private Map<String, MessageBinding> bindings;
 
     // Why do we add this empty class if Lombok @Builder is doing this job? Because this class is used as an argument
     // in one method. Since Lombok works as an annotation Processor, the JavaDoc tool cannot find the generated class

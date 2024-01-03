@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2._6_0.model.server.Server;
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,7 +45,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
     protected abstract OperationData.OperationType getOperationType();
 
     @Override
-    public Map<String, ChannelItem> scan() {
+    public Map<String, ChannelObject> scan() {
         Map<String, List<OperationData>> operationDataGroupedByChannelName = this.getOperationData().stream()
                 .filter(this::allFieldsAreNonNull)
                 .collect(groupingBy(OperationData::getChannelName));
@@ -68,26 +67,25 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
     }
 
     /**
-     * Creates an asyncapi {@link ChannelItem} using the given list of {@link OperationData}. Expects, that all {@link OperationData}
-     * items belong to the same channel. Most properties of the resulting {@link ChannelItem} are extracted from the
+     * Creates an asyncapi {@link ChannelObject} using the given list of {@link OperationData}. Expects, that all {@link OperationData}
+     * items belong to the same channel. Most properties of the resulting {@link ChannelObject} are extracted from the
      * first {@link OperationData} item in the list, assuming that all {@link OperationData} contains the same channel
      * informations.
      *
      * @param operationDataList List of all {@link OperationData} items for a single channel.
-     * @return the resulting {@link ChannelItem}
+     * @return the resulting {@link ChannelObject}
      */
-    private ChannelItem buildChannel(List<OperationData> operationDataList) {
+    private ChannelObject buildChannel(List<OperationData> operationDataList) {
         // All bindings in the group are assumed to be the same
         // AsyncApi does not support multiple bindings on a single channel
-        Map<String, ? extends ChannelBinding> channelBinding =
-                operationDataList.get(0).getChannelBinding();
-        Map<String, ? extends OperationBinding> operationBinding =
+        Map<String, ChannelBinding> channelBinding = operationDataList.get(0).getChannelBinding();
+        Map<String, OperationBinding> operationBinding =
                 operationDataList.get(0).getOperationBinding();
-        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-        String operationId = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
+        Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
+        String operationTitle = operationDataList.get(0).getChannelName() + "_" + this.getOperationType().operationName;
         String description = operationDataList.get(0).getDescription();
-        List<String> servers = operationDataList.get(0).getServers();
+        List<ServerReference> servers = operationDataList.get(0).getServers();
 
         if (description.isEmpty()) {
             description = "Auto-generated description";
@@ -95,34 +93,35 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
 
         Operation operation = Operation.builder()
                 .description(description)
-                .operationId(operationId)
-                .message(getMessageObject(operationDataList))
+                .title(operationTitle)
+                // .message(getMessageObject(operationDataList)) FIXME
                 .bindings(opBinding)
                 .build();
 
-        ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder().bindings(chBinding);
-        channelBuilder = switch (getOperationType()) {
-            case PUBLISH -> channelBuilder.publish(operation);
-            case SUBSCRIBE -> channelBuilder.subscribe(operation);};
+        ChannelObject.ChannelObjectBuilder channelBuilder =
+                ChannelObject.builder().bindings(chBinding);
+        //        channelBuilder = switch (getOperationType()) { FIXME
+        //            case PUBLISH -> channelBuilder.publish(operation);
+        //            case SUBSCRIBE -> channelBuilder.subscribe(operation);};
 
         // Only set servers if servers are defined. Avoid setting an emtpy list
         // because this would generate empty server entries for each channel in the resulting
         // async api.
         if (servers != null && !servers.isEmpty()) {
-            validateServers(servers, operationId);
+            validateServers(servers, operationTitle);
             channelBuilder.servers(servers);
         }
         return channelBuilder.build();
     }
 
     private Object getMessageObject(List<OperationData> operationDataList) {
-        Set<Message> messages =
+        Set<MessageObject> messages =
                 operationDataList.stream().map(this::buildMessage).collect(toSet());
 
         return toMessageObjectOrComposition(messages);
     }
 
-    private Message buildMessage(OperationData operationData) {
+    private MessageObject buildMessage(OperationData operationData) {
         Class<?> payloadType = operationData.getPayloadType();
         String modelName = this.getSchemaService().register(payloadType);
         String headerModelName = this.getSchemaService().register(operationData.getHeaders());
@@ -135,12 +134,12 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         var schema = payloadType.getAnnotation(Schema.class);
         String description = schema != null ? schema.description() : null;
 
-        var builder = Message.builder()
+        var builder = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(payloadType.getSimpleName())
                 .description(description)
-                .payload(PayloadReference.fromModelName(modelName))
-                .headers(HeaderReference.fromModelName(headerModelName))
+                // .payload(PayloadReference.fromModelName(modelName)) FIXME
+                // .headers(HeaderReference.fromModelName(headerModelName)) FIXME
                 .bindings(operationData.getMessageBinding());
 
         // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher
@@ -151,14 +150,16 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
         return builder.build();
     }
 
-    private void processAsyncMessageAnnotation(Message annotationMessage, Message.MessageBuilder builder) {
+    private void processAsyncMessageAnnotation(
+            MessageObject annotationMessage, MessageObject.MessageObjectBuilder builder) {
         if (annotationMessage != null) {
             builder.messageId(annotationMessage.getMessageId());
 
-            var schemaFormat = annotationMessage.getSchemaFormat() != null
-                    ? annotationMessage.getSchemaFormat()
-                    : Message.DEFAULT_SCHEMA_FORMAT;
-            builder.schemaFormat(schemaFormat);
+            // FIXME
+            //            var schemaFormat = annotationMessage.getSchemaFormat() != null
+            //                    ? annotationMessage.getSchemaFormat()
+            //                    : Message.DEFAULT_SCHEMA_FORMAT;
+            //            builder.schemaFormat(schemaFormat);
 
             var annotationMessageDescription = annotationMessage.getDescription();
             if (StringUtils.hasText(annotationMessageDescription)) {
@@ -185,7 +186,7 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
      * @param operationId          operationId of the current operation - used for exception messages
      * @throws IllegalArgumentException if server from operation is not present in AsyncApi's servers definition.
      */
-    void validateServers(List<String> serversFromOperation, String operationId) {
+    void validateServers(List<ServerReference> serversFromOperation, String operationId) {
         if (!serversFromOperation.isEmpty()) {
             Map<String, Server> asyncApiServers =
                     getAsyncApiDocketService().getAsyncApiDocket().getServers();
@@ -194,8 +195,8 @@ public abstract class AbstractOperationDataScanner implements ChannelsScanner {
                         "Operation '%s' defines server refs (%s) but there are no servers defined in this AsyncAPI.",
                         operationId, serversFromOperation));
             }
-            for (String server : serversFromOperation) {
-                if (!asyncApiServers.containsKey(server)) {
+            for (ServerReference server : serversFromOperation) {
+                if (!asyncApiServers.containsKey(server.getRef())) {
                     throw new IllegalArgumentException(String.format(
                             "Operation '%s' defines unknown server ref '%s'. This AsyncApi defines these server(s): %s",
                             operationId, server, asyncApiServers.keySet()));

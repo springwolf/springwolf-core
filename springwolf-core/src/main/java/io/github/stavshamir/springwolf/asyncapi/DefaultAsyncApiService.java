@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -62,10 +62,15 @@ public class DefaultAsyncApiService implements AsyncApiService {
             // ChannelsService must be invoked before accessing SchemasService,
             // because during channel scanning, all detected schemas are registered with
             // SchemasService.
-            Map<String, ChannelItem> channels = channelsService.findChannels();
+            Map<String, ChannelObject> channels = channelsService.findChannels();
 
             Components components = Components.builder()
-                    .schemas(schemasService.getDefinitions())
+                    // FIXME
+                    //                    .schemas(schemasService.getDefinitions().entrySet().stream()
+                    //                    .collect(Collectors.toMap(
+                    //                            Map.Entry::getKey,
+                    //                            entry -> ComponentSchema.of(entry.getValue())
+                    //                    )))
                     .build();
 
             AsyncAPI asyncAPI = AsyncAPI.builder()

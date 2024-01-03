@@ -19,6 +19,9 @@ dependencies {
 
     annotationProcessor project(":springwolf-plugins:springwolf-kafka")
 
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 
     implementation "org.springframework:spring-beans"

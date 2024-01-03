@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.channel.jms.JMSChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.jms.JMSMessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.operation.jms.JMSOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSOperationBinding;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -45,8 +45,7 @@ class JmsListenerUtilTest {
             StringValueResolver resolver = mock(StringValueResolver.class);
 
             // when
-            Map<String, ? extends ChannelBinding> channelBinding =
-                    JmsListenerUtil.buildChannelBinding(annotation, resolver);
+            Map<String, ChannelBinding> channelBinding = JmsListenerUtil.buildChannelBinding(annotation, resolver);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -61,7 +60,7 @@ class JmsListenerUtilTest {
             StringValueResolver resolver = mock(StringValueResolver.class);
 
             // when
-            Map<String, ? extends OperationBinding> operationBinding =
+            Map<String, OperationBinding> operationBinding =
                     JmsListenerUtil.buildOperationBinding(annotation, resolver);
 
             // then
@@ -73,7 +72,7 @@ class JmsListenerUtilTest {
         @Test
         void buildMessageBinding() {
             // when
-            Map<String, ? extends MessageBinding> messageBinding = JmsListenerUtil.buildMessageBinding();
+            Map<String, MessageBinding> messageBinding = JmsListenerUtil.buildMessageBinding();
 
             // then
             assertEquals(1, messageBinding.size());

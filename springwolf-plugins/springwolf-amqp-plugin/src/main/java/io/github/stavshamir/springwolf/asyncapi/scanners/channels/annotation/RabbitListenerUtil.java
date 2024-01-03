@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeType;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelQueueProperties;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
@@ -81,7 +85,7 @@ public class RabbitListenerUtil {
                 Arrays.stream(rabbitListenerAnnotation.queuesToDeclare()).map(Queue::name));
     }
 
-    public static Map<String, ? extends ChannelBinding> buildChannelBinding(
+    public static Map<String, ChannelBinding> buildChannelBinding(
             RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
         AMQPChannelBinding.AMQPChannelBindingBuilder channelBinding = AMQPChannelBinding.builder();
 
@@ -90,35 +94,38 @@ public class RabbitListenerUtil {
         String exchangeName = getExchangeName(annotation, resolver, context);
         channelBinding.exchange(buildExchangeProperties(annotation, exchangeName, context));
         if (exchangeName.isEmpty()) {
-            channelBinding.is("queue");
+            channelBinding.is(AMQPChannelType.QUEUE);
         } else {
-            channelBinding.is("routingKey");
+            channelBinding.is(AMQPChannelType.ROUTING_KEY);
         }
 
         return Map.of("amqp", channelBinding.build());
     }
 
-    private static AMQPChannelBinding.ExchangeProperties buildExchangeProperties(
+    private static AMQPChannelExchangeProperties buildExchangeProperties(
             RabbitListener annotation, String exchangeName, RabbitListenerUtilContext context) {
 
         // When a bean is found, its values are preferred regardless of the annotations values.
         // When using the annotation, it is not possible to differentiate between user set and default parameters
         Exchange exchange = context.exchangeMap.get(exchangeName);
         if (exchange != null) {
-            return AMQPChannelBinding.ExchangeProperties.builder()
+            return AMQPChannelExchangeProperties.builder()
                     .name(exchangeName)
-                    .type(exchange.getType())
+                    .type(AMQPChannelExchangeType.fromString(exchange.getType()))
                     .durable(exchange.isDurable())
                     .autoDelete(exchange.isAutoDelete())
                     .build();
         }
 
-        return AMQPChannelBinding.ExchangeProperties.builder()
+        // FIXME: Should be converted to the proper enum
+        var type = Stream.of(annotation.bindings())
+                .map(it -> it.exchange().type())
+                .findFirst()
+                .orElse(DEFAULT_EXCHANGE_TYPE);
+
+        return AMQPChannelExchangeProperties.builder()
                 .name(exchangeName)
-                .type(Stream.of(annotation.bindings())
-                        .map(it -> it.exchange().type())
-                        .findFirst()
-                        .orElse(DEFAULT_EXCHANGE_TYPE))
+                .type(AMQPChannelExchangeType.fromString(type))
                 .durable(Boolean.valueOf(Stream.of(annotation.bindings())
                         .map(it -> it.exchange().durable())
                         .findFirst()
@@ -130,7 +137,7 @@ public class RabbitListenerUtil {
                 .build();
     }
 
-    private static AMQPChannelBinding.QueueProperties buildQueueProperties(
+    private static AMQPChannelQueueProperties buildQueueProperties(
             RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
         String queueName = getQueueName(annotation, resolver);
         org.springframework.amqp.core.Queue queue = context.queueMap.get(queueName);
@@ -142,7 +149,7 @@ public class RabbitListenerUtil {
                 Arrays.stream(annotation.bindings()).map(QueueBinding::value).findFirst();
         if (queueOpt.isPresent()) {
             Queue queueAnnotation = queueOpt.get();
-            return AMQPChannelBinding.QueueProperties.builder()
+            return AMQPChannelQueueProperties.builder()
                     .name(resolver.resolveStringValue(queueAnnotation.name()))
                     .autoDelete(parse(queueAnnotation.autoDelete(), autoDelete))
                     .durable(parse(queueAnnotation.durable(), durable))
@@ -150,7 +157,7 @@ public class RabbitListenerUtil {
                     .build();
         }
 
-        return AMQPChannelBinding.QueueProperties.builder()
+        return AMQPChannelQueueProperties.builder()
                 .name(queueName)
                 .autoDelete(autoDelete)
                 .durable(durable)
@@ -186,7 +193,7 @@ public class RabbitListenerUtil {
         return exchangeName;
     }
 
-    public static Map<String, ? extends OperationBinding> buildOperationBinding(
+    public static Map<String, OperationBinding> buildOperationBinding(
             RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
         return Map.of(
                 "amqp",
@@ -227,7 +234,7 @@ public class RabbitListenerUtil {
         return routingKeys;
     }
 
-    public static Map<String, ? extends MessageBinding> buildMessageBinding() {
+    public static Map<String, MessageBinding> buildMessageBinding() {
         // currently the feature to define amqp message binding is not implemented.
         return Map.of("amqp", new AMQPMessageBinding());
     }

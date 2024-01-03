@@ -14,6 +14,7 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Yaml;
 import jakarta.annotation.PostConstruct;
 
+// FIXME: Replace this class by the AsyncAPI 'DefaultAsyncApiSerializerService'
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
 
     private ObjectMapper jsonMapper = Json.mapper();

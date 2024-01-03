@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springframework.context.EmbeddedValueResolverAware;
@@ -37,7 +37,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
         KafkaAsyncMessageBinding messageBinding = bindingAnnotation.messageBinding();
 
         KafkaMessageBinding.KafkaMessageBindingBuilder kafkaMessageBindingBuilder = KafkaMessageBinding.builder();
-        kafkaMessageBindingBuilder.key(resolveSchemaOrNull(messageBinding));
+        //        kafkaMessageBindingBuilder.key(resolveSchemaOrNull(messageBinding)); FIXME
         String bindingVersion = resolveOrNull(messageBinding.bindingVersion());
         if (StringUtils.hasText(bindingVersion)) {
             kafkaMessageBindingBuilder.bindingVersion(bindingVersion);
