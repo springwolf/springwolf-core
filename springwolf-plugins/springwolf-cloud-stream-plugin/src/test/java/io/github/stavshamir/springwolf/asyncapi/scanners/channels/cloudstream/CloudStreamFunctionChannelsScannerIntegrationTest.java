@@ -7,14 +7,11 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassS
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
@@ -41,7 +38,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -137,19 +133,19 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(String.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-//                .bindings(messageBinding) FIXME
+                //                .bindings(messageBinding) FIXME
                 .build();
 
         Operation operation = Operation.builder()
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-//                .operationId("test-supplier-output-topic_subscribe_testSupplier") FIXME
-//                .message(message) FIXME
+                //                .operationId("test-supplier-output-topic_subscribe_testSupplier") FIXME
+                //                .message(message) FIXME
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-//                .subscribe(operation) FIXME
+                //                .subscribe(operation) FIXME
                 .build();
 
         assertThat(channels).containsExactly(Map.entry(topicName, expectedChannel));
@@ -180,19 +176,19 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(Integer.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-//                .bindings(messageBinding) FIXME
+                //                .bindings(messageBinding) FIXME
                 .build();
 
         Operation subscribeOperation = Operation.builder()
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-//                .operationId("test-out-topic_subscribe_testFunction") FIXME
-//                .message(subscribeMessage) FIXME
+                //                .operationId("test-out-topic_subscribe_testFunction") FIXME
+                //                .message(subscribeMessage) FIXME
                 .build();
 
         ChannelObject subscribeChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-//                .subscribe(subscribeOperation) FIXME
+                //                .subscribe(subscribeOperation) FIXME
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
@@ -200,19 +196,19 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(String.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-//                .bindings(messageBinding) FIXME
+                //                .bindings(messageBinding) FIXME
                 .build();
 
         Operation publishOperation = Operation.builder()
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-//                .operationId("test-in-topic_publish_testFunction") FIXME
-//                .message(publishMessage) FIXME
+                //                .operationId("test-in-topic_publish_testFunction") FIXME
+                //                .message(publishMessage) FIXME
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-//                .publish(publishOperation) FIXME
+                //                .publish(publishOperation) FIXME
                 .build();
 
         assertThat(channels)
@@ -244,19 +240,19 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(Integer.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.fromSchema(Integer.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-//                .bindings(messageBinding) FIXME
+                //                .bindings(messageBinding) FIXME
                 .build();
 
         Operation subscribeOperation = Operation.builder()
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-//                .operationId("test-out-topic_subscribe_kStreamTestFunction") FIXME
-//                .message(subscribeMessage) FIXME
+                //                .operationId("test-out-topic_subscribe_kStreamTestFunction") FIXME
+                //                .message(subscribeMessage) FIXME
                 .build();
 
         ChannelObject subscribeChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-//                .subscribe(subscribeOperation) FIXME
+                //                .subscribe(subscribeOperation) FIXME
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
@@ -264,19 +260,19 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(String.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-//                .bindings(messageBinding) FIXME
+                //                .bindings(messageBinding) FIXME
                 .build();
 
         Operation publishOperation = Operation.builder()
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-//                .operationId("test-in-topic_publish_kStreamTestFunction") FIXME
-//                .message(publishMessage) FIXME
+                //                .operationId("test-in-topic_publish_kStreamTestFunction") FIXME
+                //                .message(publishMessage) FIXME
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-//                .publish(publishOperation) FIXME
+                //                .publish(publishOperation) FIXME
                 .build();
 
         assertThat(channels)
@@ -307,14 +303,14 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(Integer.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.fromSchema(Integer.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-//                .bindings(messageBinding) FIXME
+                //                .bindings(messageBinding) FIXME
                 .build();
 
         Operation subscribeOperation = Operation.builder()
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-//                .operationId("test-topic_subscribe_testFunction") FIXME
-//                .message(subscribeMessage) FIXME
+                //                .operationId("test-topic_subscribe_testFunction") FIXME
+                //                .message(subscribeMessage) FIXME
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
@@ -322,20 +318,20 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(String.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-//                .bindings(messageBinding) FIXME
+                //                .bindings(messageBinding) FIXME
                 .build();
 
         Operation publishOperation = Operation.builder()
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-//                .operationId("test-topic_publish_testFunction") FIXME
-//                .message(publishMessage) FIXME
+                //                .operationId("test-topic_publish_testFunction") FIXME
+                //                .message(publishMessage) FIXME
                 .build();
 
         ChannelObject mergedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-//                .publish(publishOperation) FIXME
-//                .subscribe(subscribeOperation) FIXME
+                //                .publish(publishOperation) FIXME
+                //                .subscribe(subscribeOperation) FIXME
                 .build();
 
         assertThat(channels).contains(Map.entry(topicName, mergedChannel));
@@ -353,7 +349,10 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                     .basePackage(this.getClass().getPackage().getName())
                     .server(
                             "kafka",
-                            Server.builder().protocol("kafka").host("kafka:9092").build())
+                            Server.builder()
+                                    .protocol("kafka")
+                                    .host("kafka:9092")
+                                    .build())
                     .build();
         }
 

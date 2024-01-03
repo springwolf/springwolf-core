@@ -45,8 +45,7 @@ class JmsListenerUtilTest {
             StringValueResolver resolver = mock(StringValueResolver.class);
 
             // when
-            Map<String, ChannelBinding> channelBinding =
-                    JmsListenerUtil.buildChannelBinding(annotation, resolver);
+            Map<String, ChannelBinding> channelBinding = JmsListenerUtil.buildChannelBinding(annotation, resolver);
 
             // then
             assertEquals(1, channelBinding.size());

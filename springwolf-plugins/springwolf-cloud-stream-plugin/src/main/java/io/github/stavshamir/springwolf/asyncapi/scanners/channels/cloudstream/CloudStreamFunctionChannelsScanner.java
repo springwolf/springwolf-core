@@ -79,13 +79,13 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .bindings(buildMessageBinding())
                 .build();
 
-// FIXME
-//        Operation operation = Operation.builder()
-//                .description("Auto-generated description")
-//                // .operationId(operationId) FIXME?
-//                .messages(List.of(message))
-//                .bindings(buildOperationBinding())
-//                .build();
+        // FIXME
+        //        Operation operation = Operation.builder()
+        //                .description("Auto-generated description")
+        //                // .operationId(operationId) FIXME?
+        //                .messages(List.of(message))
+        //                .bindings(buildOperationBinding())
+        //                .build();
 
         Map<String, ChannelBinding> channelBinding = buildChannelBinding();
         return beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER

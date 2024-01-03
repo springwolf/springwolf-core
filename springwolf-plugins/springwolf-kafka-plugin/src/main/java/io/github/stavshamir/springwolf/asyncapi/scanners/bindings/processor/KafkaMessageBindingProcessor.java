@@ -37,7 +37,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
         KafkaAsyncMessageBinding messageBinding = bindingAnnotation.messageBinding();
 
         KafkaMessageBinding.KafkaMessageBindingBuilder kafkaMessageBindingBuilder = KafkaMessageBinding.builder();
-//        kafkaMessageBindingBuilder.key(resolveSchemaOrNull(messageBinding)); FIXME
+        //        kafkaMessageBindingBuilder.key(resolveSchemaOrNull(messageBinding)); FIXME
         String bindingVersion = resolveOrNull(messageBinding.bindingVersion());
         if (StringUtils.hasText(bindingVersion)) {
             kafkaMessageBindingBuilder.bindingVersion(bindingVersion);
