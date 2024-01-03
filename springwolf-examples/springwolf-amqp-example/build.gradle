@@ -15,6 +15,9 @@ dependencies {
     annotationProcessor project(":springwolf-plugins:springwolf-amqp")
     runtimeOnly project(":springwolf-ui")
 
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 
     implementation "org.springframework.amqp:spring-rabbit"

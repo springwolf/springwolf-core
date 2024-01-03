@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,7 +43,7 @@ public class ProducerData implements OperationData {
      */
     @Nullable
     @Singular("server")
-    protected List<String> servers;
+    protected List<ServerReference> servers;
 
     /**
      * The channel binding of the producer.
@@ -52,7 +53,7 @@ public class ProducerData implements OperationData {
      *     Map.of("kafka", new KafkaChannelBinding())
      * </code>
      */
-    protected Map<String, ? extends ChannelBinding> channelBinding;
+    protected Map<String, ChannelBinding> channelBinding;
 
     /**
      * The class object of the payload published by this producer.
@@ -73,7 +74,7 @@ public class ProducerData implements OperationData {
      *     Map.of("kafka", new KafkaOperationBinding())
      * </code>
      */
-    protected Map<String, ? extends OperationBinding> operationBinding;
+    protected Map<String, OperationBinding> operationBinding;
 
     /**
      * The message binding of the producer.
@@ -83,10 +84,10 @@ public class ProducerData implements OperationData {
      *     Map.of("kafka", new KafkaMessageBinding())
      * </code>
      */
-    protected Map<String, ? extends MessageBinding> messageBinding;
+    protected Map<String, MessageBinding> messageBinding;
 
     /**
      * Operation message.
      */
-    protected Message message;
+    protected MessageObject message;
 }

@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             "springwolf.docket.info.extension-fields.x-api-name=api-name",
             "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
             "springwolf.docket.servers.test-protocol.protocol=test",
-            "springwolf.docket.servers.test-protocol.url=some-server:1234"
+            "springwolf.docket.servers.test-protocol.host=some-server:1234"
         })
 public class DefaultAsyncApiDocketServiceIntegrationTest {
     @Autowired

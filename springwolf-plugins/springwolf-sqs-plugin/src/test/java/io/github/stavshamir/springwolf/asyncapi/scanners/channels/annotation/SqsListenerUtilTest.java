@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.channel.sqs.SQSChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.sqs.SQSMessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.operation.sqs.SQSOperationBinding;
 import io.awspring.cloud.sqs.annotation.SqsListener;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSOperationBinding;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -45,8 +45,7 @@ class SqsListenerUtilTest {
             StringValueResolver resolver = mock(StringValueResolver.class);
 
             // when
-            Map<String, ? extends ChannelBinding> channelBinding =
-                    SqsListenerUtil.buildChannelBinding(annotation, resolver);
+            Map<String, ChannelBinding> channelBinding = SqsListenerUtil.buildChannelBinding(annotation, resolver);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -61,7 +60,7 @@ class SqsListenerUtilTest {
             StringValueResolver resolver = mock(StringValueResolver.class);
 
             // when
-            Map<String, ? extends OperationBinding> operationBinding =
+            Map<String, OperationBinding> operationBinding =
                     SqsListenerUtil.buildOperationBinding(annotation, resolver);
 
             // then
@@ -73,7 +72,7 @@ class SqsListenerUtilTest {
         @Test
         void buildMessageBinding() {
             // when
-            Map<String, ? extends MessageBinding> messageBinding = SqsListenerUtil.buildMessageBinding();
+            Map<String, MessageBinding> messageBinding = SqsListenerUtil.buildMessageBinding();
 
             // then
             assertEquals(1, messageBinding.size());

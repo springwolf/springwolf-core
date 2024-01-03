@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Builds an example that is embedded into {@link Schema#setExample(Object)}
  *
- * Handles types defined in https://www.asyncapi.com/docs/reference/specification/v2.6.0#dataTypeFormat
+ * Handles types defined in https://www.asyncapi.com/docs/reference/specification/v3.0.0#dataTypeFormat
  */
 public interface ExampleGenerator {
 

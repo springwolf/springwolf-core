@@ -8,14 +8,16 @@ plugins {
 
 dependencies {
     api project(":springwolf-core")
+    api project(":springwolf-asyncapi")
 
-    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-core"
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"

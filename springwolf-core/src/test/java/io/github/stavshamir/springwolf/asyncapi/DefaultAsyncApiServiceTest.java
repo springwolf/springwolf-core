@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 /**
  * Pure unit tests of {@link DefaultAsyncApiService}. Faking spring context support
  */
-public class DefaultAsyncApiServiceTest {
+class DefaultAsyncApiServiceTest {
 
     private DefaultAsyncApiService defaultAsyncApiService;
     private AsyncApiDocketService asyncApiDocketService;

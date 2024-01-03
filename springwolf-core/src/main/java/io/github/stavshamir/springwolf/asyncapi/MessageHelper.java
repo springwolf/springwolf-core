@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 public class MessageHelper {
     private static final String ONE_OF = "oneOf";
 
-    private static final Comparator<Message> byMessageName = Comparator.comparing(Message::getName);
+    private static final Comparator<MessageObject> byMessageName = Comparator.comparing(MessageObject::getName);
 
-    private static final Supplier<Set<Message>> messageSupplier = () -> new TreeSet<>(byMessageName);
+    private static final Supplier<Set<MessageObject>> messageSupplier = () -> new TreeSet<>(byMessageName);
 
-    public static Object toMessageObjectOrComposition(Set<Message> messages) {
+    public static Object toMessageObjectOrComposition(Set<MessageObject> messages) {
         return switch (messages.size()) {
             case 0 -> throw new IllegalArgumentException("messages must not be empty");
             case 1 -> messages.toArray()[0];
@@ -33,13 +33,13 @@ public class MessageHelper {
     }
 
     @SuppressWarnings("unchecked")
-    public static Set<Message> messageObjectToSet(Object messageObject) {
-        if (messageObject instanceof Message message) {
+    public static Set<MessageObject> messageObjectToSet(Object messageObject) {
+        if (messageObject instanceof MessageObject message) {
             return new HashSet<>(Collections.singletonList(message));
         }
 
         if (messageObject instanceof Map) {
-            List<Message> messages = ((Map<String, List<Message>>) messageObject).get(ONE_OF);
+            List<MessageObject> messages = ((Map<String, List<MessageObject>>) messageObject).get(ONE_OF);
             return new HashSet<>(messages);
         }
 
