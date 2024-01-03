@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.configuration;
 
-import com.asyncapi.v2._6_0.model.info.Contact;
-import com.asyncapi.v2._6_0.model.info.License;
-import com.asyncapi.v2._6_0.model.server.Server;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Contact;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket.Info;
@@ -25,7 +25,7 @@ class DefaultAsyncApiDocketServiceTest {
         configDocket.setDefaultContentType("application/json");
 
         Server server =
-                Server.builder().protocol("some-protocol").url("some-url").build();
+                Server.builder().protocol("some-protocol").host("some-url").build();
         configDocket.setServers(newHashMap("some-protocol", server));
 
         Info info = new Info();
@@ -73,7 +73,7 @@ class DefaultAsyncApiDocketServiceTest {
         configDocket.setInfo(info);
 
         Server server =
-                Server.builder().protocol("some-protocol").url("some-url").build();
+                Server.builder().protocol("some-protocol").host("some-url").build();
         configDocket.setServers(newHashMap("some-protocol", server));
 
         SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();

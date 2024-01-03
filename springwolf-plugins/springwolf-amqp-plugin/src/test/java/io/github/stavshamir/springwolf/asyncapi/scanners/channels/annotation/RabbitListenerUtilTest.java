@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeType;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelQueueProperties;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,7 +18,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -71,15 +74,15 @@ class RabbitListenerUtilTest {
             assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
             assertEquals(
                     AMQPChannelBinding.builder()
-                            .is("queue")
-                            .exchange(AMQPChannelBinding.ExchangeProperties.builder()
+                            .is(AMQPChannelType.QUEUE)
+                            .exchange(AMQPChannelExchangeProperties.builder()
                                     .name("")
-                                    .type(ExchangeTypes.DIRECT)
+                                    .type(AMQPChannelExchangeType.DIRECT)
                                     .durable(true)
                                     .autoDelete(false)
                                     .vhost("/")
                                     .build())
-                            .queue(AMQPChannelBinding.QueueProperties.builder()
+                            .queue(AMQPChannelQueueProperties.builder()
                                     .name("queue-1")
                                     .durable(true)
                                     .autoDelete(false)
@@ -99,7 +102,7 @@ class RabbitListenerUtilTest {
             when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
-            Map<String, ? extends OperationBinding> operationBinding =
+            Map<String, OperationBinding> operationBinding =
                     RabbitListenerUtil.buildOperationBinding(annotation, resolver, emptyContext);
 
             // then
@@ -111,7 +114,7 @@ class RabbitListenerUtilTest {
         @Test
         void buildMessageBinding() {
             // when
-            Map<String, ? extends MessageBinding> messageBinding = RabbitListenerUtil.buildMessageBinding();
+            Map<String, MessageBinding> messageBinding = RabbitListenerUtil.buildMessageBinding();
 
             // then
             assertEquals(1, messageBinding.size());
@@ -167,14 +170,14 @@ class RabbitListenerUtilTest {
             assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
             assertEquals(
                     AMQPChannelBinding.builder()
-                            .is("routingKey")
-                            .exchange(AMQPChannelBinding.ExchangeProperties.builder()
+                            .is(AMQPChannelType.ROUTING_KEY)
+                            .exchange(AMQPChannelExchangeProperties.builder()
                                     .name("exchange-name")
-                                    .type(ExchangeTypes.TOPIC)
+                                    .type(AMQPChannelExchangeType.TOPIC)
                                     .durable(true)
                                     .autoDelete(false)
                                     .build())
-                            .queue(AMQPChannelBinding.QueueProperties.builder()
+                            .queue(AMQPChannelQueueProperties.builder()
                                     .name("queue-1")
                                     .durable(true)
                                     .autoDelete(false)
@@ -257,14 +260,14 @@ class RabbitListenerUtilTest {
             assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
             assertEquals(
                     AMQPChannelBinding.builder()
-                            .is("routingKey")
-                            .exchange(AMQPChannelBinding.ExchangeProperties.builder()
+                            .is(AMQPChannelType.ROUTING_KEY)
+                            .exchange(AMQPChannelExchangeProperties.builder()
                                     .name("exchange-name")
-                                    .type(ExchangeTypes.DIRECT)
+                                    .type(AMQPChannelExchangeType.DIRECT)
                                     .durable(true)
                                     .autoDelete(false)
                                     .build())
-                            .queue(AMQPChannelBinding.QueueProperties.builder()
+                            .queue(AMQPChannelQueueProperties.builder()
                                     .name("queue-1")
                                     .durable(true)
                                     .autoDelete(false)
@@ -364,14 +367,14 @@ class RabbitListenerUtilTest {
             assertEquals(Sets.newTreeSet("amqp"), channelBinding.keySet());
             assertEquals(
                     AMQPChannelBinding.builder()
-                            .is("routingKey")
-                            .exchange(AMQPChannelBinding.ExchangeProperties.builder()
+                            .is(AMQPChannelType.ROUTING_KEY)
+                            .exchange(AMQPChannelExchangeProperties.builder()
                                     .name("exchange-name")
-                                    .type(ExchangeTypes.TOPIC)
+                                    .type(AMQPChannelExchangeType.TOPIC)
                                     .durable(false)
                                     .autoDelete(true)
                                     .build())
-                            .queue(AMQPChannelBinding.QueueProperties.builder()
+                            .queue(AMQPChannelQueueProperties.builder()
                                     .name("queue-1")
                                     .durable(false)
                                     .autoDelete(true)

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.configuration;
 
-import com.asyncapi.v2._6_0.model.server.Server;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.info.extension-fields.x-api-name=api-name",
                 "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
                 "springwolf.docket.servers.test-protocol.protocol=test",
-                "springwolf.docket.servers.test-protocol.url=some-server:1234",
+                "springwolf.docket.servers.test-protocol.host=some-server:1234",
             })
     static class TestSimplePropertiesIntegrationTest {
 
@@ -61,7 +61,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                             "test-protocol",
                             Server.builder()
                                     .protocol("test")
-                                    .url("some-server:1234")
+                                    .host("some-server:1234")
                                     .build()));
         }
     }

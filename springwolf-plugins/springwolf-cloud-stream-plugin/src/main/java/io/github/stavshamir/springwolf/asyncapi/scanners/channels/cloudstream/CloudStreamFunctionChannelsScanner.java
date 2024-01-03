@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2._6_0.model.server.Server;
-import com.asyncapi.v2.binding.message.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
@@ -15,6 +11,11 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -38,7 +39,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
 
     @Override
-    public Map<String, ChannelItem> scan() {
+    public Map<String, ChannelObject> scan() {
         Set<Method> beanMethods = beanMethodsScanner.getBeanMethods();
         return ChannelMerger.merge(beanMethods.stream()
                 .map(functionalChannelBeanBuilder::fromMethodBean)
@@ -52,19 +53,19 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         return cloudStreamBindingsProperties.getBindings().containsKey(beanData.cloudStreamBinding());
     }
 
-    private Map.Entry<String, ChannelItem> toChannelEntry(FunctionalChannelBeanData beanData) {
+    private Map.Entry<String, ChannelObject> toChannelEntry(FunctionalChannelBeanData beanData) {
         String channelName = cloudStreamBindingsProperties
                 .getBindings()
                 .get(beanData.cloudStreamBinding())
                 .getDestination();
 
         String operationId = buildOperationId(beanData, channelName);
-        ChannelItem channelItem = buildChannel(beanData, operationId);
+        ChannelObject channelItem = buildChannel(beanData, operationId);
 
         return Map.entry(channelName, channelItem);
     }
 
-    private ChannelItem buildChannel(FunctionalChannelBeanData beanData, String operationId) {
+    private ChannelObject buildChannel(FunctionalChannelBeanData beanData, String operationId) {
         Class<?> payloadType = beanData.payloadType();
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
@@ -78,36 +79,37 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .bindings(buildMessageBinding())
                 .build();
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId(operationId)
-                .message(message)
-                .bindings(buildOperationBinding())
-                .build();
+        // FIXME
+        //        Operation operation = Operation.builder()
+        //                .description("Auto-generated description")
+        //                // .operationId(operationId) FIXME?
+        //                .messages(List.of(message))
+        //                .bindings(buildOperationBinding())
+        //                .build();
 
-        Map<String, Object> channelBinding = buildChannelBinding();
+        Map<String, ChannelBinding> channelBinding = buildChannelBinding();
         return beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER
-                ? ChannelItem.builder()
+                ? ChannelObject.builder()
                         .bindings(channelBinding)
-                        .publish(operation)
+                        // .publish(operation) FIXME
                         .build()
-                : ChannelItem.builder()
+                : ChannelObject.builder()
                         .bindings(channelBinding)
-                        .subscribe(operation)
+                        // .subscribe(operation) FIXME
                         .build();
     }
 
-    private Map<String, ? extends MessageBinding> buildMessageBinding() {
+    private Map<String, MessageBinding> buildMessageBinding() {
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private Map<String, Object> buildOperationBinding() {
+    private Map<String, OperationBinding> buildOperationBinding() {
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyOperationBinding());
     }
 
-    private Map<String, Object> buildChannelBinding() {
+    private Map<String, ChannelBinding> buildChannelBinding() {
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyChannelBinding());
     }

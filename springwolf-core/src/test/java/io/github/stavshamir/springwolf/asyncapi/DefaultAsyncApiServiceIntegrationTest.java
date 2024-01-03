@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2._6_0.model.info.Info;
-import com.asyncapi.v2._6_0.model.server.Server;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -49,7 +48,7 @@ import static org.mockito.Mockito.when;
             "springwolf.docket.default-content-type=application/yaml",
             "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
             "springwolf.docket.servers.test-protocol.protocol=test",
-            "springwolf.docket.servers.test-protocol.url=some-server:1234",
+            "springwolf.docket.servers.test-protocol.host=some-server:1234",
         })
 class DefaultAsyncApiServiceIntegrationTest {
 
@@ -67,18 +66,24 @@ class DefaultAsyncApiServiceIntegrationTest {
         when(channelsService.findChannels())
                 .thenReturn(Map.of(
                         "consumer-topic",
-                        ChannelItem.builder()
-                                .subscribe(Operation.builder()
-                                        .bindings(Map.of("kafka", new KafkaOperationBinding()))
-                                        .message(Message.builder().build())
-                                        .build())
+                        ChannelObject.builder()
+                                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                                .messages(Map.of(
+                                        "receive",
+                                        MessageObject.builder()
+                                                .messageId("receiveId")
+                                                .description("subscriberMessage")
+                                                .build()))
                                 .build(),
                         "producer-topic",
-                        ChannelItem.builder()
-                                .publish(Operation.builder()
-                                        .bindings(Map.of("kafka", new KafkaOperationBinding()))
-                                        .message(Message.builder().build())
-                                        .build())
+                        ChannelObject.builder()
+                                .bindings(Map.of("kafka", new KafkaChannelBinding()))
+                                .messages(Map.of(
+                                        "send",
+                                        MessageObject.builder()
+                                                .messageId("sendId")
+                                                .description("publisherMessage")
+                                                .build()))
                                 .build()));
     }
 
@@ -96,29 +101,30 @@ class DefaultAsyncApiServiceIntegrationTest {
         Map<String, Server> actualServers = asyncApiService.getAsyncAPI().getServers();
 
         assertThat(actualServers.get("test-protocol").getProtocol()).isEqualTo("test");
-        assertThat(actualServers.get("test-protocol").getUrl()).isEqualTo("some-server:1234");
+        assertThat(actualServers.get("test-protocol").getHost()).isEqualTo("some-server:1234");
     }
 
     @Test
     void getAsyncAPI_channels_should_be_correct() {
-        Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
+        Map<String, ChannelObject> actualChannels =
+                asyncApiService.getAsyncAPI().getChannels();
 
         assertThat(actualChannels).hasSize(2);
 
         assertThat(actualChannels).isNotEmpty().containsKey("consumer-topic");
-        final ChannelItem consumerChannel = actualChannels.get("consumer-topic");
-        assertThat(consumerChannel.getSubscribe()).isNotNull();
-        assertThat(consumerChannel.getSubscribe().getBindings())
-                .isEqualTo(Map.of("kafka", new KafkaOperationBinding()));
-        assertThat(((Message) consumerChannel.getSubscribe().getMessage()).getDescription())
-                .isNull();
+        final ChannelObject consumerChannel = actualChannels.get("consumer-topic");
+        assertThat(consumerChannel.getBindings()).isEqualTo(Map.of("kafka", new KafkaChannelBinding()));
+        assertThat(consumerChannel.getMessages()).hasSize(1);
+        MessageObject receiveMessage =
+                (MessageObject) consumerChannel.getMessages().get("receive");
+        assertThat(receiveMessage.getDescription()).isEqualTo("subscriberMessage");
 
         assertThat(actualChannels).isNotEmpty().containsKey("producer-topic");
-        final ChannelItem publishChannel = actualChannels.get("producer-topic");
-        assertThat(publishChannel.getPublish()).isNotNull();
-        assertThat(publishChannel.getPublish().getBindings()).isEqualTo(Map.of("kafka", new KafkaOperationBinding()));
-        assertThat(((Message) publishChannel.getPublish().getMessage()).getDescription())
-                .isNull();
+        final ChannelObject publishChannel = actualChannels.get("producer-topic");
+        assertThat(publishChannel.getBindings()).isEqualTo(Map.of("kafka", new KafkaChannelBinding()));
+        assertThat(publishChannel.getMessages()).hasSize(1);
+        MessageObject sendMessage = (MessageObject) publishChannel.getMessages().get("send");
+        assertThat(sendMessage.getDescription()).isEqualTo("publisherMessage");
     }
 
     @Order(TestDescriptionCustomizer.CUSTOMIZER_ORDER)
