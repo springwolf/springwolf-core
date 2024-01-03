@@ -1,18 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersBuilder;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +41,7 @@ public class ClassLevelAnnotationChannelsScanner<
     private final SchemasService schemasService;
 
     @Override
-    public Stream<Map.Entry<String, ChannelItem>> process(Class<?> clazz) {
+    public Stream<Map.Entry<String, ChannelObject>> process(Class<?> clazz) {
         log.debug(
                 "Scanning class \"{}\" for @\"{}\" annotated methods", clazz.getName(), classAnnotationClass.getName());
 
@@ -66,7 +64,7 @@ public class ClassLevelAnnotationChannelsScanner<
                 .collect(toSet());
     }
 
-    private Stream<Map.Entry<String, ChannelItem>> mapClassToChannel(Class<?> component) {
+    private Stream<Map.Entry<String, ChannelObject>> mapClassToChannel(Class<?> component) {
         log.debug("Mapping class \"{}\" to channels", component.getName());
 
         ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
@@ -79,19 +77,19 @@ public class ClassLevelAnnotationChannelsScanner<
         String channelName = bindingFactory.getChannelName(classAnnotation);
         String operationId = channelName + "_publish_" + component.getSimpleName();
 
-        ChannelItem channelItem = buildChannelItem(classAnnotation, operationId, annotatedMethods);
+        ChannelObject channelItem = buildChannelItem(classAnnotation, operationId, annotatedMethods);
 
         return Stream.of(Map.entry(channelName, channelItem));
     }
 
-    private ChannelItem buildChannelItem(ClassAnnotation classAnnotation, String operationId, Set<Method> methods) {
+    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, String operationId, Set<Method> methods) {
         Object message = buildMessageObject(classAnnotation, methods);
         Operation operation = buildOperation(classAnnotation, operationId, message);
         return buildChannelItem(classAnnotation, operation);
     }
 
     private Object buildMessageObject(ClassAnnotation classAnnotation, Set<Method> methods) {
-        Set<Message> messages = methods.stream()
+        Set<MessageObject> messages = methods.stream()
                 .map((Method method) -> {
                     Class<?> payloadType = payloadClassExtractor.extractFrom(method);
                     return buildMessage(classAnnotation, payloadType);
@@ -101,37 +99,38 @@ public class ClassLevelAnnotationChannelsScanner<
         return toMessageObjectOrComposition(messages);
     }
 
-    private Message buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
-        Map<String, ? extends MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
+    private MessageObject buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
+        Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(asyncHeadersBuilder.buildHeaders(payloadType));
 
-        return Message.builder()
+        return MessageObject.builder()
                 .name(payloadType.getName())
                 .title(payloadType.getSimpleName())
                 .description(null)
-                .payload(PayloadReference.fromModelName(modelName))
-                .headers(HeaderReference.fromModelName(headerModelName))
+                //                .payload(PayloadReference.fromModelName(modelName)) FIXME
+                //                .headers(HeaderReference.fromModelName(headerModelName)) FIXME
                 .bindings(messageBinding)
                 .build();
     }
 
-    private Operation buildOperation(ClassAnnotation classAnnotation, String operationId, Object message) {
-        Map<String, ? extends OperationBinding> operationBinding =
-                bindingFactory.buildOperationBinding(classAnnotation);
-        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+    private Operation buildOperation(ClassAnnotation classAnnotation, String operationTitle, Object message) {
+        Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(classAnnotation);
+        Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
 
         return Operation.builder()
                 .description("Auto-generated description")
-                .operationId(operationId)
-                .message(message)
+                .title(operationTitle)
+                //                .message(message)
                 .bindings(opBinding)
                 .build();
     }
 
-    private ChannelItem buildChannelItem(ClassAnnotation classAnnotation, Operation operation) {
-        Map<String, ? extends ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(classAnnotation);
-        Map<String, Object> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-        return ChannelItem.builder().bindings(chBinding).publish(operation).build();
+    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Operation operation) {
+        Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(classAnnotation);
+        Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
+        return ChannelObject.builder()
+                .bindings(chBinding) /*.publish(operation) FIXME*/
+                .build();
     }
 }

@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2._6_0.model.server.Server;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
@@ -14,10 +9,14 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,8 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -57,12 +54,12 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
     }
 
     @Override
-    public Map<String, ChannelItem> scan() {
-        List<Map.Entry<String, ChannelItem>> channels = classScanner.scan().stream()
+    public Map<String, ChannelObject> scan() {
+        List<Map.Entry<String, ChannelObject>> channels = classScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
-                .map(this::buildChannelItem)
-                .filter(this::isInvalidChannelItem)
-                .collect(toList());
+                .map(this::buildChannel)
+                .filter(this::isInvalidChannel)
+                .toList();
 
         return ChannelMerger.merge(channels);
     }
@@ -79,14 +76,14 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
     }
 
-    private boolean isInvalidChannelItem(Map.Entry<String, ChannelItem> entry) {
-        Operation publish = entry.getValue().getPublish();
-        boolean publishBindingExists = publish != null && publish.getBindings() != null;
+    private boolean isInvalidChannel(Map.Entry<String, ChannelObject> entry) {
+        //        Operation publish = entry.getValue().getPublish();
+        //        boolean publishBindingExists = publish != null && publish.getBindings() != null;
+        //
+        //        Operation subscribe = entry.getValue().getSubscribe();
+        //        boolean subscribeBindingExists = subscribe != null && subscribe.getBindings() != null;
 
-        Operation subscribe = entry.getValue().getSubscribe();
-        boolean subscribeBindingExists = subscribe != null && subscribe.getBindings() != null;
-
-        boolean allNonNull = entry.getKey() != null && (publishBindingExists || subscribeBindingExists);
+        boolean allNonNull = entry.getKey() != null; // && (publishBindingExists || subscribeBindingExists); FIXME
 
         if (!allNonNull) {
             log.warn(
@@ -98,27 +95,30 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         return allNonNull;
     }
 
-    private Map.Entry<String, ChannelItem> buildChannelItem(MethodAndAnnotation<A> methodAndAnnotation) {
-        ChannelItem.ChannelItemBuilder channelBuilder = ChannelItem.builder();
+    private Map.Entry<String, ChannelObject> buildChannel(MethodAndAnnotation<A> methodAndAnnotation) {
+        ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
 
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
         String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
 
         Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelName);
-        switch (this.asyncAnnotationProvider.getOperationType()) {
-            case PUBLISH -> channelBuilder.publish(operation);
-            case SUBSCRIBE -> channelBuilder.subscribe(operation);
-        }
-        ;
+        //        FIXME
+        //        switch (this.asyncAnnotationProvider.getOperationType()) {
+        //            case PUBLISH -> channelBuilder.publish(operation);
+        //            case SUBSCRIBE -> channelBuilder.subscribe(operation);
+        //        };
 
         List<String> servers = AsyncAnnotationScannerUtil.getServers(operationAnnotation, resolver);
         if (servers != null && !servers.isEmpty()) {
-            validateServers(servers, operation.getOperationId());
-            channelBuilder.servers(servers);
+            // FIXME: It was originally operationId, which doesn't exist anymore
+            validateServers(servers, operation.getTitle());
+            channelBuilder.servers(servers.stream()
+                    .map(it -> ServerReference.builder().ref(it).build())
+                    .toList());
         }
 
-        ChannelItem channelItem = channelBuilder.build();
+        ChannelObject channelItem = channelBuilder.build();
         return Map.entry(channelName, channelItem);
     }
 
@@ -128,21 +128,22 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
             description = "Auto-generated description";
         }
 
-        String operationId = channelName + "_" + this.asyncAnnotationProvider.getOperationType().operationName;
+        String operationTitle = channelName + "_" + this.asyncAnnotationProvider.getOperationType().operationName;
 
         Map<String, OperationBinding> operationBinding =
                 AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
-        Map<String, Object> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
 
         return Operation.builder()
                 .description(description)
-                .operationId(operationId)
-                .message(buildMessage(asyncOperation, method))
+                .title(operationTitle)
+                // FIXME: Message should be the reference
+                //                .message(buildMessage(asyncOperation, method))
                 .bindings(opBinding)
                 .build();
     }
 
-    private Message buildMessage(AsyncOperation operationData, Method method) {
+    private MessageObject buildMessage(AsyncOperation operationData, Method method) {
         Class<?> payloadType = operationData.payloadType() != Object.class
                 ? operationData.payloadType()
                 : payloadClassExtractor.extractFrom(method);
@@ -157,12 +158,12 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         Map<String, MessageBinding> messageBinding =
                 AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
 
-        var builder = Message.builder()
+        var builder = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(payloadType.getSimpleName())
                 .description(description)
-                .payload(PayloadReference.fromModelName(modelName))
-                .headers(HeaderReference.fromModelName(headerModelName))
+                //                .payload(PayloadReference.fromModelName(modelName)) FIXME
+                //                .headers(HeaderReference.fromModelName(headerModelName)) FIXME
                 .bindings(messageBinding);
 
         // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher

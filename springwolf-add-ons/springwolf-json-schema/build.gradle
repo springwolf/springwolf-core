@@ -22,6 +22,7 @@ dependencies {
     implementation "org.springframework:spring-context"
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"

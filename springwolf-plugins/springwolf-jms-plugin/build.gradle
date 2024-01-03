@@ -8,10 +8,10 @@ plugins {
 
 dependencies {
     api project(":springwolf-core")
+    api project(":springwolf-asyncapi")
 
     implementation "jakarta.jms:jakarta.jms-api"
 
-    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     runtimeOnly "org.apache.activemq:activemq-broker"
@@ -28,6 +28,8 @@ dependencies {
     permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
@@ -45,7 +47,9 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework.boot:spring-boot-test-autoconfigure"
 
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
 jar {

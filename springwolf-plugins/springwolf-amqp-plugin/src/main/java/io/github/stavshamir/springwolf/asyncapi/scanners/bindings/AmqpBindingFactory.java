@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.RabbitListenerUtil;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
@@ -29,17 +29,17 @@ public class AmqpBindingFactory implements BindingFactory<RabbitListener>, Embed
     }
 
     @Override
-    public Map<String, ? extends ChannelBinding> buildChannelBinding(RabbitListener annotation) {
+    public Map<String, ChannelBinding> buildChannelBinding(RabbitListener annotation) {
         return RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, context);
     }
 
     @Override
-    public Map<String, ? extends OperationBinding> buildOperationBinding(RabbitListener annotation) {
+    public Map<String, OperationBinding> buildOperationBinding(RabbitListener annotation) {
         return RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, context);
     }
 
     @Override
-    public Map<String, ? extends MessageBinding> buildMessageBinding(RabbitListener annotation) {
+    public Map<String, MessageBinding> buildMessageBinding(RabbitListener annotation) {
         return RabbitListenerUtil.buildMessageBinding();
     }
 

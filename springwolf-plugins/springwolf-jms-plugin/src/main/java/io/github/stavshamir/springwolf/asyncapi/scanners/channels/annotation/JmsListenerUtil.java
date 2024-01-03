@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.channel.jms.JMSChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.jms.JMSMessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.operation.jms.JMSOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSOperationBinding;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.util.StringValueResolver;
@@ -20,17 +20,17 @@ public class JmsListenerUtil {
         return resolver.resolveStringValue(annotation.destination());
     }
 
-    public static Map<String, ? extends ChannelBinding> buildChannelBinding(
+    public static Map<String, ChannelBinding> buildChannelBinding(
             JmsListener annotation, StringValueResolver resolver) {
         return Map.of("jms", new JMSChannelBinding());
     }
 
-    public static Map<String, ? extends OperationBinding> buildOperationBinding(
+    public static Map<String, OperationBinding> buildOperationBinding(
             JmsListener annotation, StringValueResolver resolver) {
         return Map.of("jms", new JMSOperationBinding());
     }
 
-    public static Map<String, ? extends MessageBinding> buildMessageBinding() {
+    public static Map<String, MessageBinding> buildMessageBinding() {
         return Map.of("jms", new JMSMessageBinding());
     }
 }
