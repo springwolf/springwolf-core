@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 
 import java.util.Map;
 
@@ -15,5 +15,5 @@ public interface ChannelsService {
      *
      * @return Map of channel names mapping to detected ChannelItems
      */
-    Map<String, ChannelItem> findChannels();
+    Map<String, ChannelObject> findChannels();
 }

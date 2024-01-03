@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
-import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import lombok.Builder;
 
 import java.util.Collections;
@@ -24,12 +26,12 @@ public class AmqpProducerData extends ProducerData {
         this.channelName = queueName;
         this.description = description;
 
-        AMQPChannelBinding.ExchangeProperties exchangeProperties = new AMQPChannelBinding.ExchangeProperties();
+        AMQPChannelExchangeProperties exchangeProperties = new AMQPChannelExchangeProperties();
         exchangeProperties.setName(exchangeName);
         this.channelBinding = Map.of(
                 "amqp",
                 AMQPChannelBinding.builder()
-                        .is("routingKey")
+                        .is(AMQPChannelType.ROUTING_KEY)
                         .exchange(exchangeProperties)
                         .build());
 

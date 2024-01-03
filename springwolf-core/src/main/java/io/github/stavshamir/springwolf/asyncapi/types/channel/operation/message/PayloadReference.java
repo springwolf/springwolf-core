@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+// FIXME: DELETE THIS CLASS
+
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString

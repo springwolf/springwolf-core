@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.configuration.properties;
 
-import com.asyncapi.v2._6_0.model.info.Contact;
-import com.asyncapi.v2._6_0.model.info.License;
-import com.asyncapi.v2._6_0.model.server.Server;
+import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Contact;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,7 +80,7 @@ public class SpringwolfConfigProperties {
         /**
          * Identifier of the application the AsyncAPI document is defining.
          *
-         * @see com.asyncapi.v2._6_0.model.AsyncAPI#id
+         * @see AsyncAPI#getId()
          */
         @Nullable
         private String id;
@@ -87,7 +88,7 @@ public class SpringwolfConfigProperties {
         /**
          * A string representing the default content type to use when encoding/decoding a message's payload.
          *
-         * @see com.asyncapi.v2._6_0.model.AsyncAPI#getdefaultContentType
+         * @see AsyncAPI#getDefaultContentType()
          */
         @Nullable
         private String defaultContentType;
@@ -98,7 +99,7 @@ public class SpringwolfConfigProperties {
         /**
          * The object provides metadata about the API. The metadata can be used by the clients if needed.
          *
-         * @see com.asyncapi.v2._6_0.model.info.Info
+         * @see Info
          */
         @Nullable
         private Info info;
@@ -110,7 +111,7 @@ public class SpringwolfConfigProperties {
             /**
              * The title of the application
              *
-             * @see com.asyncapi.v2._6_0.model.info.Info#getTitle()
+             * @see io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info#getTitle()
              */
             @Nullable
             private String title;
@@ -118,7 +119,7 @@ public class SpringwolfConfigProperties {
             /**
              * Required. Provides the version of the application API (not to be confused with the specification version).
              *
-             * @see com.asyncapi.v2._6_0.model.info.Info#getVersion()
+             * @see io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info#getVersion()
              */
             @Nullable
             private String version;
@@ -126,14 +127,14 @@ public class SpringwolfConfigProperties {
             /**
              * A short description of the application. CommonMark syntax can be used for rich text representation.
              *
-             * @see com.asyncapi.v2._6_0.model.info.Info#getDescription()
+             * @see io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info#getDescription()
              */
             @Nullable
             private String description;
 
             /**
              * A URL to the Terms of Service for the API. MUST be in the format of a URL.
-             * {@link com.asyncapi.v2._6_0.model.info.Info#getTermsOfService()}
+             * {@link io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info#getTermsOfService()}
              */
             @Nullable
             private String termsOfService;

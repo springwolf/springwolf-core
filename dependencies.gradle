@@ -27,8 +27,6 @@
 ext {
     assertjCoreVersion = '3.24.2'
 
-    asyncapiCoreVersion = '1.0.0-EAP-2'
-
     awaitilityVersion = '4.2.0'
 
     commonsLang3Version = '3.14.0'

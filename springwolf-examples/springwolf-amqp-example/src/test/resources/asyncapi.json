@@ -1,5 +1,5 @@
 {
-  "asyncapi": "2.6.0",
+  "asyncapi": "3.0.0",
   "info": {
     "title": "Springwolf example project - AMQP",
     "version": "1.0.0",
@@ -20,36 +20,29 @@
   "defaultContentType": "application/json",
   "servers": {
     "amqp": {
-      "url": "amqp:5672",
+      "host": "amqp:5672",
       "protocol": "amqp"
     }
   },
   "channels": {
     "another-queue": {
-      "publish": {
-        "operationId": "another-queue_publish_receiveAnotherPayload",
-        "description": "Auto-generated description",
-        "bindings": {
-          "amqp": {
-            "cc": [
-              "another-queue"
-            ],
-            "bindingVersion": "0.2.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+      "address": "another-queue",
+      "messages": {
+        "another-queue_publish_receiveAnotherPayload.message": {
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
           "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schema": {
+              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+            }
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
           },
           "bindings": {
             "amqp": {
-              "bindingVersion": "0.2.0"
+              "bindingVersion": "0.3.0"
             }
           }
         }
@@ -71,70 +64,52 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.2.0"
+          "bindingVersion": "0.3.0"
         }
       }
     },
     "example-producer-channel-publisher": {
-      "subscribe": {
-        "operationId": "example-producer-channel-publisher_subscribe",
-        "description": "Custom, optional description defined in the AsyncPublisher annotation",
-        "bindings": {
-          "amqp": {
-            "expiration": 0,
-            "cc": [ ],
-            "priority": 0,
-            "deliveryMode": 0,
-            "mandatory": false,
-            "timestamp": false,
-            "ack": false,
-            "bindingVersion": "0.2.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+      "address": "example-producer-channel-publisher",
+      "messages": {
+        "example-producer-channel-publisher_subscribe.message": {
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
           "description": "Another payload model",
           "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schema": {
+              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+            }
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
           },
           "bindings": {
             "amqp": {
-              "bindingVersion": "0.2.0"
+              "bindingVersion": "0.3.0"
             }
           }
         }
       }
     },
     "example-queue": {
-      "publish": {
-        "operationId": "example-queue_publish_receiveExamplePayload",
-        "description": "Auto-generated description",
-        "bindings": {
-          "amqp": {
-            "cc": [
-              "example-queue"
-            ],
-            "bindingVersion": "0.2.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+      "address": "example-queue",
+      "messages": {
+        "example-queue_publish_receiveExamplePayload.message": {
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
           "title": "ExamplePayloadDto",
           "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schema": {
+              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+            }
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
           },
           "bindings": {
             "amqp": {
-              "bindingVersion": "0.2.0"
+              "bindingVersion": "0.3.0"
             }
           }
         }
@@ -156,35 +131,28 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.2.0"
+          "bindingVersion": "0.3.0"
         }
       }
     },
     "example-topic-routing-key": {
-      "publish": {
-        "operationId": "example-topic-routing-key_publish_bindingsExample",
-        "description": "Auto-generated description",
-        "bindings": {
-          "amqp": {
-            "cc": [
-              "example-topic-routing-key"
-            ],
-            "bindingVersion": "0.2.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+      "address": "example-topic-routing-key",
+      "messages": {
+        "example-topic-routing-key_publish_bindingsExample.message": {
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
           "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schema": {
+              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+            }
           },
           "headers": {
             "$ref": "#/components/schemas/HeadersNotDocumented"
           },
           "bindings": {
             "amqp": {
-              "bindingVersion": "0.2.0"
+              "bindingVersion": "0.3.0"
             }
           }
         }
@@ -206,57 +174,48 @@
             "autoDelete": true,
             "vhost": "/"
           },
-          "bindingVersion": "0.2.0"
+          "bindingVersion": "0.3.0"
         }
       }
     },
     "multi-payload-queue": {
-      "publish": {
-        "operationId": "multi-payload-queue_publish_bindingsBeanExample",
-        "description": "Auto-generated description",
-        "bindings": {
-          "amqp": {
-            "cc": [
-              "example-topic-routing-key"
-            ],
-            "bindingVersion": "0.2.0"
+      "address": "multi-payload-queue",
+      "messages": {
+        "multi-payload-queue_publish_bindingsBeanExample.message.0": {
+          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
+          "payload": {
+            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schema": {
+              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+            }
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "amqp": {
+              "bindingVersion": "0.3.0"
+            }
           }
         },
-        "message": {
-          "oneOf": [
-            {
-              "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-              "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
-              "title": "AnotherPayloadDto",
-              "payload": {
-                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
-              },
-              "headers": {
-                "$ref": "#/components/schemas/HeadersNotDocumented"
-              },
-              "bindings": {
-                "amqp": {
-                  "bindingVersion": "0.2.0"
-                }
-              }
-            },
-            {
-              "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-              "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
-              "title": "ExamplePayloadDto",
-              "payload": {
-                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
-              },
-              "headers": {
-                "$ref": "#/components/schemas/HeadersNotDocumented"
-              },
-              "bindings": {
-                "amqp": {
-                  "bindingVersion": "0.2.0"
-                }
-              }
+        "multi-payload-queue_publish_bindingsBeanExample.message.1": {
+          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
+          "payload": {
+            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schema": {
+              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
             }
-          ]
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "amqp": {
+              "bindingVersion": "0.3.0"
+            }
+          }
         }
       },
       "bindings": {
@@ -276,17 +235,126 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.2.0"
+          "bindingVersion": "0.3.0"
         }
       }
+    }
+  },
+  "operations": {
+    "another-queue_publish_receiveAnotherPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/another-queue"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "amqp": {
+          "cc": [
+            "another-queue"
+          ],
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-queue/messages/another-queue_publish_receiveAnotherPayload.message"
+        }
+      ]
+    },
+    "example-producer-channel-publisher_subscribe": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/example-producer-channel-publisher"
+      },
+      "description": "Custom, optional description defined in the AsyncPublisher annotation",
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "cc": [],
+          "priority": 0,
+          "deliveryMode": 0,
+          "mandatory": false,
+          "timestamp": false,
+          "ack": false,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-producer-channel-publisher/messages/example-producer-channel-publisher_subscribe.message"
+        }
+      ]
+    },
+    "example-queue_publish_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-queue"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "amqp": {
+          "cc": [
+            "example-queue"
+          ],
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-queue/messages/example-queue_publish_receiveExamplePayload.message"
+        }
+      ]
+    },
+    "example-topic-routing-key_publish_bindingsExample": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-topic-routing-key"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "amqp": {
+          "cc": [
+            "example-topic-routing-key"
+          ],
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-topic-routing-key/messages/example-topic-routing-key_publish_bindingsExample.message"
+        }
+      ]
+    },
+    "multi-payload-queue_publish_bindingsBeanExample": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/multi-payload-queue"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "amqp": {
+          "cc": [
+            "example-topic-routing-key"
+          ],
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/multi-payload-queue/messages/multi-payload-queue_publish_bindingsBeanExample.message.0"
+        },
+        {
+          "$ref": "#/channels/multi-payload-queue/messages/multi-payload-queue_publish_bindingsBeanExample.message.1"
+        }
+      ]
     }
   },
   "components": {
     "schemas": {
       "HeadersNotDocumented": {
         "type": "object",
-        "properties": { },
-        "example": { }
+        "properties": {},
+        "example": {}
       },
       "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
         "required": [
@@ -350,6 +418,5 @@
         }
       }
     }
-  },
-  "tags": [ ]
+  }
 }

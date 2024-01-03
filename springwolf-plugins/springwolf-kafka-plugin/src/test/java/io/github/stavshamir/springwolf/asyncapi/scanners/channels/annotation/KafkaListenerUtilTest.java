@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.channel.kafka.KafkaChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import org.assertj.core.util.Arrays;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class KafkaListenerUtilTest {
     @Test
     void buildChannelBinding() {
         // when
-        Map<String, ? extends ChannelBinding> channelBinding = KafkaListenerUtil.buildChannelBinding();
+        Map<String, ChannelBinding> channelBinding = KafkaListenerUtil.buildChannelBinding();
 
         // then
         assertEquals(1, channelBinding.size());
@@ -59,7 +59,7 @@ class KafkaListenerUtilTest {
         when(resolver.resolveStringValue("${group-id}")).thenReturn("group-id");
 
         // when
-        Map<String, ? extends OperationBinding> operationBinding =
+        Map<String, OperationBinding> operationBinding =
                 KafkaListenerUtil.buildOperationBinding(annotation, resolver);
 
         // then
@@ -75,7 +75,7 @@ class KafkaListenerUtilTest {
     @Test
     void buildMessageBinding() {
         // when
-        Map<String, ? extends MessageBinding> messageBinding = KafkaListenerUtil.buildMessageBinding();
+        Map<String, MessageBinding> messageBinding = KafkaListenerUtil.buildMessageBinding();
 
         // then
         assertEquals(1, messageBinding.size());

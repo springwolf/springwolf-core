@@ -18,6 +18,9 @@ dependencies {
 
     compileOnly "jakarta.jms:jakarta.jms-api"
 
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
