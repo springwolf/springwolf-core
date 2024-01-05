@@ -89,7 +89,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             Map<String, Integer> actual = properties.getPayload().getExtractableClasses();
 
             // default values
-            assertThat(actual).hasSize(5);
+            assertThat(actual).hasSize(6);
             assertThat(actual).containsEntry("org.apache.kafka.streams.kstream.KStream", 1);
             assertThat(actual).containsEntry("org.springframework.messaging.Message", 0);
             assertThat(actual).containsEntry("java.util.function.Consumer", 0);
@@ -122,7 +122,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             Map<String, Integer> actual = properties.getPayload().getExtractableClasses();
 
             // default values
-            assertThat(actual).hasSize(6);
+            assertThat(actual).hasSize(7);
             assertThat(actual).containsEntry("my.custom.class", 1);
             // default values
             assertThat(actual).containsEntry("org.apache.kafka.streams.kstream.KStream", 1);
@@ -130,6 +130,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             assertThat(actual).containsEntry("java.util.function.Consumer", 0);
             assertThat(actual).containsEntry("java.util.function.Supplier", 0);
             assertThat(actual).containsEntry("java.util.List", 0);
+            assertThat(actual).containsEntry("java.util.Optional", 0);
         }
     }
 
@@ -156,12 +157,13 @@ public class SpringwolfConfigPropertiesIntegrationTest {
         void payloadDisabledTest() {
             Map<String, Integer> actual = properties.getPayload().getExtractableClasses();
 
-            assertThat(actual).hasSize(4);
+            assertThat(actual).hasSize(5);
             // default values
             assertThat(actual).containsEntry("org.apache.kafka.streams.kstream.KStream", 1);
             assertThat(actual).containsEntry("org.springframework.messaging.Message", 0);
             assertThat(actual).containsEntry("java.util.function.Consumer", 0);
             assertThat(actual).containsEntry("java.util.function.Supplier", 0);
+            assertThat(actual).containsEntry("java.util.Optional", 0);
         }
     }
 }

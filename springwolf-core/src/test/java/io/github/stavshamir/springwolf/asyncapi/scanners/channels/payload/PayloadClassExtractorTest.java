@@ -8,8 +8,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.GenericMessage;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,16 +62,16 @@ class PayloadClassExtractorTest {
 
         Class<?> result = extractor.extractFrom(m);
 
-        assertEquals(Optional.class, result);
+        assertEquals(Collection.class, result);
     }
 
     @Test
     void getPayloadTypeWithInterface() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithGenericClass", Optional.class);
+        Method m = TestClass.class.getDeclaredMethod("consumeWithGenericClass", Collection.class);
 
         Class<?> result = extractor.extractFrom(m);
 
-        assertEquals(Optional.class, result);
+        assertEquals(Collection.class, result);
     }
 
     @Test
@@ -118,9 +118,9 @@ class PayloadClassExtractorTest {
 
         public void consumeWithString(String value) {}
 
-        public void consumeWithGenericClass(Optional<String> value) {}
+        public void consumeWithGenericClass(Collection<String> value) {}
 
-        public void consumeWithMessageOfGenericClasses(Message<Optional<String>> value) {}
+        public void consumeWithMessageOfGenericClasses(Message<Collection<String>> value) {}
 
         public void consumeWithMessageOfStringExtends(Message<? extends String> value) {}
 
