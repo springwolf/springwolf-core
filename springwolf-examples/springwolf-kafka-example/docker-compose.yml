@@ -67,3 +67,12 @@ services:
               schema-registry:
                 url: http://kafka-schema-registry:8081
                 type: confluent
+            local-sasl:
+              properties:
+                bootstrap.servers: kafka:29093
+                security.protocol: SASL_PLAINTEXT
+                sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="broker" password="broker-secret";
+                sasl.mechanism: PLAIN
+              schema-registry:
+                url: http://kafka-schema-registry:8081
+                type: confluent
