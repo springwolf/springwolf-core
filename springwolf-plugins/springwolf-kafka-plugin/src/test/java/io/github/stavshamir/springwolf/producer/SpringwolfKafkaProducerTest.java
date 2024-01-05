@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,19 +33,23 @@ class SpringwolfKafkaProducerTest {
     private SpringwolfKafkaProducer springwolfKafkaProducer;
 
     @Mock
-    KafkaTemplate<Object, Object> kafkaTemplate;
+    private SpringwolfKafkaTemplateProvider kafkaTemplateProvider;
+
+    @Mock
+    private KafkaTemplate<Object, Object> kafkaTemplate;
 
     @Captor
     private ArgumentCaptor<ProducerRecord<Object, Object>> recordArgumentCaptor;
 
     @BeforeEach
     void setUp() {
-        springwolfKafkaProducer = new SpringwolfKafkaProducer(Optional.of(kafkaTemplate));
+        springwolfKafkaProducer = new SpringwolfKafkaProducer(kafkaTemplateProvider);
     }
 
     @Test
     void testSpringwolfKafkaProducerIsNotEnabledWhenThereIsNoKafkaTemplateConfigured() {
-        Optional<KafkaTemplate<Object, Object>> kafkaTemplateMock = Optional.empty();
+        SpringwolfKafkaTemplateProvider kafkaTemplateMock = mock();
+        when(kafkaTemplateMock.isPresent()).thenReturn(false);
 
         springwolfKafkaProducer = new SpringwolfKafkaProducer(kafkaTemplateMock);
 
@@ -54,6 +59,9 @@ class SpringwolfKafkaProducerTest {
     @Test
     @SuppressWarnings("unchecked")
     void testSendingKafkaMessageWithoutHeaders() {
+        // given
+        when(kafkaTemplateProvider.get(any())).thenReturn(Optional.of(kafkaTemplate));
+
         CompletableFuture<SendResult<Object, Object>> future = new CompletableFuture<>();
         when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any()))
                 .thenReturn(future);
@@ -61,8 +69,10 @@ class SpringwolfKafkaProducerTest {
 
         Map<String, Object> payload = Collections.singletonMap("some", "field");
 
+        // when
         springwolfKafkaProducer.send("test-topic", null, null, payload);
 
+        // then
         verify(kafkaTemplate).send(recordArgumentCaptor.capture());
 
         ProducerRecord<Object, Object> capturedRecord = recordArgumentCaptor.getValue();
@@ -78,6 +88,9 @@ class SpringwolfKafkaProducerTest {
     @Test
     @SuppressWarnings("unchecked")
     void testSendingKafkaMessageWithHeaders() {
+        // given
+        when(kafkaTemplateProvider.get(any())).thenReturn(Optional.of(kafkaTemplate));
+
         CompletableFuture<SendResult<Object, Object>> future = new CompletableFuture<>();
         when(kafkaTemplate.send(ArgumentMatchers.<ProducerRecord<Object, Object>>any()))
                 .thenReturn(future);
@@ -86,8 +99,10 @@ class SpringwolfKafkaProducerTest {
         Map<String, Object> payload = Collections.singletonMap("some", "field");
         Map<String, String> headers = Collections.singletonMap("header-key", "header");
 
+        // when
         springwolfKafkaProducer.send("test-topic", null, headers, payload);
 
+        // then
         verify(kafkaTemplate).send(recordArgumentCaptor.capture());
 
         ProducerRecord<Object, Object> capturedRecord = recordArgumentCaptor.getValue();

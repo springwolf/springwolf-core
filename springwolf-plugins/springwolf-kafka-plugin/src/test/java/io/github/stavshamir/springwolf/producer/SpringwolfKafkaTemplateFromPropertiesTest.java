@@ -5,40 +5,45 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaC
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;
-import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Map;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SpringwolfKafkaTemplateFactoryTest {
+class SpringwolfKafkaTemplateFromPropertiesTest {
 
     @Test
     void kafkaTemplateShouldNotBeCreatedForEmptyProperties() {
+        // given
         SpringwolfKafkaConfigProperties configProperties = new SpringwolfKafkaConfigProperties();
 
-        SpringwolfKafkaTemplateFactory templateFactory = new SpringwolfKafkaTemplateFactory(configProperties);
+        // when
+        SpringwolfKafkaTemplateFromProperties kafkaTemplateProvider =
+                new SpringwolfKafkaTemplateFromProperties(configProperties);
 
-        Optional<KafkaTemplate<Object, Object>> kafkaTemplate = templateFactory.buildKafkaTemplate();
-
-        assertThat(kafkaTemplate).isNotPresent();
+        // then
+        assertThat(kafkaTemplateProvider.isPresent()).isFalse();
+        assertThat(kafkaTemplateProvider.get("topic")).isNotPresent();
     }
 
     @Test
     void kafkaTemplateShouldNotBeCreatedForEmptyProducerConfiguration() {
+        // given
         SpringwolfKafkaConfigProperties configProperties = new SpringwolfKafkaConfigProperties();
         configProperties.setPublishing(new SpringwolfKafkaConfigProperties.Publishing());
 
-        SpringwolfKafkaTemplateFactory templateFactory = new SpringwolfKafkaTemplateFactory(configProperties);
+        // when
+        SpringwolfKafkaTemplateFromProperties kafkaTemplateProvider =
+                new SpringwolfKafkaTemplateFromProperties(configProperties);
 
-        Optional<KafkaTemplate<Object, Object>> kafkaTemplate = templateFactory.buildKafkaTemplate();
-
-        assertThat(kafkaTemplate).isNotPresent();
+        // then
+        assertThat(kafkaTemplateProvider.isPresent()).isFalse();
+        assertThat(kafkaTemplateProvider.get("topic")).isNotPresent();
     }
 
     @Test
     void kafkaTemplateShouldBeCreatedWithProducerConfiguration() {
+        // given
         SpringwolfKafkaConfigProperties configProperties = new SpringwolfKafkaConfigProperties();
         SpringwolfKafkaConfigProperties.Publishing publishing = new SpringwolfKafkaConfigProperties.Publishing();
         publishing.setEnabled(true);
@@ -46,14 +51,15 @@ class SpringwolfKafkaTemplateFactoryTest {
 
         configProperties.setPublishing(publishing);
 
-        SpringwolfKafkaTemplateFactory templateFactory = new SpringwolfKafkaTemplateFactory(configProperties);
+        // when
+        SpringwolfKafkaTemplateFromProperties kafkaTemplateProvider =
+                new SpringwolfKafkaTemplateFromProperties(configProperties);
 
-        Optional<KafkaTemplate<Object, Object>> kafkaTemplate = templateFactory.buildKafkaTemplate();
+        // then
+        assertThat(kafkaTemplateProvider.isPresent()).isTrue();
 
-        assertThat(kafkaTemplate).isPresent();
         Map<String, Object> configurationProperties =
-                kafkaTemplate.get().getProducerFactory().getConfigurationProperties();
-
+                kafkaTemplateProvider.get("topic").get().getProducerFactory().getConfigurationProperties();
         assertThat(configurationProperties)
                 .isEqualTo(new KafkaProperties.Producer().buildProperties(new DefaultSslBundleRegistry()));
     }
