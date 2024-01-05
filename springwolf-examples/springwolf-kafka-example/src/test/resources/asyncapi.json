@@ -60,9 +60,9 @@
         }
       }
     },
-    "avro-topic-without-publishing-support": {
+    "avro-topic": {
       "publish": {
-        "operationId": "avro-topic-without-publishing-support_publish_receiveExampleAvroPayload",
+        "operationId": "avro-topic_publish_receiveExampleAvroPayload",
         "description": "Auto-generated description",
         "bindings": {
           "kafka": {

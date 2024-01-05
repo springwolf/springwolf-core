@@ -7,6 +7,7 @@ services:
     environment:
       BOOTSTRAP_SERVER: kafka:29092
       BOOTSTRAP_SERVER_SASL: kafka:29093
+      KAFKA_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
     ports:
       - "8080:8080"
     depends_on:
@@ -30,14 +31,30 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29099'
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_SCHEMA_REGISTRY_URL: 'kafka-schema-registry:8081'
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
       KAFKA_OPTS: -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
 
+  kafka-schema-registry:
+    image: confluentinc/cp-schema-registry:latest
+    ports:
+      - "8081:8081"
+    profiles:
+      - test
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
+      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    depends_on:
+      - kafka
+    links:
+      - kafka
+
   akhq:
     image: tchiotludo/akhq:latest
     ports:
-      - "8081:8080"
+      - "8085:8080"
     profiles:
       - test
     environment:
@@ -47,3 +64,6 @@ services:
             local:
               properties:
                 bootstrap.servers: kafka:29092
+              schema-registry:
+                url: http://kafka-schema-registry:8081
+                type: confluent
