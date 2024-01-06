@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "io.github.stavshamir.springwolf.example.kafka.dto.proto";
+option java_outer_classname = "ExamplePayloadProtobufDto";
+
+enum ExampleEnum
+{
+    FOO1 = 0;
+    FOO2 = 1;
+    FOO3 = 2;
+}
+
+message Message {
+  string someString = 1;
+  int64 someLong = 2;
+  ExampleEnum someEnum = 3;
+}
