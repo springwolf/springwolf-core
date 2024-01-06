@@ -62,8 +62,8 @@
     },
     "avro-topic": {
       "publish": {
-        "operationId": "avro-topic_publish_receiveExampleAvroPayload",
-        "description": "Auto-generated description",
+        "operationId": "avro-topic_publish",
+        "description": "Requires a running kafka-schema-registry. See docker-compose.yml to start it",
         "bindings": {
           "kafka": {
             "bindingVersion": "0.4.0"
@@ -84,11 +84,6 @@
               "bindingVersion": "0.4.0"
             }
           }
-        }
-      },
-      "bindings": {
-        "kafka": {
-          "bindingVersion": "0.4.0"
         }
       }
     },

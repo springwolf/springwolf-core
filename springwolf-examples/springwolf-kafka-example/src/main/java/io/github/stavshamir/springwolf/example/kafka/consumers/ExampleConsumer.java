@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.kafka.consumers;
 
-import io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto;
 import io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.example.kafka.producers.AnotherProducer;
@@ -33,19 +32,5 @@ public class ExampleConsumer {
     @KafkaListener(topics = "another-topic", groupId = "example-group-id", batch = "true")
     public void receiveAnotherPayloadBatched(List<AnotherPayloadDto> payloads) {
         log.info("Received new messages in another-topic: {}", payloads.toString());
-    }
-
-    @KafkaListener(
-            topics = "avro-topic",
-            properties = {
-                "specific.avro.reader=true",
-                "schema.registry.url=${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}",
-                "key.deserializer=org.springframework.kafka.support.serializer.ErrorHandlingDeserializer",
-                "value.deserializer=org.springframework.kafka.support.serializer.ErrorHandlingDeserializer",
-                "spring.deserializer.key.delegate.class=org.apache.kafka.common.serialization.StringDeserializer",
-                "spring.deserializer.value.delegate.class=io.confluent.kafka.serializers.KafkaAvroDeserializer"
-            })
-    public void receiveExampleAvroPayload(List<ExamplePayloadAvroDto> payloads) {
-        log.info("Received new message in avro-topic: {}", payloads.toString());
     }
 }

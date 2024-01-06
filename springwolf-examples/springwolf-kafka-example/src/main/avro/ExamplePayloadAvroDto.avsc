@@ -3,6 +3,14 @@
     "name": "ExamplePayloadAvroDto",
     "namespace": "io.github.stavshamir.springwolf.example.kafka.dto.avro",
     "fields": [{
+        "name": "someString",
+        "type": ["null", "string"],
+        "default": null
+    }, {
+        "name": "someLong",
+        "type": ["null", "int"],
+        "default": null
+    }, {
         "name": "someEnum",
         "type": {
             "type": "enum",
@@ -14,13 +22,5 @@
             ]
         },
         "default": "FOO1"
-    }, {
-        "name": "someLong",
-        "type": ["null", "int"],
-        "default": null
-    }, {
-        "name": "someString",
-        "type": ["null", "string"],
-        "default": null
     }]
 }
