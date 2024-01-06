@@ -22,8 +22,8 @@ services:
       - ./broker_jaas.conf:/etc/kafka/secrets/broker_jaas.conf
     environment:
       KAFKA_NODE_ID: 1
-      CLUSTER_ID: 'ciWo7IWazngRchmPES6q5A=='
-      KAFKA_LISTENERS:            PLAINTEXT://localhost:9092,INTERNAL://kafka:29092, SASL_PLAINTEXT://localhost:9093,SASL_INTERNAL://kafka:29093, CONTROLLER://kafka:29099
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk=='
+      KAFKA_LISTENERS:            PLAINTEXT://0.0.0.0:9092,  INTERNAL://kafka:29092, SASL_PLAINTEXT://0.0.0.0:9093,  SASL_INTERNAL://kafka:29093, CONTROLLER://kafka:29099
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,INTERNAL://kafka:29092, SASL_PLAINTEXT://localhost:9093,SASL_INTERNAL://kafka:29093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,  SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_INTERNAL:SASL_PLAINTEXT,  CONTROLLER:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
@@ -41,7 +41,7 @@ services:
     ports:
       - "8081:8081"
     profiles:
-      - test
+      - test # avoid starting (and pulling) this container by default
     environment:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
       SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
@@ -56,7 +56,7 @@ services:
     ports:
       - "8085:8080"
     profiles:
-      - test
+      - test # avoid starting (and pulling) this container by default
     environment:
       AKHQ_CONFIGURATION: |
         akhq:
