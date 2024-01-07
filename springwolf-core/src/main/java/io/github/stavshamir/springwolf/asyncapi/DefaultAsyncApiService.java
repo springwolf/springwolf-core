@@ -65,12 +65,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
             Map<String, ChannelObject> channels = channelsService.findChannels();
 
             Components components = Components.builder()
-                    // FIXME
-                    //                    .schemas(schemasService.getDefinitions().entrySet().stream()
-                    //                    .collect(Collectors.toMap(
-                    //                            Map.Entry::getKey,
-                    //                            entry -> ComponentSchema.of(entry.getValue())
-                    //                    )))
+                    .schemas(schemasService.getDefinitions())
                     .build();
 
             AsyncAPI asyncAPI = AsyncAPI.builder()

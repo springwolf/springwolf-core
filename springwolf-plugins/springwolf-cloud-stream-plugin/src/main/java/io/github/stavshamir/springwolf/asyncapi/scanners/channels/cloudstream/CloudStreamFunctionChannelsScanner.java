@@ -6,15 +6,16 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
@@ -70,12 +71,11 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         String modelName = schemasService.register(payloadType);
         String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
 
-        Message message = Message.builder()
+        MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(modelName)
-                .description(null)
-                .payload(PayloadReference.fromModelName(modelName))
-                .headers(HeaderReference.fromModelName(headerModelName))
+                .payload(MessagePayload.of(MessageReference.fromSchema(modelName)))
+                .headers(MessageHeaders.of(MessageReference.fromSchema(headerModelName)))
                 .bindings(buildMessageBinding())
                 .build();
 

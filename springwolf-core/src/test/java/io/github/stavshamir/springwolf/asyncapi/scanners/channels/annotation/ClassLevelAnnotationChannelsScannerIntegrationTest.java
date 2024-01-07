@@ -3,12 +3,15 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersNotDocumented;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -121,7 +124,8 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                     //                    .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                     // FIXME
                     //
-                    // .headers(HeaderReference.fromModelName(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName()))
+                    .headers(
+                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     // FIXME
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
@@ -167,7 +171,8 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                     //                    .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
                     // FIXME
                     //
-                    // .headers(HeaderReference.fromModelName(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName()))
+                    .headers(
+                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     // FIXME
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
@@ -177,8 +182,8 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                     .title(String.class.getSimpleName())
                     //                    .payload(PayloadReference.fromModelName(String.class.getSimpleName())) FIXME
                     //
-                    // .headers(HeaderReference.fromModelName(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName()))
-                    // FIXME
+                    .headers(
+                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
