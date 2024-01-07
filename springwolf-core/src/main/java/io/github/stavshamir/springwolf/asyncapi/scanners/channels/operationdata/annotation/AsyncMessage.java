@@ -9,8 +9,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-// import static io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message.DEFAULT_SCHEMA_FORMAT;
-
 /**
  * Annotation is mapped to {@link MessageObject}
  */

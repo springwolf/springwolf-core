@@ -10,9 +10,12 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
@@ -140,7 +143,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .description("SimpleFoo Message Description")
                 //                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName())) FIXME
                 //                .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
-                //                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 // FIXME
                 .bindings(EMPTY_MAP)
                 .build();
@@ -185,7 +188,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .description(null)
                 //                .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
                 //                .payload(PayloadReference.fromModelName(String.class.getSimpleName())) FIXME
-                //                .headers(HeaderReference.fromModelName("TestSchema")) FIXME
+                .headers(MessageHeaders.of(MessageReference.fromSchema("TestSchema")))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -221,7 +224,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 //                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName())) FIXME
                 //                .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
-                //                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 // FIXME
                 .bindings(EMPTY_MAP);
 
@@ -267,7 +270,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .description("Message description")
                 //                .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName())) FIXME
                 //                .schemaFormat("application/schema+json;version=draft-07")
-                //                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 // FIXME
                 .bindings(EMPTY_MAP)
                 .build();
@@ -378,7 +381,8 @@ class AsyncAnnotationChannelsScannerTest {
                     //                    .payload(PayloadReference.fromModelName(String.class.getSimpleName())) FIXME
                     //                    .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
                     //
-                    // .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())) FIXME
+                    .headers(
+                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
                     .build();
 
@@ -445,7 +449,8 @@ class AsyncAnnotationChannelsScannerTest {
                     //                    .payload(PayloadReference.fromModelName(String.class.getSimpleName())) FIXME
                     //                    .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
                     //
-                    // .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())) FIXME
+                    .headers(
+                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
                     .build();
 
