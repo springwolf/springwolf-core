@@ -33,7 +33,7 @@
   >
     <mat-expansion-panel-header>
       <mat-panel-title class="flex-column gap-16 flex-start items-center">
-        <div class="badge protocol-badge">
+        <div class="badge protocol-badge" *ngIf="channel.operation.protocol">
           {{ channel.operation.protocol }}
         </div>
         <div
