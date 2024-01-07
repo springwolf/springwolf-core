@@ -9,7 +9,9 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBi
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
@@ -173,21 +175,19 @@ class ConsumerOperationDataScannerIntegrationTest {
                         .name(ExamplePayloadDto.class.getName())
                         .title(ExamplePayloadDto.class.getSimpleName())
                         .description(messageDescription1)
-                        //
                         // .payload(PayloadReference.fromModelName(ExamplePayloadDto.class.getSimpleName())) FIXME
-                        //
-                        // .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())) FIXME
+                        .headers(MessageHeaders.of(
+                                MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                         .bindings(Map.of("kafka", new KafkaMessageBinding()))
                         .build(),
                 MessageObject.builder()
                         .name(AnotherExamplePayloadDto.class.getName())
                         .title(AnotherExamplePayloadDto.class.getSimpleName())
                         .description(messageDescription2)
-                        //
                         // .payload(PayloadReference.fromModelName(AnotherExamplePayloadDto.class.getSimpleName()))
                         // FIXME
-                        //
-                        // .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_USED.getSchemaName())) FIXME
+                        .headers(MessageHeaders.of(
+                                MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                         .bindings(Map.of("kafka", new KafkaMessageBinding()))
                         .build());
 

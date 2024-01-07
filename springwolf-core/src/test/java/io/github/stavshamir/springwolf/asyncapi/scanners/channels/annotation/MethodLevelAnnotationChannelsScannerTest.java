@@ -11,7 +11,9 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBind
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.Data;
@@ -77,8 +79,7 @@ class MethodLevelAnnotationChannelsScannerTest {
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 //                .payload(PayloadReference.fromModelName(String.class.getSimpleName())) FIXME
-                //                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
-                // FIXME
+                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
