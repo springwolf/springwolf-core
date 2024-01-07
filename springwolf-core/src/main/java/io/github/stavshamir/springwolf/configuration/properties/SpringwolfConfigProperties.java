@@ -14,6 +14,9 @@ import org.springframework.lang.Nullable;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Springwolf configuration loaded from Spring <code>application.properties</code> file.
+ */
 @ConfigurationProperties(prefix = SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX)
 @Getter
 @Setter

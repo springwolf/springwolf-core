@@ -14,15 +14,10 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
-
-    /**
-     * Docket definition in application.properties
-     */
     private final SpringwolfConfigProperties configProperties;
 
     /**
-     * valid Docket instance, either reference to customDocket (if set) or environment based Docket.
-     * Lazy initialized on first invocation of getAsyncApiDocket().
+     * lazily initialized AsyncApiDocket instance.
      */
     @Nullable
     private AsyncApiDocket docket;
@@ -30,12 +25,12 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     @Override
     public AsyncApiDocket getAsyncApiDocket() {
         if (docket == null) {
-            createDocket();
+            docket = createDocket();
         }
         return docket;
     }
 
-    private void createDocket() {
+    private AsyncApiDocket createDocket() {
         log.debug("Reading springwolf configuration from application.properties files");
 
         if (configProperties.getDocket() == null || configProperties.getDocket().getBasePackage() == null) {
@@ -56,7 +51,7 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
             builder.defaultContentType(configProperties.getDocket().getDefaultContentType());
         }
 
-        docket = builder.build();
+        return builder.build();
     }
 
     private static Info buildInfo(@Nullable SpringwolfConfigProperties.ConfigDocket.Info configDocketInfo) {
