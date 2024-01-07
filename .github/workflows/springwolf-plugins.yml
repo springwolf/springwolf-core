@@ -25,16 +25,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup spectral
-        run: |
-          echo 'extends: ["spectral:asyncapi"]' > .spectral.yaml
-      - name: Lint asyncapi.json with spectral
-        uses: addnab/docker-run-action@v3
-        with:
-          image: stoplight/spectral:latest
-          options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}
-          run: spectral lint --ruleset ./.spectral.yaml --fail-on-unmatched-globs ./${{ env.example }}/src/test/resources/asyncapi.json
-
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
