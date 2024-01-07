@@ -104,7 +104,7 @@ public class DefaultSchemasService implements SchemasService {
 
         if (withPayloadAnnotatedFields.size() == 1) {
             Schema envelopSchema = schemas.get(schemaName);
-            if (envelopSchema != null) {
+            if (envelopSchema != null && envelopSchema.getProperties() != null) {
                 String fieldName = withPayloadAnnotatedFields.get(0).getName();
                 Schema actualSchema = (Schema) envelopSchema.getProperties().get(fieldName);
                 if (actualSchema != null) {
