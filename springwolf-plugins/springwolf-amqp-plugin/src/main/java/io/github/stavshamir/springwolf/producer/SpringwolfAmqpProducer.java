@@ -63,8 +63,8 @@ public class SpringwolfAmqpProducer {
     private String getRoutingKey(ChannelObject channelItem) {
         String routingKey = "";
         // FIXME
-        //        Operation operation =
-        //                channelItem.getSubscribe() != null ? channelItem.getSubscribe() : channelItem.getPublish();
+        //  Operation operation =
+        //          channelItem.getSubscribe() != null ? channelItem.getSubscribe() : channelItem.getPublish();
         Operation operation = Operation.builder().build();
         if (operation != null
                 && operation.getBindings() != null

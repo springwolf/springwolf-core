@@ -26,13 +26,12 @@
   },
   "channels": {
     "another-queue": {
-      "address": "another-queue",
       "messages": {
         "another-queue_publish_receiveAnotherPayload.message": {
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
           "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
             "schema": {
               "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
             }
@@ -69,14 +68,13 @@
       }
     },
     "example-producer-channel-publisher": {
-      "address": "example-producer-channel-publisher",
       "messages": {
         "example-producer-channel-publisher_subscribe.message": {
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
           "description": "Another payload model",
           "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
             "schema": {
               "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
             }
@@ -93,13 +91,12 @@
       }
     },
     "example-queue": {
-      "address": "example-queue",
       "messages": {
         "example-queue_publish_receiveExamplePayload.message": {
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
           "title": "ExamplePayloadDto",
           "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
             "schema": {
               "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
             }
@@ -136,13 +133,12 @@
       }
     },
     "example-topic-routing-key": {
-      "address": "example-topic-routing-key",
       "messages": {
         "example-topic-routing-key_publish_bindingsExample.message": {
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
           "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
             "schema": {
               "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
             }
@@ -179,13 +175,12 @@
       }
     },
     "multi-payload-queue": {
-      "address": "multi-payload-queue",
       "messages": {
         "multi-payload-queue_publish_bindingsBeanExample.message.0": {
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
           "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
             "schema": {
               "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
             }
@@ -203,7 +198,7 @@
           "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
           "title": "ExamplePayloadDto",
           "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
             "schema": {
               "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
             }
@@ -272,7 +267,7 @@
           "expiration": 0,
           "cc": [],
           "priority": 0,
-          "deliveryMode": 0,
+          "deliveryMode": 1,
           "mandatory": false,
           "timestamp": false,
           "ack": false,

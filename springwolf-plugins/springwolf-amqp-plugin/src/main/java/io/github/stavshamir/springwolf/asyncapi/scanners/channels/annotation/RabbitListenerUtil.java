@@ -117,7 +117,6 @@ public class RabbitListenerUtil {
                     .build();
         }
 
-        // FIXME: Should be converted to the proper enum
         var type = Stream.of(annotation.bindings())
                 .map(it -> it.exchange().type())
                 .findFirst()
