@@ -66,7 +66,7 @@ import static org.mockito.Mockito.when;
             "springwolf.docket.info.version=1.0.0",
             "springwolf.docket.base-package=io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream",
             "springwolf.docket.servers.kafka.protocol=kafka",
-            "springwolf.docket.servers.kafka.url=kafka:9092",
+            "springwolf.docket.servers.kafka.host=kafka:9092",
         })
 @EnableConfigurationProperties
 @Import(CloudStreamFunctionChannelsScannerIntegrationTest.Configuration.class)
