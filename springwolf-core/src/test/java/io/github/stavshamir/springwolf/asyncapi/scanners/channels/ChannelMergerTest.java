@@ -4,11 +4,13 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -105,28 +107,34 @@ class ChannelMergerTest {
         // given
         String channelName = "channel";
         MessageObject message1 = MessageObject.builder()
+                .messageId("message1")
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
         MessageObject message2 = MessageObject.builder()
+                .messageId("message2")
                 .name(Integer.class.getCanonicalName())
                 .description("This is an integer")
                 .build();
         MessageObject message3 = MessageObject.builder()
+                .messageId("message3")
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
         Operation publishOperation1 = Operation.builder()
                 .action(OperationAction.SEND)
-                .title("publisher1") /*.message(message1)FIXME*/
+                .title("publisher1")
+                .messages(List.of(MessageReference.fromMessage(message1)))
                 .build();
         Operation publishOperation2 = Operation.builder()
                 .action(OperationAction.SEND)
-                .title("publisher2") /*.message(message2)FIXME*/
+                .title("publisher2")
+                .messages(List.of(MessageReference.fromMessage(message2)))
                 .build();
         Operation publishOperation3 = Operation.builder()
                 .action(OperationAction.SEND)
-                .title("publisher3") /*.message(message3)FIXME*/
+                .title("publisher3")
+                .messages(List.of(MessageReference.fromMessage(message3)))
                 .build();
         ChannelObject publisherChannel1 = ChannelObject.builder().build();
         ChannelObject publisherChannel2 = ChannelObject.builder().build();
@@ -157,6 +165,7 @@ class ChannelMergerTest {
         // given
         String channelName = "channel";
         MessageObject message2 = MessageObject.builder()
+                .messageId("message2")
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
@@ -166,7 +175,8 @@ class ChannelMergerTest {
                 .build();
         Operation publishOperation2 = Operation.builder()
                 .action(OperationAction.SEND)
-                .title("publisher2") /*.message(message2)FIXME*/
+                .title("publisher2")
+                .messages(List.of(MessageReference.fromMessage(message2)))
                 .build();
         ChannelObject publisherChannel1 =
                 ChannelObject.builder() /*.publish(publishOperation1)FIXME*/.build();
