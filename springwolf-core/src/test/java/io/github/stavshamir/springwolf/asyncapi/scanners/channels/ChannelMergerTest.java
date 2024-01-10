@@ -148,7 +148,7 @@ class ChannelMergerTest {
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
-        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Set.of(message1, message2));
+        Object expectedMessages = MessageHelper.toMessagesMap(Set.of(message1, message2));
         assertThat(mergedChannels).hasSize(1);
         //                .hasEntrySatisfying(channelName, it -> {
         //            assertThat(it.getPublish())
@@ -188,7 +188,7 @@ class ChannelMergerTest {
                 Arrays.asList(Map.entry(channelName, publisherChannel1), Map.entry(channelName, publisherChannel2)));
 
         // then expectedMessage message2
-        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Set.of(message2));
+        Object expectedMessages = MessageHelper.toMessagesMap(Set.of(message2));
         assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
             //            assertThat(it.getPublish()) FIXME
             //                    .isEqualTo(Operation.builder()
