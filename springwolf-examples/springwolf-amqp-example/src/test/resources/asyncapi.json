@@ -177,17 +177,17 @@
     "multi-payload-queue": {
       "messages": {
         "multi-payload-queue_publish_bindingsBeanExample.message.0": {
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
           "payload": {
             "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
             "schema": {
               "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
             }
           },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
+          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
           "bindings": {
             "amqp": {
               "bindingVersion": "0.3.0"

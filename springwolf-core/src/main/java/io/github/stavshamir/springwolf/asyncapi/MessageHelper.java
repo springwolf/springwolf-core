@@ -6,7 +6,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,21 +32,9 @@ public class MessageHelper {
                 .stream().collect(Collectors.toMap(MessageObject::getMessageId, Function.identity()));
     }
 
+    // FIXME: Do we need this method?
     @SuppressWarnings("unchecked")
-    public static Set<MessageObject> messageObjectToSet(Object messageObject) {
-        if (messageObject instanceof MessageObject message) {
-            return new HashSet<>(Collections.singletonList(message));
-        }
-
-        // FIXME
-        // if (messageObject instanceof Map) {
-        //     List<MessageObject> messages = ((Map<String, List<MessageObject>>) messageObject).get(ONE_OF);
-        //     return new HashSet<>(messages);
-        // }
-
-        log.warn(
-                "Message object must contain either a Message or a Map<String, Set<Message>, but contained: {}",
-                messageObject.getClass());
-        return new HashSet<>();
+    public static Set<Message> messageObjectToSet(Map<String, Message> messages) {
+        return new HashSet<>(messages.values());
     }
 }

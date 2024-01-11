@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import org.junit.jupiter.api.Test;
 
@@ -97,20 +98,11 @@ class MessageHelperTest {
     }
 
     @Test
-    void messageObjectToSet_notAMessageOrAMap() {
-        Object string = "foo";
-
-        Set<MessageObject> messages = messageObjectToSet(string);
-
-        assertThat(messages).isEmpty();
-    }
-
-    @Test
     void messageObjectToSet_Message() {
         MessageObject message = MessageObject.builder().name("foo").build();
-        Object asObject = toMessagesMap(Set.of(message));
+        var asMap = toMessagesMap(Set.of(message));
 
-        Set<MessageObject> messages = messageObjectToSet(asObject);
+        Set<Message> messages = messageObjectToSet(asMap);
 
         assertThat(messages).containsExactly(message);
     }
@@ -121,9 +113,9 @@ class MessageHelperTest {
 
         MessageObject message2 = MessageObject.builder().name("bar").build();
 
-        Object asObject = toMessagesMap(Set.of(message1, message2));
+        var asMap = toMessagesMap(Set.of(message1, message2));
 
-        Set<MessageObject> messages = messageObjectToSet(asObject);
+        Set<Message> messages = messageObjectToSet(asMap);
 
         assertThat(messages).containsExactlyInAnyOrder(message1, message2);
     }

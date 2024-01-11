@@ -23,10 +23,6 @@ class ChannelMergerTest {
         // given
         String channelName1 = "channel1";
         String channelName2 = "channel2";
-        //        Operation publishOperation =
-        //                Operation.builder().action(OperationAction.SEND).build();
-        //        Operation subscribeOperation =
-        //                Operation.builder().action(OperationAction.RECEIVE).build();
         ChannelObject publisherChannel = ChannelObject.builder().build();
         ChannelObject subscriberChannel = ChannelObject.builder().build();
 
@@ -36,14 +32,6 @@ class ChannelMergerTest {
 
         // then
         assertThat(mergedChannels).hasSize(2);
-        //                .hasEntrySatisfying(channelName1, it -> {
-        //                    assertThat(it.getPublish()).isEqualTo(publishOperation);
-        //                    assertThat(it.getSubscribe()).isNull();
-        //                })
-        //                .hasEntrySatisfying(channelName2, it -> {
-        //                    assertThat(it.getPublish()).isNull();
-        //                    assertThat(it.getSubscribe()).isEqualTo(subscribeOperation);
-        //                });
     }
 
     @Test
@@ -100,6 +88,49 @@ class ChannelMergerTest {
         //            assertThat(it.getPublish()).isEqualTo(publishOperation1);
         //            assertThat(it.getSubscribe()).isNull();
         //        });
+    }
+
+    @Test
+    void shouldMergeDifferentMessagesForSameChannel() {
+        // given
+        String channelName = "channel";
+        MessageObject message1 = MessageObject.builder()
+                .messageId("message1")
+                .name(String.class.getCanonicalName())
+                .description("This is a string")
+                .build();
+        MessageObject message2 = MessageObject.builder()
+                .messageId("message2")
+                .name(Integer.class.getCanonicalName())
+                .description("This is an integer")
+                .build();
+        MessageObject message3 = MessageObject.builder()
+                .messageId("message3")
+                .name(Integer.class.getCanonicalName())
+                .description("This is also an integer, but in essence the same payload type")
+                .build();
+        ChannelObject publisherChannel1 = ChannelObject.builder()
+                .messages(Map.of(message1.getMessageId(), message1))
+                .build();
+        ChannelObject publisherChannel2 = ChannelObject.builder()
+                .messages(Map.of(message2.getMessageId(), message2))
+                .build();
+        ChannelObject publisherChannel3 = ChannelObject.builder()
+                .messages(Map.of(message3.getMessageId(), message3))
+                .build();
+
+        // when
+        Map<String, ChannelObject> mergedChannels = ChannelMerger.merge(Arrays.asList(
+                Map.entry(channelName, publisherChannel1),
+                Map.entry(channelName, publisherChannel2),
+                Map.entry(channelName, publisherChannel3)));
+
+        // then expectedMessage only includes message1 and message2.
+        // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
+        var expectedMessages = MessageHelper.toMessagesMap(Set.of(message1, message2));
+        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
+            assertThat(it.getMessages()).containsExactlyEntriesOf(expectedMessages);
+        });
     }
 
     @Test
