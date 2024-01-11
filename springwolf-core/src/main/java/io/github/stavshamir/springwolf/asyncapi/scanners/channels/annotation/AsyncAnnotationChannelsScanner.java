@@ -14,8 +14,13 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -117,8 +122,10 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                     .map(it -> ServerReference.builder().ref(it).build())
                     .toList());
         }
+        MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 
-        ChannelObject channelItem = channelBuilder.build();
+        ChannelObject channelItem =
+                channelBuilder.messages(Map.of(message.getMessageId(), message)).build();
         return Map.entry(channelName, channelItem);
     }
 
@@ -133,12 +140,13 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         Map<String, OperationBinding> operationBinding =
                 AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        MessageObject message = buildMessage(asyncOperation, method);
 
         return Operation.builder()
                 .description(description)
                 .title(operationTitle)
-                // FIXME: Message should be the reference
-                //                .message(buildMessage(asyncOperation, method))
+                // FIXME: We can use the message reference once everything else works
+                .messages(List.of(MessageReference.fromMessage(message)))
                 .bindings(opBinding)
                 .build();
     }
@@ -151,6 +159,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         String modelName = this.schemasService.register(payloadType);
         AsyncHeaders asyncHeaders = AsyncAnnotationScannerUtil.getAsyncHeaders(operationData, resolver);
         String headerModelName = this.schemasService.register(asyncHeaders);
+        var headers = MessageHeaders.of(MessageReference.fromSchema(headerModelName));
 
         var schema = payloadType.getAnnotation(Schema.class);
         String description = schema != null ? schema.description() : null;
@@ -158,12 +167,17 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         Map<String, MessageBinding> messageBinding =
                 AsyncAnnotationScannerUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
 
+        var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
+                .schema(SchemaReference.fromSchema(modelName))
+                .build());
+
         var builder = MessageObject.builder()
+                .messageId(payloadType.getName())
                 .name(payloadType.getName())
                 .title(payloadType.getSimpleName())
                 .description(description)
-                //                .payload(PayloadReference.fromModelName(modelName)) FIXME
-                //                .headers(HeaderReference.fromModelName(headerModelName)) FIXME
+                .payload(messagePayload)
+                .headers(headers)
                 .bindings(messageBinding);
 
         // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher

@@ -42,6 +42,14 @@ class AsyncAnnotationScannerUtil {
                             .enumValue(values)
                             .example(exampleValue)
                             .build());
+
+                    // FIXME: Replace AsyncHeaders by proper AsyncAPI v3 Headers
+                    // MessageHeaders.of(
+                    //         SchemaObject.builder()
+                    //                 .description(getDescription(headers, resolver))
+                    //                 .enumValues(values)
+                    //                 .examples(exampleValue != null ? List.of(exampleValue) : null)
+                    //                 .build());
                 });
 
         return asyncHeaders;
@@ -106,8 +114,8 @@ class AsyncAnnotationScannerUtil {
         }
 
         // FIXME
-        //        String annotationSchemaFormat = asyncMessage.schemaFormat();
-        //        var schemaFormat = annotationSchemaFormat != null ? annotationSchemaFormat :
+        // String annotationSchemaFormat = asyncMessage.schemaFormat();
+        // var schemaFormat = annotationSchemaFormat != null ? annotationSchemaFormat :
         // Message.DEFAULT_SCHEMA_FORMAT;
         //        messageBuilder.schemaFormat(schemaFormat);
 

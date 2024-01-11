@@ -60,6 +60,7 @@ public interface OperationData {
 
     MessageObject getMessage();
 
+    // FIXME: With AsyncAPI v3 this should be Action: SEND / RECEIVER
     enum OperationType {
         PUBLISH("publish"),
         SUBSCRIBE("subscribe");

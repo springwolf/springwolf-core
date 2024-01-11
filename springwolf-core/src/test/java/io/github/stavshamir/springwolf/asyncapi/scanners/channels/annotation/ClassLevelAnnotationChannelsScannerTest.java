@@ -12,10 +12,10 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBind
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -82,24 +82,23 @@ class ClassLevelAnnotationChannelsScannerTest {
                 scanner.process(ClassWithTestListenerAnnotation.class).collect(Collectors.toList());
 
         // then
+        MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
+                .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                .build());
+
         MessageObject message = MessageObject.builder()
+                .messageId(String.class.getName())
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                //                .payload(PayloadReference.fromModelName(String.class.getSimpleName())) FIXME
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .payload(payload)
+                // FIXME
+                // .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
-                .build();
-
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .title(CHANNEL + "_publish_ClassWithTestListenerAnnotation")
-                .bindings(defaultOperationBinding)
-                //                .message(message) FIXME
                 .build();
 
         ChannelObject expectedChannelItem = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                //                .publish(operation) FIXME
+                .messages(Map.of(message.getMessageId(), message))
                 .build();
 
         assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));
