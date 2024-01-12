@@ -5,6 +5,7 @@ plugins {
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 dependencies {
@@ -52,6 +53,7 @@ dependencies {
     testImplementation "org.springframework:spring-test"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 jar {
@@ -74,4 +76,10 @@ publishing {
             }
         }
     }
+}
+repositories {
+    mavenCentral()
+}
+kotlin {
+    jvmToolchain(17)
 }

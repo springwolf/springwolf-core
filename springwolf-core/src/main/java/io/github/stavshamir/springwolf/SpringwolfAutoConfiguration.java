@@ -20,7 +20,9 @@ import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
 import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleGeneratorProvider;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.AvroSchemaPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
@@ -119,8 +121,21 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @Order(100)
+    public SwaggerSchemaPostProcessor swaggerSchemaPostProcessor() {
+        return new SwaggerSchemaPostProcessor();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ExampleGeneratorProvider exampleGeneratorProvider(List<ExampleGenerator> exampleGenerators) {
+        return new ExampleGeneratorProvider(exampleGenerators);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public ExampleGenerator exampleGenerator() {
-        return new ExampleJsonGenerator();
+        return new ExampleJsonGenerator<>(new ExampleJsonValueGenerator());
     }
 
     @Bean

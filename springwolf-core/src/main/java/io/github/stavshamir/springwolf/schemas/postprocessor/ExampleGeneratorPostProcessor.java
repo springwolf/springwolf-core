@@ -14,10 +14,10 @@ public class ExampleGeneratorPostProcessor implements SchemasPostProcessor {
     private final ExampleGenerator exampleGenerator;
 
     @Override
-    public void process(Schema schema, Map<String, Schema> definitions) {
+    public void process(Schema schema, Map<String, Schema> definitions, String contentType) {
         if (schema.getExample() == null) {
             log.debug("Generate example for {}", schema.getName());
-
+            // TODO: Select generator based on content type
             Object example = exampleGenerator.fromSchema(schema, definitions);
             schema.setExample(example);
         }

@@ -22,6 +22,8 @@ public interface ExampleGenerator {
     @Nullable
     Object fromSchema(Schema schema, Map<String, Schema> definitions);
 
+    boolean canHandle(String contentType);
+
     class ExampleGeneratingException extends RuntimeException {
         public ExampleGeneratingException(String message) {
             super(message);

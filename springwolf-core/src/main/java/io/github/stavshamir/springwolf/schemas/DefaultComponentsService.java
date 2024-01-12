@@ -2,6 +2,7 @@
 package io.github.stavshamir.springwolf.schemas;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -67,21 +68,27 @@ public class DefaultComponentsService implements ComponentsService {
         headerSchema.properties(headers);
 
         this.schemas.put(headers.getSchemaName(), headerSchema);
-        postProcessSchema(headerSchema);
+        postProcessSchema(headerSchema, Message.DEFAULT_CONTENT_TYPE);
 
         return headers.getSchemaName();
     }
 
     @Override
     public String registerSchema(Class<?> type) {
+        return this.registerSchema(type, Message.DEFAULT_CONTENT_TYPE);
+    }
+
+    @Override
+    public String registerSchema(Class<?> type, String contentType) {
         log.debug("Registering schema for {}", type.getSimpleName());
 
         Map<String, Schema> schemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
 
         String schemaName = getSchemaName(type, schemas);
+
         preProcessSchemas(schemas, schemaName, type);
         this.schemas.putAll(schemas);
-        schemas.values().forEach(this::postProcessSchema);
+        schemas.values().forEach(schema -> postProcessSchema(schema, contentType));
 
         return schemaName;
     }
@@ -150,7 +157,7 @@ public class DefaultComponentsService implements ComponentsService {
         schema.setName(String.class.getName());
 
         this.schemas.put(schemaName, schema);
-        postProcessSchema(schema);
+        postProcessSchema(schema, Message.DEFAULT_CONTENT_TYPE);
 
         return schemaName;
     }
@@ -169,9 +176,9 @@ public class DefaultComponentsService implements ComponentsService {
         return result;
     }
 
-    private void postProcessSchema(Schema schema) {
+    private void postProcessSchema(Schema schema, String contentType) {
         for (SchemasPostProcessor processor : schemaPostProcessors) {
-            processor.process(schema, schemas);
+            processor.process(schema, schemas, contentType);
 
             if (!schemas.containsValue(schema)) {
                 break;

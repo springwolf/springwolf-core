@@ -15,7 +15,10 @@ public interface ComponentsService {
 
     String registerSchema(AsyncHeaders headers);
 
+    @Deprecated
     String registerSchema(Class<?> type);
+
+    String registerSchema(Class<?> type, String contentType);
 
     Map<String, Message> getMessages();
 

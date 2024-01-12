@@ -119,6 +119,10 @@ class AsyncAnnotationScannerUtil {
         if (StringUtils.hasText(annotationTitle)) {
             messageBuilder.title(annotationTitle);
         }
+
+        if (StringUtils.hasText(asyncMessage.contentType())) {
+            messageBuilder.contentType(asyncMessage.contentType());
+        }
     }
 
     /**

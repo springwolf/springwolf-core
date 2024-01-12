@@ -32,7 +32,7 @@ class AvroSchemaPostProcessorTest {
         definitions.put("org.apache.avro.ConversionJava.lang.Object", new io.swagger.v3.oas.models.media.Schema());
 
         // when
-        processor.process(schema, definitions);
+        processor.process(schema, definitions, "content-type-ignored");
 
         // then
         assertThat(schema.getProperties()).isEqualTo(Map.of("foo", new StringSchema()));

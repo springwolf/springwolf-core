@@ -10,6 +10,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncA
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
 import io.swagger.v3.core.util.Json;
@@ -35,6 +36,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -45,7 +47,7 @@ class DefaultSchemasServiceTest {
     private final ComponentsService componentsService = new DefaultComponentsService(
             List.of(),
             List.of(
-                    new ExampleGeneratorPostProcessor(new ExampleJsonGenerator()),
+                    new ExampleGeneratorPostProcessor(new ExampleJsonGenerator(new ExampleJsonValueGenerator())),
                     schemasPostProcessor,
                     schemasPostProcessor2),
             new SwaggerSchemaUtil(),
@@ -168,10 +170,10 @@ class DefaultSchemasServiceTest {
 
     @Test
     void postProcessorsAreCalled() {
-        componentsService.registerSchema(FooWithEnum.class);
+        componentsService.registerSchema(FooWithEnum.class, "some-content-type");
 
-        verify(schemasPostProcessor).process(any(), any());
-        verify(schemasPostProcessor2).process(any(), any());
+        verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
+        verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
     }
 
     @Test
