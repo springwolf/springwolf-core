@@ -13,6 +13,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -189,9 +190,9 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         MessageObject message = buildMessage(asyncOperation, method);
 
         return Operation.builder()
+                .channel(ChannelReference.fromChannel(channelName))
                 .description(description)
                 .title(operationTitle)
-                // FIXME: We can use the message reference once everything else works
                 .messages(List.of(MessageReference.fromMessage(message)))
                 .bindings(opBinding)
                 .build();
