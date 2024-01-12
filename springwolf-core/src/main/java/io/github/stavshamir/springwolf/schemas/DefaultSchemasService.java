@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.schemas;
 
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
+import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.TypeNameResolver;
@@ -23,18 +23,18 @@ import java.util.function.Function;
 public class DefaultSchemasService implements SchemasService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
-    private final ExampleGenerator exampleGenerator;
+    private final List<SchemasPostProcessor> schemaPostProcessors;
     private final SpringwolfConfigProperties properties;
 
     private final Map<String, Schema> definitions = new HashMap<>();
 
     public DefaultSchemasService(
             List<ModelConverter> externalModelConverters,
-            ExampleGenerator exampleGenerator,
+            List<SchemasPostProcessor> schemaPostProcessors,
             SpringwolfConfigProperties properties) {
 
         externalModelConverters.forEach(converter::addConverter);
-        this.exampleGenerator = exampleGenerator;
+        this.schemaPostProcessors = schemaPostProcessors;
         this.properties = properties;
     }
 
@@ -107,25 +107,6 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     private void postProcessSchema(Schema schema) {
-        generateExampleWhenMissing(schema);
-        removeSwaggerSchemaFields(schema);
-    }
-
-    private void removeSwaggerSchemaFields(Schema schema) {
-        schema.setAdditionalProperties(null);
-
-        Map<String, Schema> properties = schema.getProperties();
-        if (properties != null) {
-            properties.values().forEach(this::removeSwaggerSchemaFields);
-        }
-    }
-
-    private void generateExampleWhenMissing(Schema schema) {
-        if (schema.getExample() == null) {
-            log.debug("Generate example for {}", schema.getName());
-
-            Object example = exampleGenerator.fromSchema(schema, definitions);
-            schema.setExample(example);
-        }
+        schemaPostProcessors.forEach(processor -> processor.process(schema, definitions));
     }
 }

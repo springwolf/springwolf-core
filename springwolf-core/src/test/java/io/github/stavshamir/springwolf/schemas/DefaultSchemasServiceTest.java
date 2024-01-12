@@ -7,8 +7,10 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
+import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
+import io.github.stavshamir.springwolf.schemas.postprocessor.SwaggerSchemaPostProcessor;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
@@ -16,6 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,12 +33,18 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 class DefaultSchemasServiceTest {
-
-    private final ExampleGenerator exampleGenerator = new ExampleJsonGenerator();
-    private final SchemasService schemasService =
-            new DefaultSchemasService(List.of(), exampleGenerator, new SpringwolfConfigProperties());
+    private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
+    private final SchemasService schemasService = new DefaultSchemasService(
+            List.of(),
+            List.of(
+                    new ExampleGeneratorPostProcessor(new ExampleJsonGenerator()),
+                    schemasPostProcessor,
+                    new SwaggerSchemaPostProcessor()),
+            new SpringwolfConfigProperties());
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
@@ -111,7 +120,7 @@ class DefaultSchemasServiceTest {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setUseFqn(true);
 
-        SchemasService schemasServiceWithFqn = new DefaultSchemasService(List.of(), exampleGenerator, properties);
+        SchemasService schemasServiceWithFqn = new DefaultSchemasService(List.of(), List.of(), properties);
 
         // when
         Class<?> clazz =
@@ -125,6 +134,13 @@ class DefaultSchemasServiceTest {
         String fqnClassName = clazz.getName();
         assertThat(actualDefinitions).contains(fqnClassName);
         assertThat(fqnClassName.length()).isGreaterThan(clazz.getSimpleName().length());
+    }
+
+    @Test
+    void postProcessorsAreCalled() {
+        schemasService.register(FooWithEnum.class);
+
+        verify(schemasPostProcessor).process(any(), any());
     }
 
     private String jsonResource(String path) throws IOException {

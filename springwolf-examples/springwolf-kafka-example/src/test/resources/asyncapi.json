@@ -60,6 +60,33 @@
         }
       }
     },
+    "avro-topic": {
+      "publish": {
+        "operationId": "avro-topic_publish",
+        "description": "Requires a running kafka-schema-registry. See docker-compose.yml to start it",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto",
+          "title": "ExamplePayloadAvroDto",
+          "payload": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "kafka": {
+              "bindingVersion": "0.4.0"
+            }
+          }
+        }
+      }
+    },
     "example-topic": {
       "publish": {
         "operationId": "example-topic_publish_receiveExamplePayload",
@@ -482,6 +509,56 @@
             },
             "currency": {
               "name": "currency",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto": {
+        "type": "object",
+        "properties": {
+          "someEnum": {
+            "type": "string",
+            "enum": [
+              "FOO1",
+              "FOO2",
+              "FOO3"
+            ]
+          },
+          "someLong": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "someString": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "someEnum": "FOO1",
+          "someLong": 0,
+          "someString": "string"
+        },
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "name": "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto",
+          "properties": {
+            "someEnum": {
+              "enum": [
+                "FOO1",
+                "FOO2",
+                "FOO3"
+              ],
+              "name": "someEnum",
+              "type": "string"
+            },
+            "someLong": {
+              "format": "int32",
+              "name": "someLong",
+              "type": "integer"
+            },
+            "someString": {
+              "name": "someString",
               "type": "string"
             }
           },

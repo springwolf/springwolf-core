@@ -7,40 +7,72 @@ services:
     environment:
       BOOTSTRAP_SERVER: kafka:29092
       BOOTSTRAP_SERVER_SASL: kafka:29093
+      KAFKA_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
     ports:
       - "8080:8080"
     depends_on:
       - kafka
-      - zookeeper
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME:
-      KAFKA_OPTS:
-        -Djava.security.auth.login.config=/etc/kafka/secrets/zookeeper_jaas.conf
-        -Dzookeeper.authProvider.1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider
-        -DrequireClientAuthScheme=sasl
-    volumes:
-      - ./zookeeper_jaas.conf:/etc/kafka/secrets/zookeeper_jaas.conf
 
   kafka:
     image: confluentinc/cp-kafka:latest
-    depends_on:
-      - zookeeper
     ports:
       - "9092:9092" # plaintext - no authentication
       - "9093:9093" # sasl
     volumes:
       - ./broker_jaas.conf:/etc/kafka/secrets/broker_jaas.conf
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_HOST://kafka:29092, SASL_PLAINTEXT://localhost:9093,SASL_PLAINTEXT_HOST://kafka:29093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,  SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_PLAINTEXT_HOST:SASL_PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_HOST
+      KAFKA_NODE_ID: 1
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk=='
+      KAFKA_LISTENERS:            PLAINTEXT://0.0.0.0:9092,  INTERNAL://kafka:29092, SASL_PLAINTEXT://0.0.0.0:9093,  SASL_INTERNAL://kafka:29093, CONTROLLER://kafka:29099
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,INTERNAL://kafka:29092, SASL_PLAINTEXT://localhost:9093,SASL_INTERNAL://kafka:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,  SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_INTERNAL:SASL_PLAINTEXT,  CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_PROCESS_ROLES: 'controller,broker'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29099'
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_SCHEMA_REGISTRY_URL: 'kafka-schema-registry:8081'
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
       KAFKA_OPTS: -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
+
+  kafka-schema-registry:
+    image: confluentinc/cp-schema-registry:latest
+    ports:
+      - "8081:8081"
+    profiles:
+      - test # avoid starting (and pulling) this container by default
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
+      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    depends_on:
+      - kafka
+    links:
+      - kafka
+
+  akhq:
+    image: tchiotludo/akhq:latest
+    ports:
+      - "8085:8080"
+    profiles:
+      - test # avoid starting (and pulling) this container by default
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            local:
+              properties:
+                bootstrap.servers: kafka:29092
+              schema-registry:
+                url: http://kafka-schema-registry:8081
+                type: confluent
+            local-sasl:
+              properties:
+                bootstrap.servers: kafka:29093
+                security.protocol: SASL_PLAINTEXT
+                sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="broker" password="broker-secret";
+                sasl.mechanism: PLAIN
+              schema-registry:
+                url: http://kafka-schema-registry:8081
+                type: confluent

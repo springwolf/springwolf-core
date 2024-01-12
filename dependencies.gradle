@@ -29,11 +29,15 @@ ext {
 
     asyncapiCoreVersion = '1.0.0-EAP-2'
 
+    avroVersion = '1.11.3'
+
     awaitilityVersion = '4.2.0'
 
     commonsLang3Version = '3.14.0'
 
     jsr305Version = '3.0.2'
+
+    kafkaAvroSerializerVersion = '7.5.1'
 
     kafkaClientsVersion = '3.6.1'
     kafkaStreamsVersion = '3.6.1'

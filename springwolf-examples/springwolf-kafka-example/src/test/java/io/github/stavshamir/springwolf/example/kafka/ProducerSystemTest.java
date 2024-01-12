@@ -2,11 +2,15 @@
 package io.github.stavshamir.springwolf.example.kafka;
 
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
+import io.github.stavshamir.springwolf.example.kafka.consumers.AvroConsumer;
 import io.github.stavshamir.springwolf.example.kafka.consumers.ExampleConsumer;
+import io.github.stavshamir.springwolf.example.kafka.dto.avro.ExampleEnum;
+import io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto;
 import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -50,6 +54,9 @@ public class ProducerSystemTest {
     @SpyBean
     ExampleConsumer exampleConsumer;
 
+    @SpyBean
+    AvroConsumer avroConsumer;
+
     @Autowired
     SpringwolfKafkaConfigProperties properties;
 
@@ -81,5 +88,19 @@ public class ProducerSystemTest {
 
         // then
         verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
+    }
+
+    @Test
+    @Order(3)
+    @Disabled("because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
+    void producerCanUseSpringwolfConfigurationToSendAvroMessage() {
+        // given
+        ExamplePayloadAvroDto payload = new ExamplePayloadAvroDto("foo", 5, ExampleEnum.FOO1);
+
+        // when
+        springwolfKafkaProducer.send("avro-topic", "key", Map.of(), payload);
+
+        // then
+        verify(avroConsumer, timeout(10000)).receiveExampleAvroPayload(payload);
     }
 }
