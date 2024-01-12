@@ -59,7 +59,7 @@ class AsyncAPITest {
         var channelUserSignedup = ChannelObject.builder()
                 .channelId("userSignedup")
                 .address("user/signedup")
-                .messages(Map.of(userSignUpMessage.getMessageId(), MessageReference.fromMessage(userSignUpMessage)))
+                .messages(Map.of(userSignUpMessage.getMessageId(), MessageReference.fromMessage("UserSignedUp")))
                 .build();
 
         AsyncAPI asyncAPI = AsyncAPI.builder()
