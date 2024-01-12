@@ -41,6 +41,8 @@ public @interface AsyncOperation {
     String[] servers() default {};
 
     /**
+     * Overwrite the Springwolf auto-detected payload type.
+     * <p>
      * Mapped to {@link OperationData#getPayloadType()}
      */
     Class<?> payloadType() default Object.class;
