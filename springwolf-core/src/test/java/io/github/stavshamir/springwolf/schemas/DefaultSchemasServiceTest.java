@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
@@ -47,7 +47,7 @@ class DefaultSchemasServiceTest {
     private final ComponentsService componentsService = new DefaultComponentsService(
             List.of(),
             List.of(
-                    new ExampleGeneratorPostProcessor(new ExampleJsonGenerator(new ExampleJsonValueGenerator())),
+                    new ExampleGeneratorPostProcessor(new DefaultSchemaWalker(new ExampleJsonValueGenerator())),
                     schemasPostProcessor,
                     schemasPostProcessor2),
             new SwaggerSchemaUtil(),

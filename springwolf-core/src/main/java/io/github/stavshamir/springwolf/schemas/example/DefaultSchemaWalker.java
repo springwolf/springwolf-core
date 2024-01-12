@@ -29,7 +29,7 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 @Slf4j
 @ConditionalOnProperty(name = SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR, havingValue = "buildin-json", matchIfMissing = true)
 @RequiredArgsConstructor
-public class ExampleJsonGenerator<T> implements ExampleGenerator {
+public class DefaultSchemaWalker<T> implements SchemaWalker {
 
     private final ExampleValueGenerator<T> exampleValueGenerator;
 

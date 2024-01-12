@@ -19,7 +19,7 @@ import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
 import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGeneratorProvider;
-import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,7 +49,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             DefaultComponentsService.class,
             SwaggerSchemaUtil.class,
             PayloadClassExtractor.class,
-            ExampleJsonGenerator.class,
+            DefaultSchemaWalker.class,
             ExampleGeneratorProvider.class,
             ExampleJsonValueGenerator.class,
             SpringwolfConfigProperties.class,

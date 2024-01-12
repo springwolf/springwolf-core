@@ -19,9 +19,9 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
 import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
-import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
+import io.github.stavshamir.springwolf.schemas.example.SchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGeneratorProvider;
-import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.AvroSchemaPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
@@ -115,8 +115,8 @@ public class SpringwolfAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @Order(10)
-    public ExampleGeneratorPostProcessor exampleGeneratorPostProcessor(ExampleGenerator exampleGenerator) {
-        return new ExampleGeneratorPostProcessor(exampleGenerator);
+    public ExampleGeneratorPostProcessor exampleGeneratorPostProcessor(SchemaWalker schemaWalker) {
+        return new ExampleGeneratorPostProcessor(schemaWalker);
     }
 
     @Bean
@@ -128,14 +128,14 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ExampleGeneratorProvider exampleGeneratorProvider(List<ExampleGenerator> exampleGenerators) {
-        return new ExampleGeneratorProvider(exampleGenerators);
+    public ExampleGeneratorProvider exampleGeneratorProvider(List<SchemaWalker> schemaWalkers) {
+        return new ExampleGeneratorProvider(schemaWalkers);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ExampleGenerator exampleGenerator() {
-        return new ExampleJsonGenerator<>(new ExampleJsonValueGenerator());
+    public SchemaWalker exampleGenerator() {
+        return new DefaultSchemaWalker<>(new ExampleJsonValueGenerator());
     }
 
     @Bean

@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * Handles types defined in https://www.asyncapi.com/docs/reference/specification/v3.0.0#dataTypeFormat
  */
-public interface ExampleGenerator {
+public interface SchemaWalker {
 
     /**
      * Build an example for a schema
