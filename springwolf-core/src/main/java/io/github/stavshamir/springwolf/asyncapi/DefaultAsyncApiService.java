@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -64,6 +65,8 @@ public class DefaultAsyncApiService implements AsyncApiService {
             // SchemasService.
             Map<String, ChannelObject> channels = channelsService.findChannels();
 
+            Map<String, Operation> operations = channelsService.findOperations();
+
             Components components = Components.builder()
                     .schemas(schemasService.getDefinitions())
                     .build();
@@ -74,6 +77,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
                     .defaultContentType(docket.getDefaultContentType())
                     .servers(docket.getServers())
                     .channels(channels)
+                    .operations(operations)
                     .components(components)
                     .build();
 

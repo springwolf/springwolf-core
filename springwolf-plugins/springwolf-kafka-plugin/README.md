@@ -44,7 +44,7 @@ springwolf.docket.info.title=${spring.application.name}
 springwolf.docket.info.version=1.0.0
 
 springwolf.docket.servers.kafka.protocol=kafka
-springwolf.docket.servers.kafka.url=${kafka.bootstrap.servers:localhost:29092}
+springwolf.docket.servers.kafka.host=${kafka.bootstrap.servers:localhost:29092}
 ```
 
 The basePackage field must be set with the name of the package containing the classes to be scanned for `@KafkaListener`

@@ -26,14 +26,10 @@ public class MessageReference implements Message, Reference {
     /**
      * Convenient Builder to create a Message reference to an existing Message
      * @param message Message to create the reference to. This Message MUST have a 'messageId' field
-     * @return a Message with the 'ref' field pointing to "#/components/messages/{messageId"
+     * @return a Message with the 'ref' field pointing to "#/components/messages/{messageName}"
      */
     public static MessageReference fromMessage(MessageObject message) {
-        var messageId = message.getMessageId();
-        if (messageId == null) {
-            throw new IllegalArgumentException("The message must have a 'messageId' defined");
-        }
-        return new MessageReference("#/components/messages/" + messageId);
+        return fromMessage(message.getName());
     }
 
     public static MessageReference fromMessage(String messageName) {

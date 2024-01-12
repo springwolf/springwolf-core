@@ -16,6 +16,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
@@ -40,14 +41,20 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
 
     @Override
-    public Map<String, ChannelObject> scan() {
+    public Map<String, ChannelObject> scanChannels() {
         Set<Method> beanMethods = beanMethodsScanner.getBeanMethods();
-        return ChannelMerger.merge(beanMethods.stream()
+        return ChannelMerger.mergeChannels(beanMethods.stream()
                 .map(functionalChannelBeanBuilder::fromMethodBean)
                 .flatMap(Set::stream)
                 .filter(this::isChannelBean)
                 .map(this::toChannelEntry)
                 .collect(Collectors.toList()));
+    }
+
+    @Override
+    public Map<String, Operation> scanOperations() {
+        // FIXME
+        return Map.of();
     }
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {

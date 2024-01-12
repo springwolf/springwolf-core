@@ -3,7 +3,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersNotDocumented;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
@@ -11,8 +10,10 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -77,7 +78,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         void scan_componentHasNoClassLevelRabbitListenerAnnotation() {
             // when
             List<Map.Entry<String, ChannelObject>> channels =
-                    scanner.process(ClassWithoutClassListener.class).toList();
+                    scanner.processChannels(ClassWithoutClassListener.class).toList();
 
             // then
             assertThat(channels).isEmpty();
@@ -96,7 +97,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         void scan_componentHasNoClassLevelRabbitListenerAnnotation() {
             // when
             List<Map.Entry<String, ChannelObject>> channels =
-                    scanner.process(ClassWithoutMethodListener.class).toList();
+                    scanner.processChannels(ClassWithoutMethodListener.class).toList();
 
             // then
             assertThat(channels).isEmpty();
@@ -114,32 +115,28 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         @Test
         void scan_componentWithOneMethodLevelAnnotation() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels =
-                    scanner.process(ClassWithOneMethodLevelHandler.class).toList();
+            List<Map.Entry<String, ChannelObject>> actualChannels = scanner.processChannels(
+                            ClassWithOneMethodLevelHandler.class)
+                    .toList();
 
             // then
+            MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
+                    .schema(SchemaReference.fromSchema(SimpleFoo.class.getSimpleName()))
+                    .build());
+
             MessageObject message = MessageObject.builder()
+                    .messageId(SimpleFoo.class.getName())
                     .name(SimpleFoo.class.getName())
                     .title(SimpleFoo.class.getSimpleName())
-                    //                    .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                    // FIXME
-                    //
-                    .headers(
-                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                    // FIXME
+                    .payload(payload)
+                    .headers(MessageHeaders.of(
+                            MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
-                    .build();
-
-            Operation operation = Operation.builder()
-                    .description("Auto-generated description")
-                    .title("test-channel_publish_ClassWithOneMethodLevelHandler")
-                    .bindings(TestBindingFactory.defaultOperationBinding)
-                    //                    .message(message) FIXME
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(TestBindingFactory.defaultChannelBinding)
-                    //                    .publish(operation) FIXME
+                    .messages(Map.of(message.getMessageId(), message))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
@@ -161,43 +158,40 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         @Test
         void scan_componentWithMultipleRabbitHandlerMethods() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels =
-                    scanner.process(ClassWithMultipleMethodLevelHandlers.class).toList();
+            List<Map.Entry<String, ChannelObject>> actualChannels = scanner.processChannels(
+                            ClassWithMultipleMethodLevelHandlers.class)
+                    .toList();
 
             // Then the returned collection contains the channel with message set to oneOf
+            MessagePayload simpleFooPayload = MessagePayload.of(MultiFormatSchema.builder()
+                    .schema(SchemaReference.fromSchema(SimpleFoo.class.getSimpleName()))
+                    .build());
+
             MessageObject fooMessage = MessageObject.builder()
                     .name(SimpleFoo.class.getName())
                     .title(SimpleFoo.class.getSimpleName())
-                    //                    .payload(PayloadReference.fromModelName(SimpleFoo.class.getSimpleName()))
-                    // FIXME
-                    //
-                    .headers(
-                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                    // FIXME
+                    .payload(simpleFooPayload)
+                    .headers(MessageHeaders.of(
+                            MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
+
+            MessagePayload stringPayload = MessagePayload.of(MultiFormatSchema.builder()
+                    .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                    .build());
 
             MessageObject barMessage = MessageObject.builder()
                     .name(String.class.getName())
                     .title(String.class.getSimpleName())
-                    //                    .payload(PayloadReference.fromModelName(String.class.getSimpleName())) FIXME
-                    //
-                    .headers(
-                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                    .payload(stringPayload)
+                    .headers(MessageHeaders.of(
+                            MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
-                    .build();
-
-            Operation operation = Operation.builder()
-                    .description("Auto-generated description")
-                    //                    .operationId("test-channel_publish_ClassWithMultipleMethodLevelHandlers")
-                    // FIXME
-                    .bindings(TestBindingFactory.defaultOperationBinding)
-                    //                    .message(toMessageObjectOrComposition(Set.of(fooMessage, barMessage))) FIXME
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(TestBindingFactory.defaultChannelBinding)
-                    //                    .publish(operation) FIXME
+                    .messages(Map.of(fooMessage.getMessageId(), fooMessage, barMessage.getMessageId(), barMessage))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
@@ -248,12 +242,12 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
 
         @Override
         public Map<String, ChannelBinding> buildChannelBinding(TestClassListener annotation) {
-            return (Map) defaultChannelBinding;
+            return defaultChannelBinding;
         }
 
         @Override
         public Map<String, OperationBinding> buildOperationBinding(TestClassListener annotation) {
-            return (Map) defaultOperationBinding;
+            return defaultOperationBinding;
         }
 
         @Override

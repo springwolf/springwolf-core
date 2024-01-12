@@ -6,12 +6,12 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.messageObjectToSet;
-import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
+import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessagesMap;
+import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,32 +19,31 @@ class MessageHelperTest {
 
     @Test
     void toMessageObjectOrComposition_emptySet() {
-        assertThatThrownBy(() -> toMessageObjectOrComposition(Collections.emptySet()))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> toMessagesMap(Collections.emptySet())).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void toMessageObjectOrComposition_oneMessage() {
+    void toMessagesMap_oneMessage() {
         MessageObject message = MessageObject.builder().name("foo").build();
 
-        Object asObject = toMessageObjectOrComposition(Set.of(message));
+        var messagesMap = toMessagesMap(Set.of(message));
 
-        assertThat(asObject).isInstanceOf(Message.class).isEqualTo(message);
+        assertThat(messagesMap).containsExactlyInAnyOrderEntriesOf(Map.of("foo", message));
     }
 
     @Test
-    void toMessageObjectOrComposition_multipleMessages() {
+    void toMessagesMap_multipleMessages() {
         MessageObject message1 = MessageObject.builder().name("foo").build();
 
         MessageObject message2 = MessageObject.builder().name("bar").build();
 
-        Object asObject = toMessageObjectOrComposition(Set.of(message1, message2));
+        var messages = toMessagesMap(Set.of(message1, message2));
 
-        assertThat(asObject).isInstanceOf(Map.class).isEqualTo(Map.of("oneOf", List.of(message2, message1)));
+        assertThat(messages).containsExactlyInAnyOrderEntriesOf(Map.of("bar", message2, "foo", message1));
     }
 
     @Test
-    void toMessageObjectOrComposition_multipleMessages_remove_duplicates() {
+    void toMessagesMap_multipleMessages_remove_duplicates() {
         MessageObject message1 = MessageObject.builder()
                 .name("foo")
                 .description("This is message 1")
@@ -60,17 +59,17 @@ class MessageHelperTest {
                 .description("This is message 3, but in essence the same payload type as message 2")
                 .build();
 
-        Object asObject = toMessageObjectOrComposition(Set.of(message1, message2, message3));
+        var messages = toMessagesMap(Set.of(message1, message2, message3));
 
-        Map<String, List<Message>> oneOfMap = (Map<String, List<Message>>) asObject;
-        assertThat(oneOfMap).hasSize(1);
-        List<Message> deduplicatedMessageList = oneOfMap.get("oneOf");
-        // we do not have any guarantee wether message2 or message3 won the deduplication.
-        assertThat(deduplicatedMessageList).hasSize(2).contains(message1).containsAnyOf(message2, message3);
+        // we do not have any guarantee whether message2 or message3 won the deduplication.
+        assertThat(messages)
+                .hasSize(2)
+                .containsValue(message1)
+                .containsAnyOf(entry("bar", message2), entry("bar", message3));
     }
 
     @Test
-    void toMessageObjectOrComposition_multipleMessages_should_not_break_deep_equals() {
+    void toMessagesMap_multipleMessages_should_not_break_deep_equals() {
         MessageObject actualMessage1 = MessageObject.builder()
                 .name("foo")
                 .description("This is actual message 1")
@@ -81,7 +80,7 @@ class MessageHelperTest {
                 .description("This is actual message 2")
                 .build();
 
-        Object actualObject = toMessageObjectOrComposition(Set.of(actualMessage1, actualMessage2));
+        Object actualObject = toMessagesMap(Set.of(actualMessage1, actualMessage2));
 
         MessageObject expectedMessage1 = MessageObject.builder()
                 .name("foo")
@@ -93,26 +92,17 @@ class MessageHelperTest {
                 .description("This is expected message 2")
                 .build();
 
-        Object expectedObject = toMessageObjectOrComposition(Set.of(expectedMessage1, expectedMessage2));
+        Object expectedObject = toMessagesMap(Set.of(expectedMessage1, expectedMessage2));
 
         assertThat(actualObject).isNotEqualTo(expectedObject);
     }
 
     @Test
-    void messageObjectToSet_notAMessageOrAMap() {
-        Object string = "foo";
-
-        Set<MessageObject> messages = messageObjectToSet(string);
-
-        assertThat(messages).isEmpty();
-    }
-
-    @Test
     void messageObjectToSet_Message() {
         MessageObject message = MessageObject.builder().name("foo").build();
-        Object asObject = toMessageObjectOrComposition(Set.of(message));
+        var asMap = toMessagesMap(Set.of(message));
 
-        Set<MessageObject> messages = messageObjectToSet(asObject);
+        Set<Message> messages = messageObjectToSet(asMap);
 
         assertThat(messages).containsExactly(message);
     }
@@ -123,9 +113,9 @@ class MessageHelperTest {
 
         MessageObject message2 = MessageObject.builder().name("bar").build();
 
-        Object asObject = toMessageObjectOrComposition(Set.of(message1, message2));
+        var asMap = toMessagesMap(Set.of(message1, message2));
 
-        Set<MessageObject> messages = messageObjectToSet(asObject);
+        Set<Message> messages = messageObjectToSet(asMap);
 
         assertThat(messages).containsExactlyInAnyOrder(message1, message2);
     }

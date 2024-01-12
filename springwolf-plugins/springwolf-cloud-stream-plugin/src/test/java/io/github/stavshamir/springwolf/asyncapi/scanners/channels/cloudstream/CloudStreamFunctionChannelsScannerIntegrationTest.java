@@ -66,7 +66,7 @@ import static org.mockito.Mockito.when;
             "springwolf.docket.info.version=1.0.0",
             "springwolf.docket.base-package=io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream",
             "springwolf.docket.servers.kafka.protocol=kafka",
-            "springwolf.docket.servers.kafka.url=kafka:9092",
+            "springwolf.docket.servers.kafka.host=kafka:9092",
         })
 @EnableConfigurationProperties
 @Import(CloudStreamFunctionChannelsScannerIntegrationTest.Configuration.class)
@@ -85,7 +85,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     @Test
     void testNoBindings() {
         when(bindingServiceProperties.getBindings()).thenReturn(Collections.emptyMap());
-        Map<String, ChannelObject> channels = scanner.scan();
+        Map<String, ChannelObject> channels = scanner.scanChannels();
         assertThat(channels).isEmpty();
     }
 
@@ -98,7 +98,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testConsumer-in-0", testConsumerInBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scan();
+        Map<String, ChannelObject> channels = scanner.scanChannels();
 
         // Then the returned channels contain a ChannelItem with the correct data
         MessageObject message = MessageObject.builder()
@@ -133,7 +133,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testSupplier-out-0", testSupplierOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scan();
+        Map<String, ChannelObject> channels = scanner.scanChannels();
 
         // Then the returned channels contain a ChannelItem with the correct data
 
@@ -177,7 +177,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scan();
+        Map<String, ChannelObject> channels = scanner.scanChannels();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -241,7 +241,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "kStreamTestFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scan();
+        Map<String, ChannelObject> channels = scanner.scanChannels();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -304,7 +304,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scan();
+        Map<String, ChannelObject> channels = scanner.scanChannels();
 
         // Then the returned merged channels contain a publish operation and  a subscribe operation
         MessageObject subscribeMessage = MessageObject.builder()
