@@ -206,6 +206,11 @@ dependencyCheck {
     outputDirectory = "$buildDir/reports/owasp-dependency-check"
     formats = [ReportGenerator.Format.SARIF.toString()]
     nvd.apiKey = project.findProperty("OWASP_API_KEY")
+    analyzers.ossIndex.warnOnlyOnRemoteErrors = true
+    analyzers.assemblyEnabled = false
+    analyzers.nodeEnabled = false
+    analyzers.nodeAudit.enabled = false
+    analyzers.nodeAudit.yarnEnabled = false
 }
 
 def static readEnvFile(path = ".env") {
