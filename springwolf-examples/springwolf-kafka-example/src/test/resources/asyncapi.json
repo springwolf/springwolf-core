@@ -199,6 +199,38 @@
         }
       }
     },
+    "protobuf-topic": {
+      "publish": {
+        "operationId": "protobuf-topic_publish_receiveExampleProtobufPayload",
+        "description": "Auto-generated description",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        },
+        "message": {
+          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+          "name": "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message",
+          "title": "Message",
+          "payload": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "bindings": {
+            "kafka": {
+              "bindingVersion": "0.4.0"
+            }
+          }
+        }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.4.0"
+        }
+      }
+    },
     "topic-defined-via-asyncPublisher-annotation": {
       "subscribe": {
         "operationId": "topic-defined-via-asyncPublisher-annotation_subscribe",
@@ -554,6 +586,58 @@
             },
             "someLong": {
               "format": "int32",
+              "name": "someLong",
+              "type": "integer"
+            },
+            "someString": {
+              "name": "someString",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
+        "type": "object",
+        "properties": {
+          "someEnum": {
+            "type": "string",
+            "enum": [
+              "FOO1",
+              "FOO2",
+              "FOO3",
+              "UNRECOGNIZED"
+            ]
+          },
+          "someLong": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "someString": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "someEnum": "FOO1",
+          "someLong": 0,
+          "someString": "string"
+        },
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "name": "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message",
+          "properties": {
+            "someEnum": {
+              "enum": [
+                "FOO1",
+                "FOO2",
+                "FOO3",
+                "UNRECOGNIZED"
+              ],
+              "name": "someEnum",
+              "type": "string"
+            },
+            "someLong": {
+              "format": "int64",
               "name": "someLong",
               "type": "integer"
             },

@@ -52,6 +52,7 @@ allprojects {
         encoding 'UTF-8'
 
         java {
+            targetExclude 'build/**'
             palantirJavaFormat()
 
             licenseHeader("// SPDX-License-Identifier: Apache-2.0", "package|import|public")

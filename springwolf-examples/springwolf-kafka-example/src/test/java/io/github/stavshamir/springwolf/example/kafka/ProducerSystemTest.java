@@ -4,17 +4,19 @@ package io.github.stavshamir.springwolf.example.kafka;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.example.kafka.consumers.AvroConsumer;
 import io.github.stavshamir.springwolf.example.kafka.consumers.ExampleConsumer;
+import io.github.stavshamir.springwolf.example.kafka.consumers.ProtobufConsumer;
 import io.github.stavshamir.springwolf.example.kafka.dto.avro.ExampleEnum;
 import io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto;
+import io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto;
 import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,6 +49,7 @@ import static org.mockito.Mockito.verify;
 @TestMethodOrder(OrderAnnotation.class)
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ProducerSystemTest {
+    private static final boolean USE_SCHEMA_REGISTRY = false;
 
     @Autowired
     SpringwolfKafkaProducer springwolfKafkaProducer;
@@ -57,12 +60,15 @@ public class ProducerSystemTest {
     @SpyBean
     AvroConsumer avroConsumer;
 
+    @SpyBean
+    ProtobufConsumer protobufConsumer;
+
     @Autowired
     SpringwolfKafkaConfigProperties properties;
 
     @Container
-    public static DockerComposeContainer<?> environment =
-            new DockerComposeContainer<>(new File("docker-compose.yml")).withServices("kafka");
+    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+            .withServices("kafka", USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "");
 
     @Test
     @Order(1)
@@ -92,7 +98,9 @@ public class ProducerSystemTest {
 
     @Test
     @Order(3)
-    @Disabled("because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
+    @DisabledIf(
+            value = "withoutSchemaRegistry",
+            disabledReason = "because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
     void producerCanUseSpringwolfConfigurationToSendAvroMessage() {
         // given
         ExamplePayloadAvroDto payload = new ExamplePayloadAvroDto("foo", 5, ExampleEnum.FOO1);
@@ -102,5 +110,29 @@ public class ProducerSystemTest {
 
         // then
         verify(avroConsumer, timeout(10000)).receiveExampleAvroPayload(payload);
+    }
+
+    @Test
+    @Order(4)
+    @DisabledIf(
+            value = "withoutSchemaRegistry",
+            disabledReason = "because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
+    void producerCanUseSpringwolfConfigurationToSendProtobufMessage() {
+        // given
+        ExamplePayloadProtobufDto.Message payload = ExamplePayloadProtobufDto.Message.newBuilder()
+                .setSomeString("foo")
+                .setSomeLong(5)
+                .setSomeEnum(ExamplePayloadProtobufDto.ExampleEnum.FOO1)
+                .build();
+
+        // when
+        springwolfKafkaProducer.send("protobuf-topic", "key", Map.of(), payload);
+
+        // then
+        verify(protobufConsumer, timeout(10000)).receiveExampleProtobufPayload(payload);
+    }
+
+    boolean withoutSchemaRegistry() {
+        return !USE_SCHEMA_REGISTRY;
     }
 }

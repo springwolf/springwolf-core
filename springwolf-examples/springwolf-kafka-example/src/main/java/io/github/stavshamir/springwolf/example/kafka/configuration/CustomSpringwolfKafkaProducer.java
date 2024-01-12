@@ -37,18 +37,38 @@ public class CustomSpringwolfKafkaProducer implements SpringwolfKafkaTemplatePro
 
     private KafkaTemplate<Object, Object> customize(KafkaTemplate<Object, Object> kafkaTemplate, String topic) {
         if (topic.contains("avro")) {
-            Map<String, Object> producerProperties =
-                    new HashMap<>(kafkaTemplate.getProducerFactory().getConfigurationProperties());
-
-            // configure the producerProperties to use avro serializer/deserializer
-            producerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-            producerProperties.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
-            producerProperties.put("schema.registry.url", kafkaSchemaRegistryUrl);
-
-            DefaultKafkaProducerFactory<Object, Object> producerFactory =
-                    new DefaultKafkaProducerFactory<>(producerProperties);
-            return new KafkaTemplate<>(producerFactory);
+            return createAvroKafkaTemplate(kafkaTemplate);
+        } else if (topic.contains("protobuf")) {
+            return createProtobufKafkaTemplate(kafkaTemplate);
         }
         return kafkaTemplate;
+    }
+
+    private KafkaTemplate<Object, Object> createAvroKafkaTemplate(KafkaTemplate<Object, Object> kafkaTemplate) {
+        Map<String, Object> producerProperties =
+                new HashMap<>(kafkaTemplate.getProducerFactory().getConfigurationProperties());
+
+        // configure the producerProperties to use avro serializer/deserializer
+        producerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        producerProperties.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
+        producerProperties.put("schema.registry.url", kafkaSchemaRegistryUrl);
+
+        DefaultKafkaProducerFactory<Object, Object> producerFactory =
+                new DefaultKafkaProducerFactory<>(producerProperties);
+        return new KafkaTemplate<>(producerFactory);
+    }
+
+    private KafkaTemplate<Object, Object> createProtobufKafkaTemplate(KafkaTemplate<Object, Object> kafkaTemplate) {
+        Map<String, Object> producerProperties =
+                new HashMap<>(kafkaTemplate.getProducerFactory().getConfigurationProperties());
+
+        // configure the producerProperties to use protobuf serializer/deserializer
+        producerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        producerProperties.put("value.serializer", "io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer");
+        producerProperties.put("schema.registry.url", kafkaSchemaRegistryUrl);
+
+        DefaultKafkaProducerFactory<Object, Object> producerFactory =
+                new DefaultKafkaProducerFactory<>(producerProperties);
+        return new KafkaTemplate<>(producerFactory);
     }
 }

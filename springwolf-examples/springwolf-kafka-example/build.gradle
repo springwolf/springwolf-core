@@ -9,6 +9,7 @@ plugins {
     id 'org.springdoc.openapi-gradle-plugin' version '1.8.0'
 
     id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
+    id 'com.google.protobuf' version '0.8.17'
 }
 
 dependencies {
@@ -25,6 +26,7 @@ dependencies {
 
     implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-web"
 
     implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
@@ -38,7 +40,17 @@ dependencies {
     implementation "io.confluent:kafka-avro-serializer:${kafkaAvroSerializerVersion}"
     permitUnusedDeclared "io.confluent:kafka-avro-serializer:${kafkaAvroSerializerVersion}@jar"
 
+    runtimeOnly "io.confluent:kafka-protobuf-serializer:${kafkaProtobufSerializerVersion}"
+    implementation "com.google.protobuf:protobuf-java:${protobufJavaVersion}"
+    implementation "com.hubspot.jackson:jackson-datatype-protobuf:${jacksonDatatypeProtobufVersion}"
+
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "javax.money:money-api:${moneyApiVersion}"
@@ -89,11 +101,37 @@ test {
     dependsOn generateOpenApiDocs
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = srcDirs + ['build/generated/source/proto/main/java']
+        }
+    }
+    test {
+        java {
+            srcDirs = srcDirs + ['build/generated/source/proto/test/java']
+        }
+    }
+}
+
 openApi {
     apiDocsUrl = "http://localhost:8080/springwolf/docs"
     // For testing purposes we put the generated json into the test resources, but it could be any other directory
     outputDir = file("$buildDir/resources/test")
     outputFileName = "openapi-generated.json"
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.21.1'
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java { }
+            }
+        }
+    }
 }
 
 afterEvaluate {

@@ -42,7 +42,10 @@ ext {
     kafkaClientsVersion = '3.6.1'
     kafkaStreamsVersion = '3.6.1'
 
+    kafkaProtobufSerializerVersion = '7.5.1'
+
     jacksonVersion = '2.16.1'
+    jacksonDatatypeProtobufVersion = '0.9.14'
     jakartaAnnotationApiVersion = '2.1.1'
 
     jsonSchemaValidator = '1.1.0'
@@ -52,6 +55,8 @@ ext {
 
     monetaVersion = '1.4.2'
     moneyApiVersion = '1.1'
+
+    protobufJavaVersion = '3.25.1'
 
     junitJupiterVersion = '5.10.1'
     jsonUnitAssertJVersion = '3.2.2'
