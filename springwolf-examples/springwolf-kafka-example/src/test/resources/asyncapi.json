@@ -602,6 +602,19 @@
           "type": "object"
         }
       },
+      "io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope": {
+        "maxLength": 100,
+        "type": "string",
+        "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
+        "example": "string",
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
+          "maxLength": 100,
+          "name": "payload",
+          "type": "string"
+        }
+      },
       "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto": {
         "type": "object",
         "properties": {
@@ -702,19 +715,6 @@
             }
           },
           "type": "object"
-        }
-      },
-      "io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope": {
-        "maxLength": 100,
-        "type": "string",
-        "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
-        "example": "string",
-        "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
-          "maxLength": 100,
-          "name": "payload",
-          "type": "string"
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto": {
