@@ -2,7 +2,6 @@
 package io.github.stavshamir.springwolf.integrationtests;
 
 import io.github.stavshamir.springwolf.asyncapi.controller.AsyncApiController;
-import io.github.stavshamir.springwolf.fixtures.MinimalIntegrationTestContextConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
@@ -19,7 +18,6 @@ public class AutoConfigurationIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = TestApplication.class)
-    @MinimalIntegrationTestContextConfiguration
     class TestSpringwolfEnabled {
         @Autowired
         private AsyncApiController asyncApiController;
@@ -33,7 +31,6 @@ public class AutoConfigurationIntegrationTest {
     @Nested
     @SpringBootTest(classes = TestApplication.class)
     @TestPropertySource(properties = {"springwolf.enabled=false"})
-    @MinimalIntegrationTestContextConfiguration
     class TestSpringwolfDisabled {
 
         @Autowired

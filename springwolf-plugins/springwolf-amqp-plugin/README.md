@@ -31,18 +31,39 @@ dependencies {
 }
 ```
 
-### Configuration
+### Configuration class
 
-Add a `application.properties` file:
+Add a configuration class and provide a `AsyncApiDocket` bean:
 
-```properties
-springwolf.docket.base-package=io.github.stavshamir.springwolf.example.consumers
+```java
 
-springwolf.docket.info.title=${spring.application.name}
-springwolf.docket.info.version=1.0.0
+@Configuration
+public class AsyncApiConfiguration {
 
-springwolf.docket.servers.amqp.protocol=amqp
-springwolf.docket.servers.amqp.url=amqp:5672
+    private final String amqpHost = "localhost";
+    private final String amqpPort = "5672";
+
+    @Bean
+    public AsyncApiDocket asyncApiDocket() {
+        Info info = Info.builder()
+                .version("1.0.0")
+                .title("Springwolf example project - AMQP")
+                .build();
+
+        Server amqp = Server.builder()
+                .protocol("amqp")
+                .url(String.format("%s:%s", amqpHost, amqpPort))
+                .build();
+
+        return AsyncApiDocket.builder()
+                .basePackage("io.github.stavshamir.springwolf.example.amqp.consumers")
+                .info(info)
+                .server("amqp", amqp)
+                .build();
+    }
+
+}
+
 ```
 
 The basePackage field must be set with the name of the package containing the classes to be scanned for `@RabbitListener`

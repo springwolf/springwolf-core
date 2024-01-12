@@ -7,6 +7,8 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBinding
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncAnnotationChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ConsumerOperationDataScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProducerOperationDataScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
@@ -28,6 +30,8 @@ import java.util.List;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED;
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCANNER_CONSUMER_DATA_ENABLED;
+import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED;
 
 /**
  * Spring configuration defining the core scanner beans.
@@ -59,6 +63,22 @@ public class SpringwolfScannerConfiguration {
     public SpringwolfClassScanner springwolfClassScanner(
             ComponentClassScanner componentClassScanner, BeanMethodsScanner beanMethodsScanner) {
         return new SpringwolfClassScanner(componentClassScanner, beanMethodsScanner);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_CONSUMER_DATA_ENABLED, havingValue = "true", matchIfMissing = true)
+    @Order(value = ChannelPriority.MANUAL_DEFINED)
+    public ConsumerOperationDataScanner consumerOperationDataScanner(
+            AsyncApiDocketService asyncApiDocketService, SchemasService schemasService) {
+        return new ConsumerOperationDataScanner(asyncApiDocketService, schemasService);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED, havingValue = "true", matchIfMissing = true)
+    @Order(value = ChannelPriority.MANUAL_DEFINED)
+    public ProducerOperationDataScanner producerOperationDataScanner(
+            AsyncApiDocketService asyncApiDocketService, SchemasService schemasService) {
+        return new ProducerOperationDataScanner(asyncApiDocketService, schemasService);
     }
 
     @Bean

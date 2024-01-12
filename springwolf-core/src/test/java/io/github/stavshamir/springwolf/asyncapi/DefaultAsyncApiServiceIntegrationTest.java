@@ -2,31 +2,35 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import com.asyncapi.v2._6_0.model.info.Info;
 import com.asyncapi.v2._6_0.model.server.Server;
+import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
 import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ConsumerOperationDataScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.ProducerOperationDataScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
+import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
+import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
-import org.junit.jupiter.api.BeforeEach;
+import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
@@ -34,60 +38,66 @@ import static org.mockito.Mockito.when;
             SpringwolfConfigProperties.class,
             DefaultAsyncApiDocketService.class,
             DefaultAsyncApiService.class,
+            DefaultChannelsService.class,
+            DefaultSchemasService.class,
+            PayloadClassExtractor.class,
+            ExampleJsonGenerator.class,
+            ProducerOperationDataScanner.class,
+            ConsumerOperationDataScanner.class,
         })
 @Import({
+    DefaultAsyncApiServiceIntegrationTest.DefaultAsyncApiServiceTestConfiguration.class,
     DefaultAsyncApiServiceIntegrationTest.TestDescriptionCustomizer.class,
     DefaultAsyncApiServiceIntegrationTest.TestDescriptionCustomizer2.class
 })
-@EnableConfigurationProperties
-@TestPropertySource(
-        properties = {
-            "springwolf.enabled=true",
-            "springwolf.docket.info.title=Info title was loaded from spring properties",
-            "springwolf.docket.info.version=1.0.0",
-            "springwolf.docket.id=urn:io:github:stavshamir:springwolf:example",
-            "springwolf.docket.default-content-type=application/yaml",
-            "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
-            "springwolf.docket.servers.test-protocol.protocol=test",
-            "springwolf.docket.servers.test-protocol.url=some-server:1234",
-        })
 class DefaultAsyncApiServiceIntegrationTest {
 
-    @MockBean
-    private ChannelsService channelsService;
+    @TestConfiguration
+    public static class DefaultAsyncApiServiceTestConfiguration {
 
-    @MockBean
-    private SchemasService schemasService;
+        @Bean
+        public AsyncApiDocket docket() {
+            Info info = Info.builder().title("Test").version("1.0.0").build();
+
+            ProducerData kafkaProducerData = ProducerData.builder()
+                    .channelName("producer-topic")
+                    .description("producer-topic-description")
+                    .payloadType(String.class)
+                    .operationBinding(Map.of("kafka", new KafkaOperationBinding()))
+                    .messageBinding(Map.of("kafka", new KafkaMessageBinding()))
+                    .build();
+
+            ConsumerData kafkaConsumerData = ConsumerData.builder()
+                    .channelName("consumer-topic")
+                    .description("consumer-topic-description")
+                    .payloadType(String.class)
+                    .operationBinding(Map.of("kafka", new KafkaOperationBinding()))
+                    .messageBinding(Map.of("kafka", new KafkaMessageBinding()))
+                    .build();
+
+            return AsyncApiDocket.builder()
+                    .info(info)
+                    .basePackage("package")
+                    .server(
+                            "kafka",
+                            Server.builder().protocol("kafka").url("kafka:9092").build())
+                    .producer(kafkaProducerData)
+                    .consumer(kafkaConsumerData)
+                    .build();
+        }
+    }
 
     @Autowired
-    private AsyncApiService asyncApiService;
+    private AsyncApiDocket docket;
 
-    @BeforeEach
-    public void setUp() {
-        when(channelsService.findChannels())
-                .thenReturn(Map.of(
-                        "consumer-topic",
-                        ChannelItem.builder()
-                                .subscribe(Operation.builder()
-                                        .bindings(Map.of("kafka", new KafkaOperationBinding()))
-                                        .message(Message.builder().build())
-                                        .build())
-                                .build(),
-                        "producer-topic",
-                        ChannelItem.builder()
-                                .publish(Operation.builder()
-                                        .bindings(Map.of("kafka", new KafkaOperationBinding()))
-                                        .message(Message.builder().build())
-                                        .build())
-                                .build()));
-    }
+    @Autowired
+    private DefaultAsyncApiService asyncApiService;
 
     @Test
     void getAsyncAPI_info_should_be_correct() {
         Info actualInfo = asyncApiService.getAsyncAPI().getInfo();
 
-        assertThat(actualInfo.getTitle()).isEqualTo("Info title was loaded from spring properties");
-        assertThat(actualInfo.getVersion()).isEqualTo("1.0.0");
+        assertThat(actualInfo).isEqualTo(docket.getInfo());
         assertThat(actualInfo.getDescription()).isEqualTo("AsyncApiInfoDescriptionCustomizer2");
     }
 
@@ -95,30 +105,33 @@ class DefaultAsyncApiServiceIntegrationTest {
     void getAsyncAPI_servers_should_be_correct() {
         Map<String, Server> actualServers = asyncApiService.getAsyncAPI().getServers();
 
-        assertThat(actualServers.get("test-protocol").getProtocol()).isEqualTo("test");
-        assertThat(actualServers.get("test-protocol").getUrl()).isEqualTo("some-server:1234");
+        assertThat(actualServers).isEqualTo(docket.getServers());
     }
 
     @Test
-    void getAsyncAPI_channels_should_be_correct() {
+    void getAsyncAPI_producers_should_be_correct() {
         Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
 
-        assertThat(actualChannels).hasSize(2);
+        assertThat(actualChannels).isNotEmpty().containsKey("producer-topic");
+
+        final ChannelItem channel = actualChannels.get("producer-topic");
+        assertThat(channel.getSubscribe()).isNotNull();
+        final Message message = (Message) channel.getSubscribe().getMessage();
+        assertThat(message.getDescription()).isNull();
+        assertThat(message.getBindings()).isEqualTo(Map.of("kafka", new KafkaMessageBinding()));
+    }
+
+    @Test
+    void getAsyncAPI_consumers_should_be_correct() {
+        Map<String, ChannelItem> actualChannels = asyncApiService.getAsyncAPI().getChannels();
 
         assertThat(actualChannels).isNotEmpty().containsKey("consumer-topic");
-        final ChannelItem consumerChannel = actualChannels.get("consumer-topic");
-        assertThat(consumerChannel.getSubscribe()).isNotNull();
-        assertThat(consumerChannel.getSubscribe().getBindings())
-                .isEqualTo(Map.of("kafka", new KafkaOperationBinding()));
-        assertThat(((Message) consumerChannel.getSubscribe().getMessage()).getDescription())
-                .isNull();
 
-        assertThat(actualChannels).isNotEmpty().containsKey("producer-topic");
-        final ChannelItem publishChannel = actualChannels.get("producer-topic");
-        assertThat(publishChannel.getPublish()).isNotNull();
-        assertThat(publishChannel.getPublish().getBindings()).isEqualTo(Map.of("kafka", new KafkaOperationBinding()));
-        assertThat(((Message) publishChannel.getPublish().getMessage()).getDescription())
-                .isNull();
+        final ChannelItem channel = actualChannels.get("consumer-topic");
+        assertThat(channel.getPublish()).isNotNull();
+        final Message message = (Message) channel.getPublish().getMessage();
+        assertThat(message.getDescription()).isNull();
+        assertThat(message.getBindings()).isEqualTo(Map.of("kafka", new KafkaMessageBinding()));
     }
 
     @Order(TestDescriptionCustomizer.CUSTOMIZER_ORDER)
