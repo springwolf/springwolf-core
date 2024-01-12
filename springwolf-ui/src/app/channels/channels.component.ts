@@ -43,8 +43,10 @@ export class ChannelsComponent implements OnInit {
         } else {
           return a.operation.operation.localeCompare(b.operation.operation);
         }
-      } else {
+      } else if (a.operation.protocol != null) {
         return a.operation.protocol.localeCompare(b.operation.protocol);
+      } else {
+        return 0;
       }
     });
   }
