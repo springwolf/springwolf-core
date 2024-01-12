@@ -40,7 +40,7 @@ class RabbitListenerUtilTest {
             new RabbitListenerUtil.RabbitListenerUtilContext(emptyMap(), emptyMap(), emptyMap());
 
     @Nested
-    public class QueuesConfiguration {
+    class QueuesConfiguration {
 
         @ParameterizedTest
         @ValueSource(classes = {ClassWithQueuesConfiguration.class, ClassWithQueuesToDeclare.class})
@@ -429,7 +429,7 @@ class RabbitListenerUtilTest {
     }
 
     @Nested
-    public class RabbitListenerUtilContextTest {
+    class RabbitListenerUtilContextTest {
         @Test
         void testEmptyContext() {
             // when

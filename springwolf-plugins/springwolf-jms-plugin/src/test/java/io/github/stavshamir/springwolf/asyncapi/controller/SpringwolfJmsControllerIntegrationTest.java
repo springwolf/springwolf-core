@@ -53,7 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             "springwolf.docket.info.title=Title",
             "springwolf.docket.info.version=1.0",
             "springwolf.docket.servers.jms.protocol=jms",
-            "springwolf.docket.servers.jms.url=127.0.0.1",
+            "springwolf.docket.servers.jms.host=127.0.0.1",
             "springwolf.plugin.jms.publishing.enabled=true",
             "springwolf.use-fqn=true"
         })

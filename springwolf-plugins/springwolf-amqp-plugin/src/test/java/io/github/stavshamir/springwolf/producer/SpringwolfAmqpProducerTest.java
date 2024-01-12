@@ -7,13 +7,14 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBind
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ class SpringwolfAmqpProducerTest {
         asyncApiService = mock(AsyncApiService.class);
         rabbitTemplate = mock(RabbitTemplate.class);
 
-        springwolfAmqpProducer = new SpringwolfAmqpProducer(asyncApiService, Collections.singletonList(rabbitTemplate));
+        springwolfAmqpProducer = new SpringwolfAmqpProducer(asyncApiService, List.of(rabbitTemplate));
     }
 
     @Test
@@ -57,17 +58,16 @@ class SpringwolfAmqpProducerTest {
         AMQPChannelExchangeProperties properties = new AMQPChannelExchangeProperties();
         properties.setName("exchange-name");
         ChannelObject channelItem = ChannelObject.builder()
+                .channelId("channel-name")
                 .bindings(Map.of(
                         "amqp",
                         AMQPChannelBinding.builder().exchange(properties).build()))
-                // FIXME
-                //                .publish(Operation.builder()
-                //                        .bindings(Map.of("amqp", new AMQPOperationBinding()))
-                //                        .build())
                 .build();
-        Map<String, ChannelObject> channels = Map.of("channel-name", channelItem);
+        Map<String, ChannelObject> channels = Map.of(channelItem.getChannelId(), channelItem);
         Operation operation = Operation.builder()
+                .action(OperationAction.SEND)
                 .bindings(Map.of("amqp", AMQPOperationBinding.builder().build()))
+                .channel(ChannelReference.fromChannel(channelItem))
                 .build();
         Map<String, Operation> operations = Map.of("amqp", operation);
 
@@ -89,6 +89,7 @@ class SpringwolfAmqpProducerTest {
         AMQPChannelExchangeProperties properties = new AMQPChannelExchangeProperties();
         properties.setName("exchange-name");
         ChannelObject channelItem = ChannelObject.builder()
+                .channelId("channel-name")
                 .bindings(Map.of(
                         "amqp",
                         AMQPChannelBinding.builder().exchange(properties).build()))
@@ -101,7 +102,7 @@ class SpringwolfAmqpProducerTest {
                 //                                        .build()))
                 //                        .build())
                 .build();
-        Map<String, ChannelObject> channels = Map.of("channel-name", channelItem);
+        Map<String, ChannelObject> channels = Map.of(channelItem.getChannelId(), channelItem);
         Operation operation = Operation.builder()
                 .bindings(Map.of(
                         "amqp",

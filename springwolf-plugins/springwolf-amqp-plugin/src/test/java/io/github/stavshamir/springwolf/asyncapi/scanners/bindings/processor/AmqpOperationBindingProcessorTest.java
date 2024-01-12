@@ -6,6 +6,8 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AmqpOperationBindingProcessorTest {
@@ -21,9 +23,14 @@ class AmqpOperationBindingProcessorTest {
 
         assertThat(binding.getType()).isEqualTo("amqp");
         assertThat(binding.getBinding())
-                .isEqualTo(AMQPOperationBinding.builder().build());
-        //                        new AMQPOperationBinding(0, null, List.of(), 0, 0, false, null, null, false, false,
-        // "0.2.0")
+                .isEqualTo(AMQPOperationBinding.builder()
+                        .cc(List.of())
+                        .priority(0)
+                        .deliveryMode(0)
+                        .mandatory(false)
+                        .timestamp(false)
+                        .ack(false)
+                        .build());
     }
 
     @AmqpAsyncOperationBinding

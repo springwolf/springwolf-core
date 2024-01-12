@@ -10,6 +10,6 @@ public class AsyncHeadersNotDocumented implements AsyncHeadersBuilder {
 
     @Override
     public AsyncHeaders buildHeaders(Class<?> payloadType) {
-        return AsyncHeaders.NOT_DOCUMENTED;
+        return NOT_DOCUMENTED;
     }
 }
