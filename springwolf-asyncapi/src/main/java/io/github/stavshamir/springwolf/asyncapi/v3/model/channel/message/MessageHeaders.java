@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.model.channel.message.MessageHeadersSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
 @JsonSerialize(using = MessageHeadersSerializer.class)
+@EqualsAndHashCode
 public class MessageHeaders {
     private MultiFormatSchema multiFormatSchema;
     private SchemaObject schema;
