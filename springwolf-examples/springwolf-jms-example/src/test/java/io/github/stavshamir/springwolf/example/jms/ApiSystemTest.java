@@ -59,7 +59,7 @@ public class ApiSystemTest {
         String actual = restTemplate.getForObject(url, String.class);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).replace("\r\n", "\n");
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
         assertEquals(expected, actual);
     }

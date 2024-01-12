@@ -44,7 +44,9 @@ public class ApiIntegrationWithActuatorIntegrationTest {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expectedWithoutServersKafkaUrlPatch = new String(s.readAllBytes(), StandardCharsets.UTF_8);
         // When running with EmbeddedKafka, the kafka bootstrap server does run on random ports
-        String expected = expectedWithoutServersKafkaUrlPatch.replace("kafka:29092", bootstrapServers);
+        String expected = expectedWithoutServersKafkaUrlPatch
+                .replace("kafka:29092", bootstrapServers)
+                .trim();
 
         assertEquals(expected, actual);
     }
