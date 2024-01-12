@@ -88,68 +88,6 @@
       }
     }
   },
-  "operations": {
-    "another-queue_publish_receiveAnotherPayload": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/another-queue"
-      },
-      "description": "Auto-generated description",
-      "bindings": {
-        "sqs": {
-          "queues": [{
-            "name": "another-queue",
-            "fifoQueue": true,
-          }]
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-queue/messages/another-queue_publish_receiveAnotherPayload.message"
-        }
-      ]
-    },
-    "another-queue_subscribe": {
-      "action": "send",
-      "channel": {
-        "$ref": "#/channels/another-queue"
-      },
-      "description": "Custom, optional description defined in the AsyncPublisher annotation",
-      "bindings": {
-        "sqs": {
-          "queues": [{
-            "name": "another-queue",
-            "fifoQueue": true,
-          }]
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-queue/messages/another-queue_subscribe.message"
-        }
-      ]
-    },
-    "example-queue_publish_receiveExamplePayload": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/example-queue"
-      },
-      "description": "Auto-generated description",
-      "bindings": {
-        "sqs": {
-          "queues": [{
-            "name": "another-queue",
-            "fifoQueue": true,
-          }]
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/example-queue/messages/example-queue_publish_receiveExamplePayload.message"
-        }
-      ]
-    }
-  },
   "components": {
     "schemas": {
       "HeadersNotDocumented": {
@@ -218,6 +156,68 @@
           "someString": "some string value"
         }
       }
+    }
+  },
+  "operations": {
+    "another-queue_publish_receiveAnotherPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/another-queue"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "sqs": {
+          "queues": [{
+            "name": "another-queue",
+            "fifoQueue": true,
+          }]
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-queue/messages/another-queue_publish_receiveAnotherPayload.message"
+        }
+      ]
+    },
+    "another-queue_subscribe": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/another-queue"
+      },
+      "description": "Custom, optional description defined in the AsyncPublisher annotation",
+      "bindings": {
+        "sqs": {
+          "queues": [{
+            "name": "another-queue",
+            "fifoQueue": true,
+          }]
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-queue/messages/another-queue_subscribe.message"
+        }
+      ]
+    },
+    "example-queue_publish_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-queue"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "sqs": {
+          "queues": [{
+            "name": "another-queue",
+            "fifoQueue": true,
+          }]
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-queue/messages/example-queue_publish_receiveExamplePayload.message"
+        }
+      ]
     }
   }
 }

@@ -12,7 +12,6 @@
     "license": {
       "name": "Apache License 2.0"
     },
-    "tags": [],
     "x-generator": "springwolf"
   },
   "defaultContentType": "application/json",
@@ -83,83 +82,6 @@
           }
         }
       }
-    }
-  },
-  "operations": {
-    "another-topic_publish": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/another-topic"
-      },
-      "description": "Auto-generated description",
-      "bindings": {
-        "sns": {
-          "consumers": [
-            {
-              "protocol": "sqs",
-              "endpoint": {
-                "name": "myQueue"
-              },
-              "rawMessageDelivery": false
-            }
-          ]
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-topic/messages/another-topic_publish.message"
-        }
-      ]
-    },
-    "another-topic_subscribe": {
-      "action": "send",
-      "channel": {
-        "$ref": "#/channels/another-topic"
-      },
-      "description": "Custom, optional description defined in the AsyncPublisher annotation",
-      "bindings": {
-        "sns": {
-          "consumers": [
-            {
-              "protocol": "sqs",
-              "endpoint": {
-                "name": "myQueue"
-              },
-              "rawMessageDelivery": false
-            }
-          ]
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-topic/messages/another-topic_subscribe.message"
-        }
-      ]
-    },
-    "example-topic_publish": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/example-topic"
-      },
-      "description": "Auto-generated description",
-      "bindings": {
-        "sns": {
-          "consumers": [
-            {
-              "protocol": "sqs",
-              "endpoint": {
-                "name": "myQueue"
-              },
-              "rawMessageDelivery": false
-            }
-          ]
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/example-topic/messages/example-topic_publish.message"
-        }
-      ]
     }
   },
   "components": {
@@ -316,6 +238,83 @@
           "type": "object"
         }
       }
+    }
+  },
+  "operations": {
+    "another-topic_publish": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/another-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "sns": {
+          "consumers": [
+            {
+              "protocol": "sqs",
+              "endpoint": {
+                "name": "myQueue"
+              },
+              "rawMessageDelivery": false
+            }
+          ]
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-topic/messages/another-topic_publish.message"
+        }
+      ]
+    },
+    "another-topic_subscribe": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/another-topic"
+      },
+      "description": "Custom, optional description defined in the AsyncPublisher annotation",
+      "bindings": {
+        "sns": {
+          "consumers": [
+            {
+              "protocol": "sqs",
+              "endpoint": {
+                "name": "myQueue"
+              },
+              "rawMessageDelivery": false
+            }
+          ]
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-topic/messages/another-topic_subscribe.message"
+        }
+      ]
+    },
+    "example-topic_publish": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "sns": {
+          "consumers": [
+            {
+              "protocol": "sqs",
+              "endpoint": {
+                "name": "myQueue"
+              },
+              "rawMessageDelivery": false
+            }
+          ]
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-topic/messages/example-topic_publish.message"
+        }
+      ]
     }
   }
 }

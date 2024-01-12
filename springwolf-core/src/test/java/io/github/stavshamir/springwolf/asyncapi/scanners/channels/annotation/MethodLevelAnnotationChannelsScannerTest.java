@@ -82,7 +82,7 @@ class MethodLevelAnnotationChannelsScannerTest {
     void scan_componentHasTestListenerMethods() {
         // when
         List<Map.Entry<String, ChannelObject>> channels =
-                scanner.process(ClassWithTestListenerAnnotation.class).collect(Collectors.toList());
+                scanner.processChannels(ClassWithTestListenerAnnotation.class).collect(Collectors.toList());
 
         // then
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -118,8 +118,9 @@ class MethodLevelAnnotationChannelsScannerTest {
     @Test
     void scan_componentHasMultipleTestListenerMethods() {
         // when
-        List<Map.Entry<String, ChannelObject>> channels =
-                scanner.process(ClassWithMultipleTestListenerAnnotation.class).toList();
+        List<Map.Entry<String, ChannelObject>> channels = scanner.processChannels(
+                        ClassWithMultipleTestListenerAnnotation.class)
+                .toList();
 
         // then
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()

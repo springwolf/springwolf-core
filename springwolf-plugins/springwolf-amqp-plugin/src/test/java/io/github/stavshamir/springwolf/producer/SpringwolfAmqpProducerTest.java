@@ -15,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ class SpringwolfAmqpProducerTest {
         asyncApiService = mock(AsyncApiService.class);
         rabbitTemplate = mock(RabbitTemplate.class);
 
-        springwolfAmqpProducer = new SpringwolfAmqpProducer(asyncApiService, Collections.singletonList(rabbitTemplate));
+        springwolfAmqpProducer = new SpringwolfAmqpProducer(asyncApiService, List.of(rabbitTemplate));
     }
 
     @Test

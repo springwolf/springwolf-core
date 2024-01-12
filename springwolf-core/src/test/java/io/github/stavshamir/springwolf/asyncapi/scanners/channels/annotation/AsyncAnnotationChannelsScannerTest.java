@@ -126,7 +126,7 @@ class AsyncAnnotationChannelsScannerTest {
     void scan_componentHasNoListenerMethods() {
         setClassToScan(ClassWithoutListenerAnnotation.class);
 
-        Map<String, ChannelObject> channels = channelScanner.scan();
+        Map<String, ChannelObject> channels = channelScanner.scanChannels();
 
         assertThat(channels).isEmpty();
     }
@@ -137,7 +137,7 @@ class AsyncAnnotationChannelsScannerTest {
         setClassToScan(ClassWithListenerAnnotation.class);
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, ChannelObject> actualChannels = channelScanner.scanChannels();
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -150,21 +150,21 @@ class AsyncAnnotationChannelsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .description("SimpleFoo Message Description")
                 .payload(payload)
+                // FIXME
                 // .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
                 .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                // FIXME
                 .bindings(EMPTY_MAP)
                 .build();
 
         Operation operation = Operation.builder()
                 .description("Auto-generated description")
-                //                .operationId("test-channel_publish") FIXME
-                //                .bindings(EMPTY_MAP)
-                //                .message(message)
+                // .operationId("test-channel_publish") FIXME
+                // .bindings(EMPTY_MAP)
+                // .message(message)
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
-                .bindings(null) /*.publish(operation) FIXME*/
+                .bindings(null)
                 .messages(Map.of(message.getMessageId(), message))
                 .build();
 
@@ -176,7 +176,7 @@ class AsyncAnnotationChannelsScannerTest {
         // Given a class with method annotated with AsyncListener, with an unknown servername
         setClassToScan(ClassWithListenerAnnotationWithInvalidServer.class);
 
-        assertThatThrownBy(channelScanner::scan)
+        assertThatThrownBy(channelScanner::scanChannels)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(
                         "Operation 'test-channel_publish' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
@@ -188,7 +188,7 @@ class AsyncAnnotationChannelsScannerTest {
         setClassToScan(ClassWithListenerAnnotationWithAllAttributes.class);
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, ChannelObject> actualChannels = channelScanner.scanChannels();
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -200,6 +200,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .description(null)
+                // FIXME
                 // .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
                 .payload(payload)
                 .headers(MessageHeaders.of(MessageReference.fromSchema("TestSchema")))
@@ -210,7 +211,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .description("description")
                 .title("test-channel_publish")
                 .bindings(Map.of(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING))
-                //                .message(message) FIXME
+                //  .message(message) FIXME
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
@@ -219,7 +220,6 @@ class AsyncAnnotationChannelsScannerTest {
                 .servers(List.of(
                         ServerReference.builder().ref("server1").build(),
                         ServerReference.builder().ref("server2").build()))
-                //                .publish(operation) FIXME
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -231,7 +231,7 @@ class AsyncAnnotationChannelsScannerTest {
         setClassToScan(ClassWithMultipleListenerAnnotations.class);
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, ChannelObject> actualChannels = channelScanner.scanChannels();
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -285,7 +285,7 @@ class AsyncAnnotationChannelsScannerTest {
         setClassToScan(ClassWithMessageAnnotation.class);
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, ChannelObject> actualChannels = channelScanner.scanChannels();
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -298,9 +298,9 @@ class AsyncAnnotationChannelsScannerTest {
                 .title("Message Title")
                 .description("Message description")
                 .payload(payload)
+                // FIXME
                 // .schemaFormat("application/schema+json;version=draft-07")
                 .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                // FIXME
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -401,7 +401,7 @@ class AsyncAnnotationChannelsScannerTest {
             setClassToScan(clazz);
 
             // When scan is called
-            Map<String, ChannelObject> actualChannels = channelScanner.scan();
+            Map<String, ChannelObject> actualChannels = channelScanner.scanChannels();
 
             // Then the returned collection contains the channel with the actual method, excluding type erased methods
             MessageObject message = MessageObject.builder()
@@ -470,17 +470,21 @@ class AsyncAnnotationChannelsScannerTest {
             setClassToScan(ClassWithMetaAnnotation.class);
 
             // When scan is called
-            Map<String, ChannelObject> actualChannels = channelScanner.scan();
+            Map<String, ChannelObject> actualChannels = channelScanner.scanChannels();
 
             // Then the returned collection contains the channel
+            var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
+                    .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                    .build());
+
             MessageObject message = MessageObject.builder()
                     .messageId(String.class.getName())
                     .name(String.class.getName())
                     .title(String.class.getSimpleName())
                     .description(null)
-                    //                    .payload(PayloadReference.fromModelName(String.class.getSimpleName())) FIXME
-                    //                    .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
-                    //
+                    .payload(messagePayload)
+                    //  FIXME
+                    // .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
                     .headers(
                             MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
@@ -490,7 +494,7 @@ class AsyncAnnotationChannelsScannerTest {
                     .description("test channel operation description")
                     .title("test-channel_publish")
                     .bindings(EMPTY_MAP)
-                    //                    .message(message) FIXME
+                    // .message(message) FIXME
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()

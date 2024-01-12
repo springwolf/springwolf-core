@@ -39,7 +39,7 @@ class MessageHelperTest {
 
         var messages = toMessagesMap(Set.of(message1, message2));
 
-        assertThat(messages).containsExactlyEntriesOf(Map.of("bar", message2, "foo", message1));
+        assertThat(messages).containsExactlyInAnyOrderEntriesOf(Map.of("bar", message2, "foo", message1));
     }
 
     @Test

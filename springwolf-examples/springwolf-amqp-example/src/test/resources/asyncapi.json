@@ -235,6 +235,76 @@
       }
     }
   },
+  "components": {
+    "schemas": {
+      "HeadersNotDocumented": {
+        "type": "object",
+        "properties": { },
+        "example": { }
+      },
+      "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
+        "required": [
+          "example"
+        ],
+        "type": "object",
+        "properties": {
+          "example": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+          },
+          "foo": {
+            "type": "string",
+            "description": "Foo field",
+            "example": "bar"
+          }
+        },
+        "description": "Another payload model",
+        "example": {
+          "example": {
+            "someEnum": "FOO2",
+            "someLong": 5,
+            "someString": "some string value"
+          },
+          "foo": "bar"
+        }
+      },
+      "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
+        "required": [
+          "someEnum",
+          "someString"
+        ],
+        "type": "object",
+        "properties": {
+          "someEnum": {
+            "type": "string",
+            "description": "Some enum field",
+            "example": "FOO2",
+            "enum": [
+              "FOO1",
+              "FOO2",
+              "FOO3"
+            ]
+          },
+          "someLong": {
+            "type": "integer",
+            "description": "Some long field",
+            "format": "int64",
+            "example": 5
+          },
+          "someString": {
+            "type": "string",
+            "description": "Some string field",
+            "example": "some string value"
+          }
+        },
+        "description": "Example payload model",
+        "example": {
+          "someEnum": "FOO2",
+          "someLong": 5,
+          "someString": "some string value"
+        }
+      }
+    }
+  },
   "operations": {
     "another-queue_publish_receiveAnotherPayload": {
       "action": "receive",
@@ -342,76 +412,6 @@
           "$ref": "#/channels/multi-payload-queue/messages/multi-payload-queue_publish_bindingsBeanExample.message.1"
         }
       ]
-    }
-  },
-  "components": {
-    "schemas": {
-      "HeadersNotDocumented": {
-        "type": "object",
-        "properties": {},
-        "example": {}
-      },
-      "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
-        "required": [
-          "example"
-        ],
-        "type": "object",
-        "properties": {
-          "example": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
-          },
-          "foo": {
-            "type": "string",
-            "description": "Foo field",
-            "example": "bar"
-          }
-        },
-        "description": "Another payload model",
-        "example": {
-          "example": {
-            "someEnum": "FOO2",
-            "someLong": 5,
-            "someString": "some string value"
-          },
-          "foo": "bar"
-        }
-      },
-      "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
-        "required": [
-          "someEnum",
-          "someString"
-        ],
-        "type": "object",
-        "properties": {
-          "someEnum": {
-            "type": "string",
-            "description": "Some enum field",
-            "example": "FOO2",
-            "enum": [
-              "FOO1",
-              "FOO2",
-              "FOO3"
-            ]
-          },
-          "someLong": {
-            "type": "integer",
-            "description": "Some long field",
-            "format": "int64",
-            "example": 5
-          },
-          "someString": {
-            "type": "string",
-            "description": "Some string field",
-            "example": "some string value"
-          }
-        },
-        "description": "Example payload model",
-        "example": {
-          "someEnum": "FOO2",
-          "someLong": 5,
-          "someString": "some string value"
-        }
-      }
     }
   }
 }

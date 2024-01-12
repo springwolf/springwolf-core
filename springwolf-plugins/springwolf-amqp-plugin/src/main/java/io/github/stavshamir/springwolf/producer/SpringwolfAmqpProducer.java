@@ -33,8 +33,13 @@ public class SpringwolfAmqpProducer {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
         ChannelObject channelItem = asyncAPI.getChannels().get(channelName);
 
+        Operation operation = null;
+        if (asyncAPI.getOperations() != null) {
+            operation = asyncAPI.getOperations().get("amqp");
+        }
+
         String exchange = getExchangeName(channelItem);
-        String routingKey = getRoutingKey(channelItem);
+        String routingKey = getRoutingKey(operation);
         if (routingKey.isEmpty() && exchange.isEmpty()) {
             routingKey = channelName;
         }
@@ -60,12 +65,8 @@ public class SpringwolfAmqpProducer {
         return exchange;
     }
 
-    private String getRoutingKey(ChannelObject channelItem) {
+    private String getRoutingKey(Operation operation) {
         String routingKey = "";
-        // FIXME
-        //  Operation operation =
-        //          channelItem.getSubscribe() != null ? channelItem.getSubscribe() : channelItem.getPublish();
-        Operation operation = Operation.builder().build();
         if (operation != null
                 && operation.getBindings() != null
                 && operation.getBindings().containsKey("amqp")) {

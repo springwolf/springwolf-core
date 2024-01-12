@@ -19,6 +19,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
@@ -59,14 +60,25 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
     }
 
     @Override
-    public Map<String, ChannelObject> scan() {
+    public Map<String, ChannelObject> scanChannels() {
         List<Map.Entry<String, ChannelObject>> channels = classScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
                 .map(this::buildChannel)
                 .filter(this::isInvalidChannel)
                 .toList();
 
-        return ChannelMerger.merge(channels);
+        return ChannelMerger.mergeChannels(channels);
+    }
+
+    @Override
+    public Map<String, Operation> scanOperations() {
+        List<Map.Entry<String, Operation>> operations = classScanner.scan().stream()
+                .flatMap(this::getAnnotatedMethods)
+                .map(this::buildOperation)
+                .filter(this::isInvalidOperation)
+                .toList();
+
+        return ChannelMerger.mergeOperations(operations);
     }
 
     private Stream<MethodAndAnnotation<A>> getAnnotatedMethods(Class<?> type) {
@@ -100,6 +112,25 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         return allNonNull;
     }
 
+    private boolean isInvalidOperation(Map.Entry<String, Operation> entry) {
+        //        Operation publish = entry.getValue().getPublish();
+        //        boolean publishBindingExists = publish != null && publish.getBindings() != null;
+        //
+        //        Operation subscribe = entry.getValue().getSubscribe();
+        //        boolean subscribeBindingExists = subscribe != null && subscribe.getBindings() != null;
+
+        boolean allNonNull = entry.getKey() != null; // && (publishBindingExists || subscribeBindingExists); FIXME
+
+        if (!allNonNull) {
+            log.warn(
+                    "Some data fields are null - method (channel={}) will not be documented: {}",
+                    entry.getKey(),
+                    entry.getValue());
+        }
+
+        return allNonNull;
+    }
+
     private Map.Entry<String, ChannelObject> buildChannel(MethodAndAnnotation<A> methodAndAnnotation) {
         ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
 
@@ -108,11 +139,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
 
         Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelName);
-        //        FIXME
-        //        switch (this.asyncAnnotationProvider.getOperationType()) {
-        //            case PUBLISH -> channelBuilder.publish(operation);
-        //            case SUBSCRIBE -> channelBuilder.subscribe(operation);
-        //        };
 
         List<String> servers = AsyncAnnotationScannerUtil.getServers(operationAnnotation, resolver);
         if (servers != null && !servers.isEmpty()) {
@@ -127,6 +153,26 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         ChannelObject channelItem =
                 channelBuilder.messages(Map.of(message.getMessageId(), message)).build();
         return Map.entry(channelName, channelItem);
+    }
+
+    private Map.Entry<String, Operation> buildOperation(MethodAndAnnotation<A> methodAndAnnotation) {
+        Operation.OperationBuilder operationBuilder = Operation.builder();
+        AsyncOperation operationAnnotation =
+                this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
+        String operationName = resolver.resolveStringValue(operationAnnotation.channelName());
+
+        Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), operationName);
+        switch (this.asyncAnnotationProvider.getOperationType()) {
+            case PUBLISH -> operation.setAction(OperationAction.RECEIVE);
+            case SUBSCRIBE -> operation.setAction(OperationAction.SEND);
+        }
+
+        MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
+
+        // FIXME
+        // Operation operation =
+        //     operationBuilder.messages(Map.of(message.getMessageId(), message)).build();
+        return Map.entry(operationName, operation);
     }
 
     private Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelName) {

@@ -40,24 +40,36 @@ class DefaultChannelsServiceIntegrationTest {
         Map<String, ChannelObject> actualChannels = defaultChannelsService.findChannels();
 
         assertThat(actualChannels)
-                .containsAllEntriesOf(fooChannelScanner.scan())
-                .containsAllEntriesOf(barChannelScanner.scan())
+                .containsAllEntriesOf(fooChannelScanner.scanChannels())
+                .containsAllEntriesOf(barChannelScanner.scanChannels())
                 .containsEntry(SameTopic.topicName, SameTopic.expectedMergedChannel);
     }
 
     @Component
     static class FooChannelScanner implements ChannelsScanner {
         @Override
-        public Map<String, ChannelObject> scan() {
+        public Map<String, ChannelObject> scanChannels() {
             return Map.of("foo", new ChannelObject());
+        }
+
+        @Override
+        public Map<String, Operation> scanOperations() {
+            // FIXME
+            return Map.of();
         }
     }
 
     @Component
     static class BarChannelScanner implements ChannelsScanner {
         @Override
-        public Map<String, ChannelObject> scan() {
+        public Map<String, ChannelObject> scanChannels() {
             return Map.of("bar", new ChannelObject());
+        }
+
+        @Override
+        public Map<String, Operation> scanOperations() {
+            // FIXME
+            return Map.of();
         }
     }
 
@@ -74,11 +86,17 @@ class DefaultChannelsServiceIntegrationTest {
                     Operation.builder() /*.message("publish")FIXME*/.build();
 
             @Override
-            public Map<String, ChannelObject> scan() {
+            public Map<String, ChannelObject> scanChannels() {
                 return Map.of(
                         topicName,
                         ChannelObject.builder() /*.publish(publishOperation) FIXME*/
                                 .build());
+            }
+
+            @Override
+            public Map<String, Operation> scanOperations() {
+                // FIXME
+                return Map.of();
             }
         }
 
@@ -88,11 +106,17 @@ class DefaultChannelsServiceIntegrationTest {
                     Operation.builder() /*.message("consumer")FIXME*/.build();
 
             @Override
-            public Map<String, ChannelObject> scan() {
+            public Map<String, ChannelObject> scanChannels() {
                 return Map.of(
                         topicName,
                         ChannelObject.builder() /*.subscribe(subscribeOperation)FIXME*/
                                 .build());
+            }
+
+            @Override
+            public Map<String, Operation> scanOperations() {
+                // FIXME
+                return Map.of();
             }
         }
     }
