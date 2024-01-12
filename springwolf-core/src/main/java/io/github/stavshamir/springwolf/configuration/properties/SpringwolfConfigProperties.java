@@ -223,6 +223,8 @@ public class SpringwolfConfigProperties {
                 "org.apache.kafka.streams.kstream.KStream",
                 1,
                 "java.util.List",
+                0,
+                "java.util.Optional",
                 0);
 
         public void setExtractableClasses(Map<String, Integer> extractableClasses) {
