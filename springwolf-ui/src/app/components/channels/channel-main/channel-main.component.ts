@@ -5,7 +5,7 @@ import { Example } from "src/app/models/example.model";
 import { Schema } from "src/app/models/schema.model";
 import { PublisherService } from "src/app/service/publisher.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Operation } from "src/app/models/channel.model";
+import { Operation } from "src/app/models/operation.model";
 import { Binding } from "src/app/models/bindings.model";
 import { STATUS } from "angular-in-memory-web-api";
 
@@ -28,7 +28,6 @@ export class ChannelMainComponent implements OnInit {
   headersSchemaIdentifier: string;
   headersExample: Example;
   headersTextAreaLineCount: number;
-  protocolName: string;
   messageBindingExample?: Example;
   messageBindingExampleTextAreaLineCount: number;
 
@@ -59,8 +58,6 @@ export class ChannelMainComponent implements OnInit {
       this.messageBindingExampleTextAreaLineCount =
         this.messageBindingExample?.lineCount || 0;
     });
-
-    this.protocolName = Object.keys(this.operation.bindings)[0];
   }
 
   isEmptyObject(object?: any): boolean {
@@ -127,7 +124,7 @@ export class ChannelMainComponent implements OnInit {
 
       this.publisherService
         .publish(
-          this.protocolName,
+          this.operation.protocol,
           this.channelName,
           example,
           payloadType,
@@ -158,7 +155,7 @@ export class ChannelMainComponent implements OnInit {
   private handlePublishError(err: { status?: number }) {
     let msg = "Publish failed";
     if (err?.status === STATUS.NOT_FOUND) {
-      msg += ": no publisher was provided for " + this.protocolName;
+      msg += ": no publisher was provided for " + this.operation.protocol;
     }
 
     return this.snackBar.open(msg, "ERROR", {

@@ -1,11 +1,9 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h1>{{ info?.title }}</h1>
 <h5>
-  API VERSION {{ info?.version }}
+  API version {{ info?.version || "not specified" }}
   -
-  <a href="javascript:void(0);" (click)="download()"
-    >Download AsyncAPI JSON file</a
-  >
+  <a href="javascript:void(0);" (click)="download()">Download AsyncAPI file</a>
 </h5>
 <p *ngIf="info?.license?.name">
   <mat-chip>

@@ -5,6 +5,21 @@
     <mat-card-title>{{ server.key }}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    {{ server.value.url }}
+    <table>
+      <tbody>
+        <tr>
+          <td>Host:</td>
+          <td>
+            {{ server.value.host }}
+          </td>
+        </tr>
+        <tr>
+          <td>Protocol:</td>
+          <td>
+            {{ server.value.protocol }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </mat-card-content>
 </mat-card>
