@@ -6,10 +6,6 @@ import { ServerChannels } from "./channels.model";
 import { ServerComponents } from "./components.model";
 import { ServerOperations } from "./operations.model";
 
-export type ServerAsyncApiChannelMessage =
-  | ServerAsyncApiMessage
-  | { oneOf: ServerAsyncApiMessage[] };
-
 export interface ServerAsyncApi {
   asyncapi: string;
   info: ServerAsyncApiInfo;

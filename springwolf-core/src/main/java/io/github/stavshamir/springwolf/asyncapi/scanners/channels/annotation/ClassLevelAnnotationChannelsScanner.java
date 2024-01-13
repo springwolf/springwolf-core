@@ -9,12 +9,14 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -164,7 +166,16 @@ public class ClassLevelAnnotationChannelsScanner<
     private Operation buildOperation(ClassAnnotation classAnnotation, Map<String, Message> messages) {
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(classAnnotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        String channelName = bindingFactory.getChannelName(classAnnotation);
+
+        // var messageReferences = messages.values().stream().map(m -> MessageReference.fromMessage(m)).toList();
+
         // FIXME
-        return Operation.builder().bindings(opBinding) /*.messages(messages)*/.build();
+        return Operation.builder()
+                .action(OperationAction.RECEIVE)
+                .channel(ChannelReference.fromChannel(channelName))
+                // .messages(messageReferences)
+                .bindings(opBinding)
+                .build();
     }
 }

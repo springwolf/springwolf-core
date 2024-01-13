@@ -9,11 +9,13 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -132,8 +134,11 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
     private Operation buildOperation(MethodAnnotation annotation, MessageObject message) {
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(annotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        String channelName = bindingFactory.getChannelName(annotation);
 
         return Operation.builder()
+                .action(OperationAction.RECEIVE)
+                .channel(ChannelReference.fromChannel(channelName))
                 .messages(List.of(MessageReference.fromMessage(message)))
                 .bindings(opBinding)
                 .build();

@@ -9,7 +9,10 @@
     <mat-tab label="Example">
       <div class="flex-column">
         <div
-          [hidden]="isEmptyObject(operation.message.bindings.get(protocolName))"
+          [hidden]="
+            operation.protocol == undefined ||
+            isEmptyObject(operation.message.bindings.get(operation.protocol))
+          "
           class="flex-column"
         >
           <h4>Message Binding</h4>
@@ -19,7 +22,7 @@
             [rows]="messageBindingExampleTextAreaLineCount"
             [value]="
               createMessageBindingExample(
-                operation.message.bindings.get(protocolName)
+                operation.message.bindings.get(operation.protocol)
               )?.value
             "
             (keyup)="
@@ -74,7 +77,7 @@
               headersTextArea.value = headersExample?.value;
               headersTextAreaLineCount = headersExample?.lineCount || 0;
               bindingTextArea.value = createMessageBindingExample(
-                operation.message.bindings.get(protocolName)
+                operation.message.bindings.get(operation.protocol)
               )?.value;
               messageBindingExampleTextAreaLineCount =
                 messageBindingExample?.lineCount || 0
@@ -114,10 +117,19 @@
       </div>
     </mat-tab>
     <mat-tab label="Operation Bindings">
-      <app-json [data]="operation.bindings[protocolName]"></app-json>
+      <div *ngIf="operation.protocol && operation.message.bindings">
+        <app-json
+          *ngIf="operation.protocol && operation.message.bindings"
+          [data]="operation.bindings[operation.protocol]"
+        ></app-json>
+      </div>
     </mat-tab>
     <mat-tab label="Message Bindings">
-      <app-json [data]="operation.message.rawBindings[protocolName]"></app-json>
+      <div *ngIf="operation.protocol && operation.message.rawBindings">
+        <app-json
+          [data]="operation.message.rawBindings[operation.protocol]"
+        ></app-json>
+      </div>
     </mat-tab>
   </mat-tab-group>
 </section>
