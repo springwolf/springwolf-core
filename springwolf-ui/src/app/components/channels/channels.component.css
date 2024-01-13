@@ -7,11 +7,11 @@
   display: inline-block;
 }
 
-.subscribe-badge {
+.send-badge {
   background-color: #ffd580;
 }
 
-.publish-badge {
+.receive-badge {
   background-color: #9bd279;
 }
 

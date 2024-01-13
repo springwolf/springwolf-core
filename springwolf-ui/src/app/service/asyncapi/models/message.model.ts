@@ -5,7 +5,12 @@ export interface ServerAsyncApiMessage {
   name: string;
   title: string;
   description?: string;
-  payload: { $ref: string };
+  payload: {
+    schemaFormat: string;
+    schema: {
+      $ref: string;
+    };
+  };
   headers: { $ref: string };
   bindings: ServerBindings;
 }

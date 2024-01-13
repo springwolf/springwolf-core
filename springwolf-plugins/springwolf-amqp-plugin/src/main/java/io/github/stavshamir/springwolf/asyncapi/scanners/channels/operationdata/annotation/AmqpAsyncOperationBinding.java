@@ -27,7 +27,7 @@ public @interface AmqpAsyncOperationBinding {
 
     int priority() default 0;
 
-    int deliveryMode() default 0;
+    int deliveryMode() default 1;
 
     boolean mandatory() default false;
 

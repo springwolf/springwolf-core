@@ -16,14 +16,14 @@
         <div
           class="badge"
           [ngClass]="{
-            'publish-badge': channel.operation.operation === 'publish',
-            'subscribe-badge': channel.operation.operation === 'subscribe'
+            'send-badge': channel.operation.operationType === 'send',
+            'receive-badge': channel.operation.operationType === 'receive'
           }"
         >
-          {{ channel.operation.operation }}
+          {{ channel.operation.operationType }}
           <i
             class="fa {{
-              channel.operation.operation == 'publish'
+              channel.operation.operationType == 'receive'
                 ? 'fa-arrow-circle-down'
                 : 'fa-arrow-circle-up'
             }}"

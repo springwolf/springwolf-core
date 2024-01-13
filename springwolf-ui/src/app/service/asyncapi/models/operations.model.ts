@@ -1,10 +1,21 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { ServerAsyncApiMessage } from "./message.model";
+import { ServerBindings } from "./bindings.model";
 
 export interface ServerOperations {
-  action: "receive" | "send";
+  [key: string]: ServerOperation;
+}
+
+export type ServerOperationAction = "receive" | "send";
+
+export interface ServerOperation {
+  action: ServerOperationAction;
   channel: {
     $ref: string;
   };
-  messages: ServerAsyncApiMessage[];
+  messages: ServerOperationMessage[];
+  bindings: ServerBindings;
+}
+
+export interface ServerOperationMessage {
+  $ref: string;
 }

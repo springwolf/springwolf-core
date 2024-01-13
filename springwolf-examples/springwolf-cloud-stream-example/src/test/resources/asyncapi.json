@@ -12,127 +12,25 @@
     "license": {
       "name": "Apache License 2.0"
     },
-    "tags": [],
     "x-generator": "springwolf"
   },
   "defaultContentType": "application/json",
   "servers": {
     "kafka": {
-      "host": "kafka:29092",
+      "host": "localhost:50025",
       "protocol": "kafka"
     }
   },
   "channels": {
     "another-topic": {
-      "address": "another-topic",
-      "messages": {
-        "another-topic_publish_consumerMethod.message": {
-          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/AnotherPayloadDto"
-            }
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "kafka": {}
-          }
-        },
-        "another-topic_subscribe_process.message": {
-          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/AnotherPayloadDto"
-            }
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "kafka": {}
-          }
-        }
-      },
       "bindings": {
-        "kafka": {}
+        "kafka": { }
       }
     },
     "example-topic": {
-      "address": "example-topic",
-      "messages": {
-        "example-topic_publish_process.message": {
-          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto",
-          "title": "ExamplePayloadDto",
-          "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/ExamplePayloadDto"
-            }
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "kafka": {}
-          }
-        }
-      },
       "bindings": {
-        "kafka": {}
+        "kafka": { }
       }
-    }
-  },
-  "operations": {
-    "another-topic_publish_consumerMethod": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/another-topic"
-      },
-      "description": "Auto-generated description",
-      "bindings": {
-        "kafka": {}
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-topic/messages/another-topic_publish_consumerMethod.message"
-        }
-      ]
-    },
-    "another-topic_subscribe_process": {
-      "action": "send",
-      "channel": {
-        "$ref": "#/channels/another-topic"
-      },
-      "description": "Auto-generated description",
-      "bindings": {
-        "kafka": {}
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-topic/messages/another-topic_subscribe_process.message"
-        }
-      ]
-    },
-    "example-topic_publish_process": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/example-topic"
-      },
-      "description": "Auto-generated description",
-      "bindings": {
-        "kafka": {}
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/example-topic/messages/example-topic_publish_process.message"
-        }
-      ]
     }
   },
   "components": {
@@ -200,9 +98,10 @@
       },
       "HeadersNotDocumented": {
         "type": "object",
-        "properties": {},
-        "example": {}
+        "properties": { },
+        "example": { }
       }
     }
-  }
+  },
+  "operations": { }
 }
