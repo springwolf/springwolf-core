@@ -123,15 +123,18 @@ class MethodLevelAnnotationChannelsScannerTest {
                 .toList();
 
         // then
-        MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
+        MessagePayload stringPayload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                .build());
+        MessagePayload simpleFooPayload = MessagePayload.of(MultiFormatSchema.builder()
+                .schema(SchemaReference.fromSchema(SimpleFoo.class.getSimpleName()))
                 .build());
 
         MessageObject stringMessage = MessageObject.builder()
                 .messageId(String.class.getName())
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(payload)
+                .payload(stringPayload)
                 .headers(MessageHeaders.of(
                         MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
@@ -141,19 +144,24 @@ class MethodLevelAnnotationChannelsScannerTest {
                 .messageId(SimpleFoo.class.getName())
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
-                .payload(payload)
+                .payload(simpleFooPayload)
                 .headers(MessageHeaders.of(
                         MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
-        ChannelObject expectedChannelItem = ChannelObject.builder()
+        ChannelObject methodChannel = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(
-                        stringMessage.getMessageId(), stringMessage, simpleFooMessage.getMessageId(), simpleFooMessage))
+                .messages(Map.of(stringMessage.getMessageId(), stringMessage))
+                .build();
+        ChannelObject anotherMethodChannel = ChannelObject.builder()
+                .bindings(defaultChannelBinding)
+                .messages(Map.of(simpleFooMessage.getMessageId(), simpleFooMessage))
                 .build();
 
-        assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));
+        assertThat(channels)
+                .containsExactlyInAnyOrderElementsOf(
+                        List.of(Map.entry(CHANNEL, methodChannel), Map.entry(CHANNEL, anotherMethodChannel)));
     }
 
     private static class ClassWithMultipleTestListenerAnnotation {

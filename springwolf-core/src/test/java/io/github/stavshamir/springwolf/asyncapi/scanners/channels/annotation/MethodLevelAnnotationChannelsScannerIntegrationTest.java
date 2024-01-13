@@ -169,11 +169,11 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
 
             ChannelObject expectedChannelItem2 = ChannelObject.builder()
                     .bindings(defaultChannelBinding)
-                    .messages(Map.of(messageString.getMessageId(), messageSimpleFoo))
+                    .messages(Map.of(messageString.getMessageId(), messageString))
                     .build();
 
             assertThat(channels)
-                    .containsExactly(
+                    .containsExactlyInAnyOrder(
                             Map.entry(TestBindingFactory.CHANNEL, expectedChannelItem),
                             Map.entry(TestBindingFactory.CHANNEL, expectedChannelItem2));
         }
