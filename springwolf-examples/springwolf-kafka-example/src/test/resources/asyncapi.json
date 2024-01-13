@@ -876,6 +876,10 @@
   },
   "operations": {
     "another-topic_publish_receiveAnotherPayloadBatched": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/another-topic"
+      },
       "bindings": {
         "kafka": {
           "groupId": {
@@ -895,6 +899,9 @@
     },
     "avro-topic": {
       "action": "receive",
+      "channel": {
+        "$ref": "#/channels/avro-topic"
+      },
       "title": "avro-topic_publish",
       "description": "Requires a running kafka-schema-registry. See docker-compose.yml to start it",
       "bindings": {
@@ -909,6 +916,10 @@
       ]
     },
     "avro-topic_publish_receiveExampleAvroPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/avro-topic"
+      },
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"
@@ -921,6 +932,10 @@
       ]
     },
     "example-topic_publish_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-topic"
+      },
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"
@@ -934,8 +949,11 @@
     },
     "multi-payload-topic": {
       "action": "receive",
+      "channel": {
+        "$ref": "#/channels/multi-payload-topic"
+      },
       "title": "multi-payload-topic_publish",
-      "description": "Override description in the AsyncListener annotation with servers at localhost:50082",
+      "description": "Override description in the AsyncListener annotation with servers at localhost:51006",
       "bindings": {
         "kafka": {
           "groupId": {
@@ -960,6 +978,10 @@
       ]
     },
     "multi-payload-topic_publish_ExampleClassLevelKafkaListener": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/multi-payload-topic"
+      },
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"
@@ -967,6 +989,10 @@
       }
     },
     "primitive-topic_publish_receivePrimitivePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/primitive-topic"
+      },
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"
@@ -979,6 +1005,10 @@
       ]
     },
     "protobuf-topic_publish_receiveExampleProtobufPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/protobuf-topic"
+      },
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"
@@ -992,6 +1022,9 @@
     },
     "string-topic": {
       "action": "receive",
+      "channel": {
+        "$ref": "#/channels/string-topic"
+      },
       "title": "string-topic_publish",
       "description": "Final classes (like String) can be documented using an envelope class and the @AsyncApiPayload annotation.",
       "bindings": {
@@ -1006,6 +1039,10 @@
       ]
     },
     "string-topic_publish_receiveStringPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/string-topic"
+      },
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"
@@ -1019,6 +1056,9 @@
     },
     "topic-defined-via-asyncPublisher-annotation": {
       "action": "send",
+      "channel": {
+        "$ref": "#/channels/topic-defined-via-asyncPublisher-annotation"
+      },
       "title": "topic-defined-via-asyncPublisher-annotation_subscribe",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
