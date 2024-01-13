@@ -17,68 +17,49 @@
   "defaultContentType": "application/json",
   "servers": {
     "sns": {
-      "host": "localhost:4566",
+      "host": "http://localhost:4566",
       "protocol": "sns"
     }
   },
   "channels": {
     "another-topic": {
-      "address": "another-topic",
       "messages": {
-        "another-topic_publish.message": {
-          "name": "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "description": "Another payload model",
+        "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto": {
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
           "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
             "schema": {
               "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
             }
           },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "sns": {}
-          }
-        },
-        "another-topic_subscribe.message": {
           "name": "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto",
           "title": "AnotherPayloadDto",
           "description": "Another payload model",
-          "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
-            }
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
           "bindings": {
-            "sns": {}
+            "sns": { }
           }
         }
       }
     },
     "example-topic": {
-      "address": "example-topic",
       "messages": {
-        "example-topic_publish.message": {
-          "name": "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto",
-          "title": "ExamplePayloadDto",
-          "description": "Example payload model",
+        "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto": {
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
           "payload": {
-            "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
             "schema": {
               "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
             }
           },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
+          "name": "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
+          "description": "Example payload model",
           "bindings": {
-            "sns": {}
+            "sns": { }
           }
         }
       }
@@ -88,8 +69,8 @@
     "schemas": {
       "HeadersNotDocumented": {
         "type": "object",
-        "properties": {},
-        "example": {},
+        "properties": { },
+        "example": { },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "name": "HeadersNotDocumented",
@@ -241,78 +222,33 @@
     }
   },
   "operations": {
-    "another-topic_publish": {
+    "another-topic": {
       "action": "receive",
-      "channel": {
-        "$ref": "#/channels/another-topic"
-      },
+      "title": "another-topic_publish",
       "description": "Auto-generated description",
       "bindings": {
         "sns": {
-          "consumers": [
-            {
-              "protocol": "sqs",
-              "endpoint": {
-                "name": "myQueue"
-              },
-              "rawMessageDelivery": false
-            }
-          ]
+          "bindingVersion": "0.1.0"
         }
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/another-topic_publish.message"
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "another-topic_subscribe": {
-      "action": "send",
-      "channel": {
-        "$ref": "#/channels/another-topic"
-      },
-      "description": "Custom, optional description defined in the AsyncPublisher annotation",
-      "bindings": {
-        "sns": {
-          "consumers": [
-            {
-              "protocol": "sqs",
-              "endpoint": {
-                "name": "myQueue"
-              },
-              "rawMessageDelivery": false
-            }
-          ]
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-topic/messages/another-topic_subscribe.message"
-        }
-      ]
-    },
-    "example-topic_publish": {
+    "example-topic": {
       "action": "receive",
-      "channel": {
-        "$ref": "#/channels/example-topic"
-      },
+      "title": "example-topic_publish",
       "description": "Auto-generated description",
       "bindings": {
         "sns": {
-          "consumers": [
-            {
-              "protocol": "sqs",
-              "endpoint": {
-                "name": "myQueue"
-              },
-              "rawMessageDelivery": false
-            }
-          ]
+          "bindingVersion": "0.1.0"
         }
       },
       "messages": [
         {
-          "$ref": "#/channels/example-topic/messages/example-topic_publish.message"
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
         }
       ]
     }
