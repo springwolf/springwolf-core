@@ -8,6 +8,11 @@ export interface ServerChannels {
 
 export interface ServerChannel {
   description?: string;
-  messages: Map<string, ServerAsyncApiMessage>;
+  messages: Map<
+    string,
+    {
+      $ref: string;
+    }
+  >;
   bindings: ServerBindings;
 }

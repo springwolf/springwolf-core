@@ -9,7 +9,6 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
@@ -19,6 +18,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
@@ -70,8 +70,8 @@ class AsyncAnnotationChannelsScannerTest {
                 }
 
                 @Override
-                public OperationData.OperationType getOperationType() {
-                    return OperationData.OperationType.PUBLISH;
+                public OperationAction getOperationType() {
+                    return OperationAction.SEND;
                 }
             };
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
@@ -150,7 +150,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .payload(payload)
                 // FIXME
                 // .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -163,7 +163,7 @@ class AsyncAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(null)
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -177,7 +177,7 @@ class AsyncAnnotationChannelsScannerTest {
         assertThatThrownBy(channelScanner::scanChannels)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(
-                        "Operation 'test-channel_publish' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
+                        "Operation 'test-channel_send' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
     }
 
     @Test
@@ -201,7 +201,7 @@ class AsyncAnnotationChannelsScannerTest {
                 // FIXME
                 // .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT)
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.fromSchema("TestSchema")))
+                .headers(MessageHeaders.of(MessageReference.toSchema("TestSchema")))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -214,7 +214,7 @@ class AsyncAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(null)
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .servers(List.of(
                         ServerReference.builder().ref("server1").build(),
                         ServerReference.builder().ref("server2").build()))
@@ -242,7 +242,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(payload)
                 //  .schemaFormat(Message.DEFAULT_SCHEMA_FORMAT) // FIXME
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(EMPTY_MAP)
                 .description("SimpleFoo Message Description")
                 .build();
@@ -255,7 +255,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannel1 = ChannelObject.builder()
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(null) /*.publish(operation1)*/
                 .build();
 
@@ -267,7 +267,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannel2 = ChannelObject.builder()
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(null) /*.publish(operation2)*/
                 .build();
 
@@ -298,7 +298,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .payload(payload)
                 // FIXME
                 // .schemaFormat("application/schema+json;version=draft-07")
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -311,7 +311,7 @@ class AsyncAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(null) /*.publish(operation) FIXME*/
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -411,8 +411,8 @@ class AsyncAnnotationChannelsScannerTest {
                     .title(String.class.getSimpleName())
                     .description(null)
                     .payload(messagePayload)
-                    .headers(
-                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                    // .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0") FIXME
+                    .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
                     .build();
 
@@ -424,7 +424,8 @@ class AsyncAnnotationChannelsScannerTest {
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(null)
-                    .messages(Map.of(message.getMessageId(), message))
+                    /*.publish(operation) FIXME*/
+                    .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -484,8 +485,7 @@ class AsyncAnnotationChannelsScannerTest {
                     .payload(messagePayload)
                     //  FIXME
                     // .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
-                    .headers(
-                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                    .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
                     .build();
 
@@ -498,7 +498,7 @@ class AsyncAnnotationChannelsScannerTest {
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(null) /*.publish(operation) FIXME*/
-                    .messages(Map.of(message.getMessageId(), message))
+                    .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));

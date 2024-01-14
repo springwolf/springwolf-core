@@ -8,7 +8,6 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanne
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
@@ -151,8 +150,9 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         }
         MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 
-        ChannelObject channelItem =
-                channelBuilder.messages(Map.of(message.getMessageId(), message)).build();
+        ChannelObject channelItem = channelBuilder
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
+                .build();
         return Map.entry(channelName, channelItem);
     }
 
@@ -163,10 +163,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         String operationName = resolver.resolveStringValue(operationAnnotation.channelName());
 
         Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), operationName);
-        switch (this.asyncAnnotationProvider.getOperationType()) {
-            case PUBLISH -> operation.setAction(OperationAction.RECEIVE);
-            case SUBSCRIBE -> operation.setAction(OperationAction.SEND);
-        }
+        operation.setAction(this.asyncAnnotationProvider.getOperationType());
 
         MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 
@@ -182,7 +179,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
             description = "Auto-generated description";
         }
 
-        String operationTitle = channelName + "_" + this.asyncAnnotationProvider.getOperationType().operationName;
+        String operationTitle = channelName + "_" + this.asyncAnnotationProvider.getOperationType().type;
 
         Map<String, OperationBinding> operationBinding =
                 AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
@@ -193,7 +190,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                 .channel(ChannelReference.fromChannel(channelName))
                 .description(description)
                 .title(operationTitle)
-                .messages(List.of(MessageReference.fromMessage(message)))
+                .messages(List.of(MessageReference.toChannelMessage(channelName, message)))
                 .bindings(opBinding)
                 .build();
     }
@@ -203,10 +200,10 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                 ? operationData.payloadType()
                 : payloadClassExtractor.extractFrom(method);
 
-        String modelName = this.schemasService.register(payloadType);
+        String modelName = this.schemasService.registerSchema(payloadType);
         AsyncHeaders asyncHeaders = AsyncAnnotationScannerUtil.getAsyncHeaders(operationData, resolver);
-        String headerModelName = this.schemasService.register(asyncHeaders);
-        var headers = MessageHeaders.of(MessageReference.fromSchema(headerModelName));
+        String headerModelName = this.schemasService.registerSchema(asyncHeaders);
+        var headers = MessageHeaders.of(MessageReference.toSchema(headerModelName));
 
         var schema = payloadType.getAnnotation(Schema.class);
         String description = schema != null ? schema.description() : null;
@@ -231,7 +228,9 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         // priority so if we find them, we need to override the default values.
         AsyncAnnotationScannerUtil.processAsyncMessageAnnotation(builder, operationData.message(), this.resolver);
 
-        return builder.build();
+        MessageObject message = builder.build();
+        this.schemasService.registerMessage(message);
+        return message;
     }
 
     /**
@@ -266,7 +265,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
 
         AsyncOperation getAsyncOperation(A annotation);
 
-        OperationData.OperationType getOperationType();
+        OperationAction getOperationType();
     }
 
     private record MethodAndAnnotation<A>(Method method, A annotation) {}

@@ -71,10 +71,10 @@ class ClassLevelAnnotationChannelsScannerTest {
         doReturn(String.class).when(payloadClassExtractor).extractFrom(any());
         doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())
                 .when(schemasService)
-                .register(any(Class.class));
+                .registerSchema(any(Class.class));
         doAnswer(invocation -> AsyncHeaders.NOT_DOCUMENTED.getSchemaName())
                 .when(schemasService)
-                .register(any(AsyncHeaders.class));
+                .registerSchema(any(AsyncHeaders.class));
     }
 
     @Test
@@ -93,13 +93,13 @@ class ClassLevelAnnotationChannelsScannerTest {
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
         ChannelObject expectedChannelItem = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));

@@ -34,13 +34,13 @@ public class ApiIntegrationTest {
     void asyncApiResourceArtifactTest() throws IOException {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actual);
+        // When running with EmbeddedKafka, the kafka bootstrap server does run on random ports
+        String actualPatched = actual.replace(bootstrapServers, "kafka:29092");
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actualPatched);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expectedWithoutServersKafkaUrlPatch = new String(s.readAllBytes(), StandardCharsets.UTF_8);
-        // When running with EmbeddedKafka, the kafka bootstrap server does run on random ports
-        String expected = expectedWithoutServersKafkaUrlPatch.replace("kafka:29092", bootstrapServers);
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
 
-        assertEquals(expected, actual);
+        assertEquals(expected, actualPatched);
     }
 }

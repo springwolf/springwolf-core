@@ -85,7 +85,7 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
         MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         String channelName = bindingFactory.getChannelName(annotation);
-        String operationId = channelName + "_publish_" + method.getName();
+        String operationId = channelName + "_receive_" + method.getName();
         Class<?> payload = payloadClassExtractor.extractFrom(method);
 
         Operation operation = buildOperation(annotation, payload);
@@ -104,29 +104,31 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
 
     private MessageObject buildMessage(MethodAnnotation annotation, Class<?> payloadType) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation);
-        String modelName = schemasService.register(payloadType);
-        String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
+        String modelName = schemasService.registerSchema(payloadType);
+        String headerModelName = schemasService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());
 
-        return MessageObject.builder()
+        MessageObject message = MessageObject.builder()
                 .messageId(payloadType.getName())
                 .name(payloadType.getName())
                 .title(payloadType.getSimpleName())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.fromSchema(headerModelName)))
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(messageBinding)
                 .build();
+
+        this.schemasService.registerMessage(message);
+        return message;
     }
 
     private ChannelObject buildChannelItem(MethodAnnotation annotation, MessageObject message) {
         Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(annotation);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         return ChannelObject.builder()
-                // FIXME: We can use the message reference once everything else works
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .bindings(chBinding)
                 .build();
     }
@@ -139,7 +141,7 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
         return Operation.builder()
                 .action(OperationAction.RECEIVE)
                 .channel(ChannelReference.fromChannel(channelName))
-                .messages(List.of(MessageReference.fromMessage(message)))
+                .messages(List.of(MessageReference.toChannelMessage(channelName, message)))
                 .bindings(opBinding)
                 .build();
     }

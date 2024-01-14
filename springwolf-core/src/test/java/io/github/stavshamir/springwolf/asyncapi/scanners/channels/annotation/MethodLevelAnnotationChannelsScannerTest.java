@@ -65,10 +65,10 @@ class MethodLevelAnnotationChannelsScannerTest {
         doReturn(String.class).when(payloadClassExtractor).extractFrom(any());
         doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())
                 .when(schemasService)
-                .register(any(Class.class));
+                .registerSchema(any(Class.class));
         doAnswer(invocation -> AsyncHeaders.NOT_DOCUMENTED.getSchemaName())
                 .when(schemasService)
-                .register(any(AsyncHeaders.class));
+                .registerSchema(any(AsyncHeaders.class));
 
         var stringMethod =
                 ClassWithMultipleTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
@@ -95,13 +95,13 @@ class MethodLevelAnnotationChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(payload)
                 .headers(MessageHeaders.of(
-                        MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
         ChannelObject expectedChannelItem = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));
@@ -136,7 +136,7 @@ class MethodLevelAnnotationChannelsScannerTest {
                 .title(String.class.getSimpleName())
                 .payload(stringPayload)
                 .headers(MessageHeaders.of(
-                        MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
@@ -146,17 +146,18 @@ class MethodLevelAnnotationChannelsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(simpleFooPayload)
                 .headers(MessageHeaders.of(
-                        MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
         ChannelObject methodChannel = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(stringMessage.getMessageId(), stringMessage))
+                .messages(Map.of(stringMessage.getMessageId(), MessageReference.toComponentMessage(stringMessage)))
                 .build();
         ChannelObject anotherMethodChannel = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(simpleFooMessage.getMessageId(), simpleFooMessage))
+                .messages(
+                        Map.of(simpleFooMessage.getMessageId(), MessageReference.toComponentMessage(simpleFooMessage)))
                 .build();
 
         assertThat(channels)

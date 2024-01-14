@@ -7,8 +7,8 @@ plugins {
 }
 
 dependencies {
-    api project(":springwolf-core")
     api project(":springwolf-asyncapi")
+    api project(":springwolf-core")
 
     implementation "jakarta.jms:jakarta.jms-api"
 
@@ -34,6 +34,8 @@ dependencies {
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
     testRuntimeOnly "org.springframework.boot:spring-boot-starter-web"
+
+    testImplementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
 
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
 

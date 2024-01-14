@@ -14,7 +14,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.Payloa
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -121,8 +121,8 @@ public class SpringwolfScannerConfiguration {
             }
 
             @Override
-            public OperationData.OperationType getOperationType() {
-                return OperationData.OperationType.PUBLISH;
+            public OperationAction getOperationType() {
+                return OperationAction.SEND;
             }
         };
     }
@@ -141,8 +141,8 @@ public class SpringwolfScannerConfiguration {
             }
 
             @Override
-            public OperationData.OperationType getOperationType() {
-                return OperationData.OperationType.SUBSCRIBE;
+            public OperationAction getOperationType() {
+                return OperationAction.RECEIVE;
             }
         };
     }

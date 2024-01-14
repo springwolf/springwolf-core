@@ -13,6 +13,7 @@ dependencyManagement {
 }
 
 dependencies {
+    api project(":springwolf-asyncapi")
     api project(":springwolf-core")
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"

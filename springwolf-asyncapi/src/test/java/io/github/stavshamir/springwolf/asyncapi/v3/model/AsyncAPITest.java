@@ -59,7 +59,7 @@ class AsyncAPITest {
         var channelUserSignedup = ChannelObject.builder()
                 .channelId("userSignedup")
                 .address("user/signedup")
-                .messages(Map.of(userSignUpMessage.getMessageId(), MessageReference.fromMessage("UserSignedUp")))
+                .messages(Map.of(userSignUpMessage.getMessageId(), MessageReference.toComponentMessage("UserSignedUp")))
                 .build();
 
         AsyncAPI asyncAPI = AsyncAPI.builder()
@@ -74,8 +74,8 @@ class AsyncAPITest {
                         Operation.builder()
                                 .action(OperationAction.SEND)
                                 .channel(ChannelReference.fromChannel(channelUserSignedup))
-                                .messages(
-                                        List.of(new MessageReference("#/channels/userSignedup/messages/UserSignedUp")))
+                                .messages(List.of(MessageReference.toChannelMessage(
+                                        "userSignedup", userSignUpMessage.getMessageId())))
                                 .build()))
                 .components(Components.builder()
                         .messages(Map.of(userSignUpMessage.getMessageId(), userSignUpMessage))
@@ -98,7 +98,7 @@ class AsyncAPITest {
                 .traits(List.of(MessageTrait.builder()
                         .ref("#/components/messageTraits/commonHeaders")
                         .build()))
-                .payload(MessagePayload.of(MessageReference.fromSchema("lightMeasuredPayload")))
+                .payload(MessagePayload.of(MessageReference.toSchema("lightMeasuredPayload")))
                 .build();
 
         var turnOnOffMessage = MessageObject.builder()
@@ -109,7 +109,7 @@ class AsyncAPITest {
                 .traits(List.of(MessageTrait.builder()
                         .ref("#/components/messageTraits/commonHeaders")
                         .build()))
-                .payload(MessagePayload.of(MessageReference.fromSchema("turnOnOffPayload")))
+                .payload(MessagePayload.of(MessageReference.toSchema("turnOnOffPayload")))
                 .build();
 
         var dimLightMessage = MessageObject.builder()
@@ -120,7 +120,7 @@ class AsyncAPITest {
                 .traits(List.of(MessageTrait.builder()
                         .ref("#/components/messageTraits/commonHeaders")
                         .build()))
-                .payload(MessagePayload.of(MessageReference.fromSchema("dimLightPayload")))
+                .payload(MessagePayload.of(MessageReference.toSchema("dimLightPayload")))
                 .build();
 
         AsyncAPI asyncAPI = AsyncAPI.builder()
@@ -190,7 +190,8 @@ class AsyncAPITest {
                         "lightingMeasured",
                         ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.event.{streetlightId}.lighting.measured")
-                                .messages(Map.of("lightMeasured", MessageReference.fromMessage(lightMeasuredMessage)))
+                                .messages(Map.of(
+                                        "lightMeasured", MessageReference.toComponentMessage(lightMeasuredMessage)))
                                 .description("The topic on which measured values may be produced and consumed.")
                                 .parameters(Map.of(
                                         "streetlightId",
@@ -201,7 +202,7 @@ class AsyncAPITest {
                         "lightTurnOn",
                         ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.action.{streetlightId}.turn.on")
-                                .messages(Map.of("turnOn", MessageReference.fromMessage(turnOnOffMessage)))
+                                .messages(Map.of("turnOn", MessageReference.toComponentMessage(turnOnOffMessage)))
                                 .parameters(Map.of(
                                         "streetlightId",
                                         ChannelParameter.builder()
@@ -211,7 +212,7 @@ class AsyncAPITest {
                         "lightTurnOff",
                         ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.action.{streetlightId}.turn.off")
-                                .messages(Map.of("turnOff", MessageReference.fromMessage(turnOnOffMessage)))
+                                .messages(Map.of("turnOff", MessageReference.toComponentMessage(turnOnOffMessage)))
                                 .parameters(Map.of(
                                         "streetlightId",
                                         ChannelParameter.builder()
@@ -221,7 +222,7 @@ class AsyncAPITest {
                         "lightsDim",
                         ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.action.{streetlightId}.dim")
-                                .messages(Map.of("dimLight", MessageReference.fromMessage(dimLightMessage)))
+                                .messages(Map.of("dimLight", MessageReference.toComponentMessage(dimLightMessage)))
                                 .parameters(Map.of(
                                         "streetlightId",
                                         ChannelParameter.builder()
@@ -239,8 +240,8 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(
-                                        new MessageReference("#/channels/lightingMeasured/messages/lightMeasured")))
+                                .messages(
+                                        List.of(MessageReference.toChannelMessage("lightingMeasured", "lightMeasured")))
                                 .build(),
                         "turnOn",
                         Operation.builder()
@@ -251,7 +252,7 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(new MessageReference("#/channels/lightTurnOn/messages/turnOn")))
+                                .messages(List.of(MessageReference.toChannelMessage("lightTurnOn", "turnOn")))
                                 .build(),
                         "turnOff",
                         Operation.builder()
@@ -262,7 +263,7 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(new MessageReference("#/channels/lightTurnOff/messages/turnOff")))
+                                .messages(List.of(MessageReference.toChannelMessage("lightTurnOff", "turnOff")))
                                 .build(),
                         "dimLight",
                         Operation.builder()
@@ -273,7 +274,7 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(new MessageReference("#/channels/lightsDim/messages/dimLight")))
+                                .messages(List.of(MessageReference.toChannelMessage("lightsDim", "dimLight")))
                                 .build()))
                 .components(Components.builder()
                         .messages(Map.of(

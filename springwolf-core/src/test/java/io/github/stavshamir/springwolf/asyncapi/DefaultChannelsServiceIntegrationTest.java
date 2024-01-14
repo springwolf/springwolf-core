@@ -3,7 +3,10 @@ package io.github.stavshamir.springwolf.asyncapi;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(
         classes = {
             DefaultChannelsService.class,
-            DefaultChannelsServiceIntegrationTest.FooChannelScanner.class,
-            DefaultChannelsServiceIntegrationTest.BarChannelScanner.class,
-            DefaultChannelsServiceIntegrationTest.SameTopic.SubscribeChannelScanner.class,
-            DefaultChannelsServiceIntegrationTest.SameTopic.ProduceChannelScanner.class
+            DefaultChannelsServiceIntegrationTest.SimpleChannelScanner.class,
+            DefaultChannelsServiceIntegrationTest.SameTopic.ReceiveChannelScanner.class,
+            DefaultChannelsServiceIntegrationTest.SameTopic.SendChannelScanner.class
         })
 class DefaultChannelsServiceIntegrationTest {
 
@@ -30,23 +32,29 @@ class DefaultChannelsServiceIntegrationTest {
     private DefaultChannelsService defaultChannelsService;
 
     @Autowired
-    private FooChannelScanner fooChannelScanner;
-
-    @Autowired
-    private BarChannelScanner barChannelScanner;
+    private SimpleChannelScanner simpleChannelScanner;
 
     @Test
     void getChannels() {
         Map<String, ChannelObject> actualChannels = defaultChannelsService.findChannels();
 
         assertThat(actualChannels)
-                .containsAllEntriesOf(fooChannelScanner.scanChannels())
-                .containsAllEntriesOf(barChannelScanner.scanChannels())
+                .containsAllEntriesOf(simpleChannelScanner.scanChannels())
                 .containsEntry(SameTopic.topicName, SameTopic.expectedMergedChannel);
     }
 
+    @Test
+    void getOperations() {
+        Map<String, Operation> actualChannels = defaultChannelsService.findOperations();
+
+        assertThat(actualChannels)
+                .containsAllEntriesOf(simpleChannelScanner.scanOperations())
+                .containsEntry("receive", SameTopic.ReceiveChannelScanner.receiveOperation)
+                .containsEntry("send", SameTopic.SendChannelScanner.sentOperation);
+    }
+
     @Component
-    static class FooChannelScanner implements ChannelsScanner {
+    static class SimpleChannelScanner implements ChannelsScanner {
         @Override
         public Map<String, ChannelObject> scanChannels() {
             return Map.of("foo", new ChannelObject());
@@ -54,69 +62,67 @@ class DefaultChannelsServiceIntegrationTest {
 
         @Override
         public Map<String, Operation> scanOperations() {
-            // FIXME
-            return Map.of();
-        }
-    }
-
-    @Component
-    static class BarChannelScanner implements ChannelsScanner {
-        @Override
-        public Map<String, ChannelObject> scanChannels() {
-            return Map.of("bar", new ChannelObject());
-        }
-
-        @Override
-        public Map<String, Operation> scanOperations() {
-            // FIXME
-            return Map.of();
+            return Map.of(
+                    "foo",
+                    Operation.builder()
+                            .channel(ChannelReference.fromChannel("foo"))
+                            .action(OperationAction.RECEIVE)
+                            .build());
         }
     }
 
     static class SameTopic {
-        static final String topicName = "subscribeProduceTopic";
+        static final String topicName = "receiveSendTopic";
         static final ChannelObject expectedMergedChannel = ChannelObject.builder()
-                //                .publish(SameTopic.ProduceChannelScanner.publishOperation) FIXME
-                //                .subscribe(SameTopic.SubscribeChannelScanner.subscribeOperation)
+                .messages(Map.of(
+                        "receiveMessage",
+                        MessageReference.toComponentMessage("receiveMessage"),
+                        "sendMessage",
+                        MessageReference.toComponentMessage("sendMessage")))
                 .build();
 
         @Component
-        static class ProduceChannelScanner implements ChannelsScanner {
-            static final Operation publishOperation =
-                    Operation.builder() /*.message("publish")FIXME*/.build();
+        static class SendChannelScanner implements ChannelsScanner {
+            static final Operation sentOperation = Operation.builder()
+                    .channel(ChannelReference.fromChannel(topicName))
+                    .action(OperationAction.SEND)
+                    .build();
 
             @Override
             public Map<String, ChannelObject> scanChannels() {
                 return Map.of(
                         topicName,
-                        ChannelObject.builder() /*.publish(publishOperation) FIXME*/
+                        ChannelObject.builder()
+                                .messages(Map.of("sendMessage", MessageReference.toComponentMessage("sendMessage")))
                                 .build());
             }
 
             @Override
             public Map<String, Operation> scanOperations() {
-                // FIXME
-                return Map.of();
+                return Map.of("send", sentOperation);
             }
         }
 
         @Component
-        static class SubscribeChannelScanner implements ChannelsScanner {
-            static final Operation subscribeOperation =
-                    Operation.builder() /*.message("consumer")FIXME*/.build();
+        static class ReceiveChannelScanner implements ChannelsScanner {
+            static final Operation receiveOperation = Operation.builder()
+                    .channel(ChannelReference.fromChannel(topicName))
+                    .action(OperationAction.RECEIVE)
+                    .build();
 
             @Override
             public Map<String, ChannelObject> scanChannels() {
                 return Map.of(
                         topicName,
-                        ChannelObject.builder() /*.subscribe(subscribeOperation)FIXME*/
+                        ChannelObject.builder()
+                                .messages(
+                                        Map.of("receiveMessage", MessageReference.toComponentMessage("receiveMessage")))
                                 .build());
             }
 
             @Override
             public Map<String, Operation> scanOperations() {
-                // FIXME
-                return Map.of();
+                return Map.of("receive", receiveOperation);
             }
         }
     }

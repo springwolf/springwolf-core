@@ -28,9 +28,9 @@ class ChannelObjectTest {
                 .description("This channel is used to exchange messages about user events.")
                 .messages(Map.of(
                         "userSignedUp",
-                        MessageReference.fromMessage("userSignedUp"),
+                        MessageReference.toComponentMessage("userSignedUp"),
                         "userCompletedOrder",
-                        MessageReference.fromMessage("userCompletedOrder")))
+                        MessageReference.toComponentMessage("userCompletedOrder")))
                 .parameters(Map.of(
                         "userId",
                         ChannelParameter.builder()
