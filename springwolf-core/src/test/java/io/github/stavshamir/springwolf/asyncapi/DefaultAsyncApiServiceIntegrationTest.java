@@ -4,7 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
@@ -68,22 +68,12 @@ class DefaultAsyncApiServiceIntegrationTest {
                         "consumer-topic",
                         ChannelObject.builder()
                                 .bindings(Map.of("kafka", new KafkaChannelBinding()))
-                                .messages(Map.of(
-                                        "receive",
-                                        MessageObject.builder()
-                                                .messageId("receiveId")
-                                                .description("subscriberMessage")
-                                                .build()))
+                                .messages(Map.of("receiveId", MessageReference.toComponentMessage("receiveId")))
                                 .build(),
                         "producer-topic",
                         ChannelObject.builder()
                                 .bindings(Map.of("kafka", new KafkaChannelBinding()))
-                                .messages(Map.of(
-                                        "send",
-                                        MessageObject.builder()
-                                                .messageId("sendId")
-                                                .description("publisherMessage")
-                                                .build()))
+                                .messages(Map.of("sendId", MessageReference.toComponentMessage("sendId")))
                                 .build()));
     }
 
@@ -115,16 +105,17 @@ class DefaultAsyncApiServiceIntegrationTest {
         final ChannelObject consumerChannel = actualChannels.get("consumer-topic");
         assertThat(consumerChannel.getBindings()).isEqualTo(Map.of("kafka", new KafkaChannelBinding()));
         assertThat(consumerChannel.getMessages()).hasSize(1);
-        MessageObject receiveMessage =
-                (MessageObject) consumerChannel.getMessages().get("receive");
-        assertThat(receiveMessage.getDescription()).isEqualTo("subscriberMessage");
+        MessageReference receiveMessage =
+                (MessageReference) consumerChannel.getMessages().get("receiveId");
+        assertThat(receiveMessage.getRef()).isEqualTo("#/components/messages/receiveId");
 
         assertThat(actualChannels).isNotEmpty().containsKey("producer-topic");
         final ChannelObject publishChannel = actualChannels.get("producer-topic");
         assertThat(publishChannel.getBindings()).isEqualTo(Map.of("kafka", new KafkaChannelBinding()));
         assertThat(publishChannel.getMessages()).hasSize(1);
-        MessageObject sendMessage = (MessageObject) publishChannel.getMessages().get("send");
-        assertThat(sendMessage.getDescription()).isEqualTo("publisherMessage");
+        MessageReference sendMessage =
+                (MessageReference) publishChannel.getMessages().get("sendId");
+        assertThat(sendMessage.getRef()).isEqualTo("#/components/messages/sendId");
     }
 
     @Order(TestDescriptionCustomizer.CUSTOMIZER_ORDER)

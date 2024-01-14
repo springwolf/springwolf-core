@@ -2,3 +2,7 @@
 p {
   /* empty */
 }
+
+.info-chips > * {
+  margin-inline-end: 8px;
+}

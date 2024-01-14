@@ -1,17 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -23,18 +21,12 @@ public class MessageHelper {
 
     private MessageHelper() {}
 
-    public static Map<String, Message> toMessagesMap(Set<MessageObject> messages) {
+    public static Map<String, MessageReference> toMessagesMap(Set<MessageObject> messages) {
         if (messages.isEmpty()) {
             throw new IllegalArgumentException("messages must not be empty");
         }
 
         return new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier)))
-                .stream().collect(Collectors.toMap(MessageObject::getMessageId, Function.identity()));
-    }
-
-    // FIXME: Do we need this method?
-    @SuppressWarnings("unchecked")
-    public static Set<Message> messageObjectToSet(Map<String, Message> messages) {
-        return new HashSet<>(messages.values());
+                .stream().collect(Collectors.toMap(MessageObject::getName, MessageReference::toComponentMessage));
     }
 }

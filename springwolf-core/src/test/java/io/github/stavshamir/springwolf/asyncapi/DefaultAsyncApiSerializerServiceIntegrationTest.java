@@ -10,6 +10,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperation
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
@@ -74,7 +75,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .name("io.github.stavshamir.springwolf.ExamplePayload")
                 .title("Example Payload")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(MessageReference.fromSchema("ExamplePayload"))
+                        .schema(MessageReference.toSchema("ExamplePayload"))
                         .build()))
                 .bindings(Map.of(
                         // FIXME: We should have a SchemaString (Schema<String>)
@@ -82,6 +83,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                         new KafkaMessageBinding(
                                 SchemaObject.builder().type("string").build(), null, null, null, "binding-version-1")))
                 .build();
+        Map<String, Message> messages = Map.of(message.getMessageId(), message);
 
         SchemaObject groupId = new SchemaObject();
         groupId.setEnumValues(List.of("myGroupId"));
@@ -94,9 +96,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .action(OperationAction.SEND)
                 // FIXME: Generate Ref from Channel Instance
                 .channel(ChannelReference.builder().ref("#/channels/new-user").build())
-                // FIXME: Generate Ref From Message Instance
-                .messages(List.of(
-                        new MessageReference("#/channels/new-user/messages/new-user_listenerMethod_subscribe.message")))
+                .messages(List.of(MessageReference.toChannelMessage("new-user", message.getName())))
                 .bindings(Map.of("kafka", operationBinding))
                 .build();
 
@@ -107,7 +107,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .servers(List.of(
                         ServerReference.builder().ref("#/servers/production").build()))
                 //                .subscribe(newUserOperation) FIXME
-                .messages(Map.of("new-user_listenerMethod_subscribe.message", message))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         Map<String, Schema> schemas = ModelConverters.getInstance()
@@ -118,7 +118,8 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .defaultContentType("application/json")
                 .servers(Map.of("production", productionServer))
                 .channels(Map.of("new-user", newUserChannel))
-                .components(Components.builder().schemas(schemas).build())
+                .components(
+                        Components.builder().schemas(schemas).messages(messages).build())
                 .operations(Map.of("new-user_listenerMethod_subscribe", newUserOperation))
                 .build();
 

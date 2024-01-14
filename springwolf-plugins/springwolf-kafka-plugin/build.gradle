@@ -7,6 +7,7 @@ plugins {
 }
 
 dependencies {
+    api project(":springwolf-asyncapi")
     api project(":springwolf-core")
 
     implementation "io.swagger.core.v3:swagger-models:${swaggerVersion}"
@@ -36,6 +37,7 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
     testRuntimeOnly "org.springframework.boot:spring-boot-starter-web"
 
+    testImplementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
     testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"

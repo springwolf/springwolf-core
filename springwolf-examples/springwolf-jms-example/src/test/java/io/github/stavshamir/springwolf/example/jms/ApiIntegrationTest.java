@@ -32,13 +32,12 @@ public class ApiIntegrationTest {
     void asyncApiResourceArtifactTest() throws IOException {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actual);
+        String actualPatched = actual.replace("localhost:61616", "activemq:61616");
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actualPatched);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expectedWithoutServersJmsUrlPatch =
-                new String(s.readAllBytes(), StandardCharsets.UTF_8).replace("\r\n", "\n");
-        String expected = expectedWithoutServersJmsUrlPatch.replace("activemq:61616", "localhost:61616");
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
 
-        assertEquals(expected, actual);
+        assertEquals(expected, actualPatched);
     }
 }

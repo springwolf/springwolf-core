@@ -17,7 +17,7 @@
   "defaultContentType": "application/json",
   "servers": {
     "kafka": {
-      "host": "localhost:50025",
+      "host": "kafka:29092",
       "protocol": "kafka"
     }
   },
@@ -101,7 +101,8 @@
         "properties": { },
         "example": { }
       }
-    }
+    },
+    "messages": { }
   },
   "operations": { }
 }

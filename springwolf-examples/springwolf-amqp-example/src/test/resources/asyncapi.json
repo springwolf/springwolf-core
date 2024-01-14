@@ -28,22 +28,7 @@
     "another-queue": {
       "messages": {
         "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "payload": {
-            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
-            }
-          },
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "bindings": {
-            "amqp": {
-              "bindingVersion": "0.3.0"
-            }
-          }
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
         }
       },
       "bindings": {
@@ -63,45 +48,14 @@
     "example-producer-channel-publisher": {
       "messages": {
         "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "payload": {
-            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
-            }
-          },
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "description": "Another payload model",
-          "bindings": {
-            "amqp": {
-              "bindingVersion": "0.3.0"
-            }
-          }
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
         }
       }
     },
     "example-queue": {
       "messages": {
         "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "payload": {
-            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
-            }
-          },
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
-          "title": "ExamplePayloadDto",
-          "bindings": {
-            "amqp": {
-              "bindingVersion": "0.3.0"
-            }
-          }
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -121,22 +75,7 @@
     "example-topic-routing-key": {
       "messages": {
         "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "payload": {
-            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
-            }
-          },
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "bindings": {
-            "amqp": {
-              "bindingVersion": "0.3.0"
-            }
-          }
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
         }
       },
       "bindings": {
@@ -156,40 +95,10 @@
     "multi-payload-queue": {
       "messages": {
         "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "payload": {
-            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
-            }
-          },
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "bindings": {
-            "amqp": {
-              "bindingVersion": "0.3.0"
-            }
-          }
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
         },
         "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "payload": {
-            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
-            }
-          },
-          "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
-          "title": "ExamplePayloadDto",
-          "bindings": {
-            "amqp": {
-              "bindingVersion": "0.3.0"
-            }
-          }
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -275,10 +184,52 @@
           "someString": "some string value"
         }
       }
+    },
+    "messages": {
+      "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
+        "title": "AnotherPayloadDto",
+        "bindings": {
+          "amqp": {
+            "bindingVersion": "0.3.0"
+          }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
+        "title": "ExamplePayloadDto",
+        "bindings": {
+          "amqp": {
+            "bindingVersion": "0.3.0"
+          }
+        }
+      }
     }
   },
   "operations": {
-    "another-queue_publish_receiveAnotherPayload": {
+    "another-queue_receive_receiveAnotherPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/another-queue"
+      },
       "bindings": {
         "amqp": {
           "expiration": 0,
@@ -290,20 +241,23 @@
       },
       "messages": [
         {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-queue/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
         }
       ]
     },
     "example-producer-channel-publisher": {
-      "action": "send",
-      "title": "example-producer-channel-publisher_subscribe",
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-producer-channel-publisher"
+      },
+      "title": "example-producer-channel-publisher_receive",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "amqp": {
           "expiration": 0,
           "cc": [ ],
           "priority": 0,
-          "deliveryMode": 0,
+          "deliveryMode": 1,
           "mandatory": false,
           "timestamp": false,
           "ack": false,
@@ -312,11 +266,15 @@
       },
       "messages": [
         {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/example-producer-channel-publisher/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "example-queue_publish_receiveExamplePayload": {
+    "example-queue_receive_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-queue"
+      },
       "bindings": {
         "amqp": {
           "expiration": 0,
@@ -328,11 +286,15 @@
       },
       "messages": [
         {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-queue/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
         }
       ]
     },
-    "example-topic-routing-key_publish_bindingsExample": {
+    "example-topic-routing-key_receive_bindingsExample": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-topic-routing-key"
+      },
       "bindings": {
         "amqp": {
           "expiration": 0,
@@ -344,11 +306,15 @@
       },
       "messages": [
         {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/example-topic-routing-key/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "multi-payload-queue_publish_bindingsBeanExample": {
+    "multi-payload-queue_receive_bindingsBeanExample": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/multi-payload-queue"
+      },
       "bindings": {
         "amqp": {
           "expiration": 0,
@@ -360,10 +326,10 @@
       },
       "messages": [
         {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/multi-payload-queue/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
         },
         {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/multi-payload-queue/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
         }
       ]
     }

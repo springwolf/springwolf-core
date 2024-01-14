@@ -130,13 +130,13 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
                     .headers(MessageHeaders.of(
-                            MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(TestBindingFactory.defaultChannelBinding)
-                    .messages(Map.of(message.getMessageId(), message))
+                    .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
@@ -172,7 +172,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(simpleFooPayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
@@ -185,13 +185,17 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                     .title(String.class.getSimpleName())
                     .payload(stringPayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(TestBindingFactory.defaultChannelBinding)
-                    .messages(Map.of(fooMessage.getMessageId(), fooMessage, barMessage.getMessageId(), barMessage))
+                    .messages(Map.of(
+                            fooMessage.getMessageId(),
+                            MessageReference.toComponentMessage(fooMessage),
+                            barMessage.getMessageId(),
+                            MessageReference.toComponentMessage(barMessage)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));

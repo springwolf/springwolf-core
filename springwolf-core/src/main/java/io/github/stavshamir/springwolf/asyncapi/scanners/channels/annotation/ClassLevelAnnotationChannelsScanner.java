@@ -10,7 +10,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
@@ -109,7 +108,7 @@ public class ClassLevelAnnotationChannelsScanner<
 
         // FIXME
         String channelName = bindingFactory.getChannelName(classAnnotation);
-        String operationId = channelName + "_publish_" + component.getSimpleName();
+        String operationId = channelName + "_receive_" + component.getSimpleName();
 
         Operation operation = buildOperation(classAnnotation, annotatedMethods);
 
@@ -126,7 +125,7 @@ public class ClassLevelAnnotationChannelsScanner<
         return buildOperation(classAnnotation, messages);
     }
 
-    private Map<String, Message> buildMessages(ClassAnnotation classAnnotation, Set<Method> methods) {
+    private Map<String, MessageReference> buildMessages(ClassAnnotation classAnnotation, Set<Method> methods) {
         Set<MessageObject> messages = methods.stream()
                 .map((Method method) -> {
                     Class<?> payloadType = payloadClassExtractor.extractFrom(method);
@@ -139,31 +138,37 @@ public class ClassLevelAnnotationChannelsScanner<
 
     private MessageObject buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
-        String modelName = schemasService.register(payloadType);
-        String headerModelName = schemasService.register(asyncHeadersBuilder.buildHeaders(payloadType));
+        String modelName = schemasService.registerSchema(payloadType);
+        String headerModelName = schemasService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
 
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());
 
-        return MessageObject.builder()
+        MessageObject message = MessageObject.builder()
                 .messageId(payloadType.getName())
                 .name(payloadType.getName())
                 .title(payloadType.getSimpleName())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.fromSchema(headerModelName)))
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(messageBinding)
+                .build();
+
+        this.schemasService.registerMessage(message);
+        return message;
+    }
+
+    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
+        Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(classAnnotation);
+        Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
+        return ChannelObject.builder()
+                .bindings(chBinding)
+                .messages(new HashMap<>(messages))
                 .build();
     }
 
-    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Map<String, Message> messages) {
-        Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(classAnnotation);
-        Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-        return ChannelObject.builder().bindings(chBinding).messages(messages).build();
-    }
-
-    private Operation buildOperation(ClassAnnotation classAnnotation, Map<String, Message> messages) {
+    private Operation buildOperation(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(classAnnotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
         String channelName = bindingFactory.getChannelName(classAnnotation);

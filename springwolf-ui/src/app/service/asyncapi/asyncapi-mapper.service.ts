@@ -23,6 +23,7 @@ import { ServerServers } from "./models/servers.model";
 import { ServerChannel, ServerChannels } from "./models/channels.model";
 import { Binding, Bindings } from "src/app/models/bindings.model";
 import { NotificationService } from "../notification.service";
+import { ServerMessages } from "./models/components.model";
 
 @Injectable()
 export class AsyncApiMapperService {
@@ -37,7 +38,8 @@ export class AsyncApiMapperService {
         servers: this.mapServers(item.servers),
         channelOperations: this.mapChannelOperations(
           item.channels,
-          item.operations
+          item.operations,
+          item.components.messages
         ),
         components: {
           schemas: this.mapSchemas(item.components.schemas),
@@ -56,6 +58,13 @@ export class AsyncApiMapperService {
       title: item.info.title,
       version: item.info.version,
       description: item.info.description,
+      contact: {
+        url: item.info.contact?.url,
+        email: item.info.contact?.email && {
+          name: item.info.contact?.email,
+          href: "mailto:" + item.info.contact?.email,
+        },
+      },
       license: {
         name: item.info.license?.name,
         url: item.info.license?.url,
@@ -72,7 +81,8 @@ export class AsyncApiMapperService {
 
   private mapChannelOperations(
     channels: ServerChannels,
-    operations: ServerOperations
+    operations: ServerOperations,
+    messages: ServerMessages
   ): ChannelOperation[] {
     const s = new Array<ChannelOperation>();
     for (let operationsKey in operations) {
@@ -80,20 +90,22 @@ export class AsyncApiMapperService {
         const operation = operations[operationsKey];
         const channelName = this.resolveRef(operation.channel.$ref);
 
-        const messages: Message[] = this.mapServerAsyncApiMessages(
+        const operationMessages: Message[] = this.mapServerAsyncApiMessages(
           channelName,
           channels[channelName],
+          messages,
           operation.messages
         );
-        messages.forEach((message) => {
+        operationMessages.forEach((message) => {
           const channelOperation = this.parsingErrorBoundary(
             "channel with name " + channelName,
             () =>
-              this.mapChannel(
+              this.mapChannelOperation(
                 channelName,
                 channels[channelName],
                 message,
-                operation.action
+                operation.action,
+                operation.bindings
               )
           );
 
@@ -106,11 +118,12 @@ export class AsyncApiMapperService {
     return s;
   }
 
-  private mapChannel(
+  private mapChannelOperation(
     channelName: string,
     channel: ServerChannel,
     message: Message,
-    operationType: ServerOperationAction
+    operationType: ServerOperationAction,
+    operationBinding: ServerBindings
   ): ChannelOperation {
     if (
       channel.bindings == undefined ||
@@ -124,7 +137,7 @@ export class AsyncApiMapperService {
     const operation = this.mapOperation(
       operationType,
       message,
-      channel.bindings
+      operationBinding
     );
 
     return {
@@ -139,21 +152,25 @@ export class AsyncApiMapperService {
         ].join("-"),
       description: channel.description,
       operation,
+      bindings: channel.bindings,
     };
   }
 
   private mapServerAsyncApiMessages(
     channelName: string,
     channel: ServerChannel,
-    messages: ServerOperationMessage[]
+    messages: ServerMessages,
+    operationMessages: ServerOperationMessage[]
   ): Message[] {
-    return messages
+    return operationMessages
       .map((operationMessage) => {
         return this.parsingErrorBoundary(
           "message of channel " + channelName,
           () => {
             const messageKey = this.resolveRef(operationMessage.$ref);
-            const message = channel.messages[messageKey];
+            const channelMessage = channel.messages[messageKey];
+            const channelMessageRef = this.resolveRef(channelMessage.$ref);
+            const message = messages[channelMessageRef];
 
             return {
               name: message.name,

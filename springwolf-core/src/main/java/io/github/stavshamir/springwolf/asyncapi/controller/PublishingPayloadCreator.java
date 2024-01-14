@@ -25,7 +25,7 @@ public class PublishingPayloadCreator {
     public Result createPayloadObject(MessageDto message) {
 
         String messagePayloadType = message.getPayloadType();
-        for (Schema<?> value : schemasService.getDefinitions().values()) {
+        for (Schema<?> value : schemasService.getSchemas().values()) {
             String schemaPayloadType = value.getName();
             // security: match against user input, but always use our controlled data from the DefaultSchemaService
             if (schemaPayloadType.equals(messagePayloadType)) {

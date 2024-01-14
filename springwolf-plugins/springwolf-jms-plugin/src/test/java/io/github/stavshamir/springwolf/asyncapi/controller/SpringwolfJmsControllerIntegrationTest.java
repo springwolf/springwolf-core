@@ -78,7 +78,7 @@ class SpringwolfJmsControllerIntegrationTest {
     void setup() {
         when(springwolfJmsProducer.isEnabled()).thenReturn(true);
 
-        schemasService.register(PayloadDto.class);
+        schemasService.registerSchema(PayloadDto.class);
     }
 
     @Test
@@ -86,11 +86,11 @@ class SpringwolfJmsControllerIntegrationTest {
         try {
             String content =
                     """
-            {
-              "bindings": null,
-              "headers": null,
-              "payload": ""
-            }""";
+                            {
+                              "bindings": null,
+                              "headers": null,
+                              "payload": ""
+                            }""";
             mvc.perform(post("/springwolf/jms/publish?topic=test-topic")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
@@ -105,10 +105,10 @@ class SpringwolfJmsControllerIntegrationTest {
         try {
             String content =
                     """
-            {
-              "bindings": null,
-              "headers": null
-            }""";
+                            {
+                              "bindings": null,
+                              "headers": null
+                            }""";
             mvc.perform(post("/springwolf/jms/publish?topic=test-topic")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
@@ -124,11 +124,11 @@ class SpringwolfJmsControllerIntegrationTest {
 
         String content =
                 """
-                {
-                  "bindings": null,
-                  "headers": null,
-                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }"
-                }""";
+                        {
+                          "bindings": null,
+                          "headers": null,
+                          "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }"
+                        }""";
         mvc.perform(post("/springwolf/jms/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
@@ -141,12 +141,12 @@ class SpringwolfJmsControllerIntegrationTest {
 
         String content =
                 """
-                {
-                  "bindings": null,
-                  "headers": null,
-                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfJmsControllerIntegrationTest$PayloadDto"
-                }""";
+                        {
+                          "bindings": null,
+                          "headers": null,
+                          "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
+                          "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfJmsControllerIntegrationTest$PayloadDto"
+                        }""";
 
         mvc.perform(post("/springwolf/jms/publish")
                         .param("topic", "test-topic")
@@ -165,15 +165,15 @@ class SpringwolfJmsControllerIntegrationTest {
 
         String content =
                 """
-                {
-                  "bindings": null,
-                  "headers": {
-                    "some-header-key": "some-header-value"
-                  },
-                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfJmsControllerIntegrationTest$PayloadDto"
-                }
-                """;
+                        {
+                          "bindings": null,
+                          "headers": {
+                            "some-header-key": "some-header-value"
+                          },
+                          "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
+                          "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfJmsControllerIntegrationTest$PayloadDto"
+                        }
+                        """;
 
         mvc.perform(post("/springwolf/jms/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
