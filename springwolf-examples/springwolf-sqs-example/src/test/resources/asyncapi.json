@@ -148,11 +148,11 @@
   },
   "operations": {
     "another-queue": {
-      "action": "send",
+      "action": "receive",
       "channel": {
         "$ref": "#/channels/another-queue"
       },
-      "title": "another-queue_subscribe",
+      "title": "another-queue_receive",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "sqs": {
@@ -168,7 +168,7 @@
         }
       ]
     },
-    "another-queue_publish_receiveAnotherPayload": {
+    "another-queue_receive_receiveAnotherPayload": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/another-queue"
@@ -184,7 +184,7 @@
         }
       ]
     },
-    "example-queue_publish_receiveExamplePayload": {
+    "example-queue_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/example-queue"

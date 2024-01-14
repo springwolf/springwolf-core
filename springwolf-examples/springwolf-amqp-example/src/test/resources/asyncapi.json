@@ -225,7 +225,7 @@
     }
   },
   "operations": {
-    "another-queue_publish_receiveAnotherPayload": {
+    "another-queue_receive_receiveAnotherPayload": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/another-queue"
@@ -246,11 +246,11 @@
       ]
     },
     "example-producer-channel-publisher": {
-      "action": "send",
+      "action": "receive",
       "channel": {
         "$ref": "#/channels/example-producer-channel-publisher"
       },
-      "title": "example-producer-channel-publisher_subscribe",
+      "title": "example-producer-channel-publisher_receive",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "amqp": {
@@ -270,7 +270,7 @@
         }
       ]
     },
-    "example-queue_publish_receiveExamplePayload": {
+    "example-queue_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/example-queue"
@@ -290,7 +290,7 @@
         }
       ]
     },
-    "example-topic-routing-key_publish_bindingsExample": {
+    "example-topic-routing-key_receive_bindingsExample": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/example-topic-routing-key"
@@ -310,7 +310,7 @@
         }
       ]
     },
-    "multi-payload-queue_publish_bindingsBeanExample": {
+    "multi-payload-queue_receive_bindingsBeanExample": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/multi-payload-queue"

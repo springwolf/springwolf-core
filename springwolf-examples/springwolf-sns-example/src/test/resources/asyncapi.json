@@ -231,11 +231,11 @@
   },
   "operations": {
     "another-topic": {
-      "action": "receive",
+      "action": "send",
       "channel": {
         "$ref": "#/channels/another-topic"
       },
-      "title": "another-topic_publish",
+      "title": "another-topic_send",
       "description": "Auto-generated description",
       "bindings": {
         "sns": {
@@ -249,11 +249,11 @@
       ]
     },
     "example-topic": {
-      "action": "receive",
+      "action": "send",
       "channel": {
         "$ref": "#/channels/example-topic"
       },
-      "title": "example-topic_publish",
+      "title": "example-topic_send",
       "description": "Auto-generated description",
       "bindings": {
         "sns": {

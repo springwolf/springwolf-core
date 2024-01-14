@@ -108,7 +108,7 @@ public class ClassLevelAnnotationChannelsScanner<
 
         // FIXME
         String channelName = bindingFactory.getChannelName(classAnnotation);
-        String operationId = channelName + "_publish_" + component.getSimpleName();
+        String operationId = channelName + "_receive_" + component.getSimpleName();
 
         Operation operation = buildOperation(classAnnotation, annotatedMethods);
 

@@ -59,16 +59,4 @@ public interface OperationData {
     Map<String, MessageBinding> getMessageBinding();
 
     MessageObject getMessage();
-
-    // FIXME: With AsyncAPI v3 this should be Action: SEND / RECEIVER
-    enum OperationType {
-        PUBLISH("publish"),
-        SUBSCRIBE("subscribe");
-
-        public final String operationName;
-
-        OperationType(String operationName) {
-            this.operationName = operationName;
-        }
-    }
 }

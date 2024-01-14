@@ -8,7 +8,6 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanne
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.OperationData;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
@@ -164,10 +163,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         String operationName = resolver.resolveStringValue(operationAnnotation.channelName());
 
         Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), operationName);
-        switch (this.asyncAnnotationProvider.getOperationType()) {
-            case PUBLISH -> operation.setAction(OperationAction.RECEIVE);
-            case SUBSCRIBE -> operation.setAction(OperationAction.SEND);
-        }
+        operation.setAction(this.asyncAnnotationProvider.getOperationType());
 
         MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 
@@ -183,7 +179,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
             description = "Auto-generated description";
         }
 
-        String operationTitle = channelName + "_" + this.asyncAnnotationProvider.getOperationType().operationName;
+        String operationTitle = channelName + "_" + this.asyncAnnotationProvider.getOperationType().type;
 
         Map<String, OperationBinding> operationBinding =
                 AsyncAnnotationScannerUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
@@ -269,7 +265,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
 
         AsyncOperation getAsyncOperation(A annotation);
 
-        OperationData.OperationType getOperationType();
+        OperationAction getOperationType();
     }
 
     private record MethodAndAnnotation<A>(Method method, A annotation) {}

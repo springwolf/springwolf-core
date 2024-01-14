@@ -85,7 +85,7 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
         MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         String channelName = bindingFactory.getChannelName(annotation);
-        String operationId = channelName + "_publish_" + method.getName();
+        String operationId = channelName + "_receive_" + method.getName();
         Class<?> payload = payloadClassExtractor.extractFrom(method);
 
         Operation operation = buildOperation(annotation, payload);
