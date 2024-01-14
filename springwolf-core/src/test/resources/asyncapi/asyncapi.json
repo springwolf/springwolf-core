@@ -29,7 +29,6 @@
       "address": "new-user",
       "messages": {
         "new-user_listenerMethod_subscribe.message": {
-          "id": "io.github.stavshamir.springwolf.ExamplePayload",
           "$ref": "#/components/messages/io.github.stavshamir.springwolf.ExamplePayload"
         }
       },
@@ -72,7 +71,6 @@
       },
       "messages": [
         {
-          "id": "new-user_listenerMethod_subscribe.message",
           "$ref": "#/channels/new-user/messages/new-user_listenerMethod_subscribe.message"
         }
       ]

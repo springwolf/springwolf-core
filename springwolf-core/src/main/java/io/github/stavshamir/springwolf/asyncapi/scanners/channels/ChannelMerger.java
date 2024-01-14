@@ -6,6 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.ChannelMessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 
 import java.util.Collection;
@@ -88,8 +89,8 @@ public class ChannelMerger {
     private static Operation mergeOperation(Operation operation, Operation otherOperation) {
         Operation mergedOperation = operation != null ? operation : otherOperation;
 
-        List<MessageReference> mergedMessages =
-                mergeMessageReferences(operation.getMessages(), otherOperation.getMessages());
+        List<ChannelMessageReference> mergedMessages =
+                mergeChannelMessageReferences(operation.getMessages(), otherOperation.getMessages());
         if (!mergedMessages.isEmpty()) {
             mergedOperation.setMessages(mergedMessages);
         }
@@ -115,6 +116,18 @@ public class ChannelMerger {
     private static List<MessageReference> mergeMessageReferences(
             Collection<MessageReference> messages, Collection<MessageReference> otherMessages) {
         var messageReferences = new HashSet<MessageReference>();
+        if (messages != null) {
+            messageReferences.addAll(messages);
+        }
+        if (otherMessages != null) {
+            messageReferences.addAll(otherMessages);
+        }
+        return messageReferences.stream().toList();
+    }
+
+    private static List<ChannelMessageReference> mergeChannelMessageReferences(
+            Collection<ChannelMessageReference> messages, Collection<ChannelMessageReference> otherMessages) {
+        var messageReferences = new HashSet<ChannelMessageReference>();
         if (messages != null) {
             messageReferences.addAll(messages);
         }

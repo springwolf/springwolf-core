@@ -23,7 +23,6 @@ channels:
     address: new-user
     messages:
       new-user_listenerMethod_subscribe.message:
-        id: io.github.stavshamir.springwolf.ExamplePayload
         "$ref": "#/components/messages/io.github.stavshamir.springwolf.ExamplePayload"
     description: This channel is used to exchange messages about users signing up
     servers:
@@ -48,5 +47,4 @@ operations:
             - myGroupId
         bindingVersion: 0.4.0
     messages:
-      - id: new-user_listenerMethod_subscribe.message
-        "$ref": "#/channels/new-user/messages/new-user_listenerMethod_subscribe.message"
+      - "$ref": "#/channels/new-user/messages/new-user_listenerMethod_subscribe.message"

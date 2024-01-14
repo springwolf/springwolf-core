@@ -16,6 +16,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Contact;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.ChannelMessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
@@ -94,9 +95,8 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .action(OperationAction.SEND)
                 // FIXME: Generate Ref from Channel Instance
                 .channel(ChannelReference.builder().ref("#/channels/new-user").build())
-                // FIXME: Generate Ref From Message Instance
-                .messages(List.of(
-                        new MessageReference("#/channels/new-user/messages/new-user_listenerMethod_subscribe.message")))
+                .messages(List.of(new ChannelMessageReference(
+                        "#/channels/new-user/messages/new-user_listenerMethod_subscribe.message")))
                 .bindings(Map.of("kafka", operationBinding))
                 .build();
 

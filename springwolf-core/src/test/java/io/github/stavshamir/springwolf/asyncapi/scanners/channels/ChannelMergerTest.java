@@ -5,6 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.ChannelMessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.junit.jupiter.api.Test;
@@ -170,6 +171,7 @@ class ChannelMergerTest {
     @Test
     void shouldMergeDifferentMessageForSameOperation() {
         // given
+        String channelName = "channel";
         String operationName = "operation";
         MessageObject message1 = MessageObject.builder()
                 .messageId("messageString")
@@ -186,9 +188,9 @@ class ChannelMergerTest {
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
-        MessageReference messageRef1 = MessageReference.fromMessage(message1);
-        MessageReference messageRef2 = MessageReference.fromMessage(message2);
-        MessageReference messageRef3 = MessageReference.fromMessage(message3);
+        ChannelMessageReference messageRef1 = ChannelMessageReference.fromMessage(channelName, message1);
+        ChannelMessageReference messageRef2 = ChannelMessageReference.fromMessage(channelName, message2);
+        ChannelMessageReference messageRef3 = ChannelMessageReference.fromMessage(channelName, message3);
 
         Operation senderOperation1 = Operation.builder()
                 .action(OperationAction.SEND)
@@ -235,7 +237,7 @@ class ChannelMergerTest {
         Operation publishOperation2 = Operation.builder()
                 .action(OperationAction.SEND)
                 .title("publisher2")
-                .messages(List.of(MessageReference.fromMessage(message2)))
+                .messages(List.of(ChannelMessageReference.fromMessage(channelName, message2)))
                 .build();
         ChannelObject publisherChannel1 =
                 ChannelObject.builder() /*.publish(publishOperation1)FIXME*/.build();
