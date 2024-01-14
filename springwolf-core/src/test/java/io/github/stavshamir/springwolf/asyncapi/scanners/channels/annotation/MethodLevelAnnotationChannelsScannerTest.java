@@ -110,11 +110,9 @@ class MethodLevelAnnotationChannelsScannerTest {
     private static class ClassWithTestListenerAnnotation {
 
         @TestListener
-        private void methodWithAnnotation(String payload) {
-        }
+        private void methodWithAnnotation(String payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     @Test
@@ -158,7 +156,8 @@ class MethodLevelAnnotationChannelsScannerTest {
                 .build();
         ChannelObject anotherMethodChannel = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(simpleFooMessage.getMessageId(), MessageReference.toComponentMessage(simpleFooMessage)))
+                .messages(
+                        Map.of(simpleFooMessage.getMessageId(), MessageReference.toComponentMessage(simpleFooMessage)))
                 .build();
 
         assertThat(channels)
@@ -169,12 +168,10 @@ class MethodLevelAnnotationChannelsScannerTest {
     private static class ClassWithMultipleTestListenerAnnotation {
 
         @TestListener
-        private void methodWithAnnotation(String payload) {
-        }
+        private void methodWithAnnotation(String payload) {}
 
         @TestListener
-        private void anotherMethodWithAnnotation(SimpleFoo payload) {
-        }
+        private void anotherMethodWithAnnotation(SimpleFoo payload) {}
     }
 
     @Data
@@ -185,6 +182,5 @@ class MethodLevelAnnotationChannelsScannerTest {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @interface TestListener {
-    }
+    @interface TestListener {}
 }

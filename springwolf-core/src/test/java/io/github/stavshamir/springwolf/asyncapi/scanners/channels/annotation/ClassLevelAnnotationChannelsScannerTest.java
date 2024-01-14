@@ -108,11 +108,9 @@ class ClassLevelAnnotationChannelsScannerTest {
     @TestClassListener
     private static class ClassWithTestListenerAnnotation {
         @TestMethodListener
-        private void methodWithAnnotation(String payload) {
-        }
+        private void methodWithAnnotation(String payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     @Data
@@ -123,10 +121,8 @@ class ClassLevelAnnotationChannelsScannerTest {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @interface TestClassListener {
-    }
+    @interface TestClassListener {}
 
     @Retention(RetentionPolicy.RUNTIME)
-    @interface TestMethodListener {
-    }
+    @interface TestMethodListener {}
 }

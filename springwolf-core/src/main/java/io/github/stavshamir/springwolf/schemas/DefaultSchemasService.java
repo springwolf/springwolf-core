@@ -133,7 +133,7 @@ public class DefaultSchemasService implements SchemasService {
 
         } else if (withPayloadAnnotatedFields.size() > 1) {
             log.warn(("Found more than one field with @AsyncApiPayload annotation in class %s. "
-                      + "Falling back and ignoring annotation.")
+                            + "Falling back and ignoring annotation.")
                     .formatted(type.getName()));
         }
     }

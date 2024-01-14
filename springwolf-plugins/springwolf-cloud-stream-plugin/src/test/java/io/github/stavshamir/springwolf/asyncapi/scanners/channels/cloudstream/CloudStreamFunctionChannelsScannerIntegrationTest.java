@@ -48,25 +48,25 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {
-                ConfigurationClassScanner.class,
-                ComponentClassScanner.class,
-                DefaultBeanMethodsScanner.class,
-                DefaultSchemasService.class,
-                PayloadClassExtractor.class,
-                ExampleJsonGenerator.class,
-                DefaultAsyncApiDocketService.class,
-                CloudStreamFunctionChannelsScanner.class,
-                FunctionalChannelBeanBuilder.class,
-                SpringwolfConfigProperties.class
+            ConfigurationClassScanner.class,
+            ComponentClassScanner.class,
+            DefaultBeanMethodsScanner.class,
+            DefaultSchemasService.class,
+            PayloadClassExtractor.class,
+            ExampleJsonGenerator.class,
+            DefaultAsyncApiDocketService.class,
+            CloudStreamFunctionChannelsScanner.class,
+            FunctionalChannelBeanBuilder.class,
+            SpringwolfConfigProperties.class
         })
 @TestPropertySource(
         properties = {
-                "springwolf.enabled=true",
-                "springwolf.docket.info.title=Test",
-                "springwolf.docket.info.version=1.0.0",
-                "springwolf.docket.base-package=io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream",
-                "springwolf.docket.servers.kafka.protocol=kafka",
-                "springwolf.docket.servers.kafka.host=kafka:9092",
+            "springwolf.enabled=true",
+            "springwolf.docket.info.title=Test",
+            "springwolf.docket.info.version=1.0.0",
+            "springwolf.docket.base-package=io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream",
+            "springwolf.docket.servers.kafka.protocol=kafka",
+            "springwolf.docket.servers.kafka.host=kafka:9092",
         })
 @EnableConfigurationProperties
 @Import(CloudStreamFunctionChannelsScannerIntegrationTest.Configuration.class)

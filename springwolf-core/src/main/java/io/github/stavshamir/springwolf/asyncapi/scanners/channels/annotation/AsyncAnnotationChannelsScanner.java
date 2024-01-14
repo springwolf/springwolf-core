@@ -272,6 +272,5 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         OperationData.OperationType getOperationType();
     }
 
-    private record MethodAndAnnotation<A>(Method method, A annotation) {
-    }
+    private record MethodAndAnnotation<A>(Method method, A annotation) {}
 }

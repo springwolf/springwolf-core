@@ -30,25 +30,25 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {
-                SpringwolfConfigProperties.class,
-                DefaultAsyncApiDocketService.class,
-                DefaultAsyncApiService.class,
+            SpringwolfConfigProperties.class,
+            DefaultAsyncApiDocketService.class,
+            DefaultAsyncApiService.class,
         })
 @Import({
-        DefaultAsyncApiServiceIntegrationTest.TestDescriptionCustomizer.class,
-        DefaultAsyncApiServiceIntegrationTest.TestDescriptionCustomizer2.class
+    DefaultAsyncApiServiceIntegrationTest.TestDescriptionCustomizer.class,
+    DefaultAsyncApiServiceIntegrationTest.TestDescriptionCustomizer2.class
 })
 @EnableConfigurationProperties
 @TestPropertySource(
         properties = {
-                "springwolf.enabled=true",
-                "springwolf.docket.info.title=Info title was loaded from spring properties",
-                "springwolf.docket.info.version=1.0.0",
-                "springwolf.docket.id=urn:io:github:stavshamir:springwolf:example",
-                "springwolf.docket.default-content-type=application/yaml",
-                "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
-                "springwolf.docket.servers.test-protocol.protocol=test",
-                "springwolf.docket.servers.test-protocol.host=some-server:1234",
+            "springwolf.enabled=true",
+            "springwolf.docket.info.title=Info title was loaded from spring properties",
+            "springwolf.docket.info.version=1.0.0",
+            "springwolf.docket.id=urn:io:github:stavshamir:springwolf:example",
+            "springwolf.docket.default-content-type=application/yaml",
+            "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
+            "springwolf.docket.servers.test-protocol.protocol=test",
+            "springwolf.docket.servers.test-protocol.host=some-server:1234",
         })
 class DefaultAsyncApiServiceIntegrationTest {
 

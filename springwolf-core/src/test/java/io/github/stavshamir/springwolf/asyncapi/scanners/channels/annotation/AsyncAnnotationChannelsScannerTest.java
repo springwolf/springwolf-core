@@ -319,53 +319,47 @@ class AsyncAnnotationChannelsScannerTest {
 
     private static class ClassWithoutListenerAnnotation {
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithListenerAnnotation {
 
         @AsyncListener(operation = @AsyncOperation(channelName = "test-channel"))
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithListenerAnnotationWithInvalidServer {
 
         @AsyncListener(
                 operation =
-                @AsyncOperation(
-                        channelName = "test-channel",
-                        description = "test channel operation description",
-                        servers = {"server3"}))
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description",
+                                servers = {"server3"}))
+        private void methodWithAnnotation(SimpleFoo payload) {}
     }
 
     private static class ClassWithListenerAnnotationWithAllAttributes {
 
         @AsyncListener(
                 operation =
-                @AsyncOperation(
-                        channelName = "${test.property.test-channel}",
-                        description = "${test.property.description}",
-                        payloadType = String.class,
-                        servers = {"${test.property.server1}", "${test.property.server2}"},
-                        headers =
-                        @AsyncOperation.Headers(
-                                schemaName = "TestSchema",
-                                values = {
-                                        @AsyncOperation.Headers.Header(name = "header", value = "value")
-                                })))
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                description = "${test.property.description}",
+                                payloadType = String.class,
+                                servers = {"${test.property.server1}", "${test.property.server2}"},
+                                headers =
+                                        @AsyncOperation.Headers(
+                                                schemaName = "TestSchema",
+                                                values = {
+                                                    @AsyncOperation.Headers.Header(name = "header", value = "value")
+                                                })))
         @TestOperationBindingProcessor.TestOperationBinding()
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     private static class ClassWithMultipleListenerAnnotations {
@@ -374,29 +368,26 @@ class AsyncAnnotationChannelsScannerTest {
                 operation = @AsyncOperation(channelName = "test-channel-1", description = "test-channel-1-description"))
         @AsyncListener(
                 operation = @AsyncOperation(channelName = "test-channel-2", description = "test-channel-2-description"))
-        private void methodWithMultipleAnnotation(SimpleFoo payload) {
-        }
+        private void methodWithMultipleAnnotation(SimpleFoo payload) {}
     }
 
     private static class ClassWithMessageAnnotation {
 
         @AsyncListener(
                 operation =
-                @AsyncOperation(
-                        channelName = "test-channel",
-                        description = "test channel operation description",
-                        message =
-                        @AsyncMessage(
-                                description = "Message description",
-                                messageId = "simpleFoo",
-                                name = "SimpleFooPayLoad",
-                                contentType = "application/schema+json;version=draft-07",
-                                title = "Message Title")))
-        private void methodWithAnnotation(SimpleFoo payload) {
-        }
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description",
+                                message =
+                                        @AsyncMessage(
+                                                description = "Message description",
+                                                messageId = "simpleFoo",
+                                                name = "SimpleFooPayLoad",
+                                                contentType = "application/schema+json;version=draft-07",
+                                                title = "Message Title")))
+        private void methodWithAnnotation(SimpleFoo payload) {}
 
-        private void methodWithoutAnnotation() {
-        }
+        private void methodWithoutAnnotation() {}
     }
 
     @Nested
@@ -421,8 +412,7 @@ class AsyncAnnotationChannelsScannerTest {
                     .description(null)
                     .payload(messagePayload)
                     // .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0") FIXME
-                    .headers(
-                            MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                    .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
                     .build();
 
@@ -445,12 +435,11 @@ class AsyncAnnotationChannelsScannerTest {
 
             @AsyncListener(
                     operation =
-                    @AsyncOperation(
-                            channelName = "test-channel",
-                            description = "test channel operation description"))
+                            @AsyncOperation(
+                                    channelName = "test-channel",
+                                    description = "test channel operation description"))
             @Override
-            public void methodFromInterface(String payload) {
-            }
+            public void methodFromInterface(String payload) {}
         }
 
         interface ClassInterface<T> {
@@ -460,16 +449,15 @@ class AsyncAnnotationChannelsScannerTest {
         private static class ClassImplementingInterfaceWithAnnotation implements ClassInterfaceWithAnnotation<String> {
 
             @Override
-            public void methodFromInterface(String payload) {
-            }
+            public void methodFromInterface(String payload) {}
         }
 
         interface ClassInterfaceWithAnnotation<T> {
             @AsyncListener(
                     operation =
-                    @AsyncOperation(
-                            channelName = "test-channel",
-                            description = "test channel operation description"))
+                            @AsyncOperation(
+                                    channelName = "test-channel",
+                                    description = "test channel operation description"))
             void methodFromInterface(T payload);
         }
     }
@@ -497,8 +485,7 @@ class AsyncAnnotationChannelsScannerTest {
                     .payload(messagePayload)
                     //  FIXME
                     // .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0")
-                    .headers(
-                            MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                    .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
                     .build();
 
@@ -519,8 +506,7 @@ class AsyncAnnotationChannelsScannerTest {
 
         public static class ClassWithMetaAnnotation {
             @AsyncListenerMetaAnnotation
-            void methodFromInterface(String payload) {
-            }
+            void methodFromInterface(String payload) {}
         }
 
         @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
@@ -528,11 +514,10 @@ class AsyncAnnotationChannelsScannerTest {
         @Inherited
         @AsyncListener(
                 operation =
-                @AsyncOperation(
-                        channelName = "test-channel",
-                        description = "test channel operation description"))
-        public @interface AsyncListenerMetaAnnotation {
-        }
+                        @AsyncOperation(
+                                channelName = "test-channel",
+                                description = "test channel operation description"))
+        public @interface AsyncListenerMetaAnnotation {}
     }
 
     @Data

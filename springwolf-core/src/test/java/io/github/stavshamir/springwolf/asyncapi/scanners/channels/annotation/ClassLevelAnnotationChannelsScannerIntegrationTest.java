@@ -42,11 +42,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {
-                ClassLevelAnnotationChannelsScannerIntegrationTest.TestBindingFactory.class,
-                DefaultSchemasService.class,
-                PayloadClassExtractor.class,
-                ExampleJsonGenerator.class,
-                SpringwolfConfigProperties.class,
+            ClassLevelAnnotationChannelsScannerIntegrationTest.TestBindingFactory.class,
+            DefaultSchemasService.class,
+            PayloadClassExtractor.class,
+            ExampleJsonGenerator.class,
+            SpringwolfConfigProperties.class,
         })
 class ClassLevelAnnotationChannelsScannerIntegrationTest {
 
@@ -87,8 +87,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         private static class ClassWithoutClassListener {
 
             @TestMethodListener
-            private void methodWithAnnotation(SimpleFoo payload) {
-            }
+            private void methodWithAnnotation(SimpleFoo payload) {}
         }
     }
 
@@ -107,8 +106,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         @TestClassListener
         private static class ClassWithoutMethodListener {
 
-            private void methodWithAnnotation(SimpleFoo payload) {
-            }
+            private void methodWithAnnotation(SimpleFoo payload) {}
         }
     }
 
@@ -148,11 +146,9 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         private static class ClassWithOneMethodLevelHandler {
 
             @TestMethodListener
-            private void methodWithAnnotation(SimpleFoo payload) {
-            }
+            private void methodWithAnnotation(SimpleFoo payload) {}
 
-            private void methodWithoutAnnotation() {
-            }
+            private void methodWithoutAnnotation() {}
         }
     }
 
@@ -209,12 +205,10 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         private static class ClassWithMultipleMethodLevelHandlers {
 
             @TestMethodListener
-            private void methodWithAnnotation(SimpleFoo payload) {
-            }
+            private void methodWithAnnotation(SimpleFoo payload) {}
 
             @TestMethodListener
-            private void anotherMethodWithAnnotation(String payload) {
-            }
+            private void anotherMethodWithAnnotation(String payload) {}
         }
     }
 
@@ -228,14 +222,12 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
     @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
     @Retention(RetentionPolicy.RUNTIME)
     @Inherited
-    public @interface TestClassListener {
-    }
+    public @interface TestClassListener {}
 
     @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
     @Retention(RetentionPolicy.RUNTIME)
     @Inherited
-    public @interface TestMethodListener {
-    }
+    public @interface TestMethodListener {}
 
     static class TestBindingFactory implements BindingFactory<TestClassListener> {
 
@@ -268,15 +260,12 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         }
 
         @EqualsAndHashCode(callSuper = true)
-        public static class TestChannelBinding extends ChannelBinding {
-        }
+        public static class TestChannelBinding extends ChannelBinding {}
 
         @EqualsAndHashCode(callSuper = true)
-        public static class TestOperationBinding extends OperationBinding {
-        }
+        public static class TestOperationBinding extends OperationBinding {}
 
         @EqualsAndHashCode(callSuper = true)
-        public static class TestMessageBinding extends MessageBinding {
-        }
+        public static class TestMessageBinding extends MessageBinding {}
     }
 }

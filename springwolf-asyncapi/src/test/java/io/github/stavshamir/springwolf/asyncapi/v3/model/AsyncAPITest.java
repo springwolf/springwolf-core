@@ -190,7 +190,8 @@ class AsyncAPITest {
                         "lightingMeasured",
                         ChannelObject.builder()
                                 .address("smartylighting.streetlights.1.0.event.{streetlightId}.lighting.measured")
-                                .messages(Map.of("lightMeasured", MessageReference.toComponentMessage(lightMeasuredMessage)))
+                                .messages(Map.of(
+                                        "lightMeasured", MessageReference.toComponentMessage(lightMeasuredMessage)))
                                 .description("The topic on which measured values may be produced and consumed.")
                                 .parameters(Map.of(
                                         "streetlightId",
@@ -239,8 +240,8 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(
-                                        MessageReference.toChannelMessage("lightingMeasured", "lightMeasured")))
+                                .messages(
+                                        List.of(MessageReference.toChannelMessage("lightingMeasured", "lightMeasured")))
                                 .build(),
                         "turnOn",
                         Operation.builder()

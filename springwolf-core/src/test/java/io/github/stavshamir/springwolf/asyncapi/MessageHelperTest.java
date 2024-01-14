@@ -41,7 +41,10 @@ class MessageHelperTest {
 
         assertThat(messages)
                 .containsExactlyInAnyOrderEntriesOf(Map.of(
-                        "bar", MessageReference.toComponentMessage(message2), "foo", MessageReference.toComponentMessage(message1)));
+                        "bar",
+                        MessageReference.toComponentMessage(message2),
+                        "foo",
+                        MessageReference.toComponentMessage(message1)));
     }
 
     @Test

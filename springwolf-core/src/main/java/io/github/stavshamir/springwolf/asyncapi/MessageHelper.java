@@ -19,8 +19,7 @@ public class MessageHelper {
 
     private static final Supplier<Set<MessageObject>> messageSupplier = () -> new TreeSet<>(byMessageName);
 
-    private MessageHelper() {
-    }
+    private MessageHelper() {}
 
     public static Map<String, MessageReference> toMessagesMap(Set<MessageObject> messages) {
         if (messages.isEmpty()) {
