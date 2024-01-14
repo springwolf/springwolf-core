@@ -129,28 +129,28 @@ class ChannelMergerTest {
         // given
         String channelName = "channel";
         MessageObject message1 = MessageObject.builder()
-                .messageId("message1")
+                .messageId("messageString")
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
         MessageObject message2 = MessageObject.builder()
-                .messageId("message2")
+                .messageId("messageInteger")
                 .name(Integer.class.getCanonicalName())
                 .description("This is an integer")
                 .build();
         MessageObject message3 = MessageObject.builder()
-                .messageId("message3")
+                .messageId("messageInteger")
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
         ChannelObject publisherChannel1 = ChannelObject.builder()
-                .messages(Map.of(message1.getMessageId(), message1))
+                .messages(Map.of(message1.getMessageId(), MessageReference.fromMessage(message1)))
                 .build();
         ChannelObject publisherChannel2 = ChannelObject.builder()
-                .messages(Map.of(message2.getMessageId(), message2))
+                .messages(Map.of(message2.getMessageId(), MessageReference.fromMessage(message2)))
                 .build();
         ChannelObject publisherChannel3 = ChannelObject.builder()
-                .messages(Map.of(message3.getMessageId(), message3))
+                .messages(Map.of(message3.getMessageId(), MessageReference.fromMessage(message3)))
                 .build();
 
         // when
@@ -172,17 +172,17 @@ class ChannelMergerTest {
         // given
         String operationName = "operation";
         MessageObject message1 = MessageObject.builder()
-                .messageId("message1")
+                .messageId("messageString")
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
         MessageObject message2 = MessageObject.builder()
-                .messageId("message2")
+                .messageId("messageInteger")
                 .name(Integer.class.getCanonicalName())
                 .description("This is an integer")
                 .build();
         MessageObject message3 = MessageObject.builder()
-                .messageId("message3")
+                .messageId("messageInteger")
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();

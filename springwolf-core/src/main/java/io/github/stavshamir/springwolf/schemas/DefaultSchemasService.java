@@ -3,6 +3,9 @@ package io.github.stavshamir.springwolf.schemas;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -24,13 +27,15 @@ import java.util.Set;
 import java.util.function.Function;
 
 @Slf4j
+// TODO: rename to DefaultComponentService & interface to ComponentService
 public class DefaultSchemasService implements SchemasService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
     private final List<SchemasPostProcessor> schemaPostProcessors;
     private final SpringwolfConfigProperties properties;
 
-    private final Map<String, Schema> definitions = new HashMap<>();
+    private final Map<String, Schema> schemas = new HashMap<>();
+    private final Map<String, Message> messages = new HashMap<>();
 
     public DefaultSchemasService(
             List<ModelConverter> externalModelConverters,
@@ -43,11 +48,12 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     @Override
-    public Map<String, Schema> getDefinitions() {
-        return definitions;
+    public Map<String, Schema> getSchemas() {
+        return schemas;
     }
 
     @Override
+    // FIXME: rename to registerSchema
     public String register(AsyncHeaders headers) {
         log.debug("Registering schema for {}", headers.getSchemaName());
 
@@ -55,13 +61,14 @@ public class DefaultSchemasService implements SchemasService {
         headerSchema.setName(headers.getSchemaName());
         headerSchema.properties(headers);
 
-        this.definitions.put(headers.getSchemaName(), headerSchema);
+        this.schemas.put(headers.getSchemaName(), headerSchema);
         postProcessSchema(headerSchema);
 
         return headers.getSchemaName();
     }
 
     @Override
+    // FIXME: rename to registerSchema
     public String register(Class<?> type) {
         log.debug("Registering schema for {}", type.getSimpleName());
 
@@ -69,10 +76,24 @@ public class DefaultSchemasService implements SchemasService {
         String schemaName = getSchemaName(type, schemas);
 
         preProcessSchemas(schemas, schemaName, type);
-        this.definitions.putAll(schemas);
+        this.schemas.putAll(schemas);
         schemas.values().forEach(this::postProcessSchema);
 
         return schemaName;
+    }
+
+    @Override
+    public Map<String, Message> getMessages() {
+        return this.messages;
+    }
+
+    @Override
+    public MessageReference registerMessage(MessageObject message) {
+        log.debug("Registering message for {}", message.getName());
+
+        messages.put(message.getName(), message);
+
+        return MessageReference.fromMessage(message);
     }
 
     private String getSchemaName(Class<?> type, Map<String, Schema> schemas) {
@@ -123,7 +144,7 @@ public class DefaultSchemasService implements SchemasService {
         String schemaName = "String";
         StringSchema schema = new StringSchema();
 
-        this.definitions.put(schemaName, schema);
+        this.schemas.put(schemaName, schema);
         postProcessSchema(schema);
 
         return schemaName;
@@ -144,6 +165,6 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     private void postProcessSchema(Schema schema) {
-        schemaPostProcessors.forEach(processor -> processor.process(schema, definitions));
+        schemaPostProcessors.forEach(processor -> processor.process(schema, schemas));
     }
 }

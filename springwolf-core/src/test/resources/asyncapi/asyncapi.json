@@ -29,22 +29,8 @@
       "address": "new-user",
       "messages": {
         "new-user_listenerMethod_subscribe.message": {
-          "name": "io.github.stavshamir.springwolf.ExamplePayload",
-          "title": "Example Payload",
-          "payload": {
-            "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-            "schema": {
-              "$ref": "#/components/schemas/ExamplePayload"
-            }
-          },
-          "bindings": {
-            "kafka": {
-              "key": {
-                "type": "string"
-              },
-              "bindingVersion": "binding-version-1"
-            }
-          }
+          "id": "io.github.stavshamir.springwolf.ExamplePayload",
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.ExamplePayload"
         }
       },
       "description": "This channel is used to exchange messages about users signing up",
@@ -53,6 +39,18 @@
           "$ref": "#/servers/production"
         }
       ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "ExamplePayload": {
+        "type": "object",
+        "properties": {
+          "s": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "operations": {
@@ -74,21 +72,10 @@
       },
       "messages": [
         {
+          "id": "new-user_listenerMethod_subscribe.message",
           "$ref": "#/channels/new-user/messages/new-user_listenerMethod_subscribe.message"
         }
       ]
-    }
-  },
-  "components": {
-    "schemas": {
-      "ExamplePayload": {
-        "type": "object",
-        "properties": {
-          "s": {
-            "type": "string"
-          }
-        }
-      }
     }
   }
 }

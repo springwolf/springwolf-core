@@ -23,8 +23,14 @@ public class MessageReference implements Message, Reference {
         return ref;
     }
 
+    @JsonIgnore
+    public String getId() {
+        return ref.substring(ref.lastIndexOf('/') + 1);
+    }
+
     /**
      * Convenient Builder to create a Message reference to an existing Message
+     *
      * @param message Message to create the reference to. This Message MUST have a 'messageId' field
      * @return a Message with the 'ref' field pointing to "#/components/messages/{messageName}"
      */

@@ -99,7 +99,7 @@ class ClassLevelAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannelItem = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                 .build();
 
         assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));

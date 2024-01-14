@@ -163,7 +163,7 @@ class AsyncAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(null)
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -214,7 +214,7 @@ class AsyncAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(null)
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                 .servers(List.of(
                         ServerReference.builder().ref("server1").build(),
                         ServerReference.builder().ref("server2").build()))
@@ -255,7 +255,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannel1 = ChannelObject.builder()
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                 .bindings(null) /*.publish(operation1)*/
                 .build();
 
@@ -267,7 +267,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannel2 = ChannelObject.builder()
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                 .bindings(null) /*.publish(operation2)*/
                 .build();
 
@@ -311,7 +311,7 @@ class AsyncAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(null) /*.publish(operation) FIXME*/
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -424,7 +424,7 @@ class AsyncAnnotationChannelsScannerTest {
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(null)
-                    .messages(Map.of(message.getMessageId(), message))
+                    .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -498,7 +498,7 @@ class AsyncAnnotationChannelsScannerTest {
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(null) /*.publish(operation) FIXME*/
-                    .messages(Map.of(message.getMessageId(), message))
+                    .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));

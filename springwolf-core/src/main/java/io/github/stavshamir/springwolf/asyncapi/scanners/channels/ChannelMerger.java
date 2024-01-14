@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
-import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
@@ -9,16 +8,14 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessagesMap;
 
 /**
  * Util to merge multiple {@link Channel}s
@@ -79,9 +76,11 @@ public class ChannelMerger {
     private static ChannelObject mergeChannel(ChannelObject channel, ChannelObject otherChannel) {
         ChannelObject mergedChannel = channel != null ? channel : otherChannel;
 
-        Set<MessageObject> mergedMessages = mergeMessages(getMessages(channel), getMessages(otherChannel));
+        List<MessageReference> mergedMessages = mergeMessageReferences(
+                channel.getMessages().values(), otherChannel.getMessages().values());
         if (!mergedMessages.isEmpty()) {
-            mergedChannel.setMessages(toMessagesMap(mergedMessages));
+            mergedChannel.setMessages(
+                    mergedMessages.stream().collect(Collectors.toMap(MessageReference::getId, Function.identity())));
         }
         return mergedChannel;
     }
@@ -114,7 +113,7 @@ public class ChannelMerger {
     }
 
     private static List<MessageReference> mergeMessageReferences(
-            List<MessageReference> messages, List<MessageReference> otherMessages) {
+            Collection<MessageReference> messages, Collection<MessageReference> otherMessages) {
         var messageReferences = new HashSet<MessageReference>();
         if (messages != null) {
             messageReferences.addAll(messages);
@@ -123,12 +122,5 @@ public class ChannelMerger {
             messageReferences.addAll(otherMessages);
         }
         return messageReferences.stream().toList();
-    }
-
-    private static Set<Message> getMessages(ChannelObject channel) {
-        return Optional.ofNullable(channel)
-                .map(ChannelObject::getMessages)
-                .map(MessageHelper::messageObjectToSet)
-                .orElseGet(HashSet::new);
     }
 }

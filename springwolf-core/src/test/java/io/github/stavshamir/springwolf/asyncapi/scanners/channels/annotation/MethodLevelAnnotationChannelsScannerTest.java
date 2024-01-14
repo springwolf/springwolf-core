@@ -101,7 +101,7 @@ class MethodLevelAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannelItem = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                 .build();
 
         assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));
@@ -152,11 +152,11 @@ class MethodLevelAnnotationChannelsScannerTest {
 
         ChannelObject methodChannel = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(stringMessage.getMessageId(), stringMessage))
+                .messages(Map.of(stringMessage.getMessageId(), MessageReference.fromMessage(stringMessage)))
                 .build();
         ChannelObject anotherMethodChannel = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(simpleFooMessage.getMessageId(), simpleFooMessage))
+                .messages(Map.of(simpleFooMessage.getMessageId(), MessageReference.fromMessage(simpleFooMessage)))
                 .build();
 
         assertThat(channels)

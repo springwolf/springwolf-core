@@ -57,7 +57,7 @@ class DefaultSchemasServiceTest {
         schemasService.register(CompositeFoo.class);
         schemasService.register(FooWithEnum.class);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
@@ -68,7 +68,7 @@ class DefaultSchemasServiceTest {
     void getDocumentedDefinitions() throws IOException {
         schemasService.register(DocumentedSimpleFoo.class);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/documented-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
@@ -79,7 +79,7 @@ class DefaultSchemasServiceTest {
     void getArrayDefinitions() throws IOException {
         schemasService.register(ArrayFoo.class);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/array-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
@@ -90,7 +90,7 @@ class DefaultSchemasServiceTest {
     void getComplexDefinitions() throws IOException {
         schemasService.register(ComplexFoo.class);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/complex-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
@@ -101,7 +101,7 @@ class DefaultSchemasServiceTest {
     void getListWrapperDefinitions() throws IOException {
         schemasService.register(ListWrapper.class);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/generics-wrapper-definitions.json");
 
         System.out.println("Got: " + actualDefinitions);
@@ -127,8 +127,7 @@ class DefaultSchemasServiceTest {
         Class<?> clazz =
                 OneFieldFooWithFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
         schemasServiceWithFqn.register(clazz);
-        String actualDefinitions =
-                objectMapper.writer(printer).writeValueAsString(schemasServiceWithFqn.getDefinitions());
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasServiceWithFqn.getSchemas());
 
         // then
         System.out.println("Got: " + actualDefinitions);
@@ -269,7 +268,7 @@ class DefaultSchemasServiceTest {
         void testSchemaWithOneOf() throws IOException {
             schemasService.register(SchemaAnnotationFoo.class);
 
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
             String expected = jsonResource("/schemas/annotation-definitions.json");
 
             System.out.println("Got: " + actualDefinitions);
@@ -315,7 +314,7 @@ class DefaultSchemasServiceTest {
         void stringEnvelopTest() throws IOException {
             schemasService.register(StringEnvelop.class);
 
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
             String expected = jsonResource("/schemas/api-payload.json");
 
             System.out.println("Got: " + actualDefinitions);
@@ -328,7 +327,7 @@ class DefaultSchemasServiceTest {
         void illegalEnvelopTest() throws IOException {
             schemasService.register(EnvelopWithMultipleAsyncApiPayloadAnnotations.class);
 
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getDefinitions());
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
 
             // fallback to EnvelopWithMultipleAsyncApiPayloadAnnotations, which contains the field
             assertThat(actualDefinitions).contains("otherField");

@@ -36,7 +36,7 @@ class DefaultAsyncApiServiceTest {
         schemasService = mock(SchemasService.class);
 
         when(channelsService.findChannels()).thenReturn(Map.of());
-        when(schemasService.getDefinitions()).thenReturn(Map.of());
+        when(schemasService.getSchemas()).thenReturn(Map.of());
 
         defaultAsyncApiService =
                 new DefaultAsyncApiService(asyncApiDocketService, channelsService, schemasService, customizers);

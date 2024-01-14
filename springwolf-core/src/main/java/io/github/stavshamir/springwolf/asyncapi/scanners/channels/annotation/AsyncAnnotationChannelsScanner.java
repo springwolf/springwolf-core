@@ -151,8 +151,9 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         }
         MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 
-        ChannelObject channelItem =
-                channelBuilder.messages(Map.of(message.getMessageId(), message)).build();
+        ChannelObject channelItem = channelBuilder
+                .messages(Map.of(message.getName(), MessageReference.fromMessage(message)))
+                .build();
         return Map.entry(channelName, channelItem);
     }
 
@@ -231,7 +232,9 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         // priority so if we find them, we need to override the default values.
         AsyncAnnotationScannerUtil.processAsyncMessageAnnotation(builder, operationData.message(), this.resolver);
 
-        return builder.build();
+        MessageObject message = builder.build();
+        this.schemasService.registerMessage(message);
+        return message;
     }
 
     /**

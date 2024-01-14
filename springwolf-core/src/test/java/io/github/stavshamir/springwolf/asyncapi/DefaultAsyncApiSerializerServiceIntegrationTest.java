@@ -107,7 +107,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .servers(List.of(
                         ServerReference.builder().ref("#/servers/production").build()))
                 //                .subscribe(newUserOperation) FIXME
-                .messages(Map.of("new-user_listenerMethod_subscribe.message", message))
+                .messages(Map.of("new-user_listenerMethod_subscribe.message", MessageReference.fromMessage(message)))
                 .build();
 
         Map<String, Schema> schemas = ModelConverters.getInstance()

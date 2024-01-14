@@ -111,7 +111,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(defaultChannelBinding)
-                    .messages(Map.of(message.getMessageId(), message))
+                    .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
@@ -163,13 +163,13 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
                     .build();
 
             ChannelObject expectedChannelItem = ChannelObject.builder()
-                    .messages(Map.of(messageSimpleFoo.getMessageId(), messageSimpleFoo))
+                    .messages(Map.of(messageSimpleFoo.getMessageId(), MessageReference.fromMessage(messageSimpleFoo)))
                     .bindings(defaultChannelBinding)
                     .build();
 
             ChannelObject expectedChannelItem2 = ChannelObject.builder()
                     .bindings(defaultChannelBinding)
-                    .messages(Map.of(messageString.getMessageId(), messageString))
+                    .messages(Map.of(messageString.getMessageId(), MessageReference.fromMessage(messageString)))
                     .build();
 
             assertThat(channels)
@@ -214,7 +214,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(defaultChannelBinding)
-                    .messages(Map.of(message.getMessageId(), message))
+                    .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));

@@ -68,7 +68,8 @@ public class DefaultAsyncApiService implements AsyncApiService {
             Map<String, Operation> operations = channelsService.findOperations();
 
             Components components = Components.builder()
-                    .schemas(schemasService.getDefinitions())
+                    .schemas(schemasService.getSchemas())
+                    .messages(schemasService.getMessages())
                     .build();
 
             AsyncAPI asyncAPI = AsyncAPI.builder()

@@ -110,7 +110,7 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());
 
-        return MessageObject.builder()
+        MessageObject message = MessageObject.builder()
                 .messageId(payloadType.getName())
                 .name(payloadType.getName())
                 .title(payloadType.getSimpleName())
@@ -119,14 +119,16 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
                 .headers(MessageHeaders.of(MessageReference.fromSchema(headerModelName)))
                 .bindings(messageBinding)
                 .build();
+
+        this.schemasService.registerMessage(message);
+        return message;
     }
 
     private ChannelObject buildChannelItem(MethodAnnotation annotation, MessageObject message) {
         Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(annotation);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         return ChannelObject.builder()
-                // FIXME: We can use the message reference once everything else works
-                .messages(Map.of(message.getMessageId(), message))
+                .messages(Map.of(message.getName(), MessageReference.fromMessage(message)))
                 .bindings(chBinding)
                 .build();
     }
