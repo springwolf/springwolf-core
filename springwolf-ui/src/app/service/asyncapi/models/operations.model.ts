@@ -12,7 +12,9 @@ export interface ServerOperation {
   channel: {
     $ref: string;
   };
-  messages: ServerOperationMessage[];
+  messages: {
+    $ref: string;
+  }[];
   bindings: ServerBindings;
 }
 
