@@ -20,7 +20,36 @@ class AMQPBindingTest {
     private static final DefaultAsyncApiSerializer serializer = new DefaultAsyncApiSerializer();
 
     @Test
-    void shouldSerializeAMQPChannelBinding() throws IOException {
+    void shouldSerializeAMQPChannelBindingQueue() throws IOException {
+
+        var asyncapi = AsyncAPI.builder()
+                .channels(Map.of(
+                        "userSignup",
+                        ChannelObject.builder()
+                                .address("user/signup")
+                                .bindings(Map.of(
+                                        "amqp",
+                                        AMQPChannelBinding.builder()
+                                                .is(AMQPChannelType.QUEUE)
+                                                .queue(AMQPChannelQueueProperties.builder()
+                                                        .name("my-queue-name")
+                                                        .durable(true)
+                                                        .exclusive(true)
+                                                        .autoDelete(false)
+                                                        .build())
+                                                .build()))
+                                .build()))
+                .build();
+
+        // Uses https://github.com/asyncapi/bindings/blob/master/amqp/README.md#example
+        var example = ClasspathUtil.parseYamlFile("/v3/bindings/amqp/amqp-channel-queue.yaml");
+        assertThatJson(serializer.toJsonString(asyncapi))
+                .whenIgnoringPaths("asyncapi", "operations")
+                .isEqualTo(example);
+    }
+
+    @Test
+    void shouldSerializeAMQPChannelBindingRouting() throws IOException {
 
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
@@ -31,12 +60,6 @@ class AMQPBindingTest {
                                         "amqp",
                                         AMQPChannelBinding.builder()
                                                 .is(AMQPChannelType.ROUTING_KEY)
-                                                .queue(AMQPChannelQueueProperties.builder()
-                                                        .name("my-queue-name")
-                                                        .durable(true)
-                                                        .exclusive(true)
-                                                        .autoDelete(false)
-                                                        .build())
                                                 .exchange(AMQPChannelExchangeProperties.builder()
                                                         .name("myExchange")
                                                         .type(AMQPChannelExchangeType.TOPIC)
@@ -48,7 +71,7 @@ class AMQPBindingTest {
                 .build();
 
         // Uses https://github.com/asyncapi/bindings/blob/master/amqp/README.md#example
-        var example = ClasspathUtil.parseYamlFile("/v3/bindings/amqp/amqp-channel.yaml");
+        var example = ClasspathUtil.parseYamlFile("/v3/bindings/amqp/amqp-channel-routing.yaml");
         assertThatJson(serializer.toJsonString(asyncapi))
                 .whenIgnoringPaths("asyncapi", "operations")
                 .isEqualTo(example);

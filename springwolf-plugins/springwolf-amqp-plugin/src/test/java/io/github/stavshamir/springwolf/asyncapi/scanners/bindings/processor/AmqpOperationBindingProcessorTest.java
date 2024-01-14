@@ -26,7 +26,7 @@ class AmqpOperationBindingProcessorTest {
                 .isEqualTo(AMQPOperationBinding.builder()
                         .cc(List.of())
                         .priority(0)
-                        .deliveryMode(0)
+                        .deliveryMode(1)
                         .mandatory(false)
                         .timestamp(false)
                         .ack(false)
