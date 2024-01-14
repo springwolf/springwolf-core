@@ -37,7 +37,7 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor
 @Slf4j
 public class ClassLevelAnnotationChannelsScanner<
-                ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
+        ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
         implements SimpleChannelsScanner.ClassProcessor {
 
     private final Class<ClassAnnotation> classAnnotationClass;
@@ -151,7 +151,7 @@ public class ClassLevelAnnotationChannelsScanner<
                 .title(payloadType.getSimpleName())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.fromSchema(headerModelName)))
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(messageBinding)
                 .build();
 

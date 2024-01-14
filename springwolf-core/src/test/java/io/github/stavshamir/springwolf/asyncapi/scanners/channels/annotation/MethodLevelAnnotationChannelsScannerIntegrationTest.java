@@ -44,11 +44,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {
-            MethodLevelAnnotationChannelsScannerIntegrationTest.TestBindingFactory.class,
-            DefaultSchemasService.class,
-            PayloadClassExtractor.class,
-            ExampleJsonGenerator.class,
-            SpringwolfConfigProperties.class,
+                MethodLevelAnnotationChannelsScannerIntegrationTest.TestBindingFactory.class,
+                DefaultSchemasService.class,
+                PayloadClassExtractor.class,
+                ExampleJsonGenerator.class,
+                SpringwolfConfigProperties.class,
         })
 class MethodLevelAnnotationChannelsScannerIntegrationTest {
     @Autowired
@@ -82,7 +82,8 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
         }
 
         private static class ClassWithoutListenerAnnotation {
-            private void methodWithoutAnnotation() {}
+            private void methodWithoutAnnotation() {
+            }
         }
     }
 
@@ -105,13 +106,13 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
                     .headers(
-                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                            MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(defaultChannelBinding)
-                    .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
+                    .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
@@ -120,9 +121,11 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
         private static class ClassWithListenerAnnotation {
 
             @TestChannelListener
-            private void methodWithAnnotation(SimpleFoo payload) {}
+            private void methodWithAnnotation(SimpleFoo payload) {
+            }
 
-            private void methodWithoutAnnotation() {}
+            private void methodWithoutAnnotation() {
+            }
         }
     }
 
@@ -149,7 +152,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(simpleFooPayload)
                     .headers(
-                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                            MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
             MessageObject messageString = MessageObject.builder()
@@ -158,18 +161,18 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
                     .title(String.class.getSimpleName())
                     .payload(stringPayload)
                     .headers(
-                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                            MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
             ChannelObject expectedChannelItem = ChannelObject.builder()
-                    .messages(Map.of(messageSimpleFoo.getMessageId(), MessageReference.fromMessage(messageSimpleFoo)))
+                    .messages(Map.of(messageSimpleFoo.getMessageId(), MessageReference.toComponentMessage(messageSimpleFoo)))
                     .bindings(defaultChannelBinding)
                     .build();
 
             ChannelObject expectedChannelItem2 = ChannelObject.builder()
                     .bindings(defaultChannelBinding)
-                    .messages(Map.of(messageString.getMessageId(), MessageReference.fromMessage(messageString)))
+                    .messages(Map.of(messageString.getMessageId(), MessageReference.toComponentMessage(messageString)))
                     .build();
 
             assertThat(channels)
@@ -181,10 +184,12 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
         private static class ClassWithTestListenerAnnotationMultiplePayloads {
 
             @TestChannelListener
-            private void methodWithAnnotation(SimpleFoo payload) {}
+            private void methodWithAnnotation(SimpleFoo payload) {
+            }
 
             @TestChannelListener
-            private void methodWithAnnotation(String payload) {}
+            private void methodWithAnnotation(String payload) {
+            }
         }
     }
 
@@ -208,13 +213,13 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
                     .headers(
-                            MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                            MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(defaultMessageBinding)
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(defaultChannelBinding)
-                    .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
+                    .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
@@ -223,16 +228,19 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
         private static class ClassWithListenerMetaAnnotation {
 
             @MetaAnnotation.TestChannelListenerMetaAnnotation
-            private void methodWithAnnotation(SimpleFoo payload) {}
+            private void methodWithAnnotation(SimpleFoo payload) {
+            }
 
-            private void methodWithoutAnnotation() {}
+            private void methodWithoutAnnotation() {
+            }
         }
 
         @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
         @Retention(RetentionPolicy.RUNTIME)
         @Inherited
         @TestChannelListener
-        public @interface TestChannelListenerMetaAnnotation {}
+        public @interface TestChannelListenerMetaAnnotation {
+        }
     }
 
     @Data
@@ -245,7 +253,8 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
     @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
     @Retention(RetentionPolicy.RUNTIME)
     @Inherited
-    public @interface TestChannelListener {}
+    public @interface TestChannelListener {
+    }
 
     static class TestBindingFactory implements BindingFactory<TestChannelListener> {
 
@@ -278,12 +287,15 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
         }
 
         @EqualsAndHashCode(callSuper = true)
-        public static class TestChannelBinding extends ChannelBinding {}
+        public static class TestChannelBinding extends ChannelBinding {
+        }
 
         @EqualsAndHashCode(callSuper = true)
-        public static class TestOperationBinding extends OperationBinding {}
+        public static class TestOperationBinding extends OperationBinding {
+        }
 
         @EqualsAndHashCode(callSuper = true)
-        public static class TestMessageBinding extends MessageBinding {}
+        public static class TestMessageBinding extends MessageBinding {
+        }
     }
 }

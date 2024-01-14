@@ -28,7 +28,7 @@ class MessageHelperTest {
         var messagesMap = toMessagesMap(Set.of(message));
 
         assertThat(messagesMap)
-                .containsExactlyInAnyOrderEntriesOf(Map.of("foo", MessageReference.fromMessage(message)));
+                .containsExactlyInAnyOrderEntriesOf(Map.of("foo", MessageReference.toComponentMessage(message)));
     }
 
     @Test
@@ -41,7 +41,7 @@ class MessageHelperTest {
 
         assertThat(messages)
                 .containsExactlyInAnyOrderEntriesOf(Map.of(
-                        "bar", MessageReference.fromMessage(message2), "foo", MessageReference.fromMessage(message1)));
+                        "bar", MessageReference.toComponentMessage(message2), "foo", MessageReference.toComponentMessage(message1)));
     }
 
     @Test
@@ -66,9 +66,9 @@ class MessageHelperTest {
         // we do not have any guarantee whether message2 or message3 won the deduplication.
         assertThat(messages)
                 .hasSize(2)
-                .containsValue(MessageReference.fromMessage(message1))
+                .containsValue(MessageReference.toComponentMessage(message1))
                 .containsAnyOf(
-                        entry("bar", MessageReference.fromMessage(message2)),
-                        entry("bar", MessageReference.fromMessage(message3)));
+                        entry("bar", MessageReference.toComponentMessage(message2)),
+                        entry("bar", MessageReference.toComponentMessage(message3)));
     }
 }

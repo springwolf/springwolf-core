@@ -19,7 +19,8 @@ public class MessageHelper {
 
     private static final Supplier<Set<MessageObject>> messageSupplier = () -> new TreeSet<>(byMessageName);
 
-    private MessageHelper() {}
+    private MessageHelper() {
+    }
 
     public static Map<String, MessageReference> toMessagesMap(Set<MessageObject> messages) {
         if (messages.isEmpty()) {
@@ -27,6 +28,6 @@ public class MessageHelper {
         }
 
         return new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier)))
-                .stream().collect(Collectors.toMap(MessageObject::getName, MessageReference::fromMessage));
+                .stream().collect(Collectors.toMap(MessageObject::getName, MessageReference::toComponentMessage));
     }
 }

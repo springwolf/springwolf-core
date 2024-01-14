@@ -48,25 +48,25 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {
-            ConfigurationClassScanner.class,
-            ComponentClassScanner.class,
-            DefaultBeanMethodsScanner.class,
-            DefaultSchemasService.class,
-            PayloadClassExtractor.class,
-            ExampleJsonGenerator.class,
-            DefaultAsyncApiDocketService.class,
-            CloudStreamFunctionChannelsScanner.class,
-            FunctionalChannelBeanBuilder.class,
-            SpringwolfConfigProperties.class
+                ConfigurationClassScanner.class,
+                ComponentClassScanner.class,
+                DefaultBeanMethodsScanner.class,
+                DefaultSchemasService.class,
+                PayloadClassExtractor.class,
+                ExampleJsonGenerator.class,
+                DefaultAsyncApiDocketService.class,
+                CloudStreamFunctionChannelsScanner.class,
+                FunctionalChannelBeanBuilder.class,
+                SpringwolfConfigProperties.class
         })
 @TestPropertySource(
         properties = {
-            "springwolf.enabled=true",
-            "springwolf.docket.info.title=Test",
-            "springwolf.docket.info.version=1.0.0",
-            "springwolf.docket.base-package=io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream",
-            "springwolf.docket.servers.kafka.protocol=kafka",
-            "springwolf.docket.servers.kafka.host=kafka:9092",
+                "springwolf.enabled=true",
+                "springwolf.docket.info.title=Test",
+                "springwolf.docket.info.version=1.0.0",
+                "springwolf.docket.base-package=io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream",
+                "springwolf.docket.servers.kafka.protocol=kafka",
+                "springwolf.docket.servers.kafka.host=kafka:9092",
         })
 @EnableConfigurationProperties
 @Import(CloudStreamFunctionChannelsScannerIntegrationTest.Configuration.class)
@@ -104,8 +104,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject message = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 // .bindings(messageBinding) FIXME
                 .build();
 
@@ -140,8 +140,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject message = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 //                .bindings(messageBinding) FIXME
                 .build();
 
@@ -183,8 +183,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title(Integer.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 //                .bindings(messageBinding) FIXME
                 .build();
 
@@ -203,8 +203,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject publishMessage = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 //                .bindings(messageBinding) FIXME
                 .build();
 
@@ -247,8 +247,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title(Integer.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.fromSchema(Integer.class.getSimpleName())))
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .payload(MessagePayload.of(MessageReference.toSchema(Integer.class.getSimpleName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 //                .bindings(messageBinding) FIXME
                 .build();
 
@@ -267,8 +267,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject publishMessage = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 //                .bindings(messageBinding) FIXME
                 .build();
 
@@ -310,8 +310,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title(Integer.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.fromSchema(Integer.class.getSimpleName())))
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .payload(MessagePayload.of(MessageReference.toSchema(Integer.class.getSimpleName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 //                .bindings(messageBinding) FIXME
                 .build();
 
@@ -325,8 +325,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject publishMessage = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.fromSchema(String.class.getSimpleName())))
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 //                .bindings(messageBinding) FIXME
                 .build();
 

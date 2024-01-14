@@ -23,41 +23,29 @@ public class MessageReference implements Message, Reference {
         return ref;
     }
 
-    @JsonIgnore
-    // TODO: Is needed?
-    public String getId() {
-        return ref.substring(ref.lastIndexOf('/') + 1);
-    }
-
     /**
      * Convenient Builder to create a Message reference to an existing Message
      *
-     * @param message Message to create the reference to. This Message MUST have a 'messageId' field
+     * @param message Message to create the reference to. This Message MUST have a 'messageName' field
      * @return a Message with the 'ref' field pointing to "#/components/messages/{messageName}"
      */
-    // FIXME: naming toComponentsMessage
-    public static MessageReference fromMessage(MessageObject message) {
-        return fromMessage(message.getName());
+    public static MessageReference toComponentMessage(MessageObject message) {
+        return toComponentMessage(message.getName());
     }
 
-    public static MessageReference fromMessage(String messageName) {
+    public static MessageReference toComponentMessage(String messageName) {
         return new MessageReference("#/components/messages/" + messageName);
     }
 
-    // FIXME: naming toMessageInChannel
-    public static MessageReference fromChannelMessage(String channelName, MessageObject message) {
+    public static MessageReference toChannelMessage(String channelName, MessageObject message) {
         return new MessageReference("#/channels/" + channelName + "/messages/" + message.getName());
     }
 
-    public static MessageReference fromChannelMessage(String channelName, MessageReference message) {
-        return new MessageReference("#/channels/" + channelName + "/messages/" + message.getId());
-    }
-
-    public static MessageReference fromChannelMessage(String channelName, String messageName) {
+    public static MessageReference toChannelMessage(String channelName, String messageName) {
         return new MessageReference("#/channels/" + channelName + "/messages/" + messageName);
     }
 
-    public static MessageReference fromSchema(String schemaName) {
+    public static MessageReference toSchema(String schemaName) {
         return new MessageReference("#/components/schemas/" + schemaName);
     }
 }

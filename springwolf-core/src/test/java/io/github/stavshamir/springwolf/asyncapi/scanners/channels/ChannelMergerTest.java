@@ -144,13 +144,13 @@ class ChannelMergerTest {
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
         ChannelObject publisherChannel1 = ChannelObject.builder()
-                .messages(Map.of(message1.getName(), MessageReference.fromMessage(message1)))
+                .messages(Map.of(message1.getName(), MessageReference.toComponentMessage(message1)))
                 .build();
         ChannelObject publisherChannel2 = ChannelObject.builder()
-                .messages(Map.of(message2.getName(), MessageReference.fromMessage(message2)))
+                .messages(Map.of(message2.getName(), MessageReference.toComponentMessage(message2)))
                 .build();
         ChannelObject publisherChannel3 = ChannelObject.builder()
-                .messages(Map.of(message3.getName(), MessageReference.fromMessage(message3)))
+                .messages(Map.of(message3.getName(), MessageReference.toComponentMessage(message3)))
                 .build();
 
         // when
@@ -187,9 +187,9 @@ class ChannelMergerTest {
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
-        MessageReference messageRef1 = MessageReference.fromChannelMessage(channelName, message1);
-        MessageReference messageRef2 = MessageReference.fromChannelMessage(channelName, message2);
-        MessageReference messageRef3 = MessageReference.fromChannelMessage(channelName, message3);
+        MessageReference messageRef1 = MessageReference.toChannelMessage(channelName, message1);
+        MessageReference messageRef2 = MessageReference.toChannelMessage(channelName, message2);
+        MessageReference messageRef3 = MessageReference.toChannelMessage(channelName, message3);
 
         Operation senderOperation1 = Operation.builder()
                 .action(OperationAction.SEND)
@@ -236,7 +236,7 @@ class ChannelMergerTest {
         Operation publishOperation2 = Operation.builder()
                 .action(OperationAction.SEND)
                 .title("publisher2")
-                .messages(List.of(MessageReference.fromChannelMessage(channelName, message2)))
+                .messages(List.of(MessageReference.toChannelMessage(channelName, message2)))
                 .build();
         ChannelObject publisherChannel1 =
                 ChannelObject.builder() /*.publish(publishOperation1)FIXME*/.build();

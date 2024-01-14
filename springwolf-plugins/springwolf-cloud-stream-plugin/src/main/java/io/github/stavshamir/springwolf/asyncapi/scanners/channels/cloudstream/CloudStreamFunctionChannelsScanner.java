@@ -81,8 +81,8 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(modelName)
-                .payload(MessagePayload.of(MessageReference.fromSchema(modelName)))
-                .headers(MessageHeaders.of(MessageReference.fromSchema(headerModelName)))
+                .payload(MessagePayload.of(MessageReference.toSchema(modelName)))
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(buildMessageBinding())
                 .build();
 
@@ -97,13 +97,13 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         Map<String, ChannelBinding> channelBinding = buildChannelBinding();
         return beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER
                 ? ChannelObject.builder()
-                        .bindings(channelBinding)
-                        // .publish(operation) FIXME
-                        .build()
+                .bindings(channelBinding)
+                // .publish(operation) FIXME
+                .build()
                 : ChannelObject.builder()
-                        .bindings(channelBinding)
-                        // .subscribe(operation) FIXME
-                        .build();
+                .bindings(channelBinding)
+                // .subscribe(operation) FIXME
+                .build();
     }
 
     private Map<String, MessageBinding> buildMessageBinding() {

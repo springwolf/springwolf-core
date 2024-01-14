@@ -116,7 +116,7 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
                 .title(payloadType.getSimpleName())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.fromSchema(headerModelName)))
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(messageBinding)
                 .build();
 
@@ -128,7 +128,7 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
         Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(annotation);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         return ChannelObject.builder()
-                .messages(Map.of(message.getName(), MessageReference.fromMessage(message)))
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .bindings(chBinding)
                 .build();
     }
@@ -141,7 +141,7 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
         return Operation.builder()
                 .action(OperationAction.RECEIVE)
                 .channel(ChannelReference.fromChannel(channelName))
-                .messages(List.of(MessageReference.fromChannelMessage(channelName, message)))
+                .messages(List.of(MessageReference.toChannelMessage(channelName, message)))
                 .bindings(opBinding)
                 .build();
     }

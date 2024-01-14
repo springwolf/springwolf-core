@@ -93,13 +93,13 @@ class ClassLevelAnnotationChannelsScannerTest {
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
         ChannelObject expectedChannelItem = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));
@@ -108,9 +108,11 @@ class ClassLevelAnnotationChannelsScannerTest {
     @TestClassListener
     private static class ClassWithTestListenerAnnotation {
         @TestMethodListener
-        private void methodWithAnnotation(String payload) {}
+        private void methodWithAnnotation(String payload) {
+        }
 
-        private void methodWithoutAnnotation() {}
+        private void methodWithoutAnnotation() {
+        }
     }
 
     @Data
@@ -121,8 +123,10 @@ class ClassLevelAnnotationChannelsScannerTest {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @interface TestClassListener {}
+    @interface TestClassListener {
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @interface TestMethodListener {}
+    @interface TestMethodListener {
+    }
 }

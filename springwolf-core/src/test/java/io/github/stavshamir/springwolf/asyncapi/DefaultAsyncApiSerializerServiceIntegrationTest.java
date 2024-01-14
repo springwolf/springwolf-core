@@ -75,7 +75,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .name("io.github.stavshamir.springwolf.ExamplePayload")
                 .title("Example Payload")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(MessageReference.fromSchema("ExamplePayload"))
+                        .schema(MessageReference.toSchema("ExamplePayload"))
                         .build()))
                 .bindings(Map.of(
                         // FIXME: We should have a SchemaString (Schema<String>)
@@ -96,7 +96,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .action(OperationAction.SEND)
                 // FIXME: Generate Ref from Channel Instance
                 .channel(ChannelReference.builder().ref("#/channels/new-user").build())
-                .messages(List.of(MessageReference.fromChannelMessage("new-user", message.getName())))
+                .messages(List.of(MessageReference.toChannelMessage("new-user", message.getName())))
                 .bindings(Map.of("kafka", operationBinding))
                 .build();
 
@@ -107,7 +107,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .servers(List.of(
                         ServerReference.builder().ref("#/servers/production").build()))
                 //                .subscribe(newUserOperation) FIXME
-                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         Map<String, Schema> schemas = ModelConverters.getInstance()

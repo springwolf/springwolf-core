@@ -152,7 +152,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 
         ChannelObject channelItem = channelBuilder
-                .messages(Map.of(message.getName(), MessageReference.fromMessage(message)))
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .build();
         return Map.entry(channelName, channelItem);
     }
@@ -194,7 +194,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                 .channel(ChannelReference.fromChannel(channelName))
                 .description(description)
                 .title(operationTitle)
-                .messages(List.of(MessageReference.fromChannelMessage(channelName, message)))
+                .messages(List.of(MessageReference.toChannelMessage(channelName, message)))
                 .bindings(opBinding)
                 .build();
     }
@@ -207,7 +207,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         String modelName = this.schemasService.registerSchema(payloadType);
         AsyncHeaders asyncHeaders = AsyncAnnotationScannerUtil.getAsyncHeaders(operationData, resolver);
         String headerModelName = this.schemasService.registerSchema(asyncHeaders);
-        var headers = MessageHeaders.of(MessageReference.fromSchema(headerModelName));
+        var headers = MessageHeaders.of(MessageReference.toSchema(headerModelName));
 
         var schema = payloadType.getAnnotation(Schema.class);
         String description = schema != null ? schema.description() : null;
@@ -272,5 +272,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         OperationData.OperationType getOperationType();
     }
 
-    private record MethodAndAnnotation<A>(Method method, A annotation) {}
+    private record MethodAndAnnotation<A>(Method method, A annotation) {
+    }
 }

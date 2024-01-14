@@ -21,7 +21,7 @@ class OperationTest {
 
     @Test
     void shouldSerializeOperation() throws IOException {
-        MessageReference userSignedUpReply = MessageReference.fromMessage("userSignedUpReply");
+        MessageReference userSignedUpReply = MessageReference.toComponentMessage("userSignedUpReply");
         var operation = Operation.builder()
                 .title("User sign up")
                 .summary("Action to sign a user up.")
@@ -38,7 +38,7 @@ class OperationTest {
                 .traits(List.of(OperationTraits.builder()
                         .ref("#/components/operationTraits/kafka")
                         .build()))
-                .messages(List.of(MessageReference.fromMessage("userSignedUp")))
+                .messages(List.of(MessageReference.toComponentMessage("userSignedUp")))
                 .reply(OperationReply.builder()
                         .address(OperationReplyAddress.builder()
                                 .location("$message.header#/replyTo")
