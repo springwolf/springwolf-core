@@ -93,11 +93,12 @@ export class AsyncApiMapperService {
           const channelOperation = this.parsingErrorBoundary(
             "channel with name " + channelName,
             () =>
-              this.mapChannel(
+              this.mapChannelOperation(
                 channelName,
                 channels[channelName],
                 message,
-                operation.action
+                operation.action,
+                operation.bindings
               )
           );
 
@@ -110,11 +111,12 @@ export class AsyncApiMapperService {
     return s;
   }
 
-  private mapChannel(
+  private mapChannelOperation(
     channelName: string,
     channel: ServerChannel,
     message: Message,
-    operationType: ServerOperationAction
+    operationType: ServerOperationAction,
+    operationBinding: ServerBindings
   ): ChannelOperation {
     if (
       channel.bindings == undefined ||
@@ -128,7 +130,7 @@ export class AsyncApiMapperService {
     const operation = this.mapOperation(
       operationType,
       message,
-      channel.bindings
+      operationBinding
     );
 
     return {
@@ -143,6 +145,7 @@ export class AsyncApiMapperService {
         ].join("-"),
       description: channel.description,
       operation,
+      bindings: channel.bindings,
     };
   }
 
