@@ -17,17 +17,19 @@
   "defaultContentType": "application/json",
   "servers": {
     "kafka": {
-      "host": "localhost:50025",
+      "host": "localhost:52551",
       "protocol": "kafka"
     }
   },
   "channels": {
     "another-topic": {
+      "messages": { },
       "bindings": {
         "kafka": { }
       }
     },
     "example-topic": {
+      "messages": { },
       "bindings": {
         "kafka": { }
       }
@@ -101,7 +103,8 @@
         "properties": { },
         "example": { }
       }
-    }
+    },
+    "messages": { }
   },
   "operations": { }
 }
