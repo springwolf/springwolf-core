@@ -29,6 +29,7 @@ public class ExampleConsumer {
         anotherProducer.sendMessage(example);
     }
 
+    // FIXME: remove as we have the StringConsumer now
     @KafkaListener(topics = "primitive-topic")
     public void receivePrimitivePayload(String primitivePayload) {
         log.info("Received new messages in primitive-topic: {}", primitivePayload);

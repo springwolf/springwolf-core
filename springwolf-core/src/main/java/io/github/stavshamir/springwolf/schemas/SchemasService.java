@@ -13,9 +13,9 @@ public interface SchemasService {
 
     Map<String, Schema> getSchemas();
 
-    String register(AsyncHeaders headers);
+    String registerSchema(AsyncHeaders headers);
 
-    String register(Class<?> type);
+    String registerSchema(Class<?> type);
 
     Map<String, Message> getMessages();
 

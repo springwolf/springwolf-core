@@ -71,10 +71,10 @@ class ClassLevelAnnotationChannelsScannerTest {
         doReturn(String.class).when(payloadClassExtractor).extractFrom(any());
         doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())
                 .when(schemasService)
-                .register(any(Class.class));
+                .registerSchema(any(Class.class));
         doAnswer(invocation -> AsyncHeaders.NOT_DOCUMENTED.getSchemaName())
                 .when(schemasService)
-                .register(any(AsyncHeaders.class));
+                .registerSchema(any(AsyncHeaders.class));
     }
 
     @Test

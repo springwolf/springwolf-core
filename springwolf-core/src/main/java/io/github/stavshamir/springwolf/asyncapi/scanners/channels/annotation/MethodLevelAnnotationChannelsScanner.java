@@ -14,7 +14,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.ChannelMessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
@@ -105,8 +104,8 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
 
     private MessageObject buildMessage(MethodAnnotation annotation, Class<?> payloadType) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation);
-        String modelName = schemasService.register(payloadType);
-        String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
+        String modelName = schemasService.registerSchema(payloadType);
+        String headerModelName = schemasService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());
@@ -142,7 +141,7 @@ public class MethodLevelAnnotationChannelsScanner<MethodAnnotation extends Annot
         return Operation.builder()
                 .action(OperationAction.RECEIVE)
                 .channel(ChannelReference.fromChannel(channelName))
-                .messages(List.of(ChannelMessageReference.fromMessage(channelName, message)))
+                .messages(List.of(MessageReference.fromChannelMessage(channelName, message)))
                 .bindings(opBinding)
                 .build();
     }

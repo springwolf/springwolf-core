@@ -311,7 +311,7 @@ class AsyncAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(null) /*.publish(operation) FIXME*/
-                .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
+                .messages(Map.of(message.getName(), MessageReference.fromMessage(message)))
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -411,6 +411,7 @@ class AsyncAnnotationChannelsScannerTest {
                     .title(String.class.getSimpleName())
                     .description(null)
                     .payload(messagePayload)
+                    // .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0") FIXME
                     .headers(
                             MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
@@ -424,6 +425,7 @@ class AsyncAnnotationChannelsScannerTest {
 
             ChannelObject expectedChannel = ChannelObject.builder()
                     .bindings(null)
+                    /*.publish(operation) FIXME*/
                     .messages(Map.of(message.getMessageId(), MessageReference.fromMessage(message)))
                     .build();
 

@@ -138,8 +138,8 @@ public class ClassLevelAnnotationChannelsScanner<
 
     private MessageObject buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
-        String modelName = schemasService.register(payloadType);
-        String headerModelName = schemasService.register(asyncHeadersBuilder.buildHeaders(payloadType));
+        String modelName = schemasService.registerSchema(payloadType);
+        String headerModelName = schemasService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
 
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))

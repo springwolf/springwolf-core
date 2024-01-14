@@ -19,7 +19,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.ChannelMessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
@@ -195,7 +194,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                 .channel(ChannelReference.fromChannel(channelName))
                 .description(description)
                 .title(operationTitle)
-                .messages(List.of(ChannelMessageReference.fromMessage(channelName, message)))
+                .messages(List.of(MessageReference.fromChannelMessage(channelName, message)))
                 .bindings(opBinding)
                 .build();
     }
@@ -205,9 +204,9 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                 ? operationData.payloadType()
                 : payloadClassExtractor.extractFrom(method);
 
-        String modelName = this.schemasService.register(payloadType);
+        String modelName = this.schemasService.registerSchema(payloadType);
         AsyncHeaders asyncHeaders = AsyncAnnotationScannerUtil.getAsyncHeaders(operationData, resolver);
-        String headerModelName = this.schemasService.register(asyncHeaders);
+        String headerModelName = this.schemasService.registerSchema(asyncHeaders);
         var headers = MessageHeaders.of(MessageReference.fromSchema(headerModelName));
 
         var schema = payloadType.getAnnotation(Schema.class);

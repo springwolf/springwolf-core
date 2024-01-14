@@ -16,7 +16,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSch
 import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.ChannelMessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationTraits;
@@ -75,7 +74,7 @@ class AsyncAPITest {
                         Operation.builder()
                                 .action(OperationAction.SEND)
                                 .channel(ChannelReference.fromChannel(channelUserSignedup))
-                                .messages(List.of(ChannelMessageReference.fromMessage(
+                                .messages(List.of(MessageReference.fromChannelMessage(
                                         "userSignedup", userSignUpMessage.getMessageId())))
                                 .build()))
                 .components(Components.builder()
@@ -241,7 +240,7 @@ class AsyncAPITest {
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
                                 .messages(List.of(
-                                        ChannelMessageReference.fromMessage("lightingMeasured", "lightMeasured")))
+                                        MessageReference.fromChannelMessage("lightingMeasured", "lightMeasured")))
                                 .build(),
                         "turnOn",
                         Operation.builder()
@@ -252,7 +251,7 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(ChannelMessageReference.fromMessage("lightTurnOn", "turnOn")))
+                                .messages(List.of(MessageReference.fromChannelMessage("lightTurnOn", "turnOn")))
                                 .build(),
                         "turnOff",
                         Operation.builder()
@@ -263,7 +262,7 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(ChannelMessageReference.fromMessage("lightTurnOff", "turnOff")))
+                                .messages(List.of(MessageReference.fromChannelMessage("lightTurnOff", "turnOff")))
                                 .build(),
                         "dimLight",
                         Operation.builder()
@@ -274,7 +273,7 @@ class AsyncAPITest {
                                 .traits(List.of(OperationTraits.builder()
                                         .ref("#/components/operationTraits/kafka")
                                         .build()))
-                                .messages(List.of(ChannelMessageReference.fromMessage("lightsDim", "dimLight")))
+                                .messages(List.of(MessageReference.fromChannelMessage("lightsDim", "dimLight")))
                                 .build()))
                 .components(Components.builder()
                         .messages(Map.of(

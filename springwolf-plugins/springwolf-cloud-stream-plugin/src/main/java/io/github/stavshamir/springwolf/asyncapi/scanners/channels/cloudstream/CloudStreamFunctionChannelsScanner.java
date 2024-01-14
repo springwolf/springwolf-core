@@ -75,8 +75,8 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     private ChannelObject buildChannel(FunctionalChannelBeanData beanData, String operationId) {
         Class<?> payloadType = beanData.payloadType();
-        String modelName = schemasService.register(payloadType);
-        String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
+        String modelName = schemasService.registerSchema(payloadType);
+        String headerModelName = schemasService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
 
         MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())

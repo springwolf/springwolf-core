@@ -3,10 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.ChannelMessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 
 import java.util.Collection;
@@ -14,9 +11,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Util to merge multiple {@link Channel}s
@@ -77,57 +71,38 @@ public class ChannelMerger {
     private static ChannelObject mergeChannel(ChannelObject channel, ChannelObject otherChannel) {
         ChannelObject mergedChannel = channel != null ? channel : otherChannel;
 
-        List<MessageReference> mergedMessages = mergeMessageReferences(
-                channel.getMessages().values(), otherChannel.getMessages().values());
-        if (!mergedMessages.isEmpty()) {
-            mergedChannel.setMessages(
-                    mergedMessages.stream().collect(Collectors.toMap(MessageReference::getId, Function.identity())));
+        Map<String, MessageReference> channelMessages = channel.getMessages();
+        Map<String, MessageReference> otherChannelMessages = otherChannel.getMessages();
+
+        Map<String, MessageReference> mergedMessages = new HashMap<>();
+        if (channelMessages != null) {
+            mergedMessages.putAll(channelMessages);
         }
+        if (otherChannelMessages != null) {
+            otherChannelMessages.forEach(mergedMessages::putIfAbsent);
+        }
+
+        if (!mergedMessages.isEmpty()) {
+            mergedChannel.setMessages(mergedMessages);
+        }
+
         return mergedChannel;
     }
 
     private static Operation mergeOperation(Operation operation, Operation otherOperation) {
         Operation mergedOperation = operation != null ? operation : otherOperation;
 
-        List<ChannelMessageReference> mergedMessages =
-                mergeChannelMessageReferences(operation.getMessages(), otherOperation.getMessages());
+        List<MessageReference> mergedMessages =
+                mergeMessageReferences(operation.getMessages(), otherOperation.getMessages());
         if (!mergedMessages.isEmpty()) {
             mergedOperation.setMessages(mergedMessages);
         }
         return mergedOperation;
     }
 
-    private static Set<MessageObject> mergeMessages(Set<Message> messages, Set<Message> otherMessages) {
-        // FIXME: We will lose any MessageReference we get
-        Map<String, MessageObject> nameToMessage = messages.stream()
-                .filter(MessageObject.class::isInstance)
-                .map(MessageObject.class::cast)
-                .collect(Collectors.toMap(MessageObject::getName, Function.identity()));
-
-        for (Message otherMessage : otherMessages) {
-            if (otherMessage instanceof MessageObject otherMessageObject) {
-                nameToMessage.putIfAbsent(otherMessageObject.getName(), otherMessageObject);
-            }
-        }
-
-        return new HashSet<>(nameToMessage.values());
-    }
-
     private static List<MessageReference> mergeMessageReferences(
             Collection<MessageReference> messages, Collection<MessageReference> otherMessages) {
         var messageReferences = new HashSet<MessageReference>();
-        if (messages != null) {
-            messageReferences.addAll(messages);
-        }
-        if (otherMessages != null) {
-            messageReferences.addAll(otherMessages);
-        }
-        return messageReferences.stream().toList();
-    }
-
-    private static List<ChannelMessageReference> mergeChannelMessageReferences(
-            Collection<ChannelMessageReference> messages, Collection<ChannelMessageReference> otherMessages) {
-        var messageReferences = new HashSet<ChannelMessageReference>();
         if (messages != null) {
             messageReferences.addAll(messages);
         }

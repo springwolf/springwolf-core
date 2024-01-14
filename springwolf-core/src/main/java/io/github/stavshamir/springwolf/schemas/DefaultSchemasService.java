@@ -53,8 +53,7 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     @Override
-    // FIXME: rename to registerSchema
-    public String register(AsyncHeaders headers) {
+    public String registerSchema(AsyncHeaders headers) {
         log.debug("Registering schema for {}", headers.getSchemaName());
 
         MapSchema headerSchema = new MapSchema();
@@ -68,8 +67,7 @@ public class DefaultSchemasService implements SchemasService {
     }
 
     @Override
-    // FIXME: rename to registerSchema
-    public String register(Class<?> type) {
+    public String registerSchema(Class<?> type) {
         log.debug("Registering schema for {}", type.getSimpleName());
 
         Map<String, Schema> schemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));

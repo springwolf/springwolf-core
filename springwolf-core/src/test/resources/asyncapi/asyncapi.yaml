@@ -22,7 +22,7 @@ channels:
   new-user:
     address: new-user
     messages:
-      new-user_listenerMethod_subscribe.message:
+      io.github.stavshamir.springwolf.ExamplePayload:
         "$ref": "#/components/messages/io.github.stavshamir.springwolf.ExamplePayload"
     description: This channel is used to exchange messages about users signing up
     servers:
@@ -34,6 +34,19 @@ components:
       properties:
         s:
           type: string
+  messages:
+    io.github.stavshamir.springwolf.ExamplePayload:
+      payload:
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schema:
+          "$ref": "#/components/schemas/ExamplePayload"
+      name: io.github.stavshamir.springwolf.ExamplePayload
+      title: Example Payload
+      bindings:
+        kafka:
+          key:
+            type: string
+          bindingVersion: binding-version-1
 operations:
   new-user_listenerMethod_subscribe:
     action: send
@@ -47,4 +60,4 @@ operations:
             - myGroupId
         bindingVersion: 0.4.0
     messages:
-      - "$ref": "#/channels/new-user/messages/new-user_listenerMethod_subscribe.message"
+      - "$ref": "#/channels/new-user/messages/io.github.stavshamir.springwolf.ExamplePayload"

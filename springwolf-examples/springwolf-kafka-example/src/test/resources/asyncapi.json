@@ -17,7 +17,7 @@
   "defaultContentType": "application/json",
   "servers": {
     "kafka": {
-      "host": "localhost:52547",
+      "host": "kafka:29092",
       "protocol": "kafka"
     }
   },
@@ -934,7 +934,7 @@
         "$ref": "#/channels/multi-payload-topic"
       },
       "title": "multi-payload-topic_publish",
-      "description": "Override description in the AsyncListener annotation with servers at localhost:52547",
+      "description": "Override description in the AsyncListener annotation with servers at kafka:29092",
       "bindings": {
         "kafka": {
           "groupId": {

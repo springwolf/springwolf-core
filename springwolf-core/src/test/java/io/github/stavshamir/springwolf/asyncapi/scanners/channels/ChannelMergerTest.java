@@ -5,7 +5,6 @@ import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.ChannelMessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.junit.jupiter.api.Test;
@@ -130,28 +129,28 @@ class ChannelMergerTest {
         // given
         String channelName = "channel";
         MessageObject message1 = MessageObject.builder()
-                .messageId("messageString")
+                .messageId("message1")
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
         MessageObject message2 = MessageObject.builder()
-                .messageId("messageInteger")
+                .messageId("message2")
                 .name(Integer.class.getCanonicalName())
                 .description("This is an integer")
                 .build();
         MessageObject message3 = MessageObject.builder()
-                .messageId("messageInteger")
+                .messageId("message3")
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
         ChannelObject publisherChannel1 = ChannelObject.builder()
-                .messages(Map.of(message1.getMessageId(), MessageReference.fromMessage(message1)))
+                .messages(Map.of(message1.getName(), MessageReference.fromMessage(message1)))
                 .build();
         ChannelObject publisherChannel2 = ChannelObject.builder()
-                .messages(Map.of(message2.getMessageId(), MessageReference.fromMessage(message2)))
+                .messages(Map.of(message2.getName(), MessageReference.fromMessage(message2)))
                 .build();
         ChannelObject publisherChannel3 = ChannelObject.builder()
-                .messages(Map.of(message3.getMessageId(), MessageReference.fromMessage(message3)))
+                .messages(Map.of(message3.getName(), MessageReference.fromMessage(message3)))
                 .build();
 
         // when
@@ -164,7 +163,7 @@ class ChannelMergerTest {
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
         var expectedMessages = MessageHelper.toMessagesMap(Set.of(message1, message2));
         assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
-            assertThat(it.getMessages()).containsExactlyEntriesOf(expectedMessages);
+            assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages);
         });
     }
 
@@ -174,23 +173,23 @@ class ChannelMergerTest {
         String channelName = "channel";
         String operationName = "operation";
         MessageObject message1 = MessageObject.builder()
-                .messageId("messageString")
+                .messageId("message1")
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
         MessageObject message2 = MessageObject.builder()
-                .messageId("messageInteger")
+                .messageId("message2")
                 .name(Integer.class.getCanonicalName())
                 .description("This is an integer")
                 .build();
         MessageObject message3 = MessageObject.builder()
-                .messageId("messageInteger")
+                .messageId("message3")
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
-        ChannelMessageReference messageRef1 = ChannelMessageReference.fromMessage(channelName, message1);
-        ChannelMessageReference messageRef2 = ChannelMessageReference.fromMessage(channelName, message2);
-        ChannelMessageReference messageRef3 = ChannelMessageReference.fromMessage(channelName, message3);
+        MessageReference messageRef1 = MessageReference.fromChannelMessage(channelName, message1);
+        MessageReference messageRef2 = MessageReference.fromChannelMessage(channelName, message2);
+        MessageReference messageRef3 = MessageReference.fromChannelMessage(channelName, message3);
 
         Operation senderOperation1 = Operation.builder()
                 .action(OperationAction.SEND)
@@ -237,7 +236,7 @@ class ChannelMergerTest {
         Operation publishOperation2 = Operation.builder()
                 .action(OperationAction.SEND)
                 .title("publisher2")
-                .messages(List.of(ChannelMessageReference.fromMessage(channelName, message2)))
+                .messages(List.of(MessageReference.fromChannelMessage(channelName, message2)))
                 .build();
         ChannelObject publisherChannel1 =
                 ChannelObject.builder() /*.publish(publishOperation1)FIXME*/.build();

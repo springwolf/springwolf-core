@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
@@ -53,9 +54,9 @@ class DefaultSchemasServiceTest {
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @Test
-    void getDefinitions() throws IOException {
-        schemasService.register(CompositeFoo.class);
-        schemasService.register(FooWithEnum.class);
+    void getSchemas() throws IOException {
+        schemasService.registerSchema(CompositeFoo.class);
+        schemasService.registerSchema(FooWithEnum.class);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/definitions.json");
@@ -65,8 +66,32 @@ class DefaultSchemasServiceTest {
     }
 
     @Test
+    void getMessages() throws IOException {
+        schemasService.registerMessage(
+                MessageObject.builder().name("messageName1").build());
+        schemasService.registerMessage(
+                MessageObject.builder().name("messageName2").build());
+
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getMessages());
+        String expected =
+                """
+                        {
+                          "messageName1" : {
+                            "name" : "messageName1"
+                          },
+                          "messageName2" : {
+                            "name" : "messageName2"
+                          }
+                        }"""
+                        .stripIndent();
+
+        System.out.println("Got: " + actualDefinitions);
+        assertEquals(expected, actualDefinitions);
+    }
+
+    @Test
     void getDocumentedDefinitions() throws IOException {
-        schemasService.register(DocumentedSimpleFoo.class);
+        schemasService.registerSchema(DocumentedSimpleFoo.class);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/documented-definitions.json");
@@ -77,7 +102,7 @@ class DefaultSchemasServiceTest {
 
     @Test
     void getArrayDefinitions() throws IOException {
-        schemasService.register(ArrayFoo.class);
+        schemasService.registerSchema(ArrayFoo.class);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/array-definitions.json");
@@ -88,7 +113,7 @@ class DefaultSchemasServiceTest {
 
     @Test
     void getComplexDefinitions() throws IOException {
-        schemasService.register(ComplexFoo.class);
+        schemasService.registerSchema(ComplexFoo.class);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/complex-definitions.json");
@@ -99,7 +124,7 @@ class DefaultSchemasServiceTest {
 
     @Test
     void getListWrapperDefinitions() throws IOException {
-        schemasService.register(ListWrapper.class);
+        schemasService.registerSchema(ListWrapper.class);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
         String expected = jsonResource("/schemas/generics-wrapper-definitions.json");
@@ -110,7 +135,7 @@ class DefaultSchemasServiceTest {
 
     @Test
     void classWithSchemaAnnotation() {
-        String modelName = schemasService.register(ClassWithSchemaAnnotation.class);
+        String modelName = schemasService.registerSchema(ClassWithSchemaAnnotation.class);
 
         assertThat(modelName).isEqualTo("DifferentName");
     }
@@ -126,7 +151,7 @@ class DefaultSchemasServiceTest {
         // when
         Class<?> clazz =
                 OneFieldFooWithFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
-        schemasServiceWithFqn.register(clazz);
+        schemasServiceWithFqn.registerSchema(clazz);
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasServiceWithFqn.getSchemas());
 
         // then
@@ -138,7 +163,7 @@ class DefaultSchemasServiceTest {
 
     @Test
     void postProcessorsAreCalled() {
-        schemasService.register(FooWithEnum.class);
+        schemasService.registerSchema(FooWithEnum.class);
 
         verify(schemasPostProcessor).process(any(), any());
     }
@@ -266,7 +291,7 @@ class DefaultSchemasServiceTest {
     class SchemaWithOneOf {
         @Test
         void testSchemaWithOneOf() throws IOException {
-            schemasService.register(SchemaAnnotationFoo.class);
+            schemasService.registerSchema(SchemaAnnotationFoo.class);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
             String expected = jsonResource("/schemas/annotation-definitions.json");
@@ -312,7 +337,7 @@ class DefaultSchemasServiceTest {
     class AsyncApiPayloadTest {
         @Test
         void stringEnvelopTest() throws IOException {
-            schemasService.register(StringEnvelop.class);
+            schemasService.registerSchema(StringEnvelop.class);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
             String expected = jsonResource("/schemas/api-payload.json");
@@ -325,7 +350,7 @@ class DefaultSchemasServiceTest {
 
         @Test
         void illegalEnvelopTest() throws IOException {
-            schemasService.register(EnvelopWithMultipleAsyncApiPayloadAnnotations.class);
+            schemasService.registerSchema(EnvelopWithMultipleAsyncApiPayloadAnnotations.class);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemasService.getSchemas());
 

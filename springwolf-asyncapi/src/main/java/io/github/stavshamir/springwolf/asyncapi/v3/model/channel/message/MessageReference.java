@@ -24,6 +24,7 @@ public class MessageReference implements Message, Reference {
     }
 
     @JsonIgnore
+    // TODO: Is needed?
     public String getId() {
         return ref.substring(ref.lastIndexOf('/') + 1);
     }
@@ -34,12 +35,26 @@ public class MessageReference implements Message, Reference {
      * @param message Message to create the reference to. This Message MUST have a 'messageId' field
      * @return a Message with the 'ref' field pointing to "#/components/messages/{messageName}"
      */
+    // FIXME: naming toComponentsMessage
     public static MessageReference fromMessage(MessageObject message) {
         return fromMessage(message.getName());
     }
 
     public static MessageReference fromMessage(String messageName) {
         return new MessageReference("#/components/messages/" + messageName);
+    }
+
+    // FIXME: naming toMessageInChannel
+    public static MessageReference fromChannelMessage(String channelName, MessageObject message) {
+        return new MessageReference("#/channels/" + channelName + "/messages/" + message.getName());
+    }
+
+    public static MessageReference fromChannelMessage(String channelName, MessageReference message) {
+        return new MessageReference("#/channels/" + channelName + "/messages/" + message.getId());
+    }
+
+    public static MessageReference fromChannelMessage(String channelName, String messageName) {
+        return new MessageReference("#/channels/" + channelName + "/messages/" + messageName);
     }
 
     public static MessageReference fromSchema(String schemaName) {

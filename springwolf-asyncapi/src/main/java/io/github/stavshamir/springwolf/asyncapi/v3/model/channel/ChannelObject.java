@@ -14,7 +14,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +51,7 @@ public class ChannelObject extends ExtendableObject implements Channel {
      * this channel MUST be valid against one, and only one, of the message objects defined in this map.
      */
     @JsonProperty(value = "messages")
-    @Builder.Default
-    private Map<String, MessageReference> messages = new HashMap<>();
+    private Map<String, MessageReference> messages;
 
     /**
      * A human-friendly title for the channel.
