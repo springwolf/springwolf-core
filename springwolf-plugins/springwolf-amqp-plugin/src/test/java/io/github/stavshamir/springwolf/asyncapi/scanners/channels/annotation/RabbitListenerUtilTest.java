@@ -75,13 +75,6 @@ class RabbitListenerUtilTest {
             assertEquals(
                     AMQPChannelBinding.builder()
                             .is(AMQPChannelType.QUEUE)
-                            .exchange(AMQPChannelExchangeProperties.builder()
-                                    .name("")
-                                    .type(AMQPChannelExchangeType.DIRECT)
-                                    .durable(true)
-                                    .autoDelete(false)
-                                    .vhost("/")
-                                    .build())
                             .queue(AMQPChannelQueueProperties.builder()
                                     .name("queue-1")
                                     .durable(true)
@@ -177,13 +170,6 @@ class RabbitListenerUtilTest {
                                     .durable(true)
                                     .autoDelete(false)
                                     .build())
-                            .queue(AMQPChannelQueueProperties.builder()
-                                    .name("queue-1")
-                                    .durable(true)
-                                    .autoDelete(false)
-                                    .exclusive(false)
-                                    .vhost("/")
-                                    .build())
                             .build(),
                     channelBinding.get("amqp"));
         }
@@ -266,13 +252,6 @@ class RabbitListenerUtilTest {
                                     .type(AMQPChannelExchangeType.DIRECT)
                                     .durable(true)
                                     .autoDelete(false)
-                                    .build())
-                            .queue(AMQPChannelQueueProperties.builder()
-                                    .name("queue-1")
-                                    .durable(true)
-                                    .autoDelete(false)
-                                    .exclusive(false)
-                                    .vhost("/")
                                     .build())
                             .build(),
                     channelBinding.get("amqp"));
@@ -373,13 +352,6 @@ class RabbitListenerUtilTest {
                                     .type(AMQPChannelExchangeType.TOPIC)
                                     .durable(false)
                                     .autoDelete(true)
-                                    .build())
-                            .queue(AMQPChannelQueueProperties.builder()
-                                    .name("queue-1")
-                                    .durable(false)
-                                    .autoDelete(true)
-                                    .exclusive(true)
-                                    .vhost("/")
                                     .build())
                             .build(),
                     channelBinding.get("amqp"));
