@@ -58,6 +58,13 @@ export class AsyncApiMapperService {
       title: item.info.title,
       version: item.info.version,
       description: item.info.description,
+      contact: {
+        url: item.info.contact?.url,
+        email: item.info.contact?.email && {
+          name: item.info.contact?.email,
+          href: "mailto:" + item.info.contact?.email,
+        },
+      },
       license: {
         name: item.info.license?.name,
         url: item.info.license?.url,
