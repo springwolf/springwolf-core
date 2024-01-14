@@ -89,14 +89,13 @@ public class RabbitListenerUtil {
             RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
         AMQPChannelBinding.AMQPChannelBindingBuilder channelBinding = AMQPChannelBinding.builder();
 
-        channelBinding.queue(buildQueueProperties(annotation, resolver, context));
-
         String exchangeName = getExchangeName(annotation, resolver, context);
-        channelBinding.exchange(buildExchangeProperties(annotation, exchangeName, context));
         if (exchangeName.isEmpty()) {
             channelBinding.is(AMQPChannelType.QUEUE);
+            channelBinding.queue(buildQueueProperties(annotation, resolver, context));
         } else {
             channelBinding.is(AMQPChannelType.ROUTING_KEY);
+            channelBinding.exchange(buildExchangeProperties(annotation, exchangeName, context));
         }
 
         return Map.of("amqp", channelBinding.build());
