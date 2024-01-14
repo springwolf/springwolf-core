@@ -7,7 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExtendableObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.Tag;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,7 +51,7 @@ public class ChannelObject extends ExtendableObject implements Channel {
      * this channel MUST be valid against one, and only one, of the message objects defined in this map.
      */
     @JsonProperty(value = "messages")
-    private Map<String, MessageReference> messages;
+    private Map<String, Message> messages;
 
     /**
      * A human-friendly title for the channel.

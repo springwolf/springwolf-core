@@ -105,14 +105,16 @@ class DefaultAsyncApiServiceIntegrationTest {
         final ChannelObject consumerChannel = actualChannels.get("consumer-topic");
         assertThat(consumerChannel.getBindings()).isEqualTo(Map.of("kafka", new KafkaChannelBinding()));
         assertThat(consumerChannel.getMessages()).hasSize(1);
-        MessageReference receiveMessage = consumerChannel.getMessages().get("receiveId");
+        MessageReference receiveMessage =
+                (MessageReference) consumerChannel.getMessages().get("receiveId");
         assertThat(receiveMessage.getRef()).isEqualTo("#/components/messages/receiveId");
 
         assertThat(actualChannels).isNotEmpty().containsKey("producer-topic");
         final ChannelObject publishChannel = actualChannels.get("producer-topic");
         assertThat(publishChannel.getBindings()).isEqualTo(Map.of("kafka", new KafkaChannelBinding()));
         assertThat(publishChannel.getMessages()).hasSize(1);
-        MessageReference sendMessage = publishChannel.getMessages().get("sendId");
+        MessageReference sendMessage =
+                (MessageReference) publishChannel.getMessages().get("sendId");
         assertThat(sendMessage.getRef()).isEqualTo("#/components/messages/sendId");
     }
 

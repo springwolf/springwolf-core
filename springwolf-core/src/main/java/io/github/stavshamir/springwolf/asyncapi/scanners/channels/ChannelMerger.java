@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 
@@ -71,10 +72,10 @@ public class ChannelMerger {
     private static ChannelObject mergeChannel(ChannelObject channel, ChannelObject otherChannel) {
         ChannelObject mergedChannel = channel != null ? channel : otherChannel;
 
-        Map<String, MessageReference> channelMessages = channel.getMessages();
-        Map<String, MessageReference> otherChannelMessages = otherChannel.getMessages();
+        Map<String, Message> channelMessages = channel.getMessages();
+        Map<String, Message> otherChannelMessages = otherChannel.getMessages();
 
-        Map<String, MessageReference> mergedMessages = new HashMap<>();
+        Map<String, Message> mergedMessages = new HashMap<>();
         if (channelMessages != null) {
             mergedMessages.putAll(channelMessages);
         }

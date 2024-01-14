@@ -162,7 +162,10 @@ public class ClassLevelAnnotationChannelsScanner<
     private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
         Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(classAnnotation);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-        return ChannelObject.builder().bindings(chBinding).messages(messages).build();
+        return ChannelObject.builder()
+                .bindings(chBinding)
+                .messages(new HashMap<>(messages))
+                .build();
     }
 
     private Operation buildOperation(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
