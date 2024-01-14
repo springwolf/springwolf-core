@@ -23,8 +23,8 @@ public class AmqpMessageBindingProcessor implements MessageBindingProcessor, Emb
     @Override
     public Optional<ProcessedMessageBinding> process(Method method) {
         return Arrays.stream(method.getAnnotations())
-                .filter(annotation -> annotation instanceof AmqpAsyncOperationBinding)
-                .map(annotation -> (AmqpAsyncOperationBinding) annotation)
+                .filter(AmqpAsyncOperationBinding.class::isInstance)
+                .map(AmqpAsyncOperationBinding.class::cast)
                 .findAny()
                 .map(this::mapToMessageBinding);
     }

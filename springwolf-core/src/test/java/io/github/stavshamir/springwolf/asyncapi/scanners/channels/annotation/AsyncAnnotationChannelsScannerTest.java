@@ -402,13 +402,15 @@ class AsyncAnnotationChannelsScannerTest {
             Map<String, ChannelObject> actualChannels = channelScanner.scanChannels();
 
             // Then the returned collection contains the channel with the actual method, excluding type erased methods
+            var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
+                    .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                    .build());
             MessageObject message = MessageObject.builder()
                     .messageId(String.class.getName())
                     .name(String.class.getName())
                     .title(String.class.getSimpleName())
                     .description(null)
-                    // .payload(PayloadReference.fromModelName(String.class.getSimpleName())) FIXME
-                    // .schemaFormat("application/vnd.oai.openapi+json;version=3.0.0") FIXME
+                    .payload(messagePayload)
                     .headers(
                             MessageHeaders.of(MessageReference.fromSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
@@ -418,11 +420,10 @@ class AsyncAnnotationChannelsScannerTest {
                     .description("test channel operation description")
                     .title("test-channel_publish")
                     .bindings(EMPTY_MAP)
-                    // .message(message) FIXME
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
-                    .bindings(null) /*.publish(operation) FIXME*/
+                    .bindings(null)
                     .messages(Map.of(message.getMessageId(), message))
                     .build();
 

@@ -49,13 +49,6 @@
       "bindings": {
         "amqp": {
           "is": "queue",
-          "exchange": {
-            "name": "",
-            "type": "direct",
-            "durable": true,
-            "autoDelete": false,
-            "vhost": "/"
-          },
           "queue": {
             "name": "another-queue",
             "durable": false,
@@ -114,13 +107,6 @@
       "bindings": {
         "amqp": {
           "is": "queue",
-          "exchange": {
-            "name": "",
-            "type": "direct",
-            "durable": true,
-            "autoDelete": false,
-            "vhost": "/"
-          },
           "queue": {
             "name": "example-queue",
             "durable": false,
@@ -161,13 +147,6 @@
             "type": "topic",
             "durable": true,
             "autoDelete": false,
-            "vhost": "/"
-          },
-          "queue": {
-            "name": "example-bindings-queue",
-            "durable": false,
-            "exclusive": true,
-            "autoDelete": true,
             "vhost": "/"
           },
           "bindingVersion": "0.3.0"
@@ -220,13 +199,6 @@
             "name": "example-topic-exchange",
             "type": "topic",
             "durable": true,
-            "autoDelete": false,
-            "vhost": "/"
-          },
-          "queue": {
-            "name": "multi-payload-queue",
-            "durable": true,
-            "exclusive": false,
             "autoDelete": false,
             "vhost": "/"
           },

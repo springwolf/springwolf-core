@@ -4,12 +4,6 @@ channels:
     bindings:
       amqp:
         is: routingKey
-        queue:
-          name: my-queue-name
-          durable: true
-          exclusive: true
-          autoDelete: false
-          vhost: /
         exchange:
           name: myExchange
           type: topic

@@ -1,0 +1,13 @@
+channels:
+  userSignup:
+    address: 'user/signup'
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: my-queue-name
+          durable: true
+          exclusive: true
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
