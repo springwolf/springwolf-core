@@ -32,4 +32,6 @@
   </mat-chip>
 </p>
 
-<p *ngIf="info?.description">{{ info.description }}</p>
+<p *ngIf="info?.description">
+  <markdown [data]="info.description"></markdown>
+</p>

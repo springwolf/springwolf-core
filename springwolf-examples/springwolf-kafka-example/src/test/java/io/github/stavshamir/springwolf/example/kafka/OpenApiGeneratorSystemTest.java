@@ -26,7 +26,9 @@ class OpenApiGeneratorSystemTest {
 
         InputStream actualStream = this.getClass().getResourceAsStream("/openapi-generated.json");
         String actual = IOUtils.toString(actualStream, StandardCharsets.UTF_8)
+                .replace("\\u003c", "<") // openapi generator replaces "<" with its unicode representation
                 .replace("\\u003d", "=") // openapi generator replaces equal (=) with its unicode representation
+                .replace("\\u003e", ">") // openapi generator replaces ">" with its unicode representation
                 .replace(
                         "localhost:9092",
                         "kafka:29092"); // When running with EmbeddedKafka, localhost is used as hostname

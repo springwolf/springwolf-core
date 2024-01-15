@@ -4,7 +4,6 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
-import { HighlightModule, HIGHLIGHT_OPTIONS } from "ngx-highlightjs";
 import { environment } from "./../environments/environment";
 import { AppComponent } from "./app.component";
 import { ChannelMainComponent } from "./components/channels/channel-main/channel-main.component";
@@ -23,6 +22,7 @@ import { NotificationService } from "./service/notification.service";
 import { FormsModule } from "@angular/forms";
 import { JsonComponent } from "./components/json/json.component";
 import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
+import { MarkdownModule, provideMarkdown } from "ngx-markdown";
 
 @NgModule({
   declarations: [
@@ -41,9 +41,9 @@ import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.servic
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HighlightModule,
     HttpClientModule,
     FormsModule,
+    MarkdownModule.forRoot(),
     environment.production
       ? []
       : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 }),
@@ -53,15 +53,7 @@ import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.servic
     AsyncApiMapperService,
     NotificationService,
     PublisherService,
-    {
-      provide: HIGHLIGHT_OPTIONS,
-      useValue: {
-        coreLibraryLoader: () => import("highlight.js/lib/core"),
-        languages: {
-          json: () => import("highlight.js/lib/languages/json"),
-        },
-      },
-    },
+    provideMarkdown(),
   ],
   bootstrap: [AppComponent],
 })

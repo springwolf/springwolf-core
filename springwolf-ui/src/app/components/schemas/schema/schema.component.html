@@ -51,7 +51,9 @@
     <a [href]="value.anchorUrl">{{ value.refTitle }}</a>
   </span>
   <span class="format" *ngIf="value.format">({{ value.format }})</span>
-  <div class="description">{{ value.description }}</div>
+  <div class="description">
+    <markdown [data]="value.description"></markdown>
+  </div>
   <span class="example" *ngIf="value.example"
     >example: {{ value.example.value }}</span
   >

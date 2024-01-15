@@ -3,7 +3,7 @@
   "info": {
     "title": "Springwolf example project - Kafka",
     "version": "1.0.0",
-    "description": "Springwolf example project to demonstrate springwolfs abilities",
+    "description": "Springwolf example project to demonstrate springwolfs abilities, including **markdown** support for descriptions.",
     "contact": {
       "name": "springwolf",
       "url": "https://github.com/springwolf/springwolf-core",
@@ -529,7 +529,7 @@
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
           "properties": {
             "example": {
-              "description": "Example payload model",
+              "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
               "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
               "properties": {
                 "someEnum": {
@@ -549,7 +549,7 @@
                   "type": "integer"
                 },
                 "someString": {
-                  "description": "Some string field",
+                  "description": "###  Some string field with Markdown\n\n- **bold**\n- *cursive*\n- images: <img src=\"./assets/springwolf-logo.png\" alt=\"Springwolf\" height=\"50\"/>\n- and code blocks (json, http, java)\n  ```json\n  {\n    \"key1\":\"value1\",\n    \"key2\":\"value2\"\n  }\n  ```\n",
                   "name": "someString",
                   "type": "string"
                 }
@@ -597,11 +597,11 @@
           },
           "someString": {
             "type": "string",
-            "description": "Some string field",
+            "description": "###  Some string field with Markdown\n\n- **bold**\n- *cursive*\n- images: <img src=\"./assets/springwolf-logo.png\" alt=\"Springwolf\" height=\"50\"/>\n- and code blocks (json, http, java)\n  ```json\n  {\n    \"key1\":\"value1\",\n    \"key2\":\"value2\"\n  }\n  ```\n",
             "example": "some string value"
           }
         },
-        "description": "Example payload model",
+        "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
         "example": {
           "someEnum": "FOO2",
           "someLong": 5,
@@ -609,7 +609,7 @@
         },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
-          "description": "Example payload model",
+          "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
           "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
           "properties": {
             "someEnum": {
@@ -629,7 +629,7 @@
               "type": "integer"
             },
             "someString": {
-              "description": "Some string field",
+              "description": "###  Some string field with Markdown\n\n- **bold**\n- *cursive*\n- images: <img src=\"./assets/springwolf-logo.png\" alt=\"Springwolf\" height=\"50\"/>\n- and code blocks (json, http, java)\n  ```json\n  {\n    \"key1\":\"value1\",\n    \"key2\":\"value2\"\n  }\n  ```\n",
               "name": "someString",
               "type": "string"
             }

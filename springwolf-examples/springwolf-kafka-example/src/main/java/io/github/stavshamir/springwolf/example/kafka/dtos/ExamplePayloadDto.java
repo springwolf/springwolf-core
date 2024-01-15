@@ -8,12 +8,34 @@ import lombok.NoArgsConstructor;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
-@Schema(description = "Example payload model")
+@Schema(
+        description =
+                """
+                        Example payload model demonstrating markdown text styling:
+                        **bold**, *cursive* and <u>underlined</u>
+                        """)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExamplePayloadDto {
-    @Schema(description = "Some string field", example = "some string value", requiredMode = REQUIRED)
+    @Schema(
+            description =
+                    """
+                            ###  Some string field with Markdown
+
+                            - **bold**
+                            - *cursive*
+                            - images: <img src="./assets/springwolf-logo.png" alt="Springwolf" height="50"/>
+                            - and code blocks (json, http, java)
+                              ```json
+                              {
+                                "key1":"value1",
+                                "key2":"value2"
+                              }
+                              ```
+                            """,
+            example = "some string value",
+            requiredMode = REQUIRED)
     private String someString;
 
     @Schema(description = "Some long field", example = "5")

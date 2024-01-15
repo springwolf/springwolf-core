@@ -24,3 +24,8 @@
   color: #6b6b6b;
   font-style: italic;
 }
+
+.description {
+  font-style: normal;
+  font-weight: normal;
+}

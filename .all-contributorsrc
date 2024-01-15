@@ -252,7 +252,16 @@
       "contributions": [
         "code"
       ]
-    }
+    },
+	{
+	  "login": "robert-henke",
+	  "name": "Robert Henke",
+	  "avatar_url": "https://avatars.githubusercontent.com/u/157017289?v=4",
+	  "profile": "https://github.com/robert-henke",
+	  "contributions": [
+		"code"
+	  ]
+	}
   ],
   "contributorsPerLine": 7,
   "linkToUsage": false

@@ -2,7 +2,9 @@
 <section>
   <mat-divider></mat-divider>
   <div *ngIf="operation.message.description">
-    <h4>{{ operation.message.description }}</h4>
+    <p>
+      <markdown [data]="operation.message.description"></markdown>
+    </p>
     <mat-divider></mat-divider>
   </div>
   <mat-tab-group animationDuration="0ms">
@@ -113,7 +115,7 @@
       </h4>
       <app-schema *ngIf="headers" [schema]="headers"></app-schema>
       <div class="flex-column">
-        <app-json [json]="headersExample?.value"></app-json>
+        <app-json [data]="headersExample?.rawValue"></app-json>
       </div>
     </mat-tab>
     <mat-tab label="Operation Bindings">

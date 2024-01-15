@@ -99,6 +99,7 @@ More details in the documentation.
 - [LVM Versicherung](https://www.lvm.de/privatkunden/)
 - [OTTO](https://www.otto.de)
 - [Teambank](https://www.teambank.de)
+- [aconium](https://www.aconium.eu)
 
 Comment in [this PR](https://github.com/springwolf/springwolf-core/issues/342) to add your company and spread the word
 
@@ -185,6 +186,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/jmwestbe"><img src="https://avatars.githubusercontent.com/u/26258285?v=4?s=100" width="100px;" alt="jmwestbe"/><br /><sub><b>jmwestbe</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=jmwestbe" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/pdalfarr"><img src="https://avatars.githubusercontent.com/u/1537201?v=4?s=100" width="100px;" alt="pdalfarr"/><br /><sub><b>pdalfarr</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=pdalfarr" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/krzysztofxkwiecien"><img src="https://avatars.githubusercontent.com/u/37042650?v=4?s=100" width="100px;" alt="Krzysztof Kwiecień"/><br /><sub><b>Krzysztof Kwiecień</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=krzysztofxkwiecien" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/robert-henke"><img src="https://avatars.githubusercontent.com/u/157017289?v=4?s=100" width="100px;" alt="Robert Henke"/><br /><sub><b>Robert Henke</b></sub></a><br /><a href="https://github.com/robert-henke/Springwolf/commits?author=robert-henke" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
