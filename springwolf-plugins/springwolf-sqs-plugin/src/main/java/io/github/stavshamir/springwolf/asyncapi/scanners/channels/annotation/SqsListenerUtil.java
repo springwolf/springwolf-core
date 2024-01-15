@@ -34,9 +34,7 @@ public class SqsListenerUtil {
                 .name("queue-name")
                 .fifoQueue(true)
                 .build();
-        var channelBinding = SQSChannelBinding.builder()
-                .queue(queue)
-                .build();
+        var channelBinding = SQSChannelBinding.builder().queue(queue).build();
         return Map.of("sqs", channelBinding);
     }
 
@@ -47,9 +45,8 @@ public class SqsListenerUtil {
                 .name("queue-name")
                 .fifoQueue(true)
                 .build();
-        var operationBinding = SQSOperationBinding.builder()
-                .queues(List.of(queue))
-                .build();
+        var operationBinding =
+                SQSOperationBinding.builder().queues(List.of(queue)).build();
         return Map.of("sqs", operationBinding);
     }
 

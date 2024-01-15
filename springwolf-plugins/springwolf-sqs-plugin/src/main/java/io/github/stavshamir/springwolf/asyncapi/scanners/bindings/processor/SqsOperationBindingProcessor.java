@@ -17,9 +17,8 @@ public class SqsOperationBindingProcessor extends AbstractOperationBindingProces
                 .name("queue-name")
                 .fifoQueue(true)
                 .build();
-        var operationBinding = SQSOperationBinding.builder()
-                .queues(List.of(queue))
-                .build();
+        var operationBinding =
+                SQSOperationBinding.builder().queues(List.of(queue)).build();
         return new ProcessedOperationBinding(bindingAnnotation.type(), operationBinding);
     }
 }

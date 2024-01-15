@@ -20,9 +20,8 @@ public class SnsOperationBindingProcessor extends AbstractOperationBindingProces
                 .endpoint(SNSOperationBindingIdentifier.builder().build())
                 .rawMessageDelivery(true)
                 .build();
-        var snsOperationBinding = SNSOperationBinding.builder()
-                .consumers(List.of(consumer))
-                .build();
+        var snsOperationBinding =
+                SNSOperationBinding.builder().consumers(List.of(consumer)).build();
         return new ProcessedOperationBinding(bindingAnnotation.type(), snsOperationBinding);
     }
 }
