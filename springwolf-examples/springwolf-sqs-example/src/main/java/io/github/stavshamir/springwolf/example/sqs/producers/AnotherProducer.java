@@ -5,6 +5,7 @@ import io.awspring.cloud.sqs.operations.SqsTemplate;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SqsAsyncOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SqsAsyncQueueBinding;
 import io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,11 +22,7 @@ public class AnotherProducer {
                     @AsyncOperation(
                             channelName = QUEUE,
                             description = "Custom, optional description defined in the AsyncPublisher annotation"))
-    @SqsAsyncOperationBinding
-    // FIXME: How can we show the usage?
-    //    @AsyncGenericOperationBinding(
-    //            type = "sqs",
-    //            fields = {"internal-field=customValue", "nested.key=nestedValue"})
+    @SqsAsyncOperationBinding(queues = {@SqsAsyncQueueBinding(name = "queue-name")})
     public void sendMessage(AnotherPayloadDto msg) {
         template.send(QUEUE, msg);
     }

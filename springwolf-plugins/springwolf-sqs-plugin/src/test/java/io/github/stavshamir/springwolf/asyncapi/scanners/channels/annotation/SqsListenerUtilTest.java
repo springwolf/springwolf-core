@@ -52,7 +52,7 @@ class SqsListenerUtilTest {
             // then
             var expectedChannel = SQSChannelBinding.builder()
                     .queue(SQSChannelBindingQueue.builder()
-                            .name("queue-name")
+                            .name("${queue-1}")
                             .fifoQueue(true)
                             .build())
                     .build();
@@ -75,7 +75,7 @@ class SqsListenerUtilTest {
             // then
             var expectedOperation = SQSOperationBinding.builder()
                     .queues(List.of(SQSChannelBindingQueue.builder()
-                            .name("queue-name")
+                            .name("${queue-1}")
                             .fifoQueue(true)
                             .build()))
                     .build();

@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SqsAsyncOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SqsAsyncQueueBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBindingQueue;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSOperationBinding;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,6 @@ class SqsOperationBindingProcessorTest {
         assertThat(binding.getBinding()).isEqualTo(expectedOperation);
     }
 
-    @SqsAsyncOperationBinding
+    @SqsAsyncOperationBinding(queues = {@SqsAsyncQueueBinding(name = "queue-name")})
     public void methodWithAnnotation() {}
 }

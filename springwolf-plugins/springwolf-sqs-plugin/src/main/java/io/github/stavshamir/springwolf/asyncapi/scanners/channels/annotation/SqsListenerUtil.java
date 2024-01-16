@@ -12,6 +12,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSOperationBind
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringValueResolver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -29,28 +30,41 @@ public class SqsListenerUtil {
 
     public static Map<String, ChannelBinding> buildChannelBinding(
             SqsListener annotation, StringValueResolver resolver) {
-        // FIXME: Read the values from the annotation
-        var queue = SQSChannelBindingQueue.builder()
-                .name("queue-name")
-                .fifoQueue(true)
-                .build();
+        var queueName = readAnnotationQueueNames(annotation)[0];
+
+        var queue =
+                SQSChannelBindingQueue.builder().name(queueName).fifoQueue(true).build();
         var channelBinding = SQSChannelBinding.builder().queue(queue).build();
         return Map.of("sqs", channelBinding);
     }
 
     public static Map<String, OperationBinding> buildOperationBinding(
             SqsListener annotation, StringValueResolver resolver) {
-        // FIXME: Read the values from the annotation
-        var queue = SQSChannelBindingQueue.builder()
-                .name("queue-name")
-                .fifoQueue(true)
-                .build();
-        var operationBinding =
-                SQSOperationBinding.builder().queues(List.of(queue)).build();
+        List<SQSChannelBindingQueue> queues = new ArrayList<>();
+
+        for (String queueName : readAnnotationQueueNames(annotation)) {
+            queues.add(SQSChannelBindingQueue.builder()
+                    .name(queueName)
+                    .fifoQueue(true)
+                    .build());
+        }
+        var operationBinding = SQSOperationBinding.builder().queues(queues).build();
         return Map.of("sqs", operationBinding);
     }
 
     public static Map<String, MessageBinding> buildMessageBinding() {
         return Map.of("sqs", new SQSMessageBinding());
+    }
+
+    private static String[] readAnnotationQueueNames(SqsListener annotation) {
+        String[] queueNames;
+        if (annotation.value().length > 0) {
+            queueNames = annotation.value();
+        } else if (annotation.queueNames().length > 0) {
+            queueNames = annotation.queueNames();
+        } else {
+            queueNames = new String[] {"default-queue-name"};
+        }
+        return queueNames;
     }
 }

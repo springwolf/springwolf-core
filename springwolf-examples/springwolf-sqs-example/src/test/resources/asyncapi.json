@@ -38,7 +38,7 @@
       "bindings": {
         "sqs": {
           "queue": {
-            "name": "queue-name",
+            "name": "example-queue",
             "fifoQueue": true,
             "deliveryDelay": 0,
             "visibilityTimeout": 30,
@@ -192,7 +192,7 @@
         "sqs": {
           "queues": [
             {
-              "name": "queue-name",
+              "name": "another-queue",
               "fifoQueue": true,
               "deliveryDelay": 0,
               "visibilityTimeout": 30,
@@ -218,7 +218,7 @@
         "sqs": {
           "queues": [
             {
-              "name": "queue-name",
+              "name": "example-queue",
               "fifoQueue": true,
               "deliveryDelay": 0,
               "visibilityTimeout": 30,
