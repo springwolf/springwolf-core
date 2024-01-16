@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBindingIdentifier;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sns.SNSOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sns.SNSOperationBindingConsumer;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sns.SNSOperationBindingIdentifier;
@@ -35,6 +36,6 @@ class SnsOperationBindingProcessorTest {
         assertThat(binding.getBinding()).isEqualTo(expectedOperation);
     }
 
-    @SnsAsyncOperationBinding
+    @SnsAsyncOperationBinding(protocol = "sqs", endpoint = @SnsAsyncOperationBindingIdentifier())
     public void methodWithAnnotation() {}
 }
