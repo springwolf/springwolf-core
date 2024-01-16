@@ -297,6 +297,8 @@ export class AsyncApiMapperService {
       example,
       minimum: schema.minimum,
       maximum: schema.maximum,
+      exclusiveMinimum: schema.exclusiveMinimum,
+      exclusiveMaximum: schema.exclusiveMaximum,
     };
   }
 

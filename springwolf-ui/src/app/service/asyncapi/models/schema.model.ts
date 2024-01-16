@@ -14,5 +14,7 @@ export interface ServerAsyncApiSchema {
   required?: string[];
   minimum?: number;
   maximum?: number;
+  exclusiveMinimum?: boolean;
+  exclusiveMaximum?: boolean;
   $ref?: string;
 }
