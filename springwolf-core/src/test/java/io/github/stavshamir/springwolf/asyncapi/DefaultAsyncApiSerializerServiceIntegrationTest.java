@@ -107,7 +107,6 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .description("This channel is used to exchange messages about users signing up")
                 .servers(List.of(
                         ServerReference.builder().ref("#/servers/production").build()))
-                //                .subscribe(newUserOperation) FIXME
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 

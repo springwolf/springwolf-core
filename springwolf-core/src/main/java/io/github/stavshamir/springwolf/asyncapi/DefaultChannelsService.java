@@ -22,9 +22,9 @@ public class DefaultChannelsService implements ChannelsService {
     private final List<? extends ChannelsScanner> channelsScanners;
 
     /**
-     * Collects all AsyncAPI ChannelItems using the available {@link ChannelsScanner}
+     * Collects all AsyncAPI ChannelObjects using the available {@link ChannelsScanner}
      * beans.
-     * @return Map of channel names mapping to detected ChannelItems
+     * @return Map of channel names mapping to detected ChannelObject
      */
     @Override
     public Map<String, ChannelObject> findChannels() {
@@ -41,7 +41,11 @@ public class DefaultChannelsService implements ChannelsService {
         return ChannelMerger.mergeChannels(foundChannelItems);
     }
 
-    // FIXME
+    /**
+     * Collects all AsyncAPI Operation using the available {@link ChannelsScanner}
+     * beans.
+     * @return Map of operation names mapping to detected Operation
+     */
     @Override
     public Map<String, Operation> findOperations() {
         List<Map.Entry<String, Operation>> foundOperations = new ArrayList<>();

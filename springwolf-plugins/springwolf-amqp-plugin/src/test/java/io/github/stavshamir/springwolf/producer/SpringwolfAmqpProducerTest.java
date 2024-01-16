@@ -93,14 +93,6 @@ class SpringwolfAmqpProducerTest {
                 .bindings(Map.of(
                         "amqp",
                         AMQPChannelBinding.builder().exchange(properties).build()))
-                // FIXME
-                //                .publish(Operation.builder()
-                //                        .bindings(Map.of(
-                //                                "amqp",
-                //                                AMQPOperationBinding.builder()
-                //                                        .cc(Collections.singletonList("routing-key"))
-                //                                        .build()))
-                //                        .build())
                 .build();
         Map<String, ChannelObject> channels = Map.of(channelItem.getChannelId(), channelItem);
         Operation operation = Operation.builder()

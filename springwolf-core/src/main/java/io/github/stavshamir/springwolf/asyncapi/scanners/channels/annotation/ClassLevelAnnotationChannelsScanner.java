@@ -173,13 +173,11 @@ public class ClassLevelAnnotationChannelsScanner<
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
         String channelName = bindingFactory.getChannelName(classAnnotation);
 
-        // var messageReferences = messages.values().stream().map(m -> MessageReference.fromMessage(m)).toList();
-
-        // FIXME
         return Operation.builder()
                 .action(OperationAction.RECEIVE)
                 .channel(ChannelReference.fromChannel(channelName))
-                // .messages(messageReferences)
+                // FIXME: Adding MessageReferences fails kakfa-example. We need to investigate
+                // .messages(messages.values().stream().toList())
                 .bindings(opBinding)
                 .build();
     }

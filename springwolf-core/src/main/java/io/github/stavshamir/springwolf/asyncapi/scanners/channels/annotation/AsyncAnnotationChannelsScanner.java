@@ -142,7 +142,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
 
         List<String> servers = AsyncAnnotationScannerUtil.getServers(operationAnnotation, resolver);
         if (servers != null && !servers.isEmpty()) {
-            // FIXME: It was originally operationId, which doesn't exist anymore
             validateServers(servers, operation.getTitle());
             channelBuilder.servers(servers.stream()
                     .map(it -> ServerReference.builder().ref(it).build())
@@ -157,7 +156,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
     }
 
     private Map.Entry<String, Operation> buildOperation(MethodAndAnnotation<A> methodAndAnnotation) {
-        Operation.OperationBuilder operationBuilder = Operation.builder();
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
         String operationName = resolver.resolveStringValue(operationAnnotation.channelName());
@@ -165,11 +163,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), operationName);
         operation.setAction(this.asyncAnnotationProvider.getOperationType());
 
-        MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
-
-        // FIXME
-        // Operation operation =
-        //     operationBuilder.messages(Map.of(message.getMessageId(), message)).build();
         return Map.entry(operationName, operation);
     }
 
