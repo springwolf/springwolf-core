@@ -23,11 +23,41 @@
   },
   "channels": {
     "another-topic": {
+      "messages": {
+        "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto": {
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/AnotherPayloadDto"
+          },
+          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
+          "title": "AnotherPayloadDto",
+          "bindings": {
+            "kafka": { }
+          }
+        }
+      },
       "bindings": {
         "kafka": { }
       }
     },
     "example-topic": {
+      "messages": {
+        "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto": {
+          "headers": {
+            "$ref": "#/components/schemas/HeadersNotDocumented"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
+          },
+          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto",
+          "title": "ExamplePayloadDto",
+          "bindings": {
+            "kafka": { }
+          }
+        }
+      },
       "bindings": {
         "kafka": { }
       }
@@ -104,5 +134,51 @@
     },
     "messages": { }
   },
-  "operations": { }
+  "operations": {
+    "another-topic_publish_consumerMethod": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/another-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-topic/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "another-topic_subscribe_process": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/another-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-topic/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "example-topic_publish_process": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/example-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-topic/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto"
+        }
+      ]
+    }
+  }
 }
