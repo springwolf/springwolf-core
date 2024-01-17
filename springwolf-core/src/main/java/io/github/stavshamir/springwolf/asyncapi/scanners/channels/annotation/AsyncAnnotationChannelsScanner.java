@@ -94,13 +94,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
     }
 
     private boolean isInvalidChannel(Map.Entry<String, ChannelObject> entry) {
-        //        Operation publish = entry.getValue().getPublish();
-        //        boolean publishBindingExists = publish != null && publish.getBindings() != null;
-        //
-        //        Operation subscribe = entry.getValue().getSubscribe();
-        //        boolean subscribeBindingExists = subscribe != null && subscribe.getBindings() != null;
-
-        boolean allNonNull = entry.getKey() != null; // && (publishBindingExists || subscribeBindingExists); FIXME
+        boolean allNonNull = entry.getKey() != null;
 
         if (!allNonNull) {
             log.warn(
@@ -113,13 +107,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
     }
 
     private boolean isInvalidOperation(Map.Entry<String, Operation> entry) {
-        //        Operation publish = entry.getValue().getPublish();
-        //        boolean publishBindingExists = publish != null && publish.getBindings() != null;
-        //
-        //        Operation subscribe = entry.getValue().getSubscribe();
-        //        boolean subscribeBindingExists = subscribe != null && subscribe.getBindings() != null;
-
-        boolean allNonNull = entry.getKey() != null; // && (publishBindingExists || subscribeBindingExists); FIXME
+        boolean allNonNull = entry.getKey() != null;
 
         if (!allNonNull) {
             log.warn(

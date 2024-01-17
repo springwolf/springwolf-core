@@ -115,12 +115,6 @@ class AsyncAnnotationScannerUtil {
             messageBuilder.name(annotationName);
         }
 
-        // FIXME
-        // String annotationSchemaFormat = asyncMessage.schemaFormat();
-        // var schemaFormat = annotationSchemaFormat != null ? annotationSchemaFormat :
-        // Message.DEFAULT_SCHEMA_FORMAT;
-        //        messageBuilder.schemaFormat(schemaFormat);
-
         String annotationTitle = resolver.resolveStringValue(asyncMessage.title());
         if (StringUtils.hasText(annotationTitle)) {
             messageBuilder.title(annotationTitle);

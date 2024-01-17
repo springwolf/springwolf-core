@@ -97,7 +97,7 @@ public class ClassLevelAnnotationChannelsScanner<
     }
 
     private Stream<Map.Entry<String, Operation>> mapClassToOperation(Class<?> component) {
-        log.debug("Mapping class \"{}\" to channels", component.getName());
+        log.debug("Mapping class \"{}\" to operations", component.getName());
 
         ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
 
@@ -106,7 +106,6 @@ public class ClassLevelAnnotationChannelsScanner<
             return Stream.empty();
         }
 
-        // FIXME
         String channelName = bindingFactory.getChannelName(classAnnotation);
         String operationId = channelName + "_receive_" + component.getSimpleName();
 
