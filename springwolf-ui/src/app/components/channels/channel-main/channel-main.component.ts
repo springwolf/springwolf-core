@@ -92,8 +92,8 @@ export class ChannelMainComponent implements OnInit {
   getExampleValue(bindingValue: string | Binding): any {
     if (typeof bindingValue === "string") {
       return bindingValue;
-    } else if (typeof bindingValue.example === "object") {
-      return bindingValue.example.value;
+    } else if (typeof bindingValue.examples === "object") {
+      return bindingValue.examples["0"];
     }
     return undefined;
   }
