@@ -14,6 +14,8 @@ import java.util.Set;
 
 public class AnnotationUtil {
 
+    private AnnotationUtil() {}
+
     public static <T extends Annotation> T findAnnotationOrThrow(Class<T> annotationClass, AnnotatedElement element) {
         T annotation = findAnnotation(annotationClass, element);
         if (annotation == null) {

@@ -29,4 +29,6 @@ public class BindingProcessorPriority {
      * Examples: Plugins like KafkaOperationBindingProcessor, etc
      */
     public static final int PROTOCOL_BINDING = 3;
+
+    private BindingProcessorPriority() {}
 }

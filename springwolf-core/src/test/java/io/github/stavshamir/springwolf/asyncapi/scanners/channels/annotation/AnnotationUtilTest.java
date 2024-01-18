@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class AnnotationUtilTest {
 
     @Nested
-    public class FindAnnotationOrThrow {
+    class FindAnnotationOrThrow {
         @Test
         void findNoAnnotationTest() throws NoSuchMethodException {
             Method method = TestClass.class.getMethod("notAnnotatedMethod");
@@ -72,7 +72,7 @@ class AnnotationUtilTest {
     }
 
     @Nested
-    public class FindAnnotation {
+    class FindAnnotation {
         @Test
         void findNoAnnotationTest() throws NoSuchMethodException {
             Method method = TestClass.class.getMethod("notAnnotatedMethod");
@@ -123,7 +123,7 @@ class AnnotationUtilTest {
     }
 
     @Nested
-    public class FindAnnotations {
+    class FindAnnotations {
         @Test
         void findNoAnnotationTest() throws NoSuchMethodException {
             Method method = TestClass.class.getMethod("notAnnotatedMethod");
