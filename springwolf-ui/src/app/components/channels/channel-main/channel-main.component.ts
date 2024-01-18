@@ -106,7 +106,7 @@ export class ChannelMainComponent implements OnInit {
       case "headers":
         this.headersTextAreaLineCount = text.split("\n").length;
         break;
-      case "massageBindingExample":
+      case "messageBindingExample":
         this.messageBindingExampleTextAreaLineCount = text.split("\n").length;
         break;
     }
