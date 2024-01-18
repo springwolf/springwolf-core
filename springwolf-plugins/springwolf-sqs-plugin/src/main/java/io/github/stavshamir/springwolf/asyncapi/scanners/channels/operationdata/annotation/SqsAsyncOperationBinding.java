@@ -20,4 +20,6 @@ import java.lang.annotation.Target;
 public @interface SqsAsyncOperationBinding {
 
     String type() default "sqs";
+
+    SqsAsyncQueueBinding[] queues() default {};
 }

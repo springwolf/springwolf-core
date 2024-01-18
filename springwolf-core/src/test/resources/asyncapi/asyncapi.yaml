@@ -46,7 +46,7 @@ components:
         kafka:
           key:
             type: string
-          bindingVersion: binding-version-1
+          bindingVersion: 0.4.0
 operations:
   new-user_listenerMethod_subscribe:
     action: send

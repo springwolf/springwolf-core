@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.host=some-server:1234"
         })
-public class DefaultAsyncApiDocketServiceIntegrationTest {
+class DefaultAsyncApiDocketServiceIntegrationTest {
     @Autowired
     private DefaultAsyncApiDocketService asyncApiDocketService;
 

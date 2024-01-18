@@ -16,7 +16,6 @@ dependencyManagement {
 
 dependencies {
     implementation project(":springwolf-core")
-    implementation project(":springwolf-add-ons:springwolf-generic-binding")
     implementation project(":springwolf-plugins:springwolf-sqs")
 
     annotationProcessor project(":springwolf-plugins:springwolf-sqs")

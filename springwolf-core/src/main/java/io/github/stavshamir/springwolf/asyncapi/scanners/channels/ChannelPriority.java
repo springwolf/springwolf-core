@@ -26,4 +26,6 @@ public class ChannelPriority {
      * Examples: Plugins like KafkaListener, etc
      */
     public static final int AUTO_DISCOVERED = 3;
+
+    private ChannelPriority() {}
 }

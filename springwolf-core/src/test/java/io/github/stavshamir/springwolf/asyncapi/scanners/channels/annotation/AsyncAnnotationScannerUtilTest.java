@@ -158,7 +158,6 @@ class AsyncAnnotationScannerUtilTest {
                 .description("Message description")
                 .messageId("simpleFoo")
                 .name("SimpleFooPayLoad")
-                //                .schemaFormat("application/schema+json;version=draft-07") FIXME
                 .title("Message Title")
                 .build();
         assertEquals(expectedMessage, actual.build());

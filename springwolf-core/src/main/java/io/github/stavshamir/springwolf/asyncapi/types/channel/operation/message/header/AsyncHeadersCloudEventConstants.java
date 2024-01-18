@@ -16,4 +16,6 @@ public class AsyncHeadersCloudEventConstants {
     public static final String TIME_DESC = "CloudEvent Time Header";
     public static final String TYPE = "ce_type";
     public static final String TYPE_DESC = "CloudEvent Payload Type Header";
+
+    private AsyncHeadersCloudEventConstants() {}
 }

@@ -64,7 +64,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         List<Map.Entry<String, ChannelObject>> channels = classScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
                 .map(this::buildChannel)
-                .filter(this::isInvalidChannel)
                 .toList();
 
         return ChannelMerger.mergeChannels(channels);
@@ -75,7 +74,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         List<Map.Entry<String, Operation>> operations = classScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
                 .map(this::buildOperation)
-                .filter(this::isInvalidOperation)
                 .toList();
 
         return ChannelMerger.mergeOperations(operations);
@@ -93,44 +91,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
     }
 
-    private boolean isInvalidChannel(Map.Entry<String, ChannelObject> entry) {
-        //        Operation publish = entry.getValue().getPublish();
-        //        boolean publishBindingExists = publish != null && publish.getBindings() != null;
-        //
-        //        Operation subscribe = entry.getValue().getSubscribe();
-        //        boolean subscribeBindingExists = subscribe != null && subscribe.getBindings() != null;
-
-        boolean allNonNull = entry.getKey() != null; // && (publishBindingExists || subscribeBindingExists); FIXME
-
-        if (!allNonNull) {
-            log.warn(
-                    "Some data fields are null - method (channel={}) will not be documented: {}",
-                    entry.getKey(),
-                    entry.getValue());
-        }
-
-        return allNonNull;
-    }
-
-    private boolean isInvalidOperation(Map.Entry<String, Operation> entry) {
-        //        Operation publish = entry.getValue().getPublish();
-        //        boolean publishBindingExists = publish != null && publish.getBindings() != null;
-        //
-        //        Operation subscribe = entry.getValue().getSubscribe();
-        //        boolean subscribeBindingExists = subscribe != null && subscribe.getBindings() != null;
-
-        boolean allNonNull = entry.getKey() != null; // && (publishBindingExists || subscribeBindingExists); FIXME
-
-        if (!allNonNull) {
-            log.warn(
-                    "Some data fields are null - method (channel={}) will not be documented: {}",
-                    entry.getKey(),
-                    entry.getValue());
-        }
-
-        return allNonNull;
-    }
-
     private Map.Entry<String, ChannelObject> buildChannel(MethodAndAnnotation<A> methodAndAnnotation) {
         ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
 
@@ -142,7 +102,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
 
         List<String> servers = AsyncAnnotationScannerUtil.getServers(operationAnnotation, resolver);
         if (servers != null && !servers.isEmpty()) {
-            // FIXME: It was originally operationId, which doesn't exist anymore
             validateServers(servers, operation.getTitle());
             channelBuilder.servers(servers.stream()
                     .map(it -> ServerReference.builder().ref(it).build())
@@ -157,7 +116,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
     }
 
     private Map.Entry<String, Operation> buildOperation(MethodAndAnnotation<A> methodAndAnnotation) {
-        Operation.OperationBuilder operationBuilder = Operation.builder();
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
         String operationName = resolver.resolveStringValue(operationAnnotation.channelName());
@@ -165,11 +123,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), operationName);
         operation.setAction(this.asyncAnnotationProvider.getOperationType());
 
-        MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
-
-        // FIXME
-        // Operation operation =
-        //     operationBuilder.messages(Map.of(message.getMessageId(), message)).build();
         return Map.entry(operationName, operation);
     }
 

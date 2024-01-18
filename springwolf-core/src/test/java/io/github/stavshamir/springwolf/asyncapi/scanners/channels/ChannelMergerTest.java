@@ -91,9 +91,9 @@ class ChannelMergerTest {
         // given
         String channelName = "channel";
         ChannelObject publisherChannel1 =
-                ChannelObject.builder().channelId("channel1").build();
+                ChannelObject.builder().title("channel1").build();
         ChannelObject publisherChannel2 =
-                ChannelObject.builder().channelId("channel2").build();
+                ChannelObject.builder().title("channel2").build();
 
         // when
         Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
@@ -101,7 +101,7 @@ class ChannelMergerTest {
 
         // then
         assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
-            assertThat(it.getChannelId()).isEqualTo("channel1");
+            assertThat(it.getTitle()).isEqualTo("channel1");
         });
     }
 
@@ -221,11 +221,38 @@ class ChannelMergerTest {
     }
 
     @Test
-    void shouldUseOtherMessageIfFirstMessageIsMissing() {
+    void shouldUseOtherMessageIfFirstMessageIsMissingForChannels() {
         // given
         String channelName = "channel";
         MessageObject message2 = MessageObject.builder()
-                .messageId("message2")
+                .messageId(String.class.getCanonicalName())
+                .name(String.class.getCanonicalName())
+                .description("This is a string")
+                .build();
+        ChannelObject publisherChannel1 = ChannelObject.builder().build();
+        ChannelObject publisherChannel2 = ChannelObject.builder()
+                .messages(Map.of(message2.getName(), message2))
+                .build();
+
+        // when
+        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
+                Arrays.asList(Map.entry(channelName, publisherChannel1), Map.entry(channelName, publisherChannel2)));
+
+        // then expectedMessage message2
+        var expectedMessages = Map.of(message2.getName(), message2);
+
+        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
+            assertThat(it.getMessages()).hasSize(1);
+            assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages);
+        });
+    }
+
+    @Test
+    void shouldUseOtherMessageIfFirstMessageIsMissingForOperations() {
+        // given
+        String channelName = "channel-name";
+        MessageObject message2 = MessageObject.builder()
+                .messageId(String.class.getCanonicalName())
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
@@ -238,24 +265,16 @@ class ChannelMergerTest {
                 .title("publisher2")
                 .messages(List.of(MessageReference.toChannelMessage(channelName, message2)))
                 .build();
-        ChannelObject publisherChannel1 =
-                ChannelObject.builder() /*.publish(publishOperation1)FIXME*/.build();
-        ChannelObject publisherChannel2 =
-                ChannelObject.builder() /*.publish(publishOperation2)FIXME*/.build();
 
         // when
-        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelName, publisherChannel1), Map.entry(channelName, publisherChannel2)));
-
+        Map<String, Operation> mergedOperations = ChannelMerger.mergeOperations(
+                Arrays.asList(Map.entry("publisher1", publishOperation1), Map.entry("publisher1", publishOperation2)));
         // then expectedMessage message2
-        var expectedMessages = MessageHelper.toMessagesMap(Set.of(message2));
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
-            //            assertThat(it.getPublish()) FIXME
-            //                    .isEqualTo(Operation.builder()
-            //                            .title("publisher1")
-            //                            .message(expectedMessages) FIXME
-            //                            .build());
-            //            assertThat(it.getSubscribe()).isNull(); FIXME
+        var expectedMessage = MessageReference.toChannelMessage(channelName, message2);
+
+        assertThat(mergedOperations).hasSize(1).hasEntrySatisfying("publisher1", it -> {
+            assertThat(it.getMessages()).hasSize(1);
+            assertThat(it.getMessages()).containsExactlyInAnyOrder(expectedMessage);
         });
     }
 }

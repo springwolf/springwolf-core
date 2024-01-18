@@ -57,7 +57,6 @@ class AsyncAPITest {
                 .build();
 
         var channelUserSignedup = ChannelObject.builder()
-                .channelId("userSignedup")
                 .address("user/signedup")
                 .messages(Map.of(userSignUpMessage.getMessageId(), MessageReference.toComponentMessage("UserSignedUp")))
                 .build();
@@ -68,12 +67,12 @@ class AsyncAPITest {
                         .version("1.0.0")
                         .description("This service is in charge of processing user signups")
                         .build())
-                .channels(Map.of(channelUserSignedup.getChannelId(), channelUserSignedup))
+                .channels(Map.of("userSignedup", channelUserSignedup))
                 .operations(Map.of(
                         "sendUserSignedup",
                         Operation.builder()
                                 .action(OperationAction.SEND)
-                                .channel(ChannelReference.fromChannel(channelUserSignedup))
+                                .channel(ChannelReference.fromChannel("userSignedup"))
                                 .messages(List.of(MessageReference.toChannelMessage(
                                         "userSignedup", userSignUpMessage.getMessageId())))
                                 .build()))

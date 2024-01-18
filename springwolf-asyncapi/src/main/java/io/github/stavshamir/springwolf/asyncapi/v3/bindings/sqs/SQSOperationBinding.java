@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * SQS Point-To-Point
  * </p>
@@ -32,7 +34,7 @@ public class SQSOperationBinding extends OperationBinding {
      */
     @NotNull
     @JsonProperty("queues")
-    private SQSChannelBindingQueue queues;
+    private List<SQSChannelBindingQueue> queues;
 
     /**
      * Optional, defaults to latest. The version of this binding.

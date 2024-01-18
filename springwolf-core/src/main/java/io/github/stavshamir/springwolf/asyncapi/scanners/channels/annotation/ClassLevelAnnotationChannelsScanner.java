@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessagesMap;
+import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toOperationsMessagesMap;
 import static java.util.stream.Collectors.toSet;
 
 @RequiredArgsConstructor
@@ -46,6 +47,11 @@ public class ClassLevelAnnotationChannelsScanner<
     private final AsyncHeadersBuilder asyncHeadersBuilder;
     private final PayloadClassExtractor payloadClassExtractor;
     private final SchemasService schemasService;
+
+    private enum MessageType {
+        CHANNEL,
+        OPERATION;
+    }
 
     @Override
     public Stream<Map.Entry<String, ChannelObject>> processChannels(Class<?> clazz) {
@@ -97,7 +103,7 @@ public class ClassLevelAnnotationChannelsScanner<
     }
 
     private Stream<Map.Entry<String, Operation>> mapClassToOperation(Class<?> component) {
-        log.debug("Mapping class \"{}\" to channels", component.getName());
+        log.debug("Mapping class \"{}\" to operations", component.getName());
 
         ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
 
@@ -106,7 +112,6 @@ public class ClassLevelAnnotationChannelsScanner<
             return Stream.empty();
         }
 
-        // FIXME
         String channelName = bindingFactory.getChannelName(classAnnotation);
         String operationId = channelName + "_receive_" + component.getSimpleName();
 
@@ -116,16 +121,17 @@ public class ClassLevelAnnotationChannelsScanner<
     }
 
     private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Set<Method> methods) {
-        var messages = buildMessages(classAnnotation, methods);
+        var messages = buildMessages(classAnnotation, methods, MessageType.CHANNEL);
         return buildChannelItem(classAnnotation, messages);
     }
 
     private Operation buildOperation(ClassAnnotation classAnnotation, Set<Method> methods) {
-        var messages = buildMessages(classAnnotation, methods);
+        var messages = buildMessages(classAnnotation, methods, MessageType.OPERATION);
         return buildOperation(classAnnotation, messages);
     }
 
-    private Map<String, MessageReference> buildMessages(ClassAnnotation classAnnotation, Set<Method> methods) {
+    private Map<String, MessageReference> buildMessages(
+            ClassAnnotation classAnnotation, Set<Method> methods, MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
                 .map((Method method) -> {
                     Class<?> payloadType = payloadClassExtractor.extractFrom(method);
@@ -133,6 +139,10 @@ public class ClassLevelAnnotationChannelsScanner<
                 })
                 .collect(toSet());
 
+        if (messageType == MessageType.OPERATION) {
+            String channelName = bindingFactory.getChannelName(classAnnotation);
+            return toOperationsMessagesMap(channelName, messages);
+        }
         return toMessagesMap(messages);
     }
 
@@ -173,13 +183,10 @@ public class ClassLevelAnnotationChannelsScanner<
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
         String channelName = bindingFactory.getChannelName(classAnnotation);
 
-        // var messageReferences = messages.values().stream().map(m -> MessageReference.fromMessage(m)).toList();
-
-        // FIXME
         return Operation.builder()
                 .action(OperationAction.RECEIVE)
                 .channel(ChannelReference.fromChannel(channelName))
-                // .messages(messageReferences)
+                .messages(messages.values().stream().toList())
                 .bindings(opBinding)
                 .build();
     }
