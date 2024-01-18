@@ -25,17 +25,7 @@
     "another-topic": {
       "messages": {
         "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto": {
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "payload": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
-          },
-          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "bindings": {
-            "kafka": { }
-          }
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto"
         }
       },
       "bindings": {
@@ -45,17 +35,7 @@
     "example-topic": {
       "messages": {
         "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto": {
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "payload": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
-          },
-          "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto",
-          "title": "ExamplePayloadDto",
-          "bindings": {
-            "kafka": { }
-          }
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -132,7 +112,40 @@
         "example": { }
       }
     },
-    "messages": { }
+    "messages": {
+      "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/AnotherPayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
+        "title": "AnotherPayloadDto",
+        "bindings": {
+          "kafka": { }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/ExamplePayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto",
+        "title": "ExamplePayloadDto",
+        "bindings": {
+          "kafka": { }
+        }
+      }
+    }
   },
   "operations": {
     "another-topic_publish_consumerMethod": {

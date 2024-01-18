@@ -151,7 +151,21 @@
     }
   },
   "operations": {
-    "another-queue": {
+    "another-queue_receive_receiveAnotherPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/another-queue"
+      },
+      "bindings": {
+        "jms": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-queue/messages/io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "another-queue_send_sendMessage": {
       "action": "send",
       "channel": {
         "$ref": "#/channels/another-queue"
@@ -165,20 +179,6 @@
             "key": "nestedValue"
           }
         }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-queue/messages/io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto"
-        }
-      ]
-    },
-    "another-queue_receive_receiveAnotherPayload": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/another-queue"
-      },
-      "bindings": {
-        "jms": { }
       },
       "messages": [
         {

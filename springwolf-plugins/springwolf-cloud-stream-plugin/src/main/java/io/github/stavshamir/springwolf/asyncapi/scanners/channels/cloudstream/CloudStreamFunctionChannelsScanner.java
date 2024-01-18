@@ -19,6 +19,8 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
@@ -96,18 +98,23 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         String modelName = schemasService.registerSchema(payloadType);
         String headerModelName = schemasService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
 
+        var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
+                .schema(SchemaReference.fromSchema(modelName))
+                .build());
+
         MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(modelName)
-                .payload(MessagePayload.of(MessageReference.toSchema(modelName)))
+                .payload(messagePayload)
                 .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(buildMessageBinding())
                 .build();
+        this.schemasService.registerMessage(message);
 
         Map<String, ChannelBinding> channelBinding = buildChannelBinding();
         return ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(message.getName(), message))
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .build();
     }
 
