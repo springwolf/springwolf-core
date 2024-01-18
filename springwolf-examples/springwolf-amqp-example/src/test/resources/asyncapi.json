@@ -245,7 +245,7 @@
         }
       ]
     },
-    "example-producer-channel-publisher": {
+    "example-producer-channel-publisher_send_sendMessage": {
       "action": "send",
       "channel": {
         "$ref": "#/channels/example-producer-channel-publisher"

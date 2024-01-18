@@ -873,29 +873,13 @@
         }
       ]
     },
-    "avro-topic": {
+    "avro-topic_receive_receiveExampleAvroPayload": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/avro-topic"
       },
       "title": "avro-topic_receive",
       "description": "Requires a running kafka-schema-registry. See docker-compose.yml to start it",
-      "bindings": {
-        "kafka": {
-          "bindingVersion": "0.4.0"
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/avro-topic/messages/io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto"
-        }
-      ]
-    },
-    "avro-topic_receive_receiveExampleAvroPayload": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/avro-topic"
-      },
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"
@@ -923,7 +907,29 @@
         }
       ]
     },
-    "multi-payload-topic": {
+    "multi-payload-topic_receive_ExampleClassLevelKafkaListener": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/multi-payload-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
+        },
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+        },
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
+        }
+      ]
+    },
+    "multi-payload-topic_receive_receiveMonetaryAmount": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/multi-payload-topic"
@@ -953,28 +959,6 @@
         }
       ]
     },
-    "multi-payload-topic_receive_ExampleClassLevelKafkaListener": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/multi-payload-topic"
-      },
-      "bindings": {
-        "kafka": {
-          "bindingVersion": "0.4.0"
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/multi-payload-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
-        },
-        {
-          "$ref": "#/channels/multi-payload-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
-        },
-        {
-          "$ref": "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
-        }
-      ]
-    },
     "protobuf-topic_receive_receiveExampleProtobufPayload": {
       "action": "receive",
       "channel": {
@@ -991,7 +975,7 @@
         }
       ]
     },
-    "string-topic": {
+    "string-topic_receive_receiveStringPayload": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/string-topic"
@@ -1006,26 +990,13 @@
       "messages": [
         {
           "$ref": "#/channels/string-topic/messages/io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope"
-        }
-      ]
-    },
-    "string-topic_receive_receiveStringPayload": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/string-topic"
-      },
-      "bindings": {
-        "kafka": {
-          "bindingVersion": "0.4.0"
-        }
-      },
-      "messages": [
+        },
         {
           "$ref": "#/channels/string-topic/messages/java.lang.String"
         }
       ]
     },
-    "topic-defined-via-asyncPublisher-annotation": {
+    "topic-defined-via-asyncPublisher-annotation_send_sendMessage": {
       "action": "send",
       "channel": {
         "$ref": "#/channels/topic-defined-via-asyncPublisher-annotation"

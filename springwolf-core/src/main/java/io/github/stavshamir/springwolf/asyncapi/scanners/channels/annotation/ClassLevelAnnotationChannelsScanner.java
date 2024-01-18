@@ -113,7 +113,7 @@ public class ClassLevelAnnotationChannelsScanner<
         }
 
         String channelName = bindingFactory.getChannelName(classAnnotation);
-        String operationId = channelName + "_receive_" + component.getSimpleName();
+        String operationId = channelName + "_" + OperationAction.RECEIVE + "_" + component.getSimpleName();
 
         Operation operation = buildOperation(classAnnotation, annotatedMethods);
 
