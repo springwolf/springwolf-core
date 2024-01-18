@@ -90,6 +90,8 @@ export class AsyncApiMapperService {
         const operation = operations[operationsKey];
         const channelName = this.resolveRef(operation.channel.$ref);
 
+        this.verifyBindings(operation.bindings, "operation " + operationsKey);
+
         const operationMessages: Message[] = this.mapServerAsyncApiMessages(
           channelName,
           channels[channelName],
@@ -125,14 +127,7 @@ export class AsyncApiMapperService {
     operationType: ServerOperationAction,
     operationBinding: ServerBindings
   ): ChannelOperation {
-    if (
-      channel.bindings == undefined ||
-      Object.keys(channel.bindings).length == 0
-    ) {
-      this.notificationService.showWarning(
-        "No binding defined for channel " + channelName
-      );
-    }
+    this.verifyBindings(channel.bindings, "channel " + channelName);
 
     const operation = this.mapOperation(
       operationType,
@@ -171,6 +166,8 @@ export class AsyncApiMapperService {
             const channelMessage = channel.messages[messageKey];
             const channelMessageRef = this.resolveRef(channelMessage.$ref);
             const message = messages[channelMessageRef];
+
+            this.verifyBindings(message.bindings, "message " + message.name);
 
             return {
               name: message.name,
@@ -305,6 +302,17 @@ export class AsyncApiMapperService {
 
   private resolveRef(ref: string) {
     return ref?.split("/")?.pop();
+  }
+
+  private verifyBindings(
+    bindings: ServerBindings | undefined,
+    identifier: string
+  ) {
+    if (bindings == undefined || Object.keys(bindings).length == 0) {
+      this.notificationService.showWarning(
+        "No binding defined for " + identifier
+      );
+    }
   }
 
   private parsingErrorBoundary<T>(path: string, f: () => T): T | undefined {
