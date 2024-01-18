@@ -91,9 +91,9 @@ class ChannelMergerTest {
         // given
         String channelName = "channel";
         ChannelObject publisherChannel1 =
-                ChannelObject.builder().channelId("channel1").build();
+                ChannelObject.builder().title("channel1").build();
         ChannelObject publisherChannel2 =
-                ChannelObject.builder().channelId("channel2").build();
+                ChannelObject.builder().title("channel2").build();
 
         // when
         Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
@@ -101,7 +101,7 @@ class ChannelMergerTest {
 
         // then
         assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
-            assertThat(it.getChannelId()).isEqualTo("channel1");
+            assertThat(it.getTitle()).isEqualTo("channel1");
         });
     }
 

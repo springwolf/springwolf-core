@@ -58,16 +58,15 @@ class SpringwolfAmqpProducerTest {
         AMQPChannelExchangeProperties properties = new AMQPChannelExchangeProperties();
         properties.setName("exchange-name");
         ChannelObject channelItem = ChannelObject.builder()
-                .channelId("channel-name")
                 .bindings(Map.of(
                         "amqp",
                         AMQPChannelBinding.builder().exchange(properties).build()))
                 .build();
-        Map<String, ChannelObject> channels = Map.of(channelItem.getChannelId(), channelItem);
+        Map<String, ChannelObject> channels = Map.of("channel-name", channelItem);
         Operation operation = Operation.builder()
                 .action(OperationAction.SEND)
                 .bindings(Map.of("amqp", AMQPOperationBinding.builder().build()))
-                .channel(ChannelReference.fromChannel(channelItem))
+                .channel(ChannelReference.fromChannel("channel-name"))
                 .build();
         Map<String, Operation> operations = Map.of("amqp", operation);
 
@@ -89,12 +88,11 @@ class SpringwolfAmqpProducerTest {
         AMQPChannelExchangeProperties properties = new AMQPChannelExchangeProperties();
         properties.setName("exchange-name");
         ChannelObject channelItem = ChannelObject.builder()
-                .channelId("channel-name")
                 .bindings(Map.of(
                         "amqp",
                         AMQPChannelBinding.builder().exchange(properties).build()))
                 .build();
-        Map<String, ChannelObject> channels = Map.of(channelItem.getChannelId(), channelItem);
+        Map<String, ChannelObject> channels = Map.of("channel-name", channelItem);
         Operation operation = Operation.builder()
                 .bindings(Map.of(
                         "amqp",
