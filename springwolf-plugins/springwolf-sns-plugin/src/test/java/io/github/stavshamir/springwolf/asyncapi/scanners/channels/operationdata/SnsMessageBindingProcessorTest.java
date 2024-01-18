@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBindingIdentifier;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sns.SNSMessageBinding;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,7 @@ class SnsMessageBindingProcessorTest {
         assertThat(binding).isNotPresent();
     }
 
-    @SnsAsyncOperationBinding
+    @SnsAsyncOperationBinding(protocol = "sqs", endpoint = @SnsAsyncOperationBindingIdentifier())
     public void methodWithAnnotation() {}
 
     public void methodWithoutAnnotation() {}

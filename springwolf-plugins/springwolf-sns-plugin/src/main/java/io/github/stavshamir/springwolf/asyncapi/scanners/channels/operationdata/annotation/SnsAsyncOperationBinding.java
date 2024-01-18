@@ -20,4 +20,10 @@ import java.lang.annotation.Target;
 public @interface SnsAsyncOperationBinding {
 
     String type() default "sns";
+
+    String protocol();
+
+    SnsAsyncOperationBindingIdentifier endpoint();
+
+    boolean rawMessageDelivery() default true;
 }

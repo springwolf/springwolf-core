@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.v3.model.channel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExtendableObject;
@@ -28,14 +27,6 @@ import java.util.Map;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ChannelObject extends ExtendableObject implements Channel {
-
-    /**
-     * An identifier for the described channel. The channelId value is case-sensitive. Tools and libraries MAY use the
-     * channelId to uniquely identify a channel, therefore, it is RECOMMENDED to follow common programming naming
-     * conventions.
-     */
-    @JsonIgnore
-    private String channelId;
 
     /**
      * An optional string representation of this channel's address. The address is typically the "topic name",

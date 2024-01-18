@@ -28,4 +28,6 @@ public class SpringwolfConfigConstants {
             SPRINGWOLF_SCANNER_PREFIX + ".producer-data" + ENABLED;
 
     public static final String SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR = SPRINGWOLF_CONFIG_PREFIX + ".example-generator";
+
+    private SpringwolfConfigConstants() {}
 }

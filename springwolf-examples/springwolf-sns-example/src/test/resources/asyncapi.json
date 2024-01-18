@@ -239,6 +239,14 @@
       "description": "Auto-generated description",
       "bindings": {
         "sns": {
+          "consumers": [
+            {
+              "protocol": "sqs",
+              "endpoint": { },
+              "filterPolicyScope": "MessageAttributes",
+              "rawMessageDelivery": true
+            }
+          ],
           "bindingVersion": "0.1.0"
         }
       },
@@ -257,6 +265,14 @@
       "description": "Auto-generated description",
       "bindings": {
         "sns": {
+          "consumers": [
+            {
+              "protocol": "sqs",
+              "endpoint": { },
+              "filterPolicyScope": "MessageAttributes",
+              "rawMessageDelivery": true
+            }
+          ],
           "bindingVersion": "0.1.0"
         }
       },

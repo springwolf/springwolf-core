@@ -66,7 +66,7 @@
             "key": {
               "type": "string"
             },
-            "bindingVersion": "binding-version-1"
+            "bindingVersion": "0.4.0"
           }
         }
       }

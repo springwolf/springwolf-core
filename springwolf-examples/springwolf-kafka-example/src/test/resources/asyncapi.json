@@ -956,7 +956,18 @@
         "kafka": {
           "bindingVersion": "0.4.0"
         }
-      }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
+        },
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+        },
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
+        }
+      ]
     },
     "protobuf-topic_receive_receiveExampleProtobufPayload": {
       "action": "receive",

@@ -29,4 +29,21 @@ public class MessageHelper {
         return new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier)))
                 .stream().collect(Collectors.toMap(MessageObject::getName, MessageReference::toComponentMessage));
     }
+
+    public static Map<String, MessageReference> toOperationsMessagesMap(
+            String channelName, Set<MessageObject> messages) {
+        if (channelName == null || channelName.isBlank()) {
+            throw new IllegalArgumentException("channelName must not be empty");
+        }
+
+        if (messages.isEmpty()) {
+            throw new IllegalArgumentException("messages must not be empty");
+        }
+
+        return new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier)))
+                .stream()
+                        .collect(Collectors.toMap(
+                                MessageObject::getName,
+                                e -> MessageReference.toChannelMessage(channelName, e.getName())));
+    }
 }

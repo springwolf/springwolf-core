@@ -12,11 +12,13 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -37,6 +39,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -98,7 +101,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testConsumer-in-0", testConsumerInBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned channels contain a ChannelItem with the correct data
         MessageObject message = MessageObject.builder()
@@ -106,22 +110,25 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(String.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                // .bindings(messageBinding) FIXME
-                .build();
-
-        Operation operation = Operation.builder()
-                .bindings(operationBinding)
-                .description("Auto-generated description")
-                // .operationId("test-consumer-input-topic_publish_testConsumer") FIXME
-                // .messages(List.of(message)) FIXME
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                // .publish(operation) FIXME
+                .messages(Map.of(message.getName(), message))
                 .build();
 
-        assertThat(channels).containsExactly(Map.entry(topicName, expectedChannel));
+        Operation expectedOperation = Operation.builder()
+                .action(OperationAction.RECEIVE)
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .channel(ChannelReference.fromChannel(topicName))
+                .messages(List.of(MessageReference.toChannelMessage(topicName, message)))
+                .build();
+
+        assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
+        assertThat(actualOperations)
+                .containsExactly(Map.entry("test-consumer-input-topic_publish_testConsumer", expectedOperation));
     }
 
     @Test
@@ -133,7 +140,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testSupplier-out-0", testSupplierOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned channels contain a ChannelItem with the correct data
 
@@ -142,22 +150,26 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(String.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                //                .bindings(messageBinding) FIXME
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
-        Operation operation = Operation.builder()
+        Operation expectedOperation = Operation.builder()
+                .bindings(operationBinding)
+                .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-                //                .operationId("test-supplier-output-topic_subscribe_testSupplier") FIXME
-                //                .message(message) FIXME
+                .channel(ChannelReference.fromChannel(topicName))
+                .messages(List.of(MessageReference.toChannelMessage(topicName, message)))
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                //                .subscribe(operation) FIXME
+                .messages(Map.of(message.getName(), message))
                 .build();
 
-        assertThat(channels).containsExactly(Map.entry(topicName, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
+        assertThat(actualOperations)
+                .containsExactly(Map.entry("test-supplier-output-topic_subscribe_testSupplier", expectedOperation));
     }
 
     @Test
@@ -177,27 +189,30 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title(Integer.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .payload(MessagePayload.of(MessageReference.toSchema(Integer.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                //                .bindings(messageBinding) FIXME
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation subscribeOperation = Operation.builder()
                 .bindings(operationBinding)
+                .action(OperationAction.SEND)
+                .bindings(operationBinding)
                 .description("Auto-generated description")
-                //                .operationId("test-out-topic_subscribe_testFunction") FIXME
-                //                .message(subscribeMessage) FIXME
+                .channel(ChannelReference.fromChannel(outputTopicName))
+                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, subscribeMessage)))
                 .build();
 
         ChannelObject subscribeChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                //                .subscribe(subscribeOperation) FIXME
+                .messages(Map.of(subscribeMessage.getName(), subscribeMessage))
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
@@ -205,23 +220,29 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(String.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                //                .bindings(messageBinding) FIXME
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation publishOperation = Operation.builder()
                 .bindings(operationBinding)
+                .action(OperationAction.RECEIVE)
+                .bindings(operationBinding)
                 .description("Auto-generated description")
-                //                .operationId("test-in-topic_publish_testFunction") FIXME
-                //                .message(publishMessage) FIXME
+                .channel(ChannelReference.fromChannel(inputTopicName))
+                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, publishMessage)))
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                //                .publish(publishOperation) FIXME
+                .messages(Map.of(publishMessage.getName(), publishMessage))
                 .build();
 
-        assertThat(channels)
+        assertThat(actualChannels)
                 .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
+        assertThat(actualOperations)
+                .contains(
+                        Map.entry("test-in-topic_publish_testFunction", publishOperation),
+                        Map.entry("test-out-topic_subscribe_testFunction", subscribeOperation));
     }
 
     @Test
@@ -241,7 +262,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "kStreamTestFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -249,19 +271,21 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(Integer.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.toSchema(Integer.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                //                .bindings(messageBinding) FIXME
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation subscribeOperation = Operation.builder()
                 .bindings(operationBinding)
+                .action(OperationAction.SEND)
+                .bindings(operationBinding)
                 .description("Auto-generated description")
-                //                .operationId("test-out-topic_subscribe_kStreamTestFunction") FIXME
-                //                .message(subscribeMessage) FIXME
+                .channel(ChannelReference.fromChannel(outputTopicName))
+                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, subscribeMessage)))
                 .build();
 
         ChannelObject subscribeChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                //                .subscribe(subscribeOperation) FIXME
+                .messages(Map.of(subscribeMessage.getName(), subscribeMessage))
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
@@ -269,23 +293,29 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(String.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                //                .bindings(messageBinding) FIXME
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation publishOperation = Operation.builder()
                 .bindings(operationBinding)
+                .action(OperationAction.RECEIVE)
+                .bindings(operationBinding)
                 .description("Auto-generated description")
-                //                .operationId("test-in-topic_publish_kStreamTestFunction") FIXME
-                //                .message(publishMessage) FIXME
+                .channel(ChannelReference.fromChannel(inputTopicName))
+                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, publishMessage)))
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                //                .publish(publishOperation) FIXME
+                .messages(Map.of(publishMessage.getName(), publishMessage))
                 .build();
 
-        assertThat(channels)
+        assertThat(actualChannels)
                 .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
+        assertThat(actualOperations)
+                .contains(
+                        Map.entry("test-in-topic_publish_kStreamTestFunction", publishOperation),
+                        Map.entry("test-out-topic_subscribe_kStreamTestFunction", subscribeOperation));
     }
 
     @Test
@@ -304,7 +334,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> channels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned merged channels contain a publish operation and  a subscribe operation
         MessageObject subscribeMessage = MessageObject.builder()
@@ -312,14 +343,16 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(Integer.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.toSchema(Integer.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                //                .bindings(messageBinding) FIXME
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         Operation subscribeOperation = Operation.builder()
                 .bindings(operationBinding)
+                .action(OperationAction.SEND)
+                .bindings(operationBinding)
                 .description("Auto-generated description")
-                //                .operationId("test-topic_subscribe_testFunction") FIXME
-                //                .message(subscribeMessage) FIXME
+                .channel(ChannelReference.fromChannel(topicName))
+                .messages(List.of(MessageReference.toChannelMessage(topicName, subscribeMessage)))
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
@@ -327,23 +360,30 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title(String.class.getSimpleName())
                 .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
-                //                .bindings(messageBinding) FIXME
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
+        // "test-topic_publish_testFunction"
         Operation publishOperation = Operation.builder()
                 .bindings(operationBinding)
+                .action(OperationAction.RECEIVE)
+                .bindings(operationBinding)
                 .description("Auto-generated description")
-                //                .operationId("test-topic_publish_testFunction") FIXME
-                //                .message(publishMessage) FIXME
+                .channel(ChannelReference.fromChannel(topicName))
+                .messages(List.of(MessageReference.toChannelMessage(topicName, publishMessage)))
                 .build();
 
         ChannelObject mergedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                //                .publish(publishOperation) FIXME
-                //                .subscribe(subscribeOperation) FIXME
+                .messages(
+                        Map.of(publishMessage.getName(), publishMessage, subscribeMessage.getName(), subscribeMessage))
                 .build();
 
-        assertThat(channels).contains(Map.entry(topicName, mergedChannel));
+        assertThat(actualChannels).contains(Map.entry(topicName, mergedChannel));
+        assertThat(actualOperations)
+                .contains(
+                        Map.entry("test-topic_publish_testFunction", publishOperation),
+                        Map.entry("test-topic_subscribe_testFunction", subscribeOperation));
     }
 
     @TestConfiguration

@@ -37,6 +37,14 @@
       },
       "bindings": {
         "sqs": {
+          "queue": {
+            "name": "example-queue",
+            "fifoQueue": true,
+            "deliveryDelay": 0,
+            "visibilityTimeout": 30,
+            "receiveMessageWaitTime": 0,
+            "messageRetentionPeriod": 345600
+          },
           "bindingVersion": "0.2.0"
         }
       }
@@ -156,10 +164,17 @@
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "sqs": {
-          "internal-field": "customValue",
-          "nested": {
-            "key": "nestedValue"
-          }
+          "queues": [
+            {
+              "name": "queue-name",
+              "fifoQueue": true,
+              "deliveryDelay": 0,
+              "visibilityTimeout": 30,
+              "receiveMessageWaitTime": 0,
+              "messageRetentionPeriod": 345600
+            }
+          ],
+          "bindingVersion": "0.2.0"
         }
       },
       "messages": [
@@ -175,6 +190,16 @@
       },
       "bindings": {
         "sqs": {
+          "queues": [
+            {
+              "name": "another-queue",
+              "fifoQueue": true,
+              "deliveryDelay": 0,
+              "visibilityTimeout": 30,
+              "receiveMessageWaitTime": 0,
+              "messageRetentionPeriod": 345600
+            }
+          ],
           "bindingVersion": "0.2.0"
         }
       },
@@ -191,6 +216,16 @@
       },
       "bindings": {
         "sqs": {
+          "queues": [
+            {
+              "name": "example-queue",
+              "fifoQueue": true,
+              "deliveryDelay": 0,
+              "visibilityTimeout": 30,
+              "receiveMessageWaitTime": 0,
+              "messageRetentionPeriod": 345600
+            }
+          ],
           "bindingVersion": "0.2.0"
         }
       },

@@ -6,6 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBindingQueue;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSOperationBinding;
 import org.assertj.core.util.Sets;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StringValueResolver;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,9 +50,16 @@ class SqsListenerUtilTest {
             Map<String, ChannelBinding> channelBinding = SqsListenerUtil.buildChannelBinding(annotation, resolver);
 
             // then
+            var expectedChannel = SQSChannelBinding.builder()
+                    .queue(SQSChannelBindingQueue.builder()
+                            .name("${queue-1}")
+                            .fifoQueue(true)
+                            .build())
+                    .build();
+
             assertEquals(1, channelBinding.size());
             assertEquals(Sets.newTreeSet("sqs"), channelBinding.keySet());
-            assertEquals(new SQSChannelBinding(), channelBinding.get("sqs"));
+            assertEquals(expectedChannel, channelBinding.get("sqs"));
         }
 
         @Test
@@ -64,9 +73,16 @@ class SqsListenerUtilTest {
                     SqsListenerUtil.buildOperationBinding(annotation, resolver);
 
             // then
+            var expectedOperation = SQSOperationBinding.builder()
+                    .queues(List.of(SQSChannelBindingQueue.builder()
+                            .name("${queue-1}")
+                            .fifoQueue(true)
+                            .build()))
+                    .build();
+
             assertEquals(1, operationBinding.size());
             assertEquals(Sets.newTreeSet("sqs"), operationBinding.keySet());
-            assertEquals(new SQSOperationBinding(), operationBinding.get("sqs"));
+            assertEquals(expectedOperation, operationBinding.get("sqs"));
         }
 
         @Test

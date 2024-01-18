@@ -25,7 +25,7 @@ public class SQSChannelBindingQueue {
      * identifier should be the one in this field.
      */
     @NotNull
-    @JsonProperty("queue")
+    @JsonProperty("name")
     private String name;
 
     /**
