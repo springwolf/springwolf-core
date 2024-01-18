@@ -64,7 +64,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         List<Map.Entry<String, ChannelObject>> channels = classScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
                 .map(this::buildChannel)
-                .filter(this::isInvalidChannel)
                 .toList();
 
         return ChannelMerger.mergeChannels(channels);
@@ -75,7 +74,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         List<Map.Entry<String, Operation>> operations = classScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
                 .map(this::buildOperation)
-                .filter(this::isInvalidOperation)
                 .toList();
 
         return ChannelMerger.mergeOperations(operations);
@@ -91,32 +89,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                 .peek(method -> log.debug("Mapping method \"{}\" to channels", method.getName()))
                 .flatMap(method -> AnnotationUtil.findAnnotations(annotationClass, method).stream()
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
-    }
-
-    private boolean isInvalidChannel(Map.Entry<String, ChannelObject> entry) {
-        boolean allNonNull = entry.getKey() != null;
-
-        if (!allNonNull) {
-            log.warn(
-                    "Some data fields are null - method (channel={}) will not be documented: {}",
-                    entry.getKey(),
-                    entry.getValue());
-        }
-
-        return allNonNull;
-    }
-
-    private boolean isInvalidOperation(Map.Entry<String, Operation> entry) {
-        boolean allNonNull = entry.getKey() != null;
-
-        if (!allNonNull) {
-            log.warn(
-                    "Some data fields are null - method (channel={}) will not be documented: {}",
-                    entry.getKey(),
-                    entry.getValue());
-        }
-
-        return allNonNull;
     }
 
     private Map.Entry<String, ChannelObject> buildChannel(MethodAndAnnotation<A> methodAndAnnotation) {
