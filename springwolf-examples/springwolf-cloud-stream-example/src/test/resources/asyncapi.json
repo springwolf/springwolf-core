@@ -64,7 +64,6 @@
     }
   },
   "components": {
-    "messages": { },
     "schemas": {
       "AnotherPayloadDto": {
         "required": [
@@ -132,7 +131,8 @@
         "properties": { },
         "example": { }
       }
-    }
+    },
+    "messages": { }
   },
   "operations": {
     "another-topic_publish_consumerMethod": {

@@ -38,42 +38,6 @@
     }
   },
   "components": {
-    "messages": {
-      "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto": {
-        "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
-        },
-        "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-          "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
-          }
-        },
-        "name": "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto",
-        "title": "AnotherPayloadDto",
-        "description": "Another payload model",
-        "bindings": {
-          "sns": { }
-        }
-      },
-      "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto": {
-        "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
-        },
-        "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-          "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
-          }
-        },
-        "name": "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto",
-        "title": "ExamplePayloadDto",
-        "description": "Example payload model",
-        "bindings": {
-          "sns": { }
-        }
-      }
-    },
     "schemas": {
       "HeadersNotDocumented": {
         "type": "object",
@@ -225,6 +189,42 @@
             "someString"
           ],
           "type": "object"
+        }
+      }
+    },
+    "messages": {
+      "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto",
+        "title": "AnotherPayloadDto",
+        "description": "Another payload model",
+        "bindings": {
+          "sns": { }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto",
+        "title": "ExamplePayloadDto",
+        "description": "Example payload model",
+        "bindings": {
+          "sns": { }
         }
       }
     }
