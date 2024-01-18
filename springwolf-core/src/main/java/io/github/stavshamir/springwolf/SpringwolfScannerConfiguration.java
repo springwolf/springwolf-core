@@ -122,7 +122,7 @@ public class SpringwolfScannerConfiguration {
 
             @Override
             public OperationAction getOperationType() {
-                return OperationAction.SEND;
+                return OperationAction.RECEIVE;
             }
         };
     }
@@ -142,7 +142,7 @@ public class SpringwolfScannerConfiguration {
 
             @Override
             public OperationAction getOperationType() {
-                return OperationAction.RECEIVE;
+                return OperationAction.SEND;
             }
         };
     }

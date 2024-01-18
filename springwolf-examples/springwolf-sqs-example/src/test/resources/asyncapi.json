@@ -51,6 +51,40 @@
     }
   },
   "components": {
+    "messages": {
+      "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
+        "title": "AnotherPayloadDto",
+        "bindings": {
+          "sqs": { }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto",
+        "title": "ExamplePayloadDto",
+        "bindings": {
+          "sqs": { }
+        }
+      }
+    },
     "schemas": {
       "HeadersNotDocumented": {
         "type": "object",
@@ -118,49 +152,15 @@
           "someString": "some string value"
         }
       }
-    },
-    "messages": {
-      "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto": {
-        "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
-        },
-        "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-          "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
-          }
-        },
-        "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
-        "title": "AnotherPayloadDto",
-        "bindings": {
-          "sqs": { }
-        }
-      },
-      "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto": {
-        "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
-        },
-        "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-          "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto"
-          }
-        },
-        "name": "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto",
-        "title": "ExamplePayloadDto",
-        "bindings": {
-          "sqs": { }
-        }
-      }
     }
   },
   "operations": {
     "another-queue": {
-      "action": "receive",
+      "action": "send",
       "channel": {
         "$ref": "#/channels/another-queue"
       },
-      "title": "another-queue_receive",
+      "title": "another-queue_send",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "sqs": {
