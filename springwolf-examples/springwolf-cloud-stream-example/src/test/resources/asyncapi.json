@@ -136,21 +136,6 @@
   },
   "operations": {
     "another-topic_publish_consumerMethod": {
-      "action": "send",
-      "channel": {
-        "$ref": "#/channels/another-topic"
-      },
-      "description": "Auto-generated description",
-      "bindings": {
-        "kafka": { }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-topic/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto"
-        }
-      ]
-    },
-    "another-topic_subscribe_process": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/another-topic"
@@ -165,8 +150,23 @@
         }
       ]
     },
-    "example-topic_publish_process": {
+    "another-topic_subscribe_process": {
       "action": "send",
+      "channel": {
+        "$ref": "#/channels/another-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-topic/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "example-topic_publish_process": {
+      "action": "receive",
       "channel": {
         "$ref": "#/channels/example-topic"
       },

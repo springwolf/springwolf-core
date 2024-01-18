@@ -119,7 +119,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         Operation expectedOperation = Operation.builder()
-                .action(OperationAction.SEND)
+                .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(topicName))
@@ -155,7 +155,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         Operation expectedOperation = Operation.builder()
                 .bindings(operationBinding)
-                .action(OperationAction.RECEIVE)
+                .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(topicName))
@@ -203,7 +203,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         Operation subscribeOperation = Operation.builder()
                 .bindings(operationBinding)
-                .action(OperationAction.RECEIVE)
+                .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(outputTopicName))
@@ -225,7 +225,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         Operation publishOperation = Operation.builder()
                 .bindings(operationBinding)
-                .action(OperationAction.SEND)
+                .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(inputTopicName))
@@ -276,7 +276,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         Operation subscribeOperation = Operation.builder()
                 .bindings(operationBinding)
-                .action(OperationAction.RECEIVE)
+                .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(outputTopicName))
@@ -298,7 +298,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         Operation publishOperation = Operation.builder()
                 .bindings(operationBinding)
-                .action(OperationAction.SEND)
+                .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(inputTopicName))
@@ -348,7 +348,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         Operation subscribeOperation = Operation.builder()
                 .bindings(operationBinding)
-                .action(OperationAction.RECEIVE)
+                .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(topicName))
@@ -366,7 +366,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         // "test-topic_publish_testFunction"
         Operation publishOperation = Operation.builder()
                 .bindings(operationBinding)
-                .action(OperationAction.SEND)
+                .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(topicName))

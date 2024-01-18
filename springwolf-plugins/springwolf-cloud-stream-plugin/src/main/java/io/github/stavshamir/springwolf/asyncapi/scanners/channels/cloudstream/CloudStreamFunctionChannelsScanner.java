@@ -130,9 +130,9 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .messages(List.of(MessageReference.toChannelMessage(channelName, message)))
                 .bindings(buildOperationBinding());
         if (beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER) {
-            builder.action(OperationAction.SEND);
-        } else {
             builder.action(OperationAction.RECEIVE);
+        } else {
+            builder.action(OperationAction.SEND);
         }
 
         return builder.build();
