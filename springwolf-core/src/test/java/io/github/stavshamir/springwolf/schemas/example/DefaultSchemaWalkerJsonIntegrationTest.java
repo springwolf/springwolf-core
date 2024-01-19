@@ -24,9 +24,11 @@ import java.util.Map;
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DefaultSchemaWalkerTest {
+class DefaultSchemaWalkerJsonIntegrationTest {
 
-    private DefaultSchemaWalker defaultSchemaWalker = new DefaultSchemaWalker(new ExampleJsonValueGenerator());
+    ExampleJsonValueGenerator exampleJsonValueGenerator = new ExampleJsonValueGenerator();
+    private DefaultSchemaWalker defaultSchemaWalker = new DefaultSchemaWalker(exampleJsonValueGenerator);
+
 
     @Nested
     class FromSchema {
@@ -179,9 +181,7 @@ class DefaultSchemaWalkerTest {
 
             String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
 
-            assertThat(actual)
-                    .isEqualTo(
-                            "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
+            assertThat(actual).isEqualTo("\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
         }
 
         @Test

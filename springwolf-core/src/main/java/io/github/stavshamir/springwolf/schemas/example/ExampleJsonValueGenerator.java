@@ -44,6 +44,11 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
         return "unknown string schema format: " + format;
     }
 
+    @Override
+    public void initialize() {
+        // Nothing to do
+    }
+
     @NotNull
     @Override
     public JsonNode createBooleanExample() {
@@ -159,7 +164,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createObjectExample(List<Map.Entry<String, JsonNode>> properties) {
+    public JsonNode createObjectExample(String name, List<Map.Entry<String, JsonNode>> properties) {
         ObjectNode objectNode = objectMapper.createObjectNode();
         properties.forEach(property -> objectNode.set(property.getKey(), property.getValue()));
         return objectNode;

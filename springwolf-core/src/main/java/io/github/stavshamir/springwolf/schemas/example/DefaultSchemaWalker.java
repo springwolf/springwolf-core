@@ -49,6 +49,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
     }
 
     String buildSchema(Schema schema, Map<String, Schema> definitions) {
+        exampleValueGenerator.initialize();
         T finishedSchema = buildSchemaInternal(schema, definitions, new HashSet<>());
         try {
             return exampleValueGenerator.toString(finishedSchema);
@@ -98,9 +99,6 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
             return (JsonNode) exampleValue;
         }
 
-        // Create an ObjectNode to hold the example JSON
-        T exampleNode = exampleValueGenerator.createObjectExample(Collections.emptyList());
-
         // Handle special types (i.e. map) with custom @Schema annotation and specified example value
         Object additionalProperties = schema.getAdditionalProperties();
         if (additionalProperties instanceof StringSchema) {
@@ -132,12 +130,12 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
 
         try {
             // exampleValue (i.e. OffsetDateTime) is represented as string
-            exampleNode = exampleValueGenerator.generateStringExample(exampleValue.toString());
+            return exampleValueGenerator.generateStringExample(exampleValue.toString());
         } catch (IllegalArgumentException ex) {
             log.debug("Unable to convert example to JSON: %s".formatted(exampleValue.toString()), ex);
         }
 
-        return exampleNode;
+        return exampleValueGenerator.createObjectExample("ignored", Collections.emptyList());
     }
 
     private T handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
@@ -183,13 +181,13 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
     }
 
     private T handleObject(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-
+        // TODO Handle missconfiguration when object schema has no name
         Map<String, Schema> properties = schema.getProperties();
         if (properties != null) {
 
             if (!visited.contains(schema)) {
                 visited.add(schema);
-                T example = handleObjectProperties(properties, definitions, visited);
+                T example = handleObjectProperties(schema.getName(), properties, definitions, visited);
                 visited.remove(schema);
                 return example;
             }
@@ -218,11 +216,11 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
         }
 
         // i.e. A MapSchema is type=object, but has properties=null
-        return exampleValueGenerator.createObjectExample(List.of());
+        return exampleValueGenerator.createObjectExample("ignored", List.of());
     }
 
     private T handleObjectProperties(
-            Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
+            String name, Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
 
         List<Map.Entry<String, T>> propertyList = properties.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
@@ -233,6 +231,6 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
                 })
                 .toList();
 
-        return exampleValueGenerator.createObjectExample(propertyList);
+        return exampleValueGenerator.createObjectExample(name, propertyList);
     }
 }

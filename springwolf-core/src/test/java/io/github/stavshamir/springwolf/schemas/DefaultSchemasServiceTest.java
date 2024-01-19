@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
@@ -16,6 +18,7 @@ import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcesso
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Nested;
@@ -212,6 +215,7 @@ class DefaultSchemasServiceTest {
     @Data
     @NoArgsConstructor
     @Schema(description = "foo model")
+    @XmlRootElement(name = "documentedSimpleFoo")
     private static class DocumentedSimpleFoo {
         @Schema(description = "s field", example = "s value", requiredMode = Schema.RequiredMode.REQUIRED)
         private String s;
@@ -237,6 +241,7 @@ class DefaultSchemasServiceTest {
 
     @Data
     @NoArgsConstructor
+    @XmlRootElement
     private static class CompositeFoo {
         private String s;
         private SimpleFoo f;
@@ -401,5 +406,16 @@ class DefaultSchemasServiceTest {
             @Schema(description = "The payload in the envelop", maxLength = 10)
             String payload;
         }
+    }
+
+    @Test
+    void test_serial() throws JsonProcessingException {
+        XmlMapper xmlMapper = new XmlMapper();
+        SimpleFoo simpleFoo = new SimpleFoo();
+        simpleFoo.setB(true);
+        simpleFoo.setS("bar");
+        String xmlString = xmlMapper.writeValueAsString(simpleFoo);
+        assertEquals("", xmlString);
+
     }
 }

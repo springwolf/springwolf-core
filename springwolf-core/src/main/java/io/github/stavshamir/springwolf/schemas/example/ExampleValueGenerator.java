@@ -9,6 +9,8 @@ import java.util.Map;
 // TODO: ExampleValueSerializer?
 interface ExampleValueGenerator<T> {
 
+    void initialize();
+
     T createIntegerExample(Integer value);
 
     T createDoubleExample(Double value);
@@ -19,7 +21,7 @@ interface ExampleValueGenerator<T> {
 
     T createIntegerExample();
 
-    T createObjectExample(List<Map.Entry<String, T>> properties);
+    T createObjectExample(String name, List<Map.Entry<String, T>> properties);
 
     T createDoubleExample();
 
