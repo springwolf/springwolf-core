@@ -5,8 +5,6 @@ import {
   ChannelOperation,
   CHANNEL_ANCHOR_PREFIX,
 } from "../../models/channel.model";
-import { Operation, OperationType } from "src/app/models/operation.model";
-import { Message } from "src/app/models/message.model";
 import { Schema } from "../../models/schema.model";
 import { Injectable } from "@angular/core";
 import { Example } from "../../models/example.model";
@@ -15,21 +13,23 @@ import { ServerAsyncApi } from "./models/asyncapi.model";
 import { ServerAsyncApiSchema } from "./models/schema.model";
 import { ServerBinding, ServerBindings } from "./models/bindings.model";
 import {
-  ServerOperationAction,
+  ServerOperation,
   ServerOperationMessage,
   ServerOperations,
 } from "./models/operations.model";
 import { ServerServers } from "./models/servers.model";
 import { ServerChannel, ServerChannels } from "./models/channels.model";
-import { Binding, Bindings } from "src/app/models/bindings.model";
-import { NotificationService } from "../notification.service";
-import { ServerMessages } from "./models/components.model";
+import { INotificationService } from "../notification.service";
+import { ServerComponents } from "./models/components.model";
+import { Binding, Bindings } from "../../models/bindings.model";
+import { Message } from "../../models/message.model";
+import { Operation } from "../../models/operation.model";
 
 @Injectable()
 export class AsyncApiMapperService {
   static BASE_URL = window.location.pathname + window.location.search + "#";
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private notificationService: INotificationService) {}
 
   public toAsyncApi(item: ServerAsyncApi): AsyncApi {
     try {
@@ -82,7 +82,7 @@ export class AsyncApiMapperService {
   private mapChannelOperations(
     channels: ServerChannels,
     operations: ServerOperations,
-    messages: ServerMessages
+    messages: ServerComponents["messages"]
   ): ChannelOperation[] {
     const s = new Array<ChannelOperation>();
     for (let operationsKey in operations) {
@@ -124,11 +124,9 @@ export class AsyncApiMapperService {
     channelName: string,
     channel: ServerChannel,
     message: Message,
-    operationType: ServerOperationAction,
+    operationType: ServerOperation["action"],
     operationBinding: ServerBindings
   ): ChannelOperation {
-    this.verifyBindings(channel.bindings, "channel " + channelName);
-
     const operation = this.mapOperation(
       operationType,
       message,
@@ -154,7 +152,7 @@ export class AsyncApiMapperService {
   private mapServerAsyncApiMessages(
     channelName: string,
     channel: ServerChannel,
-    messages: ServerMessages,
+    messages: ServerComponents["messages"],
     operationMessages: ServerOperationMessage[]
   ): Message[] {
     return operationMessages
@@ -229,13 +227,13 @@ export class AsyncApiMapperService {
   }
 
   private mapOperation(
-    operationType: ServerOperationAction,
+    operationType: ServerOperation["action"],
     message: Message,
     bindings?: Bindings
   ): Operation {
     return {
       protocol: this.getProtocol(bindings),
-      operationType: operationType,
+      operationType: operationType == "send" ? "send" : "receive",
       message,
       bindings,
     };
@@ -251,7 +249,7 @@ export class AsyncApiMapperService {
   }
 
   private mapSchemas(
-    schemas: Map<string, ServerAsyncApiSchema>
+    schemas: ServerComponents["schemas"]
   ): Map<string, Schema> {
     const s = new Map<string, Schema>();
     Object.entries(schemas).forEach(([k, v]) => {
@@ -266,37 +264,63 @@ export class AsyncApiMapperService {
     return s;
   }
 
-  private mapSchema(schemaName: string, schema: ServerAsyncApiSchema): Schema {
-    const anchorUrl = schema.$ref
-      ? AsyncApiMapperService.BASE_URL + this.resolveRef(schema.$ref)
-      : undefined;
-    const properties =
-      schema.properties !== undefined
-        ? this.mapSchemas(schema.properties)
-        : undefined;
+  private mapSchema(
+    schemaName: string,
+    schema: ServerAsyncApiSchema | { $ref: string }
+  ): Schema {
+    if ("$ref" in schema) {
+      return this.mapSchemaRef(schemaName, schema);
+    } else {
+      return this.mapSchemaObj(schemaName, schema);
+    }
+  }
+
+  private mapSchemaObj(schemaName: string, schema: ServerAsyncApiSchema) {
+    const properties = {};
+    if (schema.properties !== undefined) {
+      Object.entries(schema.properties).forEach(([key, value], index) => {
+        properties[key] = this.mapSchema(key, value);
+      });
+    }
+
     const items =
       schema.items !== undefined
-        ? this.mapSchema(schema.$ref + "[]", schema.items)
+        ? this.mapSchema(schemaName + "[]", schema.items)
         : undefined;
     const example =
       schema.example !== undefined ? new Example(schema.example) : undefined;
+
     return {
       name: schemaName,
       title: schemaName.split(".")?.pop(),
       description: schema.description,
-      refName: schema.$ref,
-      refTitle: this.resolveRef(schema.$ref),
       anchorIdentifier: "#" + schemaName,
-      anchorUrl: anchorUrl,
+
       type: schema.type,
-      items,
-      format: schema.format,
-      enum: schema.enum,
-      properties,
       required: schema.required,
+      format: schema.format,
+
+      properties,
+      items,
+      enum: schema.enum,
+
       example,
+
       minimum: schema.minimum,
       maximum: schema.maximum,
+    };
+  }
+
+  private mapSchemaRef(schemaName: string, schema: { $ref: string }): Schema {
+    return {
+      name: schemaName,
+      title: schemaName.split(".")?.pop(),
+
+      refName: schema.$ref,
+      refTitle: this.resolveRef(schema.$ref),
+
+      anchorIdentifier: "#" + schemaName,
+      anchorUrl: AsyncApiMapperService.BASE_URL + this.resolveRef(schema.$ref),
     };
   }
 

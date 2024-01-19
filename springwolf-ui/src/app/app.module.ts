@@ -18,49 +18,62 @@ import { ServersComponent } from "./components/servers/servers.component";
 import { AsyncApiService } from "./service/asyncapi/asyncapi.service";
 import { MockServer } from "./service/mock/mock-server";
 import { PublisherService } from "./service/publisher.service";
-import { NotificationService } from "./service/notification.service";
+import {
+  INotificationService,
+  NotificationService,
+} from "./service/notification.service";
 import { FormsModule } from "@angular/forms";
 import { JsonComponent } from "./components/json/json.component";
 import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    InfoComponent,
-    ServersComponent,
-    ChannelsComponent,
-    ChannelMainComponent,
-    SchemasComponent,
-    SchemaComponent,
-    JsonComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    HighlightModule,
-    HttpClientModule,
-    FormsModule,
-    environment.production
-      ? []
-      : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 }),
-  ],
-  providers: [
-    AsyncApiService,
-    AsyncApiMapperService,
-    NotificationService,
-    PublisherService,
-    {
-      provide: HIGHLIGHT_OPTIONS,
-      useValue: {
-        coreLibraryLoader: () => import("highlight.js/lib/core"),
-        languages: {
-          json: () => import("highlight.js/lib/languages/json"),
-        },
+export const declarations = [
+  AppComponent,
+  HeaderComponent,
+  InfoComponent,
+  ServersComponent,
+  ChannelsComponent,
+  ChannelMainComponent,
+  SchemasComponent,
+  SchemaComponent,
+  JsonComponent,
+];
+export const imports = [
+  BrowserModule,
+  BrowserAnimationsModule,
+  MaterialModule,
+  HighlightModule,
+  HttpClientModule,
+  FormsModule,
+  environment.production
+    ? []
+    : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 }),
+];
+export const providers = [
+  AsyncApiService,
+  AsyncApiMapperService,
+  { provide: INotificationService, useClass: NotificationService },
+  PublisherService,
+  {
+    provide: HIGHLIGHT_OPTIONS,
+    useValue: {
+      coreLibraryLoader: () => import("highlight.js/lib/core"),
+      languages: {
+        json: () => import("highlight.js/lib/languages/json"),
       },
     },
-  ],
+  },
+];
+
+export const ngModule = {
+  declarations: declarations,
+  imports: imports,
+  providers: providers,
+};
+
+@NgModule({
+  declarations: declarations,
+  imports: imports,
+  providers: providers,
   bootstrap: [AppComponent],
 })
 export class AppModule {}

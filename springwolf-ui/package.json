@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build --configuration production --base-href=./",
     "build_pages": "ng build --base-href=./",
-    "test": "ng test",
+    "test": "jest",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -29,8 +29,19 @@
     "@angular-devkit/build-angular": "^17.0.0",
     "@angular/cli": "^17.0.0",
     "@angular/compiler-cli": "^17.0.2",
+    "@testing-library/angular": "^15.1.0",
+    "@types/jest": "^29.5.11",
     "@types/node": "^18.18.0",
     "angular-in-memory-web-api": "^0.17.0",
+    "jest": "^29.7.0",
+    "jest-preset-angular": "^14.0.0",
     "typescript": "^5.2.2"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/setup-jest.ts"
+    ],
+    "modulePathIgnorePatterns": ["<rootDir>/build/"]
   }
 }

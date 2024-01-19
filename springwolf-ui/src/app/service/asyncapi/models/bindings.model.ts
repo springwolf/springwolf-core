@@ -4,5 +4,5 @@ export interface ServerBindings {
 }
 
 export interface ServerBinding {
-  [bindingProperty: string]: string | ServerBinding;
+  [bindingProperty: string]: ServerBinding | any;
 }

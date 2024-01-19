@@ -13,7 +13,7 @@ export interface Schema {
 
   type?: string;
   // type == object
-  properties?: Map<string, Schema>;
+  properties?: { [key: string]: Schema };
   // type == array
   items?: Schema;
 

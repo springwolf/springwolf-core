@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, Input, OnInit } from "@angular/core";
-import { AsyncApiService } from "src/app/service/asyncapi/asyncapi.service";
-import { Example } from "src/app/models/example.model";
-import { Schema } from "src/app/models/schema.model";
-import { PublisherService } from "src/app/service/publisher.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Operation } from "src/app/models/operation.model";
-import { Binding } from "src/app/models/bindings.model";
 import { STATUS } from "angular-in-memory-web-api";
+import { Binding } from "../../../models/bindings.model";
+import { Example } from "../../../models/example.model";
+import { Operation } from "../../../models/operation.model";
+import { Schema } from "../../../models/schema.model";
+import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
+import { PublisherService } from "../../../service/publisher.service";
 
 @Component({
   selector: "app-channel-main",
