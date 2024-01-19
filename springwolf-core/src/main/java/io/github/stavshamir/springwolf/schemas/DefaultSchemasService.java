@@ -122,6 +122,7 @@ public class DefaultSchemasService implements SchemasService {
     private String registerString() {
         String schemaName = "String";
         StringSchema schema = new StringSchema();
+        schema.setName(String.class.getName());
 
         this.definitions.put(schemaName, schema);
         postProcessSchema(schema);
