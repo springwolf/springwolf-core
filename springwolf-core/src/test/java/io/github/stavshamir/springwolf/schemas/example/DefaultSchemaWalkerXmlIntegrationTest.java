@@ -60,6 +60,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         @Test
         void type_boolean() {
             BooleanSchema schema = new BooleanSchema();
+            schema.name("type_boolean");
 
             String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
 
@@ -285,18 +286,20 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.addProperty("s", new StringSchema());
             schema.addProperty("b", new BooleanSchema());
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim().stripIndent();
 
             assertThat(actual).isEqualTo("""            
-              <CompositeObjectWithoutReferences>
-                  <b>true</b>
-                  <s>string</s>
-              </CompositeObjectWithoutReferences>""".trim());
+            <CompositeObjectWithoutReferences>
+                <b>true</b>
+                <s>string</s>
+            </CompositeObjectWithoutReferences>
+            """.trim().stripIndent());
         }
 
         @Test
         void composite_object_with_references() {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName("composite_object_with_references_root");
             compositeSchema.addProperty("s", new StringSchema());
 
             Schema referenceSchema = new Schema();
@@ -306,9 +309,18 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             ObjectSchema nestedSchema = new ObjectSchema();
             nestedSchema.addProperty("s", new StringSchema());
             nestedSchema.addProperty("b", new BooleanSchema());
-            String actual = defaultSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", nestedSchema));
+            String actual = defaultSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", nestedSchema))
+                    .trim().stripIndent();
 
-            assertThat(actual).isEqualTo("{\"f\":{\"b\":true,\"s\":\"string\"},\"s\":\"string\"}");
+            assertThat(actual).isEqualTo("""
+              <composite_object_with_references_root>
+                  <f>
+                      <b>true</b>
+                      <s>string</s>
+                  </f>
+                  <s>string</s>
+              </composite_object_with_references_root>
+            """.trim().stripIndent());
         }
 
         @Test

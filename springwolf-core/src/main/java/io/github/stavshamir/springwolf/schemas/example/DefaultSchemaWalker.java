@@ -50,15 +50,15 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
 
     String buildSchema(Schema schema, Map<String, Schema> definitions) {
         exampleValueGenerator.initialize();
-        T finishedSchema = buildSchemaInternal(schema, definitions, new HashSet<>());
+        T finishedSchema = buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
         try {
-            return exampleValueGenerator.toString(finishedSchema);
+            return exampleValueGenerator.toString(schema.getName(), finishedSchema);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private T buildSchemaInternal(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+    private T buildSchemaInternal(String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         T exampleValue = getExampleValueFromSchemaAnnotation(schema);
         if (exampleValue != null) {
             return exampleValue;
@@ -71,7 +71,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
             if (resolvedSchema == null) {
                 throw new ExampleGeneratingException("Missing schema during example json generation: " + schemaName);
             }
-            return buildSchemaInternal(resolvedSchema, definitions, visited);
+            return buildSchemaInternal(name, resolvedSchema, definitions, visited);
         }
 
         String type = schema.getType();
@@ -80,7 +80,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
             case "boolean" -> exampleValueGenerator.createBooleanExample();
             case "integer" -> exampleValueGenerator.createIntegerExample();
             case "number" -> exampleValueGenerator.createDoubleExample();
-            case "object" -> handleObject(schema, definitions, visited); // Handle object schema
+            case "object" -> handleObject(name, schema, definitions, visited); // Handle object schema
             case "string" -> handleStringSchema(schema); // Handle string schema
             default -> exampleValueGenerator.generateUnknownSchemaStringTypeExample(type);
         };
@@ -140,7 +140,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
 
     private T handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
 
-        List<T> list = Arrays.asList(buildSchemaInternal(schema.getItems(), definitions, visited));
+        List<T> list = Arrays.asList(buildSchemaInternal("TODO", schema.getItems(), definitions, visited));
 
         return exampleValueGenerator.wrapAsArray(list);
     }
@@ -180,14 +180,14 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
         return null;
     }
 
-    private T handleObject(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+    private T handleObject(String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         // TODO Handle missconfiguration when object schema has no name
         Map<String, Schema> properties = schema.getProperties();
         if (properties != null) {
 
             if (!visited.contains(schema)) {
                 visited.add(schema);
-                T example = handleObjectProperties(schema.getName(), properties, definitions, visited);
+                T example = handleObjectProperties(name, properties, definitions, visited);
                 visited.remove(schema);
                 return example;
             }
@@ -208,11 +208,11 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
         }
         if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
             List<Schema> schemas = schema.getAnyOf();
-            return buildSchemaInternal(schemas.get(0), definitions, visited);
+            return buildSchemaInternal("TODO", schemas.get(0), definitions, visited);
         }
         if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
             List<Schema> schemas = schema.getOneOf();
-            return buildSchemaInternal(schemas.get(0), definitions, visited);
+            return buildSchemaInternal("TODO", schemas.get(0), definitions, visited);
         }
 
         // i.e. A MapSchema is type=object, but has properties=null
@@ -226,7 +226,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
                 .sorted(Map.Entry.comparingByKey())
                 .map(entry -> {
                     String propertyKey = entry.getKey();
-                    T propertyValue = buildSchemaInternal(entry.getValue(), definitions, visited);
+                    T propertyValue = buildSchemaInternal(propertyKey, entry.getValue(), definitions, visited);
                     return Map.entry(propertyKey, propertyValue);
                 })
                 .toList();

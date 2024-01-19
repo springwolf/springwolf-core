@@ -149,7 +149,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public String toString(JsonNode exampleObject) throws JsonProcessingException {
+    public String toString(String name, JsonNode exampleObject) throws JsonProcessingException {
         return objectMapper.writeValueAsString(exampleObject);
     }
 

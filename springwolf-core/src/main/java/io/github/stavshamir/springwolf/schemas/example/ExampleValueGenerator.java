@@ -51,7 +51,7 @@ interface ExampleValueGenerator<T> {
 
     T wrapAsArray(List<T> list);
 
-    String toString(T exampleObject) throws JsonProcessingException;
+    String toString(String name, T exampleObject) throws JsonProcessingException;
 
     T createRaw(Object exampleValueString);
 }
