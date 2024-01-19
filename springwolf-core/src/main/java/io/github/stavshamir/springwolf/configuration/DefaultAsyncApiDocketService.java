@@ -10,14 +10,25 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
+
+    /**
+     * Docket defined by the user as a @Bean
+     */
+    private final Optional<AsyncApiDocket> customDocket;
+
+    /**
+     * Docket definition in application.properties
+     */
     private final SpringwolfConfigProperties configProperties;
 
     /**
-     * lazily initialized AsyncApiDocket instance.
+     * valid Docket instance, either reference to customDocket (if set) or environment based Docket.
+     * Lazy initialized on first invocation of getAsyncApiDocket().
      */
     @Nullable
     private AsyncApiDocket docket;
@@ -25,14 +36,25 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     @Override
     public AsyncApiDocket getAsyncApiDocket() {
         if (docket == null) {
-            docket = createDocket();
+            createDocket();
         }
         return docket;
     }
 
-    private AsyncApiDocket createDocket() {
-        log.debug("Reading springwolf configuration from application.properties files");
+    private void createDocket() {
+        if (customDocket.isPresent()) {
+            log.debug("Reading springwolf configuration from custom defined @Bean AsyncApiDocket");
+            log.warn("The usage of the @Bean AsyncApiDocket is deprecated and scheduled to be deleted. "
+                    + "Use the spring properties file instead. "
+                    + "More details: https://www.springwolf.dev/docs/quickstart");
+            docket = customDocket.get();
+        } else {
+            log.debug("Reading springwolf configuration from application.properties files");
+            docket = parseApplicationConfigProperties();
+        }
+    }
 
+    private AsyncApiDocket parseApplicationConfigProperties() {
         if (configProperties.getDocket() == null || configProperties.getDocket().getBasePackage() == null) {
             throw new IllegalArgumentException(
                     "One or more required fields (docket, basePackage) " + "in application.properties with path prefix "

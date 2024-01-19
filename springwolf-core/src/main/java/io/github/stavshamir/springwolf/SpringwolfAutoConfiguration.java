@@ -9,6 +9,7 @@ import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfInitApplicationListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
@@ -30,6 +31,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Boot auto-configuration which loads all spring-beans for springwolf core module.
@@ -80,8 +82,9 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AsyncApiDocketService asyncApiDocketService(SpringwolfConfigProperties springwolfConfigProperties) {
-        return new DefaultAsyncApiDocketService(springwolfConfigProperties);
+    public AsyncApiDocketService asyncApiDocketService(
+            Optional<AsyncApiDocket> optionalAsyncApiDocket, SpringwolfConfigProperties springwolfConfigProperties) {
+        return new DefaultAsyncApiDocketService(optionalAsyncApiDocket, springwolfConfigProperties);
     }
 
     @Bean

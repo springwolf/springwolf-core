@@ -10,6 +10,7 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Maps.newHashMap;
@@ -40,7 +41,7 @@ class DefaultAsyncApiDocketServiceTest {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setDocket(configDocket);
 
-        AsyncApiDocketService docketService = new DefaultAsyncApiDocketService(properties);
+        AsyncApiDocketService docketService = new DefaultAsyncApiDocketService(Optional.empty(), properties);
 
         // when
         AsyncApiDocket asyncApiDocket = docketService.getAsyncApiDocket();
@@ -58,7 +59,34 @@ class DefaultAsyncApiDocketServiceTest {
     }
 
     @Test
-    void docketServiceShouldDeliverCachedDocket() {
+    void docketServiceShouldDeliverCachedConfigDocketBean() {
+        // repeatable invocations of AsyncApiDocketService.getAsyncApiDocket() should return the same docket instance
+        // if a ConfigDocket @Bean is present.
+
+        // given
+        AsyncApiDocket customDocket = AsyncApiDocket.builder()
+                .basePackage("test-base-package")
+                .info(com.asyncapi.v2._6_0.model.info.Info.builder()
+                        .title("some-title")
+                        .version("some-version")
+                        .build())
+                .build();
+
+        SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
+
+        AsyncApiDocketService docketService =
+                new DefaultAsyncApiDocketService(Optional.of(customDocket), configProperties);
+
+        // when
+        AsyncApiDocket asyncApiDocket = docketService.getAsyncApiDocket();
+
+        // then
+        // second invocation should again return same instance
+        assertThat(docketService.getAsyncApiDocket()).isSameAs(asyncApiDocket);
+    }
+
+    @Test
+    void docketServiceShouldDeliverCachedSpringPropertiesBasedDocket() {
         // repeatable invocations of AsyncApiDocketService.getAsyncApiDocket() should return the same docket instance
         // if docket is based on environment properties.
 
@@ -79,7 +107,7 @@ class DefaultAsyncApiDocketServiceTest {
         SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
         configProperties.setDocket(configDocket);
 
-        AsyncApiDocketService docketService = new DefaultAsyncApiDocketService(configProperties);
+        AsyncApiDocketService docketService = new DefaultAsyncApiDocketService(Optional.empty(), configProperties);
 
         // when
         AsyncApiDocket asyncApiDocket = docketService.getAsyncApiDocket();

@@ -3,14 +3,23 @@ package io.github.stavshamir.springwolf.configuration;
 
 import com.asyncapi.v2._6_0.model.info.Info;
 import com.asyncapi.v2._6_0.model.server.Server;
+import io.github.stavshamir.springwolf.asyncapi.types.ConsumerData;
+import io.github.stavshamir.springwolf.asyncapi.types.ProducerData;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.Singular;
 import org.springframework.http.MediaType;
 
+import java.util.List;
 import java.util.Map;
 
+/**
+ * Use to (manually) configure springwolf
+ * <p>
+ * This will not be the final AsyncApiDocket, use {@link AsyncApiDocketService#getAsyncApiDocket()} to get it.
+ * This will not be the final api definition, use {@link io.github.stavshamir.springwolf.asyncapi.AsyncApiService} to get it.
+ */
 @Data
 @Builder
 public class AsyncApiDocket {
@@ -34,6 +43,17 @@ public class AsyncApiDocket {
      */
     @Singular
     private final Map<String, Server> servers;
+
+    /**
+     * Provides information about the producers.
+     */
+    @Singular
+    @Deprecated(forRemoval = true)
+    private final List<ProducerData> producers;
+
+    @Singular
+    @Deprecated(forRemoval = true)
+    private final List<ConsumerData> consumers;
 
     /**
      * A string representing the default content type to use when encoding/decoding a message's payload.
