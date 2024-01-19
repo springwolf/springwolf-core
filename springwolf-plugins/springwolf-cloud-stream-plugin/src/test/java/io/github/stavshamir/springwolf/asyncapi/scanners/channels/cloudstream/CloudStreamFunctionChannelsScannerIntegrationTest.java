@@ -3,8 +3,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
 import com.asyncapi.v2._6_0.model.channel.ChannelItem;
 import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2._6_0.model.info.Info;
-import com.asyncapi.v2._6_0.model.server.Server;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ComponentClassScanner;
@@ -16,7 +14,6 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
@@ -25,6 +22,7 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.config.BindingProperties;
@@ -32,6 +30,7 @@ import org.springframework.cloud.stream.config.BindingServiceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
@@ -57,6 +56,16 @@ import static org.mockito.Mockito.when;
             FunctionalChannelBeanBuilder.class,
             SpringwolfConfigProperties.class
         })
+@TestPropertySource(
+        properties = {
+            "springwolf.enabled=true",
+            "springwolf.docket.info.title=Test",
+            "springwolf.docket.info.version=1.0.0",
+            "springwolf.docket.base-package=io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream",
+            "springwolf.docket.servers.kafka.protocol=kafka",
+            "springwolf.docket.servers.kafka.url=kafka:9092",
+        })
+@EnableConfigurationProperties
 @Import(CloudStreamFunctionChannelsScannerIntegrationTest.Configuration.class)
 class CloudStreamFunctionChannelsScannerIntegrationTest {
 
@@ -336,19 +345,6 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
     @TestConfiguration
     public static class Configuration {
-
-        @Bean
-        public AsyncApiDocket docket() {
-            Info info = Info.builder().title("Test").version("1.0.0").build();
-
-            return AsyncApiDocket.builder()
-                    .info(info)
-                    .basePackage(this.getClass().getPackage().getName())
-                    .server(
-                            "kafka",
-                            Server.builder().protocol("kafka").url("kafka:9092").build())
-                    .build();
-        }
 
         @Bean
         public Consumer<String> testConsumer() {

@@ -14,6 +14,9 @@ import org.springframework.lang.Nullable;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Springwolf configuration loaded from Spring <code>application.properties</code> file.
+ */
 @ConfigurationProperties(prefix = SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX)
 @Getter
 @Setter
@@ -164,12 +167,6 @@ public class SpringwolfConfigProperties {
         @Nullable
         private static AsyncPublisher asyncPublisher;
 
-        @Nullable
-        private static ConsumerData consumerData;
-
-        @Nullable
-        private static ProducerData producerData;
-
         @Getter
         @Setter
         public static class AsyncListener {
@@ -187,28 +184,6 @@ public class SpringwolfConfigProperties {
             /**
              * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED}
              */
-            private boolean enabled = true;
-        }
-
-        @Getter
-        @Setter
-        public static class ConsumerData {
-
-            /**
-             * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_PRODUCER_DATA_ENABLED}
-             */
-            @Deprecated(forRemoval = true)
-            private boolean enabled = true;
-        }
-
-        @Getter
-        @Setter
-        public static class ProducerData {
-
-            /**
-             * This mirrors the ConfigConstant {@see SpringwolfConfigConstants#SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED}
-             */
-            @Deprecated(forRemoval = true)
             private boolean enabled = true;
         }
     }

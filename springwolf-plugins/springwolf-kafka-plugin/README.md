@@ -33,41 +33,18 @@ dependencies {
 }
 ```
 
-### Configuration class
+### Configuration
 
-Add a configuration class and provide a `AsyncApiDocket` bean:
+Add a `application.properties` file:
 
-```java
+```properties
+springwolf.docket.base-package=io.github.stavshamir.springwolf.example.consumers
 
-@Configuration
-public class AsyncApiConfiguration {
+springwolf.docket.info.title=${spring.application.name}
+springwolf.docket.info.version=1.0.0
 
-    private final static String BOOTSTRAP_SERVERS = "localhost:9092"; // Change to your actual bootstrap server
-
-    @Bean
-    public AsyncApiDocket asyncApiDocket() {
-        Info info = Info.builder()
-                .version("1.0.0")
-                .title("Springwolf example project")
-                .build();
-
-        // Producers are not picked up automatically - if you want them to be included in the asyncapi doc and the UI,
-        // you will need to build a ProducerData and register it in the docket (line 65)
-        ProducerData exampleProducerData = ProducerData.builder()
-                .channelName("example-producer-topic")
-                .binding(Map.of("kafka", new KafkaOperationBinding()))
-                .payloadType(ExamplePayloadDto.class)
-                .build();
-
-        return AsyncApiDocket.builder()
-                .basePackage("io.github.stavshamir.springwolf.example.kafka.consumers") // Change to your actual base package of listeners
-                .info(info)
-                .server("kafka", Server.builder().protocol("kafka").url(BOOTSTRAP_SERVERS).build())
-                .producer(exampleProducerData)
-                .build();
-    }
-
-}
+springwolf.docket.servers.kafka.protocol=kafka
+springwolf.docket.servers.kafka.url=${kafka.bootstrap.servers:localhost:29092}
 ```
 
 The basePackage field must be set with the name of the package containing the classes to be scanned for `@KafkaListener`
