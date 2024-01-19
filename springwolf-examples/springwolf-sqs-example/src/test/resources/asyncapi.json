@@ -155,18 +155,16 @@
     }
   },
   "operations": {
-    "another-queue": {
+    "another-queue_receive_receiveAnotherPayload": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/another-queue"
       },
-      "title": "another-queue_receive",
-      "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "sqs": {
           "queues": [
             {
-              "name": "queue-name",
+              "name": "another-queue",
               "fifoQueue": true,
               "deliveryDelay": 0,
               "visibilityTimeout": 30,
@@ -183,16 +181,18 @@
         }
       ]
     },
-    "another-queue_receive_receiveAnotherPayload": {
-      "action": "receive",
+    "another-queue_send_sendMessage": {
+      "action": "send",
       "channel": {
         "$ref": "#/channels/another-queue"
       },
+      "title": "another-queue_send",
+      "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "sqs": {
           "queues": [
             {
-              "name": "another-queue",
+              "name": "queue-name",
               "fifoQueue": true,
               "deliveryDelay": 0,
               "visibilityTimeout": 30,

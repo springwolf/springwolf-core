@@ -19,9 +19,12 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
+import io.github.stavshamir.springwolf.schemas.SchemasService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
@@ -81,6 +84,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     @Autowired
     private CloudStreamFunctionChannelsScanner scanner;
 
+    @Autowired
+    private SchemasService schemasService;
+
     private Map<String, EmptyMessageBinding> messageBinding = Map.of("kafka", new EmptyMessageBinding());
     private Map<String, OperationBinding> operationBinding = Map.of("kafka", new EmptyOperationBinding());
     private Map<String, ChannelBinding> channelBinding = Map.of("kafka", new EmptyChannelBinding());
@@ -108,14 +114,16 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject message = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                        .build()))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(message.getName(), message))
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .build();
 
         Operation expectedOperation = Operation.builder()
@@ -129,6 +137,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
         assertThat(actualOperations)
                 .containsExactly(Map.entry("test-consumer-input-topic_publish_testConsumer", expectedOperation));
+        assertThat(schemasService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
     @Test
@@ -148,7 +157,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject message = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                        .build()))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
@@ -164,12 +175,13 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(message.getName(), message))
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
         assertThat(actualOperations)
                 .containsExactly(Map.entry("test-supplier-output-topic_subscribe_testSupplier", expectedOperation));
+        assertThat(schemasService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
     @Test
@@ -196,7 +208,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title(Integer.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.toSchema(Integer.class.getSimpleName())))
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(Integer.class.getSimpleName()))
+                        .build()))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
@@ -212,13 +226,15 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject subscribeChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(subscribeMessage.getName(), subscribeMessage))
+                .messages(Map.of(subscribeMessage.getName(), MessageReference.toComponentMessage(subscribeMessage)))
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                        .build()))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
@@ -234,7 +250,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject publishChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(publishMessage.getName(), publishMessage))
+                .messages(Map.of(publishMessage.getName(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
         assertThat(actualChannels)
@@ -269,7 +285,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title(Integer.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.toSchema(Integer.class.getSimpleName())))
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(Integer.class.getSimpleName()))
+                        .build()))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
@@ -285,13 +303,15 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject subscribeChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(subscribeMessage.getName(), subscribeMessage))
+                .messages(Map.of(subscribeMessage.getName(), MessageReference.toComponentMessage(subscribeMessage)))
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                        .build()))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
@@ -307,7 +327,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject publishChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(publishMessage.getName(), publishMessage))
+                .messages(Map.of(publishMessage.getName(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
         assertThat(actualChannels)
@@ -316,6 +336,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .contains(
                         Map.entry("test-in-topic_publish_kStreamTestFunction", publishOperation),
                         Map.entry("test-out-topic_subscribe_kStreamTestFunction", subscribeOperation));
+        assertThat(schemasService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
+        assertThat(schemasService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
     }
 
     @Test
@@ -341,7 +363,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title(Integer.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.toSchema(Integer.class.getSimpleName())))
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(Integer.class.getSimpleName()))
+                        .build()))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
@@ -358,7 +382,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         MessageObject publishMessage = MessageObject.builder()
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MessageReference.toSchema(String.class.getSimpleName())))
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                        .build()))
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
@@ -375,8 +401,11 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject mergedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(
-                        Map.of(publishMessage.getName(), publishMessage, subscribeMessage.getName(), subscribeMessage))
+                .messages(Map.of(
+                        publishMessage.getName(),
+                        MessageReference.toComponentMessage(publishMessage),
+                        subscribeMessage.getName(),
+                        MessageReference.toComponentMessage(subscribeMessage)))
                 .build();
 
         assertThat(actualChannels).contains(Map.entry(topicName, mergedChannel));
@@ -384,6 +413,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .contains(
                         Map.entry("test-topic_publish_testFunction", publishOperation),
                         Map.entry("test-topic_subscribe_testFunction", subscribeOperation));
+        assertThat(schemasService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
+        assertThat(schemasService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
     }
 
     @TestConfiguration

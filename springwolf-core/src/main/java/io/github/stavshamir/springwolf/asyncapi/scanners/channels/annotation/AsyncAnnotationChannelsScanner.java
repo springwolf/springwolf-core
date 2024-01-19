@@ -118,12 +118,14 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
     private Map.Entry<String, Operation> buildOperation(MethodAndAnnotation<A> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
-        String operationName = resolver.resolveStringValue(operationAnnotation.channelName());
+        String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
+        String operationId = channelName + "_" + this.asyncAnnotationProvider.getOperationType().type + "_"
+                + methodAndAnnotation.method.getName();
 
-        Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), operationName);
+        Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelName);
         operation.setAction(this.asyncAnnotationProvider.getOperationType());
 
-        return Map.entry(operationName, operation);
+        return Map.entry(operationId, operation);
     }
 
     private Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelName) {

@@ -52,7 +52,7 @@ public class ChannelMerger {
      * Messages within operations are merged
      *
      * @param operationEntries Ordered pairs of operation name to Operation
-     * @return A map of operationName to a single Operation
+     * @return A map of operationId to a single Operation
      */
     public static Map<String, Operation> mergeOperations(List<Map.Entry<String, Operation>> operationEntries) {
         Map<String, Operation> mergedOperations = new HashMap<>();

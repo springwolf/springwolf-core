@@ -95,8 +95,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
         Operation newUserOperation = Operation.builder()
                 .action(OperationAction.SEND)
-                // FIXME: Generate Ref from Channel Instance
-                .channel(ChannelReference.builder().ref("#/channels/new-user").build())
+                .channel(ChannelReference.fromChannel("new-user"))
                 .messages(List.of(MessageReference.toChannelMessage("new-user", message.getName())))
                 .bindings(Map.of("kafka", operationBinding))
                 .build();

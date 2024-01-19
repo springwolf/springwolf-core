@@ -93,7 +93,7 @@ class AsyncAnnotationScannerUtil {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toMap(
-                        ProcessedMessageBinding::getType, ProcessedMessageBinding::getBinding, (e1, e2) -> e2));
+                        ProcessedMessageBinding::getType, ProcessedMessageBinding::getBinding, (e1, e2) -> e1));
     }
 
     public static void processAsyncMessageAnnotation(

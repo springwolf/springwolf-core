@@ -35,16 +35,16 @@ class ChannelMergerTest {
     }
 
     @Test
-    void shouldNotMergeDifferentOperationNames() {
+    void shouldNotMergeDifferentoperationIds() {
         // given
-        String operationName1 = "operation1";
-        String operationName2 = "operation2";
+        String operationId1 = "operation1";
+        String operationId2 = "operation2";
         Operation publisherOperation = Operation.builder().build();
         Operation subscriberOperation = Operation.builder().build();
 
         // when
         Map<String, Operation> mergedOperations = ChannelMerger.mergeOperations(Arrays.asList(
-                Map.entry(operationName1, publisherOperation), Map.entry(operationName2, subscriberOperation)));
+                Map.entry(operationId1, publisherOperation), Map.entry(operationId2, subscriberOperation)));
 
         // then
         assertThat(mergedOperations).hasSize(2);
@@ -66,9 +66,9 @@ class ChannelMergerTest {
     }
 
     @Test
-    void shouldMergeEqualOperationNamesIntoOneOperation() {
+    void shouldMergeEqualoperationIdsIntoOneOperation() {
         // given
-        String operationName = "operation";
+        String operationId = "operation";
         Operation publishOperation = Operation.builder()
                 .action(OperationAction.SEND)
                 .title("publisher")
@@ -79,8 +79,8 @@ class ChannelMergerTest {
                 .build();
 
         // when
-        Map<String, Operation> mergedOperations = ChannelMerger.mergeOperations(Arrays.asList(
-                Map.entry(operationName, publishOperation), Map.entry(operationName, subscribeOperation)));
+        Map<String, Operation> mergedOperations = ChannelMerger.mergeOperations(
+                Arrays.asList(Map.entry(operationId, publishOperation), Map.entry(operationId, subscribeOperation)));
 
         // then
         assertThat(mergedOperations).hasSize(1);
@@ -108,7 +108,7 @@ class ChannelMergerTest {
     @Test
     void shouldUseFirstOperationFound() {
         // given
-        String operationName = "operation";
+        String operationId = "operation";
         Operation senderOperation =
                 Operation.builder().action(OperationAction.SEND).build();
         Operation receiverOperation =
@@ -116,10 +116,10 @@ class ChannelMergerTest {
 
         // when
         Map<String, Operation> mergedOperations = ChannelMerger.mergeOperations(
-                Arrays.asList(Map.entry(operationName, senderOperation), Map.entry(operationName, receiverOperation)));
+                Arrays.asList(Map.entry(operationId, senderOperation), Map.entry(operationId, receiverOperation)));
 
         // then
-        assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationName, it -> {
+        assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationId, it -> {
             assertThat(it.getAction()).isEqualTo(OperationAction.SEND);
         });
     }
@@ -171,7 +171,7 @@ class ChannelMergerTest {
     void shouldMergeDifferentMessageForSameOperation() {
         // given
         String channelName = "channel";
-        String operationName = "operation";
+        String operationId = "operation";
         MessageObject message1 = MessageObject.builder()
                 .messageId("message1")
                 .name(String.class.getCanonicalName())
@@ -209,13 +209,13 @@ class ChannelMergerTest {
 
         // when
         Map<String, Operation> mergedOperations = ChannelMerger.mergeOperations(List.of(
-                Map.entry(operationName, senderOperation1),
-                Map.entry(operationName, senderOperation2),
-                Map.entry(operationName, senderOperation3)));
+                Map.entry(operationId, senderOperation1),
+                Map.entry(operationId, senderOperation2),
+                Map.entry(operationId, senderOperation3)));
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
-        assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationName, it -> {
+        assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationId, it -> {
             assertThat(it.getMessages()).containsExactlyInAnyOrder(messageRef1, messageRef2);
         });
     }

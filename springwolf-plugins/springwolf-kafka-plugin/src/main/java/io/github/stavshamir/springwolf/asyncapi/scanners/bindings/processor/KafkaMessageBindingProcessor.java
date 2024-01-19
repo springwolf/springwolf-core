@@ -6,14 +6,15 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessa
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class KafkaMessageBindingProcessor implements MessageBindingProcessor, EmbeddedValueResolverAware {
@@ -37,6 +38,9 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
         KafkaAsyncMessageBinding messageBinding = bindingAnnotation.messageBinding();
 
         KafkaMessageBinding.KafkaMessageBindingBuilder kafkaMessageBindingBuilder = KafkaMessageBinding.builder();
+
+        kafkaMessageBindingBuilder.key(resolveSchemaOrNull(messageBinding));
+
         String bindingVersion = resolveOrNull(messageBinding.bindingVersion());
         if (StringUtils.hasText(bindingVersion)) {
             kafkaMessageBindingBuilder.bindingVersion(bindingVersion);
@@ -49,15 +53,17 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
         return StringUtils.hasText(stringValue) ? resolver.resolveStringValue(stringValue) : null;
     }
 
-    private Schema<?> resolveSchemaOrNull(KafkaAsyncMessageBinding messageBinding) {
-        Schema<?> schemaDefinition = null;
+    private Schema resolveSchemaOrNull(KafkaAsyncMessageBinding messageBinding) {
+        Schema schemaDefinition = null;
         switch (messageBinding.key().type()) {
             case UNDEFINED_KEY:
                 break;
             case STRING_KEY:
-                schemaDefinition = new StringSchema()
-                        .example(messageBinding.key().example())
-                        .description(resolveOrNull(messageBinding.key().description()));
+                schemaDefinition = SchemaObject.builder()
+                        .type("string")
+                        .examples(List.of(messageBinding.key().example()))
+                        .description(resolveOrNull(messageBinding.key().description()))
+                        .build();
         }
 
         return schemaDefinition;

@@ -214,7 +214,8 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
-        assertThat(actualOperations).containsExactly(Map.entry("test-channel", expectedOperation));
+        assertThat(actualOperations)
+                .containsExactly(Map.entry("test-channel_send_methodWithAnnotation", expectedOperation));
     }
 
     @Test
@@ -275,8 +276,8 @@ class AsyncAnnotationChannelsScannerTest {
                         "test-channel-2", expectedChannel2));
         assertThat(actualOperations)
                 .containsExactlyInAnyOrderEntriesOf(Map.of(
-                        "test-channel-1", expectedOperation1,
-                        "test-channel-2", expectedOperation2));
+                        "test-channel-1_send_methodWithMultipleAnnotation", expectedOperation1,
+                        "test-channel-2_send_methodWithMultipleAnnotation", expectedOperation2));
     }
 
     @Test
@@ -318,7 +319,8 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
-        assertThat(actualOperations).containsExactly(Map.entry("test-channel", expectedOperation));
+        assertThat(actualOperations)
+                .containsExactly(Map.entry("test-channel_send_methodWithAnnotation", expectedOperation));
     }
 
     private static class ClassWithoutListenerAnnotation {
@@ -435,7 +437,8 @@ class AsyncAnnotationChannelsScannerTest {
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
-            assertThat(actualOperations).containsExactly(Map.entry("test-channel", expectedOperation));
+            assertThat(actualOperations)
+                    .containsExactly(Map.entry("test-channel_send_methodFromInterface", expectedOperation));
         }
 
         private static class ClassImplementingInterface implements ClassInterface<String> {
@@ -510,7 +513,8 @@ class AsyncAnnotationChannelsScannerTest {
                     .build();
 
             assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
-            assertThat(actualOperations).containsExactly(Map.entry("test-channel", expectedOperation));
+            assertThat(actualOperations)
+                    .containsExactly(Map.entry("test-channel_send_methodFromInterface", expectedOperation));
         }
 
         public static class ClassWithMetaAnnotation {

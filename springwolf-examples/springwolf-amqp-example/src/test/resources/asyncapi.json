@@ -245,12 +245,12 @@
         }
       ]
     },
-    "example-producer-channel-publisher": {
-      "action": "receive",
+    "example-producer-channel-publisher_send_sendMessage": {
+      "action": "send",
       "channel": {
         "$ref": "#/channels/example-producer-channel-publisher"
       },
-      "title": "example-producer-channel-publisher_receive",
+      "title": "example-producer-channel-publisher_send",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "amqp": {
