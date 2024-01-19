@@ -123,7 +123,7 @@ openApi {
 
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.21.1'
+        artifact = 'com.google.protobuf:protoc:3.25.2'
     }
     generateProtoTasks {
         all().each { task ->
