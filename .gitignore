@@ -18,6 +18,7 @@ springwolf-plugins/springwolf-sqs-plugin/build/
 .gradle/
 .idea/
 /gradle.properties
+node_modules/
 
 asyncapi.actual.json
 
