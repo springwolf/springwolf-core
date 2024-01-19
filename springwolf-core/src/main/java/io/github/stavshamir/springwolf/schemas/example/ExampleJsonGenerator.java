@@ -56,9 +56,8 @@ public class ExampleJsonGenerator implements ExampleGenerator {
     @Override
     public Object fromSchema(Schema schema, Map<String, Schema> definitions) {
         try {
-            String exampleString = buildSchema(schema, definitions);
-            return objectMapper.readValue(exampleString, Object.class);
-        } catch (JsonProcessingException | ExampleGeneratingException ex) {
+            return buildSchemaInternal(schema, definitions, new HashSet<>());
+        } catch (ExampleGeneratingException ex) {
             log.info("Failed to build json example for schema {}", schema.getName(), ex);
         }
         return null;
@@ -102,6 +101,11 @@ public class ExampleJsonGenerator implements ExampleGenerator {
         // schema is a map of properties from a nested object, whose example cannot be inferred
         if (exampleValue == null) {
             return null;
+        }
+
+        // Return directly, when we have processed this before
+        if (exampleValue instanceof JsonNode) {
+            return (JsonNode) exampleValue;
         }
 
         // Create an ObjectNode to hold the example JSON

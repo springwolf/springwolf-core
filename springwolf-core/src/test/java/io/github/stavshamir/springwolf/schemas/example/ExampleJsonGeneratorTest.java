@@ -36,7 +36,7 @@ class ExampleJsonGeneratorTest {
 
             Object actual = generator.fromSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("string");
+            assertThat(actual.toString()).isEqualTo("\"string\"");
         }
 
         @Test

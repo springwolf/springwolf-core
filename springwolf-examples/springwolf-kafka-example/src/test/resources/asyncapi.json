@@ -564,9 +564,10 @@
       },
       "String": {
         "type": "string",
-        "example": "string",
+        "example": "\"string\"",
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
+          "name": "java.lang.String",
           "type": "string"
         }
       },
@@ -606,7 +607,7 @@
         "maxLength": 100,
         "type": "string",
         "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
-        "example": "string",
+        "example": "\"string\"",
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",

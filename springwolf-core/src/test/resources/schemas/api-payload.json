@@ -3,6 +3,6 @@
     "maxLength" : 10,
     "type" : "string",
     "description" : "The payload in the envelop",
-    "example" : "string"
+    "example" : "\"string\""
   }
 }
