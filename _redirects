@@ -1,7 +1,0 @@
-# Redirects from what the browser requests to what we serve
-# Usage with netlify for dev build with mock data:
-#   Build command: ng build --base-href=/springwolf-ui/ && mv dist/springwolf-ui/_redirects dist/_redirects
-#   Publish directory: dist/
-
-/              /springwolf-ui/asyncapi-ui.html
-/springwolf-ui /springwolf-ui/asyncapi-ui.html
