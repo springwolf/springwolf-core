@@ -1,0 +1,15 @@
+[build]
+base = "springwolf-ui"
+publish = "springwolf-ui/dist/"
+build = "ng build --base-href=/springwolf-ui/"
+ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF springwolf-ui springwolf-examples/**/asyncapi.json"
+
+[[redirects]]
+from = "/"
+to = " /springwolf-ui/asyncapi-ui.html"
+status = 301
+
+[[redirects]]
+from = "/springwolf-ui"
+to = " /springwolf-ui/asyncapi-ui.html"
+status = 301
