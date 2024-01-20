@@ -2,7 +2,7 @@
 base = "springwolf-ui"
 publish = "dist/"
 command = "ng build --base-href=/springwolf-ui/"
-ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF springwolf-ui springwolf-examples/**/asyncapi.json"
+ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ./ ../springwolf-examples/**/asyncapi.json"
 
 [[redirects]]
 from = "/"
