@@ -1,0 +1,59 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<div>
+  <span
+    class="range"
+    *ngIf="schema.minimum !== undefined && schema.maximum === undefined"
+  >
+    <span
+      *ngIf="
+        schema.exclusiveMinimum;
+        then exclusiveMinimumSign;
+        else inclusiveMinimumSign
+      "
+    ></span>
+    {{ schema.minimum }}
+  </span>
+  <span
+    class="range"
+    *ngIf="schema.minimum === undefined && schema.maximum !== undefined"
+  >
+    <span
+      *ngIf="
+        schema.exclusiveMaximum;
+        then exclusiveMaximumSign;
+        else inclusiveMaximumSign
+      "
+    ></span>
+    {{ schema.maximum }}
+  </span>
+  <span
+    class="range"
+    *ngIf="schema.minimum !== undefined && schema.maximum !== undefined"
+  >
+    <span
+      *ngIf="
+        schema.exclusiveMinimum;
+        then exclusiveMinimumBrackets;
+        else inclusiveMinimumBrackets
+      "
+    ></span>
+    {{ schema.minimum }} .. {{ schema.maximum }}
+    <span
+      *ngIf="
+        schema.exclusiveMaximum;
+        then exclusiveMaximumBrackets;
+        else inclusiveMaximumBrackets
+      "
+    ></span>
+  </span>
+</div>
+
+<ng-template #exclusiveMinimumBrackets>(</ng-template>
+<ng-template #exclusiveMaximumBrackets>)</ng-template>
+<ng-template #inclusiveMinimumBrackets>[</ng-template>
+<ng-template #inclusiveMaximumBrackets>]</ng-template>
+
+<ng-template #exclusiveMinimumSign>&gt;</ng-template>
+<ng-template #exclusiveMaximumSign>&lt;</ng-template>
+<ng-template #inclusiveMinimumSign>&gt;=</ng-template>
+<ng-template #inclusiveMaximumSign>&lt;=</ng-template>

@@ -23,4 +23,6 @@ export interface Schema {
   example?: Example;
   minimum?: number;
   maximum?: number;
+  exclusiveMinimum?: boolean;
+  exclusiveMaximum?: boolean;
 }
