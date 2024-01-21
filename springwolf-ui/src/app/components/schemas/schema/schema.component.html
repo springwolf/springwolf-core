@@ -49,7 +49,9 @@
       [ngTemplateOutletContext]="{
         rangeValue: {
           minimum: value.minimum,
-          maximum: value.maximum
+          maximum: value.maximum,
+          exclusiveMinimum: value.exclusiveMinimum,
+          exclusiveMaximum: value.exclusiveMaximum,
         }
       }"
     >
@@ -73,12 +75,26 @@
 
 <ng-template #rangeContent let-rangeValue="rangeValue">
   <span class="range" *ngIf="rangeValue.minimum !== undefined && rangeValue.maximum === undefined">
-    &gt;= {{ rangeValue.minimum }}
+    <span *ngIf="rangeValue.exclusiveMinimum; then exclusiveMinimumSign else inclusiveMinimumSign"></span>
+    {{ rangeValue.minimum }}
   </span>
   <span class="range" *ngIf="rangeValue.minimum === undefined && rangeValue.maximum !== undefined">
-    &lt;= {{ rangeValue.maximum }}
+    <span *ngIf="rangeValue.exclusiveMaximum; then exclusiveMaximumSign else inclusiveMaximumSign"></span>
+    {{ rangeValue.maximum }}
   </span>
   <span class="range" *ngIf="rangeValue.minimum !== undefined && rangeValue.maximum !== undefined">
-    [ {{ rangeValue.minimum }} .. {{ rangeValue.maximum }} ]
+    <span *ngIf="rangeValue.exclusiveMinimum; then exclusiveMinimumBrackets else inclusiveMinimumBrackets"></span>
+    {{ rangeValue.minimum }} .. {{ rangeValue.maximum }}
+    <span *ngIf="rangeValue.exclusiveMaximum; then exclusiveMaximumBrackets else inclusiveMaximumBrackets"></span>
   </span>
 </ng-template>
+
+<ng-template #exclusiveMinimumBrackets>(</ng-template>
+<ng-template #exclusiveMaximumBrackets>)</ng-template>
+<ng-template #inclusiveMinimumBrackets>[</ng-template>
+<ng-template #inclusiveMaximumBrackets>]</ng-template>
+
+<ng-template #exclusiveMinimumSign>&gt;</ng-template>
+<ng-template #exclusiveMaximumSign>&lt;</ng-template>
+<ng-template #inclusiveMinimumSign>&gt;=</ng-template>
+<ng-template #inclusiveMaximumSign>&lt;=</ng-template>
