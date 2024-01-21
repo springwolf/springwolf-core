@@ -47,8 +47,10 @@
     <ng-container
       [ngTemplateOutlet]="rangeContent"
       [ngTemplateOutletContext]="{
-        minimum: value.minimum,
-        maximum: value.maximum
+        rangeValue: {
+          minimum: value.minimum,
+          maximum: value.maximum
+        }
       }"
     >
     </ng-container>
@@ -69,14 +71,14 @@
   </mat-select>
 </ng-template>
 
-<ng-template #rangeContent let-minimum="minimum" let-maximum="maximum">
-  <span class="range" *ngIf="minimum !== undefined && maximum === undefined">
-    &gt;= {{ minimum }}
+<ng-template #rangeContent let-rangeValue="rangeValue">
+  <span class="range" *ngIf="rangeValue.minimum !== undefined && rangeValue.maximum === undefined">
+    &gt;= {{ rangeValue.minimum }}
   </span>
-  <span class="range" *ngIf="minimum === undefined && maximum !== undefined">
-    &lt;= {{ maximum }}
+  <span class="range" *ngIf="rangeValue.minimum === undefined && rangeValue.maximum !== undefined">
+    &lt;= {{ rangeValue.maximum }}
   </span>
-  <span class="range" *ngIf="minimum !== undefined && maximum !== undefined">
-    [ {{ minimum }} .. {{ maximum }} ]
+  <span class="range" *ngIf="rangeValue.minimum !== undefined && rangeValue.maximum !== undefined">
+    [ {{ rangeValue.minimum }} .. {{ rangeValue.maximum }} ]
   </span>
 </ng-template>
