@@ -13,6 +13,7 @@ import { HeaderComponent } from "./components/header/header.component";
 import { InfoComponent } from "./components/info/info.component";
 import { MaterialModule } from "./material.module";
 import { SchemaComponent } from "./components/schemas/schema/schema.component";
+import { SchemaRangeComponent } from "./components/schemas/range/schema-range.component";
 import { SchemasComponent } from "./components/schemas/schemas.component";
 import { ServersComponent } from "./components/servers/servers.component";
 import { AsyncApiService } from "./service/asyncapi/asyncapi.service";
@@ -33,6 +34,7 @@ import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.servic
     ChannelMainComponent,
     SchemasComponent,
     SchemaComponent,
+    SchemaRangeComponent,
     JsonComponent,
   ],
   imports: [

@@ -24,11 +24,3 @@
   color: #6b6b6b;
   font-style: italic;
 }
-
-.range {
-  background-color: rgb(128, 90, 213);
-  color: rgb(255, 255, 255);
-  margin: 0 8 0 8;
-  padding: 2 4 2 4;
-  border-radius: 4px;
-}
