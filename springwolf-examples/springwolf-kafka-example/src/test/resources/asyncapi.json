@@ -354,6 +354,7 @@
         "properties": {
           "amount": {
             "minimum": 0.1,
+            "exclusiveMinimum": true,
             "type": "number",
             "example": 99.99
           },
