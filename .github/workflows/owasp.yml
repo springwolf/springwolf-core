@@ -25,7 +25,7 @@ jobs:
         run: echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
         shell: bash
       - name: Cache Dependency Check DB
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle/dependency-check-data
           key: ${{ runner.os }}-gradle-owasp-${{ steps.get-date.outputs.date }}
