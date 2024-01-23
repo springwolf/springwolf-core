@@ -26,6 +26,7 @@ class DefaultAsyncApiServiceTest {
     private DefaultAsyncApiService defaultAsyncApiService;
     private AsyncApiDocketService asyncApiDocketService;
     private ChannelsService channelsService;
+    private OperationsService operationsService;
     private SchemasService schemasService;
     private List<AsyncApiCustomizer> customizers = new ArrayList<>();
 
@@ -33,13 +34,14 @@ class DefaultAsyncApiServiceTest {
     public void setup() {
         asyncApiDocketService = mock(AsyncApiDocketService.class);
         channelsService = mock(ChannelsService.class);
+        operationsService = mock(OperationsService.class);
         schemasService = mock(SchemasService.class);
 
         when(channelsService.findChannels()).thenReturn(Map.of());
         when(schemasService.getSchemas()).thenReturn(Map.of());
 
-        defaultAsyncApiService =
-                new DefaultAsyncApiService(asyncApiDocketService, channelsService, schemasService, customizers);
+        defaultAsyncApiService = new DefaultAsyncApiService(
+                asyncApiDocketService, channelsService, operationsService, schemasService, customizers);
     }
 
     @Test

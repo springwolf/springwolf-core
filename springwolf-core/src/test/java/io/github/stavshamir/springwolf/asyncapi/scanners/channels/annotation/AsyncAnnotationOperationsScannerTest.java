@@ -51,15 +51,14 @@ import static java.util.Collections.EMPTY_MAP;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AsyncAnnotationChannelsScannerTest {
+class AsyncAnnotationOperationsScannerTest {
 
-    private AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
-            new AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<>() {
+    private final AsyncAnnotationOperationsScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
+            new AsyncAnnotationOperationsScanner.AsyncAnnotationProvider<>() {
                 @Override
                 public Class<AsyncListener> getAnnotation() {
                     return AsyncListener.class;
@@ -87,14 +86,14 @@ class AsyncAnnotationChannelsScannerTest {
 
     private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
-    private final AsyncAnnotationChannelsScanner<AsyncListener> channelScanner = new AsyncAnnotationChannelsScanner<>(
-            asyncAnnotationProvider,
-            classScanner,
-            schemasService,
-            asyncApiDocketService,
-            payloadClassExtractor,
-            operationBindingProcessors,
-            messageBindingProcessors);
+    private final AsyncAnnotationOperationsScanner<AsyncListener> operationsScanner =
+            new AsyncAnnotationOperationsScanner<>(
+                    asyncAnnotationProvider,
+                    classScanner,
+                    schemasService,
+                    payloadClassExtractor,
+                    operationBindingProcessors,
+                    messageBindingProcessors);
 
     @BeforeEach
     public void setup() {
@@ -105,7 +104,7 @@ class AsyncAnnotationChannelsScannerTest {
                         .server("server2", new Server())
                         .build());
 
-        channelScanner.setEmbeddedValueResolver(stringValueResolver);
+        operationsScanner.setEmbeddedValueResolver(stringValueResolver);
         when(stringValueResolver.resolveStringValue(any()))
                 .thenAnswer(invocation -> switch ((String) invocation.getArgument(0)) {
                     case "${test.property.test-channel}" -> "test-channel";
@@ -125,18 +124,18 @@ class AsyncAnnotationChannelsScannerTest {
     void scan_componentHasNoListenerMethods() {
         setClassToScan(ClassWithoutListenerAnnotation.class);
 
-        Map<String, ChannelObject> channels = channelScanner.scan();
+        Map<String, Operation> channels = operationsScanner.scan();
 
         assertThat(channels).isEmpty();
     }
 
     @Test
-    void scan_componentChannelHasListenerMethod() {
+    void scan_componentOperationHasListenerMethod() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
         setClassToScan(ClassWithListenerAnnotation.class);
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -153,23 +152,17 @@ class AsyncAnnotationChannelsScannerTest {
                 .bindings(EMPTY_MAP)
                 .build();
 
-        ChannelObject expectedChannel = ChannelObject.builder()
-                .bindings(null)
-                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
+        Operation expectedOperation = Operation.builder()
+                .title("test-channel_send")
+                .action(OperationAction.SEND)
+                .description("Auto-generated description")
+                .channel(ChannelReference.fromChannel("test-channel"))
+                .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
+                .bindings(EMPTY_MAP)
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
-    }
-
-    @Test
-    void scan_componentHasListenerMethodWithUnknownServer() {
-        // Given a class with method annotated with AsyncListener, with an unknown servername
-        setClassToScan(ClassWithListenerAnnotationWithInvalidServer.class);
-
-        assertThatThrownBy(channelScanner::scan)
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(
-                        "Operation 'test-channel_send' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
+        assertThat(actualOperations)
+                .containsExactly(Map.entry("test-channel_send_methodWithAnnotation", expectedOperation));
     }
 
     @Test
@@ -178,7 +171,7 @@ class AsyncAnnotationChannelsScannerTest {
         setClassToScan(ClassWithListenerAnnotationWithAllAttributes.class);
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -212,7 +205,8 @@ class AsyncAnnotationChannelsScannerTest {
                 .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualOperations)
+                .containsExactly(Map.entry("test-channel_send_methodWithAnnotation", expectedOperation));
     }
 
     @Test
@@ -221,7 +215,7 @@ class AsyncAnnotationChannelsScannerTest {
         setClassToScan(ClassWithMultipleListenerAnnotations.class);
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -266,10 +260,10 @@ class AsyncAnnotationChannelsScannerTest {
                 .bindings(null)
                 .build();
 
-        assertThat(actualChannels)
+        assertThat(actualOperations)
                 .containsExactlyInAnyOrderEntriesOf(Map.of(
-                        "test-channel-1", expectedChannel1,
-                        "test-channel-2", expectedChannel2));
+                        "test-channel-1_send_methodWithMultipleAnnotation", expectedOperation1,
+                        "test-channel-2_send_methodWithMultipleAnnotation", expectedOperation2));
     }
 
     @Test
@@ -278,7 +272,7 @@ class AsyncAnnotationChannelsScannerTest {
         setClassToScan(ClassWithMessageAnnotation.class);
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -309,7 +303,8 @@ class AsyncAnnotationChannelsScannerTest {
                 .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualOperations)
+                .containsExactly(Map.entry("test-channel_send_methodWithAnnotation", expectedOperation));
     }
 
     private static class ClassWithoutListenerAnnotation {
@@ -394,7 +389,7 @@ class AsyncAnnotationChannelsScannerTest {
             setClassToScan(clazz);
 
             // When scan is called
-            Map<String, ChannelObject> actualChannels = channelScanner.scan();
+            Map<String, Operation> actualOperations = operationsScanner.scan();
 
             // Then the returned collection contains the channel with the actual method, excluding type erased methods
             var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
@@ -424,7 +419,8 @@ class AsyncAnnotationChannelsScannerTest {
                     .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+            assertThat(actualOperations)
+                    .containsExactly(Map.entry("test-channel_send_methodFromInterface", expectedOperation));
         }
 
         private static class ClassImplementingInterface implements ClassInterface<String> {
@@ -466,7 +462,7 @@ class AsyncAnnotationChannelsScannerTest {
             setClassToScan(ClassWithMetaAnnotation.class);
 
             // When scan is called
-            Map<String, ChannelObject> actualChannels = channelScanner.scan();
+            Map<String, Operation> actualOperations = operationsScanner.scan();
 
             // Then the returned collection contains the channel
             var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
@@ -497,7 +493,8 @@ class AsyncAnnotationChannelsScannerTest {
                     .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+            assertThat(actualOperations)
+                    .containsExactly(Map.entry("test-channel_send_methodFromInterface", expectedOperation));
         }
 
         public static class ClassWithMetaAnnotation {

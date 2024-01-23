@@ -73,9 +73,8 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
         @Test
         void scan_componentHasNoListenerMethods() {
             // when
-            List<Map.Entry<String, ChannelObject>> channels = scanner.processChannels(
-                            ClassWithoutListenerAnnotation.class)
-                    .toList();
+            List<Map.Entry<String, ChannelObject>> channels =
+                    scanner.process(ClassWithoutListenerAnnotation.class).toList();
 
             // then
             assertThat(channels).isEmpty();
@@ -92,7 +91,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
         void scan_componentHasListenerMethod() {
             // when
             List<Map.Entry<String, ChannelObject>> actualChannels =
-                    scanner.processChannels(ClassWithListenerAnnotation.class).toList();
+                    scanner.process(ClassWithListenerAnnotation.class).toList();
 
             // then
             MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -130,7 +129,7 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
         @Test
         void scan_componentHasTestListenerMethods_multiplePayloads() {
             // when
-            List<Map.Entry<String, ChannelObject>> channels = scanner.processChannels(
+            List<Map.Entry<String, ChannelObject>> channels = scanner.process(
                             ClassWithTestListenerAnnotationMultiplePayloads.class)
                     .toList();
 
@@ -191,9 +190,8 @@ class MethodLevelAnnotationChannelsScannerIntegrationTest {
         @Test
         void scan_componentHasListenerMetaMethod() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels = scanner.processChannels(
-                            ClassWithListenerMetaAnnotation.class)
-                    .toList();
+            List<Map.Entry<String, ChannelObject>> actualChannels =
+                    scanner.process(ClassWithListenerMetaAnnotation.class).toList();
 
             // then
             MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()

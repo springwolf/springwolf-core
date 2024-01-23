@@ -6,8 +6,11 @@ import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.DefaultChannelsService;
+import io.github.stavshamir.springwolf.asyncapi.DefaultOperationsService;
+import io.github.stavshamir.springwolf.asyncapi.OperationsService;
 import io.github.stavshamir.springwolf.asyncapi.SpringwolfInitApplicationListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.OperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
@@ -58,15 +61,23 @@ public class SpringwolfAutoConfiguration {
     public AsyncApiService asyncApiService(
             AsyncApiDocketService asyncApiDocketService,
             ChannelsService channelsService,
+            OperationsService operationsService,
             SchemasService schemasService,
             List<AsyncApiCustomizer> customizers) {
-        return new DefaultAsyncApiService(asyncApiDocketService, channelsService, schemasService, customizers);
+        return new DefaultAsyncApiService(
+                asyncApiDocketService, channelsService, operationsService, schemasService, customizers);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public ChannelsService channelsService(List<? extends ChannelsScanner> channelsScanners) {
         return new DefaultChannelsService(channelsScanners);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public OperationsService operationsService(List<? extends OperationsScanner> operationsScanners) {
+        return new DefaultOperationsService(operationsScanners);
     }
 
     @Bean

@@ -3,7 +3,6 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -26,12 +25,10 @@ class SimpleChannelsScannerTest {
     @Test
     void noClassFoundTest() {
         // when
-        Map<String, ChannelObject> channels = simpleChannelsScanner.scanChannels();
-        Map<String, Operation> operations = simpleChannelsScanner.scanOperations();
+        Map<String, ChannelObject> channels = simpleChannelsScanner.scan();
 
         // then
         assertThat(channels).isEmpty();
-        assertThat(operations).isEmpty();
     }
 
     @Test
@@ -42,10 +39,10 @@ class SimpleChannelsScannerTest {
                 Map.entry("channel1", ChannelObject.builder().build());
         Map.Entry<String, ChannelObject> channel2 =
                 Map.entry("channel2", ChannelObject.builder().build());
-        when(classProcessor.processChannels(any())).thenReturn(Stream.of(channel1, channel2));
+        when(classProcessor.process(any())).thenReturn(Stream.of(channel1, channel2));
 
         // when
-        Map<String, ChannelObject> channels = simpleChannelsScanner.scanChannels();
+        Map<String, ChannelObject> channels = simpleChannelsScanner.scan();
 
         // then
         assertThat(channels).containsExactly(channel1, channel2);
@@ -59,10 +56,10 @@ class SimpleChannelsScannerTest {
                 Map.entry("channel1", ChannelObject.builder().build());
         Map.Entry<String, ChannelObject> channel2 =
                 Map.entry("channel1", ChannelObject.builder().build());
-        when(classProcessor.processChannels(any())).thenReturn(Stream.of(channel1, channel2));
+        when(classProcessor.process(any())).thenReturn(Stream.of(channel1, channel2));
 
         // when
-        Map<String, ChannelObject> channels = simpleChannelsScanner.scanChannels();
+        Map<String, ChannelObject> channels = simpleChannelsScanner.scan();
 
         // then
         assertThat(channels)
@@ -73,10 +70,10 @@ class SimpleChannelsScannerTest {
     void processEmptyClassTest() {
         // given
         when(classScanner.scan()).thenReturn(Set.of(String.class));
-        when(classProcessor.processChannels(any())).thenReturn(Stream.of());
+        when(classProcessor.process(any())).thenReturn(Stream.of());
 
         // when
-        Map<String, ChannelObject> channels = simpleChannelsScanner.scanChannels();
+        Map<String, ChannelObject> channels = simpleChannelsScanner.scan();
 
         // then
         assertThat(channels).isEmpty();

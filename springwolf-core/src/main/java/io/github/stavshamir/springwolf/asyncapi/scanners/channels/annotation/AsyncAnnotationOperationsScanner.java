@@ -3,17 +3,15 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.OperationMerger;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.OperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
@@ -22,8 +20,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
@@ -42,13 +38,12 @@ import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AsyncAnnotationChannelsScanner<A extends Annotation>
-        implements ChannelsScanner, EmbeddedValueResolverAware {
+public class AsyncAnnotationOperationsScanner<A extends Annotation>
+        implements OperationsScanner, EmbeddedValueResolverAware {
 
     private final AsyncAnnotationProvider<A> asyncAnnotationProvider;
     private final ClassScanner classScanner;
     private final SchemasService schemasService;
-    private final AsyncApiDocketService asyncApiDocketService;
     private final PayloadClassExtractor payloadClassExtractor;
     private final List<OperationBindingProcessor> operationBindingProcessors;
     private final List<MessageBindingProcessor> messageBindingProcessors;
@@ -60,13 +55,13 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
     }
 
     @Override
-    public Map<String, ChannelObject> scan() {
-        List<Map.Entry<String, ChannelObject>> channels = classScanner.scan().stream()
+    public Map<String, Operation> scan() {
+        List<Map.Entry<String, Operation>> operations = classScanner.scan().stream()
                 .flatMap(this::getAnnotatedMethods)
-                .map(this::buildChannel)
+                .map(this::buildOperation)
                 .toList();
 
-        return ChannelMerger.mergeChannels(channels);
+        return OperationMerger.mergeOperations(operations);
     }
 
     private Stream<MethodAndAnnotation<A>> getAnnotatedMethods(Class<?> type) {
@@ -81,28 +76,17 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
     }
 
-    private Map.Entry<String, ChannelObject> buildChannel(MethodAndAnnotation<A> methodAndAnnotation) {
-        ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
-
+    private Map.Entry<String, Operation> buildOperation(MethodAndAnnotation<A> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
         String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
+        String operationId = channelName + "_" + this.asyncAnnotationProvider.getOperationType().type + "_"
+                + methodAndAnnotation.method.getName();
 
         Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelName);
+        operation.setAction(this.asyncAnnotationProvider.getOperationType());
 
-        List<String> servers = AsyncAnnotationScannerUtil.getServers(operationAnnotation, resolver);
-        if (servers != null && !servers.isEmpty()) {
-            validateServers(servers, operation.getTitle());
-            channelBuilder.servers(servers.stream()
-                    .map(it -> ServerReference.builder().ref(it).build())
-                    .toList());
-        }
-        MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
-
-        ChannelObject channelItem = channelBuilder
-                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
-                .build();
-        return Map.entry(channelName, channelItem);
+        return Map.entry(operationId, operation);
     }
 
     private Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelName) {
@@ -163,33 +147,6 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation>
         MessageObject message = builder.build();
         this.schemasService.registerMessage(message);
         return message;
-    }
-
-    /**
-     * validates the given list of server names (for a specific operation) with the servers defined in the 'servers' part of
-     * the current AsyncApi.
-     *
-     * @param serversFromOperation the server names defined for the current operation
-     * @param operationId          operationId of the current operation - used for exception messages
-     * @throws IllegalArgumentException if server from operation is not present in AsyncApi's servers definition.
-     */
-    void validateServers(List<String> serversFromOperation, String operationId) {
-        if (!serversFromOperation.isEmpty()) {
-            Map<String, Server> asyncApiServers =
-                    this.asyncApiDocketService.getAsyncApiDocket().getServers();
-            if (asyncApiServers == null || asyncApiServers.isEmpty()) {
-                throw new IllegalArgumentException(String.format(
-                        "Operation '%s' defines server refs (%s) but there are no servers defined in this AsyncAPI.",
-                        operationId, serversFromOperation));
-            }
-            for (String server : serversFromOperation) {
-                if (!asyncApiServers.containsKey(server)) {
-                    throw new IllegalArgumentException(String.format(
-                            "Operation '%s' defines unknown server ref '%s'. This AsyncApi defines these server(s): %s",
-                            operationId, server, asyncApiServers.keySet()));
-                }
-            }
-        }
     }
 
     public interface AsyncAnnotationProvider<A> {

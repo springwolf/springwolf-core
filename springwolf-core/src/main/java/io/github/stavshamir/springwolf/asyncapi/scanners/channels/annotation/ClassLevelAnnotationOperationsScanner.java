@@ -2,16 +2,18 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingFactory;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersBuilder;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -33,9 +35,9 @@ import static java.util.stream.Collectors.toSet;
 
 @RequiredArgsConstructor
 @Slf4j
-public class ClassLevelAnnotationChannelsScanner<
+public class ClassLevelAnnotationOperationsScanner<
                 ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
-        implements SimpleChannelsScanner.ClassProcessor {
+        implements SimpleOperationsScanner.ClassProcessor {
 
     private final Class<ClassAnnotation> classAnnotationClass;
     private final Class<MethodAnnotation> methodAnnotationClass;
@@ -50,11 +52,11 @@ public class ClassLevelAnnotationChannelsScanner<
     }
 
     @Override
-    public Stream<Map.Entry<String, ChannelObject>> process(Class<?> clazz) {
+    public Stream<Map.Entry<String, Operation>> process(Class<?> clazz) {
         log.debug(
                 "Scanning class \"{}\" for @\"{}\" annotated methods", clazz.getName(), classAnnotationClass.getName());
 
-        return Stream.of(clazz).filter(this::isClassAnnotated).flatMap(this::mapClassToChannel);
+        return Stream.of(clazz).filter(this::isClassAnnotated).flatMap(this::mapClassToOperation);
     }
 
     private boolean isClassAnnotated(Class<?> component) {
@@ -73,8 +75,8 @@ public class ClassLevelAnnotationChannelsScanner<
                 .collect(toSet());
     }
 
-    private Stream<Map.Entry<String, ChannelObject>> mapClassToChannel(Class<?> component) {
-        log.debug("Mapping class \"{}\" to channels", component.getName());
+    private Stream<Map.Entry<String, Operation>> mapClassToOperation(Class<?> component) {
+        log.debug("Mapping class \"{}\" to operations", component.getName());
 
         ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
 
@@ -84,15 +86,16 @@ public class ClassLevelAnnotationChannelsScanner<
         }
 
         String channelName = bindingFactory.getChannelName(classAnnotation);
+        String operationId = channelName + "_" + OperationAction.RECEIVE + "_" + component.getSimpleName();
 
-        ChannelObject channelItem = buildChannelItem(classAnnotation, annotatedMethods);
+        Operation operation = buildOperation(classAnnotation, annotatedMethods);
 
-        return Stream.of(Map.entry(channelName, channelItem));
+        return Stream.of(Map.entry(operationId, operation));
     }
 
-    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Set<Method> methods) {
-        var messages = buildMessages(classAnnotation, methods, MessageType.CHANNEL);
-        return buildChannelItem(classAnnotation, messages);
+    private Operation buildOperation(ClassAnnotation classAnnotation, Set<Method> methods) {
+        var messages = buildMessages(classAnnotation, methods, MessageType.OPERATION);
+        return buildOperation(classAnnotation, messages);
     }
 
     private Map<String, MessageReference> buildMessages(
@@ -134,12 +137,16 @@ public class ClassLevelAnnotationChannelsScanner<
         return message;
     }
 
-    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
-        Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(classAnnotation);
-        Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-        return ChannelObject.builder()
-                .bindings(chBinding)
-                .messages(new HashMap<>(messages))
+    private Operation buildOperation(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
+        Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(classAnnotation);
+        Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+        String channelName = bindingFactory.getChannelName(classAnnotation);
+
+        return Operation.builder()
+                .action(OperationAction.RECEIVE)
+                .channel(ChannelReference.fromChannel(channelName))
+                .messages(messages.values().stream().toList())
+                .bindings(opBinding)
                 .build();
     }
 }

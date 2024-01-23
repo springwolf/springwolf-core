@@ -45,7 +45,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
 
     @Override
-    public Map<String, ChannelObject> scanChannels() {
+    public Map<String, ChannelObject> scan() {
         Set<Method> beanMethods = beanMethodsScanner.getBeanMethods();
         return ChannelMerger.mergeChannels(beanMethods.stream()
                 .map(functionalChannelBeanBuilder::fromMethodBean)

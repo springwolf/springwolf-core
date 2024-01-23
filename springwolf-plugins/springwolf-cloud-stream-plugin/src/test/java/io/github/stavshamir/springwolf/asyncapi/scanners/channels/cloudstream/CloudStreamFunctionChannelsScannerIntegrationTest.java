@@ -94,7 +94,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     @Test
     void testNoBindings() {
         when(bindingServiceProperties.getBindings()).thenReturn(Collections.emptyMap());
-        Map<String, ChannelObject> channels = scanner.scanChannels();
+        Map<String, ChannelObject> channels = scanner.scan();
         assertThat(channels).isEmpty();
     }
 
@@ -107,7 +107,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testConsumer-in-0", testConsumerInBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scan();
         Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned channels contain a ChannelItem with the correct data
@@ -149,7 +149,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testSupplier-out-0", testSupplierOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scan();
         Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned channels contain a ChannelItem with the correct data
@@ -201,7 +201,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scan();
         Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
@@ -278,7 +278,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "kStreamTestFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scan();
         Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
@@ -356,7 +356,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scanChannels();
+        Map<String, ChannelObject> actualChannels = scanner.scan();
         Map<String, Operation> actualOperations = scanner.scanOperations();
 
         // Then the returned merged channels contain a publish operation and  a subscribe operation

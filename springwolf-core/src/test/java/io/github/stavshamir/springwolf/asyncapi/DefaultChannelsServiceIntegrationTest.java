@@ -39,35 +39,15 @@ class DefaultChannelsServiceIntegrationTest {
         Map<String, ChannelObject> actualChannels = defaultChannelsService.findChannels();
 
         assertThat(actualChannels)
-                .containsAllEntriesOf(simpleChannelScanner.scanChannels())
+                .containsAllEntriesOf(simpleChannelScanner.scan())
                 .containsEntry(SameTopic.topicName, SameTopic.expectedMergedChannel);
-    }
-
-    @Test
-    void getOperations() {
-        Map<String, Operation> actualChannels = defaultChannelsService.findOperations();
-
-        assertThat(actualChannels)
-                .containsAllEntriesOf(simpleChannelScanner.scanOperations())
-                .containsEntry("receive", SameTopic.ReceiveChannelScanner.receiveOperation)
-                .containsEntry("send", SameTopic.SendChannelScanner.sentOperation);
     }
 
     @Component
     static class SimpleChannelScanner implements ChannelsScanner {
         @Override
-        public Map<String, ChannelObject> scanChannels() {
+        public Map<String, ChannelObject> scan() {
             return Map.of("foo", new ChannelObject());
-        }
-
-        @Override
-        public Map<String, Operation> scanOperations() {
-            return Map.of(
-                    "foo",
-                    Operation.builder()
-                            .channel(ChannelReference.fromChannel("foo"))
-                            .action(OperationAction.RECEIVE)
-                            .build());
         }
     }
 
@@ -89,17 +69,12 @@ class DefaultChannelsServiceIntegrationTest {
                     .build();
 
             @Override
-            public Map<String, ChannelObject> scanChannels() {
+            public Map<String, ChannelObject> scan() {
                 return Map.of(
                         topicName,
                         ChannelObject.builder()
                                 .messages(Map.of("sendMessage", MessageReference.toComponentMessage("sendMessage")))
                                 .build());
-            }
-
-            @Override
-            public Map<String, Operation> scanOperations() {
-                return Map.of("send", sentOperation);
             }
         }
 
@@ -111,18 +86,13 @@ class DefaultChannelsServiceIntegrationTest {
                     .build();
 
             @Override
-            public Map<String, ChannelObject> scanChannels() {
+            public Map<String, ChannelObject> scan() {
                 return Map.of(
                         topicName,
                         ChannelObject.builder()
                                 .messages(
                                         Map.of("receiveMessage", MessageReference.toComponentMessage("receiveMessage")))
                                 .build());
-            }
-
-            @Override
-            public Map<String, Operation> scanOperations() {
-                return Map.of("receive", receiveOperation);
             }
         }
     }
