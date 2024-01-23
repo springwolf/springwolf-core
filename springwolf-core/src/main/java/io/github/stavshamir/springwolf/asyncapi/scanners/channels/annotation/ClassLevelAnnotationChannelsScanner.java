@@ -6,47 +6,38 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannels
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersBuilder;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessagesMap;
-import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toOperationsMessagesMap;
-import static java.util.stream.Collectors.toSet;
-
-@RequiredArgsConstructor
 @Slf4j
 public class ClassLevelAnnotationChannelsScanner<
                 ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
+        extends ClassLevelAnnotationScanner<ClassAnnotation, MethodAnnotation>
         implements SimpleChannelsScanner.ClassProcessor {
 
-    private final Class<ClassAnnotation> classAnnotationClass;
-    private final Class<MethodAnnotation> methodAnnotationClass;
-    private final BindingFactory<ClassAnnotation> bindingFactory;
-    private final AsyncHeadersBuilder asyncHeadersBuilder;
-    private final PayloadClassExtractor payloadClassExtractor;
-    private final SchemasService schemasService;
-
-    private enum MessageType {
-        CHANNEL,
-        OPERATION;
+    public ClassLevelAnnotationChannelsScanner(
+            Class<ClassAnnotation> classAnnotationClass,
+            Class<MethodAnnotation> methodAnnotationClass,
+            BindingFactory<ClassAnnotation> bindingFactory,
+            AsyncHeadersBuilder asyncHeadersBuilder,
+            PayloadClassExtractor payloadClassExtractor,
+            SchemasService schemasService) {
+        super(
+                classAnnotationClass,
+                methodAnnotationClass,
+                bindingFactory,
+                asyncHeadersBuilder,
+                payloadClassExtractor,
+                schemasService);
     }
 
     @Override
@@ -55,22 +46,6 @@ public class ClassLevelAnnotationChannelsScanner<
                 "Scanning class \"{}\" for @\"{}\" annotated methods", clazz.getName(), classAnnotationClass.getName());
 
         return Stream.of(clazz).filter(this::isClassAnnotated).flatMap(this::mapClassToChannel);
-    }
-
-    private boolean isClassAnnotated(Class<?> component) {
-        return AnnotationUtil.findAnnotation(classAnnotationClass, component) != null;
-    }
-
-    private Set<Method> getAnnotatedMethods(Class<?> clazz) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods",
-                clazz.getName(),
-                methodAnnotationClass.getName());
-
-        return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(method -> !method.isBridge())
-                .filter(method -> AnnotationUtils.findAnnotation(method, methodAnnotationClass) != null)
-                .collect(toSet());
     }
 
     private Stream<Map.Entry<String, ChannelObject>> mapClassToChannel(Class<?> component) {
@@ -93,45 +68,6 @@ public class ClassLevelAnnotationChannelsScanner<
     private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Set<Method> methods) {
         var messages = buildMessages(classAnnotation, methods, MessageType.CHANNEL);
         return buildChannelItem(classAnnotation, messages);
-    }
-
-    private Map<String, MessageReference> buildMessages(
-            ClassAnnotation classAnnotation, Set<Method> methods, MessageType messageType) {
-        Set<MessageObject> messages = methods.stream()
-                .map((Method method) -> {
-                    Class<?> payloadType = payloadClassExtractor.extractFrom(method);
-                    return buildMessage(classAnnotation, payloadType);
-                })
-                .collect(toSet());
-
-        if (messageType == MessageType.OPERATION) {
-            String channelName = bindingFactory.getChannelName(classAnnotation);
-            return toOperationsMessagesMap(channelName, messages);
-        }
-        return toMessagesMap(messages);
-    }
-
-    private MessageObject buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
-        Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
-        String modelName = schemasService.registerSchema(payloadType);
-        String headerModelName = schemasService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
-
-        MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(modelName))
-                .build());
-
-        MessageObject message = MessageObject.builder()
-                .messageId(payloadType.getName())
-                .name(payloadType.getName())
-                .title(payloadType.getSimpleName())
-                .description(null)
-                .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
-                .bindings(messageBinding)
-                .build();
-
-        this.schemasService.registerMessage(message);
-        return message;
     }
 
     private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
