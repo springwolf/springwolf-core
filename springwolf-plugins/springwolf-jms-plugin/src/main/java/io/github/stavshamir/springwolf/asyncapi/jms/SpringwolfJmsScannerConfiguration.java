@@ -7,7 +7,9 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.JmsM
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.JmsOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -44,6 +46,20 @@ public class SpringwolfJmsScannerConfiguration {
                 JmsListener.class, jmsBindingBuilder, payloadClassExtractor, schemasService);
 
         return new SimpleChannelsScanner(classScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
+    public SimpleOperationsScanner simpleJmsMethodLevelListenerAnnotationOperationsScanner(
+            SpringwolfClassScanner classScanner,
+            JmsBindingFactory jmsBindingBuilder,
+            PayloadClassExtractor payloadClassExtractor,
+            SchemasService schemasService) {
+        MethodLevelAnnotationOperationsScanner<JmsListener> strategy = new MethodLevelAnnotationOperationsScanner<>(
+                JmsListener.class, jmsBindingBuilder, payloadClassExtractor, schemasService);
+
+        return new SimpleOperationsScanner(classScanner, strategy);
     }
 
     @Bean

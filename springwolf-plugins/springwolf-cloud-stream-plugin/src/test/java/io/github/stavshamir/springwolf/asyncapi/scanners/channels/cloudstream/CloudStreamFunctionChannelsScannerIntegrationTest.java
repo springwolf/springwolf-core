@@ -62,6 +62,7 @@ import static org.mockito.Mockito.when;
             ExampleJsonGenerator.class,
             DefaultAsyncApiDocketService.class,
             CloudStreamFunctionChannelsScanner.class,
+            CloudStreamFunctionOperationsScanner.class,
             FunctionalChannelBeanBuilder.class,
             SpringwolfConfigProperties.class
         })
@@ -82,7 +83,10 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     private BindingServiceProperties bindingServiceProperties;
 
     @Autowired
-    private CloudStreamFunctionChannelsScanner scanner;
+    private CloudStreamFunctionChannelsScanner channelsScanner;
+
+    @Autowired
+    private CloudStreamFunctionOperationsScanner operationsScanner;
 
     @Autowired
     private SchemasService schemasService;
@@ -94,7 +98,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     @Test
     void testNoBindings() {
         when(bindingServiceProperties.getBindings()).thenReturn(Collections.emptyMap());
-        Map<String, ChannelObject> channels = scanner.scan();
+        Map<String, ChannelObject> channels = channelsScanner.scan();
         assertThat(channels).isEmpty();
     }
 
@@ -107,8 +111,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testConsumer-in-0", testConsumerInBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scan();
-        Map<String, Operation> actualOperations = scanner.scanOperations();
+        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
         MessageObject message = MessageObject.builder()
@@ -149,8 +153,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testSupplier-out-0", testSupplierOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scan();
-        Map<String, Operation> actualOperations = scanner.scanOperations();
+        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
 
@@ -201,8 +205,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scan();
-        Map<String, Operation> actualOperations = scanner.scanOperations();
+        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -278,8 +282,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "kStreamTestFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scan();
-        Map<String, Operation> actualOperations = scanner.scanOperations();
+        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -356,8 +360,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = scanner.scan();
-        Map<String, Operation> actualOperations = scanner.scanOperations();
+        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned merged channels contain a publish operation and  a subscribe operation
         MessageObject subscribeMessage = MessageObject.builder()

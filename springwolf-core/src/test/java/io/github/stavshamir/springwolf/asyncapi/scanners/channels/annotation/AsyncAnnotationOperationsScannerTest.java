@@ -57,8 +57,8 @@ import static org.mockito.Mockito.when;
 
 class AsyncAnnotationOperationsScannerTest {
 
-    private final AsyncAnnotationOperationsScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
-            new AsyncAnnotationOperationsScanner.AsyncAnnotationProvider<>() {
+    private final AsyncAnnotationScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
+            new AsyncAnnotationScanner.AsyncAnnotationProvider<>() {
                 @Override
                 public Class<AsyncListener> getAnnotation() {
                     return AsyncListener.class;

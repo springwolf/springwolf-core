@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.cloudstream;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.CloudStreamFunctionChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.CloudStreamFunctionOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.FunctionalChannelBeanBuilder;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
@@ -28,6 +29,21 @@ public class SpringwolfCloudStreamAutoConfiguration {
             BindingServiceProperties cloudstreamBindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder) {
         return new CloudStreamFunctionChannelsScanner(
+                asyncApiDocketService,
+                beanMethodsScanner,
+                schemasService,
+                cloudstreamBindingServiceProperties,
+                functionalChannelBeanBuilder);
+    }
+
+    @Bean
+    public CloudStreamFunctionOperationsScanner cloudStreamFunctionOperationsScanner(
+            AsyncApiDocketService asyncApiDocketService,
+            BeanMethodsScanner beanMethodsScanner,
+            SchemasService schemasService,
+            BindingServiceProperties cloudstreamBindingServiceProperties,
+            FunctionalChannelBeanBuilder functionalChannelBeanBuilder) {
+        return new CloudStreamFunctionOperationsScanner(
                 asyncApiDocketService,
                 beanMethodsScanner,
                 schemasService,
