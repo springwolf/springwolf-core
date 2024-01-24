@@ -28,6 +28,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final ChannelsService channelsService;
+    private final OperationsService operationsService;
     private final SchemasService schemasService;
     private final List<AsyncApiCustomizer> customizers;
 
@@ -65,7 +66,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
             // SchemasService.
             Map<String, ChannelObject> channels = channelsService.findChannels();
 
-            Map<String, Operation> operations = channelsService.findOperations();
+            Map<String, Operation> operations = operationsService.findOperations();
 
             Components components = Components.builder()
                     .schemas(schemasService.getSchemas())

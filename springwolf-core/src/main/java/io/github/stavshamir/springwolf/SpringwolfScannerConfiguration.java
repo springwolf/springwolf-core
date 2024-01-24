@@ -7,6 +7,8 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBinding
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.OperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncAnnotationChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncAnnotationOperationsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.AsyncAnnotationScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
@@ -67,7 +69,7 @@ public class SpringwolfScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-    public AsyncAnnotationChannelsScanner<AsyncListener> asyncListenerAnnotationScanner(
+    public AsyncAnnotationChannelsScanner<AsyncListener> asyncListenerAnnotationChannelScanner(
             SpringwolfClassScanner springwolfClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
@@ -86,11 +88,32 @@ public class SpringwolfScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.ASYNC_ANNOTATION)
+    public AsyncAnnotationOperationsScanner<AsyncListener> asyncListenerAnnotationOperationScanner(
+            SpringwolfClassScanner springwolfClassScanner,
+            SchemasService schemasService,
+            PayloadClassExtractor payloadClassExtractor,
+            List<OperationBindingProcessor> operationBindingProcessors,
+            List<MessageBindingProcessor> messageBindingProcessors) {
+        return new AsyncAnnotationOperationsScanner<>(
+                buildAsyncListenerAnnotationProvider(),
+                springwolfClassScanner,
+                schemasService,
+                payloadClassExtractor,
+                operationBindingProcessors,
+                messageBindingProcessors);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
             name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-    public AsyncAnnotationChannelsScanner<AsyncPublisher> asyncPublisherAnnotationScanner(
+    public AsyncAnnotationChannelsScanner<AsyncPublisher> asyncPublisherChannelAnnotationScanner(
             SpringwolfClassScanner springwolfClassScanner,
             SchemasService schemasService,
             AsyncApiDocketService asyncApiDocketService,
@@ -107,9 +130,30 @@ public class SpringwolfScannerConfiguration {
                 messageBindingProcessors);
     }
 
-    private static AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<AsyncListener>
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.ASYNC_ANNOTATION)
+    public AsyncAnnotationOperationsScanner<AsyncPublisher> asyncPublisherOperationAnnotationScanner(
+            SpringwolfClassScanner springwolfClassScanner,
+            SchemasService schemasService,
+            PayloadClassExtractor payloadClassExtractor,
+            List<OperationBindingProcessor> operationBindingProcessors,
+            List<MessageBindingProcessor> messageBindingProcessors) {
+        return new AsyncAnnotationOperationsScanner<>(
+                buildAsyncPublisherAnnotationProvider(),
+                springwolfClassScanner,
+                schemasService,
+                payloadClassExtractor,
+                operationBindingProcessors,
+                messageBindingProcessors);
+    }
+
+    private static AsyncAnnotationScanner.AsyncAnnotationProvider<AsyncListener>
             buildAsyncListenerAnnotationProvider() {
-        return new AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<>() {
+        return new AsyncAnnotationScanner.AsyncAnnotationProvider<>() {
             @Override
             public Class<AsyncListener> getAnnotation() {
                 return AsyncListener.class;
@@ -127,9 +171,9 @@ public class SpringwolfScannerConfiguration {
         };
     }
 
-    private static AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<AsyncPublisher>
+    private static AsyncAnnotationScanner.AsyncAnnotationProvider<AsyncPublisher>
             buildAsyncPublisherAnnotationProvider() {
-        return new AsyncAnnotationChannelsScanner.AsyncAnnotationProvider<>() {
+        return new AsyncAnnotationScanner.AsyncAnnotationProvider<>() {
             @Override
             public Class<AsyncPublisher> getAnnotation() {
                 return AsyncPublisher.class;

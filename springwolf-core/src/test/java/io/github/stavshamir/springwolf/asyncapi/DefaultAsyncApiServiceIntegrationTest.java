@@ -56,6 +56,9 @@ class DefaultAsyncApiServiceIntegrationTest {
     private ChannelsService channelsService;
 
     @MockBean
+    private OperationsService operationsService;
+
+    @MockBean
     private SchemasService schemasService;
 
     @Autowired

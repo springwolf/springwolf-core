@@ -28,7 +28,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -81,7 +80,7 @@ class ClassLevelAnnotationChannelsScannerTest {
     void scan_componentHasTestListenerMethods() {
         // when
         List<Map.Entry<String, ChannelObject>> channels =
-                scanner.processChannels(ClassWithTestListenerAnnotation.class).collect(Collectors.toList());
+                scanner.process(ClassWithTestListenerAnnotation.class).toList();
 
         // then
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()

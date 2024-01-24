@@ -4,7 +4,6 @@ package io.github.stavshamir.springwolf.asyncapi;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,32 +31,12 @@ public class DefaultChannelsService implements ChannelsService {
 
         for (ChannelsScanner scanner : channelsScanners) {
             try {
-                Map<String, ChannelObject> channels = scanner.scanChannels();
+                Map<String, ChannelObject> channels = scanner.scan();
                 foundChannelItems.addAll(channels.entrySet());
             } catch (Exception e) {
                 log.error("An error was encountered during channel scanning with {}: {}", scanner, e.getMessage(), e);
             }
         }
         return ChannelMerger.mergeChannels(foundChannelItems);
-    }
-
-    /**
-     * Collects all AsyncAPI Operation using the available {@link ChannelsScanner}
-     * beans.
-     * @return Map of operation names mapping to detected Operation
-     */
-    @Override
-    public Map<String, Operation> findOperations() {
-        List<Map.Entry<String, Operation>> foundOperations = new ArrayList<>();
-        for (ChannelsScanner scanner : channelsScanners) {
-            try {
-                Map<String, Operation> channels = scanner.scanOperations();
-                foundOperations.addAll(channels.entrySet());
-            } catch (Exception e) {
-                log.error("An error was encountered during operation scanning with {}: {}", scanner, e.getMessage(), e);
-            }
-        }
-
-        return ChannelMerger.mergeOperations(foundOperations);
     }
 }

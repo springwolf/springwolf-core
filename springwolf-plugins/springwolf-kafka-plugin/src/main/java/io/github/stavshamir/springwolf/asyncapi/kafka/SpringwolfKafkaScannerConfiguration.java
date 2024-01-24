@@ -7,8 +7,11 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.Kafk
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.KafkaOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelAnnotationChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelAnnotationOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForKafkaBuilder;
@@ -77,6 +80,30 @@ public class SpringwolfKafkaScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
+    public SimpleOperationsScanner simpleKafkaClassLevelListenerAnnotationOperationScanner(
+            SpringwolfClassScanner classScanner,
+            KafkaBindingFactory kafkaBindingBuilder,
+            AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
+            PayloadClassExtractor payloadClassExtractor,
+            SchemasService schemasService) {
+        ClassLevelAnnotationOperationsScanner<KafkaListener, KafkaHandler> strategy =
+                new ClassLevelAnnotationOperationsScanner<>(
+                        KafkaListener.class,
+                        KafkaHandler.class,
+                        kafkaBindingBuilder,
+                        asyncHeadersForKafkaBuilder,
+                        payloadClassExtractor,
+                        schemasService);
+
+        return new SimpleOperationsScanner(classScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SimpleChannelsScanner simpleKafkaMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner classScanner,
             KafkaBindingFactory kafkaBindingBuilder,
@@ -86,6 +113,23 @@ public class SpringwolfKafkaScannerConfiguration {
                 KafkaListener.class, kafkaBindingBuilder, payloadClassExtractor, schemasService);
 
         return new SimpleChannelsScanner(classScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
+    public SimpleOperationsScanner simpleKafkaMethodLevelListenerAnnotationOperationsScanner(
+            SpringwolfClassScanner classScanner,
+            KafkaBindingFactory kafkaBindingBuilder,
+            PayloadClassExtractor payloadClassExtractor,
+            SchemasService schemasService) {
+        MethodLevelAnnotationOperationsScanner<KafkaListener> strategy = new MethodLevelAnnotationOperationsScanner<>(
+                KafkaListener.class, kafkaBindingBuilder, payloadClassExtractor, schemasService);
+
+        return new SimpleOperationsScanner(classScanner, strategy);
     }
 
     @Bean

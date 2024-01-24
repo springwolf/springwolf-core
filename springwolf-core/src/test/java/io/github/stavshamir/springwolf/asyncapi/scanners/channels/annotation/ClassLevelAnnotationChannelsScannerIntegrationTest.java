@@ -78,7 +78,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         void scan_componentHasNoClassLevelRabbitListenerAnnotation() {
             // when
             List<Map.Entry<String, ChannelObject>> channels =
-                    scanner.processChannels(ClassWithoutClassListener.class).toList();
+                    scanner.process(ClassWithoutClassListener.class).toList();
 
             // then
             assertThat(channels).isEmpty();
@@ -97,7 +97,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         void scan_componentHasNoClassLevelRabbitListenerAnnotation() {
             // when
             List<Map.Entry<String, ChannelObject>> channels =
-                    scanner.processChannels(ClassWithoutMethodListener.class).toList();
+                    scanner.process(ClassWithoutMethodListener.class).toList();
 
             // then
             assertThat(channels).isEmpty();
@@ -115,9 +115,8 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         @Test
         void scan_componentWithOneMethodLevelAnnotation() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels = scanner.processChannels(
-                            ClassWithOneMethodLevelHandler.class)
-                    .toList();
+            List<Map.Entry<String, ChannelObject>> actualChannels =
+                    scanner.process(ClassWithOneMethodLevelHandler.class).toList();
 
             // then
             MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -158,9 +157,8 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
         @Test
         void scan_componentWithMultipleRabbitHandlerMethods() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels = scanner.processChannels(
-                            ClassWithMultipleMethodLevelHandlers.class)
-                    .toList();
+            List<Map.Entry<String, ChannelObject>> actualChannels =
+                    scanner.process(ClassWithMultipleMethodLevelHandlers.class).toList();
 
             // Then the returned collection contains the channel with message set to oneOf
             MessagePayload simpleFooPayload = MessagePayload.of(MultiFormatSchema.builder()

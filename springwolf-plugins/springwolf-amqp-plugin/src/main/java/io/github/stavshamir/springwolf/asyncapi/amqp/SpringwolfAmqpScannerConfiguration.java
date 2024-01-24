@@ -7,8 +7,11 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.Amqp
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AmqpOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelAnnotationChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelAnnotationOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationChannelsScanner;
+import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForAmqpBuilder;
@@ -82,6 +85,30 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
+    public SimpleOperationsScanner simpleRabbitClassLevelListenerAnnotationOperationsScanner(
+            SpringwolfClassScanner classScanner,
+            AmqpBindingFactory amqpBindingBuilder,
+            AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
+            PayloadClassExtractor payloadClassExtractor,
+            SchemasService schemasService) {
+        ClassLevelAnnotationOperationsScanner<RabbitListener, RabbitHandler> strategy =
+                new ClassLevelAnnotationOperationsScanner<>(
+                        RabbitListener.class,
+                        RabbitHandler.class,
+                        amqpBindingBuilder,
+                        asyncHeadersForAmqpBuilder,
+                        payloadClassExtractor,
+                        schemasService);
+
+        return new SimpleOperationsScanner(classScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SimpleChannelsScanner simpleRabbitMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner classScanner,
             AmqpBindingFactory amqpBindingBuilder,
@@ -91,6 +118,23 @@ public class SpringwolfAmqpScannerConfiguration {
                 RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, schemasService);
 
         return new SimpleChannelsScanner(classScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
+    public SimpleOperationsScanner simpleRabbitMethodLevelListenerAnnotationOperationsScanner(
+            SpringwolfClassScanner classScanner,
+            AmqpBindingFactory amqpBindingBuilder,
+            PayloadClassExtractor payloadClassExtractor,
+            SchemasService schemasService) {
+        MethodLevelAnnotationOperationsScanner<RabbitListener> strategy = new MethodLevelAnnotationOperationsScanner<>(
+                RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, schemasService);
+
+        return new SimpleOperationsScanner(classScanner, strategy);
     }
 
     @Bean

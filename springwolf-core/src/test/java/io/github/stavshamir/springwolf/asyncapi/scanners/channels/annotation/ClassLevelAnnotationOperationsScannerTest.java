@@ -11,11 +11,13 @@ import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -28,7 +30,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,13 +38,19 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class MethodLevelAnnotationChannelsScannerTest {
+class ClassLevelAnnotationOperationsScannerTest {
 
     private final PayloadClassExtractor payloadClassExtractor = mock(PayloadClassExtractor.class);
-    private final BindingFactory<TestListener> bindingFactory = mock(BindingFactory.class);
+    private final BindingFactory<TestClassListener> bindingFactory = mock(BindingFactory.class);
     private final SchemasService schemasService = mock(SchemasService.class);
-    MethodLevelAnnotationChannelsScanner<TestListener> scanner = new MethodLevelAnnotationChannelsScanner<>(
-            TestListener.class, bindingFactory, payloadClassExtractor, schemasService);
+    ClassLevelAnnotationOperationsScanner<TestClassListener, TestMethodListener> scanner =
+            new ClassLevelAnnotationOperationsScanner<>(
+                    TestClassListener.class,
+                    TestMethodListener.class,
+                    bindingFactory,
+                    new AsyncHeadersNotDocumented(),
+                    payloadClassExtractor,
+                    schemasService);
 
     private static final String CHANNEL = "test-channel";
     private static final Map<String, OperationBinding> defaultOperationBinding =
@@ -54,7 +61,7 @@ class MethodLevelAnnotationChannelsScannerTest {
             Map.of("protocol", new AMQPChannelBinding());
 
     @BeforeEach
-    void setUp() throws NoSuchMethodException {
+    void setUp() {
         // when
         when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL);
 
@@ -69,20 +76,13 @@ class MethodLevelAnnotationChannelsScannerTest {
         doAnswer(invocation -> AsyncHeaders.NOT_DOCUMENTED.getSchemaName())
                 .when(schemasService)
                 .registerSchema(any(AsyncHeaders.class));
-
-        var stringMethod =
-                ClassWithMultipleTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
-        doReturn(String.class).when(payloadClassExtractor).extractFrom(stringMethod);
-        var simpleFooMethod = ClassWithMultipleTestListenerAnnotation.class.getDeclaredMethod(
-                "anotherMethodWithAnnotation", SimpleFoo.class);
-        doReturn(SimpleFoo.class).when(payloadClassExtractor).extractFrom(simpleFooMethod);
     }
 
     @Test
     void scan_componentHasTestListenerMethods() {
         // when
-        List<Map.Entry<String, ChannelObject>> channels =
-                scanner.process(ClassWithTestListenerAnnotation.class).collect(Collectors.toList());
+        List<Map.Entry<String, Operation>> operations =
+                scanner.process(ClassWithTestListenerAnnotation.class).toList();
 
         // then
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -94,83 +94,26 @@ class MethodLevelAnnotationChannelsScannerTest {
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .payload(payload)
-                .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
-        ChannelObject expectedChannelItem = ChannelObject.builder()
-                .bindings(defaultChannelBinding)
-                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
+        Operation expectedOperation = Operation.builder()
+                .action(OperationAction.RECEIVE)
+                .channel(ChannelReference.fromChannel(CHANNEL))
+                .messages(List.of(MessageReference.toChannelMessage(CHANNEL, message)))
+                .bindings(Map.of("protocol", AMQPOperationBinding.builder().build()))
                 .build();
-
-        assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));
+        String operationName = CHANNEL + "_receive_ClassWithTestListenerAnnotation";
+        assertThat(operations).containsExactly(Map.entry(operationName, expectedOperation));
     }
 
+    @TestClassListener
     private static class ClassWithTestListenerAnnotation {
-
-        @TestListener
+        @TestMethodListener
         private void methodWithAnnotation(String payload) {}
 
         private void methodWithoutAnnotation() {}
-    }
-
-    @Test
-    void scan_componentHasMultipleTestListenerMethods() {
-        // when
-        List<Map.Entry<String, ChannelObject>> channels =
-                scanner.process(ClassWithMultipleTestListenerAnnotation.class).toList();
-
-        // then
-        MessagePayload stringPayload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
-                .build());
-        MessagePayload simpleFooPayload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(SimpleFoo.class.getSimpleName()))
-                .build());
-
-        MessageObject stringMessage = MessageObject.builder()
-                .messageId(String.class.getName())
-                .name(String.class.getName())
-                .title(String.class.getSimpleName())
-                .payload(stringPayload)
-                .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
-                .bindings(defaultMessageBinding)
-                .build();
-
-        MessageObject simpleFooMessage = MessageObject.builder()
-                .messageId(SimpleFoo.class.getName())
-                .name(SimpleFoo.class.getName())
-                .title(SimpleFoo.class.getSimpleName())
-                .payload(simpleFooPayload)
-                .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
-                .bindings(defaultMessageBinding)
-                .build();
-
-        ChannelObject methodChannel = ChannelObject.builder()
-                .bindings(defaultChannelBinding)
-                .messages(Map.of(stringMessage.getMessageId(), MessageReference.toComponentMessage(stringMessage)))
-                .build();
-        ChannelObject anotherMethodChannel = ChannelObject.builder()
-                .bindings(defaultChannelBinding)
-                .messages(
-                        Map.of(simpleFooMessage.getMessageId(), MessageReference.toComponentMessage(simpleFooMessage)))
-                .build();
-
-        assertThat(channels)
-                .containsExactlyInAnyOrderElementsOf(
-                        List.of(Map.entry(CHANNEL, methodChannel), Map.entry(CHANNEL, anotherMethodChannel)));
-    }
-
-    private static class ClassWithMultipleTestListenerAnnotation {
-
-        @TestListener
-        private void methodWithAnnotation(String payload) {}
-
-        @TestListener
-        private void anotherMethodWithAnnotation(SimpleFoo payload) {}
     }
 
     @Data
@@ -181,5 +124,8 @@ class MethodLevelAnnotationChannelsScannerTest {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @interface TestListener {}
+    @interface TestClassListener {}
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface TestMethodListener {}
 }
