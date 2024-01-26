@@ -11,6 +11,7 @@ node {
 
 npm_run_build {
   dependsOn spotlessCheck
+  dependsOn npm_run_test
 
   inputs.files fileTree("src")
   inputs.file 'angular.json'
@@ -18,6 +19,13 @@ npm_run_build {
   inputs.file 'package-lock.json'
 
   outputs.dir 'build'
+}
+
+npm_run_test {
+  inputs.files fileTree("src")
+  inputs.file 'angular.json'
+  inputs.file 'package.json'
+  inputs.file 'package-lock.json'
 }
 
 tasks.register('buildPages', NpmTask) {
@@ -56,8 +64,8 @@ spotless {
     target 'src/**/*.html'
 
     prettier()
-            .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
-            .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
+      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
 
     licenseHeader("<!-- SPDX-License-Identifier: Apache-2.0 -->", "<[^!].*>")
 
@@ -69,8 +77,8 @@ spotless {
     target 'src/**/*.json'
 
     prettier()
-            .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
-            .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
+      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
 
     trimTrailingWhitespace()
     endWithNewline()
@@ -80,8 +88,8 @@ spotless {
     target 'src/**/*.ts', 'src/**/*.js', 'src/**/*.css', 'src/**/*.scss'
 
     prettier()
-            .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
-            .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
+      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
 
     licenseHeader("/* SPDX-License-Identifier: Apache-2.0 */", "import|export|.* \\{")
 

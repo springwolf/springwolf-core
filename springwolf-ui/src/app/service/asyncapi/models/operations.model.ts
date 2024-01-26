@@ -5,17 +5,15 @@ export interface ServerOperations {
   [key: string]: ServerOperation;
 }
 
-export type ServerOperationAction = "receive" | "send";
-
 export interface ServerOperation {
-  action: ServerOperationAction;
+  action: string;
   channel: {
     $ref: string;
   };
   messages: {
     $ref: string;
   }[];
-  bindings: ServerBindings;
+  bindings?: ServerBindings;
 }
 
 export interface ServerOperationMessage {

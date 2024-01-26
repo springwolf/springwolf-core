@@ -18,43 +18,57 @@ import { ServersComponent } from "./components/servers/servers.component";
 import { AsyncApiService } from "./service/asyncapi/asyncapi.service";
 import { MockServer } from "./service/mock/mock-server";
 import { PublisherService } from "./service/publisher.service";
-import { NotificationService } from "./service/notification.service";
+import {
+  INotificationService,
+  NotificationService,
+} from "./service/notification.service";
 import { FormsModule } from "@angular/forms";
 import { JsonComponent } from "./components/json/json.component";
 import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
 import { MarkdownModule, provideMarkdown } from "ngx-markdown";
 
+export const declarations = [
+  AppComponent,
+  HeaderComponent,
+  InfoComponent,
+  ServersComponent,
+  ChannelsComponent,
+  ChannelMainComponent,
+  SchemasComponent,
+  SchemaComponent,
+  SchemaRangeComponent,
+  JsonComponent,
+];
+export const imports = [
+  BrowserModule,
+  BrowserAnimationsModule,
+  MaterialModule,
+
+  HttpClientModule,
+  FormsModule,
+  MarkdownModule.forRoot(),
+  environment.production
+    ? []
+    : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 }),
+];
+export const providers = [
+  AsyncApiService,
+  AsyncApiMapperService,
+  { provide: INotificationService, useClass: NotificationService },
+  PublisherService,
+  provideMarkdown(),
+];
+
+export const ngModule = {
+  declarations: declarations,
+  imports: imports,
+  providers: providers,
+};
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    InfoComponent,
-    ServersComponent,
-    ChannelsComponent,
-    ChannelMainComponent,
-    SchemasComponent,
-    SchemaComponent,
-    SchemaRangeComponent,
-    JsonComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    HttpClientModule,
-    FormsModule,
-    MarkdownModule.forRoot(),
-    environment.production
-      ? []
-      : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 }),
-  ],
-  providers: [
-    AsyncApiService,
-    AsyncApiMapperService,
-    NotificationService,
-    PublisherService,
-    provideMarkdown(),
-  ],
+  declarations: declarations,
+  imports: imports,
+  providers: providers,
   bootstrap: [AppComponent],
 })
 export class AppModule {}

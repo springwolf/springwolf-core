@@ -12,5 +12,5 @@ export interface ServerAsyncApiMessage {
     };
   };
   headers: { $ref: string };
-  bindings: ServerBindings;
+  bindings?: ServerBindings;
 }

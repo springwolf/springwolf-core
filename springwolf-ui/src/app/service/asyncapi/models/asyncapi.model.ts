@@ -1,5 +1,4 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { ServerAsyncApiMessage } from "./message.model";
 import { ServerAsyncApiInfo } from "./info.models";
 import { ServerServers } from "./servers.model";
 import { ServerChannels } from "./channels.model";

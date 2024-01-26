@@ -4,17 +4,15 @@ export interface ServerAsyncApiSchema {
   type: string;
   format?: string;
   enum?: string[];
-  properties: Map<string, ServerAsyncApiSchema>;
-  items?: ServerAsyncApiSchema;
-  example?:
-    | {
-        [key: string]: object;
-      }
-    | string;
+  properties?: {
+    [key: string]: ServerAsyncApiSchema | { $ref: string };
+  };
+  items?: ServerAsyncApiSchema | { $ref: string };
+  example?: any;
+
   required?: string[];
   minimum?: number;
   maximum?: number;
   exclusiveMinimum?: boolean;
   exclusiveMaximum?: boolean;
-  $ref?: string;
 }

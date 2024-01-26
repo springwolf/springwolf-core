@@ -1,5 +1,4 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { ServerAsyncApiMessage } from "./message.model";
 import { ServerBindings } from "./bindings.model";
 
 export interface ServerChannels {
@@ -8,11 +7,10 @@ export interface ServerChannels {
 
 export interface ServerChannel {
   description?: string;
-  messages: Map<
-    string,
-    {
+  messages: {
+    [key: string]: {
       $ref: string;
-    }
-  >;
-  bindings: ServerBindings;
+    };
+  };
+  bindings?: ServerBindings;
 }
