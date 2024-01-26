@@ -16,8 +16,8 @@ import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
+import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.AvroSchemaPostProcessor;
@@ -62,10 +62,10 @@ public class SpringwolfAutoConfiguration {
             AsyncApiDocketService asyncApiDocketService,
             ChannelsService channelsService,
             OperationsService operationsService,
-            SchemasService schemasService,
+            ComponentsService componentsService,
             List<AsyncApiCustomizer> customizers) {
         return new DefaultAsyncApiService(
-                asyncApiDocketService, channelsService, operationsService, schemasService, customizers);
+                asyncApiDocketService, channelsService, operationsService, componentsService, customizers);
     }
 
     @Bean
@@ -82,11 +82,11 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SchemasService schemasService(
+    public ComponentsService schemasService(
             List<ModelConverter> modelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
             SpringwolfConfigProperties springwolfConfigProperties) {
-        return new DefaultSchemasService(modelConverters, schemaPostProcessors, springwolfConfigProperties);
+        return new DefaultComponentsService(modelConverters, schemaPostProcessors, springwolfConfigProperties);
     }
 
     @Bean

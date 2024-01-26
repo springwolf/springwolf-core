@@ -7,7 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +29,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
     private final AsyncApiDocketService asyncApiDocketService;
     private final ChannelsService channelsService;
     private final OperationsService operationsService;
-    private final SchemasService schemasService;
+    private final ComponentsService componentsService;
     private final List<AsyncApiCustomizer> customizers;
 
     private volatile AsyncAPIResult asyncAPIResult = null;
@@ -69,8 +69,8 @@ public class DefaultAsyncApiService implements AsyncApiService {
             Map<String, Operation> operations = operationsService.findOperations();
 
             Components components = Components.builder()
-                    .schemas(schemasService.getSchemas())
-                    .messages(schemasService.getMessages())
+                    .schemas(componentsService.getSchemas())
+                    .messages(componentsService.getMessages())
                     .build();
 
             AsyncAPI asyncAPI = AsyncAPI.builder()

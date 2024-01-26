@@ -27,8 +27,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 @Slf4j
-// TODO: rename to DefaultComponentService & interface to ComponentService
-public class DefaultSchemasService implements SchemasService {
+public class DefaultComponentsService implements ComponentsService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
     private final List<SchemasPostProcessor> schemaPostProcessors;
@@ -37,7 +36,7 @@ public class DefaultSchemasService implements SchemasService {
     private final Map<String, Schema> schemas = new HashMap<>();
     private final Map<String, Message> messages = new HashMap<>();
 
-    public DefaultSchemasService(
+    public DefaultComponentsService(
             List<ModelConverter> externalModelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
             SpringwolfConfigProperties properties) {

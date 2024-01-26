@@ -10,7 +10,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,12 +22,12 @@ import java.util.Map;
 public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Annotation> {
 
     protected final BindingFactory<MethodAnnotation> bindingFactory;
-    protected final SchemasService schemasService;
+    protected final ComponentsService componentsService;
 
     protected MessageObject buildMessage(MethodAnnotation annotation, Class<?> payloadType) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation);
-        String modelName = schemasService.registerSchema(payloadType);
-        String headerModelName = schemasService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
+        String modelName = componentsService.registerSchema(payloadType);
+        String headerModelName = componentsService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());
@@ -42,7 +42,7 @@ public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Anno
                 .bindings(messageBinding)
                 .build();
 
-        this.schemasService.registerMessage(message);
+        this.componentsService.registerMessage(message);
         return message;
     }
 }

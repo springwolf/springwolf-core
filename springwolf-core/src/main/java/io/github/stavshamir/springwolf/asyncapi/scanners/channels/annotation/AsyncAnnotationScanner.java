@@ -17,7 +17,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
 
     protected final AsyncAnnotationProvider<A> asyncAnnotationProvider;
     protected final PayloadClassExtractor payloadClassExtractor;
-    protected final SchemasService schemasService;
+    protected final ComponentsService componentsService;
     protected final List<OperationBindingProcessor> operationBindingProcessors;
     protected final List<MessageBindingProcessor> messageBindingProcessors;
     protected StringValueResolver resolver;
@@ -88,9 +88,9 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
                 ? operationData.payloadType()
                 : payloadClassExtractor.extractFrom(method);
 
-        String modelName = this.schemasService.registerSchema(payloadType);
+        String modelName = this.componentsService.registerSchema(payloadType);
         AsyncHeaders asyncHeaders = AsyncAnnotationScannerUtil.getAsyncHeaders(operationData, resolver);
-        String headerModelName = this.schemasService.registerSchema(asyncHeaders);
+        String headerModelName = this.componentsService.registerSchema(asyncHeaders);
         var headers = MessageHeaders.of(MessageReference.toSchema(headerModelName));
 
         var schema = payloadType.getAnnotation(Schema.class);
@@ -117,7 +117,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
         AsyncAnnotationScannerUtil.processAsyncMessageAnnotation(builder, operationData.message(), this.resolver);
 
         MessageObject message = builder.build();
-        this.schemasService.registerMessage(message);
+        this.componentsService.registerMessage(message);
         return message;
     }
 

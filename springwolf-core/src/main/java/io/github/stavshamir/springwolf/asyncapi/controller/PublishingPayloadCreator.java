@@ -4,7 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +21,13 @@ import java.util.List;
 @Slf4j
 public class PublishingPayloadCreator {
 
-    private final SchemasService schemasService;
+    private final ComponentsService componentsService;
     private final ObjectMapper objectMapper;
 
     public Result createPayloadObject(MessageDto message) {
         String messagePayloadType = message.getPayloadType();
 
-        List<String> knownSchemaNames = schemasService.getSchemas().values().stream()
+        List<String> knownSchemaNames = componentsService.getSchemas().values().stream()
                 .map(Schema::getName)
                 .toList();
         for (String schemaPayloadType : knownSchemaNames) {

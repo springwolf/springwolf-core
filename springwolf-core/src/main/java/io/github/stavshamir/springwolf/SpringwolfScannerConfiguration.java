@@ -18,7 +18,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ConfigurationCl
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -71,7 +71,7 @@ public class SpringwolfScannerConfiguration {
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncAnnotationChannelsScanner<AsyncListener> asyncListenerAnnotationChannelScanner(
             SpringwolfClassScanner springwolfClassScanner,
-            SchemasService schemasService,
+            ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
             PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
@@ -79,7 +79,7 @@ public class SpringwolfScannerConfiguration {
         return new AsyncAnnotationChannelsScanner<>(
                 buildAsyncListenerAnnotationProvider(),
                 springwolfClassScanner,
-                schemasService,
+                componentsService,
                 asyncApiDocketService,
                 payloadClassExtractor,
                 operationBindingProcessors,
@@ -94,14 +94,14 @@ public class SpringwolfScannerConfiguration {
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncAnnotationOperationsScanner<AsyncListener> asyncListenerAnnotationOperationScanner(
             SpringwolfClassScanner springwolfClassScanner,
-            SchemasService schemasService,
+            ComponentsService componentsService,
             PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncAnnotationOperationsScanner<>(
                 buildAsyncListenerAnnotationProvider(),
                 springwolfClassScanner,
-                schemasService,
+                componentsService,
                 payloadClassExtractor,
                 operationBindingProcessors,
                 messageBindingProcessors);
@@ -115,7 +115,7 @@ public class SpringwolfScannerConfiguration {
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncAnnotationChannelsScanner<AsyncPublisher> asyncPublisherChannelAnnotationScanner(
             SpringwolfClassScanner springwolfClassScanner,
-            SchemasService schemasService,
+            ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
             PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
@@ -123,7 +123,7 @@ public class SpringwolfScannerConfiguration {
         return new AsyncAnnotationChannelsScanner<>(
                 buildAsyncPublisherAnnotationProvider(),
                 springwolfClassScanner,
-                schemasService,
+                componentsService,
                 asyncApiDocketService,
                 payloadClassExtractor,
                 operationBindingProcessors,
@@ -138,14 +138,14 @@ public class SpringwolfScannerConfiguration {
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public AsyncAnnotationOperationsScanner<AsyncPublisher> asyncPublisherOperationAnnotationScanner(
             SpringwolfClassScanner springwolfClassScanner,
-            SchemasService schemasService,
+            ComponentsService componentsService,
             PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncAnnotationOperationsScanner<>(
                 buildAsyncPublisherAnnotationProvider(),
                 springwolfClassScanner,
-                schemasService,
+                componentsService,
                 payloadClassExtractor,
                 operationBindingProcessors,
                 messageBindingProcessors);

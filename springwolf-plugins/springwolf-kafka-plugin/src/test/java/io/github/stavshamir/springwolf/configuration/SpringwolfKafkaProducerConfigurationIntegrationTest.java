@@ -7,7 +7,7 @@ import io.github.stavshamir.springwolf.asyncapi.kafka.SpringwolfKafkaAutoConfigu
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +45,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
     @MockBeans(
             value = {
                 @MockBean(SpringwolfClassScanner.class),
-                @MockBean(SchemasService.class),
+                @MockBean(ComponentsService.class),
                 @MockBean(PayloadClassExtractor.class),
                 @MockBean(AsyncApiDocketService.class)
             })
@@ -84,7 +84,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
     @MockBeans(
             value = {
                 @MockBean(SpringwolfClassScanner.class),
-                @MockBean(SchemasService.class),
+                @MockBean(ComponentsService.class),
                 @MockBean(PayloadClassExtractor.class)
             })
     class KafkaProducerWillNotBeCreatedIfDisabledTest {

@@ -19,7 +19,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
@@ -34,7 +34,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final BeanMethodsScanner beanMethodsScanner;
-    private final SchemasService schemasService;
+    private final ComponentsService componentsService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
 
@@ -66,8 +66,8 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     private ChannelObject buildChannel(FunctionalChannelBeanData beanData) {
         Class<?> payloadType = beanData.payloadType();
-        String modelName = schemasService.registerSchema(payloadType);
-        String headerModelName = schemasService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
+        String modelName = componentsService.registerSchema(payloadType);
+        String headerModelName = componentsService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
 
         var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
@@ -80,7 +80,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(buildMessageBinding())
                 .build();
-        this.schemasService.registerMessage(message);
+        this.componentsService.registerMessage(message);
 
         Map<String, ChannelBinding> channelBinding = buildChannelBinding();
         return ChannelObject.builder()

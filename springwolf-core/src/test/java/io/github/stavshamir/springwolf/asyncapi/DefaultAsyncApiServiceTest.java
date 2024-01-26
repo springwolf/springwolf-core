@@ -5,7 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.fixtures.AsyncApiDocketFixture;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ class DefaultAsyncApiServiceTest {
     private AsyncApiDocketService asyncApiDocketService;
     private ChannelsService channelsService;
     private OperationsService operationsService;
-    private SchemasService schemasService;
+    private ComponentsService componentsService;
     private List<AsyncApiCustomizer> customizers = new ArrayList<>();
 
     @BeforeEach
@@ -35,13 +35,13 @@ class DefaultAsyncApiServiceTest {
         asyncApiDocketService = mock(AsyncApiDocketService.class);
         channelsService = mock(ChannelsService.class);
         operationsService = mock(OperationsService.class);
-        schemasService = mock(SchemasService.class);
+        componentsService = mock(ComponentsService.class);
 
         when(channelsService.findChannels()).thenReturn(Map.of());
-        when(schemasService.getSchemas()).thenReturn(Map.of());
+        when(componentsService.getSchemas()).thenReturn(Map.of());
 
         defaultAsyncApiService = new DefaultAsyncApiService(
-                asyncApiDocketService, channelsService, operationsService, schemasService, customizers);
+                asyncApiDocketService, channelsService, operationsService, componentsService, customizers);
     }
 
     @Test
