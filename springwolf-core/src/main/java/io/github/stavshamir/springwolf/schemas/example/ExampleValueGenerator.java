@@ -49,11 +49,11 @@ interface ExampleValueGenerator<T> {
 
     T generateUnknownSchemaFormatExample(String schemaFormat);
 
-    T wrapAsArray(List<T> list);
+    T generateArrayExample(T arrayItem);
 
     String toString(String name, T exampleObject) throws JsonProcessingException;
 
     T createRaw(Object exampleValueString);
 
-    T alreadyProcessed(Object example);
+    T exampleOrNull(Object example);
 }

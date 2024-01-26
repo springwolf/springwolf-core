@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +39,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
     @Override
     public Object fromSchema(Schema schema, Map<String, Schema> definitions) {
         try {
+            exampleValueGenerator.initialize();
             return buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
         } catch (ExampleGeneratingException ex) {
             log.info("Failed to build json example for schema {}", schema.getName(), ex);
@@ -47,6 +47,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
         return null;
     }
 
+    // TODO remove me
     String buildSchema(Schema schema, Map<String, Schema> definitions) {
         exampleValueGenerator.initialize();
         T finishedSchema = buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
@@ -94,7 +95,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
         }
 
         // Return directly, when we have processed this before
-        T processedExample = exampleValueGenerator.alreadyProcessed(exampleValue);
+        T processedExample = exampleValueGenerator.exampleOrNull(exampleValue);
         if (processedExample != null) {
             return processedExample;
         }
@@ -140,9 +141,9 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
 
     private T handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
 
-        List<T> list = Arrays.asList(buildSchemaInternal(schema.getName(), schema.getItems(), definitions, visited));
+        T arrayItem = buildSchemaInternal(schema.getName(), schema.getItems(), definitions, visited);
 
-        return exampleValueGenerator.wrapAsArray(list);
+        return exampleValueGenerator.generateArrayExample(arrayItem);
     }
 
     private T handleStringSchema(Schema schema) {

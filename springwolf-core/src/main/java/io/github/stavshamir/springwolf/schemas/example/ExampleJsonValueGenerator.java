@@ -142,9 +142,9 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode wrapAsArray(List<JsonNode> list) {
+    public JsonNode generateArrayExample(JsonNode arrayItem) {
         ArrayNode array = objectMapper.createArrayNode();
-        list.forEach(array::add);
+        array.add(arrayItem);
         return array;
     }
 
@@ -164,7 +164,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode alreadyProcessed(Object example) {
+    public JsonNode exampleOrNull(Object example) {
         if (example instanceof JsonNode) {
             return (JsonNode) example;
         }

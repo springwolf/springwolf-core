@@ -2,7 +2,6 @@
 package io.github.stavshamir.springwolf.schemas;
 
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -31,6 +30,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class DefaultComponentsService implements ComponentsService {
+
+    private static final String DEFAULT_CONTENT_TYPE = "application/json";
 
     private final ModelConverters converter = ModelConverters.getInstance();
     private final List<SchemasPostProcessor> schemaPostProcessors;
@@ -68,14 +69,14 @@ public class DefaultComponentsService implements ComponentsService {
         headerSchema.properties(headers);
 
         this.schemas.put(headers.getSchemaName(), headerSchema);
-        postProcessSchema(headerSchema, Message.DEFAULT_CONTENT_TYPE);
+        postProcessSchema(headerSchema, DEFAULT_CONTENT_TYPE);
 
         return headers.getSchemaName();
     }
 
     @Override
     public String registerSchema(Class<?> type) {
-        return this.registerSchema(type, Message.DEFAULT_CONTENT_TYPE);
+        return this.registerSchema(type, DEFAULT_CONTENT_TYPE);
     }
 
     @Override
@@ -157,7 +158,7 @@ public class DefaultComponentsService implements ComponentsService {
         schema.setName(String.class.getName());
 
         this.schemas.put(schemaName, schema);
-        postProcessSchema(schema, Message.DEFAULT_CONTENT_TYPE);
+        postProcessSchema(schema, DEFAULT_CONTENT_TYPE);
 
         return schemaName;
     }

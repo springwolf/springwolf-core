@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.media.UUIDSchema;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Node;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,12 +36,13 @@ class DefaultSchemaWalkerXmlIntegrationTest {
     class FromSchema {
 
         @Test
-        void build() {
+        void build() throws JsonProcessingException {
             StringSchema schema = new StringSchema();
+            schema.setName("build_schema_test");
 
-            Object actual = defaultSchemaWalker.fromSchema(schema, emptyMap());
-
-            assertThat(actual).isEqualTo("string");
+            Object actualXmlNode = defaultSchemaWalker.fromSchema(schema, emptyMap());
+            String actualXmlString = exampleJsonValueGenerator.toString(schema.getName(), (Node) actualXmlNode).trim();
+            assertThat(actualXmlString).isEqualTo("<build_schema_test>string</build_schema_test>");
         }
 
         @Test
@@ -282,7 +285,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
 
             String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("[\"string\"]");
+            assertThat(actual).isEqualTo("<type_primitive_array>string</type_primitive_array>");
         }
 
         @Test
@@ -372,15 +375,16 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         void schema_with_problematic_object_toString_example() {
             ObjectSchema schema = new ObjectSchema();
             schema.setExample(new ClassWithToString());
+            schema.setName("schema_with_problematic_object_toString_example");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, Map.of());
-            assertThat(actual).isEqualTo("\"Text with special character /\\\\\\\"\\\\'\\\\b\\\\f\\\\t\\\\r\\\\n.\"");
+            String actual = defaultSchemaWalker.buildSchema(schema, Map.of()).trim();
+            assertThat(actual).isEqualTo("<schema_with_problematic_object_toString_example>&lt;foo&gt;Text&lt;/bar&gt; with special character =?/\\\"\\'\\b\\f\\t\\r\\n.</schema_with_problematic_object_toString_example>");
         }
 
         class ClassWithToString {
             @Override
             public String toString() {
-                return "Text with special character /\\\"\\'\\b\\f\\t\\r\\n.";
+                return "<foo>Text</bar> with special character =?/\\\"\\'\\b\\f\\t\\r\\n.";
             }
         }
     }

@@ -52,6 +52,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
     @Override
     public void initialize() {
         try {
+            // TODO lazy?
             document = createDocument();
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
@@ -101,7 +102,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         }
     }
 
-    private Node wrapNode(String name, Node toWrap) {
+    private Element wrapNode(String name, Node toWrap) {
         Element rootElement = document.createElement(name);
         rootElement.appendChild(toWrap);
         return rootElement;
@@ -112,9 +113,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         if (exampleValue instanceof Element) {
             return (Element) exampleValue;
         } else if (exampleValue instanceof Text) {
-            Element element = document.createElement(propertyExample.getKey());
-            element.appendChild(exampleValue);
-            return element;
+            return wrapNode(propertyExample.getKey(), exampleValue);
         } else {
             throw new IllegalArgumentException("Unsupported type " + exampleValue.getClass().getSimpleName());
         }
@@ -187,9 +186,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
     }
 
     @Override
-    public Node wrapAsArray(List<Node> list) {
-        // TODO Handling of Array looks really fishy
-        return list.get(0);
+    public Node generateArrayExample(Node arrayItem) {
+        return arrayItem;
     }
 
     @Override
@@ -210,11 +208,12 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
 
     @Override
     public Node createRaw(Object exampleValueString) {
+        //TODO unused or in test to fix
         return null;
     }
 
     @Override
-    public Node alreadyProcessed(Object example) {
+    public Node exampleOrNull(Object example) {
         if (example instanceof Node) {
             return (Node) example;
         }
