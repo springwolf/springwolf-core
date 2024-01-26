@@ -54,4 +54,6 @@ interface ExampleValueGenerator<T> {
     String toString(String name, T exampleObject) throws JsonProcessingException;
 
     T createRaw(Object exampleValueString);
+
+    T alreadyProcessed(Object example);
 }

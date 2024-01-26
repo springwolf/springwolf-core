@@ -1,7 +1,6 @@
 package io.github.stavshamir.springwolf.schemas.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.commons.lang3.tuple.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -24,9 +23,31 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
 
     private Document document;
 
-    private static final String DEFAULT_BOOLEAN_EXAMPLE = "true";
+    private static final Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
 
     private static final String DEFAULT_STRING_EXAMPLE = "string";
+
+    private static final Integer DEFAULT_INTEGER_EXAMPLE = 0;
+
+    private static final Double DEFAULT_NUMBER_EXAMPLE = 1.1;
+
+    private static final String DEFAULT_DATE_EXAMPLE = "2015-07-20";
+    private static final String DEFAULT_DATE_TIME_EXAMPLE = "2015-07-20T15:49:04-07:00";
+    private static final String DEFAULT_PASSWORD_EXAMPLE = "string-password";
+    private static final String DEFAULT_BYTE_EXAMPLE = "YmFzZTY0LWV4YW1wbGU=";
+    private static final String DEFAULT_BINARY_EXAMPLE =
+            "0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001";
+
+    private static final String DEFAULT_EMAIL_EXAMPLE = "example@example.com";
+    private static final String DEFAULT_UUID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+
+    private static String DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(String type) {
+        return "unknown schema type: " + type;
+    }
+
+    private static String DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(String format) {
+        return "unknown string schema format: " + format;
+    }
 
     @Override
     public void initialize() {
@@ -39,27 +60,27 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
 
     @Override
     public Node createIntegerExample(Integer value) {
-        return null;
+        return document.createTextNode(value.toString());
     }
 
     @Override
     public Node createDoubleExample(Double value) {
-        return null;
+        return document.createTextNode(value.toString());
     }
 
     @Override
     public Node createBooleanExample() {
-        return document.createTextNode(DEFAULT_BOOLEAN_EXAMPLE);
+        return createBooleanExample(DEFAULT_BOOLEAN_EXAMPLE);
     }
 
     @Override
     public Node createBooleanExample(Boolean value) {
-        return null;
+        return document.createTextNode(value.toString());
     }
 
     @Override
     public Node createIntegerExample() {
-        return null;
+        return createIntegerExample(DEFAULT_INTEGER_EXAMPLE);
     }
 
     @Override
@@ -80,6 +101,12 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         }
     }
 
+    private Node wrapNode(String name, Node toWrap) {
+        Element rootElement = document.createElement(name);
+        rootElement.appendChild(toWrap);
+        return rootElement;
+    }
+
     private Element handlePropertyExample(Map.Entry<String, Node> propertyExample) throws ParserConfigurationException {
         final Node exampleValue = propertyExample.getValue();
         if (exampleValue instanceof Element) {
@@ -95,72 +122,74 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
 
     @Override
     public Node createDoubleExample() {
-        return null;
+        return createDoubleExample(DEFAULT_NUMBER_EXAMPLE);
     }
 
     @Override
     public Node generateDateExample() {
-        return null;
+        return document.createTextNode(DEFAULT_DATE_EXAMPLE);
     }
 
     @Override
     public Node generateDateTimeExample() {
-        return null;
+        return document.createTextNode(DEFAULT_DATE_TIME_EXAMPLE);
     }
 
     @Override
     public Node generateEmailExample() {
-        return null;
+        return document.createTextNode(DEFAULT_EMAIL_EXAMPLE);
     }
 
     @Override
     public Node generatePasswordExample() {
-        return null;
+        return document.createTextNode(DEFAULT_PASSWORD_EXAMPLE);
     }
 
     @Override
     public Node generateByteExample() {
-        return null;
+        return document.createTextNode(DEFAULT_BYTE_EXAMPLE);
     }
 
     @Override
     public Node generateBinaryExample() {
-        return null;
+        return document.createTextNode(DEFAULT_BINARY_EXAMPLE);
     }
 
     @Override
     public Node generateUuidExample() {
-        return null;
+        return document.createTextNode(DEFAULT_UUID_EXAMPLE);
     }
 
     @Override
     public Node generateStringExample() {
-        return document.createTextNode(DEFAULT_STRING_EXAMPLE);
+        return generateStringExample(DEFAULT_STRING_EXAMPLE);
     }
 
     @Override
     public Node generateStringExample(String value) {
-        return null;
+        return document.createTextNode(value);
     }
 
     @Override
     public Node generateEnumExample(String anEnumValue) {
-        return null;
+        return generateStringExample(anEnumValue);
     }
 
     @Override
     public Node generateUnknownSchemaStringTypeExample(String schemaType) {
-        return null;
+        return document.createTextNode(DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(schemaType));
     }
 
     @Override
     public Node generateUnknownSchemaFormatExample(String schemaFormat) {
-        return null;
+        return document.createTextNode(DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(schemaFormat));
+
     }
 
     @Override
     public Node wrapAsArray(List<Node> list) {
-        return null;
+        // TODO Handling of Array looks really fishy
+        return list.get(0);
     }
 
     @Override
@@ -169,7 +198,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         if (exampleObject instanceof Element) {
             objectToWrite = exampleObject;
         } else {
-            objectToWrite = createObjectExample(name, List.of(Pair.of(name, exampleObject)));
+            objectToWrite = wrapNode(name, exampleObject);
         }
         try {
             document.appendChild(objectToWrite);
@@ -181,6 +210,15 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
 
     @Override
     public Node createRaw(Object exampleValueString) {
+        return null;
+    }
+
+    @Override
+    public Node alreadyProcessed(Object example) {
+        if (example instanceof Node) {
+            return (Node) example;
+        }
+
         return null;
     }
 

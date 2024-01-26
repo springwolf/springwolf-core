@@ -2,7 +2,6 @@
 package io.github.stavshamir.springwolf.schemas.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +40,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
     @Override
     public Object fromSchema(Schema schema, Map<String, Schema> definitions) {
         try {
-            return buildSchemaInternal(schema, definitions, new HashSet<>());
+            return buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
         } catch (ExampleGeneratingException ex) {
             log.info("Failed to build json example for schema {}", schema.getName(), ex);
         }
@@ -95,8 +94,9 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
         }
 
         // Return directly, when we have processed this before
-        if (exampleValue instanceof JsonNode) {
-            return (JsonNode) exampleValue;
+        T processedExample = exampleValueGenerator.alreadyProcessed(exampleValue);
+        if (processedExample != null) {
+            return processedExample;
         }
 
         // Handle special types (i.e. map) with custom @Schema annotation and specified example value
@@ -140,7 +140,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
 
     private T handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
 
-        List<T> list = Arrays.asList(buildSchemaInternal("TODO", schema.getItems(), definitions, visited));
+        List<T> list = Arrays.asList(buildSchemaInternal(schema.getName(), schema.getItems(), definitions, visited));
 
         return exampleValueGenerator.wrapAsArray(list);
     }

@@ -164,6 +164,15 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
+    public JsonNode alreadyProcessed(Object example) {
+        if (example instanceof JsonNode) {
+            return (JsonNode) example;
+        }
+
+        return null;
+    }
+
+    @Override
     public JsonNode createObjectExample(String name, List<Map.Entry<String, JsonNode>> properties) {
         ObjectNode objectNode = objectMapper.createObjectNode();
         properties.forEach(property -> objectNode.set(property.getKey(), property.getValue()));

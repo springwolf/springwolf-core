@@ -62,97 +62,106 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             BooleanSchema schema = new BooleanSchema();
             schema.name("type_boolean");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("true");
+            assertThat(actual).isEqualTo("<type_boolean>true</type_boolean>");
         }
 
         @Test
         void type_boolean_example_set() {
             BooleanSchema schema = new BooleanSchema();
             schema.setExample(Boolean.FALSE);
+            schema.setName("type_boolean_example_set");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("false");
+            assertThat(actual).isEqualTo("<type_boolean_example_set>false</type_boolean_example_set>");
         }
 
         @Test
         void type_integer() {
             IntegerSchema schema = new IntegerSchema();
+            schema.name("type_integer");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("0");
+            assertThat(actual).isEqualTo("<type_integer>0</type_integer>");
         }
 
         @Test
         void type_integer_example_set() {
             IntegerSchema schema = new IntegerSchema();
             schema.setExample(Integer.parseInt("123"));
+            schema.setName("type_integer_example_set");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("123");
+            assertThat(actual).isEqualTo("<type_integer_example_set>123</type_integer_example_set>");
         }
 
         @Test
         void type_integer_format_long() {
             IntegerSchema schema = new IntegerSchema();
             schema.setFormat("int64");
+            schema.setName("type_integer_format_long");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("0");
+            assertThat(actual).isEqualTo("<type_integer_format_long>0</type_integer_format_long>");
         }
 
         @Test
         void type_number_format_float() {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setFormat("float");
+            schema.name("type_number_format_float");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("1.1");
+            assertThat(actual).isEqualTo("<type_number_format_float>1.1</type_number_format_float>");
         }
 
         @Test
         void type_number_format_double() {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setFormat("double");
+            schema.setName("type_number_format_double");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("1.1");
+            assertThat(actual).isEqualTo("<type_number_format_double>1.1</type_number_format_double>");
         }
 
         @Test
         void type_number_example_set() {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setExample(new BigDecimal("123.45"));
+            schema.setName("type_number_example_set");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("123.45");
+            assertThat(actual).isEqualTo("<type_number_example_set>123.45</type_number_example_set>");
         }
 
         @Test
         void type_string() {
             StringSchema schema = new StringSchema();
+            schema.name("type_string");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"string\"");
+            assertThat(actual).isEqualTo("<type_string>string</type_string>");
         }
 
         @Test
         void type_string_example_set() {
             StringSchema schema = new StringSchema();
             schema.setExample("custom-example-value");
+            schema.setName("type_string_example_set");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"custom-example-value\"");
+            assertThat(actual).isEqualTo("<type_string_example_set>custom-example-value</type_string_example_set>");
         }
 
         @Test
@@ -160,84 +169,93 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             StringSchema schema = new StringSchema();
             schema.addEnumItem("EnumItem1");
             schema.addEnumItem("EnumItem2");
+            schema.setName("type_string_from_enum");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"EnumItem1\"");
+            assertThat(actual).isEqualTo("<type_string_from_enum>EnumItem1</type_string_from_enum>");
         }
 
         @Test
         void type_string_format_byte() {
             StringSchema schema = new StringSchema();
             schema.setFormat("byte");
+            schema.setName("type_string_format_byte");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"YmFzZTY0LWV4YW1wbGU=\"");
+            assertThat(actual).isEqualTo("<type_string_format_byte>YmFzZTY0LWV4YW1wbGU=</type_string_format_byte>");
         }
 
         @Test
         void type_string_format_binary() {
             BinarySchema schema = new BinarySchema();
+            schema.setName("type_string_format_binary");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
+            assertThat(actual).isEqualTo("<type_string_format_binary>0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001</type_string_format_binary>");
         }
 
         @Test
         void type_string_format_date() {
             DateSchema schema = new DateSchema();
+            schema.setName("type_string_format_date");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"2015-07-20\"");
+            assertThat(actual).isEqualTo("<type_string_format_date>2015-07-20</type_string_format_date>");
         }
 
         @Test
         void type_string_format_datetime() {
             DateTimeSchema schema = new DateTimeSchema();
+            schema.setName("type_string_format_datetime");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"2015-07-20T15:49:04-07:00\"");
+            assertThat(actual).isEqualTo("<type_string_format_datetime>2015-07-20T15:49:04-07:00</type_string_format_datetime>");
         }
 
         @Test
         void type_string_format_email() {
             EmailSchema schema = new EmailSchema();
+            schema.setName("type_string_format_email");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"example@example.com\"");
+            assertThat(actual).isEqualTo("<type_string_format_email>example@example.com</type_string_format_email>");
         }
 
         @Test
         void type_string_format_password() {
             PasswordSchema schema = new PasswordSchema();
+            schema.setName("type_string_format_password");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"string-password\"");
+            assertThat(actual).isEqualTo("<type_string_format_password>string-password</type_string_format_password>");
         }
 
         @Test
         void type_string_format_uuid() {
             UUIDSchema schema = new UUIDSchema();
+            schema.setName("type_string_format_password");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"");
+            assertThat(actual).isEqualTo("<type_string_format_password>3fa85f64-5717-4562-b3fc-2c963f66afa6</type_string_format_password>");
         }
 
         @Test
         void type_string_format_unknown() {
             StringSchema schema = new StringSchema();
             schema.setFormat("unknown");
+            schema.setName("type_string_format_unknown");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"unknown string schema format: unknown\"");
+            assertThat(actual).isEqualTo("<type_string_format_unknown>unknown string schema format: unknown</type_string_format_unknown>");
         }
 
         @Test
@@ -249,18 +267,20 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             }
 
             TestSchema schema = new TestSchema();
+            schema.setName("type_unknown_schema");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("\"unknown schema type: test-schema\"");
+            assertThat(actual).isEqualTo("<type_unknown_schema>unknown schema type: test-schema</type_unknown_schema>");
         }
 
         @Test
         void type_primitive_array() {
             ArraySchema schema = new ArraySchema();
             schema.setItems(new StringSchema());
+            schema.setName("type_primitive_array");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("[\"string\"]");
         }
@@ -273,10 +293,16 @@ class DefaultSchemaWalkerXmlIntegrationTest {
 
             ArraySchema schema = new ArraySchema();
             schema.setItems(itemSchema);
+            schema.setName("type_object_array");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim();
 
-            assertThat(actual).isEqualTo("[{\"b\":true,\"s\":\"string\"}]");
+            assertThat(actual).isEqualTo("""
+            <type_object_array>
+                <b>true</b>
+                <s>string</s>
+            </type_object_array>
+            """.trim().stripIndent());
         }
 
         @Test
@@ -313,27 +339,33 @@ class DefaultSchemaWalkerXmlIntegrationTest {
                     .trim().stripIndent();
 
             assertThat(actual).isEqualTo("""
-              <composite_object_with_references_root>
-                  <f>
-                      <b>true</b>
-                      <s>string</s>
-                  </f>
-                  <s>string</s>
-              </composite_object_with_references_root>
+            <composite_object_with_references_root>
+                <f>
+                    <b>true</b>
+                    <s>string</s>
+                </f>
+                <s>string</s>
+            </composite_object_with_references_root>
             """.trim().stripIndent());
         }
 
         @Test
         void object_with_anyOf() {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName("object_with_anyOf");
 
             Schema propertySchema = new ObjectSchema();
             propertySchema.setAnyOf(List.of(new StringSchema(), new NumberSchema()));
             compositeSchema.addProperty("anyOfField", propertySchema);
 
-            String actual = defaultSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
+            String actual = defaultSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", propertySchema)).trim();
 
-            assertThat(actual).isEqualTo("{\"anyOfField\":\"string\"}");
+            assertThat(actual).isEqualTo("""
+            <object_with_anyOf>
+                <anyOfField>string</anyOfField>
+            </object_with_anyOf>
+            """.trim().stripIndent()
+            );
         }
 
         @Test
