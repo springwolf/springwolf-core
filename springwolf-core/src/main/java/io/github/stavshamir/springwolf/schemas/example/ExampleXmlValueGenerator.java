@@ -221,6 +221,11 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         return null;
     }
 
+    @Override
+    public Node createEmptyObjectExample() {
+        return document.createTextNode("");
+    }
+
     private static Document createDocument() throws ParserConfigurationException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 

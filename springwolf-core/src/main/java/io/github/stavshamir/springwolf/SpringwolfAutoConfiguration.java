@@ -19,10 +19,10 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
 import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
-import io.github.stavshamir.springwolf.schemas.example.SchemaWalker;
-import io.github.stavshamir.springwolf.schemas.example.ExampleGeneratorProvider;
 import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
+import io.github.stavshamir.springwolf.schemas.example.ExampleGeneratorProvider;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
+import io.github.stavshamir.springwolf.schemas.example.SchemaWalker;
 import io.github.stavshamir.springwolf.schemas.postprocessor.AvroSchemaPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;

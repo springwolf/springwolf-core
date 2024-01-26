@@ -23,6 +23,8 @@ interface ExampleValueGenerator<T> {
 
     T createObjectExample(String name, List<Map.Entry<String, T>> properties);
 
+    T createEmptyObjectExample();
+
     T createDoubleExample();
 
     T generateDateExample();

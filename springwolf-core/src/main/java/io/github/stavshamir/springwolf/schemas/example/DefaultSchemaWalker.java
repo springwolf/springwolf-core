@@ -209,15 +209,17 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
         }
         if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
             List<Schema> schemas = schema.getAnyOf();
-            return buildSchemaInternal("TODO", schemas.get(0), definitions, visited);
+            Schema anyOfSchema = schemas.get(0);
+            return buildSchemaInternal(anyOfSchema.getName(), anyOfSchema, definitions, visited);
         }
         if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
             List<Schema> schemas = schema.getOneOf();
-            return buildSchemaInternal("TODO", schemas.get(0), definitions, visited);
+            Schema oneOfSchema = schemas.get(0);
+            return buildSchemaInternal(oneOfSchema.getName(), oneOfSchema, definitions, visited);
         }
 
         // i.e. A MapSchema is type=object, but has properties=null
-        return exampleValueGenerator.createObjectExample("ignored", List.of());
+        return exampleValueGenerator.createEmptyObjectExample();
     }
 
     private T handleObjectProperties(

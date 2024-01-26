@@ -178,4 +178,9 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
         properties.forEach(property -> objectNode.set(property.getKey(), property.getValue()));
         return objectNode;
     }
+
+    @Override
+    public JsonNode createEmptyObjectExample() {
+        return objectMapper.createObjectNode();
+    }
 }

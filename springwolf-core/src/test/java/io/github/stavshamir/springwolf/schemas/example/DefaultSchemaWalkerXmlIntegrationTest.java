@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.EmailSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.PasswordSchema;
@@ -305,6 +306,37 @@ class DefaultSchemaWalkerXmlIntegrationTest {
                 <b>true</b>
                 <s>string</s>
             </type_object_array>
+            """.trim().stripIndent());
+        }
+
+        @Test
+        void type_map_schema() {
+            ObjectSchema schema = new ObjectSchema();
+            schema.setName("composite_type_map_schema");
+            MapSchema mapSchema = new MapSchema();
+            schema.addProperty("m", mapSchema);
+
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim().stripIndent();
+
+            assertThat(actual).isEqualTo("""            
+            <composite_type_map_schema>
+                <m/>
+            </composite_type_map_schema>
+            """.trim().stripIndent());
+        }
+
+        @Test
+        void composite_object_without_references2() {
+            ObjectSchema schema = new ObjectSchema();
+            schema.setName("CompositeObjectWithoutReferences");
+            schema.addProperty("s", new StringSchema());
+
+            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap()).trim().stripIndent();
+
+            assertThat(actual).isEqualTo("""            
+            <CompositeObjectWithoutReferences>
+                <s>string</s>
+            </CompositeObjectWithoutReferences>
             """.trim().stripIndent());
         }
 
