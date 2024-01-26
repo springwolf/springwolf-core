@@ -50,7 +50,7 @@ ext {
 
     jsonSchemaValidator = '1.1.0'
 
-    mockitoCoreVersion = '5.8.0'
+    mockitoCoreVersion = '5.9.0'
     mockitoJunitJupiterVersion = '5.8.0'
 
     monetaVersion = '1.4.2'
