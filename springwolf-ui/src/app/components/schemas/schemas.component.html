@@ -1,0 +1,27 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<h1>Schemas</h1>
+<mat-accordion>
+  <mat-expansion-panel
+    *ngFor="let schema of schemas | keyvalue"
+    [id]="schema.value.anchorIdentifier"
+    [expanded]="selectedSchema == schema.value.anchorIdentifier"
+    (opened)="this.setSchemaSelection(schema.value)"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h3>{{ schema.value.title }}</h3>
+      </mat-panel-title>
+      <mat-panel-description
+        class="flex-column flex-start items-center"
+        [ngClass]="{ 'gap-16': schema.value.description }"
+      >
+        <div>{{ schema.value.description }}</div>
+        <div class="badge type-badge">{{ schema.value.type }}</div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <h4>
+      Title: <span class="schema-name">{{ schema.value.name }}</span>
+    </h4>
+    <app-schema [schema]="schema.value"></app-schema>
+  </mat-expansion-panel>
+</mat-accordion>

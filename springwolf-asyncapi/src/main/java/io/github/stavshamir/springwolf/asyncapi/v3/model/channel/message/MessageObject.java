@@ -118,4 +118,14 @@ public class MessageObject extends ExtendableObject implements Message {
      */
     @JsonProperty(value = "traits")
     private List<MessageTrait> traits;
+
+    /*
+     * Override the getMessageId to guarantee that there's always a value. Defaults to 'name'
+     */
+    public String getMessageId() {
+        if (messageId == null) {
+            return this.name;
+        }
+        return messageId;
+    }
 }

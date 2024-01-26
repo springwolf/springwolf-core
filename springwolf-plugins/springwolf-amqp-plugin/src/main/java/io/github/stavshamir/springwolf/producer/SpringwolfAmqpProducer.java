@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.producer;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.util.CollectionUtils;
@@ -31,10 +31,15 @@ public class SpringwolfAmqpProducer {
 
     public void send(String channelName, Object payload) {
         AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
-        ChannelItem channelItem = asyncAPI.getChannels().get(channelName);
+        ChannelObject channelItem = asyncAPI.getChannels().get(channelName);
+
+        Operation operation = null;
+        if (asyncAPI.getOperations() != null) {
+            operation = asyncAPI.getOperations().get("amqp");
+        }
 
         String exchange = getExchangeName(channelItem);
-        String routingKey = getRoutingKey(channelItem);
+        String routingKey = getRoutingKey(operation);
         if (routingKey.isEmpty() && exchange.isEmpty()) {
             routingKey = channelName;
         }
@@ -46,7 +51,7 @@ public class SpringwolfAmqpProducer {
         }
     }
 
-    private String getExchangeName(ChannelItem channelItem) {
+    private String getExchangeName(ChannelObject channelItem) {
         String exchange = "";
         if (channelItem.getBindings() != null && channelItem.getBindings().containsKey("amqp")) {
             AMQPChannelBinding channelBinding =
@@ -60,10 +65,8 @@ public class SpringwolfAmqpProducer {
         return exchange;
     }
 
-    private String getRoutingKey(ChannelItem channelItem) {
+    private String getRoutingKey(Operation operation) {
         String routingKey = "";
-        Operation operation =
-                channelItem.getSubscribe() != null ? channelItem.getSubscribe() : channelItem.getPublish();
         if (operation != null
                 && operation.getBindings() != null
                 && operation.getBindings().containsKey("amqp")) {

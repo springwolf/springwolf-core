@@ -17,9 +17,8 @@ dependencyManagement {
 }
 
 dependencies {
+    api project(":springwolf-asyncapi")
     api project(":springwolf-core")
-
-    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
@@ -27,6 +26,7 @@ dependencies {
     implementation "org.springframework.cloud:spring-cloud-stream"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
 
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"

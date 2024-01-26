@@ -1,20 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2._6_0.model.server.Server;
-import com.asyncapi.v2.binding.message.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
@@ -25,7 +27,6 @@ import org.springframework.cloud.stream.config.BindingServiceProperties;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,76 +39,62 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
 
     @Override
-    public Map<String, ChannelItem> scan() {
+    public Map<String, ChannelObject> scan() {
         Set<Method> beanMethods = beanMethodsScanner.getBeanMethods();
-        return ChannelMerger.merge(beanMethods.stream()
+        return ChannelMerger.mergeChannels(beanMethods.stream()
                 .map(functionalChannelBeanBuilder::fromMethodBean)
                 .flatMap(Set::stream)
                 .filter(this::isChannelBean)
                 .map(this::toChannelEntry)
-                .collect(Collectors.toList()));
+                .toList());
     }
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {
         return cloudStreamBindingsProperties.getBindings().containsKey(beanData.cloudStreamBinding());
     }
 
-    private Map.Entry<String, ChannelItem> toChannelEntry(FunctionalChannelBeanData beanData) {
+    private Map.Entry<String, ChannelObject> toChannelEntry(FunctionalChannelBeanData beanData) {
         String channelName = cloudStreamBindingsProperties
                 .getBindings()
                 .get(beanData.cloudStreamBinding())
                 .getDestination();
 
-        String operationId = buildOperationId(beanData, channelName);
-        ChannelItem channelItem = buildChannel(beanData, operationId);
+        ChannelObject channelItem = buildChannel(beanData);
 
         return Map.entry(channelName, channelItem);
     }
 
-    private ChannelItem buildChannel(FunctionalChannelBeanData beanData, String operationId) {
+    private ChannelObject buildChannel(FunctionalChannelBeanData beanData) {
         Class<?> payloadType = beanData.payloadType();
-        String modelName = schemasService.register(payloadType);
-        String headerModelName = schemasService.register(AsyncHeaders.NOT_DOCUMENTED);
+        String modelName = schemasService.registerSchema(payloadType);
+        String headerModelName = schemasService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
 
-        Message message = Message.builder()
+        var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
+                .schema(SchemaReference.fromSchema(modelName))
+                .build());
+
+        MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(modelName)
-                .description(null)
-                .payload(PayloadReference.fromModelName(modelName))
-                .headers(HeaderReference.fromModelName(headerModelName))
+                .payload(messagePayload)
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(buildMessageBinding())
                 .build();
+        this.schemasService.registerMessage(message);
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId(operationId)
-                .message(message)
-                .bindings(buildOperationBinding())
+        Map<String, ChannelBinding> channelBinding = buildChannelBinding();
+        return ChannelObject.builder()
+                .bindings(channelBinding)
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .build();
-
-        Map<String, Object> channelBinding = buildChannelBinding();
-        return beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER
-                ? ChannelItem.builder()
-                        .bindings(channelBinding)
-                        .publish(operation)
-                        .build()
-                : ChannelItem.builder()
-                        .bindings(channelBinding)
-                        .subscribe(operation)
-                        .build();
     }
 
-    private Map<String, ? extends MessageBinding> buildMessageBinding() {
+    private Map<String, MessageBinding> buildMessageBinding() {
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private Map<String, Object> buildOperationBinding() {
-        String protocolName = getProtocolName();
-        return Map.of(protocolName, new EmptyOperationBinding());
-    }
-
-    private Map<String, Object> buildChannelBinding() {
+    private Map<String, ChannelBinding> buildChannelBinding() {
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyChannelBinding());
     }
@@ -125,12 +112,5 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .map(Server::getProtocol)
                 .orElseThrow(() ->
                         new IllegalStateException("There must be at least one server define in the AsyncApiDocker"));
-    }
-
-    private String buildOperationId(FunctionalChannelBeanData beanData, String channelName) {
-        String operationName =
-                beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
-
-        return String.format("%s_%s_%s", channelName, operationName, beanData.beanName());
     }
 }

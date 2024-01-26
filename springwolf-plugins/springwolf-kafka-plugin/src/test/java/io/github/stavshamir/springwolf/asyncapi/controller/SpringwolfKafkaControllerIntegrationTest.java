@@ -53,7 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             "springwolf.docket.info.title=Title",
             "springwolf.docket.info.version=1.0",
             "springwolf.docket.servers.kafka.protocol=kafka",
-            "springwolf.docket.servers.kafka.url=127.0.0.1",
+            "springwolf.docket.servers.kafka.host=127.0.0.1",
             "springwolf.plugin.kafka.publishing.enabled=true",
             "springwolf.use-fqn=true"
         })
@@ -78,7 +78,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     void setup() {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
-        schemasService.register(PayloadDto.class);
+        schemasService.registerSchema(PayloadDto.class);
     }
 
     @Test
@@ -86,11 +86,11 @@ class SpringwolfKafkaControllerIntegrationTest {
         try {
             String content =
                     """
-            {
-              "bindings": null,
-              "headers": null,
-              "payload": ""
-            }""";
+                            {
+                              "bindings": null,
+                              "headers": null,
+                              "payload": ""
+                            }""";
             mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
@@ -105,10 +105,10 @@ class SpringwolfKafkaControllerIntegrationTest {
         try {
             String content =
                     """
-            {
-              "bindings": null,
-              "headers": null
-            }""";
+                            {
+                              "bindings": null,
+                              "headers": null
+                            }""";
             mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
@@ -124,11 +124,11 @@ class SpringwolfKafkaControllerIntegrationTest {
 
         String content =
                 """
-                {
-                  "bindings": null,
-                  "headers": null,
-                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }"
-                }""";
+                        {
+                          "bindings": null,
+                          "headers": null,
+                          "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }"
+                        }""";
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
@@ -141,12 +141,12 @@ class SpringwolfKafkaControllerIntegrationTest {
 
         String content =
                 """
-                {
-                  "bindings": null,
-                  "headers": null,
-                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
-                }""";
+                        {
+                          "bindings": null,
+                          "headers": null,
+                          "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
+                          "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
+                        }""";
 
         mvc.perform(post("/springwolf/kafka/publish")
                         .param("topic", "test-topic")
@@ -165,15 +165,15 @@ class SpringwolfKafkaControllerIntegrationTest {
 
         String content =
                 """
-                {
-                  "bindings": null,
-                  "headers": {
-                    "some-header-key": "some-header-value"
-                  },
-                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
-                }
-                """;
+                        {
+                          "bindings": null,
+                          "headers": {
+                            "some-header-key": "some-header-value"
+                          },
+                          "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
+                          "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
+                        }
+                        """;
 
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -193,16 +193,16 @@ class SpringwolfKafkaControllerIntegrationTest {
 
         String content =
                 """
-                {
-                  "bindings": {
-                    "key": "kafka-key-value"
-                  },
-                  "headers": {
-                    "some-header-key": "some-header-value"
-                  },
-                  "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                  "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
-                }""";
+                        {
+                          "bindings": {
+                            "key": "kafka-key-value"
+                          },
+                          "headers": {
+                            "some-header-key": "some-header-value"
+                          },
+                          "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
+                          "payloadType": "io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
+                        }""";
 
         mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)

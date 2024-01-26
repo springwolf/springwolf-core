@@ -27,7 +27,7 @@ public class PublishingPayloadCreator {
     public Result createPayloadObject(MessageDto message) {
         String messagePayloadType = message.getPayloadType();
 
-        List<String> knownSchemaNames = schemasService.getDefinitions().values().stream()
+        List<String> knownSchemaNames = schemasService.getSchemas().values().stream()
                 .map(Schema::getName)
                 .toList();
         for (String schemaPayloadType : knownSchemaNames) {

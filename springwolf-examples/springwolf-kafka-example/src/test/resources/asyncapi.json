@@ -1,5 +1,5 @@
 {
-  "asyncapi": "2.6.0",
+  "asyncapi": "3.0.0",
   "info": {
     "title": "Springwolf example project - Kafka",
     "version": "1.0.0",
@@ -17,41 +17,15 @@
   "defaultContentType": "application/json",
   "servers": {
     "kafka": {
-      "url": "kafka:29092",
+      "host": "kafka:29092",
       "protocol": "kafka"
     }
   },
   "channels": {
     "another-topic": {
-      "publish": {
-        "operationId": "another-topic_publish_receiveAnotherPayloadBatched",
-        "description": "Auto-generated description",
-        "bindings": {
-          "kafka": {
-            "groupId": {
-              "type": "string",
-              "enum": [
-                "example-group-id"
-              ]
-            },
-            "bindingVersion": "0.4.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
-          "title": "AnotherPayloadDto",
-          "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "kafka": {
-              "bindingVersion": "0.4.0"
-            }
-          }
+      "messages": {
+        "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
         }
       },
       "bindings": {
@@ -61,56 +35,16 @@
       }
     },
     "avro-topic": {
-      "publish": {
-        "operationId": "avro-topic_publish",
-        "description": "Requires a running kafka-schema-registry. See docker-compose.yml to start it",
-        "bindings": {
-          "kafka": {
-            "bindingVersion": "0.4.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto",
-          "title": "ExamplePayloadAvroDto",
-          "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "kafka": {
-              "bindingVersion": "0.4.0"
-            }
-          }
+      "messages": {
+        "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto"
         }
       }
     },
     "example-topic": {
-      "publish": {
-        "operationId": "example-topic_publish_receiveExamplePayload",
-        "description": "Auto-generated description",
-        "bindings": {
-          "kafka": {
-            "bindingVersion": "0.4.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
-          "title": "ExamplePayloadDto",
-          "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "kafka": {
-              "bindingVersion": "0.4.0"
-            }
-          }
+      "messages": {
+        "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -120,109 +54,22 @@
       }
     },
     "multi-payload-topic": {
-      "publish": {
-        "operationId": "multi-payload-topic_publish",
-        "description": "Override description in the AsyncListener annotation with servers at kafka:29092",
-        "bindings": {
-          "kafka": {
-            "groupId": {
-              "type": "string",
-              "enum": [
-                "foo-groupId"
-              ]
-            },
-            "clientId": {
-              "type": "string",
-              "enum": [
-                "foo-clientId"
-              ]
-            },
-            "bindingVersion": "0.4.0"
-          }
+      "messages": {
+        "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
         },
-        "message": {
-          "oneOf": [
-            {
-              "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-              "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
-              "title": "AnotherPayloadDto",
-              "payload": {
-                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
-              },
-              "headers": {
-                "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-AnotherPayloadDto"
-              },
-              "bindings": {
-                "kafka": {
-                  "bindingVersion": "0.4.0"
-                }
-              }
-            },
-            {
-              "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-              "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
-              "title": "ExamplePayloadDto",
-              "payload": {
-                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
-              },
-              "headers": {
-                "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto"
-              },
-              "bindings": {
-                "kafka": {
-                  "bindingVersion": "0.4.0"
-                }
-              }
-            },
-            {
-              "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-              "name": "javax.money.MonetaryAmount",
-              "title": "MonetaryAmount",
-              "payload": {
-                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
-              },
-              "headers": {
-                "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-MonetaryAmount"
-              },
-              "bindings": {
-                "kafka": {
-                  "key": {
-                    "type": "string",
-                    "description": "Kafka Consumer Message Key",
-                    "example": "example-key"
-                  },
-                  "bindingVersion": "0.4.0"
-                }
-              }
-            }
-          ]
+        "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+        },
+        "javax.money.MonetaryAmount": {
+          "$ref": "#/components/messages/javax.money.MonetaryAmount"
         }
       }
     },
     "protobuf-topic": {
-      "publish": {
-        "operationId": "protobuf-topic_publish_receiveExampleProtobufPayload",
-        "description": "Auto-generated description",
-        "bindings": {
-          "kafka": {
-            "bindingVersion": "0.4.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message",
-          "title": "Message",
-          "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/HeadersNotDocumented"
-          },
-          "bindings": {
-            "kafka": {
-              "bindingVersion": "0.4.0"
-            }
-          }
+      "messages": {
+        "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
         }
       },
       "bindings": {
@@ -232,88 +79,19 @@
       }
     },
     "string-topic": {
-      "publish": {
-        "operationId": "string-topic_publish",
-        "description": "Final classes (like String) can be documented using an envelope class and the @AsyncApiPayload annotation.",
-        "bindings": {
-          "kafka": {
-            "bindingVersion": "0.4.0"
-          }
+      "messages": {
+        "io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope"
         },
-        "message": {
-          "oneOf": [
-            {
-              "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-              "name": "io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope",
-              "title": "StringEnvelope",
-              "payload": {
-                "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope"
-              },
-              "headers": {
-                "$ref": "#/components/schemas/HeadersNotDocumented"
-              },
-              "bindings": {
-                "kafka": {
-                  "bindingVersion": "0.4.0"
-                }
-              }
-            },
-            {
-              "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-              "name": "java.lang.String",
-              "title": "String",
-              "payload": {
-                "$ref": "#/components/schemas/String"
-              },
-              "headers": {
-                "$ref": "#/components/schemas/HeadersNotDocumented"
-              },
-              "bindings": {
-                "kafka": {
-                  "bindingVersion": "0.4.0"
-                }
-              }
-            }
-          ]
+        "java.lang.String": {
+          "$ref": "#/components/messages/java.lang.String"
         }
       }
     },
     "topic-defined-via-asyncPublisher-annotation": {
-      "subscribe": {
-        "operationId": "topic-defined-via-asyncPublisher-annotation_subscribe",
-        "description": "Custom, optional description defined in the AsyncPublisher annotation",
-        "bindings": {
-          "kafka": {
-            "clientId": {
-              "type": "string",
-              "enum": [
-                "foo-clientId"
-              ]
-            },
-            "bindingVersion": "0.4.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
-          "title": "NestedPayloadDto",
-          "description": "Payload model with nested complex types",
-          "payload": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/SpringDefaultHeaderAndCloudEvent"
-          },
-          "bindings": {
-            "kafka": {
-              "key": {
-                "type": "string",
-                "description": "Kafka Producer Message Key",
-                "example": "example-key"
-              },
-              "bindingVersion": "0.4.0"
-            }
-          }
+      "messages": {
+        "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
         }
       }
     }
@@ -575,6 +353,8 @@
         "type": "object",
         "properties": {
           "amount": {
+            "minimum": 0.1,
+            "exclusiveMinimum": true,
             "type": "number",
             "example": 99.99
           },
@@ -592,6 +372,7 @@
           "name": "io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount",
           "properties": {
             "amount": {
+              "minimum": 0.1,
               "name": "amount",
               "type": "number"
             },
@@ -915,7 +696,331 @@
           "type": "object"
         }
       }
+    },
+    "messages": {
+      "io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope",
+        "title": "StringEnvelope",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto",
+        "title": "ExamplePayloadAvroDto",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message",
+        "title": "Message",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
+        "title": "AnotherPayloadDto",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
+        "title": "ExamplePayloadDto",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringDefaultHeaderAndCloudEvent"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
+        "title": "NestedPayloadDto",
+        "description": "Payload model with nested complex types",
+        "bindings": {
+          "kafka": {
+            "key": {
+              "type": "string",
+              "description": "Kafka Producer Message Key",
+              "examples": [
+                "example-key"
+              ]
+            },
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
+      "java.lang.String": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/String"
+          }
+        },
+        "name": "java.lang.String",
+        "title": "String",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
+      "javax.money.MonetaryAmount": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-MonetaryAmount"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
+          }
+        },
+        "name": "javax.money.MonetaryAmount",
+        "title": "MonetaryAmount",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      }
     }
   },
-  "tags": [ ]
+  "operations": {
+    "another-topic_receive_receiveAnotherPayloadBatched": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/another-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "groupId": {
+            "type": "string",
+            "enum": [
+              "example-group-id"
+            ]
+          },
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "avro-topic_receive_receiveExampleAvroPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/avro-topic"
+      },
+      "title": "avro-topic_receive",
+      "description": "Requires a running kafka-schema-registry. See docker-compose.yml to start it",
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/avro-topic/messages/io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto"
+        }
+      ]
+    },
+    "example-topic_receive_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "multi-payload-topic_receive_ExampleClassLevelKafkaListener": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/multi-payload-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
+        },
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+        },
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
+        }
+      ]
+    },
+    "multi-payload-topic_receive_receiveMonetaryAmount": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/multi-payload-topic"
+      },
+      "title": "multi-payload-topic_receive",
+      "description": "Override description in the AsyncListener annotation with servers at kafka:29092",
+      "bindings": {
+        "kafka": {
+          "groupId": {
+            "type": "string",
+            "enum": [
+              "foo-groupId"
+            ]
+          },
+          "clientId": {
+            "type": "string",
+            "enum": [
+              "foo-clientId"
+            ]
+          },
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
+        }
+      ]
+    },
+    "protobuf-topic_receive_receiveExampleProtobufPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/protobuf-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/protobuf-topic/messages/io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+        }
+      ]
+    },
+    "string-topic_receive_receiveStringPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/string-topic"
+      },
+      "title": "string-topic_receive",
+      "description": "Final classes (like String) can be documented using an envelope class and the @AsyncApiPayload annotation.",
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/string-topic/messages/io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope"
+        },
+        {
+          "$ref": "#/channels/string-topic/messages/java.lang.String"
+        }
+      ]
+    },
+    "topic-defined-via-asyncPublisher-annotation_send_sendMessage": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/topic-defined-via-asyncPublisher-annotation"
+      },
+      "title": "topic-defined-via-asyncPublisher-annotation_send",
+      "description": "Custom, optional description defined in the AsyncPublisher annotation",
+      "bindings": {
+        "kafka": {
+          "clientId": {
+            "type": "string",
+            "enum": [
+              "foo-clientId"
+            ]
+          },
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/topic-defined-via-asyncPublisher-annotation/messages/io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
+        }
+      ]
+    }
+  }
 }

@@ -7,10 +7,11 @@ plugins {
 }
 
 dependencies {
+    api project(":springwolf-asyncapi")
     api project(":springwolf-core")
 
-    implementation "com.asyncapi:asyncapi-core:${asyncapiCoreVersion}"
     implementation "io.swagger.core.v3:swagger-models:${swaggerVersion}"
+    permitUnusedDeclared "io.swagger.core.v3:swagger-models:${swaggerVersion}"
     implementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
@@ -27,12 +28,18 @@ dependencies {
     permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
     testRuntimeOnly "org.springframework.boot:spring-boot-starter-web"
+
+    testImplementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 

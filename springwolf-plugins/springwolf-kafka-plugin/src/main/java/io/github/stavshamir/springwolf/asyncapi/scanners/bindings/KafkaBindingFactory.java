@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.KafkaListenerUtil;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import lombok.NoArgsConstructor;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -22,17 +22,17 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener>, Embed
     }
 
     @Override
-    public Map<String, ? extends ChannelBinding> buildChannelBinding(KafkaListener annotation) {
+    public Map<String, ChannelBinding> buildChannelBinding(KafkaListener annotation) {
         return KafkaListenerUtil.buildChannelBinding();
     }
 
     @Override
-    public Map<String, ? extends OperationBinding> buildOperationBinding(KafkaListener annotation) {
+    public Map<String, OperationBinding> buildOperationBinding(KafkaListener annotation) {
         return KafkaListenerUtil.buildOperationBinding(annotation, stringValueResolver);
     }
 
     @Override
-    public Map<String, ? extends MessageBinding> buildMessageBinding(KafkaListener annotation) {
+    public Map<String, MessageBinding> buildMessageBinding(KafkaListener annotation) {
         return KafkaListenerUtil.buildMessageBinding();
     }
 

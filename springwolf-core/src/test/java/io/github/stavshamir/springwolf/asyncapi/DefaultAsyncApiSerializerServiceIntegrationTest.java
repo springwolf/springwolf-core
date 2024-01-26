@@ -1,23 +1,30 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2._6_0.model.info.Contact;
-import com.asyncapi.v2._6_0.model.info.Info;
-import com.asyncapi.v2._6_0.model.info.License;
-import com.asyncapi.v2._6_0.model.server.Server;
-import com.asyncapi.v2.binding.message.kafka.KafkaMessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.operation.kafka.KafkaOperationBinding;
-import com.asyncapi.v2.schema.Type;
+import io.github.stavshamir.springwolf.ClasspathUtil;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.types.Components;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Contact;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaType;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {DefaultAsyncApiSerializerService.class})
@@ -58,36 +65,48 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .build();
 
         Server productionServer = Server.builder()
-                .url("development.gigantic-server.com")
+                .host("development.gigantic-server.com")
                 .description("Development server")
                 .protocol("kafka")
                 .protocolVersion("1.0.0")
                 .build();
 
-        Message message = Message.builder()
+        MessageObject message = MessageObject.builder()
                 .name("io.github.stavshamir.springwolf.ExamplePayload")
                 .title("Example Payload")
-                .payload(PayloadReference.fromModelName("ExamplePayload"))
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(MessageReference.toSchema("ExamplePayload"))
+                        .build()))
                 .bindings(Map.of(
-                        "kafka", new KafkaMessageBinding(new StringSchema(), null, null, null, "binding-version-1")))
+                        "kafka",
+                        KafkaMessageBinding.builder()
+                                // FIXME: We should have a SchemaString (Schema<String>)
+                                .key(SchemaObject.builder().type("string").build())
+                                .build()))
                 .build();
+        Map<String, Message> messages = Map.of(message.getMessageId(), message);
 
-        com.asyncapi.v2.schema.Schema groupId = new com.asyncapi.v2.schema.Schema();
-        groupId.setEnumValue(List.of("myGroupId"));
-        groupId.setType(Type.STRING);
+        SchemaObject groupId = new SchemaObject();
+        groupId.setEnumValues(List.of("myGroupId"));
+        groupId.setType(SchemaType.STRING);
+
         OperationBinding operationBinding =
                 KafkaOperationBinding.builder().groupId(groupId).build();
 
         Operation newUserOperation = Operation.builder()
-                .operationId("new-user_listenerMethod_subscribe")
-                .message(message)
+                .action(OperationAction.SEND)
+                .channel(ChannelReference.fromChannel("new-user"))
+                .messages(List.of(MessageReference.toChannelMessage("new-user", message.getName())))
                 .bindings(Map.of("kafka", operationBinding))
                 .build();
 
-        ChannelItem newUserChannel = ChannelItem.builder()
+        ChannelObject newUserChannel = ChannelObject.builder()
+                // FIXME: Can we autogenerate the address somehow?
+                .address("new-user")
                 .description("This channel is used to exchange messages about users signing up")
-                .servers(List.of("production"))
-                .subscribe(newUserOperation)
+                .servers(List.of(
+                        ServerReference.builder().ref("#/servers/production").build()))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         Map<String, Schema> schemas = ModelConverters.getInstance()
@@ -98,7 +117,9 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .defaultContentType("application/json")
                 .servers(Map.of("production", productionServer))
                 .channels(Map.of("new-user", newUserChannel))
-                .components(Components.builder().schemas(schemas).build())
+                .components(
+                        Components.builder().schemas(schemas).messages(messages).build())
+                .operations(Map.of("new-user_listenerMethod_subscribe", newUserOperation))
                 .build();
 
         return asyncapi;
@@ -110,16 +131,15 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         String actual = serializer.toJsonString(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
-        assertEquals(expected, actual);
+
+        assertThatJson(actual).isEqualTo(expected);
     }
 
     @Test
     void AsyncAPI_should_map_to_a_valid_asyncapi_yaml() throws IOException {
         var asyncapi = getAsyncAPITestObject();
-        String actual = serializer.toYaml(asyncapi);
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.yaml");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
-        assertEquals(expected, actual);
+        var expected = ClasspathUtil.parseYamlFile("/asyncapi/asyncapi.yaml");
+        assertThatJson(serializer.toJsonString(asyncapi)).isEqualTo(expected);
     }
 
     @Data

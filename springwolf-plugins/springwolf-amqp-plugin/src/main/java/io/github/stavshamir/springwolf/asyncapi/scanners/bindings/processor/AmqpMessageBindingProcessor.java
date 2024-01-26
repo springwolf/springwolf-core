@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
-import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AmqpAsyncOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringValueResolver;
 
@@ -23,8 +23,8 @@ public class AmqpMessageBindingProcessor implements MessageBindingProcessor, Emb
     @Override
     public Optional<ProcessedMessageBinding> process(Method method) {
         return Arrays.stream(method.getAnnotations())
-                .filter(annotation -> annotation instanceof AmqpAsyncOperationBinding)
-                .map(annotation -> (AmqpAsyncOperationBinding) annotation)
+                .filter(AmqpAsyncOperationBinding.class::isInstance)
+                .map(AmqpAsyncOperationBinding.class::cast)
                 .findAny()
                 .map(this::mapToMessageBinding);
     }

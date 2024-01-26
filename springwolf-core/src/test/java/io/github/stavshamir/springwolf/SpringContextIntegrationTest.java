@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @MinimalIntegrationTestContextConfiguration
-public class SpringContextIntegrationTest {
+class SpringContextIntegrationTest {
     @Autowired
     private ApplicationContext context;
 

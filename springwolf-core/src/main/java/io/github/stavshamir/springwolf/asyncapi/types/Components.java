@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,4 +24,5 @@ import java.util.Map;
 public class Components {
 
     private Map<String, Schema> schemas;
+    private Map<String, Message> messages;
 }

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 class MonetaryAmount {
 
     @JsonProperty("amount")
-    @Schema(example = "99.99")
+    @Schema(example = "99.99", minimum = "0.1", exclusiveMinimum = true)
     private BigDecimal amount;
 
     @JsonProperty("currency")

@@ -1,19 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.producer;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2._6_0.model.info.Info;
-import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -33,14 +36,14 @@ class SpringwolfAmqpProducerTest {
         asyncApiService = mock(AsyncApiService.class);
         rabbitTemplate = mock(RabbitTemplate.class);
 
-        springwolfAmqpProducer = new SpringwolfAmqpProducer(asyncApiService, Collections.singletonList(rabbitTemplate));
+        springwolfAmqpProducer = new SpringwolfAmqpProducer(asyncApiService, List.of(rabbitTemplate));
     }
 
     @Test
     void send_defaultExchangeAndChannelNameAsRoutingKey() {
         AsyncAPI asyncAPI = AsyncAPI.builder()
                 .info(new Info())
-                .channels(Map.of("channel-name", new ChannelItem()))
+                .channels(Map.of("channel-name", new ChannelObject()))
                 .build();
         when(asyncApiService.getAsyncAPI()).thenReturn(asyncAPI);
 
@@ -52,20 +55,26 @@ class SpringwolfAmqpProducerTest {
 
     @Test
     void send_exchangeAndNoRoutingKey() {
-        AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
+        AMQPChannelExchangeProperties properties = new AMQPChannelExchangeProperties();
         properties.setName("exchange-name");
-        ChannelItem channelItem = ChannelItem.builder()
+        ChannelObject channelItem = ChannelObject.builder()
                 .bindings(Map.of(
                         "amqp",
                         AMQPChannelBinding.builder().exchange(properties).build()))
-                .publish(Operation.builder()
-                        .bindings(Map.of("amqp", new AMQPOperationBinding()))
-                        .build())
                 .build();
-        Map<String, ChannelItem> channels = Map.of("channel-name", channelItem);
+        Map<String, ChannelObject> channels = Map.of("channel-name", channelItem);
+        Operation operation = Operation.builder()
+                .action(OperationAction.SEND)
+                .bindings(Map.of("amqp", AMQPOperationBinding.builder().build()))
+                .channel(ChannelReference.fromChannel("channel-name"))
+                .build();
+        Map<String, Operation> operations = Map.of("amqp", operation);
 
-        AsyncAPI asyncAPI =
-                AsyncAPI.builder().info(new Info()).channels(channels).build();
+        AsyncAPI asyncAPI = AsyncAPI.builder()
+                .info(new Info())
+                .channels(channels)
+                .operations(operations)
+                .build();
         when(asyncApiService.getAsyncAPI()).thenReturn(asyncAPI);
 
         Map<String, Object> payload = new HashMap<>();
@@ -76,24 +85,28 @@ class SpringwolfAmqpProducerTest {
 
     @Test
     void send_exchangeAndRoutingKeyFromBindings() {
-        AMQPChannelBinding.ExchangeProperties properties = new AMQPChannelBinding.ExchangeProperties();
+        AMQPChannelExchangeProperties properties = new AMQPChannelExchangeProperties();
         properties.setName("exchange-name");
-        ChannelItem channelItem = ChannelItem.builder()
+        ChannelObject channelItem = ChannelObject.builder()
                 .bindings(Map.of(
                         "amqp",
                         AMQPChannelBinding.builder().exchange(properties).build()))
-                .publish(Operation.builder()
-                        .bindings(Map.of(
-                                "amqp",
-                                AMQPOperationBinding.builder()
-                                        .cc(Collections.singletonList("routing-key"))
-                                        .build()))
-                        .build())
                 .build();
-        Map<String, ChannelItem> channels = Map.of("channel-name", channelItem);
+        Map<String, ChannelObject> channels = Map.of("channel-name", channelItem);
+        Operation operation = Operation.builder()
+                .bindings(Map.of(
+                        "amqp",
+                        AMQPOperationBinding.builder()
+                                .cc(List.of("routing-key"))
+                                .build()))
+                .build();
+        Map<String, Operation> operations = Map.of("amqp", operation);
 
-        AsyncAPI asyncAPI =
-                AsyncAPI.builder().info(new Info()).channels(channels).build();
+        AsyncAPI asyncAPI = AsyncAPI.builder()
+                .info(new Info())
+                .channels(channels)
+                .operations(operations)
+                .build();
         when(asyncApiService.getAsyncAPI()).thenReturn(asyncAPI);
 
         Map<String, Object> payload = new HashMap<>();

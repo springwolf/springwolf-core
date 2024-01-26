@@ -3,7 +3,6 @@ package io.github.stavshamir.springwolf.asyncapi.v3.model.schema;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -150,14 +149,12 @@ class SchemaTest {
     }
 
     @Test
-    @Disabled("MODEL WITH BOOLEAN SCHEMAS is not supported yet")
-    // FIXME: See https://www.asyncapi.com/docs/reference/specification/v3.0.0#schemaObject
     void shouldSerializeModelWithBooleans() throws JsonProcessingException {
         var schema = SchemaObject.builder()
                 .type("object")
-                //                .properties(Map.of(
-                //                        "anySchema", true,
-                //                        "cannotBeDefined", false))
+                .properties(Map.of(
+                        "anySchema", true,
+                        "cannotBeDefined", false))
                 .required(List.of("anySchema"))
                 .build();
 

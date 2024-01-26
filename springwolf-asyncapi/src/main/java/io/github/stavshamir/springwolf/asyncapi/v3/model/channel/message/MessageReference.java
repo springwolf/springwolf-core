@@ -25,22 +25,27 @@ public class MessageReference implements Message, Reference {
 
     /**
      * Convenient Builder to create a Message reference to an existing Message
-     * @param message Message to create the reference to. This Message MUST have a 'messageId' field
-     * @return a Message with the 'ref' field pointing to "#/components/messages/{messageId"
+     *
+     * @param message Message to create the reference to. This Message MUST have a 'messageName' field
+     * @return a Message with the 'ref' field pointing to "#/components/messages/{messageName}"
      */
-    public static MessageReference fromMessage(MessageObject message) {
-        var messageId = message.getMessageId();
-        if (messageId == null) {
-            throw new IllegalArgumentException("The message must have a 'messageId' defined");
-        }
-        return new MessageReference("#/components/messages/" + messageId);
+    public static MessageReference toComponentMessage(MessageObject message) {
+        return toComponentMessage(message.getName());
     }
 
-    public static MessageReference fromMessage(String messageName) {
+    public static MessageReference toComponentMessage(String messageName) {
         return new MessageReference("#/components/messages/" + messageName);
     }
 
-    public static MessageReference fromSchema(String schemaName) {
+    public static MessageReference toChannelMessage(String channelName, MessageObject message) {
+        return new MessageReference("#/channels/" + channelName + "/messages/" + message.getName());
+    }
+
+    public static MessageReference toChannelMessage(String channelName, String messageName) {
+        return new MessageReference("#/channels/" + channelName + "/messages/" + messageName);
+    }
+
+    public static MessageReference toSchema(String schemaName) {
         return new MessageReference("#/components/schemas/" + schemaName);
     }
 }

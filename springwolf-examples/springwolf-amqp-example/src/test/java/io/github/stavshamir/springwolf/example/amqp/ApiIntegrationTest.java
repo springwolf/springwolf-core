@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(
         classes = {SpringwolfAmqpExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ApiIntegrationTest {
+class ApiIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;

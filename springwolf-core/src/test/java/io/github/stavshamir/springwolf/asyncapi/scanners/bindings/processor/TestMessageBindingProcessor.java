@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
-import com.asyncapi.v2.binding.message.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class TestMessageBindingProcessor implements MessageBindingProcessor {
 
     public static final String TYPE = "testType";
-    public static final MessageBinding BINDING = new MessageBinding();
+    public static final MessageBinding BINDING = new EmptyMessageBinding();
 
     @Override
     public Optional<ProcessedMessageBinding> process(Method method) {

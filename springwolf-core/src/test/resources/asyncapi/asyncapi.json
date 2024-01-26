@@ -1,5 +1,5 @@
 {
-  "asyncapi": "2.6.0",
+  "asyncapi": "3.0.0",
   "info": {
     "title": "AsyncAPI Sample App",
     "version": "1.0.1",
@@ -18,7 +18,7 @@
   "defaultContentType": "application/json",
   "servers": {
     "production": {
-      "url": "development.gigantic-server.com",
+      "host": "development.gigantic-server.com",
       "protocol": "kafka",
       "protocolVersion": "1.0.0",
       "description": "Development server"
@@ -26,40 +26,18 @@
   },
   "channels": {
     "new-user": {
+      "address": "new-user",
+      "messages": {
+        "io.github.stavshamir.springwolf.ExamplePayload": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.ExamplePayload"
+        }
+      },
       "description": "This channel is used to exchange messages about users signing up",
       "servers": [
-        "production"
-      ],
-      "subscribe": {
-        "operationId": "new-user_listenerMethod_subscribe",
-        "bindings": {
-          "kafka": {
-            "groupId": {
-              "type": "string",
-              "enum": [
-                "myGroupId"
-              ]
-            },
-            "bindingVersion": "0.4.0"
-          }
-        },
-        "message": {
-          "schemaFormat": "application/vnd.oai.openapi+json;version=3.0.0",
-          "name": "io.github.stavshamir.springwolf.ExamplePayload",
-          "title": "Example Payload",
-          "payload": {
-            "$ref": "#/components/schemas/ExamplePayload"
-          },
-          "bindings": {
-            "kafka": {
-              "key": {
-                "type": "string"
-              },
-              "bindingVersion": "binding-version-1"
-            }
-          }
+        {
+          "$ref": "#/servers/production"
         }
-      }
+      ]
     }
   },
   "components": {
@@ -72,7 +50,50 @@
           }
         }
       }
+    },
+    "messages": {
+      "io.github.stavshamir.springwolf.ExamplePayload": {
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/ExamplePayload"
+          }
+        },
+        "name": "io.github.stavshamir.springwolf.ExamplePayload",
+        "title": "Example Payload",
+        "bindings": {
+          "kafka": {
+            "key": {
+              "type": "string"
+            },
+            "bindingVersion": "0.4.0"
+          }
+        }
+      }
     }
   },
-  "tags": [ ]
+  "operations": {
+    "new-user_listenerMethod_subscribe": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/new-user"
+      },
+      "bindings": {
+        "kafka": {
+          "groupId": {
+            "type": "string",
+            "enum": [
+              "myGroupId"
+            ]
+          },
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/new-user/messages/io.github.stavshamir.springwolf.ExamplePayload"
+        }
+      ]
+    }
+  }
 }

@@ -1,80 +1,63 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.Channel;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static io.github.stavshamir.springwolf.asyncapi.MessageHelper.toMessageObjectOrComposition;
 
 /**
- * Util to merge multiple {@link ChannelItem}s
+ * Util to merge multiple {@link Channel}s
  */
 public class ChannelMerger {
 
-    /**
-     * Merges multiple channelItems by channel name
-     * <p>
-     * Given two channelItems for the same channel name, the first seen ChannelItem is used
-     * If an operation is null, the next non-null operation is used
-     * Messages within operations are merged
-     *
-     * @param channelEntries Ordered pairs of channel name to ChannelItem
-     * @return A map of channelName to a single ChannelItem
-     */
-    public static Map<String, ChannelItem> merge(List<Map.Entry<String, ChannelItem>> channelEntries) {
-        Map<String, ChannelItem> mergedChannels = new HashMap<>();
+    private ChannelMerger() {}
 
-        for (Map.Entry<String, ChannelItem> entry : channelEntries) {
+    /**
+     * Merges multiple channels by channel name
+     * <p>
+     * Given two channels for the same channel name, the first seen Channel is used
+     * Messages within channels are merged
+     *
+     * @param channelEntries Ordered pairs of channel name to Channel
+     * @return A map of channelName to a single Channel
+     */
+    public static Map<String, ChannelObject> mergeChannels(List<Map.Entry<String, ChannelObject>> channelEntries) {
+        Map<String, ChannelObject> mergedChannels = new HashMap<>();
+
+        for (Map.Entry<String, ChannelObject> entry : channelEntries) {
             if (!mergedChannels.containsKey(entry.getKey())) {
                 mergedChannels.put(entry.getKey(), entry.getValue());
             } else {
-                ChannelItem channelItem = mergedChannels.get(entry.getKey());
-                channelItem.setPublish(mergeOperation(
-                        channelItem.getPublish(), entry.getValue().getPublish()));
-                channelItem.setSubscribe(mergeOperation(
-                        channelItem.getSubscribe(), entry.getValue().getSubscribe()));
+                ChannelObject channel = mergeChannel(mergedChannels.get(entry.getKey()), entry.getValue());
+                mergedChannels.put(entry.getKey(), channel);
             }
         }
 
         return mergedChannels;
     }
 
-    private static Operation mergeOperation(Operation operation, Operation otherOperation) {
-        Operation mergedOperation = operation != null ? operation : otherOperation;
+    private static ChannelObject mergeChannel(ChannelObject channel, ChannelObject otherChannel) {
+        ChannelObject mergedChannel = channel != null ? channel : otherChannel;
 
-        Set<Message> mergedMessages = mergeMessages(getMessages(operation), getMessages(otherOperation));
+        Map<String, Message> channelMessages = channel.getMessages();
+        Map<String, Message> otherChannelMessages = otherChannel.getMessages();
+
+        Map<String, Message> mergedMessages = new HashMap<>();
+        if (channelMessages != null) {
+            mergedMessages.putAll(channelMessages);
+        }
+        if (otherChannelMessages != null) {
+            otherChannelMessages.forEach(mergedMessages::putIfAbsent);
+        }
+
         if (!mergedMessages.isEmpty()) {
-            mergedOperation.setMessage(toMessageObjectOrComposition(mergedMessages));
-        }
-        return mergedOperation;
-    }
-
-    private static Set<Message> mergeMessages(Set<Message> messages, Set<Message> otherMessages) {
-        Map<String, Message> nameToMessage =
-                messages.stream().collect(Collectors.toMap(Message::getName, Function.identity()));
-
-        for (Message otherMessage : otherMessages) {
-            nameToMessage.putIfAbsent(otherMessage.getName(), otherMessage);
+            mergedChannel.setMessages(mergedMessages);
         }
 
-        return new HashSet<>(nameToMessage.values());
-    }
-
-    private static Set<Message> getMessages(Operation operation) {
-        return Optional.ofNullable(operation)
-                .map(Operation::getMessage)
-                .map(MessageHelper::messageObjectToSet)
-                .orElseGet(HashSet::new);
+        return mergedChannel;
     }
 }

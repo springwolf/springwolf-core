@@ -1,19 +1,23 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
-import com.asyncapi.v2.binding.channel.amqp.AMQPChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.amqp.AMQPMessageBinding;
-import com.asyncapi.v2.binding.operation.amqp.AMQPOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.PayloadReference;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersNotDocumented;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.HeaderReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.schemas.SchemasService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +28,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,10 +51,12 @@ class ClassLevelAnnotationChannelsScannerTest {
                     schemasService);
 
     private static final String CHANNEL = "test-channel";
-    private static final Map<String, Object> defaultOperationBinding = Map.of("protocol", new AMQPOperationBinding());
-    private static final Map<String, ? extends MessageBinding> defaultMessageBinding =
+    private static final Map<String, OperationBinding> defaultOperationBinding =
+            Map.of("protocol", new AMQPOperationBinding());
+    private static final Map<String, MessageBinding> defaultMessageBinding =
             Map.of("protocol", new AMQPMessageBinding());
-    private static final Map<String, Object> defaultChannelBinding = Map.of("protocol", new AMQPChannelBinding());
+    private static final Map<String, ChannelBinding> defaultChannelBinding =
+            Map.of("protocol", new AMQPChannelBinding());
 
     @BeforeEach
     void setUp() {
@@ -65,37 +70,35 @@ class ClassLevelAnnotationChannelsScannerTest {
         doReturn(String.class).when(payloadClassExtractor).extractFrom(any());
         doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())
                 .when(schemasService)
-                .register(any(Class.class));
+                .registerSchema(any(Class.class));
         doAnswer(invocation -> AsyncHeaders.NOT_DOCUMENTED.getSchemaName())
                 .when(schemasService)
-                .register(any(AsyncHeaders.class));
+                .registerSchema(any(AsyncHeaders.class));
     }
 
     @Test
     void scan_componentHasTestListenerMethods() {
         // when
-        List<Map.Entry<String, ChannelItem>> channels =
-                scanner.process(ClassWithTestListenerAnnotation.class).collect(Collectors.toList());
+        List<Map.Entry<String, ChannelObject>> channels =
+                scanner.process(ClassWithTestListenerAnnotation.class).toList();
 
         // then
-        Message message = Message.builder()
+        MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
+                .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                .build());
+
+        MessageObject message = MessageObject.builder()
+                .messageId(String.class.getName())
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
-                .payload(PayloadReference.fromModelName(String.class.getSimpleName()))
-                .headers(HeaderReference.fromModelName(AsyncHeaders.NOT_DOCUMENTED.getSchemaName()))
+                .payload(payload)
+                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
-        Operation operation = Operation.builder()
-                .description("Auto-generated description")
-                .operationId(CHANNEL + "_publish_ClassWithTestListenerAnnotation")
-                .bindings(defaultOperationBinding)
-                .message(message)
-                .build();
-
-        ChannelItem expectedChannelItem = ChannelItem.builder()
+        ChannelObject expectedChannelItem = ChannelObject.builder()
                 .bindings(defaultChannelBinding)
-                .publish(operation)
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));

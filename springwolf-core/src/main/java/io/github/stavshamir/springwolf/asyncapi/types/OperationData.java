@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
@@ -30,12 +31,12 @@ public interface OperationData {
      * channel is available on all defined servers. May be null.
      */
     @Nullable
-    List<String> getServers();
+    List<ServerReference> getServers();
 
     /**
      * The channel binding.
      */
-    Map<String, ? extends ChannelBinding> getChannelBinding();
+    Map<String, ChannelBinding> getChannelBinding();
 
     /**
      * The class object of the payload.
@@ -50,23 +51,12 @@ public interface OperationData {
     /**
      * The operation binding.
      */
-    Map<String, ? extends OperationBinding> getOperationBinding();
+    Map<String, OperationBinding> getOperationBinding();
 
     /**
      * The message binding.
      */
-    Map<String, ? extends MessageBinding> getMessageBinding();
+    Map<String, MessageBinding> getMessageBinding();
 
-    Message getMessage();
-
-    enum OperationType {
-        PUBLISH("publish"),
-        SUBSCRIBE("subscribe");
-
-        public final String operationName;
-
-        OperationType(String operationName) {
-            this.operationName = operationName;
-        }
-    }
+    MessageObject getMessage();
 }

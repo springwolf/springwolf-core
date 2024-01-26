@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels;
 
-import com.asyncapi.v2._6_0.model.channel.ChannelItem;
-import com.asyncapi.v2._6_0.model.channel.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.MessageHelper;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.Message;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -20,158 +20,118 @@ class ChannelMergerTest {
         // given
         String channelName1 = "channel1";
         String channelName2 = "channel2";
-        Operation publishOperation =
-                Operation.builder().operationId("publisher").build();
-        Operation subscribeOperation =
-                Operation.builder().operationId("subscribe").build();
-        ChannelItem publisherChannel =
-                ChannelItem.builder().publish(publishOperation).build();
-        ChannelItem subscriberChannel =
-                ChannelItem.builder().subscribe(subscribeOperation).build();
+        ChannelObject publisherChannel = ChannelObject.builder().build();
+        ChannelObject subscriberChannel = ChannelObject.builder().build();
 
         // when
-        Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(
+        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
                 Arrays.asList(Map.entry(channelName1, publisherChannel), Map.entry(channelName2, subscriberChannel)));
 
         // then
-        assertThat(mergedChannels)
-                .hasSize(2)
-                .hasEntrySatisfying(channelName1, it -> {
-                    assertThat(it.getPublish()).isEqualTo(publishOperation);
-                    assertThat(it.getSubscribe()).isNull();
-                })
-                .hasEntrySatisfying(channelName2, it -> {
-                    assertThat(it.getPublish()).isNull();
-                    assertThat(it.getSubscribe()).isEqualTo(subscribeOperation);
-                });
+        assertThat(mergedChannels).hasSize(2);
     }
 
     @Test
-    void shouldMergePublisherAndSubscriberIntoOneChannel() {
+    void shouldMergeEqualChannelNamesIntoOneChannel() {
         // given
         String channelName = "channel";
-        Operation publishOperation =
-                Operation.builder().operationId("publisher").build();
-        Operation subscribeOperation =
-                Operation.builder().operationId("subscribe").build();
-        ChannelItem publisherChannel =
-                ChannelItem.builder().publish(publishOperation).build();
-        ChannelItem subscriberChannel =
-                ChannelItem.builder().subscribe(subscribeOperation).build();
+        ChannelObject publisherChannel = ChannelObject.builder().build();
+        ChannelObject subscriberChannel = ChannelObject.builder().build();
 
         // when
-        Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(
+        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
                 Arrays.asList(Map.entry(channelName, publisherChannel), Map.entry(channelName, subscriberChannel)));
 
         // then
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
-            assertThat(it.getPublish()).isEqualTo(publishOperation);
-            assertThat(it.getSubscribe()).isEqualTo(subscribeOperation);
-        });
+        assertThat(mergedChannels).hasSize(1);
     }
 
     @Test
-    void shouldUseFirstOperationFound() {
+    void shouldUseFirstChannelFound() {
         // given
         String channelName = "channel";
-        Operation publishOperation1 =
-                Operation.builder().operationId("publisher1").build();
-        Operation publishOperation2 =
-                Operation.builder().operationId("publisher2").build();
-        ChannelItem publisherChannel1 =
-                ChannelItem.builder().publish(publishOperation1).build();
-        ChannelItem publisherChannel2 =
-                ChannelItem.builder().publish(publishOperation2).build();
+        ChannelObject publisherChannel1 =
+                ChannelObject.builder().title("channel1").build();
+        ChannelObject publisherChannel2 =
+                ChannelObject.builder().title("channel2").build();
 
         // when
-        Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(
+        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
                 Arrays.asList(Map.entry(channelName, publisherChannel1), Map.entry(channelName, publisherChannel2)));
 
         // then
         assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
-            assertThat(it.getPublish()).isEqualTo(publishOperation1);
-            assertThat(it.getSubscribe()).isNull();
+            assertThat(it.getTitle()).isEqualTo("channel1");
         });
     }
 
     @Test
-    void shouldMergeDifferentMessageForSameOperation() {
+    void shouldMergeDifferentMessagesForSameChannel() {
         // given
         String channelName = "channel";
-        Message message1 = Message.builder()
+        MessageObject message1 = MessageObject.builder()
+                .messageId("message1")
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
-        Message message2 = Message.builder()
+        MessageObject message2 = MessageObject.builder()
+                .messageId("message2")
                 .name(Integer.class.getCanonicalName())
                 .description("This is an integer")
                 .build();
-        Message message3 = Message.builder()
+        MessageObject message3 = MessageObject.builder()
+                .messageId("message3")
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
-        Operation publishOperation1 =
-                Operation.builder().operationId("publisher1").message(message1).build();
-        Operation publishOperation2 =
-                Operation.builder().operationId("publisher2").message(message2).build();
-        Operation publishOperation3 =
-                Operation.builder().operationId("publisher3").message(message3).build();
-        ChannelItem publisherChannel1 =
-                ChannelItem.builder().publish(publishOperation1).build();
-        ChannelItem publisherChannel2 =
-                ChannelItem.builder().publish(publishOperation2).build();
-        ChannelItem publisherChannel3 =
-                ChannelItem.builder().publish(publishOperation3).build();
+        ChannelObject publisherChannel1 = ChannelObject.builder()
+                .messages(Map.of(message1.getName(), MessageReference.toComponentMessage(message1)))
+                .build();
+        ChannelObject publisherChannel2 = ChannelObject.builder()
+                .messages(Map.of(message2.getName(), MessageReference.toComponentMessage(message2)))
+                .build();
+        ChannelObject publisherChannel3 = ChannelObject.builder()
+                .messages(Map.of(message3.getName(), MessageReference.toComponentMessage(message3)))
+                .build();
 
         // when
-        Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(Arrays.asList(
+        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(Arrays.asList(
                 Map.entry(channelName, publisherChannel1),
                 Map.entry(channelName, publisherChannel2),
                 Map.entry(channelName, publisherChannel3)));
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
-        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Set.of(message1, message2));
+        var expectedMessages = MessageHelper.toMessagesMap(Set.of(message1, message2));
         assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
-            assertThat(it.getPublish())
-                    .isEqualTo(Operation.builder()
-                            .operationId("publisher1")
-                            .message(expectedMessages)
-                            .build());
-            assertThat(it.getSubscribe()).isNull();
+            assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages);
         });
     }
 
     @Test
-    void shouldUseOtherMessageIfFirstMessageIsMissing() {
+    void shouldUseOtherMessageIfFirstMessageIsMissingForChannels() {
         // given
         String channelName = "channel";
-        Message message2 = Message.builder()
+        MessageObject message2 = MessageObject.builder()
+                .messageId(String.class.getCanonicalName())
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
-        Operation publishOperation1 =
-                Operation.builder().operationId("publisher1").build();
-        Operation publishOperation2 =
-                Operation.builder().operationId("publisher2").message(message2).build();
-        ChannelItem publisherChannel1 =
-                ChannelItem.builder().publish(publishOperation1).build();
-        ChannelItem publisherChannel2 =
-                ChannelItem.builder().publish(publishOperation2).build();
+        ChannelObject publisherChannel1 = ChannelObject.builder().build();
+        ChannelObject publisherChannel2 = ChannelObject.builder()
+                .messages(Map.of(message2.getName(), message2))
+                .build();
 
         // when
-        Map<String, ChannelItem> mergedChannels = ChannelMerger.merge(
+        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
                 Arrays.asList(Map.entry(channelName, publisherChannel1), Map.entry(channelName, publisherChannel2)));
 
         // then expectedMessage message2
-        Object expectedMessages = MessageHelper.toMessageObjectOrComposition(Set.of(message2));
+        var expectedMessages = Map.of(message2.getName(), message2);
+
         assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
-            assertThat(it.getPublish())
-                    .isEqualTo(Operation.builder()
-                            .operationId("publisher1")
-                            .message(expectedMessages)
-                            .build());
-            assertThat(it.getSubscribe()).isNull();
+            assertThat(it.getMessages()).hasSize(1);
+            assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages);
         });
     }
 }

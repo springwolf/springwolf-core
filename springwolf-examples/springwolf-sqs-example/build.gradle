@@ -16,11 +16,13 @@ dependencyManagement {
 
 dependencies {
     implementation project(":springwolf-core")
-    implementation project(":springwolf-add-ons:springwolf-generic-binding")
     implementation project(":springwolf-plugins:springwolf-sqs")
 
     annotationProcessor project(":springwolf-plugins:springwolf-sqs")
     runtimeOnly project(":springwolf-ui")
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 

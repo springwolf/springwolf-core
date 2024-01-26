@@ -1,18 +1,20 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import com.asyncapi.v2.binding.channel.ChannelBinding;
-import com.asyncapi.v2.binding.channel.sqs.SQSChannelBinding;
-import com.asyncapi.v2.binding.message.MessageBinding;
-import com.asyncapi.v2.binding.message.sqs.SQSMessageBinding;
-import com.asyncapi.v2.binding.operation.OperationBinding;
-import com.asyncapi.v2.binding.operation.sqs.SQSOperationBinding;
 import io.awspring.cloud.sqs.annotation.SqsListener;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBindingQueue;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSMessageBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSOperationBinding;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StringValueResolver;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,13 +47,19 @@ class SqsListenerUtilTest {
             StringValueResolver resolver = mock(StringValueResolver.class);
 
             // when
-            Map<String, ? extends ChannelBinding> channelBinding =
-                    SqsListenerUtil.buildChannelBinding(annotation, resolver);
+            Map<String, ChannelBinding> channelBinding = SqsListenerUtil.buildChannelBinding(annotation, resolver);
 
             // then
+            var expectedChannel = SQSChannelBinding.builder()
+                    .queue(SQSChannelBindingQueue.builder()
+                            .name("${queue-1}")
+                            .fifoQueue(true)
+                            .build())
+                    .build();
+
             assertEquals(1, channelBinding.size());
             assertEquals(Sets.newTreeSet("sqs"), channelBinding.keySet());
-            assertEquals(new SQSChannelBinding(), channelBinding.get("sqs"));
+            assertEquals(expectedChannel, channelBinding.get("sqs"));
         }
 
         @Test
@@ -61,19 +69,26 @@ class SqsListenerUtilTest {
             StringValueResolver resolver = mock(StringValueResolver.class);
 
             // when
-            Map<String, ? extends OperationBinding> operationBinding =
+            Map<String, OperationBinding> operationBinding =
                     SqsListenerUtil.buildOperationBinding(annotation, resolver);
 
             // then
+            var expectedOperation = SQSOperationBinding.builder()
+                    .queues(List.of(SQSChannelBindingQueue.builder()
+                            .name("${queue-1}")
+                            .fifoQueue(true)
+                            .build()))
+                    .build();
+
             assertEquals(1, operationBinding.size());
             assertEquals(Sets.newTreeSet("sqs"), operationBinding.keySet());
-            assertEquals(new SQSOperationBinding(), operationBinding.get("sqs"));
+            assertEquals(expectedOperation, operationBinding.get("sqs"));
         }
 
         @Test
         void buildMessageBinding() {
             // when
-            Map<String, ? extends MessageBinding> messageBinding = SqsListenerUtil.buildMessageBinding();
+            Map<String, MessageBinding> messageBinding = SqsListenerUtil.buildMessageBinding();
 
             // then
             assertEquals(1, messageBinding.size());

@@ -42,7 +42,7 @@ springwolf.docket.info.title=${spring.application.name}
 springwolf.docket.info.version=1.0.0
 
 springwolf.docket.servers.amqp.protocol=amqp
-springwolf.docket.servers.amqp.url=amqp:5672
+springwolf.docket.servers.amqp.host=amqp:5672
 ```
 
 The basePackage field must be set with the name of the package containing the classes to be scanned for `@RabbitListener`
