@@ -2,13 +2,12 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
 import io.github.stavshamir.springwolf.ClasspathUtil;
-import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
@@ -16,6 +15,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Contact;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
@@ -25,8 +25,8 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchem
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
+import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.oas.models.media.Schema;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
@@ -111,8 +112,13 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        Map<String, Schema> schemas = ModelConverters.getInstance()
-                .read(DefaultAsyncApiSerializerServiceIntegrationTest.ExamplePayload.class);
+        Map<String, SchemaObject> schemas = ModelConverters.getInstance()
+                // TODO: is this correct, or should this rather be a fixed schema (no data class)?
+                .read(DefaultAsyncApiSerializerServiceIntegrationTest.ExamplePayload.class)
+                .entrySet()
+                .stream()
+                .map(entry -> Map.entry(entry.getKey(), SwaggerSchemaUtil.mapSchema(entry.getValue())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         AsyncAPI asyncapi = AsyncAPI.builder()
                 .info(info)

@@ -5,13 +5,13 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.Map;
 
 public interface ComponentsService {
 
-    Map<String, ComponentSchema> getSchemas();
+    Map<String, Schema> getSchemas();
 
     String registerSchema(AsyncHeaders headers);
 

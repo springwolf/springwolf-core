@@ -3,8 +3,8 @@ package io.github.stavshamir.springwolf.asyncapi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;

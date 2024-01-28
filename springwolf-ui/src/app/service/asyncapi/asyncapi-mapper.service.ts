@@ -291,7 +291,9 @@ export class AsyncApiMapperService {
         ? this.mapSchema(schemaName + "[]", schema.items)
         : undefined;
     const example =
-      schema.example !== undefined ? new Example(schema.example) : undefined;
+      schema.examples !== undefined && 0 < schema.examples.length
+        ? new Example(schema.examples[0])
+        : undefined;
 
     return {
       name: schemaName,
