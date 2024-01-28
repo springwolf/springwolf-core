@@ -8,15 +8,27 @@ import java.util.Map;
 public class SwaggerSchemaPostProcessor implements SchemasPostProcessor {
     @Override
     public void process(Schema schema, Map<String, Schema> definitions) {
+        fixOpenApiSchemaDiscrepancies(schema);
         removeAdditionalProperties(schema);
+
+        Map<String, Schema> properties = schema.getProperties();
+        if (properties != null) {
+            properties.values().forEach((property) -> process(property, definitions));
+        }
+    }
+
+    private void fixOpenApiSchemaDiscrepancies(Schema schema) {
+        if (schema.getExclusiveMinimum() != null) {
+            schema.setExclusiveMinimumValue(schema.getMinimum());
+            schema.setExclusiveMinimum(null);
+        }
+        if (schema.getExclusiveMaximum() != null) {
+            schema.setExclusiveMaximumValue(schema.getMaximum());
+            schema.setExclusiveMaximum(null);
+        }
     }
 
     private void removeAdditionalProperties(Schema schema) {
         schema.setAdditionalProperties(null);
-
-        Map<String, Schema> properties = schema.getProperties();
-        if (properties != null) {
-            properties.values().forEach((property) -> removeAdditionalProperties(property));
-        }
     }
 }

@@ -10,15 +10,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.swagger.v3.core.util.Json;
-import io.swagger.v3.core.util.Yaml;
+import io.swagger.v3.core.util.ObjectMapperFactory;
 import jakarta.annotation.PostConstruct;
 
 // FIXME: Replace this class by the AsyncAPI 'DefaultAsyncApiSerializerService'
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
 
-    private ObjectMapper jsonMapper = Json.mapper();
-    private ObjectMapper yamlMapper = Yaml.mapper();
+    private ObjectMapper jsonMapper = ObjectMapperFactory.createJson31();
+    private ObjectMapper yamlMapper = ObjectMapperFactory.createYaml31();
     private PrettyPrinter printer = new CustomPrettyPrinter();
 
     @PostConstruct

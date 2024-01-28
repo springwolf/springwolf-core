@@ -30,7 +30,6 @@ channels:
 components:
   schemas:
     ExamplePayload:
-      type: object
       properties:
         s:
           type: string
