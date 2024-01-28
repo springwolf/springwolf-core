@@ -275,7 +275,10 @@ export class AsyncApiMapperService {
     }
   }
 
-  private mapSchemaObj(schemaName: string, schema: ServerAsyncApiSchema): Schema {
+  private mapSchemaObj(
+    schemaName: string,
+    schema: ServerAsyncApiSchema
+  ): Schema {
     const properties = {};
     if (schema.properties !== undefined) {
       Object.entries(schema.properties).forEach(([key, value], index) => {
