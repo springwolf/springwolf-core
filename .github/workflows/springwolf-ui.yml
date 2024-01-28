@@ -31,6 +31,9 @@ jobs:
       - name: Check formatting (before running tests)
         run: ./gradlew -p ${{ env.project }} spotlessCheck
 
+      - name: Test
+        run: ./gradlew -p ${{ env.project }} test
+
       - name: Build
         run: ./gradlew -p ${{ env.project }} build
 
