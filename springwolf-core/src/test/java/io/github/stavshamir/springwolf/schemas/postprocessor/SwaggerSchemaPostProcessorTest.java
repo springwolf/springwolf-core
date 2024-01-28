@@ -5,11 +5,12 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SwaggerSchemaPostProcessorTest {
-    private SwaggerSchemaPostProcessor swaggerSchemaPostProcessor = new SwaggerSchemaPostProcessor();
+    private final SwaggerSchemaPostProcessor swaggerSchemaPostProcessor = new SwaggerSchemaPostProcessor();
 
     @Test
     void shouldRemoveAdditionalProperties() {
@@ -25,6 +26,18 @@ class SwaggerSchemaPostProcessorTest {
     }
 
     @Test
+    void shouldUpdateOpenApiTypesField() {
+        // given
+        ObjectSchema schema = new ObjectSchema();
+
+        // when
+        swaggerSchemaPostProcessor.process(schema, null);
+
+        // then
+        assertThat(schema.getTypes()).isEqualTo(Set.of("object"));
+    }
+
+    @Test
     void shouldConvertOpenApiExclusiveMinimumSetting() {
         // given
         ObjectSchema schema = new ObjectSchema();
@@ -37,6 +50,7 @@ class SwaggerSchemaPostProcessorTest {
         // then
         assertThat(schema.getMinimum()).isEqualTo(BigDecimal.ONE);
         assertThat(schema.getExclusiveMinimumValue()).isEqualTo(BigDecimal.ONE);
+        assertThat(schema.getExclusiveMinimum()).isNull();
     }
 
     @Test
@@ -52,5 +66,6 @@ class SwaggerSchemaPostProcessorTest {
         // then
         assertThat(schema.getMaximum()).isEqualTo(BigDecimal.ONE);
         assertThat(schema.getExclusiveMaximumValue()).isEqualTo(BigDecimal.ONE);
+        assertThat(schema.getExclusiveMaximum()).isNull();
     }
 }

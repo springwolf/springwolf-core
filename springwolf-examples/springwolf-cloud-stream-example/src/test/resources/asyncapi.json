@@ -46,6 +46,7 @@
   "components": {
     "schemas": {
       "AnotherPayloadDto": {
+        "type": "object",
         "description": "Another payload model",
         "example": {
           "example": {
@@ -70,6 +71,7 @@
         ]
       },
       "ExamplePayloadDto": {
+        "type": "object",
         "description": "Example payload model",
         "example": {
           "someEnum": "FOO2",

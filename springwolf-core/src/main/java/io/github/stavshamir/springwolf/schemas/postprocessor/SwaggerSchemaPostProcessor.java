@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.schemas.postprocessor;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.Map;
+import java.util.Set;
 
 public class SwaggerSchemaPostProcessor implements SchemasPostProcessor {
     @Override
@@ -18,6 +19,10 @@ public class SwaggerSchemaPostProcessor implements SchemasPostProcessor {
     }
 
     private void fixOpenApiSchemaDiscrepancies(Schema schema) {
+        if (schema.getType() != null) {
+            schema.setTypes(Set.of(schema.getType()));
+        }
+
         if (schema.getExclusiveMinimum() != null) {
             schema.setExclusiveMinimumValue(schema.getMinimum());
             schema.setExclusiveMinimum(null);

@@ -50,6 +50,7 @@
         }
       },
       "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto": {
+        "type": "object",
         "description": "Another payload model",
         "example": {
           "example": {
@@ -122,6 +123,7 @@
         }
       },
       "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto": {
+        "type": "object",
         "description": "Example payload model",
         "example": {
           "someEnum": "FOO2",

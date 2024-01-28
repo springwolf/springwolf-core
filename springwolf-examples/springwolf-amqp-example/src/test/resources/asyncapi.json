@@ -124,6 +124,7 @@
         "properties": { }
       },
       "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
+        "type": "object",
         "description": "Another payload model",
         "example": {
           "example": {
@@ -148,6 +149,7 @@
         ]
       },
       "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
+        "type": "object",
         "description": "Example payload model",
         "example": {
           "someEnum": "FOO2",

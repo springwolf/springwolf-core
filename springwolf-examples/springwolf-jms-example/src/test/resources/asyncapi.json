@@ -50,6 +50,7 @@
         "properties": { }
       },
       "io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto": {
+        "type": "object",
         "description": "Another payload model",
         "example": {
           "example": {
@@ -74,6 +75,7 @@
         ]
       },
       "io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto": {
+        "type": "object",
         "description": "Example payload model",
         "example": {
           "someEnum": "FOO2",

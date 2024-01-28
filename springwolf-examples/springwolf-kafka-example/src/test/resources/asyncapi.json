@@ -350,6 +350,7 @@
         }
       },
       "io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
+        "type": "object",
         "example": {
           "amount": 99.99,
           "currency": "USD"
@@ -397,6 +398,7 @@
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto": {
+        "type": "object",
         "example": {
           "someEnum": "FOO1",
           "someLong": 0,
@@ -446,6 +448,7 @@
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
+        "type": "object",
         "example": {
           "someEnum": "FOO1",
           "someLong": 0,
@@ -497,6 +500,7 @@
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto": {
+        "type": "object",
         "description": "Another payload model",
         "example": {
           "example": {
@@ -569,6 +573,7 @@
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto": {
+        "type": "object",
         "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
         "example": {
           "someEnum": "FOO2",
@@ -637,6 +642,7 @@
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto": {
+        "type": "object",
         "description": "Payload model with nested complex types",
         "example": {
           "examplePayloads": [
