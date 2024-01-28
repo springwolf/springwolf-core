@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class SchemaObject extends ExtendableObject implements Schema {
     private String type;
 
     @JsonProperty(value = "properties")
-    private Map<String, Object> properties;
+    private Map<String, Object> properties; // String, ComponentSchema?
 
     /**
      * <a href="https://spec.commonmark.org/">CommonMark syntax</a> can be used for rich text representation.
@@ -74,10 +75,10 @@ public class SchemaObject extends ExtendableObject implements Schema {
     private String format;
 
     @JsonProperty(value = "maximum")
-    private Integer maximum;
+    private BigDecimal maximum;
 
     @JsonProperty(value = "minimum")
-    private Integer minimum;
+    private BigDecimal minimum;
 
     @JsonProperty("enum")
     private List<String> enumValues;

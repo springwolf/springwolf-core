@@ -9,6 +9,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -58,12 +59,12 @@ class MQTTBindingTest {
                                         MQTTServerBinding.builder()
                                                 .sessionExpiryInterval(SchemaObject.builder()
                                                         .type("integer")
-                                                        .minimum(30)
-                                                        .maximum(1200)
+                                                        .minimum(new BigDecimal("30"))
+                                                        .maximum(new BigDecimal("1200"))
                                                         .build())
                                                 .maximumPacketSize(SchemaObject.builder()
                                                         .type("integer")
-                                                        .minimum(256)
+                                                        .minimum(new BigDecimal("256"))
                                                         .build())
                                                 .build()))
                                 .build()))

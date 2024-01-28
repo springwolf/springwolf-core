@@ -12,7 +12,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageTrait;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
@@ -27,6 +26,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -282,20 +282,20 @@ class AsyncAPITest {
                                 dimLightMessage.getMessageId(), dimLightMessage))
                         .schemas(Map.of(
                                 "lightMeasuredPayload",
-                                ComponentSchema.of(SchemaObject.builder()
+                                SchemaObject.builder()
                                         .type("object")
                                         .properties(Map.of(
                                                 "lumens",
                                                 SchemaObject.builder()
                                                         .type("integer")
-                                                        .minimum(0)
+                                                        .minimum(BigDecimal.ZERO)
                                                         .description("Light intensity measured in lumens.")
                                                         .build(),
                                                 "sentAt",
                                                 SchemaReference.fromSchema("sentAt")))
-                                        .build()),
+                                        .build(),
                                 "turnOnOffPayload",
-                                ComponentSchema.of(SchemaObject.builder()
+                                SchemaObject.builder()
                                         .type("object")
                                         .properties(Map.of(
                                                 "command",
@@ -306,9 +306,9 @@ class AsyncAPITest {
                                                         .build(),
                                                 "sentAt",
                                                 SchemaReference.fromSchema("sentAt")))
-                                        .build()),
+                                        .build(),
                                 "dimLightPayload",
-                                ComponentSchema.of(SchemaObject.builder()
+                                SchemaObject.builder()
                                         .type("object")
                                         .properties(Map.of(
                                                 "percentage",
@@ -316,18 +316,18 @@ class AsyncAPITest {
                                                         .type("integer")
                                                         .description(
                                                                 "Percentage to which the light should be dimmed to.")
-                                                        .minimum(0)
-                                                        .maximum(100)
+                                                        .minimum(BigDecimal.ZERO)
+                                                        .maximum(new BigDecimal("100"))
                                                         .build(),
                                                 "sentAt",
                                                 SchemaReference.fromSchema("sentAt")))
-                                        .build()),
+                                        .build(),
                                 "sentAt",
-                                ComponentSchema.of(SchemaObject.builder()
+                                SchemaObject.builder()
                                         .type("string")
                                         .format("date-time")
                                         .description("Date and time when the message was sent.")
-                                        .build())))
+                                        .build()))
                         .securitySchemes(Map.of(
                                 "saslScram",
                                 SecurityScheme.builder()
@@ -353,8 +353,8 @@ class AsyncAPITest {
                                                         "my-app-header",
                                                         SchemaObject.builder()
                                                                 .type("integer")
-                                                                .minimum(0)
-                                                                .maximum(100)
+                                                                .minimum(BigDecimal.ZERO)
+                                                                .maximum(new BigDecimal("100"))
                                                                 .build()))
                                                 .build()))
                                         .build()))

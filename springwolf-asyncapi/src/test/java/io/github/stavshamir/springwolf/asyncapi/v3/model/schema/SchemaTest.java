@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ class SchemaTest {
                                 SchemaObject.builder()
                                         .type("integer")
                                         .format("int32")
-                                        .minimum(0)
+                                        .minimum(BigDecimal.ZERO)
                                         .build()))
                 .build();
 
@@ -191,8 +192,8 @@ class SchemaTest {
                                         "code",
                                                 SchemaObject.builder()
                                                         .type("integer")
-                                                        .minimum(100)
-                                                        .maximum(600)
+                                                        .minimum(new BigDecimal("100"))
+                                                        .maximum(new BigDecimal("600"))
                                                         .build()))
                                 .build(),
                         "ExtendedErrorModel",
@@ -308,7 +309,7 @@ class SchemaTest {
                                                                 .type("integer")
                                                                 .format("int32")
                                                                 .description("the size of the pack the dog is from")
-                                                                .minimum(0)
+                                                                .minimum(BigDecimal.ZERO)
                                                                 .build()))
                                                 .required(List.of("packSize"))
                                                 .build()))
