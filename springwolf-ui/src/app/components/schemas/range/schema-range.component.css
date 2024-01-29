@@ -2,7 +2,7 @@
 .range {
   background-color: rgb(128, 90, 213);
   color: rgb(255, 255, 255);
-  margin: 0 8 0 8;
-  padding: 2 4 2 4;
+  margin: 0 8px 0 8px;
+  padding: 2px 4px 2px 4px;
   border-radius: 4px;
 }
