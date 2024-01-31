@@ -25,9 +25,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchem
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
-import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
-import io.swagger.v3.core.converter.ModelConverters;
-import lombok.Data;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +37,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
@@ -112,13 +109,10 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        Map<String, SchemaObject> schemas = ModelConverters.getInstance()
-                // TODO: is this correct, or should this rather be a fixed schema (no data class)?
-                .read(DefaultAsyncApiSerializerServiceIntegrationTest.ExamplePayload.class)
-                .entrySet()
-                .stream()
-                .map(entry -> Map.entry(entry.getKey(), SwaggerSchemaUtil.mapSchema(entry.getValue())))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        SchemaObject examplePayloadSchema = new SchemaObject();
+        examplePayloadSchema.setType("object");
+        examplePayloadSchema.setProperties(Map.of("s", new ObjectSchema().type("string")));
+        Map<String, SchemaObject> schemas = Map.of("ExamplePayload", examplePayloadSchema);
 
         AsyncAPI asyncapi = AsyncAPI.builder()
                 .info(info)
@@ -149,10 +143,5 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         String actual = serializer.toJsonString(asyncapi);
         var expected = ClasspathUtil.parseYamlFile("/asyncapi/asyncapi.yaml");
         assertThatJson(actual).isEqualTo(expected);
-    }
-
-    @Data
-    static class ExamplePayload {
-        String s;
     }
 }
