@@ -173,6 +173,12 @@ allprojects {
                             name = 'David Müller'
                             email = 'david.mueller@codecentric.de'
                         }
+
+                        developer {
+                            id = 'ctasada'
+                            name = 'Carlos Tasada'
+                            email = 'ctasada@gmail.com'
+                        }
                     }
 
                     scm {
