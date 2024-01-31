@@ -8,12 +8,13 @@ plugins {
 
 dependencies {
     api project(":springwolf-core")
+    api project(":springwolf-asyncapi")
 
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     testImplementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+    testImplementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
 
     implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
 
