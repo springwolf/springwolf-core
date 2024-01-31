@@ -11,21 +11,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-// TODO: test
 public class SwaggerSchemaUtil {
     private SwaggerSchemaUtil() {}
 
-    public static ComponentSchema mapSchemaOrRef(Object value) {
-        if (value instanceof Schema) {
-            Schema schema = (Schema) value;
-            if (schema.get$ref() != null) {
-                return ComponentSchema.of(new MessageReference(schema.get$ref()));
-            }
-            return ComponentSchema.of(mapSchema(schema));
-        } else {
-            throw new RuntimeException(
-                    "Unknown type of schema: %s".formatted(value.getClass().getName()));
+    public static ComponentSchema mapSchemaOrRef(Schema schema) {
+        if (schema.get$ref() != null) {
+            return ComponentSchema.of(new MessageReference(schema.get$ref()));
         }
+        return ComponentSchema.of(mapSchema(schema));
     }
 
     public static SchemaObject mapSchema(Schema value) {
@@ -35,10 +28,11 @@ public class SwaggerSchemaUtil {
 
         io.swagger.v3.oas.models.ExternalDocumentation externalDocs = value.getExternalDocs();
         if (externalDocs != null) {
-            builder.externalDocs(ExternalDocumentation.builder()
+            ExternalDocumentation externalDocumentation = ExternalDocumentation.builder()
                     .description(externalDocs.getDescription())
                     .url(externalDocs.getUrl())
-                    .build());
+                    .build();
+            builder.externalDocs(externalDocumentation);
         }
 
         builder.deprecated(value.getDeprecated());
