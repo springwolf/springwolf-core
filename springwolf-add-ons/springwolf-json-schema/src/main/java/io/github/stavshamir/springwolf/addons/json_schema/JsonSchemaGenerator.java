@@ -142,7 +142,8 @@ public class JsonSchemaGenerator {
         for (Map.Entry<String, Object> propertySchemaSet :
                 schema.getProperties().entrySet()) {
             SchemaObject propertySchema = getSchemaObject(propertySchemaSet.getValue(), definitions);
-            node.set(propertySchemaSet.getKey(), fromSchemaInternal(propertySchema, definitions, visited));
+            ObjectNode propertySchemaMapped = fromSchemaInternal(propertySchema, definitions, visited);
+            node.set(propertySchemaSet.getKey(), propertySchemaMapped);
         }
 
         return node;
@@ -159,6 +160,7 @@ public class JsonSchemaGenerator {
                         componentSchema.getReference().getRef(), "/");
                 return definitions.get(schemaName);
             }
+            return componentSchema.getSchema();
         }
         return null;
     }
