@@ -59,7 +59,7 @@ public class SchemaObject extends ExtendableObject implements Schema {
     private String type;
 
     @JsonProperty(value = "properties")
-    private Map<String, Object> properties; // String, ComponentSchema?
+    private Map<String, Object> properties;
 
     /**
      * <a href="https://spec.commonmark.org/">CommonMark syntax</a> can be used for rich text representation.
