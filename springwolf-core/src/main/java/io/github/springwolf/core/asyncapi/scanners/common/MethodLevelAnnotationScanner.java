@@ -24,10 +24,20 @@ public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Anno
     protected final BindingFactory<MethodAnnotation> bindingFactory;
     protected final ComponentsService componentsService;
 
-    protected MessageObject buildMessage(MethodAnnotation annotation, Class<?> payloadType) {
+    protected MessageObject buildMessage(MethodAnnotation annotation, Class<?> payloadType, AsyncHeaders headers) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation);
         String modelName = componentsService.registerSchema(payloadType);
-        String headerModelName = componentsService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
+
+        MessageHeaders messageHeaders;
+        String headerModelName;
+
+        if (headers == null) {
+            headerModelName = componentsService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
+        } else {
+            headerModelName = componentsService.registerSchema(headers);
+        }
+        messageHeaders = MessageHeaders.of(MessageReference.toSchema(headerModelName));
+
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());
@@ -38,7 +48,7 @@ public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Anno
                 .title(payloadType.getSimpleName())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
+                .headers(messageHeaders)
                 .bindings(messageBinding)
                 .build();
 
