@@ -189,13 +189,6 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"name\":\"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
-                        (Supplier<Schema>) () -> {
-                            StringSchema schema = new StringSchema();
-                            schema.setName("test");
-                            return schema;
-                        }),
-                Arguments.of(
                         "{\"not\": {\"type\":\"number\"},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
                         (Supplier<Schema>) () -> {
                             ObjectSchema schema = new ObjectSchema();

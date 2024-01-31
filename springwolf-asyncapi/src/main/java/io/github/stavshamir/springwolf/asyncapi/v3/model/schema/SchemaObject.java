@@ -74,33 +74,60 @@ public class SchemaObject extends ExtendableObject implements Schema {
     @JsonProperty(value = "format")
     private String format;
 
+    @JsonProperty
+    private String pattern;
+
     @JsonProperty(value = "maximum")
     private BigDecimal maximum;
 
     @JsonProperty(value = "minimum")
     private BigDecimal minimum;
 
+    @JsonProperty(value = "multipleOf")
+    private BigDecimal multipleOf;
+
+    @JsonProperty(value = "minLength")
+    private Integer minLength;
+
+    @JsonProperty(value = "maxLength")
+    private Integer maxLength;
+
     @JsonProperty("enum")
     private List<String> enumValues;
 
     @JsonProperty(value = "examples")
-    public List<Object> examples;
+    private List<Object> examples;
 
     @JsonProperty(value = "additionalProperties")
-    public Schema additionalProperties;
+    private Schema additionalProperties;
 
     @JsonProperty(value = "required")
-    public List<String> required;
+    private List<String> required;
 
     @JsonProperty(value = "allOf")
-    public List<Schema> allOf;
+    private List<Schema> allOf;
 
     @JsonProperty(value = "oneOf")
-    public List<Schema> oneOf;
+    private List<Schema> oneOf;
 
     @JsonProperty(value = "anyOf")
-    public List<Schema> anyOf;
+    private List<Schema> anyOf;
 
     @JsonProperty(value = "const")
-    public Object constValue;
+    private Object constValue;
+
+    @JsonProperty(value = "not")
+    private Schema not;
+
+    @JsonProperty(value = "items")
+    private Schema items;
+
+    @JsonProperty(value = "uniqueItems")
+    private Boolean uniqueItems;
+
+    @JsonProperty(value = "minItems")
+    private Integer minItems;
+
+    @JsonProperty(value = "maxItems")
+    private Integer maxItems;
 }

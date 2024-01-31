@@ -59,10 +59,15 @@ public class SwaggerSchemaUtil {
         builder.description(value.getDescription());
 
         builder.format(value.getFormat());
+        builder.pattern(value.getPattern());
 
         builder.maximum(value.getMaximum());
-
         builder.minimum(value.getMinimum());
+
+        builder.multipleOf(value.getMultipleOf());
+
+        builder.minLength(value.getMinLength());
+        builder.maxLength(value.getMaxLength());
 
         List<Object> anEnum = value.getEnum();
         if (anEnum != null) {
@@ -110,6 +115,20 @@ public class SwaggerSchemaUtil {
         }
 
         builder.constValue(value.getConst());
+
+        Schema not = value.getNot();
+        if (not != null) {
+            builder.not(mapSchema(not));
+        }
+
+        Schema items = value.getItems();
+        if (items != null) {
+            builder.items(mapSchema(items));
+        }
+        builder.uniqueItems(value.getUniqueItems());
+
+        builder.minItems(value.getMinItems());
+        builder.maxItems(value.getMaxItems());
 
         return builder.build();
     }
