@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         })
 @EmbeddedKafka(partitions = 1)
 @DirtiesContext
-public class ApiIntegrationWithActuatorIntegrationTest {
+class ApiIntegrationWithActuatorIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;

@@ -6,9 +6,11 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -58,14 +60,15 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
 
         String channelName = bindingFactory.getChannelName(annotation);
         Class<?> payload = payloadClassExtractor.extractFrom(method);
+        AsyncHeaders headers = HeaderClassExtractor.extractFrom(method, payload);
 
-        ChannelObject channelItem = buildChannelItem(annotation, payload);
+        ChannelObject channelItem = buildChannelItem(annotation, payload, headers);
 
         return Map.entry(channelName, channelItem);
     }
 
-    private ChannelObject buildChannelItem(MethodAnnotation annotation, Class<?> payloadType) {
-        MessageObject message = buildMessage(annotation, payloadType);
+    private ChannelObject buildChannelItem(MethodAnnotation annotation, Class<?> payloadType, AsyncHeaders headers) {
+        MessageObject message = buildMessage(annotation, payloadType, headers);
         return buildChannelItem(annotation, message);
     }
 

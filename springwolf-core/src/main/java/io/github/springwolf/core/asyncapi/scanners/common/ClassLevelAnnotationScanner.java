@@ -82,7 +82,10 @@ public abstract class ClassLevelAnnotationScanner<
     protected MessageObject buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
         String modelName = componentsService.registerSchema(payloadType);
+        // FIXME: Add or merge headers
         String headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
+        MessageHeaders messageHeaders = MessageHeaders.of(MessageReference.toSchema(headerModelName));
+
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());
@@ -93,7 +96,7 @@ public abstract class ClassLevelAnnotationScanner<
                 .title(payloadType.getSimpleName())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
+                .headers(messageHeaders)
                 .bindings(messageBinding)
                 .build();
 
