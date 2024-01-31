@@ -311,10 +311,14 @@ export class AsyncApiMapperService {
 
       example,
 
-      minimum: schema.minimum,
-      maximum: schema.maximum,
-      exclusiveMinimum: schema.minimum == schema.exclusiveMinimum,
-      exclusiveMaximum: schema.maximum == schema.exclusiveMaximum,
+      minimum: schema.exclusiveMinimum
+        ? schema.exclusiveMinimum
+        : schema.minimum,
+      maximum: schema.exclusiveMaximum
+        ? schema.exclusiveMinimum
+        : schema.maximum,
+      exclusiveMinimum: schema.minimum == schema.exclusiveMinimum ? true : false,
+      exclusiveMaximum: schema.maximum == schema.exclusiveMaximum ? true : false,
     };
   }
 

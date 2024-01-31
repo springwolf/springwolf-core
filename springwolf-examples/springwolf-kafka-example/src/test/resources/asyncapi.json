@@ -674,8 +674,7 @@
         "type": "object",
         "properties": {
           "examplePayloads": {
-            "type": "array",
-            "items": { }
+            "type": "array"
           },
           "someStrings": {
             "type": "array",
@@ -709,7 +708,6 @@
           "description": "Payload model with nested complex types",
           "properties": {
             "examplePayloads": {
-              "items": { },
               "type": "array"
             },
             "someStrings": {

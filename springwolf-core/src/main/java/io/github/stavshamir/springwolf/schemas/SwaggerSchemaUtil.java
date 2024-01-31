@@ -128,7 +128,7 @@ public class SwaggerSchemaUtil {
         }
 
         Schema items = value.getItems();
-        if (items != null) {
+        if (items != null && items.getType() != null) {
             builder.items(mapSchema(items));
         }
         builder.uniqueItems(value.getUniqueItems());
