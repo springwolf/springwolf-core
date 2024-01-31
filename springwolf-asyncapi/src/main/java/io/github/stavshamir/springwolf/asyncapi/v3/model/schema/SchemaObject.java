@@ -95,6 +95,12 @@ public class SchemaObject extends ExtendableObject implements Schema {
     @JsonProperty("enum")
     private List<String> enumValues;
 
+    @JsonProperty(value = "exclusiveMinimum")
+    private BigDecimal exclusiveMinimum;
+
+    @JsonProperty(value = "exclusiveMaximum")
+    private BigDecimal exclusiveMaximum;
+
     @JsonProperty(value = "examples")
     private List<Object> examples;
 

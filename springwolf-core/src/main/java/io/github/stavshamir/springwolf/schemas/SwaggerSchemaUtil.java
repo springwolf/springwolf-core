@@ -61,8 +61,20 @@ public class SwaggerSchemaUtil {
         builder.format(value.getFormat());
         builder.pattern(value.getPattern());
 
-        builder.maximum(value.getMaximum());
-        builder.minimum(value.getMinimum());
+        if (value.getExclusiveMinimum() != null && value.getExclusiveMinimum()) {
+            builder.exclusiveMinimum(value.getMinimum());
+        } else if (value.getExclusiveMinimumValue() != null) {
+            builder.exclusiveMinimum(value.getExclusiveMinimumValue());
+        } else {
+            builder.minimum(value.getMinimum());
+        }
+        if (value.getExclusiveMaximum() != null && value.getExclusiveMaximum()) {
+            builder.exclusiveMaximum(value.getMaximum());
+        } else if (value.getExclusiveMaximumValue() != null) {
+            builder.exclusiveMaximum(value.getExclusiveMaximumValue());
+        } else {
+            builder.maximum(value.getMaximum());
+        }
 
         builder.multipleOf(value.getMultipleOf());
 

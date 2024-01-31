@@ -71,6 +71,12 @@ public class JsonSchemaGenerator {
             }
             node.set("enum", arrayNode);
         }
+        if (schema.getExclusiveMinimum() != null) {
+            node.put("exclusiveMinimum", schema.getExclusiveMinimum());
+        }
+        if (schema.getExclusiveMaximum() != null) {
+            node.put("exclusiveMaximum", schema.getExclusiveMaximum());
+        }
         if (schema.getFormat() != null) {
             node.put("format", schema.getFormat());
         }

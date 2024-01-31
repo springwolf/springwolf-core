@@ -144,6 +144,14 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
+                        "{\"exclusiveMinimum\": 1,\"exclusiveMaximum\": 10,\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        (Supplier<Schema>) () -> {
+                            NumberSchema schema = new NumberSchema();
+                            schema.setExclusiveMinimumValue(new BigDecimal(1));
+                            schema.setExclusiveMaximumValue(new BigDecimal(10));
+                            return schema;
+                        }),
+                Arguments.of(
                         "{\"format\": \"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
                         (Supplier<Schema>) () -> {
                             StringSchema schema = new StringSchema();
