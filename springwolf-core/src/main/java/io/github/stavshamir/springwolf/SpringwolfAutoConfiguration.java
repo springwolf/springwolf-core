@@ -20,9 +20,10 @@ import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
 import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
-import io.github.stavshamir.springwolf.schemas.example.ExampleGeneratorProvider;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleXmlValueGenerator;
 import io.github.stavshamir.springwolf.schemas.example.SchemaWalker;
+import io.github.stavshamir.springwolf.schemas.example.SchemaWalkerProvider;
 import io.github.stavshamir.springwolf.schemas.postprocessor.AvroSchemaPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
@@ -115,27 +116,25 @@ public class SpringwolfAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @Order(10)
-    public ExampleGeneratorPostProcessor exampleGeneratorPostProcessor(SchemaWalker schemaWalker) {
-        return new ExampleGeneratorPostProcessor(schemaWalker);
+    public ExampleGeneratorPostProcessor exampleGeneratorPostProcessor(SchemaWalkerProvider schemaWalkerProvider) {
+        return new ExampleGeneratorPostProcessor(schemaWalkerProvider);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @Order(100)
-    public SwaggerSchemaPostProcessor swaggerSchemaPostProcessor() {
-        return new SwaggerSchemaPostProcessor();
+    public SchemaWalkerProvider exampleGeneratorProvider(List<SchemaWalker> schemaWalkers) {
+        return new SchemaWalkerProvider(schemaWalkers);
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public ExampleGeneratorProvider exampleGeneratorProvider(List<SchemaWalker> schemaWalkers) {
-        return new ExampleGeneratorProvider(schemaWalkers);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public SchemaWalker exampleGenerator() {
+    public SchemaWalker jsonSchemaWalker() {
         return new DefaultSchemaWalker<>(new ExampleJsonValueGenerator());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean()
+    public SchemaWalker xmlSchemaWalker() {
+        return new DefaultSchemaWalker<>(new ExampleXmlValueGenerator());
     }
 
     @Bean

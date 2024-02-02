@@ -1,6 +1,8 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,6 +17,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
@@ -50,10 +53,16 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
     }
 
     @Override
+    public boolean canHandle(String contentType) {
+        return (StringUtils.equals(contentType, "text/xml") || StringUtils.equals(contentType, "application/xml"));
+    }
+
+    @Override
     public void initialize() {
         try {
-            // TODO lazy?
-            document = createDocument();
+            if (document == null) {
+                document = createDocument();
+            }
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -115,7 +124,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         } else if (exampleValue instanceof Text) {
             return wrapNode(propertyExample.getKey(), exampleValue);
         } else {
-            throw new IllegalArgumentException("Unsupported type " + exampleValue.getClass().getSimpleName());
+            throw new IllegalArgumentException(
+                    "Unsupported type " + exampleValue.getClass().getSimpleName());
         }
     }
 
@@ -182,7 +192,6 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
     @Override
     public Node generateUnknownSchemaFormatExample(String schemaFormat) {
         return document.createTextNode(DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(schemaFormat));
-
     }
 
     @Override
@@ -208,7 +217,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
 
     @Override
     public Node createRaw(Object exampleValueString) {
-        //TODO unused or in test to fix
+        // TODO unused or in test to fix
         return null;
     }
 
@@ -231,7 +240,6 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
 
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         return documentBuilder.newDocument();
-
     }
 
     private String writeDocumentAsXmlString(Document document) throws TransformerException {
@@ -246,6 +254,5 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         StreamResult sr = new StreamResult(sw);
         transformer.transform(domSource, sr);
         return sw.toString();
-
     }
 }

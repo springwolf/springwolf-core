@@ -11,8 +11,9 @@ import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.util.Json;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,11 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
 
     private static String DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(String format) {
         return "unknown string schema format: " + format;
+    }
+
+    @Override
+    public boolean canHandle(String contentType) {
+        return (StringUtils.equals(contentType, "application/json"));
     }
 
     @Override

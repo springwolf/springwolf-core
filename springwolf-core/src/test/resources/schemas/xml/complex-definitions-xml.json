@@ -28,27 +28,7 @@
         "type" : "string"
       }
     },
-    "examples" : [ {
-      "b" : true,
-      "d" : 1.1,
-      "dt" : "2015-07-20T15:49:04-07:00",
-      "f" : 1.1,
-      "i" : 0,
-      "n" : {
-        "nba" : [ "YmFzZTY0LWV4YW1wbGU=" ],
-        "nc" : {
-          "cyclic" : { }
-        },
-        "nli" : [ 0 ],
-        "nmfm" : { },
-        "ns" : "string",
-        "nsm" : [ {
-          "s" : "string"
-        } ],
-        "nu" : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-      },
-      "s" : "string"
-    } ]
+    "examples" : [ "<ComplexFoo><b>true</b><d>1.1</d><dt>2015-07-20T15:49:04-07:00</dt><f>1.1</f><i>0</i><n><nba>YmFzZTY0LWV4YW1wbGU=</nba><nc><cyclic/></nc><nli>0</nli><nmfm/><ns>string</ns><nsm><s>string</s></nsm><nu>3fa85f64-5717-4562-b3fc-2c963f66afa6</nu></n><s>string</s></ComplexFoo>" ]
   },
   "Cyclic" : {
     "type" : "object",
@@ -57,9 +37,7 @@
         "$ref" : "#/components/schemas/Cyclic"
       }
     },
-    "examples" : [ {
-      "cyclic" : { }
-    } ]
+    "examples" : [ "<Cyclic><cyclic/></Cyclic>" ]
   },
   "MyClass" : {
     "type" : "object",
@@ -68,9 +46,7 @@
         "type" : "string"
       }
     },
-    "examples" : [ {
-      "s" : "string"
-    } ]
+    "examples" : [ "<MyClass><s>string</s></MyClass>" ]
   },
   "Nested" : {
     "type" : "object",
@@ -113,18 +89,6 @@
         "format" : "uuid"
       }
     },
-    "examples" : [ {
-      "nba" : [ "YmFzZTY0LWV4YW1wbGU=" ],
-      "nc" : {
-        "cyclic" : { }
-      },
-      "nli" : [ 0 ],
-      "nmfm" : { },
-      "ns" : "string",
-      "nsm" : [ {
-        "s" : "string"
-      } ],
-      "nu" : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-    } ]
+    "examples" : [ "<Nested><nba>YmFzZTY0LWV4YW1wbGU=</nba><Cyclic><cyclic/></Cyclic><nli>0</nli><nmfm/><ns>string</ns><MyClass><s>string</s></MyClass><nu>3fa85f64-5717-4562-b3fc-2c963f66afa6</nu></Nested>" ]
   }
 }

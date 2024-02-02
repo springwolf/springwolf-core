@@ -33,12 +33,15 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
 
     @Override
     public boolean canHandle(String contentType) {
-        return true;
+        return exampleValueGenerator.canHandle(contentType);
     }
 
     @Override
     public Object fromSchema(Schema schema, Map<String, Schema> definitions) {
         try {
+            if (!StringUtils.equals(schema.getType(),"array") && !StringUtils.equals(schema.getType(), "object")) {
+                throw  new RuntimeException("Not array or Object");
+            }
             exampleValueGenerator.initialize();
             return buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
         } catch (ExampleGeneratingException ex) {
@@ -196,7 +199,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
 
         if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
             List<Schema> schemas = schema.getAllOf();
-
+            // TODO lookup ref?
             ObjectNode combinedNode = objectMapper.createObjectNode();
             schemas.stream()
                     .map(s -> buildSchemaInternal(s, definitions, visited))
@@ -210,12 +213,12 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
         if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
             List<Schema> schemas = schema.getAnyOf();
             Schema anyOfSchema = schemas.get(0);
-            return buildSchemaInternal(anyOfSchema.getName(), anyOfSchema, definitions, visited);
+            return buildSchemaInternal(name, anyOfSchema, definitions, visited);
         }
         if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
             List<Schema> schemas = schema.getOneOf();
             Schema oneOfSchema = schemas.get(0);
-            return buildSchemaInternal(oneOfSchema.getName(), oneOfSchema, definitions, visited);
+            return buildSchemaInternal(name, oneOfSchema, definitions, visited);
         }
 
         // i.e. A MapSchema is type=object, but has properties=null

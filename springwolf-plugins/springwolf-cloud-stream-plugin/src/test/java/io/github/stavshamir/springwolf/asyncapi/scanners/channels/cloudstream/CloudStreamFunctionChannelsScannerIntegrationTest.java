@@ -26,7 +26,7 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
 import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
-import io.github.stavshamir.springwolf.schemas.example.ExampleGeneratorProvider;
+import io.github.stavshamir.springwolf.schemas.example.SchemaWalkerProvider;
 import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
 import org.apache.kafka.streams.kstream.KStream;
@@ -64,7 +64,7 @@ import static org.mockito.Mockito.when;
             SwaggerSchemaUtil.class,
             PayloadClassExtractor.class,
             DefaultSchemaWalker.class,
-            ExampleGeneratorProvider.class,
+            SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
             DefaultAsyncApiDocketService.class,
             CloudStreamFunctionChannelsScanner.class,

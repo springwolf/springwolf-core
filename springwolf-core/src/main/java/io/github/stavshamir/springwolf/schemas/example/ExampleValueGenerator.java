@@ -9,6 +9,8 @@ import java.util.Map;
 // TODO: ExampleValueSerializer?
 interface ExampleValueGenerator<T> {
 
+    boolean canHandle(String contentType);
+
     void initialize();
 
     T createIntegerExample(Integer value);

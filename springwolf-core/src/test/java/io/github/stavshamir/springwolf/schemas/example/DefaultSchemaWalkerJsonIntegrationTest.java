@@ -26,9 +26,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultSchemaWalkerJsonIntegrationTest {
 
-    ExampleJsonValueGenerator exampleJsonValueGenerator = new ExampleJsonValueGenerator();
-    private DefaultSchemaWalker defaultSchemaWalker = new DefaultSchemaWalker(exampleJsonValueGenerator);
+    private final ExampleJsonValueGenerator exampleJsonValueGenerator = new ExampleJsonValueGenerator();
+    private final DefaultSchemaWalker jsonSchemaWalker = new DefaultSchemaWalker<>(exampleJsonValueGenerator);
 
+    @Nested
+    class CanHandle {
+        @Test
+        void shouldHandleApplicationJsonContentType() {
+            // when
+            boolean canHandle = jsonSchemaWalker.canHandle("application/json");
+
+            // then
+            assertThat(canHandle).isTrue();
+        }
+
+        @Test
+        void shouldNotHandleOtherContentType() {
+            // when
+            boolean canHandle = jsonSchemaWalker.canHandle("some-content-type");
+
+            // then
+            assertThat(canHandle).isFalse();
+        }
+    }
 
     @Nested
     class FromSchema {
@@ -37,7 +57,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         void build() {
             StringSchema schema = new StringSchema();
 
-            Object actual = defaultSchemaWalker.fromSchema(schema, emptyMap());
+            Object actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actual.toString()).isEqualTo("\"string\"");
         }
@@ -50,7 +70,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             referenceSchema.set$ref("#/components/schemas/Nested");
             compositeSchema.addProperty("f", referenceSchema);
 
-            Object result = defaultSchemaWalker.fromSchema(compositeSchema, emptyMap());
+            Object result = jsonSchemaWalker.fromSchema(compositeSchema, emptyMap());
             assertThat(result).isNull();
         }
     }
@@ -61,7 +81,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         void type_boolean() {
             BooleanSchema schema = new BooleanSchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("true");
         }
@@ -71,7 +91,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             BooleanSchema schema = new BooleanSchema();
             schema.setExample(Boolean.FALSE);
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("false");
         }
@@ -80,7 +100,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         void type_integer() {
             IntegerSchema schema = new IntegerSchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("0");
         }
@@ -90,7 +110,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             IntegerSchema schema = new IntegerSchema();
             schema.setExample(Integer.parseInt("123"));
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("123");
         }
@@ -100,7 +120,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             IntegerSchema schema = new IntegerSchema();
             schema.setFormat("int64");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("0");
         }
@@ -110,7 +130,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setFormat("float");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("1.1");
         }
@@ -120,7 +140,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setFormat("double");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("1.1");
         }
@@ -130,7 +150,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setExample(new BigDecimal("123.45"));
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("123.45");
         }
@@ -139,7 +159,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         void type_string() {
             StringSchema schema = new StringSchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"string\"");
         }
@@ -149,7 +169,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             StringSchema schema = new StringSchema();
             schema.setExample("custom-example-value");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"custom-example-value\"");
         }
@@ -160,7 +180,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.addEnumItem("EnumItem1");
             schema.addEnumItem("EnumItem2");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"EnumItem1\"");
         }
@@ -170,7 +190,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             StringSchema schema = new StringSchema();
             schema.setFormat("byte");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"YmFzZTY0LWV4YW1wbGU=\"");
         }
@@ -179,16 +199,18 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         void type_string_format_binary() {
             BinarySchema schema = new BinarySchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
-            assertThat(actual).isEqualTo("\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
+            assertThat(actual)
+                    .isEqualTo(
+                            "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
         }
 
         @Test
         void type_string_format_date() {
             DateSchema schema = new DateSchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"2015-07-20\"");
         }
@@ -197,7 +219,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         void type_string_format_datetime() {
             DateTimeSchema schema = new DateTimeSchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"2015-07-20T15:49:04-07:00\"");
         }
@@ -206,7 +228,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         void type_string_format_email() {
             EmailSchema schema = new EmailSchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"example@example.com\"");
         }
@@ -215,7 +237,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         void type_string_format_password() {
             PasswordSchema schema = new PasswordSchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"string-password\"");
         }
@@ -224,7 +246,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         void type_string_format_uuid() {
             UUIDSchema schema = new UUIDSchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"");
         }
@@ -234,7 +256,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             StringSchema schema = new StringSchema();
             schema.setFormat("unknown");
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"unknown string schema format: unknown\"");
         }
@@ -249,7 +271,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
 
             TestSchema schema = new TestSchema();
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("\"unknown schema type: test-schema\"");
         }
@@ -259,7 +281,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             ArraySchema schema = new ArraySchema();
             schema.setItems(new StringSchema());
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("[\"string\"]");
         }
@@ -273,7 +295,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             ArraySchema schema = new ArraySchema();
             schema.setItems(itemSchema);
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("[{\"b\":true,\"s\":\"string\"}]");
         }
@@ -284,24 +306,24 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.addProperty("s", new StringSchema());
             schema.addProperty("b", new BooleanSchema());
 
-            String actual = defaultSchemaWalker.buildSchema(schema, emptyMap());
+            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
 
             assertThat(actual).isEqualTo("{\"b\":true,\"s\":\"string\"}");
         }
 
         @Test
         void composite_object_with_references() {
-            ObjectSchema compositeSchema = new ObjectSchema();
-            compositeSchema.addProperty("s", new StringSchema());
-
             Schema referenceSchema = new Schema();
             referenceSchema.set$ref("#/components/schemas/Nested");
+
+            ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.addProperty("s", new StringSchema());
             compositeSchema.addProperty("f", referenceSchema);
 
             ObjectSchema nestedSchema = new ObjectSchema();
             nestedSchema.addProperty("s", new StringSchema());
             nestedSchema.addProperty("b", new BooleanSchema());
-            String actual = defaultSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", nestedSchema));
+            String actual = jsonSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", nestedSchema));
 
             assertThat(actual).isEqualTo("{\"f\":{\"b\":true,\"s\":\"string\"},\"s\":\"string\"}");
         }
@@ -314,7 +336,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             propertySchema.setAnyOf(List.of(new StringSchema(), new NumberSchema()));
             compositeSchema.addProperty("anyOfField", propertySchema);
 
-            String actual = defaultSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
+            String actual = jsonSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
 
             assertThat(actual).isEqualTo("{\"anyOfField\":\"string\"}");
         }
@@ -356,7 +378,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             ObjectSchema schema = new ObjectSchema();
             schema.setExample(new ClassWithToString());
 
-            String actual = defaultSchemaWalker.buildSchema(schema, Map.of());
+            String actual = jsonSchemaWalker.buildSchema(schema, Map.of());
             assertThat(actual).isEqualTo("\"Text with special character /\\\\\\\"\\\\'\\\\b\\\\f\\\\t\\\\r\\\\n.\"");
         }
 

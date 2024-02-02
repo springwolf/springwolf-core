@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class ExampleGeneratorProvider {
+public class SchemaWalkerProvider {
 
-    private final List<SchemaWalker> generators;
+    private final List<SchemaWalker> schemaWalkers;
 
     public Optional<SchemaWalker> generatorFor(String contentType) {
-        return generators.stream()
-                .filter(generator -> generator.canHandle(contentType))
+        return schemaWalkers.stream()
+                .filter(walker -> walker.canHandle(contentType))
                 .findFirst();
     }
 }

@@ -1,0 +1,39 @@
+{
+  "CompositeFoo" : {
+    "type" : "object",
+    "properties" : {
+      "f" : {
+        "$ref" : "#/components/schemas/SimpleFoo"
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "example" : "<CompositeFoo><f><b>true</b><s>string</s></f><s>string</s></CompositeFoo>"
+  },
+  "FooWithEnum" : {
+    "type" : "object",
+    "properties" : {
+      "b" : {
+        "type" : "string",
+        "enum" : [ "BAR1", "BAR2" ]
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "example" : "<FooWithEnum><b>BAR1</b><s>string</s></FooWithEnum>"
+  },
+  "SimpleFoo" : {
+    "type" : "object",
+    "properties" : {
+      "b" : {
+        "type" : "boolean"
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "example" : "<SimpleFoo><b>true</b><s>string</s></SimpleFoo>"
+  }
+}
