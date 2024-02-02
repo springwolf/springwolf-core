@@ -275,7 +275,10 @@ export class AsyncApiMapperService {
     }
   }
 
-  private mapSchemaObj(schemaName: string, schema: ServerAsyncApiSchema) {
+  private mapSchemaObj(
+    schemaName: string,
+    schema: ServerAsyncApiSchema
+  ): Schema {
     const properties = {};
     if (schema.properties !== undefined) {
       Object.entries(schema.properties).forEach(([key, value], index) => {
@@ -308,8 +311,8 @@ export class AsyncApiMapperService {
 
       minimum: schema.minimum,
       maximum: schema.maximum,
-      exclusiveMinimum: schema.exclusiveMinimum,
-      exclusiveMaximum: schema.exclusiveMaximum,
+      exclusiveMinimum: schema.minimum == schema.exclusiveMinimum,
+      exclusiveMaximum: schema.maximum == schema.exclusiveMaximum,
     };
   }
 

@@ -41,8 +41,8 @@
     "schemas": {
       "HeadersNotDocumented": {
         "type": "object",
-        "properties": { },
         "example": { },
+        "properties": { },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "name": "HeadersNotDocumented",
@@ -50,10 +50,16 @@
         }
       },
       "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto": {
-        "required": [
-          "example"
-        ],
         "type": "object",
+        "description": "Another payload model",
+        "example": {
+          "example": {
+            "someEnum": "FOO2",
+            "someLong": 5,
+            "someString": "some string value"
+          },
+          "foo": "bar"
+        },
         "properties": {
           "example": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
@@ -64,15 +70,9 @@
             "example": "bar"
           }
         },
-        "description": "Another payload model",
-        "example": {
-          "example": {
-            "someEnum": "FOO2",
-            "someLong": 5,
-            "someString": "some string value"
-          },
-          "foo": "bar"
-        },
+        "required": [
+          "example"
+        ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "Another payload model",
@@ -123,26 +123,28 @@
         }
       },
       "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto": {
-        "required": [
-          "someEnum",
-          "someString"
-        ],
         "type": "object",
+        "description": "Example payload model",
+        "example": {
+          "someEnum": "FOO2",
+          "someLong": 5,
+          "someString": "some string value"
+        },
         "properties": {
           "someEnum": {
             "type": "string",
             "description": "Some enum field",
-            "example": "FOO2",
             "enum": [
               "FOO1",
               "FOO2",
               "FOO3"
-            ]
+            ],
+            "example": "FOO2"
           },
           "someLong": {
             "type": "integer",
-            "description": "Some long field",
             "format": "int64",
+            "description": "Some long field",
             "example": 5
           },
           "someString": {
@@ -151,12 +153,10 @@
             "example": "some string value"
           }
         },
-        "description": "Example payload model",
-        "example": {
-          "someEnum": "FOO2",
-          "someLong": 5,
-          "someString": "some string value"
-        },
+        "required": [
+          "someEnum",
+          "someString"
+        ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "Example payload model",

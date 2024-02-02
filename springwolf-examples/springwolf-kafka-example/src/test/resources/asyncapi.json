@@ -100,8 +100,8 @@
     "schemas": {
       "HeadersNotDocumented": {
         "type": "object",
-        "properties": { },
         "example": { },
+        "properties": { },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "name": "HeadersNotDocumented",
@@ -110,72 +110,6 @@
       },
       "SpringDefaultHeaderAndCloudEvent": {
         "type": "object",
-        "properties": {
-          "__TypeId__": {
-            "type": "string",
-            "description": "Spring Type Id Header",
-            "example": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
-            "enum": [
-              "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
-            ]
-          },
-          "ce_id": {
-            "type": "string",
-            "description": "CloudEvent Id Header",
-            "example": "2c60089e-6f39-459d-8ced-2d6df7e4c03a",
-            "enum": [
-              "2c60089e-6f39-459d-8ced-2d6df7e4c03a"
-            ]
-          },
-          "ce_source": {
-            "type": "string",
-            "description": "CloudEvent Source Header",
-            "example": "http://localhost",
-            "enum": [
-              "http://localhost"
-            ]
-          },
-          "ce_specversion": {
-            "type": "string",
-            "description": "CloudEvent Spec Version Header",
-            "example": "1.0",
-            "enum": [
-              "1.0"
-            ]
-          },
-          "ce_subject": {
-            "type": "string",
-            "description": "CloudEvent Subject Header",
-            "example": "Springwolf example project - Kafka",
-            "enum": [
-              "Springwolf example project - Kafka"
-            ]
-          },
-          "ce_time": {
-            "type": "string",
-            "description": "CloudEvent Time Header",
-            "example": "2023-10-28 20:01:23+00:00",
-            "enum": [
-              "2023-10-28 20:01:23+00:00"
-            ]
-          },
-          "ce_type": {
-            "type": "string",
-            "description": "CloudEvent Payload Type Header",
-            "example": "NestedPayloadDto.v1",
-            "enum": [
-              "NestedPayloadDto.v1"
-            ]
-          },
-          "content-type": {
-            "type": "string",
-            "description": "CloudEvent Content-Type Header",
-            "example": "application/json",
-            "enum": [
-              "application/json"
-            ]
-          }
-        },
         "example": {
           "__TypeId__": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto",
           "ce_id": "2c60089e-6f39-459d-8ced-2d6df7e4c03a",
@@ -185,6 +119,72 @@
           "ce_time": "2023-10-28 20:01:23+00:00",
           "ce_type": "NestedPayloadDto.v1",
           "content-type": "application/json"
+        },
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
+            ],
+            "example": "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto"
+          },
+          "ce_id": {
+            "type": "string",
+            "description": "CloudEvent Id Header",
+            "enum": [
+              "2c60089e-6f39-459d-8ced-2d6df7e4c03a"
+            ],
+            "example": "2c60089e-6f39-459d-8ced-2d6df7e4c03a"
+          },
+          "ce_source": {
+            "type": "string",
+            "description": "CloudEvent Source Header",
+            "enum": [
+              "http://localhost"
+            ],
+            "example": "http://localhost"
+          },
+          "ce_specversion": {
+            "type": "string",
+            "description": "CloudEvent Spec Version Header",
+            "enum": [
+              "1.0"
+            ],
+            "example": "1.0"
+          },
+          "ce_subject": {
+            "type": "string",
+            "description": "CloudEvent Subject Header",
+            "enum": [
+              "Springwolf example project - Kafka"
+            ],
+            "example": "Springwolf example project - Kafka"
+          },
+          "ce_time": {
+            "type": "string",
+            "description": "CloudEvent Time Header",
+            "enum": [
+              "2023-10-28 20:01:23+00:00"
+            ],
+            "example": "2023-10-28 20:01:23+00:00"
+          },
+          "ce_type": {
+            "type": "string",
+            "description": "CloudEvent Payload Type Header",
+            "enum": [
+              "NestedPayloadDto.v1"
+            ],
+            "example": "NestedPayloadDto.v1"
+          },
+          "content-type": {
+            "type": "string",
+            "description": "CloudEvent Content-Type Header",
+            "enum": [
+              "application/json"
+            ],
+            "example": "application/json"
+          }
         },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
@@ -252,18 +252,18 @@
       },
       "SpringKafkaDefaultHeaders-AnotherPayloadDto": {
         "type": "object",
+        "example": {
+          "__TypeId__": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
+        },
         "properties": {
           "__TypeId__": {
             "type": "string",
             "description": "Spring Type Id Header",
-            "example": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto",
             "enum": [
               "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
-            ]
+            ],
+            "example": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
           }
-        },
-        "example": {
-          "__TypeId__": "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto"
         },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
@@ -282,18 +282,18 @@
       },
       "SpringKafkaDefaultHeaders-ExamplePayloadDto": {
         "type": "object",
+        "example": {
+          "__TypeId__": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+        },
         "properties": {
           "__TypeId__": {
             "type": "string",
             "description": "Spring Type Id Header",
-            "example": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto",
             "enum": [
               "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
-            ]
+            ],
+            "example": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
           }
-        },
-        "example": {
-          "__TypeId__": "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
         },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
@@ -312,18 +312,18 @@
       },
       "SpringKafkaDefaultHeaders-MonetaryAmount": {
         "type": "object",
+        "example": {
+          "__TypeId__": "javax.money.MonetaryAmount"
+        },
         "properties": {
           "__TypeId__": {
             "type": "string",
             "description": "Spring Type Id Header",
-            "example": "javax.money.MonetaryAmount",
             "enum": [
               "javax.money.MonetaryAmount"
-            ]
+            ],
+            "example": "javax.money.MonetaryAmount"
           }
-        },
-        "example": {
-          "__TypeId__": "javax.money.MonetaryAmount"
         },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
@@ -351,28 +351,28 @@
       },
       "io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
         "type": "object",
+        "example": {
+          "amount": 99.99,
+          "currency": "USD"
+        },
         "properties": {
           "amount": {
-            "minimum": 0.1,
-            "exclusiveMinimum": true,
             "type": "number",
-            "example": 99.99
+            "example": 99.99,
+            "exclusiveMinimum": 0.01,
+            "minimum": 0.01
           },
           "currency": {
             "type": "string",
             "example": "USD"
           }
         },
-        "example": {
-          "amount": 99.99,
-          "currency": "USD"
-        },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "name": "io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount",
           "properties": {
             "amount": {
-              "minimum": 0.1,
+              "minimum": 0.01,
               "name": "amount",
               "type": "number"
             },
@@ -385,10 +385,10 @@
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope": {
-        "maxLength": 100,
         "type": "string",
         "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
         "example": "\"string\"",
+        "maxLength": 100,
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
@@ -399,6 +399,11 @@
       },
       "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto": {
         "type": "object",
+        "example": {
+          "someEnum": "FOO1",
+          "someLong": 0,
+          "someString": "string"
+        },
         "properties": {
           "someEnum": {
             "type": "string",
@@ -415,11 +420,6 @@
           "someString": {
             "type": "string"
           }
-        },
-        "example": {
-          "someEnum": "FOO1",
-          "someLong": 0,
-          "someString": "string"
         },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
@@ -449,6 +449,11 @@
       },
       "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
         "type": "object",
+        "example": {
+          "someEnum": "FOO1",
+          "someLong": 0,
+          "someString": "string"
+        },
         "properties": {
           "someEnum": {
             "type": "string",
@@ -466,11 +471,6 @@
           "someString": {
             "type": "string"
           }
-        },
-        "example": {
-          "someEnum": "FOO1",
-          "someLong": 0,
-          "someString": "string"
         },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
@@ -500,10 +500,16 @@
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto": {
-        "required": [
-          "example"
-        ],
         "type": "object",
+        "description": "Another payload model",
+        "example": {
+          "example": {
+            "someEnum": "FOO2",
+            "someLong": 5,
+            "someString": "some string value"
+          },
+          "foo": "bar"
+        },
         "properties": {
           "example": {
             "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
@@ -514,15 +520,9 @@
             "example": "bar"
           }
         },
-        "description": "Another payload model",
-        "example": {
-          "example": {
-            "someEnum": "FOO2",
-            "someLong": 5,
-            "someString": "some string value"
-          },
-          "foo": "bar"
-        },
+        "required": [
+          "example"
+        ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "Another payload model",
@@ -573,26 +573,28 @@
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto": {
-        "required": [
-          "someEnum",
-          "someString"
-        ],
         "type": "object",
+        "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
+        "example": {
+          "someEnum": "FOO2",
+          "someLong": 5,
+          "someString": "some string value"
+        },
         "properties": {
           "someEnum": {
             "type": "string",
             "description": "Some enum field",
-            "example": "FOO2",
             "enum": [
               "FOO1",
               "FOO2",
               "FOO3"
-            ]
+            ],
+            "example": "FOO2"
           },
           "someLong": {
             "type": "integer",
-            "description": "Some long field",
             "format": "int64",
+            "description": "Some long field",
             "example": 5
           },
           "someString": {
@@ -601,12 +603,10 @@
             "example": "some string value"
           }
         },
-        "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
-        "example": {
-          "someEnum": "FOO2",
-          "someLong": 5,
-          "someString": "some string value"
-        },
+        "required": [
+          "someEnum",
+          "someString"
+        ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
@@ -643,23 +643,6 @@
       },
       "io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto": {
         "type": "object",
-        "properties": {
-          "examplePayloads": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
-            }
-          },
-          "someStrings": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "description": "Some string field",
-              "example": "some string value"
-            }
-          }
-        },
         "description": "Payload model with nested complex types",
         "example": {
           "examplePayloads": [
@@ -672,6 +655,23 @@
           "someStrings": [
             "some string value"
           ]
+        },
+        "properties": {
+          "examplePayloads": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+            }
+          },
+          "someStrings": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Some string field",
+              "example": "some string value"
+            },
+            "uniqueItems": true
+          }
         },
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",

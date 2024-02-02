@@ -138,8 +138,9 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
     @Test
     void AsyncAPI_should_map_to_a_valid_asyncapi_yaml() throws IOException {
         var asyncapi = getAsyncAPITestObject();
+        String actual = serializer.toJsonString(asyncapi);
         var expected = ClasspathUtil.parseYamlFile("/asyncapi/asyncapi.yaml");
-        assertThatJson(serializer.toJsonString(asyncapi)).isEqualTo(expected);
+        assertThatJson(actual).isEqualTo(expected);
     }
 
     @Data
