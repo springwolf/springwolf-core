@@ -24,7 +24,6 @@ import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.AvroSchemaPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
-import io.github.stavshamir.springwolf.schemas.postprocessor.SwaggerSchemaPostProcessor;
 import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -116,13 +115,6 @@ public class SpringwolfAutoConfiguration {
     @Order(10)
     public ExampleGeneratorPostProcessor exampleGeneratorPostProcessor(ExampleGenerator exampleGenerator) {
         return new ExampleGeneratorPostProcessor(exampleGenerator);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @Order(100)
-    public SwaggerSchemaPostProcessor swaggerSchemaPostProcessor() {
-        return new SwaggerSchemaPostProcessor();
     }
 
     @Bean

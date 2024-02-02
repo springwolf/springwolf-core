@@ -26,11 +26,20 @@
         "description" : "Map with example",
         "examples" : [ {
           "key1" : "value1"
-        } ]
+        } ],
+        "additionalProperties" : {
+          "type" : "string",
+          "description" : "Map with example",
+          "examples" : [ "{\"key1\":\"value1\"}" ]
+        }
       },
       "mss_plain" : {
         "type" : "object",
-        "description" : "Map without example"
+        "description" : "Map without example",
+        "additionalProperties" : {
+          "type" : "string",
+          "description" : "Map without example"
+        }
       },
       "s" : {
         "type" : "string",

@@ -93,7 +93,10 @@
         }
       },
       "nmfm" : {
-        "type" : "object"
+        "type" : "object",
+        "additionalProperties" : {
+          "$ref" : "#/components/schemas/MyClass"
+        }
       },
       "ns" : {
         "type" : "string"

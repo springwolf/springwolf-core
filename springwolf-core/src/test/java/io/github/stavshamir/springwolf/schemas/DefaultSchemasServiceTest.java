@@ -12,7 +12,6 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
-import io.github.stavshamir.springwolf.schemas.postprocessor.SwaggerSchemaPostProcessor;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
@@ -42,10 +41,7 @@ class DefaultSchemasServiceTest {
     private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
     private final ComponentsService componentsService = new DefaultComponentsService(
             List.of(),
-            List.of(
-                    new ExampleGeneratorPostProcessor(new ExampleJsonGenerator()),
-                    schemasPostProcessor,
-                    new SwaggerSchemaPostProcessor()),
+            List.of(new ExampleGeneratorPostProcessor(new ExampleJsonGenerator()), schemasPostProcessor),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
 
