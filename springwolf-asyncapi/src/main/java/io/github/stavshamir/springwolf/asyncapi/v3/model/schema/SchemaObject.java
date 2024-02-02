@@ -4,6 +4,7 @@ package io.github.stavshamir.springwolf.asyncapi.v3.model.schema;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExtendableObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.ExternalDocumentation;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -105,28 +106,28 @@ public class SchemaObject extends ExtendableObject implements Schema {
     private List<Object> examples;
 
     @JsonProperty(value = "additionalProperties")
-    private Schema additionalProperties;
+    private ComponentSchema additionalProperties;
 
     @JsonProperty(value = "required")
     private List<String> required;
 
     @JsonProperty(value = "allOf")
-    private List<Schema> allOf;
+    private List<ComponentSchema> allOf;
 
     @JsonProperty(value = "oneOf")
-    private List<Schema> oneOf;
+    private List<ComponentSchema> oneOf;
 
     @JsonProperty(value = "anyOf")
-    private List<Schema> anyOf;
+    private List<ComponentSchema> anyOf;
 
     @JsonProperty(value = "const")
     private Object constValue;
 
     @JsonProperty(value = "not")
-    private Schema not;
+    private ComponentSchema not;
 
     @JsonProperty(value = "items")
-    private Schema items;
+    private ComponentSchema items;
 
     @JsonProperty(value = "uniqueItems")
     private Boolean uniqueItems;

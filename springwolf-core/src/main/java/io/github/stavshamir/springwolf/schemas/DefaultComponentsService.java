@@ -33,6 +33,7 @@ public class DefaultComponentsService implements ComponentsService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
     private final List<SchemasPostProcessor> schemaPostProcessors;
+    private final SwaggerSchemaUtil swaggerSchemaUtil;
     private final SpringwolfConfigProperties properties;
 
     private final Map<String, Schema> schemas = new HashMap<>();
@@ -41,17 +42,19 @@ public class DefaultComponentsService implements ComponentsService {
     public DefaultComponentsService(
             List<ModelConverter> externalModelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
+            SwaggerSchemaUtil swaggerSchemaUtil,
             SpringwolfConfigProperties properties) {
 
         externalModelConverters.forEach(converter::addConverter);
         this.schemaPostProcessors = schemaPostProcessors;
+        this.swaggerSchemaUtil = swaggerSchemaUtil;
         this.properties = properties;
     }
 
     @Override
     public Map<String, SchemaObject> getSchemas() {
         return schemas.entrySet().stream()
-                .map(entry -> Map.entry(entry.getKey(), SwaggerSchemaUtil.mapSchema(entry.getValue())))
+                .map(entry -> Map.entry(entry.getKey(), swaggerSchemaUtil.mapSchema(entry.getValue())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 

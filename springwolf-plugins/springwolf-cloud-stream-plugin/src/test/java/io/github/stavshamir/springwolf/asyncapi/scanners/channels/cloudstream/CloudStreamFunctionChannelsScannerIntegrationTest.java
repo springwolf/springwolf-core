@@ -25,6 +25,7 @@ import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketServic
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
+import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
@@ -58,6 +59,7 @@ import static org.mockito.Mockito.when;
             ComponentClassScanner.class,
             DefaultBeanMethodsScanner.class,
             DefaultComponentsService.class,
+            SwaggerSchemaUtil.class,
             PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
             DefaultAsyncApiDocketService.class,

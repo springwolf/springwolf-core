@@ -46,6 +46,7 @@ class DefaultSchemasServiceTest {
                     new ExampleGeneratorPostProcessor(new ExampleJsonGenerator()),
                     schemasPostProcessor,
                     new SwaggerSchemaPostProcessor()),
+            new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
 
     private static final ObjectMapper objectMapper =
@@ -146,7 +147,8 @@ class DefaultSchemasServiceTest {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setUseFqn(true);
 
-        ComponentsService componentsServiceWithFqn = new DefaultComponentsService(List.of(), List.of(), properties);
+        ComponentsService componentsServiceWithFqn =
+                new DefaultComponentsService(List.of(), List.of(), new SwaggerSchemaUtil(), properties);
 
         // when
         Class<?> clazz =

@@ -674,7 +674,10 @@
         "type": "object",
         "properties": {
           "examplePayloads": {
-            "type": "array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto"
+            }
           },
           "someStrings": {
             "type": "array",
@@ -708,6 +711,34 @@
           "description": "Payload model with nested complex types",
           "properties": {
             "examplePayloads": {
+              "items": {
+                "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
+                "properties": {
+                  "someEnum": {
+                    "description": "Some enum field",
+                    "enum": [
+                      "FOO1",
+                      "FOO2",
+                      "FOO3"
+                    ],
+                    "type": "string"
+                  },
+                  "someLong": {
+                    "description": "Some long field",
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "someString": {
+                    "description": "###  Some string field with Markdown\n\n- **bold**\n- *cursive*\n- images: <img src=\"./assets/springwolf-logo.png\" alt=\"Springwolf\" height=\"50\"/>\n- and code blocks (json, http, java)\n  ```json\n  {\n    \"key1\":\"value1\",\n    \"key2\":\"value2\"\n  }\n  ```\n",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "someEnum",
+                  "someString"
+                ],
+                "type": "object"
+              },
               "type": "array"
             },
             "someStrings": {

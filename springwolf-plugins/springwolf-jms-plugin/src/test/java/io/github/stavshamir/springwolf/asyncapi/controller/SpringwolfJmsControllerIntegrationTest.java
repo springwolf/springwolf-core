@@ -7,6 +7,7 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import io.github.stavshamir.springwolf.producer.SpringwolfJmsProducer;
 import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
+import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             SpringwolfJmsProducer.class,
             PayloadClassExtractor.class,
             DefaultComponentsService.class,
+            SwaggerSchemaUtil.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
         })

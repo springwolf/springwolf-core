@@ -3,6 +3,8 @@ package io.github.stavshamir.springwolf.asyncapi.v3.model.schema;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -73,7 +75,8 @@ class SchemaTest {
     void shouldSerializeStringToStringMapping() throws JsonProcessingException {
         var schema = SchemaObject.builder()
                 .type("object")
-                .additionalProperties(SchemaObject.builder().type("string").build())
+                .additionalProperties(
+                        ComponentSchema.of(SchemaObject.builder().type("string").build()))
                 .build();
 
         var example =
@@ -92,7 +95,7 @@ class SchemaTest {
     void shouldSerializeModelMapping() throws JsonProcessingException {
         var schema = SchemaObject.builder()
                 .type("object")
-                .additionalProperties(SchemaReference.fromSchema("ComplexModel"))
+                .additionalProperties(ComponentSchema.of(MessageReference.toSchema("ComplexModel")))
                 .build();
 
         var example =
@@ -199,8 +202,8 @@ class SchemaTest {
                         "ExtendedErrorModel",
                         SchemaObject.builder()
                                 .allOf(List.of(
-                                        SchemaReference.fromSchema("ErrorModel"),
-                                        SchemaObject.builder()
+                                        ComponentSchema.of(MessageReference.toSchema("ErrorModel")),
+                                        ComponentSchema.of(SchemaObject.builder()
                                                 .type("object")
                                                 .required(List.of("rootCause"))
                                                 .properties(Map.of(
@@ -208,7 +211,7 @@ class SchemaTest {
                                                         SchemaObject.builder()
                                                                 .type("string")
                                                                 .build()))
-                                                .build()))
+                                                .build())))
                                 .build()));
 
         var example =
@@ -277,8 +280,8 @@ class SchemaTest {
                                 .description(
                                         "A representation of a cat. Note that `Cat` will be used as the discriminator value.")
                                 .allOf(List.of(
-                                        SchemaReference.fromSchema("Pet"),
-                                        SchemaObject.builder()
+                                        ComponentSchema.of(MessageReference.toSchema("Pet")),
+                                        ComponentSchema.of(SchemaObject.builder()
                                                 .type("object")
                                                 .properties(Map.of(
                                                         "huntingSkill",
@@ -293,15 +296,15 @@ class SchemaTest {
                                                                                 "aggressive"))
                                                                 .build()))
                                                 .required(List.of("huntingSkill"))
-                                                .build()))
+                                                .build())))
                                 .build(),
                         "Dog",
                         SchemaObject.builder()
                                 .description(
                                         "A representation of a dog. Note that `Dog` will be used as the discriminator value.")
                                 .allOf(List.of(
-                                        SchemaReference.fromSchema("Pet"),
-                                        SchemaObject.builder()
+                                        ComponentSchema.of(MessageReference.toSchema("Pet")),
+                                        ComponentSchema.of(SchemaObject.builder()
                                                 .type("object")
                                                 .properties(Map.of(
                                                         "packSize",
@@ -312,15 +315,15 @@ class SchemaTest {
                                                                 .minimum(BigDecimal.ZERO)
                                                                 .build()))
                                                 .required(List.of("packSize"))
-                                                .build()))
+                                                .build())))
                                 .build(),
                         "StickInsect",
                         SchemaObject.builder()
                                 .description(
                                         "A representation of an Australian walking stick. Note that `StickBug` will be used as the discriminator value.")
                                 .allOf(List.of(
-                                        SchemaReference.fromSchema("Pet"),
-                                        SchemaObject.builder()
+                                        ComponentSchema.of(MessageReference.toSchema("Pet")),
+                                        ComponentSchema.of(SchemaObject.builder()
                                                 .type("object")
                                                 .properties(Map.of(
                                                         "petType",
@@ -332,7 +335,7 @@ class SchemaTest {
                                                                 .type("string")
                                                                 .build()))
                                                 .required(List.of("color"))
-                                                .build()))
+                                                .build())))
                                 .build()));
         var example =
                 """

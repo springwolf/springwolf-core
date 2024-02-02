@@ -28,7 +28,7 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "b" : true,
       "d" : 1.1,
       "dt" : "2015-07-20T15:49:04-07:00",
@@ -48,7 +48,7 @@
         "nu" : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
       },
       "s" : "string"
-    }
+    } ]
   },
   "Cyclic" : {
     "type" : "object",
@@ -57,9 +57,9 @@
         "$ref" : "#/components/schemas/Cyclic"
       }
     },
-    "example" : {
+    "examples" : [ {
       "cyclic" : { }
-    }
+    } ]
   },
   "MyClass" : {
     "type" : "object",
@@ -68,9 +68,9 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "s" : "string"
-    }
+    } ]
   },
   "Nested" : {
     "type" : "object",
@@ -99,18 +99,18 @@
         "type" : "string"
       },
       "nsm" : {
-        "uniqueItems" : true,
         "type" : "array",
         "items" : {
           "$ref" : "#/components/schemas/MyClass"
-        }
+        },
+        "uniqueItems" : true
       },
       "nu" : {
         "type" : "string",
         "format" : "uuid"
       }
     },
-    "example" : {
+    "examples" : [ {
       "nba" : [ "YmFzZTY0LWV4YW1wbGU=" ],
       "nc" : {
         "cyclic" : { }
@@ -122,6 +122,6 @@
         "s" : "string"
       } ],
       "nu" : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-    }
+    } ]
   }
 }

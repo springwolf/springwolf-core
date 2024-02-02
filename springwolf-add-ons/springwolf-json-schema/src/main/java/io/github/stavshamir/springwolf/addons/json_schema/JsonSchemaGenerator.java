@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSchema;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +43,7 @@ public class JsonSchemaGenerator {
 
         if (schema.getAnyOf() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
-            for (Schema ofSchema : schema.getAnyOf()) {
+            for (ComponentSchema ofSchema : schema.getAnyOf()) {
                 SchemaObject schemaObject = getSchemaObject(ofSchema, definitions);
                 arrayNode.add(fromSchemaInternal(schemaObject, definitions, visited));
             }
@@ -52,8 +51,8 @@ public class JsonSchemaGenerator {
         }
         if (schema.getAllOf() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
-            for (Schema ofSchema : schema.getAllOf()) {
-                SchemaObject schemaObject = getSchemaObject(ofSchema, definitions);
+            for (ComponentSchema allSchema : schema.getAllOf()) {
+                SchemaObject schemaObject = getSchemaObject(allSchema, definitions);
                 arrayNode.add(fromSchemaInternal(schemaObject, definitions, visited));
             }
             node.set("allOf", arrayNode);
@@ -111,7 +110,7 @@ public class JsonSchemaGenerator {
         }
         if (schema.getOneOf() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
-            for (Schema ofSchema : schema.getOneOf()) {
+            for (ComponentSchema ofSchema : schema.getOneOf()) {
                 SchemaObject schemaObject = getSchemaObject(ofSchema, definitions);
                 arrayNode.add(fromSchemaInternal(schemaObject, definitions, visited));
             }

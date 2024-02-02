@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class JsonSchemaGeneratorTest {
     private final ObjectMapper mapper = Json.mapper();
+    private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
     private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(mapper);
 
     @ParameterizedTest
@@ -42,7 +43,7 @@ class JsonSchemaGeneratorTest {
     public void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema)
             throws IOException {
         // given
-        SchemaObject actualSchema = SwaggerSchemaUtil.mapSchema(asyncApiSchema.get());
+        SchemaObject actualSchema = swaggerSchemaUtil.mapSchema(asyncApiSchema.get());
 
         // when
         verifyValidJsonSchema(expectedJsonSchema);

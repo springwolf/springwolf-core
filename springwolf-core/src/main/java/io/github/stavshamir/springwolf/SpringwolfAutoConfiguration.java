@@ -18,6 +18,7 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfig
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
+import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.ExampleGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import io.github.stavshamir.springwolf.schemas.postprocessor.AvroSchemaPostProcessor;
@@ -82,11 +83,19 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public SwaggerSchemaUtil swaggerSchemaUtil() {
+        return new SwaggerSchemaUtil();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public ComponentsService schemasService(
             List<ModelConverter> modelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
+            SwaggerSchemaUtil swaggerSchemaUtil,
             SpringwolfConfigProperties springwolfConfigProperties) {
-        return new DefaultComponentsService(modelConverters, schemaPostProcessors, springwolfConfigProperties);
+        return new DefaultComponentsService(
+                modelConverters, schemaPostProcessors, swaggerSchemaUtil, springwolfConfigProperties);
     }
 
     @Bean

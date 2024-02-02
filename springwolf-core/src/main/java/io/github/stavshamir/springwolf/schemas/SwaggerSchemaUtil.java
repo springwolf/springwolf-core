@@ -6,22 +6,23 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.swagger.v3.oas.models.media.Schema;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class SwaggerSchemaUtil {
-    private SwaggerSchemaUtil() {}
 
-    public static ComponentSchema mapSchemaOrRef(Schema schema) {
+    public ComponentSchema mapSchemaOrRef(Schema schema) {
         if (schema.get$ref() != null) {
             return ComponentSchema.of(new MessageReference(schema.get$ref()));
         }
         return ComponentSchema.of(mapSchema(schema));
     }
 
-    public static SchemaObject mapSchema(Schema value) {
+    public SchemaObject mapSchema(Schema value) {
         SchemaObject.SchemaObjectBuilder builder = SchemaObject.builder();
 
         //          TODO:              .discriminator(value.getDiscriminator())
@@ -91,7 +92,7 @@ public class SwaggerSchemaUtil {
 
         Object additionalProperties = value.getAdditionalProperties();
         if (additionalProperties instanceof Schema) {
-            builder.additionalProperties(mapSchema((Schema<?>) additionalProperties));
+            builder.additionalProperties(mapSchemaOrRef((Schema<?>) additionalProperties));
         }
 
         builder.required(value.getRequired());
@@ -100,7 +101,7 @@ public class SwaggerSchemaUtil {
         if (allOf != null) {
             builder.allOf(allOf.stream()
                     .filter((el) -> el instanceof Schema<?>)
-                    .map((Object schema) -> mapSchema((Schema<?>) schema))
+                    .map((Object schema) -> mapSchemaOrRef((Schema<?>) schema))
                     .collect(Collectors.toList()));
         }
 
@@ -108,7 +109,7 @@ public class SwaggerSchemaUtil {
         if (oneOf != null) {
             builder.oneOf(oneOf.stream()
                     .filter((el) -> el instanceof Schema<?>)
-                    .map((Object schema) -> mapSchema((Schema<?>) schema))
+                    .map((Object schema) -> mapSchemaOrRef((Schema<?>) schema))
                     .collect(Collectors.toList()));
         }
 
@@ -116,7 +117,7 @@ public class SwaggerSchemaUtil {
         if (anyOf != null) {
             builder.anyOf(anyOf.stream()
                     .filter((el) -> el instanceof Schema<?>)
-                    .map((Object schema) -> mapSchema((Schema<?>) schema))
+                    .map((Object schema) -> mapSchemaOrRef((Schema<?>) schema))
                     .collect(Collectors.toList()));
         }
 
@@ -124,12 +125,12 @@ public class SwaggerSchemaUtil {
 
         Schema not = value.getNot();
         if (not != null) {
-            builder.not(mapSchema(not));
+            builder.not(mapSchemaOrRef(not));
         }
 
         Schema items = value.getItems();
-        if (items != null && items.getType() != null) {
-            builder.items(mapSchema(items));
+        if (items != null && "array".equals(value.getType())) {
+            builder.items(mapSchemaOrRef(items));
         }
         builder.uniqueItems(value.getUniqueItems());
 

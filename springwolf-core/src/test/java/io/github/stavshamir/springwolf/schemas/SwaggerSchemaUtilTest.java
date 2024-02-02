@@ -15,6 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SwaggerSchemaUtilTest {
+    private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
 
     @Nested
     class MapSchemaOrRef {
@@ -26,7 +27,7 @@ class SwaggerSchemaUtilTest {
             schema.set$ref("#/components/schemas/MySchema");
 
             // when
-            ComponentSchema componentSchema = SwaggerSchemaUtil.mapSchemaOrRef(schema);
+            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchemaOrRef(schema);
 
             // then
             assertThat(componentSchema.getReference()).isEqualTo(new MessageReference("#/components/schemas/MySchema"));
@@ -39,7 +40,7 @@ class SwaggerSchemaUtilTest {
             schema.setType("string");
 
             // when
-            ComponentSchema componentSchema = SwaggerSchemaUtil.mapSchemaOrRef(schema);
+            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchemaOrRef(schema);
 
             // then
             assertThat(componentSchema.getSchema().getType()).isEqualTo(schema.getType());
@@ -58,7 +59,7 @@ class SwaggerSchemaUtilTest {
             schema.setExternalDocs(externalDocs);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getExternalDocs().getDescription()).isEqualTo(externalDocs.getDescription());
@@ -72,7 +73,7 @@ class SwaggerSchemaUtilTest {
             schema.setDeprecated(true);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getDeprecated()).isEqualTo(true);
@@ -85,7 +86,7 @@ class SwaggerSchemaUtilTest {
             schema.setTitle("title");
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getTitle()).isEqualTo(schema.getTitle());
@@ -98,7 +99,7 @@ class SwaggerSchemaUtilTest {
             schema.setType("string");
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getType()).isEqualTo(schema.getType());
@@ -113,7 +114,7 @@ class SwaggerSchemaUtilTest {
             schema.addProperty("property", property);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(((ComponentSchema) componentSchema.getProperties().get("property"))
@@ -129,7 +130,7 @@ class SwaggerSchemaUtilTest {
             schema.setDescription("description");
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getDescription()).isEqualTo(schema.getDescription());
@@ -142,7 +143,7 @@ class SwaggerSchemaUtilTest {
             schema.setFormat("format");
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getFormat()).isEqualTo(schema.getFormat());
@@ -155,7 +156,7 @@ class SwaggerSchemaUtilTest {
             schema.setPattern("pattern");
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getPattern()).isEqualTo(schema.getPattern());
@@ -169,7 +170,7 @@ class SwaggerSchemaUtilTest {
             schema.setExclusiveMinimum(true);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getExclusiveMinimum()).isEqualTo(schema.getMinimum());
@@ -183,7 +184,7 @@ class SwaggerSchemaUtilTest {
             schema.setExclusiveMinimumValue(BigDecimal.ONE);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getExclusiveMinimum()).isEqualTo(schema.getExclusiveMinimumValue());
@@ -198,7 +199,7 @@ class SwaggerSchemaUtilTest {
             schema.setExclusiveMaximum(true);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getExclusiveMaximum()).isEqualTo(schema.getMaximum());
@@ -212,7 +213,7 @@ class SwaggerSchemaUtilTest {
             schema.setExclusiveMaximumValue(BigDecimal.ONE);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getExclusiveMaximum()).isEqualTo(schema.getExclusiveMaximumValue());
@@ -226,7 +227,7 @@ class SwaggerSchemaUtilTest {
             schema.setMinimum(BigDecimal.ONE);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getMinimum()).isEqualTo(schema.getMinimum());
@@ -240,7 +241,7 @@ class SwaggerSchemaUtilTest {
             schema.setMaximum(BigDecimal.ONE);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getMaximum()).isEqualTo(schema.getMaximum());
@@ -254,7 +255,7 @@ class SwaggerSchemaUtilTest {
             schema.setMultipleOf(BigDecimal.ONE);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getMultipleOf()).isEqualTo(schema.getMultipleOf());
@@ -267,7 +268,7 @@ class SwaggerSchemaUtilTest {
             schema.setMinLength(1);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getMinLength()).isEqualTo(schema.getMinLength());
@@ -280,7 +281,7 @@ class SwaggerSchemaUtilTest {
             schema.setMaxLength(1);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getMaxLength()).isEqualTo(schema.getMaxLength());
@@ -293,7 +294,7 @@ class SwaggerSchemaUtilTest {
             schema.setEnum(List.of("enum1", "enum2"));
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getEnumValues()).isEqualTo(schema.getEnum());
@@ -306,7 +307,7 @@ class SwaggerSchemaUtilTest {
             schema.setExample("example");
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getExamples()).isEqualTo(List.of(schema.getExample()));
@@ -321,10 +322,12 @@ class SwaggerSchemaUtilTest {
             schema.setAdditionalProperties(additionalProperties);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getAdditionalProperties()).getType())
+            assertThat(((ComponentSchema) componentSchema.getAdditionalProperties())
+                            .getSchema()
+                            .getType())
                     .isEqualTo(additionalProperties.getType());
         }
 
@@ -335,7 +338,7 @@ class SwaggerSchemaUtilTest {
             schema.setRequired(List.of("required"));
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getRequired()).isEqualTo(schema.getRequired());
@@ -350,10 +353,10 @@ class SwaggerSchemaUtilTest {
             schema.addAllOfItem(allOf);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getAllOf().get(0)).getType())
+            assertThat(((SchemaObject) componentSchema.getAllOf().get(0).getSchema()).getType())
                     .isEqualTo(allOf.getType());
         }
 
@@ -366,10 +369,10 @@ class SwaggerSchemaUtilTest {
             schema.addOneOfItem(oneOf);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getOneOf().get(0)).getType())
+            assertThat(((SchemaObject) componentSchema.getOneOf().get(0).getSchema()).getType())
                     .isEqualTo(oneOf.getType());
         }
 
@@ -382,10 +385,10 @@ class SwaggerSchemaUtilTest {
             schema.addAnyOfItem(anyOf);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getAnyOf().get(0)).getType())
+            assertThat(((SchemaObject) componentSchema.getAnyOf().get(0).getSchema()).getType())
                     .isEqualTo(anyOf.getType());
         }
 
@@ -396,7 +399,7 @@ class SwaggerSchemaUtilTest {
             schema.setConst("const");
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getConstValue()).isEqualTo(schema.getConst());
@@ -411,25 +414,28 @@ class SwaggerSchemaUtilTest {
             schema.setNot(not);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getNot()).getType()).isEqualTo(not.getType());
+            assertThat(((SchemaObject) componentSchema.getNot().getSchema()).getType())
+                    .isEqualTo(not.getType());
         }
 
         @Test
         void mapItems() {
             // given
             ObjectSchema schema = new ObjectSchema();
+            schema.type("array");
             ObjectSchema item = new ObjectSchema();
             item.setType("string");
             schema.setItems(item);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getItems()).getType()).isEqualTo(item.getType());
+            assertThat(((SchemaObject) componentSchema.getItems().getSchema()).getType())
+                    .isEqualTo(item.getType());
         }
 
         @Test
@@ -439,7 +445,7 @@ class SwaggerSchemaUtilTest {
             schema.setUniqueItems(false);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getUniqueItems()).isEqualTo(schema.getUniqueItems());
@@ -452,7 +458,7 @@ class SwaggerSchemaUtilTest {
             schema.setMinItems(1);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getMinItems()).isEqualTo(schema.getMinItems());
@@ -465,7 +471,7 @@ class SwaggerSchemaUtilTest {
             schema.setMaxItems(10);
 
             // when
-            SchemaObject componentSchema = SwaggerSchemaUtil.mapSchema(schema);
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getMaxItems()).isEqualTo(schema.getMaxItems());
