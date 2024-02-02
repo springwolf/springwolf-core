@@ -317,8 +317,10 @@ export class AsyncApiMapperService {
       maximum: schema.exclusiveMaximum
         ? schema.exclusiveMinimum
         : schema.maximum,
-      exclusiveMinimum: schema.minimum == schema.exclusiveMinimum ? true : false,
-      exclusiveMaximum: schema.maximum == schema.exclusiveMaximum ? true : false,
+      exclusiveMinimum:
+        schema.minimum == schema.exclusiveMinimum ? true : false,
+      exclusiveMaximum:
+        schema.maximum == schema.exclusiveMaximum ? true : false,
     };
   }
 
