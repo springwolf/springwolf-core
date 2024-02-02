@@ -93,8 +93,7 @@ public class SpringwolfConfigProperties {
          *
          * @see AsyncAPI#getDefaultContentType()
          */
-        @Nullable
-        private String defaultContentType;
+        private String defaultContentType = "application/json";
 
         @Nullable
         private Map<String, Server> servers;

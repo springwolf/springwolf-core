@@ -132,7 +132,6 @@ public class SpringwolfAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean()
     public SchemaWalker xmlSchemaWalker() {
         return new DefaultSchemaWalker<>(new ExampleXmlValueGenerator());
     }

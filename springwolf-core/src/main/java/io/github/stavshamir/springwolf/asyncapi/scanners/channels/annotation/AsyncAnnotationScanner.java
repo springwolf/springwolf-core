@@ -88,7 +88,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
                 ? operationData.payloadType()
                 : payloadClassExtractor.extractFrom(method);
 
-        String modelName = this.componentsService.registerSchema(payloadType);
+        String modelName = this.componentsService.registerSchema(payloadType, operationData.message().contentType());
         AsyncHeaders asyncHeaders = AsyncAnnotationScannerUtil.getAsyncHeaders(operationData, resolver);
         String headerModelName = this.componentsService.registerSchema(asyncHeaders);
         var headers = MessageHeaders.of(MessageReference.toSchema(headerModelName));

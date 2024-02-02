@@ -16,6 +16,7 @@ import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DefaultComponentsService implements ComponentsService {
 
+    @Deprecated
     private static final String DEFAULT_CONTENT_TYPE = "application/json";
 
     private final ModelConverters converter = ModelConverters.getInstance();
@@ -76,20 +78,22 @@ public class DefaultComponentsService implements ComponentsService {
 
     @Override
     public String registerSchema(Class<?> type) {
-        return this.registerSchema(type, DEFAULT_CONTENT_TYPE);
+        return this.registerSchema(type, properties.getDocket().getDefaultContentType());
     }
 
     @Override
     public String registerSchema(Class<?> type, String contentType) {
         log.debug("Registering schema for {}", type.getSimpleName());
+        String actualContentType = StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
 
         Map<String, Schema> schemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
 
         String schemaName = getSchemaName(type, schemas);
 
         preProcessSchemas(schemas, schemaName, type);
+        // TODO Fix Me putIfAbsent
         this.schemas.putAll(schemas);
-        schemas.values().forEach(schema -> postProcessSchema(schema, contentType));
+        schemas.values().forEach(schema -> postProcessSchema(schema, actualContentType));
 
         return schemaName;
     }
@@ -103,7 +107,7 @@ public class DefaultComponentsService implements ComponentsService {
     public MessageReference registerMessage(MessageObject message) {
         log.debug("Registering message for {}", message.getName());
 
-        messages.put(message.getName(), message);
+        messages.putIfAbsent(message.getName(), message);
 
         return MessageReference.toComponentMessage(message);
     }
