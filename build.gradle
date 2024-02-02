@@ -119,19 +119,23 @@ allprojects {
         }
     }
 
+    var plugins = [
+            'springwolf-amqp',
+            'springwolf-cloud-stream',
+            'springwolf-jms',
+            'springwolf-kafka',
+            'springwolf-sns',
+            'springwolf-sqs'
+    ]
     var publishingEnabled = (
             project.name == 'springwolf-asyncapi' ||
             project.name == 'springwolf-core' ||
-            project.name == 'springwolf-amqp' ||
-            project.name == 'springwolf-cloud-stream' ||
-            project.name == 'springwolf-jms' ||
-            project.name == 'springwolf-kafka' ||
-            project.name == 'springwolf-sns' ||
-            project.name == 'springwolf-sqs' ||
             project.name == 'springwolf-ui' ||
             project.name == 'springwolf-common-model-converters' ||
             project.name == 'springwolf-generic-binding' ||
-            project.name == 'springwolf-json-schema')
+            project.name == 'springwolf-json-schema' ||
+            plugins.contains(project.name)
+    )
     tasks.withType(PublishToMavenRepository).configureEach { it.enabled = publishingEnabled }
     tasks.withType(PublishToMavenLocal).configureEach { it.enabled = publishingEnabled }
     publishing {
@@ -205,6 +209,17 @@ allprojects {
         def signingPassword = project.findProperty("SIGNINGPASSWORD")
         useInMemoryPgpKeys(signingKey, signingPassword)
         sign publishing.publications.mavenJava
+    }
+
+    tasks.register('updateAsyncApiJson') {
+        group 'verification'
+        description 'Update the AsyncAPI JSON files in the examples to match the current state of the plugin'
+
+        plugins.forEach {
+            project
+                    .file('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.actual.json')
+                    .renameTo('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.json')
+        }
     }
 }
 
