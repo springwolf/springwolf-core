@@ -15,7 +15,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.Met
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForKafkaBuilder;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -61,7 +61,7 @@ public class SpringwolfKafkaScannerConfiguration {
             KafkaBindingFactory kafkaBindingBuilder,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         ClassLevelAnnotationChannelsScanner<KafkaListener, KafkaHandler> strategy =
                 new ClassLevelAnnotationChannelsScanner<>(
                         KafkaListener.class,
@@ -69,7 +69,7 @@ public class SpringwolfKafkaScannerConfiguration {
                         kafkaBindingBuilder,
                         asyncHeadersForKafkaBuilder,
                         payloadClassExtractor,
-                        schemasService);
+                        componentsService);
 
         return new SimpleChannelsScanner(classScanner, strategy);
     }
@@ -85,7 +85,7 @@ public class SpringwolfKafkaScannerConfiguration {
             KafkaBindingFactory kafkaBindingBuilder,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         ClassLevelAnnotationOperationsScanner<KafkaListener, KafkaHandler> strategy =
                 new ClassLevelAnnotationOperationsScanner<>(
                         KafkaListener.class,
@@ -93,7 +93,7 @@ public class SpringwolfKafkaScannerConfiguration {
                         kafkaBindingBuilder,
                         asyncHeadersForKafkaBuilder,
                         payloadClassExtractor,
-                        schemasService);
+                        componentsService);
 
         return new SimpleOperationsScanner(classScanner, strategy);
     }
@@ -108,9 +108,9 @@ public class SpringwolfKafkaScannerConfiguration {
             SpringwolfClassScanner classScanner,
             KafkaBindingFactory kafkaBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         MethodLevelAnnotationChannelsScanner<KafkaListener> strategy = new MethodLevelAnnotationChannelsScanner<>(
-                KafkaListener.class, kafkaBindingBuilder, payloadClassExtractor, schemasService);
+                KafkaListener.class, kafkaBindingBuilder, payloadClassExtractor, componentsService);
 
         return new SimpleChannelsScanner(classScanner, strategy);
     }
@@ -125,9 +125,9 @@ public class SpringwolfKafkaScannerConfiguration {
             SpringwolfClassScanner classScanner,
             KafkaBindingFactory kafkaBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         MethodLevelAnnotationOperationsScanner<KafkaListener> strategy = new MethodLevelAnnotationOperationsScanner<>(
-                KafkaListener.class, kafkaBindingBuilder, payloadClassExtractor, schemasService);
+                KafkaListener.class, kafkaBindingBuilder, payloadClassExtractor, componentsService);
 
         return new SimpleOperationsScanner(classScanner, strategy);
     }

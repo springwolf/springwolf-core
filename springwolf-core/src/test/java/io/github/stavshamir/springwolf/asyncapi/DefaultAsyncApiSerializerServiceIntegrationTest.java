@@ -2,11 +2,12 @@
 package io.github.stavshamir.springwolf.asyncapi;
 
 import io.github.stavshamir.springwolf.ClasspathUtil;
-import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
+import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
@@ -14,6 +15,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Contact;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
@@ -23,9 +25,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchem
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
-import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.oas.models.media.Schema;
-import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +40,11 @@ import java.util.Map;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {DefaultAsyncApiSerializerService.class})
+@ContextConfiguration(classes = {DefaultAsyncApiSerializer.class})
 class DefaultAsyncApiSerializerServiceIntegrationTest {
 
     @Autowired
-    private DefaultAsyncApiSerializerService serializer;
+    private AsyncApiSerializerService serializer;
 
     private AsyncAPI getAsyncAPITestObject() {
         Info info = Info.builder()
@@ -109,8 +108,12 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        Map<String, Schema> schemas = ModelConverters.getInstance()
-                .read(DefaultAsyncApiSerializerServiceIntegrationTest.ExamplePayload.class);
+        SchemaObject examplePayloadSchema = new SchemaObject();
+        examplePayloadSchema.setType("object");
+        SchemaObject stringSchema = new SchemaObject();
+        stringSchema.setType("string");
+        examplePayloadSchema.setProperties(Map.of("s", stringSchema));
+        Map<String, SchemaObject> schemas = Map.of("ExamplePayload", examplePayloadSchema);
 
         AsyncAPI asyncapi = AsyncAPI.builder()
                 .info(info)
@@ -141,10 +144,5 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         String actual = serializer.toJsonString(asyncapi);
         var expected = ClasspathUtil.parseYamlFile("/asyncapi/asyncapi.yaml");
         assertThatJson(actual).isEqualTo(expected);
-    }
-
-    @Data
-    static class ExamplePayload {
-        String s;
     }
 }

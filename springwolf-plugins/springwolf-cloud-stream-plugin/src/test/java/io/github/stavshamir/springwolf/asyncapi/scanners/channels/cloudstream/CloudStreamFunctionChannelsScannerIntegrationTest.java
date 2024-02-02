@@ -23,8 +23,9 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchem
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.configuration.DefaultAsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
+import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
+import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,8 @@ import static org.mockito.Mockito.when;
             ConfigurationClassScanner.class,
             ComponentClassScanner.class,
             DefaultBeanMethodsScanner.class,
-            DefaultSchemasService.class,
+            DefaultComponentsService.class,
+            SwaggerSchemaUtil.class,
             PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
             DefaultAsyncApiDocketService.class,
@@ -89,7 +91,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     private CloudStreamFunctionOperationsScanner operationsScanner;
 
     @Autowired
-    private SchemasService schemasService;
+    private ComponentsService componentsService;
 
     private Map<String, EmptyMessageBinding> messageBinding = Map.of("kafka", new EmptyMessageBinding());
     private Map<String, OperationBinding> operationBinding = Map.of("kafka", new EmptyOperationBinding());
@@ -141,7 +143,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
         assertThat(actualOperations)
                 .containsExactly(Map.entry("test-consumer-input-topic_publish_testConsumer", expectedOperation));
-        assertThat(schemasService.getMessages()).contains(Map.entry(String.class.getName(), message));
+        assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
     @Test
@@ -185,7 +187,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
         assertThat(actualOperations)
                 .containsExactly(Map.entry("test-supplier-output-topic_subscribe_testSupplier", expectedOperation));
-        assertThat(schemasService.getMessages()).contains(Map.entry(String.class.getName(), message));
+        assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
     @Test
@@ -340,8 +342,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .contains(
                         Map.entry("test-in-topic_publish_kStreamTestFunction", publishOperation),
                         Map.entry("test-out-topic_subscribe_kStreamTestFunction", subscribeOperation));
-        assertThat(schemasService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
-        assertThat(schemasService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
+        assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
+        assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
     }
 
     @Test
@@ -417,8 +419,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .contains(
                         Map.entry("test-topic_publish_testFunction", publishOperation),
                         Map.entry("test-topic_subscribe_testFunction", subscribeOperation));
-        assertThat(schemasService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
-        assertThat(schemasService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
+        assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
+        assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
     }
 
     @TestConfiguration

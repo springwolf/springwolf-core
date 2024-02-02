@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersionDetector;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -31,43 +35,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class JsonSchemaGeneratorTest {
     private final ObjectMapper mapper = Json.mapper();
+    private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
     private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(mapper);
 
     @ParameterizedTest
     @MethodSource
     public void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema)
             throws IOException {
+        // given
+        SchemaObject actualSchema = swaggerSchemaUtil.mapSchema(asyncApiSchema.get());
+
         // when
         verifyValidJsonSchema(expectedJsonSchema);
 
         // ref cycle ping -> pingField -> pong -> pongField -> ping (repeat)
-        ObjectSchema pingSchema = new ObjectSchema();
-        pingSchema.setName("PingSchema");
-        ObjectSchema pingFieldSchema = new ObjectSchema();
-        pingFieldSchema.setName("PingFieldSchema");
-        pingFieldSchema.set$ref("PongSchema");
-        pingSchema.setProperties(Map.of("pingfield", pingFieldSchema));
-        ObjectSchema pongSchema = new ObjectSchema();
-        pongSchema.setName("PongSchema");
-        ObjectSchema pongFieldSchema = new ObjectSchema();
-        pongFieldSchema.setName("PongFieldSchema");
-        pongFieldSchema.set$ref("PingSchema");
-        pongSchema.setProperties(Map.of("pongField", pongFieldSchema));
+        SchemaObject pingSchema = new SchemaObject();
+        pingSchema.setType("object");
+        pingSchema.setProperties(Map.of("pingfield", ComponentSchema.of(MessageReference.toSchema("PongSchema"))));
+        SchemaObject pongSchema = new SchemaObject();
+        pongSchema.setType("object");
+        pongSchema.setProperties(Map.of("pongField", ComponentSchema.of(MessageReference.toSchema("PingSchema"))));
 
-        Map<String, Schema> definitions = Map.of(
-                "StringRef",
-                new StringSchema(),
-                "PingSchema",
-                pingSchema,
-                "PingFieldSchema",
-                pingFieldSchema,
-                "PongSchema",
-                pongSchema,
-                "PongFieldSchema",
-                pongFieldSchema);
+        SchemaObject stringSchema = new SchemaObject();
+        stringSchema.setType("string");
+
+        Map<String, SchemaObject> definitions =
+                Map.of("StringRef", stringSchema, "PingSchema", pingSchema, "PongSchema", pongSchema);
 
         // when
-        Object jsonSchema = jsonSchemaGenerator.fromSchema(asyncApiSchema.get(), definitions);
+        Object jsonSchema = jsonSchemaGenerator.fromSchema(actualSchema, definitions);
 
         // then
         String jsonSchemaString = mapper.writeValueAsString(jsonSchema);
@@ -141,11 +137,19 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"enum\": [\"test\", \"value2\", \"null\"],\"type\":[\"string\",\"null\"],\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"enum\": [\"test\", \"value2\"],\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
                         (Supplier<Schema>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setEnum(List.of("test", "value2"));
                             schema.setNullable(true);
+                            return schema;
+                        }),
+                Arguments.of(
+                        "{\"exclusiveMinimum\": 1,\"exclusiveMaximum\": 10,\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        (Supplier<Schema>) () -> {
+                            NumberSchema schema = new NumberSchema();
+                            schema.setExclusiveMinimumValue(new BigDecimal(1));
+                            schema.setExclusiveMaximumValue(new BigDecimal(10));
                             return schema;
                         }),
                 Arguments.of(
@@ -156,7 +160,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"items\": {\"type\": \"number\"},\"type\":\"array\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"items\": {\"type\":\"number\"},\"type\":\"array\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
                         (Supplier<Schema>) () -> {
                             ArraySchema schema = new ArraySchema();
                             schema.setItems(new NumberSchema());
@@ -194,14 +198,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"name\": \"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
-                        (Supplier<Schema>) () -> {
-                            StringSchema schema = new StringSchema();
-                            schema.setName("test");
-                            return schema;
-                        }),
-                Arguments.of(
-                        "{\"not\": {\"type\": \"number\"},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"not\": {\"type\":\"number\"},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
                         (Supplier<Schema>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setNot(new NumberSchema());
@@ -215,7 +212,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"pattern\": \"test\",\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"pattern\":\"test\",\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
                         (Supplier<Schema>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setPattern("test");
@@ -256,7 +253,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"properties\":{\"field\":{\"name\":\"PingSchema\",\"properties\":{\"pingfield\":{\"name\":\"PongSchema\",\"properties\":{\"pongField\":{}},\"type\":\"object\"}},\"type\":\"object\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"properties\":{\"field\":{\"properties\":{\"pingfield\":{\"properties\":{\"pongField\":{}},\"type\":\"object\"}},\"type\":\"object\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
                         (Supplier<Schema>) () -> {
                             ObjectSchema refField = new ObjectSchema();
                             refField.set$ref("PingSchema");

@@ -11,7 +11,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -36,7 +36,7 @@ public abstract class ClassLevelAnnotationScanner<
     protected final BindingFactory<ClassAnnotation> bindingFactory;
     protected final AsyncHeadersBuilder asyncHeadersBuilder;
     protected final PayloadClassExtractor payloadClassExtractor;
-    protected final SchemasService schemasService;
+    protected final ComponentsService componentsService;
 
     protected enum MessageType {
         CHANNEL,
@@ -79,8 +79,8 @@ public abstract class ClassLevelAnnotationScanner<
 
     protected MessageObject buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
-        String modelName = schemasService.registerSchema(payloadType);
-        String headerModelName = schemasService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
+        String modelName = componentsService.registerSchema(payloadType);
+        String headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
 
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
@@ -96,7 +96,7 @@ public abstract class ClassLevelAnnotationScanner<
                 .bindings(messageBinding)
                 .build();
 
-        this.schemasService.registerMessage(message);
+        this.componentsService.registerMessage(message);
         return message;
     }
 }

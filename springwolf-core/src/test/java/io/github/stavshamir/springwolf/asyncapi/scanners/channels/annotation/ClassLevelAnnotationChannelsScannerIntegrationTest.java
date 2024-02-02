@@ -15,8 +15,9 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
+import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
+import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,7 +44,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(
         classes = {
             ClassLevelAnnotationChannelsScannerIntegrationTest.TestBindingFactory.class,
-            DefaultSchemasService.class,
+            DefaultComponentsService.class,
+            SwaggerSchemaUtil.class,
             PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
@@ -57,7 +59,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
     PayloadClassExtractor payloadClassExtractor;
 
     @Autowired
-    SchemasService schemasService;
+    ComponentsService componentsService;
 
     private ClassLevelAnnotationChannelsScanner<TestClassListener, TestMethodListener> scanner;
 
@@ -69,7 +71,7 @@ class ClassLevelAnnotationChannelsScannerIntegrationTest {
                 this.bindingFactory,
                 new AsyncHeadersNotDocumented(),
                 payloadClassExtractor,
-                schemasService);
+                componentsService);
     }
 
     @Nested

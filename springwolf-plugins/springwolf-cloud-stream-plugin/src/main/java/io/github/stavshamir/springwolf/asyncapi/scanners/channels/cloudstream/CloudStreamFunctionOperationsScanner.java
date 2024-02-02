@@ -19,7 +19,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationActi
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
@@ -35,7 +35,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final BeanMethodsScanner beanMethodsScanner;
-    private final SchemasService schemasService;
+    private final ComponentsService componentsService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
 
@@ -68,8 +68,8 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
 
     private Operation buildOperation(FunctionalChannelBeanData beanData, String channelName) {
         Class<?> payloadType = beanData.payloadType();
-        String modelName = schemasService.registerSchema(payloadType);
-        String headerModelName = schemasService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
+        String modelName = componentsService.registerSchema(payloadType);
+        String headerModelName = componentsService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
 
         MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())

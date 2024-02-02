@@ -9,13 +9,13 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "f" : {
         "b" : true,
         "s" : "string"
       },
       "s" : "string"
-    }
+    } ]
   },
   "FooWithEnum" : {
     "type" : "object",
@@ -28,10 +28,10 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "b" : "BAR1",
       "s" : "string"
-    }
+    } ]
   },
   "SimpleFoo" : {
     "type" : "object",
@@ -43,9 +43,9 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "b" : true,
       "s" : "string"
-    }
+    } ]
   }
 }

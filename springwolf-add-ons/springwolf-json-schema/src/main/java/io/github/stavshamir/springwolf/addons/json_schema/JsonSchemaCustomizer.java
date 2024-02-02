@@ -2,8 +2,8 @@
 package io.github.stavshamir.springwolf.addons.json_schema;
 
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiCustomizer;
-import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.swagger.v3.oas.models.media.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,20 +19,23 @@ public class JsonSchemaCustomizer implements AsyncApiCustomizer {
 
     @Override
     public void customize(AsyncAPI asyncAPI) {
-        Map<String, Schema> schemas = asyncAPI.getComponents().getSchemas();
-        for (Map.Entry<String, Schema> entry : schemas.entrySet()) {
-            Schema schema = entry.getValue();
-            if (schema.getExtensions() == null) {
-                schema.setExtensions(new HashMap<>());
-            }
+        Map<String, SchemaObject> schemas = asyncAPI.getComponents().getSchemas();
+        for (Map.Entry<String, SchemaObject> entry : schemas.entrySet()) {
+            SchemaObject schema = entry.getValue();
 
-            try {
-                log.debug("Generate json-schema for %s".formatted(entry.getKey()));
+            if (schema != null) {
+                if (schema.getExtensionFields() == null) {
+                    schema.setExtensionFields(new HashMap<>());
+                }
 
-                Object jsonSchema = jsonSchemaGenerator.fromSchema(schema, schemas);
-                schema.getExtensions().putIfAbsent(EXTENSION_JSON_SCHEMA, jsonSchema);
-            } catch (Exception ex) {
-                log.warn("Unable to create json-schema for %s".formatted(schema.getName()), ex);
+                try {
+                    log.debug("Generate json-schema for %s".formatted(entry.getKey()));
+
+                    Object jsonSchema = jsonSchemaGenerator.fromSchema(schema, schemas);
+                    schema.getExtensionFields().putIfAbsent(EXTENSION_JSON_SCHEMA, jsonSchema);
+                } catch (Exception ex) {
+                    log.warn("Unable to create json-schema for %s".formatted(entry.getKey()), ex);
+                }
             }
         }
     }

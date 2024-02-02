@@ -65,12 +65,6 @@ public class AsyncAPI extends ExtendableObject {
     private Info info;
 
     /**
-     * Provides connection details of servers.
-     */
-    @JsonProperty(value = "servers")
-    private Map<String, Server> servers;
-
-    /**
      * Default content type to use when encoding/decoding a message's payload.
      * </p>
      * A string representing the default content type to use when encoding/decoding a message's payload.
@@ -81,6 +75,12 @@ public class AsyncAPI extends ExtendableObject {
      */
     @JsonProperty(value = "defaultContentType")
     private String defaultContentType;
+
+    /**
+     * Provides connection details of servers.
+     */
+    @JsonProperty(value = "servers")
+    private Map<String, Server> servers;
 
     /**
      * The channels used by this
@@ -94,6 +94,14 @@ public class AsyncAPI extends ExtendableObject {
     private Map<String, ChannelObject> channels;
 
     /**
+     * An element to hold various reusable objects for the specification. Everything that is defined inside this
+     * object represents a resource that MAY or MAY NOT be used in the rest of the document and MAY or MAY NOT be
+     * used by the implemented
+     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#definitionsApplication">Application</a>.
+     */
+    @JsonProperty(value = "components")
+    private Components components;
+    /**
      * Holds a dictionary with all the operations this application MUST implement.
      * </p>
      * If you're looking for a place to define operations that MAY or MAY NOT be implemented by the
@@ -102,13 +110,4 @@ public class AsyncAPI extends ExtendableObject {
      */
     @JsonProperty(value = "operations")
     private Map<String, Operation> operations;
-
-    /**
-     * An element to hold various reusable objects for the specification. Everything that is defined inside this
-     * object represents a resource that MAY or MAY NOT be used in the rest of the document and MAY or MAY NOT be
-     * used by the implemented
-     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#definitionsApplication">Application</a>.
-     */
-    @JsonProperty(value = "components")
-    private Components components;
 }

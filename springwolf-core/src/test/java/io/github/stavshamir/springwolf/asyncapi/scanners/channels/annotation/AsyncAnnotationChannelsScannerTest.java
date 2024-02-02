@@ -26,8 +26,9 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
+import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
+import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -75,9 +76,12 @@ class AsyncAnnotationChannelsScannerTest {
                     return OperationAction.SEND;
                 }
             };
+    private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
     private final ClassScanner classScanner = mock(ClassScanner.class);
-    private final SchemasService schemasService = new DefaultSchemasService(emptyList(), emptyList(), properties);
+    private final ComponentsService componentsService =
+            new DefaultComponentsService(emptyList(), emptyList(), swaggerSchemaUtil, properties);
+
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
     private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(properties);
 
@@ -90,7 +94,7 @@ class AsyncAnnotationChannelsScannerTest {
     private final AsyncAnnotationChannelsScanner<AsyncListener> channelScanner = new AsyncAnnotationChannelsScanner<>(
             asyncAnnotationProvider,
             classScanner,
-            schemasService,
+            componentsService,
             asyncApiDocketService,
             payloadClassExtractor,
             operationBindingProcessors,

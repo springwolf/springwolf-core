@@ -8,7 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfAmqpControl
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +48,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 @MockBean(AsyncApiService.class),
                 @MockBean(RabbitTemplate.class),
                 @MockBean(SpringwolfClassScanner.class),
-                @MockBean(SchemasService.class),
+                @MockBean(ComponentsService.class),
                 @MockBean(PayloadClassExtractor.class),
                 @MockBean(AsyncApiDocketService.class)
             })
@@ -89,7 +89,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 @MockBean(AsyncApiService.class),
                 @MockBean(RabbitTemplate.class),
                 @MockBean(SpringwolfClassScanner.class),
-                @MockBean(SchemasService.class),
+                @MockBean(ComponentsService.class),
                 @MockBean(PayloadClassExtractor.class),
             })
     @Nested

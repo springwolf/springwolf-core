@@ -9,12 +9,12 @@
         }
       }
     },
-    "example" : {
+    "examples" : [ {
       "flist" : [ {
         "b" : true,
         "s" : "string"
       } ]
-    }
+    } ]
   },
   "SimpleFoo" : {
     "type" : "object",
@@ -26,9 +26,9 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "b" : true,
       "s" : "string"
-    }
+    } ]
   }
 }

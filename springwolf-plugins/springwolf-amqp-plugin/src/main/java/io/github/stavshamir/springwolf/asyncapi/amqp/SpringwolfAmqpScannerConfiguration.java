@@ -15,7 +15,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.Met
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForAmqpBuilder;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
@@ -66,7 +66,7 @@ public class SpringwolfAmqpScannerConfiguration {
             AmqpBindingFactory amqpBindingBuilder,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         ClassLevelAnnotationChannelsScanner<RabbitListener, RabbitHandler> strategy =
                 new ClassLevelAnnotationChannelsScanner<>(
                         RabbitListener.class,
@@ -74,7 +74,7 @@ public class SpringwolfAmqpScannerConfiguration {
                         amqpBindingBuilder,
                         asyncHeadersForAmqpBuilder,
                         payloadClassExtractor,
-                        schemasService);
+                        componentsService);
 
         return new SimpleChannelsScanner(classScanner, strategy);
     }
@@ -90,7 +90,7 @@ public class SpringwolfAmqpScannerConfiguration {
             AmqpBindingFactory amqpBindingBuilder,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         ClassLevelAnnotationOperationsScanner<RabbitListener, RabbitHandler> strategy =
                 new ClassLevelAnnotationOperationsScanner<>(
                         RabbitListener.class,
@@ -98,7 +98,7 @@ public class SpringwolfAmqpScannerConfiguration {
                         amqpBindingBuilder,
                         asyncHeadersForAmqpBuilder,
                         payloadClassExtractor,
-                        schemasService);
+                        componentsService);
 
         return new SimpleOperationsScanner(classScanner, strategy);
     }
@@ -113,9 +113,9 @@ public class SpringwolfAmqpScannerConfiguration {
             SpringwolfClassScanner classScanner,
             AmqpBindingFactory amqpBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         MethodLevelAnnotationChannelsScanner<RabbitListener> strategy = new MethodLevelAnnotationChannelsScanner<>(
-                RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, schemasService);
+                RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, componentsService);
 
         return new SimpleChannelsScanner(classScanner, strategy);
     }
@@ -130,9 +130,9 @@ public class SpringwolfAmqpScannerConfiguration {
             SpringwolfClassScanner classScanner,
             AmqpBindingFactory amqpBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         MethodLevelAnnotationOperationsScanner<RabbitListener> strategy = new MethodLevelAnnotationOperationsScanner<>(
-                RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, schemasService);
+                RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, componentsService);
 
         return new SimpleOperationsScanner(classScanner, strategy);
     }

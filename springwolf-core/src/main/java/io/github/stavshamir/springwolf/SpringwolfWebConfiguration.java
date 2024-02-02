@@ -2,13 +2,13 @@
 package io.github.stavshamir.springwolf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.stavshamir.springwolf.asyncapi.AsyncApiSerializerService;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import io.github.stavshamir.springwolf.asyncapi.DefaultAsyncApiSerializerService;
 import io.github.stavshamir.springwolf.asyncapi.controller.ActuatorAsyncApiController;
 import io.github.stavshamir.springwolf.asyncapi.controller.AsyncApiController;
 import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
+import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -32,8 +32,9 @@ public class SpringwolfWebConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public PublishingPayloadCreator publishingPayloadCreator(SchemasService schemasService, ObjectMapper objectMapper) {
-        return new PublishingPayloadCreator(schemasService, objectMapper);
+    public PublishingPayloadCreator publishingPayloadCreator(
+            ComponentsService componentsService, ObjectMapper objectMapper) {
+        return new PublishingPayloadCreator(componentsService, objectMapper);
     }
 
     @Bean
@@ -47,6 +48,6 @@ public class SpringwolfWebConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AsyncApiSerializerService asyncApiSerializerService() {
-        return new DefaultAsyncApiSerializerService();
+        return new DefaultAsyncApiSerializer();
     }
 }

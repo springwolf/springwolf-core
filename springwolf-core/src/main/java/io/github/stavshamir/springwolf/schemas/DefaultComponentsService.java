@@ -6,6 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -25,31 +26,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
-// TODO: rename to DefaultComponentService & interface to ComponentService
-public class DefaultSchemasService implements SchemasService {
+public class DefaultComponentsService implements ComponentsService {
 
     private final ModelConverters converter = ModelConverters.getInstance();
     private final List<SchemasPostProcessor> schemaPostProcessors;
+    private final SwaggerSchemaUtil swaggerSchemaUtil;
     private final SpringwolfConfigProperties properties;
 
     private final Map<String, Schema> schemas = new HashMap<>();
     private final Map<String, Message> messages = new HashMap<>();
 
-    public DefaultSchemasService(
+    public DefaultComponentsService(
             List<ModelConverter> externalModelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
+            SwaggerSchemaUtil swaggerSchemaUtil,
             SpringwolfConfigProperties properties) {
 
         externalModelConverters.forEach(converter::addConverter);
         this.schemaPostProcessors = schemaPostProcessors;
+        this.swaggerSchemaUtil = swaggerSchemaUtil;
         this.properties = properties;
     }
 
     @Override
-    public Map<String, Schema> getSchemas() {
-        return schemas;
+    public Map<String, SchemaObject> getSchemas() {
+        return schemas.entrySet().stream()
+                .map(entry -> Map.entry(entry.getKey(), swaggerSchemaUtil.mapSchema(entry.getValue())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     @Override

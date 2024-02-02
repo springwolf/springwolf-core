@@ -2,9 +2,9 @@
 package io.github.stavshamir.springwolf.addons.json_schema;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.types.Components;
-import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +42,9 @@ class JsonSchemaCustomizerTest {
     public void shouldAddJsonSchemaExtensionTest() throws JsonProcessingException {
         // given
         AsyncAPI asyncAPI = createAsyncApi();
-        asyncAPI.getComponents().setSchemas(Map.of("schema", new ObjectSchema()));
+        SchemaObject schemaObject = new SchemaObject();
+        schemaObject.setType("object");
+        asyncAPI.getComponents().setSchemas(Map.of("schema", schemaObject));
 
         when(jsonSchemaGenerator.fromSchema(any(), any())).thenReturn("mock-string");
 
@@ -50,7 +52,7 @@ class JsonSchemaCustomizerTest {
         jsonSchemaCustomizer.customize(asyncAPI);
 
         // then
-        assertThat(asyncAPI.getComponents().getSchemas().get("schema").getExtensions())
+        assertThat(asyncAPI.getComponents().getSchemas().get("schema").getExtensionFields())
                 .isEqualTo(Map.of("x-json-schema", "mock-string"));
     }
 

@@ -1,6 +1,5 @@
 {
   "DocumentedSimpleFoo" : {
-    "required" : [ "dt", "f", "s" ],
     "type" : "object",
     "properties" : {
       "bi" : {
@@ -9,7 +8,7 @@
       "dt" : {
         "type" : "string",
         "format" : "date-time",
-        "example" : "2000-01-01T02:00:00+02:00"
+        "examples" : [ "2000-01-01T02:00:00+02:00" ]
       },
       "f" : {
         "$ref" : "#/components/schemas/SimpleFoo"
@@ -25,22 +24,31 @@
       "mss" : {
         "type" : "object",
         "description" : "Map with example",
-        "example" : {
+        "examples" : [ {
           "key1" : "value1"
+        } ],
+        "additionalProperties" : {
+          "type" : "string",
+          "description" : "Map with example",
+          "examples" : [ "{\"key1\":\"value1\"}" ]
         }
       },
       "mss_plain" : {
         "type" : "object",
-        "description" : "Map without example"
+        "description" : "Map without example",
+        "additionalProperties" : {
+          "type" : "string",
+          "description" : "Map without example"
+        }
       },
       "s" : {
         "type" : "string",
         "description" : "s field",
-        "example" : "s value"
+        "examples" : [ "s value" ]
       }
     },
     "description" : "foo model",
-    "example" : {
+    "examples" : [ {
       "bi" : 0,
       "dt" : "2000-01-01T02:00+02:00",
       "f" : {
@@ -53,7 +61,8 @@
       },
       "mss_plain" : { },
       "s" : "s value"
-    }
+    } ],
+    "required" : [ "dt", "f", "s" ]
   },
   "SimpleFoo" : {
     "type" : "object",
@@ -65,9 +74,9 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "b" : true,
       "s" : "string"
-    }
+    } ]
   }
 }

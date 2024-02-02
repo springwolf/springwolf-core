@@ -6,7 +6,7 @@
         "type" : "boolean"
       }
     },
-    "example" : [ "string" ],
+    "examples" : [ [ "string" ] ],
     "items" : {
       "type" : "string"
     }

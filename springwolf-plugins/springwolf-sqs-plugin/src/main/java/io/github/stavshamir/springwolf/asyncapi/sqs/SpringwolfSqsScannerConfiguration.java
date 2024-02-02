@@ -13,7 +13,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.Met
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationOperationsScanner;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -41,9 +41,9 @@ public class SpringwolfSqsScannerConfiguration {
             SpringwolfClassScanner classScanner,
             SqsBindingFactory sqsBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         MethodLevelAnnotationChannelsScanner<SqsListener> strategy = new MethodLevelAnnotationChannelsScanner<>(
-                SqsListener.class, sqsBindingBuilder, payloadClassExtractor, schemasService);
+                SqsListener.class, sqsBindingBuilder, payloadClassExtractor, componentsService);
 
         return new SimpleChannelsScanner(classScanner, strategy);
     }
@@ -55,9 +55,9 @@ public class SpringwolfSqsScannerConfiguration {
             SpringwolfClassScanner classScanner,
             SqsBindingFactory sqsBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
+            ComponentsService componentsService) {
         MethodLevelAnnotationOperationsScanner<SqsListener> strategy = new MethodLevelAnnotationOperationsScanner<>(
-                SqsListener.class, sqsBindingBuilder, payloadClassExtractor, schemasService);
+                SqsListener.class, sqsBindingBuilder, payloadClassExtractor, componentsService);
 
         return new SimpleOperationsScanner(classScanner, strategy);
     }

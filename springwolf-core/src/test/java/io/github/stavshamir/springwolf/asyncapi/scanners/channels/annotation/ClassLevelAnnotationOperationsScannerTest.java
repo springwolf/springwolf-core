@@ -20,7 +20,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +42,7 @@ class ClassLevelAnnotationOperationsScannerTest {
 
     private final PayloadClassExtractor payloadClassExtractor = mock(PayloadClassExtractor.class);
     private final BindingFactory<TestClassListener> bindingFactory = mock(BindingFactory.class);
-    private final SchemasService schemasService = mock(SchemasService.class);
+    private final ComponentsService componentsService = mock(ComponentsService.class);
     ClassLevelAnnotationOperationsScanner<TestClassListener, TestMethodListener> scanner =
             new ClassLevelAnnotationOperationsScanner<>(
                     TestClassListener.class,
@@ -50,7 +50,7 @@ class ClassLevelAnnotationOperationsScannerTest {
                     bindingFactory,
                     new AsyncHeadersNotDocumented(),
                     payloadClassExtractor,
-                    schemasService);
+                    componentsService);
 
     private static final String CHANNEL = "test-channel";
     private static final Map<String, OperationBinding> defaultOperationBinding =
@@ -71,10 +71,10 @@ class ClassLevelAnnotationOperationsScannerTest {
 
         doReturn(String.class).when(payloadClassExtractor).extractFrom(any());
         doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())
-                .when(schemasService)
+                .when(componentsService)
                 .registerSchema(any(Class.class));
         doAnswer(invocation -> AsyncHeaders.NOT_DOCUMENTED.getSchemaName())
-                .when(schemasService)
+                .when(componentsService)
                 .registerSchema(any(AsyncHeaders.class));
     }
 

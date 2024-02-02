@@ -10,7 +10,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
@@ -32,8 +32,8 @@ public class MethodLevelAnnotationOperationsScanner<MethodAnnotation extends Ann
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<MethodAnnotation> bindingFactory,
             PayloadClassExtractor payloadClassExtractor,
-            SchemasService schemasService) {
-        super(bindingFactory, schemasService);
+            ComponentsService componentsService) {
+        super(bindingFactory, componentsService);
         this.methodAnnotationClass = methodAnnotationClass;
         this.payloadClassExtractor = payloadClassExtractor;
     }

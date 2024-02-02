@@ -9,7 +9,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.classes.ClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
@@ -25,14 +25,14 @@ public class AsyncAnnotationOperationsScanner<A extends Annotation> extends Asyn
     public AsyncAnnotationOperationsScanner(
             AsyncAnnotationProvider<A> asyncAnnotationProvider,
             ClassScanner classScanner,
-            SchemasService schemasService,
+            ComponentsService componentsService,
             PayloadClassExtractor payloadClassExtractor,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         super(
                 asyncAnnotationProvider,
                 payloadClassExtractor,
-                schemasService,
+                componentsService,
                 operationBindingProcessors,
                 messageBindingProcessors);
         this.classScanner = classScanner;

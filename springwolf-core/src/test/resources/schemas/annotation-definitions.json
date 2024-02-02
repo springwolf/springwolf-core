@@ -1,10 +1,10 @@
 {
   "AllOf" : {
     "type" : "object",
-    "example" : {
+    "examples" : [ {
       "firstOne" : "string",
       "secondOne" : "string"
-    },
+    } ],
     "allOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -13,10 +13,10 @@
   },
   "AnyOf" : {
     "type" : "object",
-    "example" : {
+    "examples" : [ {
       "firstOne" : "string",
       "secondOne" : "string"
-    },
+    } ],
     "anyOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -33,10 +33,10 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "firstOne" : "string",
       "secondOne" : "string"
-    }
+    } ]
   },
   "ImplementationTwo" : {
     "type" : "object",
@@ -49,17 +49,17 @@
         "type" : "boolean"
       }
     },
-    "example" : {
+    "examples" : [ {
       "firstTwo" : 0,
       "secondTwo" : true
-    }
+    } ]
   },
   "OneOf" : {
     "type" : "object",
-    "example" : {
+    "examples" : [ {
       "firstOne" : "string",
       "secondOne" : "string"
-    },
+    } ],
     "oneOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -82,7 +82,7 @@
         "$ref" : "#/components/schemas/OneOf"
       }
     },
-    "example" : {
+    "examples" : [ {
       "allOf" : {
         "firstOne" : "string",
         "secondOne" : "string"
@@ -96,6 +96,6 @@
         "firstOne" : "string",
         "secondOne" : "string"
       }
-    }
+    } ]
   }
 }

@@ -2,9 +2,8 @@
 package io.github.stavshamir.springwolf.asyncapi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.stavshamir.springwolf.asyncapi.AsyncApiSerializerService;
 import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
+import io.github.stavshamir.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -25,7 +24,7 @@ public class AsyncApiController {
     public String asyncApiJson() throws JsonProcessingException {
         log.debug("Returning AsyncApi.json document");
 
-        AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
+        Object asyncAPI = asyncApiService.getAsyncAPI();
         return serializer.toJsonString(asyncAPI);
     }
 
@@ -33,7 +32,7 @@ public class AsyncApiController {
     public String asyncApiYaml() throws JsonProcessingException {
         log.debug("Returning AsyncApi.yaml document");
 
-        AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
+        Object asyncAPI = asyncApiService.getAsyncAPI();
         return serializer.toYaml(asyncAPI);
     }
 }

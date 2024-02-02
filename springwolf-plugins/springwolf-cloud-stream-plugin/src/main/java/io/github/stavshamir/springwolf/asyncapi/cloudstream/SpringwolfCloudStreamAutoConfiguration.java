@@ -8,7 +8,7 @@ import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.Fu
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
@@ -25,13 +25,13 @@ public class SpringwolfCloudStreamAutoConfiguration {
     public CloudStreamFunctionChannelsScanner cloudStreamFunctionChannelsScanner(
             AsyncApiDocketService asyncApiDocketService,
             BeanMethodsScanner beanMethodsScanner,
-            SchemasService schemasService,
+            ComponentsService componentsService,
             BindingServiceProperties cloudstreamBindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder) {
         return new CloudStreamFunctionChannelsScanner(
                 asyncApiDocketService,
                 beanMethodsScanner,
-                schemasService,
+                componentsService,
                 cloudstreamBindingServiceProperties,
                 functionalChannelBeanBuilder);
     }
@@ -40,13 +40,13 @@ public class SpringwolfCloudStreamAutoConfiguration {
     public CloudStreamFunctionOperationsScanner cloudStreamFunctionOperationsScanner(
             AsyncApiDocketService asyncApiDocketService,
             BeanMethodsScanner beanMethodsScanner,
-            SchemasService schemasService,
+            ComponentsService componentsService,
             BindingServiceProperties cloudstreamBindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder) {
         return new CloudStreamFunctionOperationsScanner(
                 asyncApiDocketService,
                 beanMethodsScanner,
-                schemasService,
+                componentsService,
                 cloudstreamBindingServiceProperties,
                 functionalChannelBeanBuilder);
     }

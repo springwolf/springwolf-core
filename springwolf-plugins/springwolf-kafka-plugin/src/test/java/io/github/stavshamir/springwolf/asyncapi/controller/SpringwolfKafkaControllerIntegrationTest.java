@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
-import io.github.stavshamir.springwolf.schemas.DefaultSchemasService;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
+import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
+import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,7 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             SpringwolfKafkaController.class,
             PublishingPayloadCreator.class,
             SpringwolfKafkaProducer.class,
-            DefaultSchemasService.class,
+            DefaultComponentsService.class,
+            SwaggerSchemaUtil.class,
             PayloadClassExtractor.class,
             ExampleJsonGenerator.class,
             SpringwolfConfigProperties.class,
@@ -63,7 +65,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     private MockMvc mvc;
 
     @Autowired
-    private SchemasService schemasService;
+    private ComponentsService componentsService;
 
     @MockBean
     private SpringwolfKafkaProducer springwolfKafkaProducer;
@@ -78,7 +80,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     void setup() {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
-        schemasService.registerSchema(PayloadDto.class);
+        componentsService.registerSchema(PayloadDto.class);
     }
 
     @Test

@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.swagger.v3.oas.models.media.Schema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,14 +19,16 @@ import java.util.Set;
 public class JsonSchemaGenerator {
     private final ObjectMapper objectMapper;
 
-    public Object fromSchema(Schema<?> schema, Map<String, Schema> definitions) throws JsonProcessingException {
+    public Object fromSchema(SchemaObject schema, Map<String, SchemaObject> definitions)
+            throws JsonProcessingException {
         ObjectNode node = fromSchemaInternal(schema, definitions, new HashSet<>());
         node.put("$schema", "https://json-schema.org/draft-04/schema#");
 
         return objectMapper.readValue(node.toString(), Object.class);
     }
 
-    private ObjectNode fromSchemaInternal(Schema<?> schema, Map<String, Schema> definitions, Set<Schema> visited) {
+    private ObjectNode fromSchemaInternal(
+            SchemaObject schema, Map<String, SchemaObject> definitions, Set<SchemaObject> visited) {
         if (schema != null && !visited.contains(schema)) {
             visited.add(schema);
 
@@ -34,44 +37,51 @@ public class JsonSchemaGenerator {
         return objectMapper.createObjectNode();
     }
 
-    private ObjectNode mapToJsonSchema(Schema<?> schema, Map<String, Schema> definitions, Set<Schema> visited) {
+    private ObjectNode mapToJsonSchema(
+            SchemaObject schema, Map<String, SchemaObject> definitions, Set<SchemaObject> visited) {
         ObjectNode node = objectMapper.createObjectNode();
 
         if (schema.getAnyOf() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
-            for (Schema ofSchema : schema.getAnyOf()) {
-                arrayNode.add(fromSchemaInternal(ofSchema, definitions, visited));
+            for (ComponentSchema ofSchema : schema.getAnyOf()) {
+                SchemaObject schemaObject = getSchemaObject(ofSchema, definitions);
+                arrayNode.add(fromSchemaInternal(schemaObject, definitions, visited));
             }
-            node.put("anyOf", arrayNode);
+            node.set("anyOf", arrayNode);
         }
         if (schema.getAllOf() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
-            for (Schema ofSchema : schema.getAllOf()) {
-                arrayNode.add(fromSchemaInternal(ofSchema, definitions, visited));
+            for (ComponentSchema allSchema : schema.getAllOf()) {
+                SchemaObject schemaObject = getSchemaObject(allSchema, definitions);
+                arrayNode.add(fromSchemaInternal(schemaObject, definitions, visited));
             }
-            node.put("allOf", arrayNode);
+            node.set("allOf", arrayNode);
         }
-        if (schema.getConst() != null) {
-            node.put("const", schema.getConst().toString());
+        if (schema.getConstValue() != null) {
+            node.put("const", schema.getConstValue().toString());
         }
         if (schema.getDescription() != null) {
             node.put("description", schema.getDescription());
         }
-        if (schema.getEnum() != null) {
+        if (schema.getEnumValues() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
-            for (Object property : schema.getEnum()) {
+            for (Object property : schema.getEnumValues()) {
                 arrayNode.add(property.toString());
             }
-            if (schema.getNullable() != null && schema.getNullable()) {
-                arrayNode.add("null");
-            }
             node.set("enum", arrayNode);
+        }
+        if (schema.getExclusiveMinimum() != null) {
+            node.put("exclusiveMinimum", schema.getExclusiveMinimum());
+        }
+        if (schema.getExclusiveMaximum() != null) {
+            node.put("exclusiveMaximum", schema.getExclusiveMaximum());
         }
         if (schema.getFormat() != null) {
             node.put("format", schema.getFormat());
         }
         if (schema.getItems() != null) {
-            node.set("items", fromSchemaInternal(schema.getItems(), definitions, visited));
+            SchemaObject schemaObject = getSchemaObject(schema.getItems(), definitions);
+            node.set("items", fromSchemaInternal(schemaObject, definitions, visited));
         }
         if (schema.getMaximum() != null) {
             node.put("maximum", schema.getMaximum());
@@ -94,18 +104,17 @@ public class JsonSchemaGenerator {
         if (schema.getMultipleOf() != null) {
             node.put("multipleOf", schema.getMultipleOf());
         }
-        if (schema.getName() != null) {
-            node.put("name", schema.getName());
-        }
         if (schema.getNot() != null) {
-            node.put("not", fromSchemaInternal(schema.getNot(), definitions, visited));
+            SchemaObject schemaObject = getSchemaObject(schema.getNot(), definitions);
+            node.set("not", fromSchemaInternal(schemaObject, definitions, visited));
         }
         if (schema.getOneOf() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
-            for (Schema ofSchema : schema.getOneOf()) {
-                arrayNode.add(fromSchemaInternal(ofSchema, definitions, visited));
+            for (ComponentSchema ofSchema : schema.getOneOf()) {
+                SchemaObject schemaObject = getSchemaObject(ofSchema, definitions);
+                arrayNode.add(fromSchemaInternal(schemaObject, definitions, visited));
             }
-            node.put("oneOf", arrayNode);
+            node.set("oneOf", arrayNode);
         }
         if (schema.getPattern() != null) {
             node.put("pattern", schema.getPattern());
@@ -124,14 +133,7 @@ public class JsonSchemaGenerator {
             node.put("title", schema.getTitle());
         }
         if (schema.getType() != null) {
-            if (schema.getNullable() != null && schema.getNullable()) {
-                ArrayNode arrayNode = objectMapper.createArrayNode();
-                arrayNode.add(schema.getType());
-                arrayNode.add("null");
-                node.set("type", arrayNode);
-            } else {
-                node.put("type", schema.getType());
-            }
+            node.put("type", schema.getType());
         }
         if (schema.getUniqueItems() != null) {
             node.put("uniqueItems", schema.getUniqueItems());
@@ -140,21 +142,33 @@ public class JsonSchemaGenerator {
         return node;
     }
 
-    private JsonNode buildProperties(Schema<?> schema, Map<String, Schema> definitions, Set<Schema> visited) {
+    private JsonNode buildProperties(
+            SchemaObject schema, Map<String, SchemaObject> definitions, Set<SchemaObject> visited) {
         ObjectNode node = objectMapper.createObjectNode();
 
-        for (Map.Entry<String, Schema> propertySchemaSet :
+        for (Map.Entry<String, Object> propertySchemaSet :
                 schema.getProperties().entrySet()) {
-            Schema propertySchema = propertySchemaSet.getValue();
-
-            if (propertySchema != null && propertySchema.get$ref() != null) {
-                String schemaName = StringUtils.substringAfterLast(propertySchema.get$ref(), "/");
-                propertySchema = definitions.get(schemaName);
-            }
-
-            node.set(propertySchemaSet.getKey(), fromSchemaInternal(propertySchema, definitions, visited));
+            SchemaObject propertySchema = getSchemaObject(propertySchemaSet.getValue(), definitions);
+            ObjectNode propertySchemaMapped = fromSchemaInternal(propertySchema, definitions, visited);
+            node.set(propertySchemaSet.getKey(), propertySchemaMapped);
         }
 
         return node;
+    }
+
+    private static SchemaObject getSchemaObject(Object schema, Map<String, SchemaObject> definitions) {
+        if (schema instanceof SchemaObject) {
+            return (SchemaObject) schema;
+        } else if (schema instanceof ComponentSchema) {
+            ComponentSchema componentSchema = (ComponentSchema) schema;
+            if (componentSchema.getReference() != null
+                    && componentSchema.getReference().getRef() != null) {
+                String schemaName = StringUtils.substringAfterLast(
+                        componentSchema.getReference().getRef(), "/");
+                return definitions.get(schemaName);
+            }
+            return componentSchema.getSchema();
+        }
+        return null;
     }
 }

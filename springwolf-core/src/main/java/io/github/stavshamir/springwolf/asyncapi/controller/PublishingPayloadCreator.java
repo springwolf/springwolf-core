@@ -4,14 +4,13 @@ package io.github.stavshamir.springwolf.asyncapi.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto;
-import io.github.stavshamir.springwolf.schemas.SchemasService;
-import io.swagger.v3.oas.models.media.Schema;
+import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.MessageFormat;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Used in plugins with publishing enabled.
@@ -21,15 +20,13 @@ import java.util.List;
 @Slf4j
 public class PublishingPayloadCreator {
 
-    private final SchemasService schemasService;
+    private final ComponentsService componentsService;
     private final ObjectMapper objectMapper;
 
     public Result createPayloadObject(MessageDto message) {
         String messagePayloadType = message.getPayloadType();
 
-        List<String> knownSchemaNames = schemasService.getSchemas().values().stream()
-                .map(Schema::getName)
-                .toList();
+        Set<String> knownSchemaNames = componentsService.getSchemas().keySet();
         for (String schemaPayloadType : knownSchemaNames) {
             // security: match against user input, but always use our controlled data from the DefaultSchemaService
             if (schemaPayloadType != null && schemaPayloadType.equals(messagePayloadType)) {
