@@ -25,7 +25,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchem
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
-import io.swagger.v3.oas.models.media.ObjectSchema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +110,9 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
         SchemaObject examplePayloadSchema = new SchemaObject();
         examplePayloadSchema.setType("object");
-        examplePayloadSchema.setProperties(Map.of("s", new ObjectSchema().type("string")));
+        SchemaObject stringSchema = new SchemaObject();
+        stringSchema.setType("string");
+        examplePayloadSchema.setProperties(Map.of("s", stringSchema));
         Map<String, SchemaObject> schemas = Map.of("ExamplePayload", examplePayloadSchema);
 
         AsyncAPI asyncapi = AsyncAPI.builder()

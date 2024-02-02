@@ -76,7 +76,6 @@ public class AsyncAPI extends ExtendableObject {
     @JsonProperty(value = "defaultContentType")
     private String defaultContentType;
 
-    // TODO: moved only for testing purposes - revert later
     /**
      * Provides connection details of servers.
      */
@@ -94,7 +93,6 @@ public class AsyncAPI extends ExtendableObject {
     @JsonProperty(value = "channels")
     private Map<String, ChannelObject> channels;
 
-    // TODO: moved only for testing purposes - revert later
     /**
      * An element to hold various reusable objects for the specification. Everything that is defined inside this
      * object represents a resource that MAY or MAY NOT be used in the rest of the document and MAY or MAY NOT be
