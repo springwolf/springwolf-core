@@ -6,6 +6,7 @@ import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class DefaultComponentsService implements ComponentsService {
@@ -47,8 +49,10 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     @Override
-    public Map<String, Schema> getSchemas() {
-        return schemas;
+    public Map<String, SchemaObject> getSchemas() {
+        return schemas.entrySet().stream()
+                .map(entry -> Map.entry(entry.getKey(), SwaggerSchemaUtil.mapSchema(entry.getValue())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     @Override

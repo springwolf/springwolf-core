@@ -8,13 +8,11 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
 import io.github.stavshamir.springwolf.schemas.ComponentsService;
-import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -71,10 +69,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
             Map<String, Operation> operations = operationsService.findOperations();
 
             Components components = Components.builder()
-                    // TODO: move this into the components service
-                    .schemas(componentsService.getSchemas().entrySet().stream()
-                            .map(entry -> Map.entry(entry.getKey(), SwaggerSchemaUtil.mapSchema(entry.getValue())))
-                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
+                    .schemas(componentsService.getSchemas())
                     .messages(componentsService.getMessages())
                     .build();
 
