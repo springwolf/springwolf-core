@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi;
 
-import io.github.stavshamir.springwolf.asyncapi.types.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.types.Components;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
 import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;

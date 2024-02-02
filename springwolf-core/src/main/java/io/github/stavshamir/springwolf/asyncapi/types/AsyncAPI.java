@@ -26,6 +26,7 @@ import static io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI.ASYNCAP
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Deprecated
 public class AsyncAPI {
     /**
      * REQUIRED. Specifies the AsyncAPI Specification version being used. It can be used by tooling Specifications and

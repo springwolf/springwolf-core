@@ -7,6 +7,8 @@ import io.github.stavshamir.springwolf.asyncapi.types.Components;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
+import io.github.stavshamir.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
+import io.github.stavshamir.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
@@ -41,11 +43,11 @@ import java.util.Map;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {DefaultAsyncApiSerializerService.class})
+@ContextConfiguration(classes = {DefaultAsyncApiSerializer.class})
 class DefaultAsyncApiSerializerServiceIntegrationTest {
 
     @Autowired
-    private DefaultAsyncApiSerializerService serializer;
+    private AsyncApiSerializerService serializer;
 
     private AsyncAPI getAsyncAPITestObject() {
         Info info = Info.builder()

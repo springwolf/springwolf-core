@@ -21,6 +21,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Deprecated
 public class Components {
 
     private Map<String, Schema> schemas;
