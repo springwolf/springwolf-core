@@ -53,7 +53,7 @@ ext {
     mockitoCoreVersion = '5.9.0'
     mockitoJunitJupiterVersion = '5.10.0'
 
-    monetaVersion = '1.4.2'
+    monetaVersion = '1.4.4'
     moneyApiVersion = '1.1'
 
     protobufJavaVersion = '3.25.2'
