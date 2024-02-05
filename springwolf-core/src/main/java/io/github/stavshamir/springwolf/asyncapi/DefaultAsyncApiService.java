@@ -49,7 +49,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
 
     /**
      * Does the 'heavy work' of building the AsyncAPI documents once. Stores the resulting
-     * AsyncAPI document or alternativly a catched exception/error in the instance variable asyncAPIResult.
+     * AsyncAPI document or alternatively a caught exception/error in the instance variable asyncAPIResult.
      */
     protected synchronized void initAsyncAPI() {
         if (this.asyncAPIResult != null) {
@@ -90,7 +90,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
             }
             this.asyncAPIResult = new AsyncAPIResult(asyncAPI, null);
 
-            log.debug("AsyncAPI document was build");
+            log.debug("AsyncAPI document was built");
         } catch (Throwable t) {
             log.debug("Failed to build AsyncAPI document", t);
             this.asyncAPIResult = new AsyncAPIResult(null, t);

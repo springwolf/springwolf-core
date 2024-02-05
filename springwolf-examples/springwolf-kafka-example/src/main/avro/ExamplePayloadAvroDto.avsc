@@ -1,26 +1,34 @@
 {
+    "namespace": "demo.springwolf.model",
     "type": "record",
-    "name": "ExamplePayloadAvroDto",
-    "namespace": "io.github.stavshamir.springwolf.example.kafka.dto.avro",
-    "fields": [{
-        "name": "someString",
-        "type": ["null", "string"],
-        "default": null
-    }, {
-        "name": "someLong",
-        "type": ["null", "int"],
-        "default": null
-    }, {
-        "name": "someEnum",
-        "type": {
-            "type": "enum",
-            "name": "ExampleEnum",
-            "symbols": [
-                "FOO1",
-                "FOO2",
-                "FOO3"
-            ]
+    "name": "AnotherPayloadDto",
+    "fields": [
+        {
+            "name": "foo",
+            "type": ["null", "string"],
+            "default": null,
+            "doc": "Some string field"
         },
-        "default": "FOO1"
-    }]
+        {
+            "name": "ExamplePayloadDto",
+            "type": {
+                "type": "record",
+                "name": "ExamplePayloadDto",
+                "fields": [
+                    {
+                        "name": "someString",
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "default": null
+                    },
+                    {
+                        "name": "someLong",
+                        "type": "long"
+                    }
+                ]
+            }
+        }
+    ]
 }

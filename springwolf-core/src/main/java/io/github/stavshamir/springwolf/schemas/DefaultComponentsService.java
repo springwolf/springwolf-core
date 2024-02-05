@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -77,11 +78,22 @@ public class DefaultComponentsService implements ComponentsService {
         log.debug("Registering schema for {}", type.getSimpleName());
 
         Map<String, Schema> schemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
-        String schemaName = getSchemaName(type, schemas);
 
-        preProcessSchemas(schemas, schemaName, type);
-        this.schemas.putAll(schemas);
-        schemas.values().forEach(this::postProcessSchema);
+        // When a custom record references another custom record, we need to reverse the order so that we post process
+        // the inner records first.
+        Map<String, Schema> reversedSchemas = new LinkedHashMap<>();
+        Set<String> setKeys = schemas.keySet();
+        List<String> listKeys = new ArrayList<>(setKeys);
+        ListIterator<String> iterator = listKeys.listIterator(listKeys.size());
+        while (iterator.hasPrevious()) {
+            String key = iterator.previous();
+            reversedSchemas.put(key, schemas.get(key));
+        }
+
+        String schemaName = getSchemaName(type, reversedSchemas);
+        preProcessSchemas(reversedSchemas, schemaName, type);
+        this.schemas.putAll(reversedSchemas);
+        reversedSchemas.values().forEach(this::postProcessSchema);
 
         return schemaName;
     }
@@ -139,7 +151,7 @@ public class DefaultComponentsService implements ComponentsService {
 
         } else if (withPayloadAnnotatedFields.size() > 1) {
             log.warn(("Found more than one field with @AsyncApiPayload annotation in class %s. "
-                            + "Falling back and ignoring annotation.")
+                    + "Falling back and ignoring annotation.")
                     .formatted(type.getName()));
         }
     }

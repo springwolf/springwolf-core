@@ -15,6 +15,13 @@ public class ExampleGeneratorPostProcessor implements SchemasPostProcessor {
 
     @Override
     public void process(Schema schema, Map<String, Schema> definitions) {
+        // Even though the schemas are removed from the definitions, they are still processed and throws an error when
+        // they don't find themselves in the definitions.
+        if (schema.getName().startsWith("org.apache.avro")) {
+            log.debug("Skipping avro schema: " + schema.getName());
+            return;
+        }
+
         if (schema.getExample() == null) {
             log.debug("Generate example for {}", schema.getName());
 
