@@ -36,8 +36,8 @@
     },
     "avro-topic": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto"
+        "io.github.stavshamir.model.AnotherPayloadAvroDto": {
+          "$ref": "#/components/messages/io.github.stavshamir.model.AnotherPayloadAvroDto"
         }
       }
     },
@@ -377,6 +377,88 @@
           "type": "string"
         }
       },
+      "io.github.stavshamir.model.AnotherPayloadAvroDto": {
+        "type": "object",
+        "properties": {
+          "examplePayloadAvroDto": {
+            "$ref": "#/components/schemas/io.github.stavshamir.model.ExamplePayloadAvroDto"
+          },
+          "someEnum": {
+            "type": "string",
+            "enum": [
+              "FOO1",
+              "FOO2",
+              "FOO3"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "examplePayloadAvroDto": {
+              "someLong": 0,
+              "someString": "string"
+            },
+            "someEnum": "FOO1"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "examplePayloadAvroDto": {
+              "properties": {
+                "someLong": {
+                  "format": "int64",
+                  "type": "integer"
+                },
+                "someString": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "someEnum": {
+              "enum": [
+                "FOO1",
+                "FOO2",
+                "FOO3"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "io.github.stavshamir.model.ExamplePayloadAvroDto": {
+        "type": "object",
+        "properties": {
+          "someLong": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "someString": {
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "someLong": 0,
+            "someString": "string"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "someLong": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "someString": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
       "io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
         "type": "object",
         "properties": {
@@ -426,54 +508,6 @@
           "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
           "maxLength": 100,
           "type": "string"
-        }
-      },
-      "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto": {
-        "type": "object",
-        "properties": {
-          "someEnum": {
-            "type": "string",
-            "enum": [
-              "FOO1",
-              "FOO2",
-              "FOO3"
-            ]
-          },
-          "someLong": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "someString": {
-            "type": "string"
-          }
-        },
-        "examples": [
-          {
-            "someEnum": "FOO1",
-            "someLong": 0,
-            "someString": "string"
-          }
-        ],
-        "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "properties": {
-            "someEnum": {
-              "enum": [
-                "FOO1",
-                "FOO2",
-                "FOO3"
-              ],
-              "type": "string"
-            },
-            "someLong": {
-              "format": "int32",
-              "type": "integer"
-            },
-            "someString": {
-              "type": "string"
-            }
-          },
-          "type": "object"
         }
       },
       "io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
@@ -755,6 +789,24 @@
       }
     },
     "messages": {
+      "io.github.stavshamir.model.AnotherPayloadAvroDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.model.AnotherPayloadAvroDto"
+          }
+        },
+        "name": "io.github.stavshamir.model.AnotherPayloadAvroDto",
+        "title": "AnotherPayloadAvroDto",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
       "io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -767,24 +819,6 @@
         },
         "name": "io.github.stavshamir.springwolf.example.kafka.consumers.StringConsumer$StringEnvelope",
         "title": "StringEnvelope",
-        "bindings": {
-          "kafka": {
-            "bindingVersion": "0.4.0"
-          }
-        }
-      },
-      "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto": {
-        "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
-        },
-        "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-          "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto"
-          }
-        },
-        "name": "io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto",
-        "title": "ExamplePayloadAvroDto",
         "bindings": {
           "kafka": {
             "bindingVersion": "0.4.0"
@@ -946,7 +980,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/avro-topic/messages/io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto"
+          "$ref": "#/channels/avro-topic/messages/io.github.stavshamir.model.AnotherPayloadAvroDto"
         }
       ]
     },

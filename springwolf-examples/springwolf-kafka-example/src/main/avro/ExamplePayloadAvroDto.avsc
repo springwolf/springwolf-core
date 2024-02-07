@@ -1,26 +1,30 @@
 {
-    "namespace": "demo.springwolf.model",
+    "namespace": "io.github.stavshamir.model",
     "type": "record",
-    "name": "AnotherPayloadDto",
+    "name": "AnotherPayloadAvroDto",
     "fields": [
         {
-            "name": "foo",
-            "type": ["null", "string"],
-            "default": null,
-            "doc": "Some string field"
+            "name": "someEnum",
+            "type": {
+                "type": "enum",
+                "name": "ExampleEnum",
+                "symbols": [
+                    "FOO1",
+                    "FOO2",
+                    "FOO3"
+                ]
+            },
+            "default": "FOO1"
         },
         {
-            "name": "ExamplePayloadDto",
+            "name": "ExamplePayloadAvroDto",
             "type": {
                 "type": "record",
-                "name": "ExamplePayloadDto",
+                "name": "ExamplePayloadAvroDto",
                 "fields": [
                     {
                         "name": "someString",
-                        "type": [
-                            "null",
-                            "string"
-                        ],
+                        "type": ["null", "string"],
                         "default": null
                     },
                     {
