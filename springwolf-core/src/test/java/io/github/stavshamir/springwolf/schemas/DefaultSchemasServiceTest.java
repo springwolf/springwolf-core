@@ -35,13 +35,19 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 class DefaultSchemasServiceTest {
     private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
+    private final SchemasPostProcessor schemasPostProcessor2 = Mockito.mock(SchemasPostProcessor.class);
     private final ComponentsService componentsService = new DefaultComponentsService(
             List.of(),
-            List.of(new ExampleGeneratorPostProcessor(new ExampleJsonGenerator()), schemasPostProcessor),
+            List.of(
+                    new ExampleGeneratorPostProcessor(new ExampleJsonGenerator()),
+                    schemasPostProcessor,
+                    schemasPostProcessor2),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
 
@@ -165,6 +171,22 @@ class DefaultSchemasServiceTest {
         componentsService.registerSchema(FooWithEnum.class);
 
         verify(schemasPostProcessor).process(any(), any());
+        verify(schemasPostProcessor2).process(any(), any());
+    }
+
+    @Test
+    void postProcessorIsSkippedWhenSchemaWasRemoved() {
+        doAnswer(invocationOnMock -> {
+                    Map<String, io.swagger.v3.oas.models.media.Schema> schemas = invocationOnMock.getArgument(1);
+                    schemas.clear();
+                    return null;
+                })
+                .when(schemasPostProcessor)
+                .process(any(), any());
+
+        componentsService.registerSchema(FooWithEnum.class);
+
+        verifyNoInteractions(schemasPostProcessor2);
     }
 
     private String jsonResource(String path) throws IOException {

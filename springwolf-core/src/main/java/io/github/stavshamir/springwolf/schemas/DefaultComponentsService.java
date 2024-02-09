@@ -182,6 +182,12 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     private void postProcessSchema(Schema schema) {
-        schemaPostProcessors.forEach(processor -> processor.process(schema, schemas));
+        for (SchemasPostProcessor processor : schemaPostProcessors) {
+            processor.process(schema, schemas);
+
+            if (!schemas.containsValue(schema)) {
+                break;
+            }
+        }
     }
 }

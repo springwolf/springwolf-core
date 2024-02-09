@@ -51,7 +51,7 @@ export class MockServer implements InMemoryDbService {
       hostname.includes(el.plugin)
     );
     if (0 < matchedExample.length) {
-      return matchedExample[0].plugin;
+      return matchedExample[0].value;
     }
 
     // Kafka is default

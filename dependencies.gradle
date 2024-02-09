@@ -25,7 +25,7 @@
  * The dependencies are sorted alphabetically.
  */
 ext {
-    assertjCoreVersion = '3.25.2'
+    assertjCoreVersion = '3.25.3'
 
     asyncapiCoreVersion = '1.0.0-EAP-2'
 
@@ -53,12 +53,12 @@ ext {
     mockitoCoreVersion = '5.9.0'
     mockitoJunitJupiterVersion = '5.10.0'
 
-    monetaVersion = '1.4.2'
+    monetaVersion = '1.4.4'
     moneyApiVersion = '1.1'
 
     protobufJavaVersion = '3.25.2'
 
-    junitJupiterVersion = '5.10.1'
+    junitJupiterVersion = '5.10.2'
     jsonUnitAssertJVersion = '3.2.2'
 
     lombokVersion = '1.18.30'
