@@ -1,5 +1,5 @@
 {
-    "namespace": "io.github.stavshamir.model",
+    "namespace": "io.github.stavshamir.springwolf.example.kafka.dto.avro",
     "type": "record",
     "name": "AnotherPayloadAvroDto",
     "fields": [

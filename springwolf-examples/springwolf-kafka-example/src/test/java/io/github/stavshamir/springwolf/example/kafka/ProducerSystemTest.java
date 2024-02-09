@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.kafka;
 
-import io.github.stavshamir.model.AnotherPayloadAvroDto;
-import io.github.stavshamir.model.ExampleEnum;
-import io.github.stavshamir.model.ExamplePayloadAvroDto;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaConfigProperties;
 import io.github.stavshamir.springwolf.example.kafka.consumers.AvroConsumer;
 import io.github.stavshamir.springwolf.example.kafka.consumers.ExampleConsumer;
 import io.github.stavshamir.springwolf.example.kafka.consumers.ProtobufConsumer;
+import io.github.stavshamir.springwolf.example.kafka.dto.avro.AnotherPayloadAvroDto;
+import io.github.stavshamir.springwolf.example.kafka.dto.avro.ExampleEnum;
+import io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto;
 import io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto;
 import io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
