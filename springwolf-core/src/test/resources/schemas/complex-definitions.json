@@ -1,5 +1,5 @@
 {
-  "ComplexFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo" : {
     "type" : "object",
     "properties" : {
       "b" : {
@@ -22,7 +22,7 @@
         "format" : "int32"
       },
       "n" : {
-        "$ref" : "#/components/schemas/Nested"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested"
       },
       "s" : {
         "type" : "string"
@@ -50,29 +50,7 @@
       "s" : "string"
     } ]
   },
-  "Cyclic" : {
-    "type" : "object",
-    "properties" : {
-      "cyclic" : {
-        "$ref" : "#/components/schemas/Cyclic"
-      }
-    },
-    "examples" : [ {
-      "cyclic" : { }
-    } ]
-  },
-  "MyClass" : {
-    "type" : "object",
-    "properties" : {
-      "s" : {
-        "type" : "string"
-      }
-    },
-    "examples" : [ {
-      "s" : "string"
-    } ]
-  },
-  "Nested" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested" : {
     "type" : "object",
     "properties" : {
       "nba" : {
@@ -83,7 +61,7 @@
         }
       },
       "nc" : {
-        "$ref" : "#/components/schemas/Cyclic"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$Cyclic"
       },
       "nli" : {
         "type" : "array",
@@ -95,7 +73,7 @@
       "nmfm" : {
         "type" : "object",
         "additionalProperties" : {
-          "$ref" : "#/components/schemas/MyClass"
+          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$MyClass"
         }
       },
       "ns" : {
@@ -104,7 +82,7 @@
       "nsm" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/MyClass"
+          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$MyClass"
         },
         "uniqueItems" : true
       },
@@ -125,6 +103,28 @@
         "s" : "string"
       } ],
       "nu" : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    } ]
+  },
+  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$Cyclic" : {
+    "type" : "object",
+    "properties" : {
+      "cyclic" : {
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+      }
+    },
+    "examples" : [ {
+      "cyclic" : { }
+    } ]
+  },
+  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$MyClass" : {
+    "type" : "object",
+    "properties" : {
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ {
+      "s" : "string"
     } ]
   }
 }

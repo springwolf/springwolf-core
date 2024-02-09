@@ -54,7 +54,7 @@ public class SpringwolfConfigProperties {
      * useFqn = true  -> java.lang.String
      * useFqn = false -> String
      */
-    private boolean useFqn = false;
+    private boolean useFqn = true;
 
     @Nullable
     private Endpoint endpoint;
