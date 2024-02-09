@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
+import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket;
 import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
 import io.github.stavshamir.springwolf.schemas.example.SchemaWalkerProvider;
@@ -19,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -45,21 +47,29 @@ import static org.mockito.Mockito.verifyNoInteractions;
 class DefaultJsonSchemasServiceTest {
     private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
     private final SchemasPostProcessor schemasPostProcessor2 = Mockito.mock(SchemasPostProcessor.class);
-    private final ComponentsService componentsService = new DefaultComponentsService(
-            List.of(),
-            List.of(
-                    new ExampleGeneratorPostProcessor(
-                        new SchemaWalkerProvider(
-                            List.of(new DefaultSchemaWalker<>(new ExampleJsonValueGenerator())))),
-                    schemasPostProcessor,
-                    schemasPostProcessor2),
-            new SwaggerSchemaUtil(),
-            new SpringwolfConfigProperties());
+
+    private ComponentsService componentsService;
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
     private static final PrettyPrinter printer =
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+
+    @BeforeEach
+    void setUp() {
+        SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
+        configProperties.setDocket(new ConfigDocket());
+
+        componentsService = new DefaultComponentsService(
+                List.of(),
+                List.of(
+                        new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(
+                                List.of(new DefaultSchemaWalker<>(new ExampleJsonValueGenerator())))),
+                        schemasPostProcessor,
+                        schemasPostProcessor2),
+                new SwaggerSchemaUtil(),
+                configProperties);
+    }
 
     @Test
     void getSchemas() throws IOException {
@@ -152,6 +162,7 @@ class DefaultJsonSchemasServiceTest {
     void getDefinitionWithFqnClassName() throws IOException {
         // given
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
+        properties.setDocket(new ConfigDocket());
         properties.setUseFqn(true);
 
         ComponentsService componentsServiceWithFqn =

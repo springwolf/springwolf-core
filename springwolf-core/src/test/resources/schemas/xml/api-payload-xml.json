@@ -1,8 +1,8 @@
 {
   "StringEnvelop" : {
-    "maxLength" : 10,
     "type" : "string",
     "description" : "The payload in the envelop",
-    "example" : "<envelope><payload>string</payload>"
+    "maxLength" : 10,
+    "examples" : [ "<payload>string</payload>" ]
   }
 }

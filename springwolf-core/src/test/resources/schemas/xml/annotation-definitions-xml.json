@@ -1,10 +1,7 @@
 {
   "AllOf" : {
     "type" : "object",
-    "example" : {
-      "firstOne" : "string",
-      "secondOne" : "string"
-    },
+    "examples" : [ "<AllOf><firstOne>string</firstOne><secondOne>string</secondOne></AllOf>" ],
     "allOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -13,10 +10,7 @@
   },
   "AnyOf" : {
     "type" : "object",
-    "example" : {
-      "firstOne" : "string",
-      "secondOne" : "string"
-    },
+    "examples" : [ "<AnyOf><firstOne>string</firstOne><secondOne>string</secondOne></AnyOf>" ],
     "anyOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -33,10 +27,7 @@
         "type" : "string"
       }
     },
-    "example" : {
-      "firstOne" : "string",
-      "secondOne" : "string"
-    }
+    "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ]
   },
   "ImplementationTwo" : {
     "type" : "object",
@@ -49,17 +40,11 @@
         "type" : "boolean"
       }
     },
-    "example" : {
-      "firstTwo" : 0,
-      "secondTwo" : true
-    }
+    "examples" : [ "<ImplementationTwo><firstTwo>0</firstTwo><secondTwo>true</secondTwo></ImplementationTwo>" ]
   },
   "OneOf" : {
     "type" : "object",
-    "example" : {
-      "firstOne" : "string",
-      "secondOne" : "string"
-    },
+    "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ],
     "oneOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -82,20 +67,6 @@
         "$ref" : "#/components/schemas/OneOf"
       }
     },
-    "example" : {
-      "allOf" : {
-        "firstOne" : "string",
-        "secondOne" : "string"
-      },
-      "anyOf" : {
-        "firstOne" : "string",
-        "secondOne" : "string"
-      },
-      "field" : "string",
-      "oneOf" : {
-        "firstOne" : "string",
-        "secondOne" : "string"
-      }
-    }
+    "examples" : [ "<SchemaAnnotationFoo><AllOf><firstOne>string</firstOne><secondOne>string</secondOne></AllOf><AnyOf><firstOne>string</firstOne><secondOne>string</secondOne></AnyOf><field>string</field><ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne></SchemaAnnotationFoo>" ]
   }
 }

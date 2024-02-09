@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * Handles types defined in https://www.asyncapi.com/docs/reference/specification/v3.0.0#dataTypeFormat
  */
-public interface SchemaWalker {
+public interface SchemaWalker<R> {
 
     /**
      * Build an example for a schema
@@ -20,7 +20,7 @@ public interface SchemaWalker {
      * @return the example, null if no example can be generated
      */
     @Nullable
-    Object fromSchema(Schema schema, Map<String, Schema> definitions);
+    R fromSchema(Schema schema, Map<String, Schema> definitions);
 
     boolean canHandle(String contentType);
 

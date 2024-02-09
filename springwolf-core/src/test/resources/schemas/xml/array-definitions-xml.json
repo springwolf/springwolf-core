@@ -9,7 +9,7 @@
         }
       }
     },
-    "example" : "<ArrayFoo><flist><b>true</b><s>string</s></flist></ArrayFoo>"
+    "examples" : [ "<ArrayFoo><flist><b>true</b><s>string</s></flist></ArrayFoo>" ]
   },
   "SimpleFoo" : {
     "type" : "object",
@@ -21,6 +21,6 @@
         "type" : "string"
       }
     },
-    "example" : "<SimpleFoo><b>true</b><s>string</s></SimpleFoo>"
+    "examples" : [ "<SimpleFoo><b>true</b><s>string</s></SimpleFoo>" ]
   }
 }

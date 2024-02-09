@@ -38,7 +38,7 @@
         "description" : "Map without example",
         "additionalProperties" : {
           "type" : "string",
-        "description" : "Map without example"
+          "description" : "Map without example"
         }
       },
       "s" : {

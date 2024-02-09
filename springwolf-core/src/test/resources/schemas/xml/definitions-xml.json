@@ -9,7 +9,7 @@
         "type" : "string"
       }
     },
-    "example" : "<CompositeFoo><f><b>true</b><s>string</s></f><s>string</s></CompositeFoo>"
+    "examples" : [ "<CompositeFoo><f><b>true</b><s>string</s></f><s>string</s></CompositeFoo>" ]
   },
   "FooWithEnum" : {
     "type" : "object",
@@ -22,7 +22,7 @@
         "type" : "string"
       }
     },
-    "example" : "<FooWithEnum><b>BAR1</b><s>string</s></FooWithEnum>"
+    "examples" : [ "<FooWithEnum><b>BAR1</b><s>string</s></FooWithEnum>" ]
   },
   "SimpleFoo" : {
     "type" : "object",
@@ -34,6 +34,6 @@
         "type" : "string"
       }
     },
-    "example" : "<SimpleFoo><b>true</b><s>string</s></SimpleFoo>"
+    "examples" : [ "<SimpleFoo><b>true</b><s>string</s></SimpleFoo>" ]
   }
 }

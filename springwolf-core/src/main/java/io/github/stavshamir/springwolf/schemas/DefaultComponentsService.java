@@ -84,7 +84,8 @@ public class DefaultComponentsService implements ComponentsService {
     @Override
     public String registerSchema(Class<?> type, String contentType) {
         log.debug("Registering schema for {}", type.getSimpleName());
-        String actualContentType = StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
+        String actualContentType =
+                StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
 
         Map<String, Schema> schemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
 

@@ -30,6 +30,8 @@ dependencies {
 
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationApiVersion}"
+    // TODO Properly
+    implementation "jakarta.validation:jakarta.validation-api:3.0.2"
 
     implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
 
@@ -50,6 +52,8 @@ dependencies {
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
+    permitTestUnusedDeclared "org.slf4j:slf4j-simple:2.0.12"
+
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 }

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.example;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,12 +20,16 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
+@Slf4j
+public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, String> {
 
     private Document document;
+
+    private Map<String, Node> exampleCache = new HashMap<>();
 
     private static final Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
 
@@ -52,6 +57,14 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         return "unknown string schema format: " + format;
     }
 
+    //    public ExampleXmlValueGenerator() {
+    //        try {
+    //            document = createDocument();
+    //        } catch (ParserConfigurationException e) {
+    //            throw new RuntimeException(e);
+    //        }
+    //    }
+
     @Override
     public boolean canHandle(String contentType) {
         return (StringUtils.equals(contentType, "text/xml") || StringUtils.equals(contentType, "application/xml"));
@@ -60,9 +73,9 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
     @Override
     public void initialize() {
         try {
-            if (document == null) {
-                document = createDocument();
-            }
+            // if (document == null) {
+            document = createDocument();
+            // }
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -200,7 +213,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
     }
 
     @Override
-    public String toString(String name, Node exampleObject) throws JsonProcessingException {
+    public String serializeIfNeeded(String name, Node exampleObject) {
         final Node objectToWrite;
         if (exampleObject instanceof Element) {
             objectToWrite = exampleObject;
@@ -209,8 +222,13 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         }
         try {
             document.appendChild(objectToWrite);
-            return writeDocumentAsXmlString(document);
-        } catch (TransformerException e) {
+            String xml = writeDocumentAsXmlString(document);
+            log.info("name {} -> xml: {}", name, xml);
+
+            exampleCache.putIfAbsent(name, exampleObject);
+            return xml;
+        } catch (TransformerException | DOMException e) {
+            log.error("Serialize {}", name, e);
             return null;
         }
     }
@@ -222,11 +240,31 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
     }
 
     @Override
-    public Node exampleOrNull(Object example) {
+    public Node exampleOrNull(String name, Object example) {
         if (example instanceof Node) {
             return (Node) example;
         }
 
+        if (exampleCache.containsKey(name)) {
+            return this.document.importNode(exampleCache.get(name), true);
+        }
+
+        //        if (example instanceof String) {
+        //            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        //            DocumentBuilder builder = null;
+        //            try {
+        //                builder = factory.newDocumentBuilder();
+        //                InputSource is = new InputSource(new StringReader((String) example));
+        //                Document document = builder.parse(is);
+        //                return this.document.importNode(document.getDocumentElement(), true);
+        //            } catch (ParserConfigurationException e) {
+        //                throw new RuntimeException(e);
+        //            } catch (IOException e) {
+        //                throw new RuntimeException(e);
+        //            } catch (SAXException e) {
+        //                throw new RuntimeException(e);
+        //            }
+        //        }
         return null;
     }
 
@@ -249,7 +287,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node> {
         transformer.setOutputProperty(OutputKeys.METHOD, "xml");
         transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.INDENT, "no");
         StringWriter sw = new StringWriter();
         StreamResult sr = new StreamResult(sw);
         transformer.transform(domSource, sr);

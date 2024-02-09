@@ -6,7 +6,7 @@
         "type" : "boolean"
       }
     },
-    "examples" : [ "string" ],
+    "examples" : [ "<ListWrapper>string</ListWrapper>" ],
     "items" : {
       "type" : "string"
     }

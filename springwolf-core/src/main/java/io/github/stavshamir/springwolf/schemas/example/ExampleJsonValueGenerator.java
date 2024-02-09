@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode> {
+public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode, JsonNode> {
 
     private static final BooleanNode DEFAULT_BOOLEAN_EXAMPLE = BooleanNode.TRUE;
 
@@ -155,8 +155,8 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public String toString(String name, JsonNode exampleObject) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(exampleObject);
+    public JsonNode serializeIfNeeded(String name, JsonNode exampleObject) {
+        return exampleObject;
     }
 
     @Override
@@ -170,7 +170,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode exampleOrNull(Object example) {
+    public JsonNode exampleOrNull(String name, Object example) {
         if (example instanceof JsonNode) {
             return (JsonNode) example;
         }

@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultSchemaWalkerXmlIntegrationTest {
 
     private final ExampleXmlValueGenerator exampleXmlValueGenerator = new ExampleXmlValueGenerator();
-    private final DefaultSchemaWalker xmlSchemaWalker = new DefaultSchemaWalker<>(exampleXmlValueGenerator);
+    private final DefaultSchemaWalker<Node, String> xmlSchemaWalker = new DefaultSchemaWalker(exampleXmlValueGenerator);
 
     @Nested
     class CanHandle {
@@ -71,10 +71,9 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setName("build_schema_test");
             // TODO should throw exception, just a raw value does not work in xml
             // TODO duplicate with number schema
-            Object actualXmlNode = xmlSchemaWalker.fromSchema(schema, emptyMap());
-            String actualXmlString = exampleXmlValueGenerator
-                    .toString(schema.getName(), (Node) actualXmlNode)
-                    .trim();
+
+            String actualXmlString =
+                    xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
             assertThat(actualXmlString).isEqualTo("<build_schema_test>string</build_schema_test>");
         }
 
@@ -98,7 +97,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             BooleanSchema schema = new BooleanSchema();
             schema.name("type_boolean");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_boolean>true</type_boolean>");
         }
@@ -109,7 +108,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setExample(Boolean.FALSE);
             schema.setName("type_boolean_example_set");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_boolean_example_set>false</type_boolean_example_set>");
         }
@@ -119,7 +118,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             IntegerSchema schema = new IntegerSchema();
             schema.name("type_integer");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_integer>0</type_integer>");
         }
@@ -130,7 +129,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setExample(Integer.parseInt("123"));
             schema.setName("type_integer_example_set");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_integer_example_set>123</type_integer_example_set>");
         }
@@ -141,7 +140,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setFormat("int64");
             schema.setName("type_integer_format_long");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_integer_format_long>0</type_integer_format_long>");
         }
@@ -152,7 +151,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setFormat("float");
             schema.name("type_number_format_float");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_number_format_float>1.1</type_number_format_float>");
         }
@@ -163,7 +162,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setFormat("double");
             schema.setName("type_number_format_double");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_number_format_double>1.1</type_number_format_double>");
         }
@@ -174,7 +173,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setExample(new BigDecimal("123.45"));
             schema.setName("type_number_example_set");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_number_example_set>123.45</type_number_example_set>");
         }
@@ -184,7 +183,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             StringSchema schema = new StringSchema();
             schema.name("type_string");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_string>string</type_string>");
         }
@@ -195,7 +194,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setExample("custom-example-value");
             schema.setName("type_string_example_set");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_string_example_set>custom-example-value</type_string_example_set>");
         }
@@ -207,7 +206,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.addEnumItem("EnumItem2");
             schema.setName("type_string_from_enum");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_string_from_enum>EnumItem1</type_string_from_enum>");
         }
@@ -218,7 +217,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setFormat("byte");
             schema.setName("type_string_format_byte");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_string_format_byte>YmFzZTY0LWV4YW1wbGU=</type_string_format_byte>");
         }
@@ -228,7 +227,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             BinarySchema schema = new BinarySchema();
             schema.setName("type_string_format_binary");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual)
                     .isEqualTo(
@@ -240,7 +239,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             DateSchema schema = new DateSchema();
             schema.setName("type_string_format_date");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_string_format_date>2015-07-20</type_string_format_date>");
         }
@@ -250,7 +249,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             DateTimeSchema schema = new DateTimeSchema();
             schema.setName("type_string_format_datetime");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual)
                     .isEqualTo("<type_string_format_datetime>2015-07-20T15:49:04-07:00</type_string_format_datetime>");
@@ -261,7 +260,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             EmailSchema schema = new EmailSchema();
             schema.setName("type_string_format_email");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_string_format_email>example@example.com</type_string_format_email>");
         }
@@ -271,7 +270,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             PasswordSchema schema = new PasswordSchema();
             schema.setName("type_string_format_password");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_string_format_password>string-password</type_string_format_password>");
         }
@@ -281,7 +280,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             UUIDSchema schema = new UUIDSchema();
             schema.setName("type_string_format_password");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual)
                     .isEqualTo(
@@ -294,7 +293,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setFormat("unknown");
             schema.setName("type_string_format_unknown");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual)
                     .isEqualTo(
@@ -312,7 +311,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             TestSchema schema = new TestSchema();
             schema.setName("type_unknown_schema");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_unknown_schema>unknown schema type: test-schema</type_unknown_schema>");
         }
@@ -323,7 +322,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setItems(new StringSchema());
             schema.setName("type_primitive_array");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_primitive_array>string</type_primitive_array>");
         }
@@ -338,18 +337,10 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setItems(itemSchema);
             schema.setName("type_object_array");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, emptyMap()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual)
-                    .isEqualTo(
-                            """
-            <type_object_array>
-                <b>true</b>
-                <s>string</s>
-            </type_object_array>
-            """
-                                    .trim()
-                                    .stripIndent());
+                    .isEqualTo("<type_object_array><b>true</b><s>string</s></type_object_array>".trim().stripIndent());
         }
 
         @Test
@@ -360,17 +351,12 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.addProperty("m", mapSchema);
 
             String actual =
-                    xmlSchemaWalker.buildSchema(schema, emptyMap()).trim().stripIndent();
+                    xmlSchemaWalker.fromSchema(schema, emptyMap()).trim().stripIndent();
 
             assertThat(actual)
-                    .isEqualTo(
-                            """
-            <composite_type_map_schema>
-                <m/>
-            </composite_type_map_schema>
-            """
-                                    .trim()
-                                    .stripIndent());
+                    .isEqualTo("<composite_type_map_schema><m/></composite_type_map_schema>"
+                            .trim()
+                            .stripIndent());
         }
 
         @Test
@@ -380,17 +366,12 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.addProperty("s", new StringSchema());
 
             String actual =
-                    xmlSchemaWalker.buildSchema(schema, emptyMap()).trim().stripIndent();
+                    xmlSchemaWalker.fromSchema(schema, emptyMap()).trim().stripIndent();
 
             assertThat(actual)
-                    .isEqualTo(
-                            """
-            <CompositeObjectWithoutReferences>
-                <s>string</s>
-            </CompositeObjectWithoutReferences>
-            """
-                                    .trim()
-                                    .stripIndent());
+                    .isEqualTo("<CompositeObjectWithoutReferences><s>string</s></CompositeObjectWithoutReferences>"
+                            .trim()
+                            .stripIndent());
         }
 
         @Test
@@ -401,18 +382,12 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.addProperty("b", new BooleanSchema());
 
             String actual =
-                    xmlSchemaWalker.buildSchema(schema, emptyMap()).trim().stripIndent();
+                    xmlSchemaWalker.fromSchema(schema, emptyMap()).trim().stripIndent();
 
             assertThat(actual)
-                    .isEqualTo(
-                            """
-            <CompositeObjectWithoutReferences>
-                <b>true</b>
-                <s>string</s>
-            </CompositeObjectWithoutReferences>
-            """
-                                    .trim()
-                                    .stripIndent());
+                    .isEqualTo("<CompositeObjectWithoutReferences><b>true</b><s>string</s></CompositeObjectWithoutReferences>"
+                            .trim()
+                            .stripIndent());
         }
 
         @Test
@@ -431,23 +406,14 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             compositeSchema.addProperty("f", referenceSchema);
 
             String actual = xmlSchemaWalker
-                    .buildSchema(compositeSchema, Map.of("Nested", nestedSchema))
+                    .fromSchema(compositeSchema, Map.of("Nested", nestedSchema))
                     .trim()
                     .stripIndent();
 
             assertThat(actual)
-                    .isEqualTo(
-                            """
-            <composite_object_with_references_root>
-                <f>
-                    <b>true</b>
-                    <s>string</s>
-                </f>
-                <s>string</s>
-            </composite_object_with_references_root>
-            """
-                                    .trim()
-                                    .stripIndent());
+                    .isEqualTo("<composite_object_with_references_root><f><b>true</b><s>string</s></f><s>string</s></composite_object_with_references_root>"
+                            .trim()
+                            .stripIndent());
         }
 
         @Test
@@ -457,28 +423,19 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             nestedSchema.addProperty("s", new StringSchema());
             nestedSchema.addProperty("b", new BooleanSchema());
 
-
             ObjectSchema compositeSchema = new ObjectSchema();
             compositeSchema.setName("composite_object_with_references_root");
             compositeSchema.addProperty("s", new StringSchema());
             compositeSchema.addProperty("f", nestedSchema);
 
             String actual = xmlSchemaWalker
-                    .buildSchema(compositeSchema, emptyMap())
+                    .fromSchema(compositeSchema, emptyMap())
                     .trim()
                     .stripIndent();
 
             assertThat(actual)
                     .isEqualTo(
-                            """
-            <composite_object_with_references_root>
-                <f>
-                    <b>true</b>
-                    <s>string</s>
-                </f>
-                <s>string</s>
-            </composite_object_with_references_root>
-            """
+                            "<composite_object_with_references_root><f><b>true</b><s>string</s></f><s>string</s></composite_object_with_references_root>"
                                     .trim()
                                     .stripIndent());
         }
@@ -493,18 +450,13 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             compositeSchema.addProperty("anyOfField", propertySchema);
 
             String actual = xmlSchemaWalker
-                    .buildSchema(compositeSchema, Map.of("Nested", propertySchema))
+                    .fromSchema(compositeSchema, Map.of("Nested", propertySchema))
                     .trim();
 
             assertThat(actual)
-                    .isEqualTo(
-                            """
-            <object_with_anyOf>
-                <anyOfField>string</anyOfField>
-            </object_with_anyOf>
-            """
-                                    .trim()
-                                    .stripIndent());
+                    .isEqualTo("<object_with_anyOf><anyOfField>string</anyOfField></object_with_anyOf>"
+                            .trim()
+                            .stripIndent());
         }
 
         @Test
@@ -513,7 +465,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             schema.setExample(new ClassWithToString());
             schema.setName("schema_with_problematic_object_toString_example");
 
-            String actual = xmlSchemaWalker.buildSchema(schema, Map.of()).trim();
+            String actual = xmlSchemaWalker.fromSchema(schema, Map.of()).trim();
             assertThat(actual)
                     .isEqualTo(
                             "<schema_with_problematic_object_toString_example>&lt;foo&gt;Text&lt;/bar&gt; with special character =?/\\\"\\'\\b\\f\\t\\r\\n.</schema_with_problematic_object_toString_example>");

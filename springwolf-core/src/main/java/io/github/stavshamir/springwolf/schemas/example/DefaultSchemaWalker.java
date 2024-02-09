@@ -27,9 +27,9 @@ import static io.github.stavshamir.springwolf.configuration.properties.Springwol
 @Slf4j
 @ConditionalOnProperty(name = SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR, havingValue = "buildin-json", matchIfMissing = true)
 @RequiredArgsConstructor
-public class DefaultSchemaWalker<T> implements SchemaWalker {
+public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
-    private final ExampleValueGenerator<T> exampleValueGenerator;
+    private final ExampleValueGenerator<T, R> exampleValueGenerator;
 
     @Override
     public boolean canHandle(String contentType) {
@@ -37,34 +37,21 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
     }
 
     @Override
-    public Object fromSchema(Schema schema, Map<String, Schema> definitions) {
+    public R fromSchema(Schema schema, Map<String, Schema> definitions) {
         try {
             // TODO properly
-/*            if (!StringUtils.equals(schema.getType(),"array") && !StringUtils.equals(schema.getType(), "object")) {
+            /*            if (!StringUtils.equals(schema.getType(),"array") && !StringUtils.equals(schema.getType(), "object")) {
                 throw  new RuntimeException("Not array or Object");
             }*/
             exampleValueGenerator.initialize();
 
-            if (exampleValueGenerator instanceof ExampleXmlValueGenerator) {
-              return exampleValueGenerator.toString(schema.getName(),
-                      buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>()));
-            }
-            return buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
+            T generatedExample = buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
+
+            return exampleValueGenerator.serializeIfNeeded(schema.getName(), generatedExample);
         } catch (ExampleGeneratingException | JsonProcessingException ex) {
             log.info("Failed to build json example for schema {}", schema.getName(), ex);
         }
         return null;
-    }
-
-    // TODO remove me
-    String buildSchema(Schema schema, Map<String, Schema> definitions) {
-        exampleValueGenerator.initialize();
-        T finishedSchema = buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
-        try {
-            return exampleValueGenerator.toString(schema.getName(), finishedSchema);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private T buildSchemaInternal(String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
@@ -104,7 +91,7 @@ public class DefaultSchemaWalker<T> implements SchemaWalker {
         }
 
         // Return directly, when we have processed this before
-        T processedExample = exampleValueGenerator.exampleOrNull(exampleValue);
+        T processedExample = exampleValueGenerator.exampleOrNull(schema.getName(), exampleValue);
         if (processedExample != null) {
             return processedExample;
         }

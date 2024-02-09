@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -27,7 +31,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultSchemaWalkerJsonIntegrationTest {
 
     private final ExampleJsonValueGenerator exampleJsonValueGenerator = new ExampleJsonValueGenerator();
-    private final DefaultSchemaWalker jsonSchemaWalker = new DefaultSchemaWalker<>(exampleJsonValueGenerator);
+    private final DefaultSchemaWalker<JsonNode, JsonNode> jsonSchemaWalker =
+            new DefaultSchemaWalker<>(exampleJsonValueGenerator);
+
+    private final ObjectMapper jsonMapper = Json.mapper();
 
     @Nested
     class CanHandle {
@@ -54,12 +61,13 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     class FromSchema {
 
         @Test
-        void build() {
+        void build() throws JsonProcessingException {
             StringSchema schema = new StringSchema();
 
-            Object actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual.toString()).isEqualTo("\"string\"");
+            assertThat(actualString).isEqualTo("\"string\"");
         }
 
         @Test
@@ -78,191 +86,210 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     @Nested
     class BuildSchema {
         @Test
-        void type_boolean() {
+        void type_boolean() throws JsonProcessingException {
             BooleanSchema schema = new BooleanSchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("true");
+            assertThat(actualString).isEqualTo("true");
         }
 
         @Test
-        void type_boolean_example_set() {
+        void type_boolean_example_set() throws JsonProcessingException {
             BooleanSchema schema = new BooleanSchema();
             schema.setExample(Boolean.FALSE);
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("false");
+            assertThat(actualString).isEqualTo("false");
         }
 
         @Test
-        void type_integer() {
+        void type_integer() throws JsonProcessingException {
             IntegerSchema schema = new IntegerSchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("0");
+            assertThat(actualString).isEqualTo("0");
         }
 
         @Test
-        void type_integer_example_set() {
+        void type_integer_example_set() throws JsonProcessingException {
             IntegerSchema schema = new IntegerSchema();
             schema.setExample(Integer.parseInt("123"));
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("123");
+            assertThat(actualString).isEqualTo("123");
         }
 
         @Test
-        void type_integer_format_long() {
+        void type_integer_format_long() throws JsonProcessingException {
             IntegerSchema schema = new IntegerSchema();
             schema.setFormat("int64");
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("0");
+            assertThat(actualString).isEqualTo("0");
         }
 
         @Test
-        void type_number_format_float() {
+        void type_number_format_float() throws JsonProcessingException {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setFormat("float");
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("1.1");
+            assertThat(actualString).isEqualTo("1.1");
         }
 
         @Test
-        void type_number_format_double() {
+        void type_number_format_double() throws JsonProcessingException {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setFormat("double");
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("1.1");
+            assertThat(actualString).isEqualTo("1.1");
         }
 
         @Test
-        void type_number_example_set() {
+        void type_number_example_set() throws JsonProcessingException {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setExample(new BigDecimal("123.45"));
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("123.45");
+            assertThat(actualString).isEqualTo("123.45");
         }
 
         @Test
-        void type_string() {
+        void type_string() throws JsonProcessingException {
             StringSchema schema = new StringSchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"string\"");
+            assertThat(actualString).isEqualTo("\"string\"");
         }
 
         @Test
-        void type_string_example_set() {
+        void type_string_example_set() throws JsonProcessingException {
             StringSchema schema = new StringSchema();
             schema.setExample("custom-example-value");
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"custom-example-value\"");
+            assertThat(actualString).isEqualTo("\"custom-example-value\"");
         }
 
         @Test
-        void type_string_from_enum() {
+        void type_string_from_enum() throws JsonProcessingException {
             StringSchema schema = new StringSchema();
             schema.addEnumItem("EnumItem1");
             schema.addEnumItem("EnumItem2");
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"EnumItem1\"");
+            assertThat(actualString).isEqualTo("\"EnumItem1\"");
         }
 
         @Test
-        void type_string_format_byte() {
+        void type_string_format_byte() throws JsonProcessingException {
             StringSchema schema = new StringSchema();
             schema.setFormat("byte");
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"YmFzZTY0LWV4YW1wbGU=\"");
+            assertThat(actualString).isEqualTo("\"YmFzZTY0LWV4YW1wbGU=\"");
         }
 
         @Test
-        void type_string_format_binary() {
+        void type_string_format_binary() throws JsonProcessingException {
             BinarySchema schema = new BinarySchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual)
+            assertThat(actualString)
                     .isEqualTo(
                             "\"0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001\"");
         }
 
         @Test
-        void type_string_format_date() {
+        void type_string_format_date() throws JsonProcessingException {
             DateSchema schema = new DateSchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"2015-07-20\"");
+            assertThat(actualString).isEqualTo("\"2015-07-20\"");
         }
 
         @Test
-        void type_string_format_datetime() {
+        void type_string_format_datetime() throws JsonProcessingException {
             DateTimeSchema schema = new DateTimeSchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"2015-07-20T15:49:04-07:00\"");
+            assertThat(actualString).isEqualTo("\"2015-07-20T15:49:04-07:00\"");
         }
 
         @Test
-        void type_string_format_email() {
+        void type_string_format_email() throws JsonProcessingException {
             EmailSchema schema = new EmailSchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"example@example.com\"");
+            assertThat(actualString).isEqualTo("\"example@example.com\"");
         }
 
         @Test
-        void type_string_format_password() {
+        void type_string_format_password() throws JsonProcessingException {
             PasswordSchema schema = new PasswordSchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"string-password\"");
+            assertThat(actualString).isEqualTo("\"string-password\"");
         }
 
         @Test
-        void type_string_format_uuid() {
+        void type_string_format_uuid() throws JsonProcessingException {
             UUIDSchema schema = new UUIDSchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"");
+            assertThat(actualString).isEqualTo("\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"");
         }
 
         @Test
-        void type_string_format_unknown() {
+        void type_string_format_unknown() throws JsonProcessingException {
             StringSchema schema = new StringSchema();
             schema.setFormat("unknown");
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"unknown string schema format: unknown\"");
+            assertThat(actualString).isEqualTo("\"unknown string schema format: unknown\"");
         }
 
         @Test
-        void type_unknown_schema() {
+        void type_unknown_schema() throws JsonProcessingException {
             class TestSchema extends Schema<StringSchema> {
                 TestSchema() {
                     super("test-schema", (String) null);
@@ -271,23 +298,25 @@ class DefaultSchemaWalkerJsonIntegrationTest {
 
             TestSchema schema = new TestSchema();
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("\"unknown schema type: test-schema\"");
+            assertThat(actualString).isEqualTo("\"unknown schema type: test-schema\"");
         }
 
         @Test
-        void type_primitive_array() {
+        void type_primitive_array() throws JsonProcessingException {
             ArraySchema schema = new ArraySchema();
             schema.setItems(new StringSchema());
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("[\"string\"]");
+            assertThat(actualString).isEqualTo("[\"string\"]");
         }
 
         @Test
-        void type_object_array() {
+        void type_object_array() throws JsonProcessingException {
             ObjectSchema itemSchema = new ObjectSchema();
             itemSchema.addProperty("s", new StringSchema());
             itemSchema.addProperty("b", new BooleanSchema());
@@ -295,24 +324,26 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             ArraySchema schema = new ArraySchema();
             schema.setItems(itemSchema);
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("[{\"b\":true,\"s\":\"string\"}]");
+            assertThat(actualString).isEqualTo("[{\"b\":true,\"s\":\"string\"}]");
         }
 
         @Test
-        void composite_object_without_references() {
+        void composite_object_without_references() throws JsonProcessingException {
             ObjectSchema schema = new ObjectSchema();
             schema.addProperty("s", new StringSchema());
             schema.addProperty("b", new BooleanSchema());
 
-            String actual = jsonSchemaWalker.buildSchema(schema, emptyMap());
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("{\"b\":true,\"s\":\"string\"}");
+            assertThat(actualString).isEqualTo("{\"b\":true,\"s\":\"string\"}");
         }
 
         @Test
-        void composite_object_with_references() {
+        void composite_object_with_references() throws JsonProcessingException {
             Schema referenceSchema = new Schema();
             referenceSchema.set$ref("#/components/schemas/Nested");
 
@@ -323,22 +354,24 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             ObjectSchema nestedSchema = new ObjectSchema();
             nestedSchema.addProperty("s", new StringSchema());
             nestedSchema.addProperty("b", new BooleanSchema());
-            String actual = jsonSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", nestedSchema));
+            JsonNode actual = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", nestedSchema));
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("{\"f\":{\"b\":true,\"s\":\"string\"},\"s\":\"string\"}");
+            assertThat(actualString).isEqualTo("{\"f\":{\"b\":true,\"s\":\"string\"},\"s\":\"string\"}");
         }
 
         @Test
-        void object_with_anyOf() {
+        void object_with_anyOf() throws JsonProcessingException {
             ObjectSchema compositeSchema = new ObjectSchema();
 
             Schema propertySchema = new ObjectSchema();
             propertySchema.setAnyOf(List.of(new StringSchema(), new NumberSchema()));
             compositeSchema.addProperty("anyOfField", propertySchema);
 
-            String actual = jsonSchemaWalker.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
+            JsonNode actual = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("{\"anyOfField\":\"string\"}");
+            assertThat(actualString).isEqualTo("{\"anyOfField\":\"string\"}");
         }
 
         @Test
@@ -374,12 +407,15 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void schema_with_problematic_object_toString_example() {
+        void schema_with_problematic_object_toString_example() throws JsonProcessingException {
             ObjectSchema schema = new ObjectSchema();
             schema.setExample(new ClassWithToString());
 
-            String actual = jsonSchemaWalker.buildSchema(schema, Map.of());
-            assertThat(actual).isEqualTo("\"Text with special character /\\\\\\\"\\\\'\\\\b\\\\f\\\\t\\\\r\\\\n.\"");
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, Map.of());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString)
+                    .isEqualTo("\"Text with special character /\\\\\\\"\\\\'\\\\b\\\\f\\\\t\\\\r\\\\n.\"");
         }
 
         class ClassWithToString {

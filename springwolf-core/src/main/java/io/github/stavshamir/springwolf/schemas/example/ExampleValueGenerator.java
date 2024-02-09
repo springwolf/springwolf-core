@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 // TODO: ExampleValueSerializer?
-interface ExampleValueGenerator<T> {
+interface ExampleValueGenerator<T, R> {
 
     boolean canHandle(String contentType);
 
@@ -55,9 +55,9 @@ interface ExampleValueGenerator<T> {
 
     T generateArrayExample(T arrayItem);
 
-    String toString(String name, T exampleObject) throws JsonProcessingException;
+    R serializeIfNeeded(String name, T exampleObject) throws JsonProcessingException;
 
     T createRaw(Object exampleValueString);
 
-    T exampleOrNull(Object example);
+    T exampleOrNull(String name, Object example);
 }

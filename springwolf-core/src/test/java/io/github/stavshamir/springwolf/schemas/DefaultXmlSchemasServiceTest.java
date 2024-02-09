@@ -45,9 +45,10 @@ class DefaultXmlSchemasServiceTest {
     private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
     private final ComponentsService componentsService = new DefaultComponentsService(
             List.of(),
-            List.of(new ExampleGeneratorPostProcessor(
-                    new SchemaWalkerProvider(
-                            List.of(new DefaultSchemaWalker<>(new ExampleXmlValueGenerator())))), schemasPostProcessor),
+            List.of(
+                    new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(
+                            List.of(new DefaultSchemaWalker<>(new ExampleXmlValueGenerator())))),
+                    schemasPostProcessor),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
     private static final ObjectMapper objectMapper =
@@ -155,7 +156,8 @@ class DefaultXmlSchemasServiceTest {
         Class<?> clazz =
                 OneFieldFooWithFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
         componentsServiceWithFqn.registerSchema(clazz, "text/xml");
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsServiceWithFqn.getSchemas());
+        String actualDefinitions =
+                objectMapper.writer(printer).writeValueAsString(componentsServiceWithFqn.getSchemas());
 
         // then
         System.out.println("Got: " + actualDefinitions);
