@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.postprocessor;
 
+import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springframework.util.StringUtils;
 
@@ -22,10 +23,17 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
     @Override
     public void process(Schema schema, Map<String, Schema> definitions) {
         removeAvroSchemas(definitions);
-        removeAvroProperties(schema);
+        removeAvroProperties(schema, definitions);
     }
 
-    private void removeAvroProperties(Schema schema) {
+    private void removeAvroProperties(Schema schema, Map<String, Schema> definitions) {
+        if (schema.get$ref() != null) {
+            String schemaName = MessageReference.extractRefName(schema.get$ref());
+            if (definitions.containsKey(schemaName)) {
+                removeAvroProperties(definitions.get(schemaName), definitions);
+            }
+        }
+
         Map<String, Schema> properties = schema.getProperties();
         if (properties != null) {
             Schema schemaPropertySchema = properties.getOrDefault(SCHEMA_PROPERTY, null);
@@ -37,6 +45,8 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
                     properties.remove(SPECIFIC_DATA_PROPERTY);
                 }
             }
+
+            properties.forEach((key, value) -> removeAvroProperties(value, definitions));
         }
     }
 

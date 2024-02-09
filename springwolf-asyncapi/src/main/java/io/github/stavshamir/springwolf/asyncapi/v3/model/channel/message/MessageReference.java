@@ -48,4 +48,8 @@ public class MessageReference implements Message, Reference {
     public static MessageReference toSchema(String schemaName) {
         return new MessageReference("#/components/schemas/" + schemaName);
     }
+
+    public static String extractRefName(String ref) {
+        return ref.substring(ref.lastIndexOf('/') + 1);
+    }
 }
