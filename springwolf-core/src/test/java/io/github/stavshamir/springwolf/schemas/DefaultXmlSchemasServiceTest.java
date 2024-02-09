@@ -344,7 +344,6 @@ class DefaultXmlSchemasServiceTest {
     class AsyncApiPayloadTest {
         @Test
         void stringEnvelopTest() throws IOException {
-            // TODO fix me
             componentsService.registerSchema(StringEnvelop.class, "text/xml");
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());

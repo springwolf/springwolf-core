@@ -18,12 +18,7 @@ import java.util.Set;
 
 import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR;
 
-// TODO: Example JsonGenerator: Traversieren vom Generieren Trennen
-// TODO: Welche API brauchen wir beim Generieren? Parentmitgeben vs State im Generator
-
 // TODO: Einfach Yaml generieren?
-// TODO: Wie wird der XML Root richtig gesetzt?
-
 @Slf4j
 @ConditionalOnProperty(name = SPRINGWOLF_SCHEMA_EXAMPLE_GENERATOR, havingValue = "buildin-json", matchIfMissing = true)
 @RequiredArgsConstructor
@@ -171,7 +166,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         if (enums != null) {
             Optional<String> firstEnumEntry = enums.stream().findFirst();
             if (firstEnumEntry.isPresent()) {
-                return firstEnumEntry.get(); // TODO: Pass through example value generator
+                return firstEnumEntry.get();
             }
         }
         return null;
@@ -192,7 +187,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
         if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
             List<Schema> schemas = schema.getAllOf();
-            // TODO lookup ref?
+
             ObjectNode combinedNode = objectMapper.createObjectNode();
             schemas.stream()
                     .map(s -> buildSchemaInternal(s, definitions, visited))

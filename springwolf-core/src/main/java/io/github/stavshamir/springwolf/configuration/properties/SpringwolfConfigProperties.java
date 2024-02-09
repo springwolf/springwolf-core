@@ -59,8 +59,7 @@ public class SpringwolfConfigProperties {
     @Nullable
     private Endpoint endpoint;
 
-    @Nullable
-    private ConfigDocket docket;
+    private ConfigDocket docket = new ConfigDocket();
 
     @Nullable
     private Scanner scanner;

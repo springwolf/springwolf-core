@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.example;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -66,7 +65,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
     class FromSchema {
 
         @Test
-        void build() throws JsonProcessingException {
+        void build() {
             StringSchema schema = new StringSchema();
             schema.setName("build_schema_test");
             // TODO should throw exception, just a raw value does not work in xml
@@ -340,7 +339,9 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual)
-                    .isEqualTo("<type_object_array><b>true</b><s>string</s></type_object_array>".trim().stripIndent());
+                    .isEqualTo("<type_object_array><b>true</b><s>string</s></type_object_array>"
+                            .trim()
+                            .stripIndent());
         }
 
         @Test
@@ -385,9 +386,10 @@ class DefaultSchemaWalkerXmlIntegrationTest {
                     xmlSchemaWalker.fromSchema(schema, emptyMap()).trim().stripIndent();
 
             assertThat(actual)
-                    .isEqualTo("<CompositeObjectWithoutReferences><b>true</b><s>string</s></CompositeObjectWithoutReferences>"
-                            .trim()
-                            .stripIndent());
+                    .isEqualTo(
+                            "<CompositeObjectWithoutReferences><b>true</b><s>string</s></CompositeObjectWithoutReferences>"
+                                    .trim()
+                                    .stripIndent());
         }
 
         @Test
@@ -411,9 +413,10 @@ class DefaultSchemaWalkerXmlIntegrationTest {
                     .stripIndent();
 
             assertThat(actual)
-                    .isEqualTo("<composite_object_with_references_root><f><b>true</b><s>string</s></f><s>string</s></composite_object_with_references_root>"
-                            .trim()
-                            .stripIndent());
+                    .isEqualTo(
+                            "<composite_object_with_references_root><f><b>true</b><s>string</s></f><s>string</s></composite_object_with_references_root>"
+                                    .trim()
+                                    .stripIndent());
         }
 
         @Test
