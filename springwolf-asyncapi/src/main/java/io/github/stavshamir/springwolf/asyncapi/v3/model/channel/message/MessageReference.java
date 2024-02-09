@@ -50,7 +50,7 @@ public class MessageReference implements Message, Reference {
     }
 
     public static String extractRefName(String ref) {
-        if(ref.contains("/")) {
+        if (ref.contains("/")) {
             return ref.substring(ref.lastIndexOf('/') + 1);
         }
         return ref;

@@ -79,21 +79,10 @@ public class DefaultComponentsService implements ComponentsService {
 
         Map<String, Schema> schemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
 
-        // When a custom record references another custom record, we need to reverse the order so that we post process
-        // the inner records first.
-        Map<String, Schema> reversedSchemas = new LinkedHashMap<>();
-        Set<String> setKeys = schemas.keySet();
-        List<String> listKeys = new ArrayList<>(setKeys);
-        ListIterator<String> iterator = listKeys.listIterator(listKeys.size());
-        while (iterator.hasPrevious()) {
-            String key = iterator.previous();
-            reversedSchemas.put(key, schemas.get(key));
-        }
-
-        String schemaName = getSchemaName(type, reversedSchemas);
-        preProcessSchemas(reversedSchemas, schemaName, type);
-        this.schemas.putAll(reversedSchemas);
-        reversedSchemas.values().forEach(this::postProcessSchema);
+        String schemaName = getSchemaName(type, schemas);
+        preProcessSchemas(schemas, schemaName, type);
+        this.schemas.putAll(schemas);
+        schemas.values().forEach(this::postProcessSchema);
 
         return schemaName;
     }
