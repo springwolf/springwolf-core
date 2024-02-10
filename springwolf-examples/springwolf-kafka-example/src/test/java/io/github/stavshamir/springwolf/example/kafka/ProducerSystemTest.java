@@ -5,6 +5,7 @@ import io.github.stavshamir.springwolf.configuration.properties.SpringwolfKafkaC
 import io.github.stavshamir.springwolf.example.kafka.consumers.AvroConsumer;
 import io.github.stavshamir.springwolf.example.kafka.consumers.ExampleConsumer;
 import io.github.stavshamir.springwolf.example.kafka.consumers.ProtobufConsumer;
+import io.github.stavshamir.springwolf.example.kafka.dto.avro.AnotherPayloadAvroDto;
 import io.github.stavshamir.springwolf.example.kafka.dto.avro.ExampleEnum;
 import io.github.stavshamir.springwolf.example.kafka.dto.avro.ExamplePayloadAvroDto;
 import io.github.stavshamir.springwolf.example.kafka.dto.proto.ExamplePayloadProtobufDto;
@@ -103,13 +104,14 @@ public class ProducerSystemTest {
             disabledReason = "because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
     void producerCanUseSpringwolfConfigurationToSendAvroMessage() {
         // given
-        ExamplePayloadAvroDto payload = new ExamplePayloadAvroDto("foo", 5, ExampleEnum.FOO1);
+        ExamplePayloadAvroDto payload = new ExamplePayloadAvroDto("foo", 5L);
+        AnotherPayloadAvroDto anotherPayload = new AnotherPayloadAvroDto(ExampleEnum.FOO1, payload);
 
         // when
-        springwolfKafkaProducer.send("avro-topic", "key", Map.of(), payload);
+        springwolfKafkaProducer.send("avro-topic", "key", Map.of(), anotherPayload);
 
         // then
-        verify(avroConsumer, timeout(10000)).receiveExampleAvroPayload(payload);
+        verify(avroConsumer, timeout(10000)).receiveExampleAvroPayload(anotherPayload);
     }
 
     @Test

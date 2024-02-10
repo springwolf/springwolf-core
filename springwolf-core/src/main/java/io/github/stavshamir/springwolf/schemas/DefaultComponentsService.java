@@ -77,8 +77,8 @@ public class DefaultComponentsService implements ComponentsService {
         log.debug("Registering schema for {}", type.getSimpleName());
 
         Map<String, Schema> schemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
-        String schemaName = getSchemaName(type, schemas);
 
+        String schemaName = getSchemaName(type, schemas);
         preProcessSchemas(schemas, schemaName, type);
         this.schemas.putAll(schemas);
         schemas.values().forEach(this::postProcessSchema);
@@ -170,6 +170,12 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     private void postProcessSchema(Schema schema) {
-        schemaPostProcessors.forEach(processor -> processor.process(schema, schemas));
+        for (SchemasPostProcessor processor : schemaPostProcessors) {
+            processor.process(schema, schemas);
+
+            if (!schemas.containsValue(schema)) {
+                break;
+            }
+        }
     }
 }
