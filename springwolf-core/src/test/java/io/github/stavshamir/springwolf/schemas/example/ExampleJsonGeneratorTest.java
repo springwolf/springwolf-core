@@ -319,6 +319,38 @@ class ExampleJsonGeneratorTest {
         }
 
         @Test
+        void object_with_oneOf() {
+            ObjectSchema compositeSchema = new ObjectSchema();
+
+            Schema propertySchema = new ObjectSchema();
+            propertySchema.setOneOf(List.of(new StringSchema(), new NumberSchema()));
+            compositeSchema.addProperty("oneOfField", propertySchema);
+
+            String actual = ExampleJsonGenerator.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
+
+            assertThat(actual).isEqualTo("{\"oneOfField\":\"string\"}");
+        }
+
+        @Test
+        void object_with_allOf() {
+            ObjectSchema compositeSchema = new ObjectSchema();
+
+            ObjectSchema schema1 = new ObjectSchema();
+            schema1.setProperties(Map.of("field1", new StringSchema()));
+            ObjectSchema schema2 = new ObjectSchema();
+            schema2.setProperties(Map.of("field2", new NumberSchema()));
+            StringSchema skippedSchemaSinceObjectIsRequired = new StringSchema();
+
+            Schema propertySchema = new ObjectSchema();
+            propertySchema.setAllOf(List.of(schema1, schema2, skippedSchemaSinceObjectIsRequired));
+            compositeSchema.addProperty("allOfField", propertySchema);
+
+            String actual = ExampleJsonGenerator.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
+
+            assertThat(actual).isEqualTo("{\"allOfField\":{\"field1\":\"string\",\"field2\":1.1}}");
+        }
+
+        @Test
         void schema_with_problematic_object_toString_example() {
             ObjectSchema schema = new ObjectSchema();
             schema.setExample(new ClassWithToString());
