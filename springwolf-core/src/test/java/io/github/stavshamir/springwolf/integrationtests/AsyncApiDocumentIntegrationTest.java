@@ -72,7 +72,7 @@ public class AsyncApiDocumentIntegrationTest {
     @MinimalIntegrationTestContextConfiguration
     @TestPropertySource(
             properties = {
-                    "springwolf.docket.base-package=io.github.stavshamir.springwolf.integrationtests.application.polymorphic",
+                "springwolf.docket.base-package=io.github.stavshamir.springwolf.integrationtests.application.polymorphic",
             })
     class PolymorphicPayloadTest {
         @Autowired
@@ -87,7 +87,7 @@ public class AsyncApiDocumentIntegrationTest {
             Map<String, Message> messages = asyncAPI.getComponents().getMessages();
             assertThat(messages)
                     .containsOnlyKeys(
-                            "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicApplication$Payload");
+                            "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Payload");
             Map<String, SchemaObject> schemas = asyncAPI.getComponents().getSchemas();
             assertThat(schemas).containsOnlyKeys("HeadersNotDocumented", "Payload", "Pet", "Cat", "Dog");
 

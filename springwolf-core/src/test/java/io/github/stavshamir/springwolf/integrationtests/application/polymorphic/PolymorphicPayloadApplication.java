@@ -17,18 +17,16 @@ public class PolymorphicPayloadApplication {
 
     class Listener {
         @AsyncListener(operation = @AsyncOperation(channelName = "listener-channel"))
-        public void listen(Payload payload) {
-        }
+        public void listen(Payload payload) {}
     }
 
-    public record Payload(Pet pet) {
-    }
+    public record Payload(Pet pet) {}
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
     @JsonSubTypes(
             value = {
-                    @JsonSubTypes.Type(value = Dog.class, name = "dog"),
-                    @JsonSubTypes.Type(value = Cat.class, name = "cat"),
+                @JsonSubTypes.Type(value = Dog.class, name = "dog"),
+                @JsonSubTypes.Type(value = Cat.class, name = "cat"),
             })
     public interface Pet {
         public String getType();
