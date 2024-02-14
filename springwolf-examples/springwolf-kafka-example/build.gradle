@@ -104,19 +104,6 @@ test {
     dependsOn generateOpenApiDocs
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs = srcDirs + ['build/generated/source/proto/main/java']
-        }
-    }
-    test {
-        java {
-            srcDirs = srcDirs + ['build/generated/source/proto/test/java']
-        }
-    }
-}
-
 openApi {
     apiDocsUrl = "http://localhost:8080/springwolf/docs"
     // For testing purposes we put the generated json into the test resources, but it could be any other directory
