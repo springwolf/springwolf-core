@@ -5,6 +5,7 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -345,6 +346,21 @@ class SwaggerSchemaUtilTest {
         }
 
         @Test
+        void mapDiscriminator() {
+            // given
+            ObjectSchema schema = new ObjectSchema();
+            Discriminator discriminator = new Discriminator();
+            discriminator.setPropertyName("propertyName");
+            schema.setDiscriminator(discriminator);
+
+            // when
+            SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
+
+            // then
+            assertThat(componentSchema.getDiscriminator()).isEqualTo("propertyName");
+        }
+
+        @Test
         void mapAllOf() {
             // given
             ObjectSchema schema = new ObjectSchema();
@@ -356,7 +372,7 @@ class SwaggerSchemaUtilTest {
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getAllOf().get(0).getSchema()).getType())
+            assertThat((componentSchema.getAllOf().get(0).getSchema()).getType())
                     .isEqualTo(allOf.getType());
         }
 
@@ -372,7 +388,7 @@ class SwaggerSchemaUtilTest {
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getOneOf().get(0).getSchema()).getType())
+            assertThat((componentSchema.getOneOf().get(0).getSchema()).getType())
                     .isEqualTo(oneOf.getType());
         }
 
@@ -388,7 +404,7 @@ class SwaggerSchemaUtilTest {
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getAnyOf().get(0).getSchema()).getType())
+            assertThat((componentSchema.getAnyOf().get(0).getSchema()).getType())
                     .isEqualTo(anyOf.getType());
         }
 
@@ -417,8 +433,7 @@ class SwaggerSchemaUtilTest {
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getNot().getSchema()).getType())
-                    .isEqualTo(not.getType());
+            assertThat((componentSchema.getNot().getSchema()).getType()).isEqualTo(not.getType());
         }
 
         @Test
@@ -434,8 +449,7 @@ class SwaggerSchemaUtilTest {
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((SchemaObject) componentSchema.getItems().getSchema()).getType())
-                    .isEqualTo(item.getType());
+            assertThat((componentSchema.getItems().getSchema()).getType()).isEqualTo(item.getType());
         }
 
         @Test

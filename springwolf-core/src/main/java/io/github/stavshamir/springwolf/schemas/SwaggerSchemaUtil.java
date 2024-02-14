@@ -25,8 +25,6 @@ public class SwaggerSchemaUtil {
     public SchemaObject mapSchema(Schema value) {
         SchemaObject.SchemaObjectBuilder builder = SchemaObject.builder();
 
-        //          TODO:              .discriminator(value.getDiscriminator())
-
         io.swagger.v3.oas.models.ExternalDocumentation externalDocs = value.getExternalDocs();
         if (externalDocs != null) {
             ExternalDocumentation externalDocumentation = ExternalDocumentation.builder()
@@ -96,6 +94,10 @@ public class SwaggerSchemaUtil {
         }
 
         builder.required(value.getRequired());
+
+        if (value.getDiscriminator() != null) {
+            builder.discriminator(value.getDiscriminator().getPropertyName());
+        }
 
         List<Object> allOf = value.getAllOf();
         if (allOf != null) {
