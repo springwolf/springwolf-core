@@ -9,7 +9,7 @@ plugins {
     id 'org.springdoc.openapi-gradle-plugin' version '1.8.0'
 
     id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
-    id 'com.google.protobuf' version '0.8.17'
+    id 'com.google.protobuf' version '0.9.4'
 }
 
 dependencies {
