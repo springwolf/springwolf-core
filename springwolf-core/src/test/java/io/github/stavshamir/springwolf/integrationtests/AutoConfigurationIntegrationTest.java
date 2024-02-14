@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.integrationtests;
 
 import io.github.stavshamir.springwolf.asyncapi.controller.AsyncApiController;
 import io.github.stavshamir.springwolf.fixtures.MinimalIntegrationTestContextConfiguration;
+import io.github.stavshamir.springwolf.integrationtests.application.basic.TestApplication;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
