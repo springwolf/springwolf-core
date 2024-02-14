@@ -52,7 +52,7 @@ public class ProtobufPropertiesModule extends Module {
 
     @Override
     public Version version() {
-        return VersionUtil.packageVersionFor(getClass());
+        return VersionUtil.versionFor(getClass());
     }
 
     @Override
