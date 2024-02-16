@@ -146,6 +146,7 @@
         },
         "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
+        "description": "Another payload model",
         "bindings": {
           "sqs": { }
         }
