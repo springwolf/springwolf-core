@@ -182,12 +182,12 @@ class DefaultJsonSchemasServiceTest {
     @Test
     void postProcessorIsSkippedWhenSchemaWasRemoved() {
         doAnswer(invocationOnMock -> {
-                    Map<String, io.swagger.v3.oas.models.media.Schema> schemas = invocationOnMock.getArgument(1);
+                    Map<String, Schema> schemas = invocationOnMock.getArgument(1);
                     schemas.clear();
                     return null;
                 })
                 .when(schemasPostProcessor)
-                .process(any(), any());
+                .process(any(), any(), any());
 
         componentsService.registerSchema(FooWithEnum.class);
 

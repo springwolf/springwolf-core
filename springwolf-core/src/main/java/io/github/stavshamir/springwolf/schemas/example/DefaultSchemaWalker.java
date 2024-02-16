@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -55,14 +56,9 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             return exampleValue;
         }
 
-        String ref = schema.get$ref();
-        if (ref != null) {
-            String schemaName = StringUtils.substringAfterLast(ref, "/");
-            Schema resolvedSchema = definitions.get(schemaName);
-            if (resolvedSchema == null) {
-                throw new ExampleGeneratingException("Missing schema during example json generation: " + schemaName);
-            }
-            return buildSchemaInternal(name, resolvedSchema, definitions, visited);
+        Optional<Schema<?>> resolvedSchema = resolveSchemaFromRefIfAny(schema, definitions);
+        if (resolvedSchema.isPresent()) {
+            return buildSchemaInternal(name, resolvedSchema.get(), definitions, visited);
         }
 
         String type = schema.getType();
@@ -106,7 +102,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             return null;
         }
 
-        // exampleValue is represented in their native type
+        // value is represented in their native type
         if (exampleValue instanceof Boolean) {
             return exampleValueGenerator.createBooleanExample((Boolean) exampleValue);
         } else if (exampleValue instanceof Number) {
@@ -121,7 +117,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         }
 
         try {
-            // exampleValue (i.e. OffsetDateTime) is represented as string
+            // value (i.e. OffsetDateTime) is represented as string
             return exampleValueGenerator.generateStringExample(exampleValue.toString());
         } catch (IllegalArgumentException ex) {
             log.debug("Unable to convert example to JSON: %s".formatted(exampleValue.toString()), ex);
@@ -188,15 +184,15 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
             List<Schema> schemas = schema.getAllOf();
 
-            ObjectNode combinedNode = objectMapper.createObjectNode();
-            schemas.stream()
-                    .map(s -> buildSchemaInternal(s, definitions, visited))
-                    .filter(JsonNode::isObject)
-                    .map(JsonNode::fields)
-                    .forEach(fields ->
-                            fields.forEachRemaining(entry -> combinedNode.set(entry.getKey(), entry.getValue())));
+            List<PropertySchema> mergedPropertiesOfSchemas = mergePropertiesOfSchemas(schemas, definitions);
 
-            return combinedNode;
+            List<PropertyExample<T>> mergedProperties = mergedPropertiesOfSchemas.stream()
+                    .map((mergedProperty) -> new PropertyExample<>(
+                            mergedProperty.name(),
+                            buildSchemaInternal(mergedProperty.name(), mergedProperty.schema(), definitions, visited)))
+                    .toList();
+
+            return exampleValueGenerator.combineObjectExample(name, mergedProperties);
         }
         if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
             List<Schema> schemas = schema.getAnyOf();
@@ -216,15 +212,38 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     private T handleObjectProperties(
             String name, Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
 
-        List<Map.Entry<String, T>> propertyList = properties.entrySet().stream()
+        List<PropertyExample<T>> propertyList = properties.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .map(entry -> {
                     String propertyKey = entry.getKey();
                     T propertyValue = buildSchemaInternal(propertyKey, entry.getValue(), definitions, visited);
-                    return Map.entry(propertyKey, propertyValue);
+                    return new PropertyExample<>(propertyKey, propertyValue);
                 })
                 .toList();
 
         return exampleValueGenerator.createObjectExample(name, propertyList);
+    }
+
+    private Optional<Schema<?>> resolveSchemaFromRefIfAny(Schema schema, Map<String, Schema> definitions) {
+        String ref = schema.get$ref();
+        if (ref != null) {
+            String schemaName = StringUtils.substringAfterLast(ref, "/");
+            Schema<?> resolvedSchema = definitions.get(schemaName);
+            if (resolvedSchema == null) {
+                throw new ExampleGeneratingException("Missing schema during example json generation: " + schemaName);
+            }
+            return Optional.of(resolvedSchema);
+        }
+        return Optional.empty();
+    }
+
+    private List<PropertySchema> mergePropertiesOfSchemas(List<Schema> schemas, Map<String, Schema> definitions) {
+        return schemas.stream()
+                .map(schema -> resolveSchemaFromRefIfAny(schema, definitions).orElse(schema))
+                .map(Schema::getProperties)
+                .filter(Objects::nonNull)
+                .flatMap(propertiesFromSchema -> propertiesFromSchema.entrySet().stream())
+                .map(entry -> new PropertySchema(entry.getKey(), entry.getValue()))
+                .toList();
     }
 }

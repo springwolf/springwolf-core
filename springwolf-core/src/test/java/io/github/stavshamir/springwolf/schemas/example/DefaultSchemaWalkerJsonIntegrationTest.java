@@ -375,20 +375,21 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void object_with_oneOf() {
+        void object_with_oneOf() throws JsonProcessingException {
             ObjectSchema compositeSchema = new ObjectSchema();
 
             Schema propertySchema = new ObjectSchema();
             propertySchema.setOneOf(List.of(new StringSchema(), new NumberSchema()));
             compositeSchema.addProperty("oneOfField", propertySchema);
 
-            String actual = ExampleJsonGenerator.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
+            JsonNode actual = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("{\"oneOfField\":\"string\"}");
+            assertThat(actualString).isEqualTo("{\"oneOfField\":\"string\"}");
         }
 
         @Test
-        void object_with_allOf() {
+        void object_with_allOf() throws JsonProcessingException {
             ObjectSchema compositeSchema = new ObjectSchema();
 
             ObjectSchema schema1 = new ObjectSchema();
@@ -401,9 +402,10 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             propertySchema.setAllOf(List.of(schema1, schema2, skippedSchemaSinceObjectIsRequired));
             compositeSchema.addProperty("allOfField", propertySchema);
 
-            String actual = ExampleJsonGenerator.buildSchema(compositeSchema, Map.of("Nested", propertySchema));
+            JsonNode actual = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
+            String actualString = jsonMapper.writeValueAsString(actual);
 
-            assertThat(actual).isEqualTo("{\"allOfField\":{\"field1\":\"string\",\"field2\":1.1}}");
+            assertThat(actualString).isEqualTo("{\"allOfField\":{\"field1\":\"string\",\"field2\":1.1}}");
         }
 
         @Test

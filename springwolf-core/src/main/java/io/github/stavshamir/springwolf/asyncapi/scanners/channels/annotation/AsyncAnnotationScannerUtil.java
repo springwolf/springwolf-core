@@ -50,7 +50,7 @@ class AsyncAnnotationScannerUtil {
                     //         SchemaObject.builder()
                     //                 .description(getDescription(headers, resolver))
                     //                 .enumValues(values)
-                    //                 .examples(exampleValue != null ? List.of(exampleValue) : null)
+                    //                 .examples(value != null ? List.of(value) : null)
                     //                 .build());
                 });
 

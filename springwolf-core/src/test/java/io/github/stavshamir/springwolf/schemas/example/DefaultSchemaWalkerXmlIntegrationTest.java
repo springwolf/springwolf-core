@@ -463,6 +463,42 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         }
 
         @Test
+        void object_with_oneOf() {
+            ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName("object_with_oneOf");
+
+            Schema propertySchema = new ObjectSchema();
+            propertySchema.setOneOf(List.of(new StringSchema(), new NumberSchema()));
+            compositeSchema.addProperty("oneOfField", propertySchema);
+
+            String actual = xmlSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
+
+            assertThat(actual).isEqualTo("<object_with_oneOf><oneOfField>string</oneOfField></object_with_oneOf>");
+        }
+
+        @Test
+        void object_with_allOf() {
+            ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName("object_with_allOf");
+
+            ObjectSchema schema1 = new ObjectSchema();
+            schema1.setProperties(Map.of("field1", new StringSchema()));
+            ObjectSchema schema2 = new ObjectSchema();
+            schema2.setProperties(Map.of("field2", new NumberSchema()));
+            StringSchema skippedSchemaSinceObjectIsRequired = new StringSchema();
+
+            Schema propertySchema = new ObjectSchema();
+            propertySchema.setAllOf(List.of(schema1, schema2, skippedSchemaSinceObjectIsRequired));
+            compositeSchema.addProperty("allOfField", propertySchema);
+
+            String actual = xmlSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
+
+            assertThat(actual)
+                    .isEqualTo(
+                            "<object_with_allOf><allOfField><field1>string</field1><field2>1.1</field2></allOfField></object_with_allOf>");
+        }
+
+        @Test
         void schema_with_problematic_object_toString_example() {
             ObjectSchema schema = new ObjectSchema();
             schema.setExample(new ClassWithToString());

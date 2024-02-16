@@ -4,7 +4,6 @@ package io.github.stavshamir.springwolf.schemas.example;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
-import java.util.Map;
 
 // TODO: ExampleValueSerializer?
 interface ExampleValueGenerator<T, R> {
@@ -23,7 +22,7 @@ interface ExampleValueGenerator<T, R> {
 
     T createIntegerExample();
 
-    T createObjectExample(String name, List<Map.Entry<String, T>> properties);
+    T createObjectExample(String name, List<PropertyExample<T>> properties);
 
     T createEmptyObjectExample();
 
@@ -60,4 +59,6 @@ interface ExampleValueGenerator<T, R> {
     T createRaw(Object exampleValueString);
 
     T exampleOrNull(String name, Object example);
+
+    T combineObjectExample(String name, List<PropertyExample<T>> fieldsToCombine);
 }

@@ -18,7 +18,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -107,14 +106,14 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node createObjectExample(String name, List<Map.Entry<String, Node>> properties) {
+    public Node createObjectExample(String name, List<PropertyExample<Node>> properties) {
         if (name == null) {
             throw new IllegalArgumentException("Object Name must not be empty");
         }
         try {
             Element rootElement = document.createElement(name);
 
-            for (Map.Entry<String, Node> propertyExample : properties) {
+            for (PropertyExample<Node> propertyExample : properties) {
                 rootElement.appendChild(handlePropertyExample(propertyExample));
             }
 
@@ -130,12 +129,12 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         return rootElement;
     }
 
-    private Element handlePropertyExample(Map.Entry<String, Node> propertyExample) throws ParserConfigurationException {
-        final Node exampleValue = propertyExample.getValue();
+    private Element handlePropertyExample(PropertyExample<Node> propertyExample) throws ParserConfigurationException {
+        final Node exampleValue = propertyExample.example();
         if (exampleValue instanceof Element) {
             return (Element) exampleValue;
         } else if (exampleValue instanceof Text) {
-            return wrapNode(propertyExample.getKey(), exampleValue);
+            return wrapNode(propertyExample.name(), exampleValue);
         } else {
             throw new IllegalArgumentException(
                     "Unsupported type " + exampleValue.getClass().getSimpleName());
@@ -271,6 +270,11 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     @Override
     public Node createEmptyObjectExample() {
         return document.createTextNode("");
+    }
+
+    @Override
+    public Node combineObjectExample(String name, List<PropertyExample<Node>> fieldsToCombine) {
+        return createObjectExample(name, fieldsToCombine);
     }
 
     private static Document createDocument() throws ParserConfigurationException {

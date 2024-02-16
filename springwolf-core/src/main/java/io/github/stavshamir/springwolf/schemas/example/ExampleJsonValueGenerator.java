@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode, JsonNode> {
@@ -179,14 +178,23 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createObjectExample(String name, List<Map.Entry<String, JsonNode>> properties) {
+    public JsonNode createObjectExample(String name, List<PropertyExample<JsonNode>> properties) {
         ObjectNode objectNode = objectMapper.createObjectNode();
-        properties.forEach(property -> objectNode.set(property.getKey(), property.getValue()));
+        properties.forEach(property -> objectNode.set(property.name(), property.example()));
         return objectNode;
     }
 
     @Override
     public JsonNode createEmptyObjectExample() {
         return objectMapper.createObjectNode();
+    }
+
+    @Override
+    public JsonNode combineObjectExample(String name, List<PropertyExample<JsonNode>> fieldsToCombine) {
+        ObjectNode combinedNode = objectMapper.createObjectNode();
+
+        fieldsToCombine.forEach(field -> combinedNode.set(field.name(), field.example()));
+
+        return combinedNode;
     }
 }
