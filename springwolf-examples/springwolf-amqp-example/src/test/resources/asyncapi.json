@@ -212,6 +212,7 @@
         },
         "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
+        "description": "Another payload model",
         "bindings": {
           "amqp": {
             "bindingVersion": "0.3.0"
