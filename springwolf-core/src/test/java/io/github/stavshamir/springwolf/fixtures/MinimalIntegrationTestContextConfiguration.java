@@ -19,8 +19,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
             "springwolf.docket.info.title=Info title was loaded from spring properties",
             "springwolf.docket.info.version=1.0.0",
             "springwolf.docket.id=urn:io:github:stavshamir:springwolf:example",
-            "springwolf.docket.default-content-type=application/yaml",
-            "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
+            "springwolf.docket.default-content-type=application/json",
+            "springwolf.docket.base-package=io.github.stavshamir.springwolf.integrationtests.application.basic",
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.host=some-server:1234",
         })
