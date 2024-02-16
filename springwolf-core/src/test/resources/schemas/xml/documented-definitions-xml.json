@@ -24,13 +24,11 @@
       "mss" : {
         "type" : "object",
         "description" : "Map with example",
-        "examples" : [ {
-          "key1" : "value1"
-        } ],
+        "examples" : [ "<key1>value1</key1>" ],
         "additionalProperties" : {
           "type" : "string",
           "description" : "Map with example",
-          "examples" : [ "{\"key1\":\"value1\"}" ]
+          "examples" : [ "<key1>value1</key1>" ]
         }
       },
       "mss_plain" : {

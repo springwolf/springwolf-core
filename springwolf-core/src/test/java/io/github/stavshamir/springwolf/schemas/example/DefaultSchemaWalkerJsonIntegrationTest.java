@@ -84,7 +84,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     }
 
     @Nested
-    class BuildSchema {
+    class TestSimpleSchema {
         @Test
         void type_boolean() throws JsonProcessingException {
             BooleanSchema schema = new BooleanSchema();
@@ -314,7 +314,10 @@ class DefaultSchemaWalkerJsonIntegrationTest {
 
             assertThat(actualString).isEqualTo("[\"string\"]");
         }
+    }
 
+    @Nested
+    class TestObjectSchema {
         @Test
         void type_object_array() throws JsonProcessingException {
             ObjectSchema itemSchema = new ObjectSchema();

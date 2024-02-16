@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.example;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import java.util.List;
 
-// TODO: ExampleValueSerializer?
 interface ExampleValueGenerator<T, R> {
 
     boolean canHandle(String contentType);
@@ -54,7 +51,7 @@ interface ExampleValueGenerator<T, R> {
 
     T generateArrayExample(T arrayItem);
 
-    R serializeIfNeeded(String name, T exampleObject) throws JsonProcessingException;
+    R serializeIfNeeded(String name, T exampleObject);
 
     T createRaw(Object exampleValueString);
 

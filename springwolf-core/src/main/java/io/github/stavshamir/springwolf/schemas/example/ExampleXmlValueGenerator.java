@@ -8,6 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,6 +19,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +28,11 @@ import java.util.Map;
 @Slf4j
 public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, String> {
 
+    private final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+
     private Document document;
 
-    private Map<String, Node> exampleCache = new HashMap<>();
+    private final Map<String, Node> exampleCache = new HashMap<>();
 
     private static final Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
 
@@ -56,14 +60,6 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         return "unknown string schema format: " + format;
     }
 
-    //    public ExampleXmlValueGenerator() {
-    //        try {
-    //            document = createDocument();
-    //        } catch (ParserConfigurationException e) {
-    //            throw new RuntimeException(e);
-    //        }
-    //    }
-
     @Override
     public boolean canHandle(String contentType) {
         return (StringUtils.equals(contentType, "text/xml") || StringUtils.equals(contentType, "application/xml"));
@@ -72,9 +68,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     @Override
     public void initialize() {
         try {
-            // if (document == null) {
             document = createDocument();
-            // }
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -233,9 +227,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node createRaw(Object exampleValueString) {
-        // TODO unused or in test to fix
-        return null;
+    public Node createRaw(Object exampleValue) {
+        return readXmlString(exampleValue.toString());
     }
 
     @Override
@@ -248,22 +241,6 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
             return this.document.importNode(exampleCache.get(name), true);
         }
 
-        //        if (example instanceof String) {
-        //            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        //            DocumentBuilder builder = null;
-        //            try {
-        //                builder = factory.newDocumentBuilder();
-        //                InputSource is = new InputSource(new StringReader((String) example));
-        //                Document document = builder.parse(is);
-        //                return this.document.importNode(document.getDocumentElement(), true);
-        //            } catch (ParserConfigurationException e) {
-        //                throw new RuntimeException(e);
-        //            } catch (IOException e) {
-        //                throw new RuntimeException(e);
-        //            } catch (SAXException e) {
-        //                throw new RuntimeException(e);
-        //            }
-        //        }
         return null;
     }
 
@@ -272,9 +249,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         return document.createTextNode("");
     }
 
-    private static Document createDocument() throws ParserConfigurationException {
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-
+    private Document createDocument() throws ParserConfigurationException {
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         return documentBuilder.newDocument();
     }
@@ -291,5 +266,15 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         StreamResult sr = new StreamResult(sw);
         transformer.transform(domSource, sr);
         return sw.toString();
+    }
+
+    private Node readXmlString(String xmlString) {
+        try {
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            return documentBuilder.parse(xmlString);
+        } catch (SAXException | IOException | ParserConfigurationException e) {
+            log.info("Unable to convert example to XMl Node: {}", xmlString, e);
+        }
+        return null;
     }
 }

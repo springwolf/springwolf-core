@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.example;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +38,8 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             T generatedExample = buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
 
             return exampleValueGenerator.serializeIfNeeded(schema.getName(), generatedExample);
-        } catch (ExampleGeneratingException | JsonProcessingException ex) {
-            log.info("Failed to build json example for schema {}", schema.getName(), ex);
+        } catch (ExampleGeneratingException ex) {
+            log.info("Failed to build example for schema {}", schema.getName(), ex);
         }
         return null;
     }

@@ -163,7 +163,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
         try {
             return objectMapper.readTree(exampleValue.toString());
         } catch (JsonProcessingException e) {
-            log.info("Unable to convert example to JSON: %s".formatted(exampleValue), e);
+            log.info("Unable to parse example to JsonNode: {}", exampleValue, e);
             return null;
         }
     }

@@ -90,7 +90,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
     }
 
     @Nested
-    class BuildSchema {
+    class TestSimpleSchema {
         @Test
         void type_boolean() {
             BooleanSchema schema = new BooleanSchema();
@@ -325,6 +325,10 @@ class DefaultSchemaWalkerXmlIntegrationTest {
 
             assertThat(actual).isEqualTo("<type_primitive_array>string</type_primitive_array>");
         }
+    }
+
+    @Nested
+    class TestObjectSchema {
 
         @Test
         void type_object_array() {
@@ -420,7 +424,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         }
 
         @Test
-        void der_gleiche_ohne_ref() {
+        void composite_object_without_ref() {
             ObjectSchema nestedSchema = new ObjectSchema();
             nestedSchema.setName("Nested");
             nestedSchema.addProperty("s", new StringSchema());
