@@ -59,6 +59,4 @@ interface ExampleValueGenerator<T, R> {
     T createRaw(Object exampleValueString);
 
     T exampleOrNull(String name, Object example);
-
-    T combineObjectExample(String name, List<PropertyExample<T>> fieldsToCombine);
 }

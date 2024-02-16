@@ -188,13 +188,4 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     public JsonNode createEmptyObjectExample() {
         return objectMapper.createObjectNode();
     }
-
-    @Override
-    public JsonNode combineObjectExample(String name, List<PropertyExample<JsonNode>> fieldsToCombine) {
-        ObjectNode combinedNode = objectMapper.createObjectNode();
-
-        fieldsToCombine.forEach(field -> combinedNode.set(field.name(), field.example()));
-
-        return combinedNode;
-    }
 }

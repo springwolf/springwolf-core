@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas;
 
 import com.fasterxml.jackson.core.PrettyPrinter;
@@ -50,8 +51,7 @@ class DefaultComponentsServiceTest {
     void setUp() {
         componentsService = new DefaultComponentsService(
                 List.of(),
-                List.of(schemasPostProcessor,
-                        schemasPostProcessor2),
+                List.of(schemasPostProcessor, schemasPostProcessor2),
                 new SwaggerSchemaUtil(),
                 new SpringwolfConfigProperties());
     }
@@ -82,7 +82,8 @@ class DefaultComponentsServiceTest {
 
     @Test
     void classWithSchemaAnnotation() {
-        String modelName = componentsService.registerSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
+        String modelName =
+                componentsService.registerSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
 
         assertThat(modelName).isEqualTo("DifferentName");
     }
@@ -97,7 +98,8 @@ class DefaultComponentsServiceTest {
                 new DefaultComponentsService(List.of(), List.of(), new SwaggerSchemaUtil(), properties);
 
         // when
-        Class<?> clazz = OneFieldFooWithFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
+        Class<?> clazz =
+                OneFieldFooWithFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
         componentsServiceWithFqn.registerSchema(clazz, "content-type-not-relevant");
         String actualDefinitions =
                 objectMapper.writer(printer).writeValueAsString(componentsServiceWithFqn.getSchemas());
@@ -120,14 +122,14 @@ class DefaultComponentsServiceTest {
     @Test
     void postProcessorIsSkippedWhenSchemaWasRemoved() {
         doAnswer(invocationOnMock -> {
-            Map<String, Schema> schemas = invocationOnMock.getArgument(1);
-            schemas.clear();
-            return null;
-        })
+                    Map<String, Schema> schemas = invocationOnMock.getArgument(1);
+                    schemas.clear();
+                    return null;
+                })
                 .when(schemasPostProcessor)
                 .process(any(), any(), any());
 
-        componentsService.registerSchema(ClassWithSchemaAnnotation.class,"content-type-not-relevant");
+        componentsService.registerSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
 
         verifyNoInteractions(schemasPostProcessor2);
     }
@@ -145,5 +147,4 @@ class DefaultComponentsServiceTest {
     private static class OneFieldFooWithFqn {
         private String s;
     }
-
 }

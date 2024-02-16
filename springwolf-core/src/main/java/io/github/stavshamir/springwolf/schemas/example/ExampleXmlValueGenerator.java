@@ -272,11 +272,6 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         return document.createTextNode("");
     }
 
-    @Override
-    public Node combineObjectExample(String name, List<PropertyExample<Node>> fieldsToCombine) {
-        return createObjectExample(name, fieldsToCombine);
-    }
-
     private static Document createDocument() throws ParserConfigurationException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 

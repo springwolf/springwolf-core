@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -89,8 +88,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
         // Handle special types (i.e. map) with custom @Schema annotation and specified example value
         Object additionalProperties = schema.getAdditionalProperties();
-        if (additionalProperties instanceof StringSchema) {
-            StringSchema additionalPropertiesSchema = (StringSchema) additionalProperties;
+        if (additionalProperties instanceof StringSchema additionalPropertiesSchema) {
             Object exampleValueString = additionalPropertiesSchema.getExample();
             if (exampleValueString != null) {
                 return exampleValueGenerator.createRaw(exampleValueString);
@@ -123,7 +121,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             log.debug("Unable to convert example to JSON: %s".formatted(exampleValue.toString()), ex);
         }
 
-        return exampleValueGenerator.createObjectExample("ignored", Collections.emptyList());
+        return exampleValueGenerator.createEmptyObjectExample();
     }
 
     private T handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
@@ -192,7 +190,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
                             buildSchemaInternal(mergedProperty.name(), mergedProperty.schema(), definitions, visited)))
                     .toList();
 
-            return exampleValueGenerator.combineObjectExample(name, mergedProperties);
+            return exampleValueGenerator.createObjectExample(name, mergedProperties);
         }
         if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
             List<Schema> schemas = schema.getAnyOf();

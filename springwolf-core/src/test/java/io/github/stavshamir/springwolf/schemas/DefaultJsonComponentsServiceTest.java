@@ -70,8 +70,6 @@ class DefaultJsonComponentsServiceTest {
         assertEquals(expected, actualDefinitions);
     }
 
-
-
     @Test
     void getDocumentedDefinitions() throws IOException {
         componentsService.registerSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_JSON);
@@ -284,7 +282,8 @@ class DefaultJsonComponentsServiceTest {
 
         @Test
         void illegalEnvelopTest() throws IOException {
-            componentsService.registerSchema(EnvelopWithMultipleAsyncApiPayloadAnnotations.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.registerSchema(
+                    EnvelopWithMultipleAsyncApiPayloadAnnotations.class, CONTENT_TYPE_APPLICATION_JSON);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
 
