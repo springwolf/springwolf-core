@@ -216,8 +216,16 @@ public class ExampleJsonGenerator implements ExampleGenerator {
 
         if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
             List<Schema> schemas = schema.getAllOf();
-            // Open: Handle properties of all schemas, not only the first one
-            return buildSchemaInternal(schemas.get(0), definitions, visited);
+
+            ObjectNode combinedNode = objectMapper.createObjectNode();
+            schemas.stream()
+                    .map(s -> buildSchemaInternal(s, definitions, visited))
+                    .filter(JsonNode::isObject)
+                    .map(JsonNode::fields)
+                    .forEach(fields ->
+                            fields.forEachRemaining(entry -> combinedNode.set(entry.getKey(), entry.getValue())));
+
+            return combinedNode;
         }
         if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
             List<Schema> schemas = schema.getAnyOf();

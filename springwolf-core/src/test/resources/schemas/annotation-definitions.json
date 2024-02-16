@@ -3,7 +3,9 @@
     "type" : "object",
     "examples" : [ {
       "firstOne" : "string",
-      "secondOne" : "string"
+      "secondOne" : "string",
+      "firstTwo" : 0,
+      "secondTwo" : true
     } ],
     "allOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
@@ -85,7 +87,9 @@
     "examples" : [ {
       "allOf" : {
         "firstOne" : "string",
-        "secondOne" : "string"
+        "secondOne" : "string",
+        "firstTwo" : 0,
+        "secondTwo" : true
       },
       "anyOf" : {
         "firstOne" : "string",
