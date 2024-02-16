@@ -50,6 +50,7 @@ dependencies {
     testImplementation "net.javacrumbs.json-unit:json-unit-assertj:${jsonUnitAssertJVersion}"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
     permitTestUnusedDeclared "org.slf4j:slf4j-simple:2.0.12"
