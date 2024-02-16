@@ -9,6 +9,7 @@ include(
         'springwolf-plugins:springwolf-kafka-plugin',
         'springwolf-plugins:springwolf-sns-plugin',
         'springwolf-plugins:springwolf-sqs-plugin',
+//        'springwolf-plugins:springwolf-stomp-plugin',
         'springwolf-examples:springwolf-amqp-example',
         'springwolf-examples:springwolf-cloud-stream-example',
         'springwolf-examples:springwolf-jms-example',
@@ -16,6 +17,7 @@ include(
         'springwolf-examples:springwolf-kafka-protobuf-example',
         'springwolf-examples:springwolf-sns-example',
         'springwolf-examples:springwolf-sqs-example',
+        'springwolf-examples:springwolf-stomp-example',
         'springwolf-ui',
         'springwolf-add-ons:springwolf-common-model-converters',
         'springwolf-add-ons:springwolf-generic-binding',
@@ -28,4 +30,5 @@ project(':springwolf-plugins:springwolf-jms-plugin').name = 'springwolf-jms'
 project(':springwolf-plugins:springwolf-kafka-plugin').name = 'springwolf-kafka'
 project(':springwolf-plugins:springwolf-sns-plugin').name = 'springwolf-sns'
 project(':springwolf-plugins:springwolf-sqs-plugin').name = 'springwolf-sqs'
+//project(':springwolf-plugins:springwolf-stomp-plugin').name = 'springwolf-stomp'
 
