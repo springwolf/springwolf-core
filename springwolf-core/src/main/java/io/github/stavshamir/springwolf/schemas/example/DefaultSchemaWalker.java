@@ -34,10 +34,6 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     @Override
     public R fromSchema(Schema schema, Map<String, Schema> definitions) {
         try {
-            // TODO properly
-            /*            if (!StringUtils.equals(schema.getType(),"array") && !StringUtils.equals(schema.getType(), "object")) {
-                throw  new RuntimeException("Not array or Object");
-            }*/
             exampleValueGenerator.initialize();
 
             T generatedExample = buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
