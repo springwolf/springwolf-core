@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.util.VersionUtil;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy.PropertyNamingStrategyBase;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
@@ -52,7 +52,7 @@ public class ProtobufPropertiesModule extends Module {
 
     @Override
     public Version version() {
-        return VersionUtil.packageVersionFor(getClass());
+        return VersionUtil.versionFor(getClass());
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ProtobufPropertiesModule extends Module {
                 return super.findNamingStrategy(ac);
             }
 
-            return new PropertyNamingStrategyBase() {
+            return new PropertyNamingStrategies.NamingBase() {
                 @Override
                 public String translate(String propertyName) {
                     if (propertyName.endsWith("_")) {

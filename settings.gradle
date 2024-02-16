@@ -13,7 +13,6 @@ include(
         'springwolf-examples:springwolf-cloud-stream-example',
         'springwolf-examples:springwolf-jms-example',
         'springwolf-examples:springwolf-kafka-example',
-        'springwolf-examples:springwolf-kafka-protobuf-example',
         'springwolf-examples:springwolf-sns-example',
         'springwolf-examples:springwolf-sqs-example',
         'springwolf-ui',
@@ -28,4 +27,3 @@ project(':springwolf-plugins:springwolf-jms-plugin').name = 'springwolf-jms'
 project(':springwolf-plugins:springwolf-kafka-plugin').name = 'springwolf-kafka'
 project(':springwolf-plugins:springwolf-sns-plugin').name = 'springwolf-sns'
 project(':springwolf-plugins:springwolf-sqs-plugin').name = 'springwolf-sqs'
-
