@@ -30,8 +30,7 @@ dependencies {
 
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationApiVersion}"
-    // TODO Properly
-    implementation "jakarta.validation:jakarta.validation-api:3.0.2"
+    implementation "jakarta.validation:jakarta.validation-api:${jakartaValidationApiVersion}"
 
     implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
 
