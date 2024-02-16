@@ -15,12 +15,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class XmlConsumer {
 
-    @AsyncListener(operation = @AsyncOperation(
-            channelName = "xml-topic",
-            message = @AsyncMessage(
-                    contentType = "text/xml"
-            )
-    ))
+    @AsyncListener(
+            operation = @AsyncOperation(channelName = "xml-topic", message = @AsyncMessage(contentType = "text/xml")))
     @KafkaListener(topics = "xml-topic")
     public void receiveExamplePayload(XmlPayloadDto payload) {
         log.info("Received new message in example-queue: {}", payload.toString());

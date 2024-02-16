@@ -13,14 +13,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +24,8 @@ import java.util.Map;
 public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, String> {
 
     private final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+
+    private final ExampleXmlValueSerializer exampleXmlValueSerializer;
 
     private Document document;
 
@@ -51,6 +48,10 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
     private static final String DEFAULT_EMAIL_EXAMPLE = "example@example.com";
     private static final String DEFAULT_UUID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+
+    public ExampleXmlValueGenerator(ExampleXmlValueSerializer exampleXmlValueSerializer) {
+        this.exampleXmlValueSerializer = exampleXmlValueSerializer;
+    }
 
     private static String DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(String type) {
         return "unknown schema type: " + type;
@@ -215,7 +216,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         }
         try {
             document.appendChild(objectToWrite);
-            String xml = writeDocumentAsXmlString(document);
+            String xml = exampleXmlValueSerializer.writeDocumentAsXmlString(document);
             log.info("name {} -> xml: {}", name, xml);
 
             exampleCache.putIfAbsent(name, exampleObject);
@@ -252,20 +253,6 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     private Document createDocument() throws ParserConfigurationException {
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         return documentBuilder.newDocument();
-    }
-
-    private String writeDocumentAsXmlString(Document document) throws TransformerException {
-        DOMSource domSource = new DOMSource(document);
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-        transformer.setOutputProperty(OutputKeys.INDENT, "no");
-        StringWriter sw = new StringWriter();
-        StreamResult sr = new StreamResult(sw);
-        transformer.transform(domSource, sr);
-        return sw.toString();
     }
 
     private Node readXmlString(String xmlString) {

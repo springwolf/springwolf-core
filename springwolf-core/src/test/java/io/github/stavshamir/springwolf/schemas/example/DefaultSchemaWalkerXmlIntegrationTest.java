@@ -28,7 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultSchemaWalkerXmlIntegrationTest {
 
-    private final ExampleXmlValueGenerator exampleXmlValueGenerator = new ExampleXmlValueGenerator();
+    private final ExampleXmlValueGenerator exampleXmlValueGenerator =
+            new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer());
     private final DefaultSchemaWalker<Node, String> xmlSchemaWalker = new DefaultSchemaWalker(exampleXmlValueGenerator);
 
     @Nested

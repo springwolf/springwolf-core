@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
+import io.github.stavshamir.springwolf.schemas.example.DefaultExampleXmlValueSerializer;
 import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.ExampleXmlValueGenerator;
 import io.github.stavshamir.springwolf.schemas.example.SchemaWalkerProvider;
@@ -42,8 +43,8 @@ class DefaultXmlComponentsServiceTest {
     private final ComponentsService componentsService = new DefaultComponentsService(
             List.of(),
             List.of(
-                    new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(
-                            List.of(new DefaultSchemaWalker<>(new ExampleXmlValueGenerator())))),
+                    new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(
+                            new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer()))))),
                     schemasPostProcessor),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
