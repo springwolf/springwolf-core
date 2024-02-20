@@ -100,11 +100,6 @@
         "io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto": {
           "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto"
         }
-      },
-      "bindings": {
-        "kafka": {
-          "bindingVersion": "0.4.0"
-        }
       }
     }
   },
@@ -819,11 +814,7 @@
           }
         },
         "examples": [
-          {
-            "someEnum": "FOO1",
-            "someLong": 0,
-            "someString": "string"
-          }
+          "<io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto><someEnum>FOO1</someEnum><someLong>0</someLong><someString>string</someString></io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto>"
         ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
@@ -905,7 +896,7 @@
       },
       "io.github.stavshamir.springwolf.example.kafka.dtos.AnotherPayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-AnotherPayloadDto"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -923,7 +914,7 @@
       },
       "io.github.stavshamir.springwolf.example.kafka.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -965,6 +956,25 @@
           }
         }
       },
+      "io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto"
+          }
+        },
+        "contentType": "text/xml",
+        "name": "io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto",
+        "title": "XmlPayloadDto",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
       "java.lang.String": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -997,6 +1007,13 @@
         "title": "MonetaryAmount",
         "bindings": {
           "kafka": {
+            "key": {
+              "type": "string",
+              "description": "Kafka Consumer Message Key",
+              "examples": [
+                "example-key"
+              ]
+            },
             "bindingVersion": "0.4.0"
           }
         }
@@ -1178,6 +1195,8 @@
       "channel": {
         "$ref": "#/channels/xml-topic"
       },
+      "title": "xml-topic_receive",
+      "description": "Showcases a xml based message",
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"

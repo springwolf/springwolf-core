@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Selects the appropriate SchemaWalker for a given content type
+ */
 @RequiredArgsConstructor
 public class SchemaWalkerProvider {
 

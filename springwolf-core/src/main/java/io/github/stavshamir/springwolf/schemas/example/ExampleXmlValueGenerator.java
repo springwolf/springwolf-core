@@ -2,7 +2,6 @@
 package io.github.stavshamir.springwolf.schemas.example;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,51 +18,27 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, String> {
 
-    private final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    private final Set<String> SUPPORTED_CONTENT_TYPES = Set.of("text/xml", "application/xml");
 
     private final ExampleXmlValueSerializer exampleXmlValueSerializer;
 
     private Document document;
 
+    private final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     private final Map<String, Node> exampleCache = new HashMap<>();
-
-    private static final Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
-
-    private static final String DEFAULT_STRING_EXAMPLE = "string";
-
-    private static final Integer DEFAULT_INTEGER_EXAMPLE = 0;
-
-    private static final Double DEFAULT_NUMBER_EXAMPLE = 1.1;
-
-    private static final String DEFAULT_DATE_EXAMPLE = "2015-07-20";
-    private static final String DEFAULT_DATE_TIME_EXAMPLE = "2015-07-20T15:49:04-07:00";
-    private static final String DEFAULT_PASSWORD_EXAMPLE = "string-password";
-    private static final String DEFAULT_BYTE_EXAMPLE = "YmFzZTY0LWV4YW1wbGU=";
-    private static final String DEFAULT_BINARY_EXAMPLE =
-            "0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001";
-
-    private static final String DEFAULT_EMAIL_EXAMPLE = "example@example.com";
-    private static final String DEFAULT_UUID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 
     public ExampleXmlValueGenerator(ExampleXmlValueSerializer exampleXmlValueSerializer) {
         this.exampleXmlValueSerializer = exampleXmlValueSerializer;
     }
 
-    private static String DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(String type) {
-        return "unknown schema type: " + type;
-    }
-
-    private static String DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(String format) {
-        return "unknown string schema format: " + format;
-    }
-
     @Override
     public boolean canHandle(String contentType) {
-        return (StringUtils.equals(contentType, "text/xml") || StringUtils.equals(contentType, "application/xml"));
+        return SUPPORTED_CONTENT_TYPES.contains(contentType);
     }
 
     @Override
@@ -103,7 +78,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     @Override
     public Node createObjectExample(String name, List<PropertyExample<Node>> properties) {
         if (name == null) {
-            throw new IllegalArgumentException("Object Name must not be empty");
+            throw new IllegalArgumentException("Object name must not be empty");
         }
         try {
             Element rootElement = document.createElement(name);
@@ -193,12 +168,12 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
     @Override
     public Node generateUnknownSchemaStringTypeExample(String schemaType) {
-        return document.createTextNode(DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(schemaType));
+        return document.createTextNode("unknown schema type: " + schemaType);
     }
 
     @Override
     public Node generateUnknownSchemaFormatExample(String schemaFormat) {
-        return document.createTextNode(DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(schemaFormat));
+        return document.createTextNode("unknown string schema format: " + schemaFormat);
     }
 
     @Override
@@ -207,7 +182,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public String serializeIfNeeded(String name, Node exampleObject) {
+    public String prepareForSerialization(String name, Node exampleObject) {
         final Node objectToWrite;
         if (exampleObject instanceof Element) {
             objectToWrite = exampleObject;
@@ -217,7 +192,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         try {
             document.appendChild(objectToWrite);
             String xml = exampleXmlValueSerializer.writeDocumentAsXmlString(document);
-            log.info("name {} -> xml: {}", name, xml);
+            log.debug("name {} -> xml: {}", name, xml);
 
             exampleCache.putIfAbsent(name, exampleObject);
             return xml;

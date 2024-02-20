@@ -20,13 +20,13 @@ public class ExampleGeneratorPostProcessor implements SchemasPostProcessor {
     public void process(Schema schema, Map<String, Schema> definitions, String contentType) {
         if (schema.getExample() == null) {
             log.debug("Generate example for {}", schema.getName());
-            Optional<SchemaWalker> schemaWalkerOptional = schemaWalkerProvider.generatorFor(contentType);
 
+            Optional<SchemaWalker> schemaWalkerOptional = schemaWalkerProvider.generatorFor(contentType);
             if (schemaWalkerOptional.isPresent()) {
                 Object example = schemaWalkerOptional.get().fromSchema(schema, definitions);
                 schema.setExample(example);
             } else {
-                log.debug("No Schema Walker for ContentType: {}", contentType);
+                log.debug("No matching SchemaWalker for contentType {} for example {}", contentType, schema.getName());
             }
         }
     }

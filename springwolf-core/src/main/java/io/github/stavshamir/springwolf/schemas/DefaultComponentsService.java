@@ -92,8 +92,7 @@ public class DefaultComponentsService implements ComponentsService {
         String schemaName = getSchemaName(type, schemas);
 
         preProcessSchemas(schemas, schemaName, type);
-        // TODO Fix Me putIfAbsent
-        this.schemas.putAll(schemas);
+        schemas.forEach(this.schemas::putIfAbsent);
         schemas.values().forEach(schema -> postProcessSchema(schema, actualContentType));
 
         return schemaName;

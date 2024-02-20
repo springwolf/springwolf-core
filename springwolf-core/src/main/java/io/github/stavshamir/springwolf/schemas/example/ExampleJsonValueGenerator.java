@@ -13,40 +13,21 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.util.Json;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode, JsonNode> {
 
-    private static final BooleanNode DEFAULT_BOOLEAN_EXAMPLE = BooleanNode.TRUE;
-
+    private static final Set<String> SUPPORTED_CONTENT_TYPES = Set.of("application/json");
+    private static final BooleanNode DEFAULT_BOOLEAN_EXAMPLE =
+            BooleanNode.valueOf(ExampleValueGenerator.DEFAULT_BOOLEAN_EXAMPLE);
     private static final ObjectMapper objectMapper = Json.mapper();
-    private static final Double DEFAULT_NUMBER_EXAMPLE = 1.1;
-    private static final Integer DEFAULT_INTEGER_EXAMPLE = 0;
-
-    private static final String DEFAULT_DATE_EXAMPLE = "2015-07-20";
-    private static final String DEFAULT_DATE_TIME_EXAMPLE = "2015-07-20T15:49:04-07:00";
-    private static final String DEFAULT_PASSWORD_EXAMPLE = "string-password";
-    private static final String DEFAULT_BYTE_EXAMPLE = "YmFzZTY0LWV4YW1wbGU=";
-    private static final String DEFAULT_BINARY_EXAMPLE =
-            "0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001";
-    private static final String DEFAULT_STRING_EXAMPLE = "string";
-    private static final String DEFAULT_EMAIL_EXAMPLE = "example@example.com";
-    private static final String DEFAULT_UUID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
-
-    private static String DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(String type) {
-        return "unknown schema type: " + type;
-    }
-
-    private static String DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(String format) {
-        return "unknown string schema format: " + format;
-    }
 
     @Override
     public boolean canHandle(String contentType) {
-        return (StringUtils.equals(contentType, "application/json"));
+        return SUPPORTED_CONTENT_TYPES.contains(contentType);
     }
 
     @Override
@@ -138,12 +119,12 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
 
     @Override
     public JsonNode generateUnknownSchemaStringTypeExample(String type) {
-        return JsonNodeFactory.instance.textNode(DEFAULT_UNKNOWN_SCHEMA_EXAMPLE(type));
+        return JsonNodeFactory.instance.textNode("unknown schema type: " + type);
     }
 
     @Override
     public JsonNode generateUnknownSchemaFormatExample(String schemaFormat) {
-        return JsonNodeFactory.instance.textNode(DEFAULT_UNKNOWN_SCHEMA_STRING_EXAMPLE(schemaFormat));
+        return JsonNodeFactory.instance.textNode("unknown string schema format: " + schemaFormat);
     }
 
     @Override
@@ -154,7 +135,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode serializeIfNeeded(String name, JsonNode exampleObject) {
+    public JsonNode prepareForSerialization(String name, JsonNode exampleObject) {
         return exampleObject;
     }
 

@@ -7,9 +7,7 @@ import jakarta.annotation.Nullable;
 import java.util.Map;
 
 /**
- * Builds an example that is embedded into {@link Schema#setExample(Object)}
- *
- * Handles types defined in https://www.asyncapi.com/docs/reference/specification/v3.0.0#dataTypeFormat
+ * Builds an example for a schema
  */
 public interface SchemaWalker<R> {
 
@@ -22,6 +20,11 @@ public interface SchemaWalker<R> {
     @Nullable
     R fromSchema(Schema schema, Map<String, Schema> definitions);
 
+    /**
+     * Check if the walker can handle the given content type
+     *
+     * @param contentType The content type to check
+     */
     boolean canHandle(String contentType);
 
     class ExampleGeneratingException extends RuntimeException {
