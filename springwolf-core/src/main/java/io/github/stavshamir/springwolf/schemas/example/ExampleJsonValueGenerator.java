@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.oas.models.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +34,11 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     @Override
     public void initialize() {
         // Nothing to do
+    }
+
+    @Override
+    public String lookupSchemaName(Schema schema) {
+        return schema.getName();
     }
 
     @NotNull

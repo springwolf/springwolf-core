@@ -1,23 +1,23 @@
 {
-  "AllOf" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$AllOf" : {
     "type" : "object",
     "examples" : [ "<AllOf><firstOne>string</firstOne><firstTwo>0</firstTwo><secondOne>string</secondOne><secondTwo>true</secondTwo></AllOf>" ],
     "allOf" : [ {
-      "$ref" : "#/components/schemas/ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "AnyOf" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$AnyOf" : {
     "type" : "object",
     "examples" : [ "<AnyOf><firstOne>string</firstOne><secondOne>string</secondOne></AnyOf>" ],
     "anyOf" : [ {
-      "$ref" : "#/components/schemas/ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "ImplementationOne" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationOne" : {
     "type" : "object",
     "properties" : {
       "firstOne" : {
@@ -29,7 +29,7 @@
     },
     "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ]
   },
-  "ImplementationTwo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo" : {
     "type" : "object",
     "properties" : {
       "firstTwo" : {
@@ -42,29 +42,29 @@
     },
     "examples" : [ "<ImplementationTwo><firstTwo>0</firstTwo><secondTwo>true</secondTwo></ImplementationTwo>" ]
   },
-  "OneOf" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$OneOf" : {
     "type" : "object",
     "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ],
     "oneOf" : [ {
-      "$ref" : "#/components/schemas/ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "SchemaAnnotationFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
     "type" : "object",
     "properties" : {
       "allOf" : {
-        "$ref" : "#/components/schemas/AllOf"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$AllOf"
       },
       "anyOf" : {
-        "$ref" : "#/components/schemas/AnyOf"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$AnyOf"
       },
       "field" : {
         "type" : "string"
       },
       "oneOf" : {
-        "$ref" : "#/components/schemas/OneOf"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$OneOf"
       }
     },
     "examples" : [ "<SchemaAnnotationFoo><AllOf><firstOne>string</firstOne><firstTwo>0</firstTwo><secondOne>string</secondOne><secondTwo>true</secondTwo></AllOf><AnyOf><firstOne>string</firstOne><secondOne>string</secondOne></AnyOf><field>string</field><ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne></SchemaAnnotationFoo>" ]

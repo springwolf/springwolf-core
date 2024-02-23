@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.example;
 
+import io.swagger.v3.oas.models.media.Schema;
+
 import java.util.List;
 
 /**
@@ -33,6 +35,8 @@ interface ExampleValueGenerator<T, R> {
      * Some internal representation need to be initialized per Schema
      */
     void initialize();
+
+    String lookupSchemaName(Schema schema);
 
     /**
      * @return The serializable representation of the example (object for json & yaml, string for others)

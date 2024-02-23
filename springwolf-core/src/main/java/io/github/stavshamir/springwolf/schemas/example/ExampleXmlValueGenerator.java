@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.schemas.example;
 
+import io.swagger.v3.oas.models.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -13,7 +14,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +48,14 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String lookupSchemaName(Schema schema) {
+        if (schema.getXml() != null) {
+            return schema.getXml().getName();
+        }
+        return schema.getName();
     }
 
     @Override
