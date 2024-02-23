@@ -29,11 +29,10 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE;
+
 @Slf4j
 public class DefaultComponentsService implements ComponentsService {
-
-    @Deprecated
-    private static final String DEFAULT_CONTENT_TYPE = "application/json";
 
     private final ModelConverters converter = ModelConverters.getInstance();
     private final List<SchemasPostProcessor> schemaPostProcessors;

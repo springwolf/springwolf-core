@@ -71,6 +71,8 @@ public class SpringwolfConfigProperties {
     @Setter
     public static class ConfigDocket {
 
+        public static final String DEFAULT_CONTENT_TYPE = "application/json";
+
         /**
          * The base package to scan for listeners which are declared inside a class annotated with @Component or @Service.
          *
@@ -92,7 +94,7 @@ public class SpringwolfConfigProperties {
          *
          * @see AsyncAPI#getDefaultContentType()
          */
-        private String defaultContentType = "application/json";
+        private String defaultContentType = DEFAULT_CONTENT_TYPE;
 
         @Nullable
         private Map<String, Server> servers;
