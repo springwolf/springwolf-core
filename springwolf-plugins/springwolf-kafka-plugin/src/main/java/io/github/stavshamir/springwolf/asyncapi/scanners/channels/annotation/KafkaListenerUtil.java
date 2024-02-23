@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaType;
+import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
+import io.github.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.lang.Nullable;

@@ -2,7 +2,7 @@
 package io.github.springwolf.core.configuration;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -6,9 +6,9 @@ import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfigura
 import io.github.springwolf.core.integrationtests.application.listener.ListenerApplication;
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.publisher.PublisherApplication;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

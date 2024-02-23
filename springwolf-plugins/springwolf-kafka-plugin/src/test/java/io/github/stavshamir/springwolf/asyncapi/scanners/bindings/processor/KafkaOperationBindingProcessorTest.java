@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
 import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

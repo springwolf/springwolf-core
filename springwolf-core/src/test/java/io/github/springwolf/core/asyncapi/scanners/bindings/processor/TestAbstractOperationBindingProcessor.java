@@ -4,7 +4,7 @@ package io.github.springwolf.core.asyncapi.scanners.bindings.processor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotation.AsyncOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;

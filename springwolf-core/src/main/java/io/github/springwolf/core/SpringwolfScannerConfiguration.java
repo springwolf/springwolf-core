@@ -18,7 +18,7 @@ import io.github.springwolf.core.asyncapi.scanners.classes.ConfigurationClassSca
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.configuration.AsyncApiDocketService;
 import io.github.springwolf.core.schemas.ComponentsService;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

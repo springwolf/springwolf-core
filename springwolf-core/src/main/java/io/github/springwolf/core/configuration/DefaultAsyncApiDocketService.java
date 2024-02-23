@@ -3,7 +3,7 @@ package io.github.springwolf.core.configuration;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
+import io.github.springwolf.asyncapi.v3.model.info.Info;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;

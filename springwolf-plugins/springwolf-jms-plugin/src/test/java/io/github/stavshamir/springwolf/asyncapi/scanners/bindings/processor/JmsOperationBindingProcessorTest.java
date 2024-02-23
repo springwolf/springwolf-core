@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
 import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.JmsAsyncOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSOperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.jms.JMSOperationBinding;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

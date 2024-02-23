@@ -2,10 +2,10 @@
 package io.github.springwolf.core.configuration.properties;
 
 import io.github.springwolf.core.configuration.AsyncApiDocket;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Contact;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.asyncapi.v3.model.info.Contact;
+import io.github.springwolf.asyncapi.v3.model.info.License;
+import io.github.springwolf.asyncapi.v3.model.server.Server;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -114,7 +114,7 @@ public class SpringwolfConfigProperties {
             /**
              * The title of the application
              *
-             * @see io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info#getTitle()
+             * @see io.github.springwolf.asyncapi.v3.model.info.Info#getTitle()
              */
             @Nullable
             private String title;
@@ -122,7 +122,7 @@ public class SpringwolfConfigProperties {
             /**
              * Required. Provides the version of the application API (not to be confused with the specification version).
              *
-             * @see io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info#getVersion()
+             * @see io.github.springwolf.asyncapi.v3.model.info.Info#getVersion()
              */
             @Nullable
             private String version;
@@ -130,14 +130,14 @@ public class SpringwolfConfigProperties {
             /**
              * A short description of the application. CommonMark syntax can be used for rich text representation.
              *
-             * @see io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info#getDescription()
+             * @see io.github.springwolf.asyncapi.v3.model.info.Info#getDescription()
              */
             @Nullable
             private String description;
 
             /**
              * A URL to the Terms of Service for the API. MUST be in the format of a URL.
-             * {@link io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info#getTermsOfService()}
+             * {@link io.github.springwolf.asyncapi.v3.model.info.Info#getTermsOfService()}
              */
             @Nullable
             private String termsOfService;

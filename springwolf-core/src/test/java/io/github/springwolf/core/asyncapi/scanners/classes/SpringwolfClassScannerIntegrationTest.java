@@ -4,7 +4,7 @@ package io.github.springwolf.core.asyncapi.scanners.classes;
 import io.github.springwolf.core.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.springwolf.core.configuration.AsyncApiDocket;
 import io.github.springwolf.core.configuration.AsyncApiDocketService;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
+import io.github.springwolf.asyncapi.v3.model.info.Info;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

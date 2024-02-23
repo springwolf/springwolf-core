@@ -2,9 +2,9 @@
 package io.github.springwolf.core.asyncapi.scanners.channels;
 
 import io.github.springwolf.core.asyncapi.MessageHelper;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

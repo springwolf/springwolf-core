@@ -10,12 +10,12 @@ import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClass
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import io.github.springwolf.core.configuration.AsyncApiDocketService;
 import io.github.springwolf.core.schemas.ComponentsService;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ServerReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.channel.ServerReference;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.springwolf.asyncapi.v3.model.server.Server;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;

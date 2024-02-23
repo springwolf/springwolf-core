@@ -2,9 +2,9 @@
 package io.github.stavshamir.springwolf.addons.json_schema;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.asyncapi.v3.model.components.Components;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

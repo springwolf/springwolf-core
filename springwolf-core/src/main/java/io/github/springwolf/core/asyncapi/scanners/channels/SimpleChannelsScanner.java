@@ -2,7 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.channels;
 
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

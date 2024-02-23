@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
 import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SqsAsyncOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSMessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.sqs.SQSMessageBinding;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;

@@ -2,13 +2,13 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
 import io.awspring.cloud.sqs.annotation.SqsListener;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBindingQueue;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSMessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sqs.SQSOperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBindingQueue;
+import io.github.springwolf.asyncapi.v3.bindings.sqs.SQSMessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.sqs.SQSOperationBinding;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringValueResolver;
 

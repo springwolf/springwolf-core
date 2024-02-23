@@ -5,9 +5,9 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBi
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.AbstractOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBindingIdentifier;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sns.SNSOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sns.SNSOperationBindingConsumer;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sns.SNSOperationBindingIdentifier;
+import io.github.springwolf.asyncapi.v3.bindings.sns.SNSOperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.sns.SNSOperationBindingConsumer;
+import io.github.springwolf.asyncapi.v3.bindings.sns.SNSOperationBindingIdentifier;
 
 import java.util.List;
 

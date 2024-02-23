@@ -3,9 +3,9 @@ package io.github.springwolf.core.configuration;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Contact;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.info.License;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.asyncapi.v3.model.info.Contact;
+import io.github.springwolf.asyncapi.v3.model.info.License;
+import io.github.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

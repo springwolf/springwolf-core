@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.bindings;
 
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import lombok.Data;
 
 @Data

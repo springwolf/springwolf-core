@@ -2,9 +2,9 @@
 package io.github.springwolf.core.asyncapi;
 
 import io.github.springwolf.core.asyncapi.scanners.channels.OperationsScanner;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

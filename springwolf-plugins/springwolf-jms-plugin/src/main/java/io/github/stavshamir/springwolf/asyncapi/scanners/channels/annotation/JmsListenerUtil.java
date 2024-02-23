@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSMessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.jms.JMSOperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.jms.JMSChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.jms.JMSMessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.jms.JMSOperationBinding;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.util.StringValueResolver;

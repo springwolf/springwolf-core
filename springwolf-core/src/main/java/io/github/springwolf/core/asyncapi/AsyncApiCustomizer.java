@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi;
 
-import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 
 /**
  * Allows to modify the final AsyncApi document after it has been generated.

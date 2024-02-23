@@ -9,9 +9,9 @@ import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annota
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaderSchema;
 import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 

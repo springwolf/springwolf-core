@@ -4,10 +4,10 @@ package io.github.springwolf.core.asyncapi;
 import io.github.springwolf.core.configuration.AsyncApiDocket;
 import io.github.springwolf.core.configuration.AsyncApiDocketService;
 import io.github.springwolf.core.schemas.ComponentsService;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.components.Components;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.components.Components;
+import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation;
 
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeType;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelQueueProperties;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeType;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelQueueProperties;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

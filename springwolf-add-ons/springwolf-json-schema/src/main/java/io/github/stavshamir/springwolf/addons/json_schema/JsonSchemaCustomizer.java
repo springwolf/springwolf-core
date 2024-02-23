@@ -3,8 +3,8 @@ package io.github.stavshamir.springwolf.addons.json_schema;
 
 
 import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

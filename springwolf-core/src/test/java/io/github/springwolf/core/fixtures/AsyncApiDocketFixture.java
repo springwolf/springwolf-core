@@ -2,7 +2,7 @@
 package io.github.springwolf.core.fixtures;
 
 import io.github.springwolf.core.configuration.AsyncApiDocket;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.info.Info;
+import io.github.springwolf.asyncapi.v3.model.info.Info;
 
 public class AsyncApiDocketFixture {
 

@@ -3,11 +3,11 @@ package io.github.stavshamir.springwolf.asyncapi.types;
 
 import io.github.springwolf.core.asyncapi.types.ProducerData;
 import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import lombok.Builder;
 
 import java.util.Collections;
