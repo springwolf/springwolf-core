@@ -1,7 +1,7 @@
 {
   "AllOf" : {
     "type" : "object",
-    "examples" : [ "firstOne: string\nsecondOne: string\nfirstTwo: 0\nsecondTwo: true\n" ],
+    "examples" : [ "firstOne: string\nfirstTwo: 0\nsecondOne: string\nsecondTwo: true\n" ],
     "allOf" : [ {
       "$ref" : "#/components/schemas/ImplementationOne"
     }, {
@@ -67,6 +67,6 @@
         "$ref" : "#/components/schemas/OneOf"
       }
     },
-    "examples" : [ "allOf: |\n  firstOne: string\n  secondOne: string\n  firstTwo: 0\n  secondTwo: true\nanyOf: |\n  firstOne: string\n  secondOne: string\nfield: string\noneOf: |\n  |\n    firstOne: string\n    secondOne: string\n" ]
+    "examples" : [ "allOf: |\n  firstOne: string\n  firstTwo: 0\n  secondOne: string\n  secondTwo: true\nanyOf: |\n  firstOne: string\n  secondOne: string\nfield: string\noneOf: |\n  |\n    firstOne: string\n    secondOne: string\n" ]
   }
 }

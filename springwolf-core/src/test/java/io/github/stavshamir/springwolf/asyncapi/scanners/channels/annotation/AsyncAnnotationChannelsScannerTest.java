@@ -382,7 +382,7 @@ class AsyncAnnotationChannelsScannerTest {
                                                 description = "Message description",
                                                 messageId = "simpleFoo",
                                                 name = "SimpleFooPayLoad",
-                                                contentType = "application/schema+json;version=draft-07",
+                                                contentType = "application/json",
                                                 title = "Message Title")))
         private void methodWithAnnotation(SimpleFoo payload) {}
 

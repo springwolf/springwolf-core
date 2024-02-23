@@ -3,8 +3,8 @@
     "type" : "object",
     "examples" : [ {
       "firstOne" : "string",
-      "secondOne" : "string",
       "firstTwo" : 0,
+      "secondOne" : "string",
       "secondTwo" : true
     } ],
     "allOf" : [ {
@@ -87,8 +87,8 @@
     "examples" : [ {
       "allOf" : {
         "firstOne" : "string",
-        "secondOne" : "string",
         "firstTwo" : 0,
+        "secondOne" : "string",
         "secondTwo" : true
       },
       "anyOf" : {

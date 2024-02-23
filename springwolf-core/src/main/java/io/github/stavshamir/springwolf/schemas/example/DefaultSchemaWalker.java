@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-// TODO: Einfach Yaml generieren?
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
@@ -31,7 +31,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         try {
             exampleValueGenerator.initialize();
 
-            T generatedExample = buildSchemaInternal(schema.getName(), schema, definitions, new HashSet<>());
+            T generatedExample = buildExample(schema.getName(), schema, definitions, new HashSet<>());
 
             return exampleValueGenerator.prepareForSerialization(schema.getName(), generatedExample);
         } catch (ExampleGeneratingException ex) {
@@ -40,25 +40,25 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         return null;
     }
 
-    private T buildSchemaInternal(String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+    private T buildExample(String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         T exampleValue = getExampleValueFromSchemaAnnotation(schema);
         if (exampleValue != null) {
             return exampleValue;
         }
 
-        Optional<Schema<?>> resolvedSchema = resolveSchemaFromRefIfAny(schema, definitions);
+        Optional<Schema<?>> resolvedSchema = resolveSchemaFromRef(schema, definitions);
         if (resolvedSchema.isPresent()) {
-            return buildSchemaInternal(name, resolvedSchema.get(), definitions, visited);
+            return buildExample(name, resolvedSchema.get(), definitions, visited);
         }
 
         String type = schema.getType();
         return switch (type) {
-            case "array" -> handleArraySchema(schema, definitions, visited);
+            case "array" -> buildArrayExample(schema, definitions, visited);
             case "boolean" -> exampleValueGenerator.createBooleanExample();
             case "integer" -> exampleValueGenerator.createIntegerExample();
             case "number" -> exampleValueGenerator.createDoubleExample();
-            case "object" -> handleObject(name, schema, definitions, visited);
-            case "string" -> handleStringSchema(schema);
+            case "object" -> buildFromObjectSchema(name, schema, definitions, visited);
+            case "string" -> buildFromStringSchema(schema);
             default -> exampleValueGenerator.createUnknownSchemaStringTypeExample(type);
         };
     }
@@ -115,13 +115,13 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         return exampleValueGenerator.createEmptyObjectExample();
     }
 
-    private T handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        T arrayItem = buildSchemaInternal(schema.getName(), schema.getItems(), definitions, visited);
+    private T buildArrayExample(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+        T arrayItem = buildExample(schema.getName(), schema.getItems(), definitions, visited);
 
         return exampleValueGenerator.createArrayExample(arrayItem);
     }
 
-    private T handleStringSchema(Schema schema) {
+    private T buildFromStringSchema(Schema schema) {
         String firstEnumValue = getFirstEnumValue(schema);
         if (firstEnumValue != null) {
             return exampleValueGenerator.createEnumExample(firstEnumValue);
@@ -155,13 +155,14 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         return null;
     }
 
-    private T handleObject(String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+    private T buildFromObjectSchema(String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         Map<String, Schema> properties = schema.getProperties();
         if (properties != null) {
             if (!visited.contains(schema)) {
                 visited.add(schema);
 
-                List<PropertyExample<T>> propertyList = buildPropertyListFromSchema(properties, definitions, visited);
+                List<PropertyExample<T>> propertyList =
+                        buildPropertyExampleListFromSchema(properties, definitions, visited);
                 T example = exampleValueGenerator.createObjectExample(name, propertyList);
 
                 visited.remove(schema);
@@ -172,49 +173,50 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
             List<Schema> schemas = schema.getAllOf();
 
-            List<PropertyExample<T>> mergedProperties = buildPropertyListFromSchemas(schemas, definitions, visited);
+            List<PropertyExample<T>> mergedProperties =
+                    buildPropertyExampleListFromSchemas(schemas, definitions, visited);
             return exampleValueGenerator.createObjectExample(name, mergedProperties);
         }
         if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
             List<Schema> schemas = schema.getAnyOf();
             Schema anyOfSchema = schemas.get(0);
-            return buildSchemaInternal(name, anyOfSchema, definitions, visited);
+            return buildExample(name, anyOfSchema, definitions, visited);
         }
         if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
             List<Schema> schemas = schema.getOneOf();
             Schema oneOfSchema = schemas.get(0);
-            return buildSchemaInternal(name, oneOfSchema, definitions, visited);
+            return buildExample(name, oneOfSchema, definitions, visited);
         }
 
         // i.e. A MapSchema is type=object, but has properties=null
         return exampleValueGenerator.createEmptyObjectExample();
     }
 
-    private List<PropertyExample<T>> buildPropertyListFromSchema(
+    private List<PropertyExample<T>> buildPropertyExampleListFromSchema(
             Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
         return properties.entrySet().stream()
-                // TODO: comparing to sort? Remove or add to buildPropertyListFromSchemas
-                .sorted(Map.Entry.comparingByKey())
                 .map(entry -> {
                     String propertyKey = entry.getKey();
-                    T propertyValue = buildSchemaInternal(propertyKey, entry.getValue(), definitions, visited);
+                    T propertyValue = buildExample(propertyKey, entry.getValue(), definitions, visited);
                     return new PropertyExample<>(propertyKey, propertyValue);
                 })
+                .sorted(Comparator.comparing(PropertyExample::name))
                 .toList();
     }
 
-    private List<PropertyExample<T>> buildPropertyListFromSchemas(
+    private List<PropertyExample<T>> buildPropertyExampleListFromSchemas(
             List<Schema> schemas, Map<String, Schema> definitions, Set<Schema> visited) {
         return schemas.stream()
-                .map(schema -> resolveSchemaFromRefIfAny(schema, definitions).orElse(schema))
+                .map(schema -> resolveSchemaFromRef(schema, definitions).orElse(schema))
                 .map(Schema::getProperties)
                 .filter(Objects::nonNull)
                 .flatMap(propertiesFromSchema ->
-                        buildPropertyListFromSchema(propertiesFromSchema, definitions, visited).stream())
+                        buildPropertyExampleListFromSchema(propertiesFromSchema, definitions, visited).stream())
+                .sorted(Comparator.comparing(PropertyExample::name))
                 .toList();
     }
 
-    private Optional<Schema<?>> resolveSchemaFromRefIfAny(Schema schema, Map<String, Schema> definitions) {
+    private Optional<Schema<?>> resolveSchemaFromRef(Schema schema, Map<String, Schema> definitions) {
         String ref = schema.get$ref();
         if (ref != null) {
             String schemaName = MessageReference.extractRefName(ref);
