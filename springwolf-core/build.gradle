@@ -52,7 +52,7 @@ dependencies {
     testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
-    permitTestUnusedDeclared "org.slf4j:slf4j-simple:2.0.12"
+    permitTestUnusedDeclared "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
 
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
