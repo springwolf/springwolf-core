@@ -101,6 +101,13 @@
           "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto"
         }
       }
+    },
+    "yaml-topic": {
+      "messages": {
+        "io.github.stavshamir.springwolf.example.kafka.dtos.YamlPayloadDto": {
+          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.kafka.dtos.YamlPayloadDto"
+        }
+      }
     }
   },
   "components": {
@@ -837,6 +844,50 @@
           },
           "type": "object"
         }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dtos.YamlPayloadDto": {
+        "type": "object",
+        "properties": {
+          "someEnum": {
+            "type": "string",
+            "enum": [
+              "FOO1",
+              "FOO2",
+              "FOO3"
+            ]
+          },
+          "someLong": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "someString": {
+            "type": "string"
+          }
+        },
+        "examples": [
+          "someEnum: FOO1\nsomeLong: 0\nsomeString: string\n"
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "someEnum": {
+              "enum": [
+                "FOO1",
+                "FOO2",
+                "FOO3"
+              ],
+              "type": "string"
+            },
+            "someLong": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "someString": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
       }
     },
     "messages": {
@@ -969,6 +1020,25 @@
         "contentType": "text/xml",
         "name": "io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto",
         "title": "XmlPayloadDto",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.4.0"
+          }
+        }
+      },
+      "io.github.stavshamir.springwolf.example.kafka.dtos.YamlPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.kafka.dtos.YamlPayloadDto"
+          }
+        },
+        "contentType": "application/yaml",
+        "name": "io.github.stavshamir.springwolf.example.kafka.dtos.YamlPayloadDto",
+        "title": "YamlPayloadDto",
         "bindings": {
           "kafka": {
             "bindingVersion": "0.4.0"
@@ -1205,6 +1275,24 @@
       "messages": [
         {
           "$ref": "#/channels/xml-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.XmlPayloadDto"
+        }
+      ]
+    },
+    "yaml-topic_receive_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/yaml-topic"
+      },
+      "title": "yaml-topic_receive",
+      "description": "Showcases a xml based message",
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.4.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/yaml-topic/messages/io.github.stavshamir.springwolf.example.kafka.dtos.YamlPayloadDto"
         }
       ]
     }
