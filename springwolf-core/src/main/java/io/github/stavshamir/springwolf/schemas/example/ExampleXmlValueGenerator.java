@@ -117,67 +117,67 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node generateDateExample() {
+    public Node createDateExample() {
         return document.createTextNode(DEFAULT_DATE_EXAMPLE);
     }
 
     @Override
-    public Node generateDateTimeExample() {
+    public Node createDateTimeExample() {
         return document.createTextNode(DEFAULT_DATE_TIME_EXAMPLE);
     }
 
     @Override
-    public Node generateEmailExample() {
+    public Node createEmailExample() {
         return document.createTextNode(DEFAULT_EMAIL_EXAMPLE);
     }
 
     @Override
-    public Node generatePasswordExample() {
+    public Node createPasswordExample() {
         return document.createTextNode(DEFAULT_PASSWORD_EXAMPLE);
     }
 
     @Override
-    public Node generateByteExample() {
+    public Node createByteExample() {
         return document.createTextNode(DEFAULT_BYTE_EXAMPLE);
     }
 
     @Override
-    public Node generateBinaryExample() {
+    public Node createBinaryExample() {
         return document.createTextNode(DEFAULT_BINARY_EXAMPLE);
     }
 
     @Override
-    public Node generateUuidExample() {
+    public Node createUuidExample() {
         return document.createTextNode(DEFAULT_UUID_EXAMPLE);
     }
 
     @Override
-    public Node generateStringExample() {
-        return generateStringExample(DEFAULT_STRING_EXAMPLE);
+    public Node createStringExample() {
+        return createStringExample(DEFAULT_STRING_EXAMPLE);
     }
 
     @Override
-    public Node generateStringExample(String value) {
+    public Node createStringExample(String value) {
         return document.createTextNode(value);
     }
 
     @Override
-    public Node generateEnumExample(String anEnumValue) {
-        return generateStringExample(anEnumValue);
+    public Node createEnumExample(String anEnumValue) {
+        return createStringExample(anEnumValue);
     }
 
     @Override
-    public Node generateUnknownSchemaStringTypeExample(String schemaType) {
+    public Node createUnknownSchemaStringTypeExample(String schemaType) {
         return document.createTextNode("unknown schema type: " + schemaType);
     }
 
     @Override
-    public Node generateUnknownSchemaFormatExample(String schemaFormat) {
+    public Node createUnknownSchemaStringFormatExample(String schemaFormat) {
         return document.createTextNode("unknown string schema format: " + schemaFormat);
     }
 
     @Override
-    public Node generateArrayExample(Node arrayItem) {
+    public Node createArrayExample(Node arrayItem) {
         return arrayItem;
     }
 
@@ -208,7 +208,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node exampleOrNull(String name, Object example) {
+    public Node getExampleOrNull(String name, Object example) {
         if (example instanceof Node) {
             return (Node) example;
         }

@@ -68,67 +68,67 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode generateStringExample() {
+    public JsonNode createStringExample() {
         return JsonNodeFactory.instance.textNode(DEFAULT_STRING_EXAMPLE);
     }
 
     @Override
-    public JsonNode generateStringExample(String value) {
+    public JsonNode createStringExample(String value) {
         return JsonNodeFactory.instance.textNode(value);
     }
 
     @Override
-    public JsonNode generateEnumExample(String anEnumValue) {
+    public JsonNode createEnumExample(String anEnumValue) {
         return JsonNodeFactory.instance.textNode(anEnumValue);
     }
 
     @Override
-    public JsonNode generateDateExample() {
+    public JsonNode createDateExample() {
         return JsonNodeFactory.instance.textNode(DEFAULT_DATE_EXAMPLE);
     }
 
     @Override
-    public JsonNode generateDateTimeExample() {
+    public JsonNode createDateTimeExample() {
         return JsonNodeFactory.instance.textNode(DEFAULT_DATE_TIME_EXAMPLE);
     }
 
     @Override
-    public JsonNode generateEmailExample() {
+    public JsonNode createEmailExample() {
         return JsonNodeFactory.instance.textNode(DEFAULT_EMAIL_EXAMPLE);
     }
 
     @Override
-    public JsonNode generatePasswordExample() {
+    public JsonNode createPasswordExample() {
         return JsonNodeFactory.instance.textNode(DEFAULT_PASSWORD_EXAMPLE);
     }
 
     @Override
-    public JsonNode generateByteExample() {
+    public JsonNode createByteExample() {
         return JsonNodeFactory.instance.textNode(DEFAULT_BYTE_EXAMPLE);
     }
 
     @Override
-    public JsonNode generateBinaryExample() {
+    public JsonNode createBinaryExample() {
         return JsonNodeFactory.instance.textNode(DEFAULT_BINARY_EXAMPLE);
     }
 
     @Override
-    public JsonNode generateUuidExample() {
+    public JsonNode createUuidExample() {
         return JsonNodeFactory.instance.textNode(DEFAULT_UUID_EXAMPLE);
     }
 
     @Override
-    public JsonNode generateUnknownSchemaStringTypeExample(String type) {
+    public JsonNode createUnknownSchemaStringTypeExample(String type) {
         return JsonNodeFactory.instance.textNode("unknown schema type: " + type);
     }
 
     @Override
-    public JsonNode generateUnknownSchemaFormatExample(String schemaFormat) {
+    public JsonNode createUnknownSchemaStringFormatExample(String schemaFormat) {
         return JsonNodeFactory.instance.textNode("unknown string schema format: " + schemaFormat);
     }
 
     @Override
-    public JsonNode generateArrayExample(JsonNode arrayItem) {
+    public JsonNode createArrayExample(JsonNode arrayItem) {
         ArrayNode array = objectMapper.createArrayNode();
         array.add(arrayItem);
         return array;
@@ -150,7 +150,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode exampleOrNull(String name, Object example) {
+    public JsonNode getExampleOrNull(String name, Object example) {
         if (example instanceof JsonNode) {
             return (JsonNode) example;
         }

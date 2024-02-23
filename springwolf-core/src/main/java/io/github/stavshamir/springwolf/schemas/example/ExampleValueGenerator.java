@@ -55,33 +55,33 @@ interface ExampleValueGenerator<T, R> {
 
     T createDoubleExample();
 
-    T generateDateExample();
+    T createDateExample();
 
-    T generateDateTimeExample();
+    T createDateTimeExample();
 
-    T generateEmailExample();
+    T createEmailExample();
 
-    T generatePasswordExample();
+    T createPasswordExample();
 
-    T generateByteExample();
+    T createByteExample();
 
-    T generateBinaryExample();
+    T createBinaryExample();
 
-    T generateUuidExample();
+    T createUuidExample();
 
-    T generateStringExample();
+    T createStringExample();
 
-    T generateStringExample(String value);
+    T createStringExample(String value);
 
-    T generateEnumExample(String anEnumValue);
+    T createEnumExample(String anEnumValue);
 
-    T generateUnknownSchemaStringTypeExample(String schemaType);
+    T createUnknownSchemaStringTypeExample(String schemaType);
 
-    T generateUnknownSchemaFormatExample(String schemaFormat);
+    T createUnknownSchemaStringFormatExample(String schemaFormat);
 
-    T generateArrayExample(T arrayItem);
+    T createArrayExample(T arrayItem);
 
     T createRaw(Object exampleValueString);
 
-    T exampleOrNull(String name, Object example);
+    T getExampleOrNull(String name, Object example);
 }

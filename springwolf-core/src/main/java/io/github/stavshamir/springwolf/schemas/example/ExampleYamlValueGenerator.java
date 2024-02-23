@@ -77,68 +77,68 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode generateDateExample() {
-        return this.exampleJsonValueGenerator.generateDateExample();
+    public JsonNode createDateExample() {
+        return this.exampleJsonValueGenerator.createDateExample();
     }
 
     @Override
-    public JsonNode generateDateTimeExample() {
-        return this.exampleJsonValueGenerator.generateDateTimeExample();
+    public JsonNode createDateTimeExample() {
+        return this.exampleJsonValueGenerator.createDateTimeExample();
     }
 
     @Override
-    public JsonNode generateEmailExample() {
-        return this.exampleJsonValueGenerator.generateEmailExample();
+    public JsonNode createEmailExample() {
+        return this.exampleJsonValueGenerator.createEmailExample();
     }
 
     @Override
-    public JsonNode generatePasswordExample() {
-        return this.exampleJsonValueGenerator.generatePasswordExample();
+    public JsonNode createPasswordExample() {
+        return this.exampleJsonValueGenerator.createPasswordExample();
     }
 
     @Override
-    public JsonNode generateByteExample() {
-        return this.exampleJsonValueGenerator.generateByteExample();
+    public JsonNode createByteExample() {
+        return this.exampleJsonValueGenerator.createByteExample();
     }
 
     @Override
-    public JsonNode generateBinaryExample() {
-        return this.exampleJsonValueGenerator.generateBinaryExample();
+    public JsonNode createBinaryExample() {
+        return this.exampleJsonValueGenerator.createBinaryExample();
     }
 
     @Override
-    public JsonNode generateUuidExample() {
-        return this.exampleJsonValueGenerator.generateUuidExample();
+    public JsonNode createUuidExample() {
+        return this.exampleJsonValueGenerator.createUuidExample();
     }
 
     @Override
-    public JsonNode generateStringExample() {
-        return this.exampleJsonValueGenerator.generateStringExample();
+    public JsonNode createStringExample() {
+        return this.exampleJsonValueGenerator.createStringExample();
     }
 
     @Override
-    public JsonNode generateStringExample(String value) {
-        return this.exampleJsonValueGenerator.generateStringExample(value);
+    public JsonNode createStringExample(String value) {
+        return this.exampleJsonValueGenerator.createStringExample(value);
     }
 
     @Override
-    public JsonNode generateEnumExample(String anEnumValue) {
-        return this.exampleJsonValueGenerator.generateEnumExample(anEnumValue);
+    public JsonNode createEnumExample(String anEnumValue) {
+        return this.exampleJsonValueGenerator.createEnumExample(anEnumValue);
     }
 
     @Override
-    public JsonNode generateUnknownSchemaStringTypeExample(String schemaType) {
-        return this.exampleJsonValueGenerator.generateUnknownSchemaStringTypeExample(schemaType);
+    public JsonNode createUnknownSchemaStringTypeExample(String schemaType) {
+        return this.exampleJsonValueGenerator.createUnknownSchemaStringTypeExample(schemaType);
     }
 
     @Override
-    public JsonNode generateUnknownSchemaFormatExample(String schemaFormat) {
-        return this.exampleJsonValueGenerator.generateUnknownSchemaFormatExample(schemaFormat);
+    public JsonNode createUnknownSchemaStringFormatExample(String schemaFormat) {
+        return this.exampleJsonValueGenerator.createUnknownSchemaStringFormatExample(schemaFormat);
     }
 
     @Override
-    public JsonNode generateArrayExample(JsonNode arrayItem) {
-        return this.exampleJsonValueGenerator.generateArrayExample(arrayItem);
+    public JsonNode createArrayExample(JsonNode arrayItem) {
+        return this.exampleJsonValueGenerator.createArrayExample(arrayItem);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode exampleOrNull(String name, Object example) {
-        return this.exampleJsonValueGenerator.exampleOrNull(name, example);
+    public JsonNode getExampleOrNull(String name, Object example) {
+        return this.exampleJsonValueGenerator.getExampleOrNull(name, example);
     }
 }

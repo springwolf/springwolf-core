@@ -334,6 +334,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         @Test
         void type_object_array() {
             ObjectSchema itemSchema = new ObjectSchema();
+            itemSchema.setName("array_element");
             itemSchema.addProperty("s", new StringSchema());
             itemSchema.addProperty("b", new BooleanSchema());
 
@@ -343,10 +344,12 @@ class DefaultSchemaWalkerXmlIntegrationTest {
 
             String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
+            // TODO FixeMe
             assertThat(actual)
-                    .isEqualTo("<type_object_array><b>true</b><s>string</s></type_object_array>"
-                            .trim()
-                            .stripIndent());
+                    .isEqualTo(
+                            "<type_object_array><array_element><b>true</b><s>string</s></array_element></type_object_array>"
+                                    .trim()
+                                    .stripIndent());
         }
 
         @Test

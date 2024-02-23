@@ -59,7 +59,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             case "number" -> exampleValueGenerator.createDoubleExample();
             case "object" -> handleObject(name, schema, definitions, visited);
             case "string" -> handleStringSchema(schema);
-            default -> exampleValueGenerator.generateUnknownSchemaStringTypeExample(type);
+            default -> exampleValueGenerator.createUnknownSchemaStringTypeExample(type);
         };
     }
 
@@ -72,7 +72,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         }
 
         // Return directly, when we have processed this before
-        T processedExample = exampleValueGenerator.exampleOrNull(schema.getName(), exampleValue);
+        T processedExample = exampleValueGenerator.getExampleOrNull(schema.getName(), exampleValue);
         if (processedExample != null) {
             return processedExample;
         }
@@ -107,7 +107,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
         try {
             // value (i.e. OffsetDateTime) is represented as string
-            return exampleValueGenerator.generateStringExample(exampleValue.toString());
+            return exampleValueGenerator.createStringExample(exampleValue.toString());
         } catch (IllegalArgumentException ex) {
             log.debug("Unable to convert example to JSON: %s".formatted(exampleValue.toString()), ex);
         }
@@ -118,29 +118,29 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     private T handleArraySchema(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         T arrayItem = buildSchemaInternal(schema.getName(), schema.getItems(), definitions, visited);
 
-        return exampleValueGenerator.generateArrayExample(arrayItem);
+        return exampleValueGenerator.createArrayExample(arrayItem);
     }
 
     private T handleStringSchema(Schema schema) {
         String firstEnumValue = getFirstEnumValue(schema);
         if (firstEnumValue != null) {
-            return exampleValueGenerator.generateEnumExample(firstEnumValue);
+            return exampleValueGenerator.createEnumExample(firstEnumValue);
         }
 
         String format = schema.getFormat();
         if (format == null) {
-            return exampleValueGenerator.generateStringExample();
+            return exampleValueGenerator.createStringExample();
         }
 
         return switch (format) {
-            case "date" -> exampleValueGenerator.generateDateExample();
-            case "date-time" -> exampleValueGenerator.generateDateTimeExample();
-            case "email" -> exampleValueGenerator.generateEmailExample();
-            case "password" -> exampleValueGenerator.generatePasswordExample();
-            case "byte" -> exampleValueGenerator.generateByteExample();
-            case "binary" -> exampleValueGenerator.generateBinaryExample();
-            case "uuid" -> exampleValueGenerator.generateUuidExample();
-            default -> exampleValueGenerator.generateUnknownSchemaFormatExample(format);
+            case "date" -> exampleValueGenerator.createDateExample();
+            case "date-time" -> exampleValueGenerator.createDateTimeExample();
+            case "email" -> exampleValueGenerator.createEmailExample();
+            case "password" -> exampleValueGenerator.createPasswordExample();
+            case "byte" -> exampleValueGenerator.createByteExample();
+            case "binary" -> exampleValueGenerator.createBinaryExample();
+            case "uuid" -> exampleValueGenerator.createUuidExample();
+            default -> exampleValueGenerator.createUnknownSchemaStringFormatExample(format);
         };
     }
 
@@ -156,7 +156,6 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private T handleObject(String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        // TODO Handle missconfiguration when object schema has no name
         Map<String, Schema> properties = schema.getProperties();
         if (properties != null) {
             if (!visited.contains(schema)) {

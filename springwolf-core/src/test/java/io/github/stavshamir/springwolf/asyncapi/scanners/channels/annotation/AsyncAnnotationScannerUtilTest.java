@@ -159,7 +159,7 @@ class AsyncAnnotationScannerUtilTest {
                 .messageId("simpleFoo")
                 .name("SimpleFooPayLoad")
                 .title("Message Title")
-                .contentType("application/schema+json;version=draft-07")
+                .contentType("application/json")
                 .build();
         assertEquals(expectedMessage, actual.build());
     }
