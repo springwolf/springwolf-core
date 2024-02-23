@@ -20,10 +20,13 @@ import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
 import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
 import io.github.stavshamir.springwolf.schemas.example.DefaultExampleXmlValueSerializer;
+import io.github.stavshamir.springwolf.schemas.example.DefaultExampleYamlValueSerializer;
 import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleXmlValueGenerator;
 import io.github.stavshamir.springwolf.schemas.example.ExampleXmlValueSerializer;
+import io.github.stavshamir.springwolf.schemas.example.ExampleYamlValueGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleYamlValueSerializer;
 import io.github.stavshamir.springwolf.schemas.example.SchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.SchemaWalkerProvider;
 import io.github.stavshamir.springwolf.schemas.postprocessor.AvroSchemaPostProcessor;
@@ -142,6 +145,18 @@ public class SpringwolfAutoConfiguration {
     @Bean
     public SchemaWalker xmlSchemaWalker(ExampleXmlValueSerializer exampleXmlValueSerializer) {
         return new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(exampleXmlValueSerializer));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ExampleYamlValueSerializer defaultExampleYamlValueSerializer() {
+        return new DefaultExampleYamlValueSerializer();
+    }
+
+    @Bean
+    public SchemaWalker yamlSchemaWalker(ExampleYamlValueSerializer exampleYamlValueSerializer) {
+        return new DefaultSchemaWalker<>(
+                new ExampleYamlValueGenerator(new ExampleJsonValueGenerator(), exampleYamlValueSerializer));
     }
 
     @Bean
