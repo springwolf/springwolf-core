@@ -2,6 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings;
 
 import io.awspring.cloud.sqs.annotation.SqsListener;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.SqsListenerUtil;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;

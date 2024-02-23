@@ -2,8 +2,8 @@
 package io.github.stavshamir.springwolf.example.sns.producers;
 
 import io.awspring.cloud.sns.core.SnsTemplate;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
+import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
+import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBindingIdentifier;
 import io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto;

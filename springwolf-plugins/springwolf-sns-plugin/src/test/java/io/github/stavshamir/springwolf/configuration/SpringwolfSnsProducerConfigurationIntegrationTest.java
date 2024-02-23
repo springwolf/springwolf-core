@@ -2,15 +2,16 @@
 package io.github.stavshamir.springwolf.configuration;
 
 import io.awspring.cloud.sns.core.SnsTemplate;
-import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import io.github.stavshamir.springwolf.asyncapi.ChannelsService;
-import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.asyncapi.AsyncApiService;
+import io.github.springwolf.core.asyncapi.ChannelsService;
+import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
+import io.github.springwolf.core.configuration.AsyncApiDocketService;
+import io.github.springwolf.core.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSnsController;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.sns.SpringwolfSnsAutoConfiguration;
 import io.github.stavshamir.springwolf.producer.SpringwolfSnsProducer;
-import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

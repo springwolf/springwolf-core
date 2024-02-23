@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.sqs;
 
 import io.awspring.cloud.sqs.operations.SqsTemplate;
-import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSqsController;
 import io.github.stavshamir.springwolf.producer.SpringwolfSqsProducer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

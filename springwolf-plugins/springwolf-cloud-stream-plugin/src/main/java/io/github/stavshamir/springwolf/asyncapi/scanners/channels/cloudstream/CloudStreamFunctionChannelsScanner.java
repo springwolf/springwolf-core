@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.beans.BeanMethodsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelMerger;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.bindings.EmptyChannelBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.springwolf.core.asyncapi.types.channel.bindings.EmptyChannelBinding;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.springwolf.core.configuration.AsyncApiDocket;
+import io.github.springwolf.core.configuration.AsyncApiDocketService;
+import io.github.springwolf.core.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.ChannelObject;
@@ -17,9 +20,6 @@ import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.Message
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.server.Server;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket;
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocketService;
-import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;

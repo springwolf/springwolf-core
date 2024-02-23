@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

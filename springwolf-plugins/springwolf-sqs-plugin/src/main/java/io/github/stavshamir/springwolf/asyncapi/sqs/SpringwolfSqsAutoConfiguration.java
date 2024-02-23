@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.sqs;
 
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfSqsConfigProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

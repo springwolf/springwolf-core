@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.amqp;
 
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfAmqpConfigProperties;
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigConstants;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

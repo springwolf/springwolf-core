@@ -1,21 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.amqp;
 
+
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
+import io.github.springwolf.core.asyncapi.scanners.channels.SimpleChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.SimpleOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.annotation.ClassLevelAnnotationChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.annotation.ClassLevelAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.annotation.MethodLevelAnnotationChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.annotation.MethodLevelAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
+import io.github.springwolf.core.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.AmqpBindingFactory;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AmqpMessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor.AmqpOperationBindingProcessor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.ChannelPriority;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.SimpleOperationsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelAnnotationChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.ClassLevelAnnotationOperationsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.MethodLevelAnnotationOperationsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersForAmqpBuilder;
-import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;

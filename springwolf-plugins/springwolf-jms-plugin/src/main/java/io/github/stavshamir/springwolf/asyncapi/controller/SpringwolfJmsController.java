@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.controller;
 
-import io.github.stavshamir.springwolf.asyncapi.controller.dtos.MessageDto;
+import io.github.springwolf.core.asyncapi.controller.PublishingBaseController;
+import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.asyncapi.controller.dtos.MessageDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfJmsProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;

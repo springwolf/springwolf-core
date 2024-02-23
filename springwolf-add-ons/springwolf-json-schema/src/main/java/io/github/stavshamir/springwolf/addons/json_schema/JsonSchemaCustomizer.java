@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.addons.json_schema;
 
-import io.github.stavshamir.springwolf.asyncapi.AsyncApiCustomizer;
+
+import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Method;

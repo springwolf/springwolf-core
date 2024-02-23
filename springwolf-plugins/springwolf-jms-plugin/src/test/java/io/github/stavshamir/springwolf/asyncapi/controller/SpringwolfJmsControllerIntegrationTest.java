@@ -2,15 +2,16 @@
 package io.github.stavshamir.springwolf.asyncapi.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.stavshamir.springwolf.producer.SpringwolfJmsProducer;
-import io.github.stavshamir.springwolf.schemas.ComponentsService;
-import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
-import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
-import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
-import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
-import io.github.stavshamir.springwolf.schemas.example.SchemaWalkerProvider;
+import io.github.springwolf.core.schemas.ComponentsService;
+import io.github.springwolf.core.schemas.DefaultComponentsService;
+import io.github.springwolf.core.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.schemas.example.DefaultSchemaWalker;
+import io.github.springwolf.core.schemas.example.ExampleJsonValueGenerator;
+import io.github.springwolf.core.schemas.example.SchemaWalkerProvider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

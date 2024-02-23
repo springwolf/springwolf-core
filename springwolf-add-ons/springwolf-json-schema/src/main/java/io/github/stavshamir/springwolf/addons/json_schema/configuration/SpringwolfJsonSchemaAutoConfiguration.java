@@ -2,9 +2,9 @@
 package io.github.stavshamir.springwolf.addons.json_schema.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
 import io.github.stavshamir.springwolf.addons.json_schema.JsonSchemaCustomizer;
 import io.github.stavshamir.springwolf.addons.json_schema.JsonSchemaGenerator;
-import io.github.stavshamir.springwolf.asyncapi.AsyncApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

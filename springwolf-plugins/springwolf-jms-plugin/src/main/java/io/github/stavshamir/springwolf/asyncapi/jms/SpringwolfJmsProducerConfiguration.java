@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.jms;
 
-import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfJmsController;
 import io.github.stavshamir.springwolf.producer.SpringwolfJmsProducer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

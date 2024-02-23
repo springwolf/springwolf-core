@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.amqp;
 
-import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
-import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.asyncapi.AsyncApiService;
+import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfAmqpController;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

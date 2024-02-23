@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.kafka.producers;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
+import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
+import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeadersCloudEventConstants;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncKey;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
-import io.github.stavshamir.springwolf.asyncapi.types.channel.operation.message.header.AsyncHeadersCloudEventConstants;
 import io.github.stavshamir.springwolf.example.kafka.configuration.KafkaConfiguration;
 import io.github.stavshamir.springwolf.example.kafka.dtos.NestedPayloadDto;
 import org.springframework.beans.factory.annotation.Autowired;

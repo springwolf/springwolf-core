@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.addons.generic_binding.annotation.processor;
 
 import io.github.stavshamir.springwolf.addons.generic_binding.annotation.AsyncGenericOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedOperationBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

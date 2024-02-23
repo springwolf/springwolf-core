@@ -2,7 +2,7 @@
 package io.github.stavshamir.springwolf.asyncapi.sns;
 
 import io.awspring.cloud.sns.core.SnsTemplate;
-import io.github.stavshamir.springwolf.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
 import io.github.stavshamir.springwolf.asyncapi.controller.SpringwolfSnsController;
 import io.github.stavshamir.springwolf.producer.SpringwolfSnsProducer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

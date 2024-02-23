@@ -1284,7 +1284,7 @@
         "$ref": "#/channels/yaml-topic"
       },
       "title": "yaml-topic_receive",
-      "description": "Showcases a yaml based message",
+      "description": "Showcases a xml based message",
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"

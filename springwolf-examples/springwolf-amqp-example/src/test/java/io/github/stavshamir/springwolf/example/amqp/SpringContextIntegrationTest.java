@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.example.amqp;
 
-import io.github.stavshamir.springwolf.asyncapi.AsyncApiService;
+import io.github.springwolf.core.asyncapi.AsyncApiService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

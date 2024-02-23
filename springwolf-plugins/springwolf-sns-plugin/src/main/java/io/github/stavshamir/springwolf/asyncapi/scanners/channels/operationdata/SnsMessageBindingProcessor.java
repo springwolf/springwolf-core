@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.MessageBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.sns.SNSMessageBinding;
 import org.springframework.context.EmbeddedValueResolverAware;

@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.MessageBindingProcessor;
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.ProcessedMessageBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.MessageBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.Schema;
 import io.github.stavshamir.springwolf.asyncapi.v3.model.schema.SchemaObject;
@@ -35,7 +34,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
     }
 
     private ProcessedMessageBinding mapToMessageBinding(KafkaAsyncOperationBinding bindingAnnotation) {
-        KafkaAsyncMessageBinding messageBinding = bindingAnnotation.messageBinding();
+        KafkaAsyncOperationBinding.KafkaAsyncMessageBinding messageBinding = bindingAnnotation.messageBinding();
 
         KafkaMessageBinding.KafkaMessageBindingBuilder kafkaMessageBindingBuilder = KafkaMessageBinding.builder();
 
@@ -53,7 +52,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
         return StringUtils.hasText(stringValue) ? resolver.resolveStringValue(stringValue) : null;
     }
 
-    private Schema resolveSchemaOrNull(KafkaAsyncMessageBinding messageBinding) {
+    private Schema resolveSchemaOrNull(KafkaAsyncOperationBinding.KafkaAsyncMessageBinding messageBinding) {
         Schema schemaDefinition = null;
         switch (messageBinding.key().type()) {
             case UNDEFINED_KEY:

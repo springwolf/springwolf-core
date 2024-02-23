@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.sns;
 
-import io.github.stavshamir.springwolf.asyncapi.scanners.bindings.BindingProcessorPriority;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.SnsMessageBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.SnsOperationBindingProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
