@@ -1,5 +1,5 @@
 {
-  "ComplexFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$ComplexFoo" : {
     "type" : "object",
     "properties" : {
       "b" : {
@@ -22,7 +22,7 @@
         "format" : "int32"
       },
       "n" : {
-        "$ref" : "#/components/schemas/Nested"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested"
       },
       "s" : {
         "type" : "string"
@@ -30,25 +30,7 @@
     },
     "examples" : [ "<ComplexFoo><b>true</b><d>1.1</d><dt>2015-07-20T15:49:04-07:00</dt><f>1.1</f><i>0</i><n><nba>YmFzZTY0LWV4YW1wbGU=</nba><nc><cyclic/></nc><nli>0</nli><nmfm/><ns>string</ns><nsm><s>string</s></nsm><nu>3fa85f64-5717-4562-b3fc-2c963f66afa6</nu></n><s>string</s></ComplexFoo>" ]
   },
-  "Cyclic" : {
-    "type" : "object",
-    "properties" : {
-      "cyclic" : {
-        "$ref" : "#/components/schemas/Cyclic"
-      }
-    },
-    "examples" : [ "<Cyclic><cyclic/></Cyclic>" ]
-  },
-  "MyClass" : {
-    "type" : "object",
-    "properties" : {
-      "s" : {
-        "type" : "string"
-      }
-    },
-    "examples" : [ "<MyClass><s>string</s></MyClass>" ]
-  },
-  "Nested" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested" : {
     "type" : "object",
     "properties" : {
       "nba" : {
@@ -59,7 +41,7 @@
         }
       },
       "nc" : {
-        "$ref" : "#/components/schemas/Cyclic"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
       },
       "nli" : {
         "type" : "array",
@@ -71,7 +53,7 @@
       "nmfm" : {
         "type" : "object",
         "additionalProperties" : {
-          "$ref" : "#/components/schemas/MyClass"
+          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$MyClass"
         }
       },
       "ns" : {
@@ -80,7 +62,7 @@
       "nsm" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/MyClass"
+          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$MyClass"
         },
         "uniqueItems" : true
       },
@@ -89,6 +71,24 @@
         "format" : "uuid"
       }
     },
-    "examples" : [ "<Nested><nba>YmFzZTY0LWV4YW1wbGU=</nba><Cyclic><cyclic/></Cyclic><nli>0</nli><nmfm/><ns>string</ns><MyClass><s>string</s></MyClass><nu>3fa85f64-5717-4562-b3fc-2c963f66afa6</nu></Nested>" ]
+    "examples" : [ "<Nested><nba>YmFzZTY0LWV4YW1wbGU=</nba><nc><cyclic/></nc><nli>0</nli><nmfm/><ns>string</ns><nsm><s>string</s></nsm><nu>3fa85f64-5717-4562-b3fc-2c963f66afa6</nu></Nested>" ]
+  },
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$Cyclic" : {
+    "type" : "object",
+    "properties" : {
+      "cyclic" : {
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+      }
+    },
+    "examples" : [ "<Cyclic><cyclic/></Cyclic>" ]
+  },
+  "io.github.stavshamir.springwolf.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$MyClass" : {
+    "type" : "object",
+    "properties" : {
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "<MyClass><s>string</s></MyClass>" ]
   }
 }

@@ -1,9 +1,9 @@
 {
-  "CompositeFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$CompositeFoo" : {
     "type" : "object",
     "properties" : {
       "f" : {
-        "$ref" : "#/components/schemas/SimpleFoo"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SimpleFoo"
       },
       "s" : {
         "type" : "string"
@@ -11,7 +11,7 @@
     },
     "examples" : [ "f:\n  b: true\n  s: string\ns: string\n" ]
   },
-  "FooWithEnum" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$FooWithEnum" : {
     "type" : "object",
     "properties" : {
       "b" : {
@@ -24,7 +24,7 @@
     },
     "examples" : [ "b: BAR1\ns: string\n" ]
   },
-  "SimpleFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SimpleFoo" : {
     "type" : "object",
     "properties" : {
       "b" : {

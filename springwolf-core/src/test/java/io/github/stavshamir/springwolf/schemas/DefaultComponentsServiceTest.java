@@ -89,10 +89,10 @@ class DefaultComponentsServiceTest {
     }
 
     @Test
-    void getDefinitionWithFqnClassName() throws IOException {
+    void getDefinitionWithoutFqnClassName() throws IOException {
         // given
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
-        properties.setUseFqn(true);
+        properties.setUseFqn(false);
 
         ComponentsService componentsServiceWithFqn =
                 new DefaultComponentsService(List.of(), List.of(), new SwaggerSchemaUtil(), properties);
@@ -106,9 +106,8 @@ class DefaultComponentsServiceTest {
 
         // then
         System.out.println("Got: " + actualDefinitions);
-        String fqnClassName = clazz.getName();
-        assertThat(actualDefinitions).contains(fqnClassName);
-        assertThat(fqnClassName.length()).isGreaterThan(clazz.getSimpleName().length());
+        assertThat(actualDefinitions).contains(clazz.getSimpleName());
+        assertThat(actualDefinitions).doesNotContain(clazz.getCanonicalName());
     }
 
     @Test

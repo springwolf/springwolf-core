@@ -112,6 +112,7 @@ class DefaultXmlComponentsServiceTest {
 
     @Data
     @NoArgsConstructor
+    @XmlRootElement(name = "SimpleFoo")
     private static class SimpleFoo {
         private String s;
         private boolean b;
@@ -120,7 +121,7 @@ class DefaultXmlComponentsServiceTest {
     @Data
     @NoArgsConstructor
     @Schema(description = "foo model")
-    @XmlRootElement(name = "documentedSimpleFoo")
+    @XmlRootElement(name = "DocumentedSimpleFoo")
     private static class DocumentedSimpleFoo {
         @Schema(description = "s field", example = "s value", requiredMode = Schema.RequiredMode.REQUIRED)
         private String s;
@@ -146,7 +147,7 @@ class DefaultXmlComponentsServiceTest {
 
     @Data
     @NoArgsConstructor
-    @XmlRootElement
+    @XmlRootElement(name = "CompositeFoo")
     private static class CompositeFoo {
         private String s;
         private SimpleFoo f;
@@ -154,15 +155,18 @@ class DefaultXmlComponentsServiceTest {
 
     @Data
     @NoArgsConstructor
+    @XmlRootElement(name = "ArrayFoo")
     private static class ArrayFoo {
         private List<SimpleFoo> fList;
     }
 
     @NoArgsConstructor
+    @XmlRootElement(name = "ListWrapper")
     private static class ListWrapper extends ArrayList<String> {}
 
     @Data
     @NoArgsConstructor
+    @XmlRootElement(name = "FooWithEnum")
     private static class FooWithEnum {
         private String s;
         private Bar b;
@@ -175,6 +179,7 @@ class DefaultXmlComponentsServiceTest {
 
     @Data
     @NoArgsConstructor
+    @XmlRootElement(name = "ComplexFoo")
     private static class ComplexFoo {
         private String s;
         private Boolean b;
@@ -186,6 +191,7 @@ class DefaultXmlComponentsServiceTest {
 
         @Data
         @NoArgsConstructor
+        @XmlRootElement(name = "Nested")
         private static class Nested {
             private String ns;
             private List<Integer> nli;
@@ -197,6 +203,7 @@ class DefaultXmlComponentsServiceTest {
 
             @Data
             @NoArgsConstructor
+            @XmlRootElement(name = "Cyclic")
             private static class Cyclic {
 
                 @Nullable
@@ -205,6 +212,7 @@ class DefaultXmlComponentsServiceTest {
 
             @Data
             @NoArgsConstructor
+            @XmlRootElement(name = "MyClass")
             private static class MyClass {
                 private String s;
             }
@@ -212,6 +220,7 @@ class DefaultXmlComponentsServiceTest {
     }
 
     @Nested
+    @XmlRootElement(name = "SchemaWithOneOf")
     class SchemaWithOneOf {
         @Test
         void testSchemaWithOneOf() throws IOException {
@@ -226,6 +235,7 @@ class DefaultXmlComponentsServiceTest {
 
         @Data
         @NoArgsConstructor
+        @XmlRootElement(name = "SchemaAnnotationFoo")
         public class SchemaAnnotationFoo {
             private String field;
             private AnyOf anyOf;
@@ -234,16 +244,20 @@ class DefaultXmlComponentsServiceTest {
         }
 
         @Schema(anyOf = {ImplementationOne.class, ImplementationTwo.class})
+        @XmlRootElement(name = "AnyOf")
         public interface AnyOf {}
 
         @Schema(allOf = {ImplementationOne.class, ImplementationTwo.class})
+        @XmlRootElement(name = "AllOf")
         public interface AllOf {}
 
         @Schema(oneOf = {ImplementationOne.class, ImplementationTwo.class})
+        @XmlRootElement(name = "OneOf")
         public interface OneOf {}
 
         @Data
         @NoArgsConstructor
+        @XmlRootElement(name = "ImplementationOne")
         public class ImplementationOne {
             private String firstOne;
             private String secondOne;
@@ -251,6 +265,7 @@ class DefaultXmlComponentsServiceTest {
 
         @Data
         @NoArgsConstructor
+        @XmlRootElement(name = "ImplementationTwo")
         public class ImplementationTwo {
             private Integer firstTwo;
             private Boolean secondTwo;
@@ -294,6 +309,7 @@ class DefaultXmlComponentsServiceTest {
 
         @Data
         @NoArgsConstructor
+        @XmlRootElement(name = "EnvelopWithMultipleAsyncApiPayloadAnnotations")
         public class EnvelopWithMultipleAsyncApiPayloadAnnotations {
             @AsyncApiPayload
             Integer otherField;

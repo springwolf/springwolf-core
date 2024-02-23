@@ -3,6 +3,7 @@ package io.github.stavshamir.springwolf.schemas.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +26,11 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
 
     @Override
     public void initialize() {}
+
+    @Override
+    public String lookupSchemaName(Schema schema) {
+        return exampleJsonValueGenerator.lookupSchemaName(schema);
+    }
 
     @Override
     public String prepareForSerialization(String name, JsonNode exampleObject) {

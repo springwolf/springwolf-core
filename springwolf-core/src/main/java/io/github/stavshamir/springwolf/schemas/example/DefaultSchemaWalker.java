@@ -28,14 +28,15 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
     @Override
     public R fromSchema(Schema schema, Map<String, Schema> definitions) {
+        exampleValueGenerator.initialize();
+
+        String schemaName = exampleValueGenerator.lookupSchemaName(schema);
         try {
-            exampleValueGenerator.initialize();
+            T generatedExample = buildExample(schemaName, schema, definitions, new HashSet<>());
 
-            T generatedExample = buildExample(schema.getName(), schema, definitions, new HashSet<>());
-
-            return exampleValueGenerator.prepareForSerialization(schema.getName(), generatedExample);
+            return exampleValueGenerator.prepareForSerialization(schemaName, generatedExample);
         } catch (ExampleGeneratingException ex) {
-            log.info("Failed to build example for schema {}", schema.getName(), ex);
+            log.info("Failed to build example for schema {}", schemaName, ex);
         }
         return null;
     }
@@ -72,7 +73,8 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         }
 
         // Return directly, when we have processed this before
-        T processedExample = exampleValueGenerator.getExampleOrNull(schema.getName(), exampleValue);
+        T processedExample =
+                exampleValueGenerator.getExampleOrNull(exampleValueGenerator.lookupSchemaName(schema), exampleValue);
         if (processedExample != null) {
             return processedExample;
         }
@@ -116,7 +118,8 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private T buildArrayExample(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        T arrayItem = buildExample(schema.getName(), schema.getItems(), definitions, visited);
+        String name = exampleValueGenerator.lookupSchemaName(schema);
+        T arrayItem = buildExample(name, schema.getItems(), definitions, visited);
 
         return exampleValueGenerator.createArrayExample(arrayItem);
     }
