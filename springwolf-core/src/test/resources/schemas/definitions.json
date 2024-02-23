@@ -1,9 +1,9 @@
 {
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$CompositeFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$CompositeFoo" : {
     "type" : "object",
     "properties" : {
       "f" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SimpleFoo"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SimpleFoo"
       },
       "s" : {
         "type" : "string"
@@ -17,7 +17,7 @@
       "s" : "string"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$FooWithEnum" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$FooWithEnum" : {
     "type" : "object",
     "properties" : {
       "b" : {
@@ -33,7 +33,7 @@
       "s" : "string"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SimpleFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SimpleFoo" : {
     "type" : "object",
     "properties" : {
       "b" : {

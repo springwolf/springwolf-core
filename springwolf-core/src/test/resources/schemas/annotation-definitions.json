@@ -1,5 +1,5 @@
 {
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$AllOf" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$AllOf" : {
     "type" : "object",
     "examples" : [ {
       "firstOne" : "string",
@@ -8,24 +8,24 @@
       "secondTwo" : true
     } ],
     "allOf" : [ {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$AnyOf" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$AnyOf" : {
     "type" : "object",
     "examples" : [ {
       "firstOne" : "string",
       "secondOne" : "string"
     } ],
     "anyOf" : [ {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$ImplementationOne" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationOne" : {
     "type" : "object",
     "properties" : {
       "firstOne" : {
@@ -40,7 +40,7 @@
       "secondOne" : "string"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$ImplementationTwo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationTwo" : {
     "type" : "object",
     "properties" : {
       "firstTwo" : {
@@ -56,32 +56,32 @@
       "secondTwo" : true
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$OneOf" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$OneOf" : {
     "type" : "object",
     "examples" : [ {
       "firstOne" : "string",
       "secondOne" : "string"
     } ],
     "oneOf" : [ {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
     "type" : "object",
     "properties" : {
       "allOf" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$AllOf"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$AllOf"
       },
       "anyOf" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$AnyOf"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$AnyOf"
       },
       "field" : {
         "type" : "string"
       },
       "oneOf" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SchemaWithOneOf$OneOf"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SchemaWithOneOf$OneOf"
       }
     },
     "examples" : [ {

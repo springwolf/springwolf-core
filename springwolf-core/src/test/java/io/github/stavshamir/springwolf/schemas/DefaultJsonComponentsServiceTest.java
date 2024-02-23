@@ -34,18 +34,10 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-<<<<<<<< HEAD:springwolf-core/src/test/java/io/github/stavshamir/springwolf/schemas/DefaultJsonComponentsServiceTest.java
 class DefaultJsonComponentsServiceTest {
 
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
-|||||||| parent of abee36b4 (feat(core)!: change setting use-fqn default to true):springwolf-core/src/test/java/io/github/stavshamir/springwolf/schemas/DefaultSchemasServiceTest.java
-class DefaultSchemasServiceTest {
-    private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
-========
-class DefaultComponentsServiceTest {
-    private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
->>>>>>>> abee36b4 (feat(core)!: change setting use-fqn default to true):springwolf-core/src/test/java/io/github/stavshamir/springwolf/schemas/DefaultComponentsServiceTest.java
     private final ComponentsService componentsService = new DefaultComponentsService(
             List.of(),
             List.of(new ExampleGeneratorPostProcessor(
@@ -59,19 +51,9 @@ class DefaultComponentsServiceTest {
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @Test
-<<<<<<<< HEAD:springwolf-core/src/test/java/io/github/stavshamir/springwolf/schemas/DefaultJsonComponentsServiceTest.java
     void getSchemas() throws IOException {
         componentsService.registerSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_JSON);
         componentsService.registerSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_JSON);
-|||||||| parent of abee36b4 (feat(core)!: change setting use-fqn default to true):springwolf-core/src/test/java/io/github/stavshamir/springwolf/schemas/DefaultSchemasServiceTest.java
-    void getSchemas() throws IOException {
-        componentsService.registerSchema(CompositeFoo.class);
-        componentsService.registerSchema(FooWithEnum.class);
-========
-    void getDefinitions() throws IOException {
-        componentsService.registerSchema(CompositeFoo.class);
-        componentsService.registerSchema(FooWithEnum.class);
->>>>>>>> abee36b4 (feat(core)!: change setting use-fqn default to true):springwolf-core/src/test/java/io/github/stavshamir/springwolf/schemas/DefaultComponentsServiceTest.java
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = jsonResource("/schemas/definitions.json");

@@ -1,11 +1,11 @@
 {
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ArrayFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ArrayFoo" : {
     "type" : "object",
     "properties" : {
       "flist" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SimpleFoo"
+          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SimpleFoo"
         }
       }
     },
@@ -16,7 +16,7 @@
       } ]
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$SimpleFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$SimpleFoo" : {
     "type" : "object",
     "properties" : {
       "b" : {

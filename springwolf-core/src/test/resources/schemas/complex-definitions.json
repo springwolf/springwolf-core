@@ -1,5 +1,5 @@
 {
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ComplexFoo" : {
     "type" : "object",
     "properties" : {
       "b" : {
@@ -22,7 +22,7 @@
         "format" : "int32"
       },
       "n" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ComplexFoo$Nested"
       },
       "s" : {
         "type" : "string"
@@ -50,7 +50,7 @@
       "s" : "string"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ComplexFoo$Nested" : {
     "type" : "object",
     "properties" : {
       "nba" : {
@@ -61,7 +61,7 @@
         }
       },
       "nc" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ComplexFoo$Nested$Cyclic"
       },
       "nli" : {
         "type" : "array",
@@ -73,7 +73,7 @@
       "nmfm" : {
         "type" : "object",
         "additionalProperties" : {
-          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$MyClass"
+          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ComplexFoo$Nested$MyClass"
         }
       },
       "ns" : {
@@ -82,7 +82,7 @@
       "nsm" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$MyClass"
+          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ComplexFoo$Nested$MyClass"
         },
         "uniqueItems" : true
       },
@@ -105,18 +105,18 @@
       "nu" : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$Cyclic" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ComplexFoo$Nested$Cyclic" : {
     "type" : "object",
     "properties" : {
       "cyclic" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ComplexFoo$Nested$Cyclic"
       }
     },
     "examples" : [ {
       "cyclic" : { }
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ComplexFoo$Nested$MyClass" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ComplexFoo$Nested$MyClass" : {
     "type" : "object",
     "properties" : {
       "s" : {

@@ -1,5 +1,5 @@
 {
-  "io.github.stavshamir.springwolf.schemas.DefaultComponentsServiceTest$ListWrapper" : {
+  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$ListWrapper" : {
     "type" : "array",
     "properties" : {
       "empty" : {

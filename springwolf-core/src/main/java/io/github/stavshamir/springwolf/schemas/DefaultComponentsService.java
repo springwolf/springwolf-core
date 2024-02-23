@@ -168,15 +168,11 @@ public class DefaultComponentsService implements ComponentsService {
 
     private <R> R runWithFqnSetting(Function<Void, R> callable) {
         boolean previousUseFqn = TypeNameResolver.std.getUseFqn();
-        if (properties.isUseFqn()) {
-            TypeNameResolver.std.setUseFqn(true);
-        }
+        TypeNameResolver.std.setUseFqn(properties.isUseFqn());
 
         R result = callable.apply(null);
 
-        if (properties.isUseFqn()) {
-            TypeNameResolver.std.setUseFqn(previousUseFqn);
-        }
+        TypeNameResolver.std.setUseFqn(previousUseFqn);
         return result;
     }
 
