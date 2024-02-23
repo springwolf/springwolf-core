@@ -191,8 +191,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         }
         try {
             document.appendChild(objectToWrite);
+
             String xml = exampleXmlValueSerializer.writeDocumentAsXmlString(document);
-            log.debug("name {} -> xml: {}", name, xml);
 
             exampleCache.putIfAbsent(name, exampleObject);
             return xml;
