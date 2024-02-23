@@ -13,7 +13,6 @@ import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
 import io.github.stavshamir.springwolf.schemas.example.ExampleXmlValueGenerator;
 import io.github.stavshamir.springwolf.schemas.example.SchemaWalkerProvider;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
-import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
@@ -22,7 +21,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,13 +37,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultXmlComponentsServiceTest {
-    private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
     private final ComponentsService componentsService = new DefaultComponentsService(
             List.of(),
-            List.of(
-                    new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(
-                            new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer()))))),
-                    schemasPostProcessor),
+            List.of(new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(
+                    new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer())))))),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
     private static final ObjectMapper objectMapper =
