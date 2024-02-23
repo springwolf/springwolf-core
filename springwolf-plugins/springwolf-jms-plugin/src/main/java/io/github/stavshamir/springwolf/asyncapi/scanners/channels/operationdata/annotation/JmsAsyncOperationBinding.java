@@ -2,6 +2,8 @@
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation;
 
 import io.github.springwolf.core.asyncapi.scanners.channels.annotation.AsyncOperationBinding;
+import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
+import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
