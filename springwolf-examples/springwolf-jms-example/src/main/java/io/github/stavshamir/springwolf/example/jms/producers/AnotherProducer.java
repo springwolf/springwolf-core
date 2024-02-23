@@ -3,7 +3,7 @@ package io.github.stavshamir.springwolf.example.jms.producers;
 
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
-import io.github.stavshamir.springwolf.addons.generic_binding.annotation.AsyncGenericOperationBinding;
+import io.github.springwolf.addons.generic_binding.annotation.AsyncGenericOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.JmsAsyncOperationBinding;
 import io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto;
 import lombok.RequiredArgsConstructor;
