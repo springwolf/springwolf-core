@@ -134,7 +134,6 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         String actual = serializer.toJsonString(asyncapi);
         InputStream s = this.getClass().getResourceAsStream("/asyncapi/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
-
         assertThatJson(actual).isEqualTo(expected);
     }
 

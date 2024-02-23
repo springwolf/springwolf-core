@@ -11,5 +11,5 @@ import java.util.Map;
  * It is closely coupled with the data structure of the SchemasService.
  */
 public interface SchemasPostProcessor {
-    void process(Schema schema, Map<String, Schema> definitions);
+    void process(Schema schema, Map<String, Schema> definitions, String contentType);
 }

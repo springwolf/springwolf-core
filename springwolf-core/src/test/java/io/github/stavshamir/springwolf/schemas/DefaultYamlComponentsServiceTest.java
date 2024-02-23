@@ -7,11 +7,13 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.payload.AsyncApiPayload;
-import io.github.stavshamir.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties;
-import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.example.DefaultExampleYamlValueSerializer;
+import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
+import io.github.stavshamir.springwolf.schemas.example.ExampleYamlValueGenerator;
+import io.github.stavshamir.springwolf.schemas.example.SchemaWalkerProvider;
 import io.github.stavshamir.springwolf.schemas.postprocessor.ExampleGeneratorPostProcessor;
-import io.github.stavshamir.springwolf.schemas.postprocessor.SchemasPostProcessor;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
@@ -19,7 +21,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,20 +35,18 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 
-class DefaultSchemasServiceTest {
-    private final SchemasPostProcessor schemasPostProcessor = Mockito.mock(SchemasPostProcessor.class);
-    private final SchemasPostProcessor schemasPostProcessor2 = Mockito.mock(SchemasPostProcessor.class);
+class DefaultYamlComponentsServiceTest {
+
+    private static final String CONTENT_TYPE_APPLICATION_YAML = "application/yaml";
+
+    private final ExampleYamlValueGenerator exampleYamlValueGenerator =
+            new ExampleYamlValueGenerator(new ExampleJsonValueGenerator(), new DefaultExampleYamlValueSerializer());
+
     private final ComponentsService componentsService = new DefaultComponentsService(
             List.of(),
-            List.of(
-                    new ExampleGeneratorPostProcessor(new ExampleJsonGenerator()),
-                    schemasPostProcessor,
-                    schemasPostProcessor2),
+            List.of(new ExampleGeneratorPostProcessor(
+                    new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(exampleYamlValueGenerator))))),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
 
@@ -58,35 +57,11 @@ class DefaultSchemasServiceTest {
 
     @Test
     void getSchemas() throws IOException {
-        componentsService.registerSchema(CompositeFoo.class);
-        componentsService.registerSchema(FooWithEnum.class);
+        componentsService.registerSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_YAML);
+        componentsService.registerSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/definitions.json");
-
-        System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
-    }
-
-    @Test
-    void getMessages() throws IOException {
-        componentsService.registerMessage(
-                MessageObject.builder().name("messageName1").build());
-        componentsService.registerMessage(
-                MessageObject.builder().name("messageName2").build());
-
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getMessages());
-        String expected =
-                """
-                        {
-                          "messageName1" : {
-                            "name" : "messageName1"
-                          },
-                          "messageName2" : {
-                            "name" : "messageName2"
-                          }
-                        }"""
-                        .stripIndent();
+        String expected = jsonResource("/schemas/yaml/definitions-yaml.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -94,10 +69,10 @@ class DefaultSchemasServiceTest {
 
     @Test
     void getDocumentedDefinitions() throws IOException {
-        componentsService.registerSchema(DocumentedSimpleFoo.class);
+        componentsService.registerSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/documented-definitions.json");
+        String expected = jsonResource("/schemas/yaml/documented-definitions-yaml.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -105,10 +80,10 @@ class DefaultSchemasServiceTest {
 
     @Test
     void getArrayDefinitions() throws IOException {
-        componentsService.registerSchema(ArrayFoo.class);
+        componentsService.registerSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/array-definitions.json");
+        String expected = jsonResource("/schemas/yaml/array-definitions-yaml.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -116,10 +91,10 @@ class DefaultSchemasServiceTest {
 
     @Test
     void getComplexDefinitions() throws IOException {
-        componentsService.registerSchema(ComplexFoo.class);
+        componentsService.registerSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/complex-definitions.json");
+        String expected = jsonResource("/schemas/yaml/complex-definitions-yaml.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -127,71 +102,19 @@ class DefaultSchemasServiceTest {
 
     @Test
     void getListWrapperDefinitions() throws IOException {
-        componentsService.registerSchema(ListWrapper.class);
+        componentsService.registerSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/generics-wrapper-definitions.json");
+        String expected = jsonResource("/schemas/yaml/generics-wrapper-definitions-yaml.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
     }
 
-    @Test
-    void classWithSchemaAnnotation() {
-        String modelName = componentsService.registerSchema(ClassWithSchemaAnnotation.class);
-
-        assertThat(modelName).isEqualTo("DifferentName");
-    }
-
-    @Test
-    void getDefinitionWithFqnClassName() throws IOException {
-        // given
-        SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
-        properties.setUseFqn(true);
-
-        ComponentsService componentsServiceWithFqn =
-                new DefaultComponentsService(List.of(), List.of(), new SwaggerSchemaUtil(), properties);
-
-        // when
-        Class<?> clazz =
-                OneFieldFooWithFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
-        componentsServiceWithFqn.registerSchema(clazz);
-        String actualDefinitions =
-                objectMapper.writer(printer).writeValueAsString(componentsServiceWithFqn.getSchemas());
-
-        // then
-        System.out.println("Got: " + actualDefinitions);
-        String fqnClassName = clazz.getName();
-        assertThat(actualDefinitions).contains(fqnClassName);
-        assertThat(fqnClassName.length()).isGreaterThan(clazz.getSimpleName().length());
-    }
-
-    @Test
-    void postProcessorsAreCalled() {
-        componentsService.registerSchema(FooWithEnum.class);
-
-        verify(schemasPostProcessor).process(any(), any());
-        verify(schemasPostProcessor2).process(any(), any());
-    }
-
-    @Test
-    void postProcessorIsSkippedWhenSchemaWasRemoved() {
-        doAnswer(invocationOnMock -> {
-                    Map<String, io.swagger.v3.oas.models.media.Schema> schemas = invocationOnMock.getArgument(1);
-                    schemas.clear();
-                    return null;
-                })
-                .when(schemasPostProcessor)
-                .process(any(), any());
-
-        componentsService.registerSchema(FooWithEnum.class);
-
-        verifyNoInteractions(schemasPostProcessor2);
-    }
-
     private String jsonResource(String path) throws IOException {
-        InputStream s = this.getClass().getResourceAsStream(path);
-        return new String(s.readAllBytes(), StandardCharsets.UTF_8);
+        try (InputStream s = this.getClass().getResourceAsStream(path)) {
+            return new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        }
     }
 
     @Data
@@ -199,12 +122,6 @@ class DefaultSchemasServiceTest {
     private static class SimpleFoo {
         private String s;
         private boolean b;
-    }
-
-    @Data
-    @NoArgsConstructor
-    private static class OneFieldFooWithFqn {
-        private String s;
     }
 
     @Data
@@ -246,7 +163,6 @@ class DefaultSchemasServiceTest {
         private List<SimpleFoo> fList;
     }
 
-    @Data
     @NoArgsConstructor
     private static class ListWrapper extends ArrayList<String> {}
 
@@ -260,14 +176,6 @@ class DefaultSchemasServiceTest {
             BAR1,
             BAR2
         }
-    }
-
-    @Data
-    @NoArgsConstructor
-    @Schema(name = "DifferentName")
-    private static class ClassWithSchemaAnnotation {
-        private String s;
-        private boolean b;
     }
 
     @Data
@@ -312,10 +220,10 @@ class DefaultSchemasServiceTest {
     class SchemaWithOneOf {
         @Test
         void testSchemaWithOneOf() throws IOException {
-            componentsService.registerSchema(SchemaAnnotationFoo.class);
+            componentsService.registerSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/annotation-definitions.json");
+            String expected = jsonResource("/schemas/yaml/annotation-definitions-yaml.json");
 
             System.out.println("Got: " + actualDefinitions);
             assertEquals(expected, actualDefinitions);
@@ -358,10 +266,10 @@ class DefaultSchemasServiceTest {
     class AsyncApiPayloadTest {
         @Test
         void stringEnvelopTest() throws IOException {
-            componentsService.registerSchema(StringEnvelop.class);
+            componentsService.registerSchema(StringEnvelop.class, CONTENT_TYPE_APPLICATION_YAML);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/api-payload.json");
+            String expected = jsonResource("/schemas/yaml/api-payload-yaml.json");
 
             System.out.println("Got: " + actualDefinitions);
             assertEquals(expected, actualDefinitions);
@@ -371,7 +279,8 @@ class DefaultSchemasServiceTest {
 
         @Test
         void illegalEnvelopTest() throws IOException {
-            componentsService.registerSchema(EnvelopWithMultipleAsyncApiPayloadAnnotations.class);
+            componentsService.registerSchema(
+                    EnvelopWithMultipleAsyncApiPayloadAnnotations.class, CONTENT_TYPE_APPLICATION_YAML);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
 

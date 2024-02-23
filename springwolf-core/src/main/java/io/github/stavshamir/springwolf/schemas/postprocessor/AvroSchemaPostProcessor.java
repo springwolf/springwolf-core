@@ -21,7 +21,7 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
     private static final String SPECIFIC_DAT_REF = "org.apache.avro.specific.SpecificData";
 
     @Override
-    public void process(Schema schema, Map<String, Schema> definitions) {
+    public void process(Schema schema, Map<String, Schema> definitions, String contentType) {
         removeAvroSchemas(definitions);
         removeAvroProperties(schema, definitions);
     }

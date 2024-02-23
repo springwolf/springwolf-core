@@ -1,0 +1,64 @@
+{
+  "DocumentedSimpleFoo" : {
+    "type" : "object",
+    "properties" : {
+      "bi" : {
+        "type" : "integer"
+      },
+      "dt" : {
+        "type" : "string",
+        "format" : "date-time",
+        "examples" : [ "2000-01-01T02:00:00+02:00" ]
+      },
+      "f" : {
+        "$ref" : "#/components/schemas/SimpleFoo"
+      },
+      "ls_plain" : {
+        "type" : "array",
+        "description" : "List without example",
+        "items" : {
+          "type" : "string",
+          "description" : "List without example"
+        }
+      },
+      "mss" : {
+        "type" : "object",
+        "description" : "Map with example",
+        "examples" : [ "<key1>value1</key1>" ],
+        "additionalProperties" : {
+          "type" : "string",
+          "description" : "Map with example",
+          "examples" : [ "<key1>value1</key1>" ]
+        }
+      },
+      "mss_plain" : {
+        "type" : "object",
+        "description" : "Map without example",
+        "additionalProperties" : {
+          "type" : "string",
+          "description" : "Map without example"
+        }
+      },
+      "s" : {
+        "type" : "string",
+        "description" : "s field",
+        "examples" : [ "s value" ]
+      }
+    },
+    "description" : "foo model",
+    "examples" : [ "<DocumentedSimpleFoo><bi>0</bi><dt>2000-01-01T02:00+02:00</dt><f><b>true</b><s>string</s></f><ls_plain>string</ls_plain><mss/><mss_plain/><s>s value</s></DocumentedSimpleFoo>" ],
+    "required" : [ "dt", "f", "s" ]
+  },
+  "SimpleFoo" : {
+    "type" : "object",
+    "properties" : {
+      "b" : {
+        "type" : "boolean"
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "<SimpleFoo><b>true</b><s>string</s></SimpleFoo>" ]
+  }
+}

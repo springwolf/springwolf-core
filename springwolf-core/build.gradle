@@ -30,6 +30,7 @@ dependencies {
 
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationApiVersion}"
+    implementation "jakarta.validation:jakarta.validation-api:${jakartaValidationApiVersion}"
 
     implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
 
@@ -48,8 +49,11 @@ dependencies {
     testImplementation "net.javacrumbs.json-unit:json-unit-assertj:${jsonUnitAssertJVersion}"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
+    permitTestUnusedDeclared "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
+
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 }

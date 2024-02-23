@@ -8,7 +8,9 @@ import io.github.stavshamir.springwolf.producer.SpringwolfKafkaProducer;
 import io.github.stavshamir.springwolf.schemas.ComponentsService;
 import io.github.stavshamir.springwolf.schemas.DefaultComponentsService;
 import io.github.stavshamir.springwolf.schemas.SwaggerSchemaUtil;
-import io.github.stavshamir.springwolf.schemas.example.ExampleJsonGenerator;
+import io.github.stavshamir.springwolf.schemas.example.DefaultSchemaWalker;
+import io.github.stavshamir.springwolf.schemas.example.ExampleJsonValueGenerator;
+import io.github.stavshamir.springwolf.schemas.example.SchemaWalkerProvider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,7 +48,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             DefaultComponentsService.class,
             SwaggerSchemaUtil.class,
             PayloadClassExtractor.class,
-            ExampleJsonGenerator.class,
+            DefaultSchemaWalker.class,
+            SchemaWalkerProvider.class,
+            ExampleJsonValueGenerator.class,
             SpringwolfConfigProperties.class,
         })
 @TestPropertySource(

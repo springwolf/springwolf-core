@@ -59,8 +59,7 @@ public class SpringwolfConfigProperties {
     @Nullable
     private Endpoint endpoint;
 
-    @Nullable
-    private ConfigDocket docket;
+    private ConfigDocket docket = new ConfigDocket();
 
     @Nullable
     private Scanner scanner;
@@ -71,6 +70,8 @@ public class SpringwolfConfigProperties {
     @Getter
     @Setter
     public static class ConfigDocket {
+
+        public static final String DEFAULT_CONTENT_TYPE = "application/json";
 
         /**
          * The base package to scan for listeners which are declared inside a class annotated with @Component or @Service.
@@ -93,8 +94,7 @@ public class SpringwolfConfigProperties {
          *
          * @see AsyncAPI#getDefaultContentType()
          */
-        @Nullable
-        private String defaultContentType;
+        private String defaultContentType = DEFAULT_CONTENT_TYPE;
 
         @Nullable
         private Map<String, Server> servers;

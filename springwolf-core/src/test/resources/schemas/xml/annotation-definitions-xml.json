@@ -1,0 +1,72 @@
+{
+  "AllOf" : {
+    "type" : "object",
+    "examples" : [ "<AllOf><firstOne>string</firstOne><firstTwo>0</firstTwo><secondOne>string</secondOne><secondTwo>true</secondTwo></AllOf>" ],
+    "allOf" : [ {
+      "$ref" : "#/components/schemas/ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/ImplementationTwo"
+    } ]
+  },
+  "AnyOf" : {
+    "type" : "object",
+    "examples" : [ "<AnyOf><firstOne>string</firstOne><secondOne>string</secondOne></AnyOf>" ],
+    "anyOf" : [ {
+      "$ref" : "#/components/schemas/ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/ImplementationTwo"
+    } ]
+  },
+  "ImplementationOne" : {
+    "type" : "object",
+    "properties" : {
+      "firstOne" : {
+        "type" : "string"
+      },
+      "secondOne" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ]
+  },
+  "ImplementationTwo" : {
+    "type" : "object",
+    "properties" : {
+      "firstTwo" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "secondTwo" : {
+        "type" : "boolean"
+      }
+    },
+    "examples" : [ "<ImplementationTwo><firstTwo>0</firstTwo><secondTwo>true</secondTwo></ImplementationTwo>" ]
+  },
+  "OneOf" : {
+    "type" : "object",
+    "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ],
+    "oneOf" : [ {
+      "$ref" : "#/components/schemas/ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/ImplementationTwo"
+    } ]
+  },
+  "SchemaAnnotationFoo" : {
+    "type" : "object",
+    "properties" : {
+      "allOf" : {
+        "$ref" : "#/components/schemas/AllOf"
+      },
+      "anyOf" : {
+        "$ref" : "#/components/schemas/AnyOf"
+      },
+      "field" : {
+        "type" : "string"
+      },
+      "oneOf" : {
+        "$ref" : "#/components/schemas/OneOf"
+      }
+    },
+    "examples" : [ "<SchemaAnnotationFoo><AllOf><firstOne>string</firstOne><firstTwo>0</firstTwo><secondOne>string</secondOne><secondTwo>true</secondTwo></AllOf><AnyOf><firstOne>string</firstOne><secondOne>string</secondOne></AnyOf><field>string</field><ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne></SchemaAnnotationFoo>" ]
+  }
+}

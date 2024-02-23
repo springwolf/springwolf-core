@@ -50,7 +50,7 @@ class AsyncAnnotationScannerUtil {
                     //         SchemaObject.builder()
                     //                 .description(getDescription(headers, resolver))
                     //                 .enumValues(values)
-                    //                 .examples(exampleValue != null ? List.of(exampleValue) : null)
+                    //                 .examples(value != null ? List.of(value) : null)
                     //                 .build());
                 });
 
@@ -118,6 +118,10 @@ class AsyncAnnotationScannerUtil {
         String annotationTitle = resolver.resolveStringValue(asyncMessage.title());
         if (StringUtils.hasText(annotationTitle)) {
             messageBuilder.title(annotationTitle);
+        }
+
+        if (StringUtils.hasText(asyncMessage.contentType())) {
+            messageBuilder.contentType(asyncMessage.contentType());
         }
     }
 

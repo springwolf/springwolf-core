@@ -159,6 +159,7 @@ class AsyncAnnotationScannerUtilTest {
                 .messageId("simpleFoo")
                 .name("SimpleFooPayLoad")
                 .title("Message Title")
+                .contentType("application/json")
                 .build();
         assertEquals(expectedMessage, actual.build());
     }
@@ -215,7 +216,7 @@ class AsyncAnnotationScannerUtilTest {
                                                 description = "Message description",
                                                 messageId = "simpleFoo",
                                                 name = "SimpleFooPayLoad",
-                                                contentType = "application/schema+json;version=draft-07",
+                                                contentType = "application/json",
                                                 title = "Message Title")))
         @TestOperationBindingProcessor.TestOperationBinding()
         private void methodWithAsyncMessageAnnotation(String payload) {}
@@ -258,7 +259,7 @@ class AsyncAnnotationScannerUtilTest {
                                                 description = "Message description",
                                                 messageId = "simpleFoo",
                                                 name = "SimpleFooPayLoad",
-                                                contentType = "application/schema+json;version=draft-07",
+                                                contentType = "application/json",
                                                 title = "Message Title")))
         @TestAbstractOperationBindingProcessor.TestOperationBinding()
         private void methodWithAsyncMessageAnnotation(String payload) {}

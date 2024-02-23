@@ -1,0 +1,72 @@
+{
+  "AllOf" : {
+    "type" : "object",
+    "examples" : [ "firstOne: string\nfirstTwo: 0\nsecondOne: string\nsecondTwo: true\n" ],
+    "allOf" : [ {
+      "$ref" : "#/components/schemas/ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/ImplementationTwo"
+    } ]
+  },
+  "AnyOf" : {
+    "type" : "object",
+    "examples" : [ "firstOne: string\nsecondOne: string\n" ],
+    "anyOf" : [ {
+      "$ref" : "#/components/schemas/ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/ImplementationTwo"
+    } ]
+  },
+  "ImplementationOne" : {
+    "type" : "object",
+    "properties" : {
+      "firstOne" : {
+        "type" : "string"
+      },
+      "secondOne" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "firstOne: string\nsecondOne: string\n" ]
+  },
+  "ImplementationTwo" : {
+    "type" : "object",
+    "properties" : {
+      "firstTwo" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "secondTwo" : {
+        "type" : "boolean"
+      }
+    },
+    "examples" : [ "firstTwo: 0\nsecondTwo: true\n" ]
+  },
+  "OneOf" : {
+    "type" : "object",
+    "examples" : [ "|\n  firstOne: string\n  secondOne: string\n" ],
+    "oneOf" : [ {
+      "$ref" : "#/components/schemas/ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/ImplementationTwo"
+    } ]
+  },
+  "SchemaAnnotationFoo" : {
+    "type" : "object",
+    "properties" : {
+      "allOf" : {
+        "$ref" : "#/components/schemas/AllOf"
+      },
+      "anyOf" : {
+        "$ref" : "#/components/schemas/AnyOf"
+      },
+      "field" : {
+        "type" : "string"
+      },
+      "oneOf" : {
+        "$ref" : "#/components/schemas/OneOf"
+      }
+    },
+    "examples" : [ "allOf: |\n  firstOne: string\n  firstTwo: 0\n  secondOne: string\n  secondTwo: true\nanyOf: |\n  firstOne: string\n  secondOne: string\nfield: string\noneOf: |\n  |\n    firstOne: string\n    secondOne: string\n" ]
+  }
+}

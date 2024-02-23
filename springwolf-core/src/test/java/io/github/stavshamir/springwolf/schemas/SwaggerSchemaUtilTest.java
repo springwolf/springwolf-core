@@ -350,14 +350,14 @@ class SwaggerSchemaUtilTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             Discriminator discriminator = new Discriminator();
-            discriminator.setPropertyName("propertyName");
+            discriminator.setPropertyName("name");
             schema.setDiscriminator(discriminator);
 
             // when
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(componentSchema.getDiscriminator()).isEqualTo("propertyName");
+            assertThat(componentSchema.getDiscriminator()).isEqualTo("name");
         }
 
         @Test

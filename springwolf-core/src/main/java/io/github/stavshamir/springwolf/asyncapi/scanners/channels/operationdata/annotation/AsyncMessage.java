@@ -34,7 +34,7 @@ public @interface AsyncMessage {
     /**
      * Mapped to {@link MessageObject#getContentType()}
      */
-    String contentType() default "application/json";
+    String contentType() default "";
 
     /**
      * Mapped to {@link MessageObject#getTitle()}

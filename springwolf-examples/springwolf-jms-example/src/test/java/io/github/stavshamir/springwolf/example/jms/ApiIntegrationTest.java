@@ -36,7 +36,7 @@ public class ApiIntegrationTest {
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actualPatched);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
         assertEquals(expected, actualPatched);
     }
