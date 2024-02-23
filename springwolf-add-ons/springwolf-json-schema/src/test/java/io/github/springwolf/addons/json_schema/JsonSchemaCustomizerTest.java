@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.addons.json_schema;
+package io.github.springwolf.addons.json_schema;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.springwolf.addons.json_schema.json_schema.JsonSchemaCustomizer;
+import io.github.springwolf.addons.json_schema.json_schema.JsonSchemaGenerator;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
