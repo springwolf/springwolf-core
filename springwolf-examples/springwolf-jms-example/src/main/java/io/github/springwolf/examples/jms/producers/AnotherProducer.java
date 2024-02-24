@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.jms.producers;
+package io.github.springwolf.examples.jms.producers;
 
 import io.github.springwolf.addons.generic_binding.annotation.AsyncGenericOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
+import io.github.springwolf.examples.jms.dtos.AnotherPayloadDto;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.JmsAsyncOperationBinding;
-import io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;

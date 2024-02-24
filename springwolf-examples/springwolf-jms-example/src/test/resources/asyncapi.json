@@ -24,15 +24,15 @@
   "channels": {
     "another-queue": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto"
+        "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.jms.dtos.AnotherPayloadDto"
         }
       }
     },
     "example-queue": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto"
+        "io.github.springwolf.examples.jms.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.jms.dtos.ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -51,11 +51,11 @@
           { }
         ]
       },
-      "io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto": {
+      "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto": {
         "type": "object",
         "properties": {
           "example": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.jms.dtos.ExamplePayloadDto"
           },
           "foo": {
             "type": "string",
@@ -80,7 +80,7 @@
           "example"
         ]
       },
-      "io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto": {
+      "io.github.springwolf.examples.jms.dtos.ExamplePayloadDto": {
         "type": "object",
         "properties": {
           "someEnum": {
@@ -126,17 +126,17 @@
       }
     },
     "messages": {
-      "io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto": {
+      "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.jms.dtos.AnotherPayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto",
+        "name": "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
         "description": "Another payload model",
         "bindings": {
@@ -145,17 +145,17 @@
           }
         }
       },
-      "io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto": {
+      "io.github.springwolf.examples.jms.dtos.ExamplePayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.jms.dtos.ExamplePayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto",
+        "name": "io.github.springwolf.examples.jms.dtos.ExamplePayloadDto",
         "title": "ExamplePayloadDto",
         "bindings": {
           "jms": {
@@ -176,7 +176,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-queue/messages/io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.jms.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -197,7 +197,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-queue/messages/io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.jms.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -211,7 +211,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-queue/messages/io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-queue/messages/io.github.springwolf.examples.jms.dtos.ExamplePayloadDto"
         }
       ]
     }

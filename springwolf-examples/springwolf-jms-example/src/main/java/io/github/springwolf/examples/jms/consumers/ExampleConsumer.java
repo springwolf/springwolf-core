@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.jms.consumers;
+package io.github.springwolf.examples.jms.consumers;
 
-import io.github.stavshamir.springwolf.example.jms.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.example.jms.producers.AnotherProducer;
+import io.github.springwolf.examples.jms.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.jms.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.jms.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;

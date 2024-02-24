@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.jms;
+package io.github.springwolf.examples.jms;
 
-import io.github.stavshamir.springwolf.example.jms.consumers.ExampleConsumer;
-import io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.jms.consumers.ExampleConsumer;
+import io.github.springwolf.examples.jms.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfJmsProducer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -20,7 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.util.Map;
 
-import static io.github.stavshamir.springwolf.example.jms.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
+import static io.github.springwolf.examples.jms.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
