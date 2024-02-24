@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.cloudstream;
+package io.github.springwolf.examples.cloudstream;
 
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import org.junit.jupiter.api.Nested;
@@ -27,7 +27,7 @@ public class SpringContextIntegrationTest {
                 "springwolf.enabled=true",
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
-                "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
+                "springwolf.docket.base-package=io.github.springwolf.examples",
                 "springwolf.docket.servers.test-protocol.protocol=kafka",
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
             })

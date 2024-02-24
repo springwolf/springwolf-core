@@ -24,8 +24,8 @@
   "channels": {
     "another-topic": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto"
+        "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
         }
       },
       "bindings": {
@@ -34,8 +34,8 @@
     },
     "example-topic": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto"
+        "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -127,7 +127,7 @@
       }
     },
     "messages": {
-      "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto": {
+      "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
@@ -137,13 +137,13 @@
             "$ref": "#/components/schemas/AnotherPayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto",
+        "name": "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
         "bindings": {
           "kafka": { }
         }
       },
-      "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto": {
+      "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
@@ -153,7 +153,7 @@
             "$ref": "#/components/schemas/ExamplePayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto",
+        "name": "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto",
         "title": "ExamplePayloadDto",
         "bindings": {
           "kafka": { }
@@ -173,7 +173,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -188,7 +188,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -203,7 +203,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-topic/messages/io.github.stavshamir.springwolf.example.cloudstream.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-topic/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
         }
       ]
     }
