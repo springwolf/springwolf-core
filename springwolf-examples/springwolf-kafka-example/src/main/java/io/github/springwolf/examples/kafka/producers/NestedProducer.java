@@ -6,9 +6,9 @@ import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annota
 import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeadersCloudEventConstants;
 import io.github.springwolf.examples.kafka.configuration.KafkaConfiguration;
 import io.github.springwolf.examples.kafka.dtos.NestedPayloadDto;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncKey;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
+import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
+import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncKey;
+import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.KafkaTemplate;

@@ -4,7 +4,7 @@ package io.github.springwolf.examples.kafka.consumers;
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.channels.payload.AsyncApiPayload;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
+import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

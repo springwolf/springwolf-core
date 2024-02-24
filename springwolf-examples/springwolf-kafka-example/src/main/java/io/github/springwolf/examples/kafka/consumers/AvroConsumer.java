@@ -4,7 +4,7 @@ package io.github.springwolf.examples.kafka.consumers;
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
+import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

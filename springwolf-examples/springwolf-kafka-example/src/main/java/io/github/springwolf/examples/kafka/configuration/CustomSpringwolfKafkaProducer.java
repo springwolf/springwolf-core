@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka.configuration;
 
-import io.github.stavshamir.springwolf.producer.SpringwolfKafkaTemplateFromProperties;
-import io.github.stavshamir.springwolf.producer.SpringwolfKafkaTemplateProvider;
+import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaTemplateFromProperties;
+import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaTemplateProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
