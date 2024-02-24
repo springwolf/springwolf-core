@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.addons.common_model_converters.converters;
+package io.github.springwolf.addons.common_model_converters.converters.monetaryamount;
 
-import io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmountConverter;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
