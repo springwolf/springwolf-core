@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
+package io.github.springwolf.plugins.cloudstream.scanners.channels;
 
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
@@ -77,7 +77,7 @@ import static org.mockito.Mockito.when;
             "springwolf.enabled=true",
             "springwolf.docket.info.title=Test",
             "springwolf.docket.info.version=1.0.0",
-            "springwolf.docket.base-package=io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream",
+            "springwolf.docket.base-package=io.github.springwolf.plugins.cloudstream.scanners.channels",
             "springwolf.docket.servers.kafka.protocol=kafka",
             "springwolf.docket.servers.kafka.host=kafka:9092",
         })

@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
+package io.github.springwolf.plugins.cloudstream.scanners.channels;
 
+import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
-import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
-import io.github.springwolf.core.asyncapi.scanners.channels.OperationMerger;
-import io.github.springwolf.core.asyncapi.scanners.channels.OperationsScanner;
-import io.github.springwolf.core.asyncapi.types.channel.operation.bindings.EmptyOperationBinding;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsScanner;
+import io.github.springwolf.core.asyncapi.types.channel.bindings.EmptyChannelBinding;
 import io.github.springwolf.core.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
 import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.springwolf.core.configuration.AsyncApiDocket;
@@ -25,13 +25,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
+public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final BeanMethodsScanner beanMethodsScanner;
@@ -40,13 +39,13 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
 
     @Override
-    public Map<String, Operation> scan() {
+    public Map<String, ChannelObject> scan() {
         Set<Method> beanMethods = beanMethodsScanner.getBeanMethods();
-        return OperationMerger.mergeOperations(beanMethods.stream()
+        return ChannelMerger.mergeChannels(beanMethods.stream()
                 .map(functionalChannelBeanBuilder::fromMethodBean)
                 .flatMap(Set::stream)
                 .filter(this::isChannelBean)
-                .map(this::toOperationEntry)
+                .map(this::toChannelEntry)
                 .toList());
     }
 
@@ -54,43 +53,40 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
         return cloudStreamBindingsProperties.getBindings().containsKey(beanData.cloudStreamBinding());
     }
 
-    private Map.Entry<String, Operation> toOperationEntry(FunctionalChannelBeanData beanData) {
+    private Map.Entry<String, ChannelObject> toChannelEntry(FunctionalChannelBeanData beanData) {
         String channelName = cloudStreamBindingsProperties
                 .getBindings()
                 .get(beanData.cloudStreamBinding())
                 .getDestination();
 
-        String operationId = buildOperationId(beanData, channelName);
-        Operation operation = buildOperation(beanData, channelName);
+        ChannelObject channelItem = buildChannel(beanData);
 
-        return Map.entry(operationId, operation);
+        return Map.entry(channelName, channelItem);
     }
 
-    private Operation buildOperation(FunctionalChannelBeanData beanData, String channelName) {
+    private ChannelObject buildChannel(FunctionalChannelBeanData beanData) {
         Class<?> payloadType = beanData.payloadType();
         String modelName = componentsService.registerSchema(payloadType);
         String headerModelName = componentsService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
 
+        var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
+                .schema(SchemaReference.fromSchema(modelName))
+                .build());
+
         MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(modelName)
-                .payload(MessagePayload.of(MessageReference.toSchema(modelName)))
+                .payload(messagePayload)
                 .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(buildMessageBinding())
                 .build();
+        this.componentsService.registerMessage(message);
 
-        var builder = Operation.builder()
-                .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(channelName))
-                .messages(List.of(MessageReference.toChannelMessage(channelName, message)))
-                .bindings(buildOperationBinding());
-        if (beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER) {
-            builder.action(OperationAction.RECEIVE);
-        } else {
-            builder.action(OperationAction.SEND);
-        }
-
-        return builder.build();
+        Map<String, ChannelBinding> channelBinding = buildChannelBinding();
+        return ChannelObject.builder()
+                .bindings(channelBinding)
+                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
+                .build();
     }
 
     private Map<String, MessageBinding> buildMessageBinding() {
@@ -98,9 +94,9 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private Map<String, OperationBinding> buildOperationBinding() {
+    private Map<String, ChannelBinding> buildChannelBinding() {
         String protocolName = getProtocolName();
-        return Map.of(protocolName, new EmptyOperationBinding());
+        return Map.of(protocolName, new EmptyChannelBinding());
     }
 
     private String getProtocolName() {
@@ -116,12 +112,5 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 .map(Server::getProtocol)
                 .orElseThrow(() ->
                         new IllegalStateException("There must be at least one server define in the AsyncApiDocker"));
-    }
-
-    private String buildOperationId(FunctionalChannelBeanData beanData, String channelName) {
-        String operationName =
-                beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
-
-        return String.format("%s_%s_%s", channelName, operationName, beanData.beanName());
     }
 }

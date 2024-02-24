@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.cloudstream;
+package io.github.springwolf.plugins.cloudstream.configuration;
 
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.schemas.ComponentsService;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.CloudStreamFunctionChannelsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.CloudStreamFunctionOperationsScanner;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.FunctionalChannelBeanBuilder;
+import io.github.springwolf.plugins.cloudstream.scanners.channels.CloudStreamFunctionChannelsScanner;
+import io.github.springwolf.plugins.cloudstream.scanners.channels.CloudStreamFunctionOperationsScanner;
+import io.github.springwolf.plugins.cloudstream.scanners.channels.FunctionalChannelBeanBuilder;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.config.BindingServiceProperties;

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
+package io.github.springwolf.plugins.cloudstream.scanners.channels;
 
 record FunctionalChannelBeanData(String beanName, Class<?> payloadType, BeanType beanType, String cloudStreamBinding) {
 

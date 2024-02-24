@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
+package io.github.springwolf.plugins.cloudstream.scanners.channels;
 
 import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.apache.kafka.streams.kstream.KStream;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +16,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.FunctionalChannelBeanData.BeanType.CONSUMER;
-import static io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream.FunctionalChannelBeanData.BeanType.SUPPLIER;
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.github.springwolf.plugins.cloudstream.scanners.channels.FunctionalChannelBeanData.BeanType.CONSUMER;
+import static io.github.springwolf.plugins.cloudstream.scanners.channels.FunctionalChannelBeanData.BeanType.SUPPLIER;
 
 class FunctionalChannelBeanBuilderTest {
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
@@ -32,7 +32,7 @@ class FunctionalChannelBeanBuilderTest {
 
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
-            assertThat(data).isEmpty();
+            Assertions.assertThat(data).isEmpty();
         }
 
         @Bean
@@ -49,7 +49,7 @@ class FunctionalChannelBeanBuilderTest {
 
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
-            assertThat(data)
+            Assertions.assertThat(data)
                     .containsExactly(
                             new FunctionalChannelBeanData("consumerBean", String.class, CONSUMER, "consumerBean-in-0"));
         }
@@ -68,7 +68,7 @@ class FunctionalChannelBeanBuilderTest {
 
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
-            assertThat(data)
+            Assertions.assertThat(data)
                     .containsExactly(new FunctionalChannelBeanData(
                             "supplierBean", String.class, SUPPLIER, "supplierBean-out-0"));
         }
@@ -87,7 +87,7 @@ class FunctionalChannelBeanBuilderTest {
 
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
-            assertThat(data)
+            Assertions.assertThat(data)
                     .containsExactlyInAnyOrder(
                             new FunctionalChannelBeanData("functionBean", String.class, CONSUMER, "functionBean-in-0"),
                             new FunctionalChannelBeanData(
@@ -110,7 +110,7 @@ class FunctionalChannelBeanBuilderTest {
 
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
-            assertThat(data)
+            Assertions.assertThat(data)
                     .containsExactly(
                             new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
         }
@@ -131,7 +131,7 @@ class FunctionalChannelBeanBuilderTest {
 
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
-            assertThat(data)
+            Assertions.assertThat(data)
                     .containsExactly(
                             new FunctionalChannelBeanData(methodName, String.class, CONSUMER, methodName + "-in-0"));
         }
