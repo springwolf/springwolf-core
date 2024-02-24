@@ -3,7 +3,7 @@ package io.github.springwolf.examples.amqp;
 
 import io.github.springwolf.examples.amqp.consumers.ExampleConsumer;
 import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
+import io.github.springwolf.plugins.amqp.producer.SpringwolfAmqpProducer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

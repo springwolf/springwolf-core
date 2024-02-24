@@ -29,3 +29,6 @@ asyncapi.actual.json
 
 # VsCode
 .vscode/
+
+# Mac
+.DS_Store
