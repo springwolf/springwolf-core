@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.sns;
+package io.github.springwolf.examples.sns;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

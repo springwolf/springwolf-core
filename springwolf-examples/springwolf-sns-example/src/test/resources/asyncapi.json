@@ -24,15 +24,15 @@
   "channels": {
     "another-topic": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
+        "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
         }
       }
     },
     "example-topic": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
+        "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.sns.dtos.ExamplePayloadDto"
         }
       }
     }
@@ -50,11 +50,11 @@
           "type": "object"
         }
       },
-      "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto": {
+      "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto": {
         "type": "object",
         "properties": {
           "example": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.sns.dtos.ExamplePayloadDto"
           },
           "foo": {
             "type": "string",
@@ -121,7 +121,7 @@
           "type": "object"
         }
       },
-      "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto": {
+      "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto": {
         "type": "object",
         "properties": {
           "someEnum": {
@@ -196,34 +196,34 @@
       }
     },
     "messages": {
-      "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto": {
+      "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto",
+        "name": "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
         "description": "Another payload model",
         "bindings": {
           "sns": { }
         }
       },
-      "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto": {
+      "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.sns.dtos.ExamplePayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto",
+        "name": "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto",
         "title": "ExamplePayloadDto",
         "description": "Example payload model",
         "bindings": {
@@ -255,7 +255,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -281,7 +281,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -307,7 +307,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-topic/messages/io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-topic/messages/io.github.springwolf.examples.sns.dtos.ExamplePayloadDto"
         }
       ]
     }

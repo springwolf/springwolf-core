@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.sns.consumers;
+package io.github.springwolf.examples.sns.consumers;
 
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
+import io.github.springwolf.examples.sns.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.sns.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.sns.producers.AnotherProducer;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBindingIdentifier;
-import io.github.stavshamir.springwolf.example.sns.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.example.sns.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.example.sns.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
