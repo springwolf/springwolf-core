@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
+import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.AbstractOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.annotation.KafkaListenerUtil;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
-import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import org.springframework.util.StringUtils;
 
 public class KafkaOperationBindingProcessor extends AbstractOperationBindingProcessor<KafkaAsyncOperationBinding> {

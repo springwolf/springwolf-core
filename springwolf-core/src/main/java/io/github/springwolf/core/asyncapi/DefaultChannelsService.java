@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi;
 
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsScanner;
-import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

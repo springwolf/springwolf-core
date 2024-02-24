@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.schemas;
 
-import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 
 import java.util.Map;
 

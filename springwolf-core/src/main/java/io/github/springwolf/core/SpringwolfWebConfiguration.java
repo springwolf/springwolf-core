@@ -2,13 +2,13 @@
 package io.github.springwolf.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
+import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.controller.ActuatorAsyncApiController;
 import io.github.springwolf.core.asyncapi.controller.AsyncApiController;
 import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
 import io.github.springwolf.core.schemas.ComponentsService;
-import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
-import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.producer;
 
-import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
@@ -11,6 +10,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.core.asyncapi.AsyncApiService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

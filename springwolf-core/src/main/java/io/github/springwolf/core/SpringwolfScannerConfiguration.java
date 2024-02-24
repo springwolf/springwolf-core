@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core;
 
+import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.MessageBindingProcessor;
@@ -18,7 +19,6 @@ import io.github.springwolf.core.asyncapi.scanners.classes.ConfigurationClassSca
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.configuration.AsyncApiDocketService;
 import io.github.springwolf.core.schemas.ComponentsService;
-import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

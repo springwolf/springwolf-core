@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  *     public void receiveMessage(MonetaryAmount payload) { ... }
  * </pre>
  *
- * Maintainer node: move to io.github.stavshamir.springwolf.asyncapi.annotation
+ * Maintainer node: move to io.github.springwolf.core.asyncapi.annotation
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})

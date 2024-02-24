@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata;
 
+import io.github.springwolf.asyncapi.v3.bindings.sns.SNSMessageBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.SnsAsyncOperationBindingIdentifier;
-import io.github.springwolf.asyncapi.v3.bindings.sns.SNSMessageBinding;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;

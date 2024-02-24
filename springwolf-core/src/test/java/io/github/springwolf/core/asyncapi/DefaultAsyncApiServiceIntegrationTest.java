@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi;
 
-import io.github.springwolf.core.configuration.DefaultAsyncApiDocketService;
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.core.schemas.ComponentsService;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.core.configuration.DefaultAsyncApiDocketService;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.schemas.ComponentsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +46,7 @@ import static org.mockito.Mockito.when;
             "springwolf.docket.info.version=1.0.0",
             "springwolf.docket.id=urn:io:github:stavshamir:springwolf:example",
             "springwolf.docket.default-content-type=application/json",
-            "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
+            "springwolf.docket.base-package=io.github.springwolf.core.example",
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.host=some-server:1234",
         })

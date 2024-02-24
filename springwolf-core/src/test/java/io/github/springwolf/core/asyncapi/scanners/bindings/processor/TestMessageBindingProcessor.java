@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.bindings.processor;
 
+import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.bindings.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedMessageBinding;
 import io.github.springwolf.core.asyncapi.types.channel.operation.message.bindings.EmptyMessageBinding;
-import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;

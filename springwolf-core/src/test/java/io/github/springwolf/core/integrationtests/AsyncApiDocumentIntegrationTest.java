@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.integrationtests;
 
+import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
 import io.github.springwolf.core.integrationtests.application.listener.ListenerApplication;
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.publisher.PublisherApplication;
-import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,40 +92,40 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(schemas)
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
-                            "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Payload",
-                            "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet",
-                            "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat",
-                            "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Dog");
+                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Payload",
+                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet",
+                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat",
+                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Dog");
 
             assertThat(schemas.get(
-                                    "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet")
                             .getDiscriminator())
                     .isEqualTo("type");
             assertThat(schemas.get(
-                                    "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat")
                             .getAllOf()
                             .get(0)
                             .getReference()
                             .getRef())
                     .isEqualTo(
-                            "#/components/schemas/io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet");
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet");
             assertThat(schemas.get(
-                                    "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat")
                             .getAllOf()
                             .get(1)
                             .getSchema()
                             .getProperties())
                     .containsOnlyKeys("catSpecificField");
             assertThat(schemas.get(
-                                    "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Dog")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Dog")
                             .getAllOf()
                             .get(0)
                             .getReference()
                             .getRef())
                     .isEqualTo(
-                            "#/components/schemas/io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet");
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet");
             assertThat(schemas.get(
-                                    "io.github.stavshamir.springwolf.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Dog")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Dog")
                             .getAllOf()
                             .get(1)
                             .getSchema()

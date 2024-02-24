@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import io.github.springwolf.core.asyncapi.types.ConsumerData;
-import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangeProperties;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
+import io.github.springwolf.core.asyncapi.types.ConsumerData;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import lombok.Builder;
 
 import java.util.Collections;

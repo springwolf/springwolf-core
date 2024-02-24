@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.types;
 
-import io.github.springwolf.core.asyncapi.types.ConsumerData;
-import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
+import io.github.springwolf.core.asyncapi.types.ConsumerData;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
 import lombok.Builder;
 
 import java.util.Map;

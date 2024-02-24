@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.amqp;
 
-
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.SimpleChannelsScanner;

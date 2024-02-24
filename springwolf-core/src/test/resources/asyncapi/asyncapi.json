@@ -28,8 +28,8 @@
     "new-user": {
       "address": "new-user",
       "messages": {
-        "io.github.stavshamir.springwolf.ExamplePayload": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.ExamplePayload"
+        "io.github.springwolf.core.ExamplePayload": {
+          "$ref": "#/components/messages/io.github.springwolf.core.ExamplePayload"
         }
       },
       "description": "This channel is used to exchange messages about users signing up",
@@ -52,14 +52,14 @@
       }
     },
     "messages": {
-      "io.github.stavshamir.springwolf.ExamplePayload": {
+      "io.github.springwolf.core.ExamplePayload": {
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
             "$ref": "#/components/schemas/ExamplePayload"
           }
         },
-        "name": "io.github.stavshamir.springwolf.ExamplePayload",
+        "name": "io.github.springwolf.core.ExamplePayload",
         "title": "Example Payload",
         "bindings": {
           "kafka": {
@@ -91,7 +91,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/new-user/messages/io.github.stavshamir.springwolf.ExamplePayload"
+          "$ref": "#/channels/new-user/messages/io.github.springwolf.core.ExamplePayload"
         }
       ]
     }

@@ -1,5 +1,5 @@
 {
-  "io.github.stavshamir.springwolf.schemas.DefaultJsonComponentsServiceTest$AsyncApiPayloadTest$StringEnvelop" : {
+  "io.github.springwolf.core.schemas.DefaultJsonComponentsServiceTest$AsyncApiPayloadTest$StringEnvelop" : {
     "type" : "string",
     "description" : "The payload in the envelop",
     "maxLength" : 10,

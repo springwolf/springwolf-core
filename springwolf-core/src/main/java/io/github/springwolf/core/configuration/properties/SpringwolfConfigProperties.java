@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.configuration.properties;
 
-import io.github.springwolf.core.configuration.AsyncApiDocket;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.info.Contact;
 import io.github.springwolf.asyncapi.v3.model.info.License;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.core.configuration.AsyncApiDocket;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

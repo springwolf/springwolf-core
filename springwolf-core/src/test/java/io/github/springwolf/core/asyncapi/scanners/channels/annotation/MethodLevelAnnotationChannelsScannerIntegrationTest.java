@@ -1,16 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.channels.annotation;
 
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.core.schemas.ComponentsService;
-import io.github.springwolf.core.schemas.DefaultComponentsService;
-import io.github.springwolf.core.schemas.SwaggerSchemaUtil;
-import io.github.springwolf.core.schemas.example.DefaultSchemaWalker;
-import io.github.springwolf.core.schemas.example.ExampleJsonValueGenerator;
-import io.github.springwolf.core.schemas.example.SchemaWalkerProvider;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
@@ -21,6 +11,16 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.schemas.ComponentsService;
+import io.github.springwolf.core.schemas.DefaultComponentsService;
+import io.github.springwolf.core.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.schemas.example.DefaultSchemaWalker;
+import io.github.springwolf.core.schemas.example.ExampleJsonValueGenerator;
+import io.github.springwolf.core.schemas.example.SchemaWalkerProvider;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

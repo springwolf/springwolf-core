@@ -1,6 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.channels.cloudstream;
 
+import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.classes.ComponentClassScanner;
@@ -17,18 +29,6 @@ import io.github.springwolf.core.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.schemas.example.DefaultSchemaWalker;
 import io.github.springwolf.core.schemas.example.ExampleJsonValueGenerator;
 import io.github.springwolf.core.schemas.example.SchemaWalkerProvider;
-import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
-import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

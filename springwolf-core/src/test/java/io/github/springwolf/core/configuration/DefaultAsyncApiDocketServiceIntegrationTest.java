@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             "springwolf.docket.info.title=Info title was loaded from spring properties",
             "springwolf.docket.info.version=1.0.0",
             "springwolf.docket.info.extension-fields.x-api-name=api-name",
-            "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
+            "springwolf.docket.base-package=io.github.springwolf.core.example",
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.host=some-server:1234"
         })

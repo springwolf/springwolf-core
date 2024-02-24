@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import java.io.StringWriter;
 
 public class DefaultExampleXmlValueSerializer implements ExampleXmlValueSerializer {

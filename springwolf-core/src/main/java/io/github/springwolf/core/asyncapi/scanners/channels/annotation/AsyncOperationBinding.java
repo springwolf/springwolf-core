@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * Object documentation. Those implementations are usually available in its own plugin, like {@code springwolf-kafka-plugin}
  * or {@code springwolf-amqp-plugin}
  *
- * Maintainer note: Move to io.github.stavshamir.springwolf.asyncapi.scanners.bindings
+ * Maintainer note: Move to io.github.springwolf.core.asyncapi.scanners.bindings
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.ANNOTATION_TYPE})

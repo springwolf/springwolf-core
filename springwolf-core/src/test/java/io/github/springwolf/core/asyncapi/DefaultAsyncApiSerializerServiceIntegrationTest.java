@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi;
 
-import io.github.springwolf.core.ClasspathUtil;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
@@ -25,6 +24,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.core.ClasspathUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +71,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .build();
 
         MessageObject message = MessageObject.builder()
-                .name("io.github.stavshamir.springwolf.ExamplePayload")
+                .name("io.github.springwolf.core.ExamplePayload")
                 .title("Example Payload")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(MessageReference.toSchema("ExamplePayload"))

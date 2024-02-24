@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.configuration;
 
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.info.extension-fields.x-api-name=api-name",
-                "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
+                "springwolf.docket.base-package=io.github.springwolf.core.example",
                 "springwolf.docket.servers.test-protocol.protocol=test",
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
             })
@@ -51,7 +51,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
 
         @Test
         void docketBasePackageTest() {
-            assertThat(properties.getDocket().getBasePackage()).isEqualTo("io.github.stavshamir.springwolf.example");
+            assertThat(properties.getDocket().getBasePackage()).isEqualTo("io.github.springwolf.core.example");
         }
 
         @Test
@@ -75,7 +75,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.info.extension-fields.x-api-name=api-name",
-                "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
+                "springwolf.docket.base-package=io.github.springwolf.core.example",
                 "springwolf.docket.servers.test-protocol.protocol=test",
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
             })
@@ -107,7 +107,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.info.extension-fields.x-api-name=api-name",
-                "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
+                "springwolf.docket.base-package=io.github.springwolf.core.example",
                 "springwolf.docket.servers.test-protocol.protocol=test",
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.payload.extractable-classes.my.custom.class=1"
@@ -143,7 +143,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.info.extension-fields.x-api-name=api-name",
-                "springwolf.docket.base-package=io.github.stavshamir.springwolf.example",
+                "springwolf.docket.base-package=io.github.springwolf.core.example",
                 "springwolf.docket.servers.test-protocol.protocol=test",
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.payload.extractable-classes.java.util.List=-1"

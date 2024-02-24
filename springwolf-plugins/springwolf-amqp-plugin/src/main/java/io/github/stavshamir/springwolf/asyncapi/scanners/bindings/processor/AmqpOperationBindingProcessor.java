@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.stavshamir.springwolf.asyncapi.scanners.bindings.processor;
 
+import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.AbstractOperationBindingProcessor;
 import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.AmqpAsyncOperationBinding;
-import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 
 import java.util.Arrays;
 

@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.channels.annotation;
 
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
-import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeadersNotDocumented;
-import io.github.springwolf.core.schemas.ComponentsService;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
@@ -21,6 +16,11 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeadersNotDocumented;
+import io.github.springwolf.core.schemas.ComponentsService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;

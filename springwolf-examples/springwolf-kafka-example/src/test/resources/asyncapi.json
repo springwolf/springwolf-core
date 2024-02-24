@@ -391,7 +391,7 @@
           "type": "string"
         }
       },
-      "io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
+      "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
         "type": "object",
         "properties": {
           "amount": {
@@ -1070,7 +1070,7 @@
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
+            "$ref": "#/components/schemas/io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
           }
         },
         "name": "javax.money.MonetaryAmount",
@@ -1284,7 +1284,7 @@
         "$ref": "#/channels/yaml-topic"
       },
       "title": "yaml-topic_receive",
-      "description": "Showcases a xml based message",
+      "description": "Showcases a yaml based message",
       "bindings": {
         "kafka": {
           "bindingVersion": "0.4.0"

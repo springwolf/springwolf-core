@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.schemas;
 
-import io.github.springwolf.core.asyncapi.scanners.channels.payload.AsyncApiPayload;
-import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.core.schemas.postprocessor.SchemasPostProcessor;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.channels.payload.AsyncApiPayload;
+import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.schemas.postprocessor.SchemasPostProcessor;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.TypeNameResolver;
