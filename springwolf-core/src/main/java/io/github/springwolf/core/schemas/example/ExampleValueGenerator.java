@@ -41,7 +41,7 @@ interface ExampleValueGenerator<T, R> {
     /**
      * @return The serializable representation of the example (object for json & yaml, string for others)
      */
-    R prepareForSerialization(String name, T exampleObject);
+    R prepareForSerialization(Schema name, T exampleObject);
 
     T createIntegerExample(Integer value);
 

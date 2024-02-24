@@ -1,6 +1,6 @@
 {
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$ComplexFoo" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "b" : {
         "type" : "boolean"
@@ -31,7 +31,7 @@
     "examples" : [ "<ComplexFoo><b>true</b><d>1.1</d><dt>2015-07-20T15:49:04-07:00</dt><f>1.1</f><i>0</i><n><nba>YmFzZTY0LWV4YW1wbGU=</nba><nc><cyclic/></nc><nli>0</nli><nmfm/><ns>string</ns><nsm><s>string</s></nsm><nu>3fa85f64-5717-4562-b3fc-2c963f66afa6</nu></n><s>string</s></ComplexFoo>" ]
   },
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "nba" : {
         "type" : "array",
@@ -74,7 +74,7 @@
     "examples" : [ "<Nested><nba>YmFzZTY0LWV4YW1wbGU=</nba><nc><cyclic/></nc><nli>0</nli><nmfm/><ns>string</ns><nsm><s>string</s></nsm><nu>3fa85f64-5717-4562-b3fc-2c963f66afa6</nu></Nested>" ]
   },
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$Cyclic" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "cyclic" : {
         "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
@@ -83,7 +83,7 @@
     "examples" : [ "<Cyclic><cyclic/></Cyclic>" ]
   },
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$MyClass" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "s" : {
         "type" : "string"

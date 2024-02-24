@@ -141,7 +141,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode prepareForSerialization(String name, JsonNode exampleObject) {
+    public JsonNode prepareForSerialization(Schema schema, JsonNode exampleObject) {
         return exampleObject;
     }
 

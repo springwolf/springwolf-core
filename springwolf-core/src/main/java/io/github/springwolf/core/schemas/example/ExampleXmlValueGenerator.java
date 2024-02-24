@@ -2,6 +2,7 @@
 package io.github.springwolf.core.schemas.example;
 
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -25,6 +26,7 @@ import java.util.Set;
 public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, String> {
 
     private final Set<String> SUPPORTED_CONTENT_TYPES = Set.of("text/xml", "application/xml");
+    private final Schema<String> OVERRIDE_SCHEMA = new StringSchema();
 
     private final ExampleXmlValueSerializer exampleXmlValueSerializer;
 
@@ -191,7 +193,9 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public String prepareForSerialization(String name, Node exampleObject) {
+    public String prepareForSerialization(Schema schema, Node exampleObject) {
+        final String name = lookupSchemaName(schema);
+
         final Node objectToWrite;
         if (exampleObject instanceof Element) {
             objectToWrite = exampleObject;
@@ -202,8 +206,11 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
             document.appendChild(objectToWrite);
 
             String xml = exampleXmlValueSerializer.writeDocumentAsXmlString(document);
-
             exampleCache.putIfAbsent(name, exampleObject);
+
+            schema.setType(OVERRIDE_SCHEMA.getType());
+            schema.setTypes(OVERRIDE_SCHEMA.getTypes());
+
             return xml;
         } catch (TransformerException | DOMException e) {
             log.error("Serialize {}", name, e);

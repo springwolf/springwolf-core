@@ -1,6 +1,6 @@
 {
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$DocumentedSimpleFoo" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "bi" : {
         "type" : "integer"
@@ -50,7 +50,7 @@
     "required" : [ "dt", "f", "s" ]
   },
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SimpleFoo" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "b" : {
         "type" : "boolean"

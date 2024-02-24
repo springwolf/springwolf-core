@@ -1,6 +1,6 @@
 {
   "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$DocumentedSimpleFoo" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "bi" : {
         "type" : "integer"
@@ -52,7 +52,7 @@
     "required" : [ "dt", "f", "s" ]
   },
   "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SimpleFoo" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "b" : {
         "type" : "boolean"

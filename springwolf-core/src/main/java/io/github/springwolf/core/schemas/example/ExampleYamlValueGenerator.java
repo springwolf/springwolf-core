@@ -4,6 +4,7 @@ package io.github.springwolf.core.schemas.example;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode, String> {
 
     private final Set<String> SUPPORTED_CONTENT_TYPES = Set.of("application/yaml");
+    private final Schema<String> OVERRIDE_SCHEMA = new StringSchema();
 
     private final ExampleJsonValueGenerator exampleJsonValueGenerator;
     private final ExampleYamlValueSerializer exampleYamlValueSerializer;
@@ -33,8 +35,12 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public String prepareForSerialization(String name, JsonNode exampleObject) {
+    public String prepareForSerialization(Schema schema, JsonNode exampleObject) {
+        final String name = schema.getName();
         try {
+            schema.setType(OVERRIDE_SCHEMA.getType());
+            schema.setTypes(OVERRIDE_SCHEMA.getTypes());
+
             return exampleYamlValueSerializer.writeDocumentAsYamlString(exampleObject);
         } catch (JsonProcessingException e) {
             log.error("Serialize {}", name, e);

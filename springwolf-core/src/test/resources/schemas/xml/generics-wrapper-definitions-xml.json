@@ -1,14 +1,11 @@
 {
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$ListWrapper" : {
-    "type" : "array",
+    "type" : "string",
     "properties" : {
       "empty" : {
         "type" : "boolean"
       }
     },
-    "examples" : [ "<ListWrapper>string</ListWrapper>" ],
-    "items" : {
-      "type" : "string"
-    }
+    "examples" : [ "<ListWrapper>string</ListWrapper>" ]
   }
 }

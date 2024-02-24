@@ -802,7 +802,7 @@
         }
       },
       "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto": {
-        "type": "object",
+        "type": "string",
         "properties": {
           "someEnum": {
             "type": "string",
@@ -842,11 +842,11 @@
               "type": "string"
             }
           },
-          "type": "object"
+          "type": "string"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto": {
-        "type": "object",
+        "type": "string",
         "properties": {
           "someEnum": {
             "type": "string",
@@ -886,7 +886,7 @@
               "type": "string"
             }
           },
-          "type": "object"
+          "type": "string"
         }
       }
     },
