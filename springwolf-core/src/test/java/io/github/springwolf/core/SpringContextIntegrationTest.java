@@ -29,6 +29,6 @@ class SpringContextIntegrationTest {
         assertThat(asyncApiService.getAsyncAPI().getInfo().getTitle())
                 .isEqualTo("Info title was loaded from spring properties");
         assertThat(asyncApiService.getAsyncAPI().getDefaultContentType()).isEqualTo("application/json");
-        assertThat(asyncApiService.getAsyncAPI().getId()).isEqualTo("urn:io:github:stavshamir:springwolf:example");
+        assertThat(asyncApiService.getAsyncAPI().getId()).isEqualTo("urn:io:github:springwolf:example");
     }
 }
