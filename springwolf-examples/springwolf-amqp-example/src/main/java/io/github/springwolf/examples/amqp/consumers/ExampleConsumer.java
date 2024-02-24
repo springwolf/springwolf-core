@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.amqp.consumers;
+package io.github.springwolf.examples.amqp.consumers;
 
-import io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.example.amqp.producers.AnotherProducer;
+import io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.amqp.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;

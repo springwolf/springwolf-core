@@ -27,8 +27,8 @@
   "channels": {
     "another-queue": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       },
       "bindings": {
@@ -47,15 +47,15 @@
     },
     "example-producer-channel-publisher": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       }
     },
     "example-queue": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+        "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -74,8 +74,8 @@
     },
     "example-topic-routing-key": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       },
       "bindings": {
@@ -94,11 +94,11 @@
     },
     "multi-payload-queue": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         },
-        "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+        "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -125,11 +125,11 @@
           { }
         ]
       },
-      "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
+      "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
         "type": "object",
         "properties": {
           "example": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
           },
           "foo": {
             "type": "string",
@@ -154,7 +154,7 @@
           "example"
         ]
       },
-      "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
+      "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
         "type": "object",
         "properties": {
           "someEnum": {
@@ -200,17 +200,17 @@
       }
     },
     "messages": {
-      "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto": {
+      "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto",
+        "name": "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
         "description": "Another payload model",
         "bindings": {
@@ -219,17 +219,17 @@
           }
         }
       },
-      "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto": {
+      "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto",
+        "name": "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto",
         "title": "ExamplePayloadDto",
         "bindings": {
           "amqp": {
@@ -256,7 +256,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-queue/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -281,7 +281,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-producer-channel-publisher/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/example-producer-channel-publisher/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -301,7 +301,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-queue/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
         }
       ]
     },
@@ -321,7 +321,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-topic-routing-key/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/example-topic-routing-key/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -341,10 +341,10 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/multi-payload-queue/messages/io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/multi-payload-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
         },
         {
-          "$ref": "#/channels/multi-payload-queue/messages/io.github.stavshamir.springwolf.example.amqp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/multi-payload-queue/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       ]
     }

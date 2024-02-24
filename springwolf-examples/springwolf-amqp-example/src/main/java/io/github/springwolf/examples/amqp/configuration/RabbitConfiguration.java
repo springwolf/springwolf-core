@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.amqp.configuration;
+package io.github.springwolf.examples.amqp.configuration;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

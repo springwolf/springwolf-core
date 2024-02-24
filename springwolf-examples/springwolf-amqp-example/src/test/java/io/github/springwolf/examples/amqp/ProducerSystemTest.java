@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.amqp;
+package io.github.springwolf.examples.amqp;
 
-import io.github.stavshamir.springwolf.example.amqp.consumers.ExampleConsumer;
-import io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.amqp.consumers.ExampleConsumer;
+import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
 import io.github.stavshamir.springwolf.producer.SpringwolfAmqpProducer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -22,7 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
 
-import static io.github.stavshamir.springwolf.example.amqp.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
+import static io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
