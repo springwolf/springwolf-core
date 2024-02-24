@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.stavshamir.springwolf.example.sqs.consumers;
+package io.github.springwolf.examples.sqs.consumers;
 
 import io.awspring.cloud.sqs.annotation.SqsListener;
-import io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.example.sqs.producers.AnotherProducer;
+import io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.sqs.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
