@@ -5,7 +5,7 @@ import io.github.springwolf.addons.generic_binding.annotation.AsyncGenericOperat
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
 import io.github.springwolf.examples.jms.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.asyncapi.scanners.channels.operationdata.annotation.JmsAsyncOperationBinding;
+import io.github.springwolf.plugins.jms.scanners.channels.operationdata.annotation.JmsAsyncOperationBinding;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
