@@ -1,1 +1,1 @@
-io.github.stavshamir.springwolf.asyncapi.amqp.SpringwolfAmqpAutoConfiguration
+io.github.springwolf.plugins.amqp.configuration.SpringwolfAmqpAutoConfiguration

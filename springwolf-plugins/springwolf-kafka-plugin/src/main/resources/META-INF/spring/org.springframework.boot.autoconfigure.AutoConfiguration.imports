@@ -1,1 +1,1 @@
-io.github.stavshamir.springwolf.asyncapi.kafka.SpringwolfKafkaAutoConfiguration
+io.github.springwolf.plugins.kafka.configuration.SpringwolfKafkaAutoConfiguration

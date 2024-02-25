@@ -26,3 +26,9 @@ asyncapi.actual.json
 .classpath
 .project
 .settings/
+
+# VsCode
+.vscode/
+
+# Mac
+.DS_Store

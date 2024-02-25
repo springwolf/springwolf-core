@@ -1,1 +1,1 @@
-io.github.stavshamir.springwolf.asyncapi.cloudstream.SpringwolfCloudStreamAutoConfiguration
+io.github.springwolf.plugins.cloudstream.configuration.SpringwolfCloudStreamAutoConfiguration

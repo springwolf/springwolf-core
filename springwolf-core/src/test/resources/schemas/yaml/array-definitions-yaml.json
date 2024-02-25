@@ -1,17 +1,17 @@
 {
-  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$ArrayFoo" : {
+  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$ArrayFoo" : {
     "type" : "object",
     "properties" : {
       "flist" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SimpleFoo"
+          "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SimpleFoo"
         }
       }
     },
     "examples" : [ "flist:\n- b: true\n  s: string\n" ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SimpleFoo" : {
+  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SimpleFoo" : {
     "type" : "object",
     "properties" : {
       "b" : {

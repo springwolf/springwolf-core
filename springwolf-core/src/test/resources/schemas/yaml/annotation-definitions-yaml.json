@@ -1,23 +1,23 @@
 {
-  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AllOf" : {
+  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AllOf" : {
     "type" : "object",
     "examples" : [ "firstOne: string\nfirstTwo: 0\nsecondOne: string\nsecondTwo: true\n" ],
     "allOf" : [ {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AnyOf" : {
+  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AnyOf" : {
     "type" : "object",
     "examples" : [ "firstOne: string\nsecondOne: string\n" ],
     "anyOf" : [ {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne" : {
+  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne" : {
     "type" : "object",
     "properties" : {
       "firstOne" : {
@@ -29,7 +29,7 @@
     },
     "examples" : [ "firstOne: string\nsecondOne: string\n" ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo" : {
+  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo" : {
     "type" : "object",
     "properties" : {
       "firstTwo" : {
@@ -42,29 +42,29 @@
     },
     "examples" : [ "firstTwo: 0\nsecondTwo: true\n" ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$OneOf" : {
+  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$OneOf" : {
     "type" : "object",
     "examples" : [ "|\n  firstOne: string\n  secondOne: string\n" ],
     "oneOf" : [ {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
+  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
     "type" : "object",
     "properties" : {
       "allOf" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AllOf"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AllOf"
       },
       "anyOf" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AnyOf"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AnyOf"
       },
       "field" : {
         "type" : "string"
       },
       "oneOf" : {
-        "$ref" : "#/components/schemas/io.github.stavshamir.springwolf.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$OneOf"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SchemaWithOneOf$OneOf"
       }
     },
     "examples" : [ "allOf: |\n  firstOne: string\n  firstTwo: 0\n  secondOne: string\n  secondTwo: true\nanyOf: |\n  firstOne: string\n  secondOne: string\nfield: string\noneOf: |\n  |\n    firstOne: string\n    secondOne: string\n" ]
