@@ -75,14 +75,16 @@
             color="primary"
             (click)="
               messageTextArea.value = defaultExample.value;
-              exampleTextAreaLineCount = defaultExample.lineCount || 0;
               headersTextArea.value = headersExample?.value;
-              headersTextAreaLineCount = headersExample?.lineCount || 0;
               bindingTextArea.value = createMessageBindingExample(
                 operation.message.bindings.get(operation.protocol)
               )?.value;
-              messageBindingExampleTextAreaLineCount =
-                messageBindingExample?.lineCount || 0
+              recalculateLineCount(
+                'messageBindingExample',
+                bindingTextArea.value
+              );
+              recalculateLineCount('headers', headersTextArea.value);
+              recalculateLineCount('example', messageTextArea.value)
             "
           >
             Default
