@@ -30,7 +30,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.servers.test-protocol.protocol=test",
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
             })
-    static class TestSimplePropertiesIntegrationTest {
+    class TestSimplePropertiesIntegrationTest {
 
         @Autowired
         private SpringwolfConfigProperties properties;
@@ -79,7 +79,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.servers.test-protocol.protocol=test",
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
             })
-    static class PayloadWithoutCustomizingIntegrationTest {
+    class PayloadWithoutCustomizingIntegrationTest {
 
         @Autowired
         private SpringwolfConfigProperties properties;
@@ -112,7 +112,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.payload.extractable-classes.my.custom.class=1"
             })
-    static class PayloadWithCustomizingIntegrationTest {
+    class PayloadWithCustomizingIntegrationTest {
 
         @Autowired
         private SpringwolfConfigProperties properties;
@@ -148,7 +148,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.payload.extractable-classes.java.util.List=-1"
             })
-    static class PayloadDisabledIntegrationTest {
+    class PayloadDisabledIntegrationTest {
 
         @Autowired
         private SpringwolfConfigProperties properties;

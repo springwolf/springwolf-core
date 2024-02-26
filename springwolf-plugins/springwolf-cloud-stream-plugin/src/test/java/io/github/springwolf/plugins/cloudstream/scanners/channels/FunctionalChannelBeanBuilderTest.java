@@ -42,7 +42,7 @@ class FunctionalChannelBeanBuilderTest {
     }
 
     @Nested
-    class consumerBean {
+    class ConsumerBean {
         @Test
         void testConsumerBean() throws NoSuchMethodException {
             Method method = getMethod(this.getClass(), "consumerBean");

@@ -159,8 +159,7 @@ public class JsonSchemaGenerator {
     private static SchemaObject getSchemaObject(Object schema, Map<String, SchemaObject> definitions) {
         if (schema instanceof SchemaObject) {
             return (SchemaObject) schema;
-        } else if (schema instanceof ComponentSchema) {
-            ComponentSchema componentSchema = (ComponentSchema) schema;
+        } else if (schema instanceof ComponentSchema componentSchema) {
             if (componentSchema.getReference() != null
                     && componentSchema.getReference().getRef() != null) {
                 String schemaName = StringUtils.substringAfterLast(

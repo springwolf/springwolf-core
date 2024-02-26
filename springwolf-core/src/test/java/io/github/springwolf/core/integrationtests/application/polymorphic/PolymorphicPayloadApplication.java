@@ -15,7 +15,7 @@ public class PolymorphicPayloadApplication {
         return new Listener();
     }
 
-    class Listener {
+    static class Listener {
         @AsyncListener(operation = @AsyncOperation(channelName = "listener-channel"))
         public void listen(Payload payload) {}
     }
@@ -29,7 +29,7 @@ public class PolymorphicPayloadApplication {
                 @JsonSubTypes.Type(value = Cat.class, name = "cat"),
             })
     public interface Pet {
-        public String getType();
+        String getType();
     }
 
     public record Dog() implements Pet {

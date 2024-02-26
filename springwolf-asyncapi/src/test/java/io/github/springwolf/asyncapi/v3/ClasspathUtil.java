@@ -13,13 +13,15 @@ public final class ClasspathUtil {
     private ClasspathUtil() {}
 
     public static String readAsString(String resourceName) throws IOException {
-        InputStream inputStream = ClasspathUtil.class.getResourceAsStream(resourceName);
-        return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        try (InputStream inputStream = ClasspathUtil.class.getResourceAsStream(resourceName)) {
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
     }
 
     public static JsonNode parseYamlFile(String resourceName) throws IOException {
-        InputStream inputStream = ClasspathUtil.class.getResourceAsStream(resourceName);
-        ObjectMapper objectMapper = new DefaultAsyncApiSerializer().getYamlObjectMapper();
-        return objectMapper.readTree(inputStream);
+        try (InputStream inputStream = ClasspathUtil.class.getResourceAsStream(resourceName)) {
+            ObjectMapper objectMapper = new DefaultAsyncApiSerializer().getYamlObjectMapper();
+            return objectMapper.readTree(inputStream);
+        }
     }
 }

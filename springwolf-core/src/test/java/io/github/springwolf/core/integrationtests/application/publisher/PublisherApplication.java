@@ -13,7 +13,7 @@ public class PublisherApplication {
         return new Publisher();
     }
 
-    class Publisher {
+    static class Publisher {
         @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel"))
         public void publish(String payload) {}
     }
