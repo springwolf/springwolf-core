@@ -38,6 +38,7 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     public String prepareForSerialization(Schema schema, JsonNode exampleObject) {
         final String name = schema.getName();
         try {
+            // spec workaround to embedded yaml examples as string https://github.com/asyncapi/spec/issues/1038
             schema.setType(OVERRIDE_SCHEMA.getType());
             schema.setTypes(OVERRIDE_SCHEMA.getTypes());
 

@@ -208,6 +208,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
             String xml = exampleXmlValueSerializer.writeDocumentAsXmlString(document);
             exampleCache.putIfAbsent(name, exampleObject);
 
+            // spec workaround to embedded xml examples as string https://github.com/asyncapi/spec/issues/1038
             schema.setType(OVERRIDE_SCHEMA.getType());
             schema.setTypes(OVERRIDE_SCHEMA.getTypes());
 
