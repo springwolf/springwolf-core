@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation;
 
-import io.github.springwolf.core.asyncapi.types.OperationData;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Repeatable;
@@ -15,8 +13,7 @@ import java.lang.annotation.Target;
  * Publishers in this context are methods that send a message to a message broker.
  * To document listeners, use {@link AsyncListener}.
  * <p>
- * The fields channel, description, payload and headers are part of {@link AsyncOperation}
- * and behaves identical to {@link io.github.springwolf.core.asyncapi.types.ProducerData}.
+ * The fields channel, description, payload and headers are part of {@link AsyncOperation}.
  * If no {@link AsyncOperation#payloadType()} is passed, the payload type is extracted from the signature of the method.
  * Add {@link org.springframework.messaging.handler.annotation.Payload} to the payload argument, if the method has more than one argument.
  * <p>
@@ -35,8 +32,5 @@ import java.lang.annotation.Target;
 @Repeatable(AsyncPublishers.class)
 @Inherited
 public @interface AsyncPublisher {
-    /**
-     * Mapped to {@link OperationData}
-     */
     AsyncOperation operation();
 }
