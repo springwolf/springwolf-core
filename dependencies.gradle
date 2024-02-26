@@ -42,7 +42,7 @@ ext {
     kafkaClientsVersion = '3.6.1'
     kafkaStreamsVersion = '3.6.1'
 
-    kafkaProtobufSerializerVersion = '7.5.3'
+    kafkaProtobufSerializerVersion = '7.6.0'
 
     jacksonVersion = '2.16.1'
     jacksonDatatypeProtobufVersion = '0.9.14'
