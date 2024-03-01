@@ -3,8 +3,8 @@ package io.github.springwolf.core.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.springwolf.core.controller.dtos.MessageDto;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.controller.dtos.MessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

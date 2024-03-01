@@ -2,8 +2,8 @@
 package io.github.springwolf.core.asyncapi.channels;
 
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -28,7 +28,8 @@ public class SpringAnnotationChannelsScanner implements ChannelsScanner {
     }
 
     private List<Map.Entry<String, ChannelObject>> mapToChannels(Set<Class<?>> components) {
-        return components.stream().flatMap(springAnnotationChannelsScannerDelegator::scan).toList();
+        return components.stream()
+                .flatMap(springAnnotationChannelsScannerDelegator::scan)
+                .toList();
     }
-
 }

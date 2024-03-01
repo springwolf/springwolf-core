@@ -2,7 +2,7 @@
 package io.github.springwolf.asyncapi.v3.model.security_scheme.oauth2.flows;
 
 import io.github.springwolf.asyncapi.v3.ClasspathUtil;
-import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
+import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.util.Map;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 class OAuthFlowTest {
-    private static final DefaultAsyncApiSerializer serializer = new DefaultAsyncApiSerializer();
+    private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
     void shouldSerializeAuthorizationCodeOAuthFlow() throws IOException {

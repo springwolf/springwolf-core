@@ -17,9 +17,9 @@ class MessageDtoDeserializationTest {
     @Test
     void testCanBeSerialized() throws IOException, ClassNotFoundException {
         String content = "{" + "\"headers\": { \"some-header-key\" : \"some-header-value\" }, "
-                         + "\"payload\": \"{\\\"some-payload-key\\\":\\\"some-payload-value\\\"}\", "
-                         + "\"payloadType\": \""
-                         + MessageDto.class.getCanonicalName() + "\"" + "}";
+                + "\"payload\": \"{\\\"some-payload-key\\\":\\\"some-payload-value\\\"}\", "
+                + "\"payloadType\": \""
+                + MessageDto.class.getCanonicalName() + "\"" + "}";
 
         MessageDto value = objectMapper.readValue(content, MessageDto.class);
 
@@ -28,6 +28,6 @@ class MessageDtoDeserializationTest {
         assertThat(value.getPayload())
                 .isEqualTo(
                         new ObjectMapper().writeValueAsString(singletonMap("some-payload-key", "some-payload-value")));
-        assertThat(value.getPayloadType()).isEqualTo("io.github.springwolf.core.asyncapi.controller.dtos.MessageDto");
+        assertThat(value.getPayloadType()).isEqualTo("io.github.springwolf.core.controller.dtos.MessageDto");
     }
 }

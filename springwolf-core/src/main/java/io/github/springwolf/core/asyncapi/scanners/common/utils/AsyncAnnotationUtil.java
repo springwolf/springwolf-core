@@ -4,14 +4,14 @@ package io.github.springwolf.core.asyncapi.scanners.common.utils;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaderSchema;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 

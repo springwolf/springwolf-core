@@ -46,7 +46,6 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "net.javacrumbs.json-unit:json-unit-assertj:${jsonUnitAssertJVersion}"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
     testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"

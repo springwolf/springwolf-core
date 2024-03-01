@@ -2,8 +2,8 @@
 package io.github.springwolf.core.asyncapi.operations;
 
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

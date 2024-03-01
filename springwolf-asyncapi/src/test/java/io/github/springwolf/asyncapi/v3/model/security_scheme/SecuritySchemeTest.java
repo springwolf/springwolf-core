@@ -2,7 +2,7 @@
 package io.github.springwolf.asyncapi.v3.model.security_scheme;
 
 import io.github.springwolf.asyncapi.v3.ClasspathUtil;
-import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
+import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.security_scheme.oauth2.OAuthFlows;
 import io.github.springwolf.asyncapi.v3.model.security_scheme.oauth2.flows.ImplicitOAuthFlow;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.util.Map;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 class SecuritySchemeTest {
-    private static final DefaultAsyncApiSerializer serializer = new DefaultAsyncApiSerializer();
+    private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
     void shouldSerializeUserPassword() throws IOException {

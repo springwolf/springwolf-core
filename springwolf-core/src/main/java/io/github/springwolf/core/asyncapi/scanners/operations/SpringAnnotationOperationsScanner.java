@@ -30,5 +30,4 @@ public class SpringAnnotationOperationsScanner implements OperationsScanner {
     private List<Map.Entry<String, Operation>> mapToOperations(Set<Class<?>> components) {
         return components.stream().flatMap(classProcessor::scan).toList();
     }
-
 }

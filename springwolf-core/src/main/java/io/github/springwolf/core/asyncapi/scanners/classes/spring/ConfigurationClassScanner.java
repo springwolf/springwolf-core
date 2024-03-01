@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.classes.spring;
 
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 

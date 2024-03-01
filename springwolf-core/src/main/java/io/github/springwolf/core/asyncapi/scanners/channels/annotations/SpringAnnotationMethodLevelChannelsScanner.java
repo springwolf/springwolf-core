@@ -5,11 +5,11 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;

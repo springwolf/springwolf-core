@@ -3,9 +3,9 @@ package io.github.springwolf.core.asyncapi.components.examples.walkers.yaml;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.ExampleValueGenerator;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.PropertyExample;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.ExampleValueGenerator;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;

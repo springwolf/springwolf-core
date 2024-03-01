@@ -2,10 +2,10 @@
 package io.github.springwolf.core.asyncapi.scanners.bindings.processor;
 
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.core.asyncapi.annotations.AsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
-import io.github.springwolf.core.asyncapi.annotations.AsyncOperationBinding;
 import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;

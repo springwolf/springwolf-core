@@ -3,12 +3,12 @@ package io.github.springwolf.core.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
-import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
+import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
+import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.controller.ActuatorAsyncApiController;
 import io.github.springwolf.core.controller.AsyncApiController;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -48,6 +48,6 @@ public class SpringwolfWebConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AsyncApiSerializerService asyncApiSerializerService() {
-        return new DefaultAsyncApiSerializer();
+        return new DefaultAsyncApiSerializerService();
     }
 }

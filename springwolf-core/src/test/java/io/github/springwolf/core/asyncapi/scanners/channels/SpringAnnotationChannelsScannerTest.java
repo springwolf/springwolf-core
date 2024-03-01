@@ -21,7 +21,8 @@ class SpringAnnotationChannelsScannerTest {
     private final SpringAnnotationChannelsScannerDelegator springAnnotationChannelsScannerDelegator =
             mock(SpringAnnotationChannelsScannerDelegator.class);
 
-    private final SpringAnnotationChannelsScanner springAnnotationChannelsScanner = new SpringAnnotationChannelsScanner(classScanner, springAnnotationChannelsScannerDelegator);
+    private final SpringAnnotationChannelsScanner springAnnotationChannelsScanner =
+            new SpringAnnotationChannelsScanner(classScanner, springAnnotationChannelsScannerDelegator);
 
     @Test
     void noClassFoundTest() {
