@@ -270,6 +270,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "aerfus",
+      "name": "Nikita Marunko",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8309418?v=4",
+      "profile": "https://github.com/aerfus",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

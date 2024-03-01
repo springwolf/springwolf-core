@@ -190,6 +190,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://raphaeldelio.com/"><img src="https://avatars.githubusercontent.com/u/25641721?v=4?s=100" width="100px;" alt="Raphael De Lio"/><br /><sub><b>Raphael De Lio</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=raphaeldelio" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/aerfus"><img src="https://avatars.githubusercontent.com/u/8309418?v=4?s=100" width="100px;" alt="Nikita Marunko"/><br /><sub><b>Nikita Marunko</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=aerfus" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
