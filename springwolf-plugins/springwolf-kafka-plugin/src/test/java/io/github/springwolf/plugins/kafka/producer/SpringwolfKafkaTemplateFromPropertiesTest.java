@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.kafka.producer;
 
-import io.github.springwolf.plugins.kafka.properties.SpringwolfKafkaConfigProperties;
+import io.github.springwolf.plugins.kafka.configuration.properties.SpringwolfKafkaConfigProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;

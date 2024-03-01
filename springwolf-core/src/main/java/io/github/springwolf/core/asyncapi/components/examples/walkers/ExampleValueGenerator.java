@@ -39,7 +39,7 @@ public interface ExampleValueGenerator<T, R> {
     String lookupSchemaName(Schema schema);
 
     /**
-     * @return The serializable representation of the example (object for json & yaml, string for others)
+     * @return The serializable representation of the example (object for json and yaml, string for others)
      */
     R prepareForSerialization(Schema name, T exampleObject);
 

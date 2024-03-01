@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-import static io.github.springwolf.plugins.sns.properties.SpringwolfSnsConfigConstants.SPRINGWOLF_SNS_CONFIG_PREFIX;
-import static io.github.springwolf.plugins.sns.properties.SpringwolfSnsConfigConstants.SPRINGWOLF_SNS_PLUGIN_PUBLISHING_ENABLED;
+import static io.github.springwolf.plugins.sns.configuration.properties.SpringwolfSnsConfigConstants.SPRINGWOLF_SNS_CONFIG_PREFIX;
+import static io.github.springwolf.plugins.sns.configuration.properties.SpringwolfSnsConfigConstants.SPRINGWOLF_SNS_PLUGIN_PUBLISHING_ENABLED;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(

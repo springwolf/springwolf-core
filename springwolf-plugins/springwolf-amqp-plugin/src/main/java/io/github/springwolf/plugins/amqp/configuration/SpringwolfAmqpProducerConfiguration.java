@@ -15,8 +15,8 @@ import org.springframework.lang.NonNull;
 
 import java.util.List;
 
-import static io.github.springwolf.plugins.amqp.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_AMQP_CONFIG_PREFIX;
-import static io.github.springwolf.plugins.amqp.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_AMQP_PLUGIN_PUBLISHING_ENABLED;
+import static io.github.springwolf.plugins.amqp.configuration.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_AMQP_CONFIG_PREFIX;
+import static io.github.springwolf.plugins.amqp.configuration.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_AMQP_PLUGIN_PUBLISHING_ENABLED;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(
