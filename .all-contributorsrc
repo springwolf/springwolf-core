@@ -253,15 +253,24 @@
         "code"
       ]
     },
-	{
-	  "login": "robert-henke",
-	  "name": "Robert Henke",
-	  "avatar_url": "https://avatars.githubusercontent.com/u/157017289?v=4",
-	  "profile": "https://github.com/robert-henke",
-	  "contributions": [
-		"code"
-	  ]
-	}
+    {
+      "login": "robert-henke",
+      "name": "Robert Henke",
+      "avatar_url": "https://avatars.githubusercontent.com/u/157017289?v=4",
+      "profile": "https://github.com/robert-henke",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "raphaeldelio",
+      "name": "Raphael De Lio",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25641721?v=4",
+      "profile": "https://raphaeldelio.com/",
+      "contributions": [
+        "code"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
   "linkToUsage": false
