@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.cloudstream.configuration;
 
+import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.plugins.cloudstream.scanners.channels.CloudStreamFunctionChannelsScanner;
 import io.github.springwolf.plugins.cloudstream.scanners.channels.CloudStreamFunctionOperationsScanner;
 import io.github.springwolf.plugins.cloudstream.scanners.channels.FunctionalChannelBeanBuilder;

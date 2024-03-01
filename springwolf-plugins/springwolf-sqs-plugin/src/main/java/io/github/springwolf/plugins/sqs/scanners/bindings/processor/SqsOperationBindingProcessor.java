@@ -3,8 +3,8 @@ package io.github.springwolf.plugins.sqs.scanners.bindings.processor;
 
 import io.github.springwolf.asyncapi.v3.bindings.sqs.SQSChannelBindingQueue;
 import io.github.springwolf.asyncapi.v3.bindings.sqs.SQSOperationBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractOperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import io.github.springwolf.plugins.sqs.scanners.channels.operationdata.annotation.SqsAsyncOperationBinding;
 import io.github.springwolf.plugins.sqs.scanners.channels.operationdata.annotation.SqsAsyncQueueBinding;
 

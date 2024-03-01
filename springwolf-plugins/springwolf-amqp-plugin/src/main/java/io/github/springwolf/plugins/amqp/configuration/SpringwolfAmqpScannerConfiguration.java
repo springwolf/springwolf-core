@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.amqp.configuration;
 
+import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
-import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationClassLevelChannelsScanner;
-import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
-import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.amqp.scanners.bindings.AmqpBindingFactory;
 import io.github.springwolf.plugins.amqp.scanners.bindings.processor.AmqpMessageBindingProcessor;
 import io.github.springwolf.plugins.amqp.scanners.bindings.processor.AmqpOperationBindingProcessor;
@@ -114,8 +114,9 @@ public class SpringwolfAmqpScannerConfiguration {
             AmqpBindingFactory amqpBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
             ComponentsService componentsService) {
-        SpringAnnotationMethodLevelChannelsScanner<RabbitListener> strategy = new SpringAnnotationMethodLevelChannelsScanner<>(
-                RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, componentsService);
+        SpringAnnotationMethodLevelChannelsScanner<RabbitListener> strategy =
+                new SpringAnnotationMethodLevelChannelsScanner<>(
+                        RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, componentsService);
 
         return new SpringAnnotationChannelsScanner(classScanner, strategy);
     }
@@ -131,8 +132,9 @@ public class SpringwolfAmqpScannerConfiguration {
             AmqpBindingFactory amqpBindingBuilder,
             PayloadClassExtractor payloadClassExtractor,
             ComponentsService componentsService) {
-        SpringAnnotationMethodLevelOperationsScanner<RabbitListener> strategy = new SpringAnnotationMethodLevelOperationsScanner<>(
-                RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, componentsService);
+        SpringAnnotationMethodLevelOperationsScanner<RabbitListener> strategy =
+                new SpringAnnotationMethodLevelOperationsScanner<>(
+                        RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);
     }
