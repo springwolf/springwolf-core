@@ -2,7 +2,7 @@
 package io.github.springwolf.asyncapi.v3.bindings.kafka;
 
 import io.github.springwolf.asyncapi.v3.ClasspathUtil;
-import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
+import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -19,7 +19,7 @@ import java.util.Map;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 class KafkaBindingTest {
-    private static final DefaultAsyncApiSerializer serializer = new DefaultAsyncApiSerializer();
+    private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
     void shouldSerializeKafkaServerBinding() throws IOException {

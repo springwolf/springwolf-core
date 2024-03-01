@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.amqp.scanners.bindings.processor;
 
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedMessageBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import io.github.springwolf.plugins.amqp.scanners.channels.operationdata.annotation.AmqpAsyncOperationBinding;
 import org.junit.jupiter.api.Test;
 

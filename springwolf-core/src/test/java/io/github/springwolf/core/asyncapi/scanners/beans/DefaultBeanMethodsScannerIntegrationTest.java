@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.beans;
 
-import io.github.springwolf.core.asyncapi.scanners.classes.ConfigurationClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

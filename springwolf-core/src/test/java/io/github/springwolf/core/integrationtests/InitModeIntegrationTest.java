@@ -2,7 +2,7 @@
 package io.github.springwolf.core.integrationtests;
 
 import io.github.springwolf.core.asyncapi.DefaultAsyncApiService;
-import io.github.springwolf.core.asyncapi.controller.AsyncApiController;
+import io.github.springwolf.core.controller.AsyncApiController;
 import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
 import io.github.springwolf.core.integrationtests.application.basic.TestApplication;
 import org.junit.jupiter.api.Nested;

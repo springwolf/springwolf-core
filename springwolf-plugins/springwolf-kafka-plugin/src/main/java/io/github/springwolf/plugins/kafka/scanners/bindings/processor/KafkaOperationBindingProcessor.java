@@ -3,8 +3,8 @@ package io.github.springwolf.plugins.kafka.scanners.bindings.processor;
 
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.processor.AbstractOperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractOperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import io.github.springwolf.plugins.kafka.scanners.channels.annotation.KafkaListenerUtil;
 import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import org.springframework.util.StringUtils;

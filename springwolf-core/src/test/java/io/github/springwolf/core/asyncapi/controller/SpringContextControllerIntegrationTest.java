@@ -2,7 +2,9 @@
 package io.github.springwolf.core.asyncapi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.springwolf.core.SpringwolfWebConfiguration;
+import io.github.springwolf.core.configuration.SpringwolfWebConfiguration;
+import io.github.springwolf.core.controller.ActuatorAsyncApiController;
+import io.github.springwolf.core.controller.AsyncApiController;
 import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

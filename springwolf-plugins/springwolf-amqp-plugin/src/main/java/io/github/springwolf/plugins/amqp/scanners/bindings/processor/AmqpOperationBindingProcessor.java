@@ -2,8 +2,8 @@
 package io.github.springwolf.plugins.amqp.scanners.bindings.processor;
 
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.processor.AbstractOperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractOperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import io.github.springwolf.plugins.amqp.scanners.channels.operationdata.annotation.AmqpAsyncOperationBinding;
 
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.fixtures;
 
-import io.github.springwolf.core.SpringwolfAutoConfiguration;
+import io.github.springwolf.core.configuration.SpringwolfAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;

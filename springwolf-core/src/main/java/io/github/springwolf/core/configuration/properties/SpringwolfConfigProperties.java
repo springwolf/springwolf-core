@@ -5,7 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.info.Contact;
 import io.github.springwolf.asyncapi.v3.model.info.License;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
-import io.github.springwolf.core.configuration.AsyncApiDocket;
+import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

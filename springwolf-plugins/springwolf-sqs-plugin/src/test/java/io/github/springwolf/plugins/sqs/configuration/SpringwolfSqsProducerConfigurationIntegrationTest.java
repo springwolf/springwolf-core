@@ -3,12 +3,12 @@ package io.github.springwolf.plugins.sqs.configuration;
 
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
-import io.github.springwolf.core.asyncapi.ChannelsService;
-import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
-import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.channels.ChannelsService;
+import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
-import io.github.springwolf.core.configuration.AsyncApiDocketService;
-import io.github.springwolf.core.schemas.ComponentsService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.sqs.controller.SpringwolfSqsController;
 import io.github.springwolf.plugins.sqs.producer.SpringwolfSqsProducer;
 import org.junit.jupiter.api.Nested;

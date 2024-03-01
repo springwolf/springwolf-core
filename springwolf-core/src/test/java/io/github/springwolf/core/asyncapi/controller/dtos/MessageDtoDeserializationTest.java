@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.controller.dtos;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.springwolf.core.controller.dtos.MessageDto;
 import io.swagger.v3.core.util.Json;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,6 @@ class MessageDtoDeserializationTest {
         assertThat(value.getPayload())
                 .isEqualTo(
                         new ObjectMapper().writeValueAsString(singletonMap("some-payload-key", "some-payload-value")));
-        assertThat(value.getPayloadType()).isEqualTo("io.github.springwolf.core.asyncapi.controller.dtos.MessageDto");
+        assertThat(value.getPayloadType()).isEqualTo("io.github.springwolf.core.controller.dtos.MessageDto");
     }
 }

@@ -2,7 +2,7 @@
 package io.github.springwolf.asyncapi.v3.model.schema;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializer;
+import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.util.Map;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 class SchemaTest {
-    private static final DefaultAsyncApiSerializer serializer = new DefaultAsyncApiSerializer();
+    private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
     void shouldSerializePrimitiveSample() throws JsonProcessingException {

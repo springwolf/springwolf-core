@@ -2,15 +2,15 @@
 package io.github.springwolf.plugins.kafka.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
-import io.github.springwolf.core.asyncapi.scanners.channels.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
+import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
+import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.core.schemas.ComponentsService;
-import io.github.springwolf.core.schemas.DefaultComponentsService;
-import io.github.springwolf.core.schemas.SwaggerSchemaUtil;
-import io.github.springwolf.core.schemas.example.DefaultSchemaWalker;
-import io.github.springwolf.core.schemas.example.ExampleJsonValueGenerator;
-import io.github.springwolf.core.schemas.example.SchemaWalkerProvider;
+import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

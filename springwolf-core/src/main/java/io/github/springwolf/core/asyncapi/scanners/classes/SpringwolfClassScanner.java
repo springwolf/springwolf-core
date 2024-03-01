@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.classes;
 
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Method;

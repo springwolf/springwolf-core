@@ -1,9 +1,9 @@
 {
-  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$CompositeFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$CompositeFoo" : {
     "type" : "string",
     "properties" : {
       "f" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SimpleFoo"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SimpleFoo"
       },
       "s" : {
         "type" : "string"
@@ -11,7 +11,7 @@
     },
     "examples" : [ "f:\n  b: true\n  s: string\ns: string\n" ]
   },
-  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$FooWithEnum" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$FooWithEnum" : {
     "type" : "string",
     "properties" : {
       "b" : {
@@ -24,7 +24,7 @@
     },
     "examples" : [ "b: BAR1\ns: string\n" ]
   },
-  "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SimpleFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SimpleFoo" : {
     "type" : "string",
     "properties" : {
       "b" : {

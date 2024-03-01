@@ -2,8 +2,8 @@
 package io.github.springwolf.plugins.sns.scanners.channels.operationdata;
 
 import io.github.springwolf.asyncapi.v3.bindings.sns.SNSMessageBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.MessageBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedMessageBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import io.github.springwolf.plugins.sns.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringValueResolver;

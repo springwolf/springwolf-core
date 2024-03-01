@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.kafka.controller;
 
-import io.github.springwolf.core.asyncapi.controller.PublishingBaseController;
-import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
-import io.github.springwolf.core.asyncapi.controller.dtos.MessageDto;
+import io.github.springwolf.core.controller.PublishingBaseController;
+import io.github.springwolf.core.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.dtos.MessageDto;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;

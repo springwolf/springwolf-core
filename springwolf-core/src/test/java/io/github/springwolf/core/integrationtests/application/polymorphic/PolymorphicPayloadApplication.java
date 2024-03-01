@@ -3,8 +3,8 @@ package io.github.springwolf.core.integrationtests.application.polymorphic;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
-import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
+import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
+import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 

@@ -1,5 +1,5 @@
 {
-  "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$ListWrapper" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ListWrapper" : {
     "type" : "string",
     "properties" : {
       "empty" : {

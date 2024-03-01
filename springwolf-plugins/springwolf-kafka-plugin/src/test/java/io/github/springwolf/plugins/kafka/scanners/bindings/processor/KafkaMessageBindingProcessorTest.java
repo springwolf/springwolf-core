@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.kafka.scanners.bindings.processor;
 
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedMessageBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import org.junit.jupiter.api.Test;
 

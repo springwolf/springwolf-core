@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.bindings;
 
-import io.github.springwolf.core.configuration.AsyncApiDocket;
+import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 
 /**
  * Order of binding processors

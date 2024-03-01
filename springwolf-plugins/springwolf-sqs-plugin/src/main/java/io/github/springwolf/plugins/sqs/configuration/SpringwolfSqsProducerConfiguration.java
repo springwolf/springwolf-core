@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.sqs.configuration;
 
 import io.awspring.cloud.sqs.operations.SqsTemplate;
-import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.sqs.controller.SpringwolfSqsController;
 import io.github.springwolf.plugins.sqs.producer.SpringwolfSqsProducer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
