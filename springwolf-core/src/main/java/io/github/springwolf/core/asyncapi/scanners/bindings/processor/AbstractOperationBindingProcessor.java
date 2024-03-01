@@ -40,10 +40,10 @@ public abstract class AbstractOperationBindingProcessor<A>
 
     /**
      * Attempt to cast the annotation to the specific annotation
-     *
+     * <p>
      * Casting might fail, when multiple, different binding annotations are used,
      * which results in an (expected) exception.
-     *
+     * <p>
      * If there is an option to previously test casting without casting, then lets change the code here.
      */
     private Stream<A> tryCast(Annotation obj) {

@@ -40,7 +40,7 @@ public abstract class ClassLevelAnnotationScanner<
 
     protected enum MessageType {
         CHANNEL,
-        OPERATION;
+        OPERATION
     }
 
     protected boolean isClassAnnotated(Class<?> component) {

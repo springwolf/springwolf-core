@@ -55,6 +55,6 @@ public class WebSocketChannelBinding extends ChannelBinding {
         GET,
 
         @JsonProperty("POST")
-        POST;
+        POST
     }
 }

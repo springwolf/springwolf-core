@@ -13,8 +13,8 @@ import io.swagger.v3.core.util.ObjectMapperFactory;
 
 public class DefaultAsyncApiSerializer implements AsyncApiSerializerService {
 
-    private ObjectMapper jsonMapper = ObjectMapperFactory.createJson31();
-    private ObjectMapper yamlMapper = ObjectMapperFactory.createYaml31();
+    private final ObjectMapper jsonMapper = ObjectMapperFactory.createJson31();
+    private final ObjectMapper yamlMapper = ObjectMapperFactory.createYaml31();
     private final PrettyPrinter printer = new CustomPrettyPrinter();
 
     public DefaultAsyncApiSerializer() {

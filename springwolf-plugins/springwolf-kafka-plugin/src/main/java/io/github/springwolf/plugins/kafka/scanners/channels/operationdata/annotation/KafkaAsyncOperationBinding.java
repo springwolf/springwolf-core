@@ -33,7 +33,7 @@ public @interface KafkaAsyncOperationBinding {
 
     @Retention(RetentionPolicy.CLASS)
     @Target({})
-    public @interface KafkaAsyncMessageBinding {
+    @interface KafkaAsyncMessageBinding {
 
         KafkaAsyncKey key() default @KafkaAsyncKey(type = KafkaAsyncKey.KafkaKeyTypes.UNDEFINED_KEY);
 
@@ -42,7 +42,7 @@ public @interface KafkaAsyncOperationBinding {
 
     @Retention(RetentionPolicy.CLASS)
     @Target({})
-    public @interface KafkaAsyncKey {
+    @interface KafkaAsyncKey {
 
         KafkaKeyTypes type() default KafkaKeyTypes.STRING_KEY;
 

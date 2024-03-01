@@ -27,14 +27,14 @@ public class SpringwolfConfigProperties {
         /**
          * Default option.
          * AsyncAPI detection on application startup. Exceptions interrupt the application start.
-         *
+         * <p>
          * Use for immediate feedback in case of misconfiguration.
          */
         FAIL_FAST,
 
         /**
          * AsyncAPI detection after application startup in background thread (via Spring TaskExecutor).
-         *
+         * <p>
          * Use when your application context is large and initialization should be deferred to reduce start-up time.
          */
         BACKGROUND
@@ -49,7 +49,7 @@ public class SpringwolfConfigProperties {
 
     /**
      * Use fully qualified names for the schema classes
-     *
+     * <p>
      * Example:
      * useFqn = true  -> java.lang.String
      * useFqn = false -> String
@@ -211,7 +211,7 @@ public class SpringwolfConfigProperties {
     public static class Payload {
         /**
          * In case the payload is wrapped, Springwolf will try to unwrap the specified generic classes.
-         *
+         * <p>
          * The format is: canonicalClassName=generic-argument-index
          */
         private Map<String, Integer> extractableClasses = Map.of(
