@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.kafka.configuration;
 
-import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.kafka.controller.SpringwolfKafkaController;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaTemplateFromProperties;

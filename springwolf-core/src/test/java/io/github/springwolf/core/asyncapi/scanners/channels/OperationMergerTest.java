@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

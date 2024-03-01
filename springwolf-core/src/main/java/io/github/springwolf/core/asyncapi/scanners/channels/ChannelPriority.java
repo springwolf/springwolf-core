@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.channels;
 
-import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
-import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncPublisher;
-import io.github.springwolf.core.configuration.AsyncApiDocket;
+import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
+import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
+import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 
 public class ChannelPriority {
     /**

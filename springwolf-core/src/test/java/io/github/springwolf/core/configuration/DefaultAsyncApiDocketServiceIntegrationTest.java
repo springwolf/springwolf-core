@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.configuration;
 
+import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
+import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.amqp.types.channel.operation.message.header;
 
-import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeaders;
-import io.github.springwolf.core.asyncapi.types.channel.operation.message.header.AsyncHeadersBuilder;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
 
 public class AsyncHeadersForAmqpBuilder implements AsyncHeadersBuilder {
 

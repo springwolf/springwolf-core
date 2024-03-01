@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.amqp.configuration;
 
 import io.github.springwolf.core.asyncapi.AsyncApiService;
-import io.github.springwolf.core.asyncapi.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.amqp.controller.SpringwolfAmqpController;
 import io.github.springwolf.plugins.amqp.producer.SpringwolfAmqpProducer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

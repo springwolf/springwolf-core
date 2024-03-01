@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import static io.github.springwolf.core.asyncapi.MessageHelper.toMessagesMap;
-import static io.github.springwolf.core.asyncapi.MessageHelper.toOperationsMessagesMap;
+import static io.github.springwolf.core.asyncapi.scanners.common.MessageHelper.toMessagesMap;
+import static io.github.springwolf.core.asyncapi.scanners.common.MessageHelper.toOperationsMessagesMap;
 import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

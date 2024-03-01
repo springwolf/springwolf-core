@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka.consumers;
 
-import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncListener;
-import io.github.springwolf.core.asyncapi.scanners.channels.operationdata.annotation.AsyncOperation;
-import io.github.springwolf.core.asyncapi.scanners.channels.payload.AsyncApiPayload;
+import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
+import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
+import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
 import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

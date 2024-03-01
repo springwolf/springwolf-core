@@ -4,7 +4,7 @@ package io.github.springwolf.plugins.sns.scanners.channels.operationdata;
 import io.github.springwolf.asyncapi.v3.bindings.sns.SNSOperationBinding;
 import io.github.springwolf.asyncapi.v3.bindings.sns.SNSOperationBindingConsumer;
 import io.github.springwolf.asyncapi.v3.bindings.sns.SNSOperationBindingIdentifier;
-import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import io.github.springwolf.plugins.sns.scanners.channels.operationdata.annotation.SnsAsyncOperationBinding;
 import io.github.springwolf.plugins.sns.scanners.channels.operationdata.annotation.SnsAsyncOperationBindingIdentifier;
 import org.junit.jupiter.api.Test;

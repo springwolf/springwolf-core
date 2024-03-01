@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.schemas.example;
 
+import io.github.springwolf.core.asyncapi.components.examples.walkers.SchemaWalker;
+import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

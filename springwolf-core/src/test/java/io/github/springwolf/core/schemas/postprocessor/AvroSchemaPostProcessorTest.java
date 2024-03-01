@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.schemas.postprocessor;
 
+import io.github.springwolf.core.asyncapi.components.postprocessors.AvroSchemaPostProcessor;
+import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.junit.jupiter.api.Test;
 

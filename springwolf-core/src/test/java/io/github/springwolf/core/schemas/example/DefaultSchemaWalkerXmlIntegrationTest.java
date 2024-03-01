@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.schemas.example;
 
+import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.DefaultExampleXmlValueSerializer;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.ExampleXmlValueGenerator;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;

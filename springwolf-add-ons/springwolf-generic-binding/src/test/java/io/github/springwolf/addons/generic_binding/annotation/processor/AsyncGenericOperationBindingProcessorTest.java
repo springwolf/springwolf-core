@@ -2,7 +2,7 @@
 package io.github.springwolf.addons.generic_binding.annotation.processor;
 
 import io.github.springwolf.addons.generic_binding.annotation.AsyncGenericOperationBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedOperationBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

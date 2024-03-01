@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.jms.scanners.bindings.processor;
 
 import io.github.springwolf.asyncapi.v3.bindings.jms.JMSMessageBinding;
-import io.github.springwolf.core.asyncapi.scanners.bindings.ProcessedMessageBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import io.github.springwolf.plugins.jms.scanners.channels.operationdata.annotation.JmsAsyncOperationBinding;
 import org.junit.jupiter.api.Test;
 

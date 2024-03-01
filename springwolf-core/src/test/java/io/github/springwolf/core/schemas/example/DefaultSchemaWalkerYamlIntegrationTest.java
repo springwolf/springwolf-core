@@ -2,6 +2,10 @@
 package io.github.springwolf.core.schemas.example;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.DefaultExampleYamlValueSerializer;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.ExampleYamlValueGenerator;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
