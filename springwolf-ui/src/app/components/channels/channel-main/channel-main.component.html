@@ -116,14 +116,11 @@
         }}</a>
       </h4>
       <app-schema *ngIf="headers" [schema]="headers"></app-schema>
-      <div class="flex-column">
-        <app-json [data]="headersExample?.rawValue"></app-json>
-      </div>
     </mat-tab>
     <mat-tab label="Operation Bindings">
       <div *ngIf="operation.protocol && operation.message.bindings">
         <app-json
-          *ngIf="operation.protocol && operation.message.bindings"
+          *ngIf="operation.protocol && operation.bindings"
           [data]="operation.bindings[operation.protocol]"
         ></app-json>
       </div>
@@ -131,6 +128,7 @@
     <mat-tab label="Message Bindings">
       <div *ngIf="operation.protocol && operation.message.rawBindings">
         <app-json
+          *ngIf="operation.protocol && operation.message"
           [data]="operation.message.rawBindings[operation.protocol]"
         ></app-json>
       </div>
