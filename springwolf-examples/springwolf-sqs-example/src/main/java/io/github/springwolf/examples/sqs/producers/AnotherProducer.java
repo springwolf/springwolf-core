@@ -5,8 +5,8 @@ import io.awspring.cloud.sqs.operations.SqsTemplate;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
 import io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto;
-import io.github.springwolf.plugins.sqs.scanners.channels.operationdata.annotation.SqsAsyncOperationBinding;
-import io.github.springwolf.plugins.sqs.scanners.channels.operationdata.annotation.SqsAsyncQueueBinding;
+import io.github.springwolf.plugins.sqs.annotations.SqsAsyncOperationBinding;
+import io.github.springwolf.plugins.sqs.annotations.SqsAsyncQueueBinding;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

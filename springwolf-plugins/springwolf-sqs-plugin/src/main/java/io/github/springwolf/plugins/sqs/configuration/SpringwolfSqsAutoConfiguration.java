@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.sqs.configuration;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
-import io.github.springwolf.plugins.sqs.properties.SpringwolfSqsConfigProperties;
+import io.github.springwolf.plugins.sqs.configuration.properties.SpringwolfSqsConfigProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

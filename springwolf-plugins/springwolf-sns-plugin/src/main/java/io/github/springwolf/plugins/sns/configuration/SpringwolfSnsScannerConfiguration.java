@@ -2,8 +2,8 @@
 package io.github.springwolf.plugins.sns.configuration;
 
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
-import io.github.springwolf.plugins.sns.scanners.channels.operationdata.SnsMessageBindingProcessor;
-import io.github.springwolf.plugins.sns.scanners.channels.operationdata.SnsOperationBindingProcessor;
+import io.github.springwolf.plugins.sns.asyncapi.scanners.bindings.messages.SnsMessageBindingProcessor;
+import io.github.springwolf.plugins.sns.asyncapi.scanners.bindings.operations.SnsOperationBindingProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

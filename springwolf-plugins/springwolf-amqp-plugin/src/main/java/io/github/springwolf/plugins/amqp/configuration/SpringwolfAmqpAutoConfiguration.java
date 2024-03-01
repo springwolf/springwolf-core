@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.amqp.configuration;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
-import io.github.springwolf.plugins.amqp.properties.SpringwolfAmqpConfigProperties;
+import io.github.springwolf.plugins.amqp.configuration.properties.SpringwolfAmqpConfigProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

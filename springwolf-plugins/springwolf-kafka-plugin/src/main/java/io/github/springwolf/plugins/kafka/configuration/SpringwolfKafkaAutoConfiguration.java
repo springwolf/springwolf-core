@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.kafka.configuration;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
-import io.github.springwolf.plugins.kafka.properties.SpringwolfKafkaConfigProperties;
+import io.github.springwolf.plugins.kafka.configuration.properties.SpringwolfKafkaConfigProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

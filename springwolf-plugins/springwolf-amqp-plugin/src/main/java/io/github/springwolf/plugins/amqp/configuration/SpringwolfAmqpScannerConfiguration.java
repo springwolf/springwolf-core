@@ -12,10 +12,10 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassEx
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
-import io.github.springwolf.plugins.amqp.scanners.bindings.AmqpBindingFactory;
-import io.github.springwolf.plugins.amqp.scanners.bindings.processor.AmqpMessageBindingProcessor;
-import io.github.springwolf.plugins.amqp.scanners.bindings.processor.AmqpOperationBindingProcessor;
-import io.github.springwolf.plugins.amqp.types.channel.operation.message.header.AsyncHeadersForAmqpBuilder;
+import io.github.springwolf.plugins.amqp.asyncapi.components.headers.AsyncHeadersForAmqpBuilder;
+import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.AmqpBindingFactory;
+import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.messages.AmqpMessageBindingProcessor;
+import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.operations.AmqpOperationBindingProcessor;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
@@ -29,7 +29,7 @@ import org.springframework.core.annotation.Order;
 
 import java.util.List;
 
-import static io.github.springwolf.plugins.amqp.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED;
+import static io.github.springwolf.plugins.amqp.configuration.properties.SpringwolfAmqpConfigConstants.SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED;
 
 /**
  * Spring configuration defining the scanner beans for this amqp plugin.

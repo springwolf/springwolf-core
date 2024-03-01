@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-import static io.github.springwolf.plugins.sqs.properties.SpringwolfSqsConfigConstants.SPRINGWOLF_SQS_CONFIG_PREFIX;
-import static io.github.springwolf.plugins.sqs.properties.SpringwolfSqsConfigConstants.SPRINGWOLF_SQS_PLUGIN_PUBLISHING_ENABLED;
+import static io.github.springwolf.plugins.sqs.configuration.properties.SpringwolfSqsConfigConstants.SPRINGWOLF_SQS_CONFIG_PREFIX;
+import static io.github.springwolf.plugins.sqs.configuration.properties.SpringwolfSqsConfigConstants.SPRINGWOLF_SQS_PLUGIN_PUBLISHING_ENABLED;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(

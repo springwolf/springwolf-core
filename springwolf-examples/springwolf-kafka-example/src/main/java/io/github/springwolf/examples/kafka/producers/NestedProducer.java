@@ -6,9 +6,7 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersCloudEventConstants;
 import io.github.springwolf.examples.kafka.configuration.KafkaConfiguration;
 import io.github.springwolf.examples.kafka.dtos.NestedPayloadDto;
-import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding;
-import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncKey;
-import io.github.springwolf.plugins.kafka.scanners.channels.operationdata.annotation.KafkaAsyncOperationBinding.KafkaAsyncMessageBinding;
+import io.github.springwolf.plugins.kafka.asyncapi.annotations.KafkaAsyncOperationBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -66,8 +64,11 @@ public class NestedProducer {
     @KafkaAsyncOperationBinding(
             clientId = "foo-clientId",
             messageBinding =
-                    @KafkaAsyncMessageBinding(
-                            key = @KafkaAsyncKey(description = "Kafka Producer Message Key", example = "example-key")))
+                    @KafkaAsyncOperationBinding.KafkaAsyncMessageBinding(
+                            key =
+                                    @KafkaAsyncOperationBinding.KafkaAsyncKey(
+                                            description = "Kafka Producer Message Key",
+                                            example = "example-key")))
     public void sendMessage(NestedPayloadDto msg) {
         kafkaTemplate.send(KafkaConfiguration.PRODUCER_TOPIC, msg);
     }

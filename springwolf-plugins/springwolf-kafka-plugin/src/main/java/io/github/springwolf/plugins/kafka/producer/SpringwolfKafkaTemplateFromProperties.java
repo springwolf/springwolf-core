@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.kafka.producer;
 
 import io.github.springwolf.plugins.kafka.configuration.SpringwolfKafkaProducerConfiguration;
-import io.github.springwolf.plugins.kafka.properties.SpringwolfKafkaConfigProperties;
+import io.github.springwolf.plugins.kafka.configuration.properties.SpringwolfKafkaConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;

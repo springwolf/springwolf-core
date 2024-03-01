@@ -12,8 +12,8 @@ import org.springframework.jms.core.JmsTemplate;
 
 import java.util.List;
 
-import static io.github.springwolf.plugins.jms.properties.SpringwolfJmsConfigConstants.SPRINGWOLF_JMS_CONFIG_PREFIX;
-import static io.github.springwolf.plugins.jms.properties.SpringwolfJmsConfigConstants.SPRINGWOLF_JMS_PLUGIN_PUBLISHING_ENABLED;
+import static io.github.springwolf.plugins.jms.configuration.properties.SpringwolfJmsConfigConstants.SPRINGWOLF_JMS_CONFIG_PREFIX;
+import static io.github.springwolf.plugins.jms.configuration.properties.SpringwolfJmsConfigConstants.SPRINGWOLF_JMS_PLUGIN_PUBLISHING_ENABLED;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(

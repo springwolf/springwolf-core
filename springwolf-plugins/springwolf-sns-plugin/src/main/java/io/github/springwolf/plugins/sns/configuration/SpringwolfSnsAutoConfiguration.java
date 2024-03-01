@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.sns.configuration;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
-import io.github.springwolf.plugins.sns.properties.SpringwolfSnsConfigProperties;
+import io.github.springwolf.plugins.sns.configuration.properties.SpringwolfSnsConfigProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

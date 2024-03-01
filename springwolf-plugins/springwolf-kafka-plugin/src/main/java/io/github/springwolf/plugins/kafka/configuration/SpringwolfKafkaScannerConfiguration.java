@@ -12,10 +12,10 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassEx
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
-import io.github.springwolf.plugins.kafka.scanners.bindings.KafkaBindingFactory;
-import io.github.springwolf.plugins.kafka.scanners.bindings.processor.KafkaMessageBindingProcessor;
-import io.github.springwolf.plugins.kafka.scanners.bindings.processor.KafkaOperationBindingProcessor;
-import io.github.springwolf.plugins.kafka.types.channel.operation.message.header.AsyncHeadersForKafkaBuilder;
+import io.github.springwolf.plugins.kafka.asyncapi.components.header.AsyncHeadersForKafkaBuilder;
+import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
+import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.messages.KafkaMessageBindingProcessor;
+import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.operations.KafkaOperationBindingProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +24,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 
-import static io.github.springwolf.plugins.kafka.properties.SpringwolfKafkaConfigConstants.SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED;
+import static io.github.springwolf.plugins.kafka.configuration.properties.SpringwolfKafkaConfigConstants.SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED;
 
 /**
  * spring configuration defining the scanner beans for the kafka plugin

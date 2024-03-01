@@ -10,9 +10,9 @@ import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanne
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
-import io.github.springwolf.plugins.jms.scanners.bindings.JmsBindingFactory;
-import io.github.springwolf.plugins.jms.scanners.bindings.processor.JmsMessageBindingProcessor;
-import io.github.springwolf.plugins.jms.scanners.bindings.processor.JmsOperationBindingProcessor;
+import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.JmsBindingFactory;
+import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.messages.JmsMessageBindingProcessor;
+import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.operations.JmsOperationBindingProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.jms.annotation.JmsListener;
 
-import static io.github.springwolf.plugins.jms.properties.SpringwolfJmsConfigConstants.SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED;
+import static io.github.springwolf.plugins.jms.configuration.properties.SpringwolfJmsConfigConstants.SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED;
 
 /**
  * spring configuration defining the scanner beans for the jms plugin
