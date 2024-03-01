@@ -17,22 +17,20 @@ dependencies {
 After starting the application, visit: `localhost:8080/springwolf/asyncapi-ui.html`.
 
 ## Development
+
+__**Note: Check out our [contribution guidelines](../CONTRIBUTING.md) before starting.**__
+
 1. Run `npm i`
-2. Run `ng serve`
+2. Run `npm start`
 
 ### Mock Data
 
-The application renders content based on mock data in `src/app/shared/mock`.
-It contains multiple mocks - including the ones from the springwolf-core examples projects.
+In development mode, the application renders content based on mock data referenced in `src/app/service/mock`.
 
-## Release
+### Running tests
 
-Releasing is done by running the gradle task `publish`. For local development, use `publishToMavenLocal`.
+Run `npm test`
 
-### Setup the signing keys
+### Code Formatting
 
-If you do not have gpg keys yet, generate one with: `gpg --full-gen-key` You will need to set password.
-
-Use the following environment variables:
-- ORG_GRADLE_PROJECT_SIGNINGKEY: Output of `gpg --armor --export-secret-key`
-- ORG_GRADLE_PROJECT_SIGNINGPASSWORD: Password for the gpg key
+We use spotless to check the formatting and auto-fix many violations via `../gradlew spotlessApply`

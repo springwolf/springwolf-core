@@ -6,9 +6,7 @@
     "start": "ng serve",
     "build": "ng build --configuration production --base-href=./",
     "build_pages": "ng build --base-href=./",
-    "test": "jest",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "test": "jest"
   },
   "private": true,
   "dependencies": {
