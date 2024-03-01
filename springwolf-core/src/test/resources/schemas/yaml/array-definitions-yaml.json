@@ -1,6 +1,6 @@
 {
   "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$ArrayFoo" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "flist" : {
         "type" : "array",
@@ -12,7 +12,7 @@
     "examples" : [ "flist:\n- b: true\n  s: string\n" ]
   },
   "io.github.springwolf.core.schemas.DefaultYamlComponentsServiceTest$SimpleFoo" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "b" : {
         "type" : "boolean"

@@ -34,7 +34,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         try {
             T generatedExample = buildExample(schemaName, schema, definitions, new HashSet<>());
 
-            return exampleValueGenerator.prepareForSerialization(schemaName, generatedExample);
+            return exampleValueGenerator.prepareForSerialization(schema, generatedExample);
         } catch (ExampleGeneratingException ex) {
             log.info("Failed to build example for schema {}", schemaName, ex);
         }

@@ -41,19 +41,8 @@ describe("AsyncApiMapperService", () => {
         );
 
         // In case you are debugging, copy the asyncapi.json to AsyncApi Studio as it displays better error messages.
-        // Remove workaround after https://github.com/asyncapi/spec/issues/1038 is clarified
-        expect(
-          diagnostics
-            .map((el) => el.message)
-            .filter(
-              (message) => message === '"0" property type must be object"'
-            )
-        ).toHaveLength(0);
-        expect(
-          diagnostics.filter(
-            (el) => el.message === '"0" property type must be object"'
-          )
-        ).toHaveLength(0);
+        expect(diagnostics.map((el) => el.message)).toHaveLength(0);
+        expect(diagnostics).toHaveLength(0);
       }
     );
   });

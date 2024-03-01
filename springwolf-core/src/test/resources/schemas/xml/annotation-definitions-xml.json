@@ -1,6 +1,6 @@
 {
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$AllOf" : {
-    "type" : "object",
+    "type" : "string",
     "examples" : [ "<AllOf><firstOne>string</firstOne><firstTwo>0</firstTwo><secondOne>string</secondOne><secondTwo>true</secondTwo></AllOf>" ],
     "allOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
@@ -9,7 +9,7 @@
     } ]
   },
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$AnyOf" : {
-    "type" : "object",
+    "type" : "string",
     "examples" : [ "<AnyOf><firstOne>string</firstOne><secondOne>string</secondOne></AnyOf>" ],
     "anyOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
@@ -18,7 +18,7 @@
     } ]
   },
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationOne" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "firstOne" : {
         "type" : "string"
@@ -30,7 +30,7 @@
     "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ]
   },
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "firstTwo" : {
         "type" : "integer",
@@ -43,7 +43,7 @@
     "examples" : [ "<ImplementationTwo><firstTwo>0</firstTwo><secondTwo>true</secondTwo></ImplementationTwo>" ]
   },
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$OneOf" : {
-    "type" : "object",
+    "type" : "string",
     "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ],
     "oneOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
@@ -52,7 +52,7 @@
     } ]
   },
   "io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
-    "type" : "object",
+    "type" : "string",
     "properties" : {
       "allOf" : {
         "$ref" : "#/components/schemas/io.github.springwolf.core.schemas.DefaultXmlComponentsServiceTest$SchemaWithOneOf$AllOf"
