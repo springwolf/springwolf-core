@@ -40,7 +40,7 @@ ext {
     kafkaAvroSerializerVersion = '7.6.0'
 
     kafkaClientsVersion = '3.6.1'
-    kafkaStreamsVersion = '3.6.1'
+    kafkaStreamsVersion = '6.1.15-ce'
 
     kafkaProtobufSerializerVersion = '7.6.0'
 
