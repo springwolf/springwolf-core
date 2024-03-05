@@ -23,6 +23,7 @@ public class NestedProducer {
                     @AsyncOperation(
                             channelName = "topic-defined-via-asyncPublisher-annotation",
                             description = "Custom, optional description defined in the AsyncPublisher annotation",
+                            servers = {"kafka"},
                             headers =
                                     @AsyncOperation.Headers(
                                             schemaName = "SpringDefaultHeaderAndCloudEvent",

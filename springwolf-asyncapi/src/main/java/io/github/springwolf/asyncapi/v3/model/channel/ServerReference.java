@@ -20,4 +20,8 @@ public class ServerReference implements Reference {
     public String getRef() {
         return ref;
     }
+
+    public static ServerReference fromServer(String server) {
+        return new ServerReference("#/servers/" + server);
+    }
 }

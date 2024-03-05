@@ -204,18 +204,7 @@ class AsyncAnnotationChannelsScannerTest {
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(null)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
-                .servers(List.of(
-                        ServerReference.builder().ref("server1").build(),
-                        ServerReference.builder().ref("server2").build()))
-                .build();
-
-        Operation expectedOperation = Operation.builder()
-                .action(OperationAction.SEND)
-                .title("test-channel_send")
-                .channel(ChannelReference.fromChannel("test-channel"))
-                .description("description")
-                .bindings(Map.of(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING))
-                .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
+                .servers(List.of(ServerReference.fromServer("server1"), ServerReference.fromServer("server2")))
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -244,27 +233,9 @@ class AsyncAnnotationChannelsScannerTest {
                 .description("SimpleFoo Message Description")
                 .build();
 
-        Operation expectedOperation1 = Operation.builder()
-                .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel("test-channel-1"))
-                .description("test-channel-1-description")
-                .title("test-channel-1_send")
-                .bindings(EMPTY_MAP)
-                .messages(List.of(MessageReference.toChannelMessage("test-channel-1", message)))
-                .build();
-
         ChannelObject expectedChannel1 = ChannelObject.builder()
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(null)
-                .build();
-
-        Operation expectedOperation2 = Operation.builder()
-                .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel("test-channel-2"))
-                .description("test-channel-2-description")
-                .title("test-channel-2_send")
-                .bindings(EMPTY_MAP)
-                .messages(List.of(MessageReference.toChannelMessage("test-channel-2", message)))
                 .build();
 
         ChannelObject expectedChannel2 = ChannelObject.builder()
@@ -299,15 +270,6 @@ class AsyncAnnotationChannelsScannerTest {
                 .payload(payload)
                 .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(EMPTY_MAP)
-                .build();
-
-        Operation expectedOperation = Operation.builder()
-                .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel("test-channel"))
-                .description("test channel operation description")
-                .title("test-channel_send")
-                .bindings(EMPTY_MAP)
-                .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
@@ -414,15 +376,6 @@ class AsyncAnnotationChannelsScannerTest {
                     .payload(messagePayload)
                     .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
-                    .build();
-
-            Operation expectedOperation = Operation.builder()
-                    .action(OperationAction.SEND)
-                    .channel(ChannelReference.fromChannel("test-channel"))
-                    .description("test channel operation description")
-                    .title("test-channel_send")
-                    .bindings(EMPTY_MAP)
-                    .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
