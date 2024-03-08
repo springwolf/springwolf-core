@@ -346,9 +346,9 @@ class DefaultSchemaWalkerXmlIntegrationTest {
 
             String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
-            // TODO FixeMe Expected
-            // :"<type_object_array><array_element><b>true</b><s>string</s></array_element></type_object_array>"
-            assertThat(actual).isEqualTo("<type_object_array><b>true</b><s>string</s></type_object_array>");
+            assertThat(actual)
+                    .isEqualTo(
+                            "<type_object_array><array_element><b>true</b><s>string</s></array_element></type_object_array>");
         }
 
         @Test

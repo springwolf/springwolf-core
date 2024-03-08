@@ -9,7 +9,7 @@
         }
       }
     },
-    "examples" : [ "<ArrayFoo><flist><b>true</b><s>string</s></flist></ArrayFoo>" ]
+    "examples" : [ "<ArrayFoo><flist><SimpleFoo><b>true</b><s>string</s></SimpleFoo></flist></ArrayFoo>" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$SimpleFoo" : {
     "type" : "string",
