@@ -153,8 +153,8 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createArrayExample(JsonNode arrayItem) {
-        return this.exampleJsonValueGenerator.createArrayExample(arrayItem);
+    public JsonNode createArrayExample(String name, JsonNode arrayItem) {
+        return this.exampleJsonValueGenerator.createArrayExample(name, arrayItem);
     }
 
     @Override

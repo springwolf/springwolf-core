@@ -136,7 +136,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createArrayExample(JsonNode arrayItem) {
+    public JsonNode createArrayExample(String name, JsonNode arrayItem) {
         ArrayNode array = objectMapper.createArrayNode();
         array.add(arrayItem);
         return array;

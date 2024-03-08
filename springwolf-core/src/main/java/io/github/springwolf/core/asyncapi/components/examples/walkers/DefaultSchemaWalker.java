@@ -118,10 +118,13 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private T buildArrayExample(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        String name = exampleValueGenerator.lookupSchemaName(schema);
-        T arrayItem = buildExample(name, schema.getItems(), definitions, visited);
+        Schema arrayItemSchema =
+                resolveSchemaFromRef(schema.getItems(), definitions).orElse(schema.getItems());
+        String arrayItemName = exampleValueGenerator.lookupSchemaName(arrayItemSchema);
+        T arrayItem = buildExample(arrayItemName, arrayItemSchema, definitions, visited);
 
-        return exampleValueGenerator.createArrayExample(arrayItem);
+        String arrayName = exampleValueGenerator.lookupSchemaName(schema);
+        return exampleValueGenerator.createArrayExample(arrayName, arrayItem);
     }
 
     private T buildFromStringSchema(Schema schema) {

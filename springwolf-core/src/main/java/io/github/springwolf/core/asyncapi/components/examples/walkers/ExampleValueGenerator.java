@@ -83,7 +83,7 @@ public interface ExampleValueGenerator<T, R> {
 
     T createUnknownSchemaStringFormatExample(String schemaFormat);
 
-    T createArrayExample(T arrayItem);
+    T createArrayExample(String name, T arrayItem);
 
     T createRaw(Object exampleValueString);
 

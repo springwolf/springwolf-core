@@ -190,8 +190,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node createArrayExample(Node arrayItem) {
-        return arrayItem;
+    public Node createArrayExample(String name, Node arrayItem) {
+        return wrapNode(name, arrayItem);
     }
 
     @Override
