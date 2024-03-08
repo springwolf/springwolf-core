@@ -1,0 +1,65 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.9.22'
+        kotlinxSerializationVersion = '1.6.3'
+    }
+}
+
+plugins {
+    id 'java'
+
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
+
+    id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}"
+}
+
+dependencies {
+    implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-beans"
+
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+
+    implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
+
+    implementation "org.jetbrains:annotations:13.0"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:${kotlinxSerializationVersion}"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:${kotlinxSerializationVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-reflect"
+
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+}
+
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+bootJar.enabled = false
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'springwolf-kotlinx-serialization-model-converter'
+                description = 'Kotlinx serialization model converter beans for Springwolf'
+            }
+        }
+    }
+}

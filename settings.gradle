@@ -21,7 +21,8 @@ include(
         'springwolf-ui',
         'springwolf-add-ons:springwolf-common-model-converters',
         'springwolf-add-ons:springwolf-generic-binding',
-        'springwolf-add-ons:springwolf-json-schema'
+        'springwolf-add-ons:springwolf-json-schema',
+        'springwolf-add-ons:springwolf-kotlinx-serialization-model-converter',
 )
 
 project(':springwolf-plugins:springwolf-amqp-plugin').name = 'springwolf-amqp'

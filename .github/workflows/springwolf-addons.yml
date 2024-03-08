@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        addon: [ "common-model-converters", "generic-binding", "json-schema" ]
+        addon: [ "common-model-converters", "generic-binding", "json-schema", "kotlinx-serialization-model-converter" ]
     timeout-minutes: 10
 
     env:
