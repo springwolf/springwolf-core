@@ -196,19 +196,18 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
     @Override
     public String prepareForSerialization(Schema schema, Node exampleObject) {
-        final String name = lookupSchemaName(schema);
-
         final Node objectToWrite;
         if (exampleObject instanceof Element) {
             objectToWrite = exampleObject;
         } else {
+            final String name = lookupSchemaName(schema);
             objectToWrite = wrapNode(name, exampleObject);
         }
         try {
             document.appendChild(objectToWrite);
 
             String xml = exampleXmlValueSerializer.writeDocumentAsXmlString(document);
-            exampleCache.putIfAbsent(name, exampleObject);
+            exampleCache.putIfAbsent(getCacheKey(schema), exampleObject);
 
             // spec workaround to embedded xml examples as string https://github.com/asyncapi/spec/issues/1038
             schema.setType(OVERRIDE_SCHEMA.getType());
@@ -216,7 +215,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
             return xml;
         } catch (TransformerException | DOMException e) {
-            log.error("Serialize {}", name, e);
+            log.error("Serialize {}", schema.getName(), e);
             return null;
         }
     }
@@ -227,7 +226,9 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node getExampleOrNull(String name, Object example) {
+    public Node getExampleOrNull(Schema schema, Object example) {
+        String name = getCacheKey(schema);
+
         if (example instanceof Node) {
             return (Node) example;
         }
@@ -242,6 +243,10 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     @Override
     public Node createEmptyObjectExample() {
         return document.createTextNode("");
+    }
+
+    private String getCacheKey(Schema schema) {
+        return schema.getName();
     }
 
     private Document createDocument() throws ParserConfigurationException {
