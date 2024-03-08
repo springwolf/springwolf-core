@@ -158,7 +158,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode getExampleOrNull(String name, Object example) {
+    public JsonNode getExampleOrNull(Schema schema, Object example) {
         if (example instanceof JsonNode) {
             return (JsonNode) example;
         }

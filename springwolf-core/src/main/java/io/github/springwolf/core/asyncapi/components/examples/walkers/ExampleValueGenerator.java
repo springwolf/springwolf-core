@@ -87,5 +87,5 @@ public interface ExampleValueGenerator<T, R> {
 
     T createRaw(Object exampleValueString);
 
-    T getExampleOrNull(String name, Object example);
+    T getExampleOrNull(Schema schema, Object example);
 }

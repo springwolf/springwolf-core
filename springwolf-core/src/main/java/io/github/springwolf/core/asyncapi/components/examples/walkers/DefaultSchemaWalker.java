@@ -73,8 +73,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         }
 
         // Return directly, when we have processed this before
-        T processedExample =
-                exampleValueGenerator.getExampleOrNull(exampleValueGenerator.lookupSchemaName(schema), exampleValue);
+        T processedExample = exampleValueGenerator.getExampleOrNull(schema, exampleValue);
         if (processedExample != null) {
             return processedExample;
         }
