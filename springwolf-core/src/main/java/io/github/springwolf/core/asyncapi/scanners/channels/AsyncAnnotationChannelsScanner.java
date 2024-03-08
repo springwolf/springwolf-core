@@ -70,9 +70,8 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation> extends AsyncA
         List<String> servers = AsyncAnnotationUtil.getServers(operationAnnotation, resolver);
         if (servers != null && !servers.isEmpty()) {
             validateServers(servers, operation.getTitle());
-            channelBuilder.servers(servers.stream()
-                    .map(it -> ServerReference.builder().ref(it).build())
-                    .toList());
+            channelBuilder.servers(
+                    servers.stream().map(ServerReference::fromServer).toList());
         }
         MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 

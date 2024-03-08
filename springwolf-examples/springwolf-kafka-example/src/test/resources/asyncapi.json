@@ -93,7 +93,12 @@
         "io.github.springwolf.examples.kafka.dtos.NestedPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dtos.NestedPayloadDto"
         }
-      }
+      },
+      "servers": [
+        {
+          "$ref": "#/servers/kafka"
+        }
+      ]
     },
     "xml-topic": {
       "messages": {

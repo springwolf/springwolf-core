@@ -3,7 +3,6 @@ package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.springwolf.asyncapi.v3.model.channel.ServerReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
@@ -192,14 +191,6 @@ class AsyncAnnotationOperationsScannerTest {
                 .bindings(EMPTY_MAP)
                 .build();
 
-        ChannelObject expectedChannel = ChannelObject.builder()
-                .bindings(null)
-                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
-                .servers(List.of(
-                        ServerReference.builder().ref("server1").build(),
-                        ServerReference.builder().ref("server2").build()))
-                .build();
-
         Operation expectedOperation = Operation.builder()
                 .action(OperationAction.SEND)
                 .title("test-channel_send")
@@ -245,11 +236,6 @@ class AsyncAnnotationOperationsScannerTest {
                 .messages(List.of(MessageReference.toChannelMessage("test-channel-1", message)))
                 .build();
 
-        ChannelObject expectedChannel1 = ChannelObject.builder()
-                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
-                .bindings(null)
-                .build();
-
         Operation expectedOperation2 = Operation.builder()
                 .action(OperationAction.SEND)
                 .channel(ChannelReference.fromChannel("test-channel-2"))
@@ -257,11 +243,6 @@ class AsyncAnnotationOperationsScannerTest {
                 .title("test-channel-2_send")
                 .bindings(EMPTY_MAP)
                 .messages(List.of(MessageReference.toChannelMessage("test-channel-2", message)))
-                .build();
-
-        ChannelObject expectedChannel2 = ChannelObject.builder()
-                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
-                .bindings(null)
                 .build();
 
         assertThat(actualOperations)
@@ -300,11 +281,6 @@ class AsyncAnnotationOperationsScannerTest {
                 .title("test-channel_send")
                 .bindings(EMPTY_MAP)
                 .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
-                .build();
-
-        ChannelObject expectedChannel = ChannelObject.builder()
-                .bindings(null)
-                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(actualOperations)
