@@ -2,10 +2,7 @@
 package io.github.springwolf.plugins.sqs.configuration;
 
 import io.awspring.cloud.sqs.annotation.SqsListener;
-import io.github.springwolf.bindings.sqs.scanners.messages.SqsMessageBindingProcessor;
-import io.github.springwolf.bindings.sqs.scanners.operations.SqsOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
@@ -14,7 +11,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassEx
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.sqs.asyncapi.scanners.bindings.SqsBindingFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,19 +58,5 @@ public class SpringwolfSqsScannerConfiguration {
                         SqsListener.class, sqsBindingBuilder, payloadClassExtractor, componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);
-    }
-
-    @Bean
-    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
-    @ConditionalOnMissingBean
-    public SqsMessageBindingProcessor sqsMessageBindingProcessor() {
-        return new SqsMessageBindingProcessor();
-    }
-
-    @Bean
-    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
-    @ConditionalOnMissingBean
-    public SqsOperationBindingProcessor sqsOperationBindingProcessor() {
-        return new SqsOperationBindingProcessor();
     }
 }
