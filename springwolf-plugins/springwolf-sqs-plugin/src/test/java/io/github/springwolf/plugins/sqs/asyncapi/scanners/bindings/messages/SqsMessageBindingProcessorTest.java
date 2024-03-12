@@ -33,6 +33,7 @@ class SqsMessageBindingProcessorTest {
         assertThat(binding).isNotPresent();
     }
 
+    @SuppressWarnings({"deprecation", "removal"})
     @SqsAsyncOperationBinding
     public void methodWithAnnotation() {}
 

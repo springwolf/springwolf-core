@@ -17,6 +17,7 @@ dependencyManagement {
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-sqs")
+    implementation project(":springwolf-bindings:springwolf-sqs-binding")
 
     annotationProcessor project(":springwolf-plugins:springwolf-sqs")
     runtimeOnly project(":springwolf-ui")

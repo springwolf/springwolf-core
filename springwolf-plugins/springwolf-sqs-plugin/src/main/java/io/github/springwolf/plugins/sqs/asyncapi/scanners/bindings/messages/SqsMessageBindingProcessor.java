@@ -20,6 +20,7 @@ public class SqsMessageBindingProcessor implements MessageBindingProcessor, Embe
         this.resolver = resolver;
     }
 
+    @SuppressWarnings({"deprecation", "removal"})
     @Override
     public Optional<ProcessedMessageBinding> process(Method method) {
         return Arrays.stream(method.getAnnotations())
@@ -29,6 +30,7 @@ public class SqsMessageBindingProcessor implements MessageBindingProcessor, Embe
                 .map(this::mapToMessageBinding);
     }
 
+    @SuppressWarnings({"deprecation", "removal"})
     private ProcessedMessageBinding mapToMessageBinding(SqsAsyncOperationBinding bindingAnnotation) {
         SQSMessageBinding sqsMessageBinding = new SQSMessageBinding();
 
