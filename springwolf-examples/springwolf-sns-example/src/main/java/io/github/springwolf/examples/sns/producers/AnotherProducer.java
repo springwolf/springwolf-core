@@ -23,6 +23,7 @@ public class AnotherProducer {
                     @AsyncOperation(
                             channelName = TOPIC,
                             description = "Custom, optional description defined in the AsyncPublisher annotation"))
+    @SuppressWarnings({"deprecation", "removal"})
     @SnsAsyncOperationBinding(protocol = "sqs", endpoint = @SnsAsyncOperationBindingIdentifier())
     public void sendMessage(AnotherPayloadDto msg) {
         template.send(TOPIC, MessageBuilder.withPayload(msg).build());

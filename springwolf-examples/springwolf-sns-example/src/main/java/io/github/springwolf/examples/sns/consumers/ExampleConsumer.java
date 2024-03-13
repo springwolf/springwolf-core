@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class ExampleConsumer {
     private final AnotherProducer anotherProducer;
 
+    @SuppressWarnings({"deprecation", "removal"})
     @AsyncListener(operation = @AsyncOperation(channelName = "example-topic"))
     @SnsAsyncOperationBinding(protocol = "sqs", endpoint = @SnsAsyncOperationBindingIdentifier())
     public void receiveExamplePayload(ExamplePayloadDto payload) {
@@ -30,6 +31,7 @@ public class ExampleConsumer {
         anotherProducer.sendMessage(example);
     }
 
+    @SuppressWarnings({"deprecation", "removal"})
     @AsyncListener(operation = @AsyncOperation(channelName = "another-topic"))
     @SnsAsyncOperationBinding(protocol = "sqs", endpoint = @SnsAsyncOperationBindingIdentifier())
     public void receiveAnotherPayload(AnotherPayloadDto payload) {
