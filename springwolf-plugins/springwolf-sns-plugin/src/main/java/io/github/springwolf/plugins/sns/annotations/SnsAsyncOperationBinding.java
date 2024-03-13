@@ -23,7 +23,9 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @AsyncOperationBinding
 // FIXME
-@io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBinding(protocol = "", endpoint = @io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBindingIdentifier())
+@io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBinding(
+        protocol = "",
+        endpoint = @io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBindingIdentifier())
 @Inherited
 public @interface SnsAsyncOperationBinding {
 
