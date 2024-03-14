@@ -5,6 +5,8 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchemaSettings;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -20,12 +22,14 @@ import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import io.github.springwolf.plugins.cloudstream.annotation.GooglePubSubSchemaSetting;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
@@ -84,7 +88,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .build();
         this.componentsService.registerMessage(message);
 
-        Map<String, ChannelBinding> channelBinding = buildChannelBinding();
+        Map<String, ChannelBinding> channelBinding = buildChannelBinding(beanData.schemaSetting());
         return ChannelObject.builder()
                 .bindings(channelBinding)
                 .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
@@ -96,8 +100,18 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private Map<String, ChannelBinding> buildChannelBinding() {
+    private Map<String, ChannelBinding> buildChannelBinding(Annotation annotation) {
         String protocolName = getProtocolName();
+        if (annotation instanceof GooglePubSubSchemaSetting schemaSetting) {
+            GooglePubSubChannelBinding googlePubSubChannelBinding = new GooglePubSubChannelBinding();
+            GooglePubSubSchemaSettings googlePubSubSchemaSettings = new GooglePubSubSchemaSettings(
+                    schemaSetting.encoding(),
+                    schemaSetting.firstRevisionId(),
+                    schemaSetting.lastRevisionId(),
+                    schemaSetting.name());
+            googlePubSubChannelBinding.setSchemaSettings(googlePubSubSchemaSettings);
+            return Map.of(protocolName, googlePubSubChannelBinding);
+        }
         return Map.of(protocolName, new EmptyChannelBinding());
     }
 

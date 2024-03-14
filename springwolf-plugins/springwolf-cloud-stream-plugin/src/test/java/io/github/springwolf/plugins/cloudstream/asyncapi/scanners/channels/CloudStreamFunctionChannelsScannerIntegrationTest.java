@@ -29,6 +29,7 @@ import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationC
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.plugins.cloudstream.annotation.GooglePubSubSchemaSetting;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.operations.CloudStreamFunctionOperationsScanner;
 import org.apache.kafka.streams.kstream.KStream;
@@ -431,7 +432,6 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
     @TestConfiguration
     public static class Configuration {
-
         @Bean
         public Consumer<String> testConsumer() {
             return System.out::println;
@@ -450,6 +450,12 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         @Bean
         public Function<KStream<Void, String>, KStream<Void, Integer>> kStreamTestFunction() {
             return stream -> stream.mapValues(s -> 1);
+        }
+
+        @Bean
+        @GooglePubSubSchemaSetting(encoding = "BINARY", name = "project/test")
+        public Consumer<String> testPubSubConsumer() {
+            return System.out::println;
         }
     }
 }
