@@ -39,6 +39,13 @@ public @interface AsyncOperation {
 
         Header[] values() default {};
 
+        /**
+         * Indicate that no headers are used in this operation.
+         * <p>
+         * All other properties of this annotation are ignored if this is set to true.
+         */
+        boolean notUsed() default false;
+
         @Retention(RetentionPolicy.CLASS)
         @Target({})
         @Inherited

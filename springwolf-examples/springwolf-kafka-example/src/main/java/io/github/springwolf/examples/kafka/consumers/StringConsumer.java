@@ -25,7 +25,8 @@ public class StringConsumer {
                             channelName = TOPIC,
                             description =
                                     "Final classes (like String) can be documented using an envelope class and the @AsyncApiPayload annotation.",
-                            payloadType = StringEnvelope.class))
+                            payloadType = StringEnvelope.class,
+                            headers = @AsyncOperation.Headers(notUsed = true)))
     @KafkaAsyncOperationBinding
     public void receiveStringPayload(String stringPayload) {
         log.info("Received new message in {}: {}", TOPIC, stringPayload);

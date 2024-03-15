@@ -13,7 +13,7 @@ public class AsyncHeaders extends HashMap<String, Schema> {
     /**
      * Explicitly document that no headers are used.
      */
-    public static final AsyncHeaders NOT_USED = new AsyncHeaders("HeadersNotUsed", "No headers are preset.");
+    public static final AsyncHeaders NOT_USED = new AsyncHeaders("HeadersNotUsed", "No headers are present.");
 
     private final String schemaName;
     private final String description;

@@ -29,6 +29,9 @@ public class AsyncAnnotationUtil {
 
     public static AsyncHeaders getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
         if (op.headers().values().length == 0) {
+            if (op.headers().notUsed()) {
+                return AsyncHeaders.NOT_USED;
+            }
             return AsyncHeaders.NOT_DOCUMENTED;
         }
 

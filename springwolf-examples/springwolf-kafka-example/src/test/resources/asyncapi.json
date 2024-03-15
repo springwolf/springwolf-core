@@ -130,6 +130,19 @@
           "type": "object"
         }
       },
+      "HeadersNotUsed": {
+        "type": "object",
+        "properties": { },
+        "description": "No headers are present.",
+        "examples": [
+          { }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "No headers are present.",
+          "type": "object"
+        }
+      },
       "SpringDefaultHeaderAndCloudEvent": {
         "type": "object",
         "properties": {
@@ -1067,7 +1080,7 @@
     "messages": {
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "$ref": "#/components/schemas/HeadersNotUsed"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
