@@ -287,6 +287,39 @@
           "type": "object"
         }
       },
+      "SpringKafkaDefaultHeaders-AnotherPayloadAvroDto": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
+            ],
+            "examples": [
+              "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
       "SpringKafkaDefaultHeaders-AnotherPayloadDto": {
         "type": "object",
         "properties": {
@@ -353,6 +386,39 @@
           "type": "object"
         }
       },
+      "SpringKafkaDefaultHeaders-Message": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+            ],
+            "examples": [
+              "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
       "SpringKafkaDefaultHeaders-MonetaryAmount": {
         "type": "object",
         "properties": {
@@ -379,6 +445,105 @@
               "description": "Spring Type Id Header",
               "enum": [
                 "javax.money.MonetaryAmount"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-String": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "java.lang.String"
+            ],
+            "examples": [
+              "java.lang.String"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "java.lang.String"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "java.lang.String"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-XmlPayloadDto": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
+            ],
+            "examples": [
+              "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-YamlPayloadDto": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
+            ],
+            "examples": [
+              "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
               ],
               "type": "string"
             }
@@ -934,7 +1099,7 @@
       },
       "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-Message"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -1052,7 +1217,7 @@
       },
       "java.lang.String": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-String"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",

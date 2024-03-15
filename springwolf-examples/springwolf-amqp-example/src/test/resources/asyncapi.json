@@ -125,6 +125,13 @@
           { }
         ]
       },
+      "SpringRabbitListenerDefaultHeaders": {
+        "type": "object",
+        "properties": { },
+        "examples": [
+          { }
+        ]
+      },
       "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
         "type": "object",
         "properties": {
@@ -221,7 +228,7 @@
       },
       "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",

@@ -43,7 +43,11 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
     private final BindingFactory<TestListener> bindingFactory = mock(BindingFactory.class);
     private final ComponentsService componentsService = mock(ComponentsService.class);
     SpringAnnotationMethodLevelChannelsScanner<TestListener> scanner = new SpringAnnotationMethodLevelChannelsScanner<>(
-            TestListener.class, bindingFactory, payloadClassExtractor, componentsService);
+            TestListener.class,
+            bindingFactory,
+            new AsyncHeadersNotDocumented(),
+            payloadClassExtractor,
+            componentsService);
 
     private static final String CHANNEL = "test-channel";
     private static final Map<String, OperationBinding> defaultOperationBinding =

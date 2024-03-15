@@ -18,6 +18,7 @@ import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvid
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -71,7 +72,11 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
     @BeforeEach
     void setUp() {
         scanner = new SpringAnnotationMethodLevelChannelsScanner<>(
-                TestChannelListener.class, this.bindingFactory, payloadClassExtractor, componentsService);
+                TestChannelListener.class,
+                this.bindingFactory,
+                new AsyncHeadersNotDocumented(),
+                payloadClassExtractor,
+                componentsService);
     }
 
     @Nested
