@@ -6,6 +6,8 @@
 3. Visit `localhost:8080/springwolf/asyncapi-ui.html` or try the API: `$ curl localhost:8080/springwolf/docs`.
 
 ### Run with gradle
+Note: You need to execute the gradle `bootRun` task since the IntelliJ spring application will not include springwolf-ui correctly.
+
 1. Verify zookeeper and kafka are running.
 2. Define an environment variable with the bootstrap server details: `$ export BOOTSTRAP_SERVER=localhost:9092`.
 3. Clone this repository: `$ git clone https://github.com/springwolf/springwolf-core.git`.
