@@ -52,6 +52,7 @@
       "HeadersNotDocumented": {
         "type": "object",
         "properties": { },
+        "description": "There can be headers, but they are not explicitly documented.",
         "examples": [
           { }
         ]

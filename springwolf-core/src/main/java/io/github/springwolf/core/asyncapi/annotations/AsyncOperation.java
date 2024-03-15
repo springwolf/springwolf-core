@@ -35,6 +35,8 @@ public @interface AsyncOperation {
     @interface Headers {
         String schemaName() default "";
 
+        String description() default "";
+
         Header[] values() default {};
 
         @Retention(RetentionPolicy.CLASS)

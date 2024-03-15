@@ -120,11 +120,13 @@
       "HeadersNotDocumented": {
         "type": "object",
         "properties": { },
+        "description": "There can be headers, but they are not explicitly documented.",
         "examples": [
           { }
         ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "There can be headers, but they are not explicitly documented.",
           "type": "object"
         }
       },
@@ -212,6 +214,7 @@
             ]
           }
         },
+        "description": "Spring __TypeId__ and CloudEvent Headers",
         "examples": [
           {
             "__TypeId__": "io.github.springwolf.examples.kafka.dtos.NestedPayloadDto",
@@ -226,6 +229,7 @@
         ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "Spring __TypeId__ and CloudEvent Headers",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",

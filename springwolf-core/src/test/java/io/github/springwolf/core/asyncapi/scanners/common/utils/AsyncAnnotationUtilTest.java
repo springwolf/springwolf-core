@@ -47,6 +47,7 @@ class AsyncAnnotationUtilTest {
         // then
         AsyncHeaders headers = AsyncAnnotationUtil.getAsyncHeaders(operation, resolver);
         assertEquals("TestSchema", headers.getSchemaName());
+        assertEquals("header-descriptionResolved", headers.getDescription());
         assertTrue(headers.containsKey("headerResolved"));
         assertEquals("string", headers.get("headerResolved").getType());
         assertEquals("valueResolved", headers.get("headerResolved").getExample());
@@ -188,6 +189,7 @@ class AsyncAnnotationUtilTest {
                                 headers =
                                         @AsyncOperation.Headers(
                                                 schemaName = "TestSchema",
+                                                description = "header-description",
                                                 values = {
                                                     @AsyncOperation.Headers.Header(
                                                             name = "header",
@@ -231,6 +233,7 @@ class AsyncAnnotationUtilTest {
                                 headers =
                                         @AsyncOperation.Headers(
                                                 schemaName = "TestSchema",
+                                                description = "header-description",
                                                 values = {
                                                     @AsyncOperation.Headers.Header(
                                                             name = "header",

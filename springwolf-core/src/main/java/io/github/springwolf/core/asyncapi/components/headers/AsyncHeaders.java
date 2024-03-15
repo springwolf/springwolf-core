@@ -13,16 +13,26 @@ public class AsyncHeaders extends HashMap<String, Schema> {
     /**
      * Explicitly document that no headers are used.
      */
-    public static final AsyncHeaders NOT_USED = new AsyncHeaders("HeadersNotUsed");
+    public static final AsyncHeaders NOT_USED = new AsyncHeaders("HeadersNotUsed", "No headers are preset.");
 
     private final String schemaName;
+    private final String description;
+
+    public AsyncHeaders(String schemaName, String description) {
+        this.schemaName = schemaName;
+        this.description = description;
+    }
 
     public AsyncHeaders(String schemaName) {
-        this.schemaName = schemaName;
+        this(schemaName, null);
     }
 
     public String getSchemaName() {
         return this.schemaName;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     public void addHeader(AsyncHeaderSchema header) {
@@ -30,7 +40,7 @@ public class AsyncHeaders extends HashMap<String, Schema> {
     }
 
     public static AsyncHeaders from(AsyncHeaders source, String newSchemaName) {
-        AsyncHeaders clone = new AsyncHeaders(newSchemaName);
+        AsyncHeaders clone = new AsyncHeaders(newSchemaName, source.getDescription());
         clone.putAll(source);
         return clone;
     }

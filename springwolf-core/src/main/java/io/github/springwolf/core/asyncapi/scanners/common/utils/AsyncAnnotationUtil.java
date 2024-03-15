@@ -32,7 +32,10 @@ public class AsyncAnnotationUtil {
             return AsyncHeaders.NOT_DOCUMENTED;
         }
 
-        AsyncHeaders asyncHeaders = new AsyncHeaders(op.headers().schemaName());
+        String headerDescription = StringUtils.hasText(op.headers().description())
+                ? resolver.resolveStringValue(op.headers().description())
+                : null;
+        AsyncHeaders asyncHeaders = new AsyncHeaders(op.headers().schemaName(), headerDescription);
         Arrays.stream(op.headers().values())
                 .collect(groupingBy(AsyncOperation.Headers.Header::name))
                 .forEach((headerName, headers) -> {

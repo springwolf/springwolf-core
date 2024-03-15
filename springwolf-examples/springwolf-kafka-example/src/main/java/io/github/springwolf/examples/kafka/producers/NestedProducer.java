@@ -27,6 +27,7 @@ public class NestedProducer {
                             headers =
                                     @AsyncOperation.Headers(
                                             schemaName = "SpringDefaultHeaderAndCloudEvent",
+                                            description = "Spring __TypeId__ and CloudEvent Headers",
                                             values = {
                                                 @AsyncOperation.Headers.Header(
                                                         name = DEFAULT_CLASSID_FIELD_NAME,
