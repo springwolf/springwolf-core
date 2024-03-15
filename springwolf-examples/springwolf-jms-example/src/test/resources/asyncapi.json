@@ -27,11 +27,6 @@
         "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.jms.dtos.AnotherPayloadDto"
         }
-      },
-      "bindings": {
-        "jms": {
-          "bindingVersion": "0.0.1"
-        }
       }
     },
     "example-queue": {
@@ -144,6 +139,7 @@
         },
         "name": "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
+        "description": "Another payload model",
         "bindings": {
           "jms": {
             "bindingVersion": "0.0.1"
@@ -178,6 +174,27 @@
       },
       "bindings": {
         "jms": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.jms.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "another-queue_send_sendMessage": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/another-queue"
+      },
+      "title": "another-queue_send",
+      "description": "Custom, optional description defined in the AsyncPublisher annotation",
+      "bindings": {
+        "jms": {
+          "internal-field": "customValue",
+          "nested": {
+            "key": "nestedValue"
+          }
+        }
       },
       "messages": [
         {

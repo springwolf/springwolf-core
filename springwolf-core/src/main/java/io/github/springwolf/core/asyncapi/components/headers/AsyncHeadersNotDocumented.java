@@ -3,7 +3,7 @@ package io.github.springwolf.core.asyncapi.components.headers;
 
 public class AsyncHeadersNotDocumented implements AsyncHeadersBuilder {
     /**
-     * Per default, if no headers are explicitly defined, {@link AsyncHeaders#NOT_USED} is used.
+     * Per default, if no headers are explicitly defined, {@link AsyncHeadersNotUsed#NOT_USED} is used.
      * There can be headers, but don't have to be.
      */
     public static final AsyncHeaders NOT_DOCUMENTED =

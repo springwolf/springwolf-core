@@ -27,19 +27,6 @@
         "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
         }
-      },
-      "bindings": {
-        "sqs": {
-          "queue": {
-            "name": "another-queue",
-            "fifoQueue": true,
-            "deliveryDelay": 0,
-            "visibilityTimeout": 30,
-            "receiveMessageWaitTime": 0,
-            "messageRetentionPeriod": 345600
-          },
-          "bindingVersion": "0.2.0"
-        }
       }
     },
     "example-queue": {
@@ -160,6 +147,7 @@
         },
         "name": "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
+        "description": "Another payload model",
         "bindings": {
           "sqs": { }
         }
@@ -193,6 +181,34 @@
           "queues": [
             {
               "name": "another-queue",
+              "fifoQueue": true,
+              "deliveryDelay": 0,
+              "visibilityTimeout": 30,
+              "receiveMessageWaitTime": 0,
+              "messageRetentionPeriod": 345600
+            }
+          ],
+          "bindingVersion": "0.2.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "another-queue_send_sendMessage": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/another-queue"
+      },
+      "title": "another-queue_send",
+      "description": "Custom, optional description defined in the AsyncPublisher annotation",
+      "bindings": {
+        "sqs": {
+          "queues": [
+            {
+              "name": "queue-name",
               "fifoQueue": true,
               "deliveryDelay": 0,
               "visibilityTimeout": 30,

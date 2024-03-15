@@ -8,6 +8,8 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaderSchema;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotUsed;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
@@ -30,9 +32,9 @@ public class AsyncAnnotationUtil {
     public static AsyncHeaders getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
         if (op.headers().values().length == 0) {
             if (op.headers().notUsed()) {
-                return AsyncHeaders.NOT_USED;
+                return AsyncHeadersNotUsed.NOT_USED;
             }
-            return AsyncHeaders.NOT_DOCUMENTED;
+            return AsyncHeadersNotDocumented.NOT_DOCUMENTED;
         }
 
         String headerDescription = StringUtils.hasText(op.headers().description())

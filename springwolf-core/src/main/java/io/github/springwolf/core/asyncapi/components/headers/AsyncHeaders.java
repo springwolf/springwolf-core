@@ -6,15 +6,6 @@ import io.swagger.v3.oas.models.media.Schema;
 import java.util.HashMap;
 
 public class AsyncHeaders extends HashMap<String, Schema> {
-    /**
-     * Alias to stay backwards-compatible
-     */
-    public static final AsyncHeaders NOT_DOCUMENTED = AsyncHeadersNotDocumented.NOT_DOCUMENTED;
-    /**
-     * Explicitly document that no headers are used.
-     */
-    public static final AsyncHeaders NOT_USED = new AsyncHeaders("HeadersNotUsed", "No headers are present.");
-
     private final String schemaName;
     private final String description;
 

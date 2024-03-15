@@ -71,7 +71,7 @@ class SpringAnnotationClassLevelChannelsScannerTest {
         doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())
                 .when(componentsService)
                 .registerSchema(any(Class.class));
-        doAnswer(invocation -> AsyncHeaders.NOT_DOCUMENTED.getSchemaName())
+        doAnswer(invocation -> AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())
                 .when(componentsService)
                 .registerSchema(any(AsyncHeaders.class));
     }
@@ -92,7 +92,8 @@ class SpringAnnotationClassLevelChannelsScannerTest {
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(defaultMessageBinding)
                 .build();
 
