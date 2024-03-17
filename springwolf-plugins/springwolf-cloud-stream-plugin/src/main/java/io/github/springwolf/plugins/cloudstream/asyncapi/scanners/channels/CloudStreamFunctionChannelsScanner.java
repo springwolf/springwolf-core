@@ -14,7 +14,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
@@ -78,7 +78,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .name(payloadType.getName())
                 .title(modelName)
                 .payload(messagePayload)
-                .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
+                .headers(MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED))
                 .bindings(buildMessageBinding())
                 .build();
         this.componentsService.registerMessage(message);

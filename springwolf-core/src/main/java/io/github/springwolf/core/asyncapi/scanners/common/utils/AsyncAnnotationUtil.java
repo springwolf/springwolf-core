@@ -8,7 +8,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
@@ -31,7 +31,7 @@ public class AsyncAnnotationUtil {
 
     public static MessageHeaders getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
         if (op.headers().values().length == 0) {
-            return MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED);
+            return MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
         }
 
         SchemaObject headerSchema = new SchemaObject();

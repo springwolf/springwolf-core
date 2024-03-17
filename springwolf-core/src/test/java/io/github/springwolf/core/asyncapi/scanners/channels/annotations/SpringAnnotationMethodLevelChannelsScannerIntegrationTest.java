@@ -17,7 +17,7 @@ import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -109,7 +109,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .name(SimpleFoo.class.getName())
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
-                    .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
+                    .headers(MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
@@ -152,7 +152,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .name(SimpleFoo.class.getName())
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(simpleFooPayload)
-                    .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
+                    .headers(MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
             MessageObject messageString = MessageObject.builder()
@@ -160,7 +160,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .name(String.class.getName())
                     .title(String.class.getSimpleName())
                     .payload(stringPayload)
-                    .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
+                    .headers(MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
@@ -209,7 +209,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .name(SimpleFoo.class.getName())
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
-                    .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
+                    .headers(MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED))
                     .bindings(defaultMessageBinding)
                     .build();
 
