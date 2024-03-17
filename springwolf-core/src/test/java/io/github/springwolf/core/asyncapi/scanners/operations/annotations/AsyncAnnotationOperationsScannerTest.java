@@ -151,7 +151,7 @@ class AsyncAnnotationOperationsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .description("SimpleFoo Message Description")
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -222,7 +222,7 @@ class AsyncAnnotationOperationsScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
                 .bindings(EMPTY_MAP)
                 .description("SimpleFoo Message Description")
                 .build();
@@ -270,7 +270,7 @@ class AsyncAnnotationOperationsScannerTest {
                 .title("Message Title")
                 .description("Message description")
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -381,7 +381,7 @@ class AsyncAnnotationOperationsScannerTest {
                     .title(String.class.getSimpleName())
                     .description(null)
                     .payload(messagePayload)
-                    .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                    .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
                     .bindings(EMPTY_MAP)
                     .build();
 
@@ -455,7 +455,7 @@ class AsyncAnnotationOperationsScannerTest {
                     .title(String.class.getSimpleName())
                     .description(null)
                     .payload(messagePayload)
-                    .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                    .headers(MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED))
                     .bindings(EMPTY_MAP)
                     .build();
 

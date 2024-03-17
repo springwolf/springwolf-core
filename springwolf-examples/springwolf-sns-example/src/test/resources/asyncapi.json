@@ -39,17 +39,6 @@
   },
   "components": {
     "schemas": {
-      "HeadersNotDocumented": {
-        "type": "object",
-        "properties": { },
-        "examples": [
-          { }
-        ],
-        "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "type": "object"
-        }
-      },
       "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto": {
         "type": "object",
         "properties": {
@@ -198,7 +187,12 @@
     "messages": {
       "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "title": "HeadersNotDocumented",
+          "type": "object",
+          "properties": { },
+          "examples": [
+            { }
+          ]
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -215,7 +209,12 @@
       },
       "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "title": "HeadersNotDocumented",
+          "type": "object",
+          "properties": { },
+          "examples": [
+            { }
+          ]
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",

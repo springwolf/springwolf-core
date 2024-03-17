@@ -3,10 +3,11 @@ package io.github.springwolf.core.asyncapi.scanners.common.utils;
 
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaderSchema;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
@@ -17,6 +18,7 @@ import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,42 +29,40 @@ import static java.util.stream.Collectors.groupingBy;
 public class AsyncAnnotationUtil {
     private AsyncAnnotationUtil() {}
 
-    public static AsyncHeaders getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
+    public static MessageHeaders getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
         if (op.headers().values().length == 0) {
-            return AsyncHeaders.NOT_DOCUMENTED;
+            return MessageHeaders.of(AsyncHeaders.NOT_DOCUMENTED);
         }
 
-        AsyncHeaders asyncHeaders = new AsyncHeaders(op.headers().schemaName());
+        SchemaObject headerSchema = new SchemaObject();
+        headerSchema.setType("object");
+        headerSchema.setTitle(op.headers().schemaName());
+        headerSchema.setProperties(new HashMap<>());
+
         Arrays.stream(op.headers().values())
                 .collect(groupingBy(AsyncOperation.Headers.Header::name))
                 .forEach((headerName, headers) -> {
-                    List<String> values = getHeaderValues(headers, resolver);
-                    String exampleValue = values.stream().findFirst().orElse(null);
-                    asyncHeaders.addHeader(AsyncHeaderSchema.headerBuilder()
-                            .headerName(resolver.resolveStringValue(headerName))
-                            .description(getDescription(headers, resolver))
-                            .enumValue(values)
-                            .example(exampleValue)
-                            .build());
+                    List<Object> values = getHeaderValues(headers, resolver);
+                    String propertyName = resolver.resolveStringValue(headerName);
 
-                    // FIXME: Replace AsyncHeaders by proper AsyncAPI v3 Headers
-                    // MessageHeaders.of(
-                    //         SchemaObject.builder()
-                    //                 .description(getDescription(headers, resolver))
-                    //                 .enumValues(values)
-                    //                 .examples(value != null ? List.of(value) : null)
-                    //                 .build());
+                    SchemaObject property = new SchemaObject();
+                    property.setType("string");
+                    property.setTitle(propertyName);
+                    property.setDescription(getDescription(headers, resolver));
+                    property.setExamples(values);
+                    headerSchema.getProperties().put(propertyName, property);
                 });
 
-        return asyncHeaders;
+        return MessageHeaders.of(headerSchema);
     }
 
-    private static List<String> getHeaderValues(
+    private static List<Object> getHeaderValues(
             List<AsyncOperation.Headers.Header> value, StringValueResolver resolver) {
         return value.stream()
                 .map(AsyncOperation.Headers.Header::value)
                 .map(resolver::resolveStringValue)
                 .sorted()
+                .map(it -> (Object) it)
                 .toList();
     }
 
