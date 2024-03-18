@@ -45,7 +45,7 @@ ext {
     kafkaProtobufSerializerVersion = '7.6.0'
 
     jacksonVersion = '2.16.2'
-    jacksonDatatypeProtobufVersion = '0.9.14'
+    jacksonDatatypeProtobufVersion = '0.9.15'
 
     jakartaAnnotationApiVersion = '2.1.1'
     jakartaValidationApiVersion = '3.0.2'
