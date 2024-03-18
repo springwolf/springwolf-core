@@ -2,10 +2,8 @@
 package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common;
 
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
-import io.github.springwolf.plugins.cloudstream.annotation.GooglePubSubSchemaSetting;
 import lombok.RequiredArgsConstructor;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
@@ -24,37 +22,34 @@ public class FunctionalChannelBeanBuilder {
 
     public Set<FunctionalChannelBeanData> fromMethodBean(Method methodBean) {
         Class<?> returnType = methodBean.getReturnType();
-        Annotation schemaSetting = methodBean.getAnnotation(GooglePubSubSchemaSetting.class);
         if (Consumer.class.isAssignableFrom(returnType)) {
             Class<?> payloadType = getReturnTypeGenerics(methodBean).get(0);
-            return Set.of(ofConsumer(methodBean.getName(), payloadType, schemaSetting));
+            return Set.of(ofConsumer(methodBean, payloadType));
         }
 
         if (Supplier.class.isAssignableFrom(returnType)) {
             Class<?> payloadType = getReturnTypeGenerics(methodBean).get(0);
-            return Set.of(ofSupplier(methodBean.getName(), payloadType, schemaSetting));
+            return Set.of(ofSupplier(methodBean, payloadType));
         }
 
         if (Function.class.isAssignableFrom(returnType)) {
             Class<?> inputType = getReturnTypeGenerics(methodBean).get(0);
             Class<?> outputType = getReturnTypeGenerics(methodBean).get(1);
 
-            return Set.of(
-                    ofConsumer(methodBean.getName(), inputType, schemaSetting),
-                    ofSupplier(methodBean.getName(), outputType, schemaSetting));
+            return Set.of(ofConsumer(methodBean, inputType), ofSupplier(methodBean, outputType));
         }
 
         return Collections.emptySet();
     }
 
-    private static FunctionalChannelBeanData ofConsumer(String name, Class<?> payloadType, Annotation schemaSetting) {
+    private static FunctionalChannelBeanData ofConsumer(Method method, Class<?> payloadType) {
         return new FunctionalChannelBeanData(
-                name, payloadType, FunctionalChannelBeanData.BeanType.CONSUMER, name + "-in-0", schemaSetting);
+                method, payloadType, FunctionalChannelBeanData.BeanType.CONSUMER, method.getName() + "-in-0");
     }
 
-    private static FunctionalChannelBeanData ofSupplier(String name, Class<?> payloadType, Annotation schemaSetting) {
+    private static FunctionalChannelBeanData ofSupplier(Method method, Class<?> payloadType) {
         return new FunctionalChannelBeanData(
-                name, payloadType, FunctionalChannelBeanData.BeanType.SUPPLIER, name + "-out-0", schemaSetting);
+                method, payloadType, FunctionalChannelBeanData.BeanType.SUPPLIER, method.getName() + "-out-0");
     }
 
     private List<Class<?>> getReturnTypeGenerics(Method methodBean) {

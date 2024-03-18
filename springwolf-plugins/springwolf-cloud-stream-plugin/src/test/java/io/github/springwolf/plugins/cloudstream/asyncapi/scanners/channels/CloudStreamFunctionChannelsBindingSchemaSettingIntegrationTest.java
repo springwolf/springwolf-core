@@ -12,6 +12,10 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncSchemaSetting;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubsubAsyncMessageStoragePolicy;
+import io.github.springwolf.bindings.googlepubsub.configuration.SpringwolfGooglePubSubBindingAutoConfiguration;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
@@ -30,15 +34,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.config.BindingProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -46,6 +53,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {
+            SpringwolfGooglePubSubBindingAutoConfiguration.class,
             ConfigurationClassScanner.class,
             ComponentClassScanner.class,
             DefaultBeanMethodsScanner.class,
@@ -71,7 +79,7 @@ import static org.mockito.Mockito.when;
             "springwolf.docket.servers.googlepubsub.host=kafka:9092",
         })
 @EnableConfigurationProperties
-@Import(CloudStreamFunctionChannelsScannerIntegrationTest.Configuration.class)
+@Import(CloudStreamFunctionChannelsBindingSchemaSettingIntegrationTest.Configuration.class)
 public class CloudStreamFunctionChannelsBindingSchemaSettingIntegrationTest {
 
     @MockBean
@@ -114,5 +122,16 @@ public class CloudStreamFunctionChannelsBindingSchemaSettingIntegrationTest {
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
+    }
+
+    @TestConfiguration
+    public static class Configuration {
+        @Bean
+        @GooglePubSubAsyncChannelBinding(
+                messageStoragePolicy = @GooglePubsubAsyncMessageStoragePolicy(),
+                schemaSettings = @GooglePubSubAsyncSchemaSetting(encoding = "BINARY", name = "project/test"))
+        public Consumer<String> testPubSubConsumer() {
+            return System.out::println;
+        }
     }
 }

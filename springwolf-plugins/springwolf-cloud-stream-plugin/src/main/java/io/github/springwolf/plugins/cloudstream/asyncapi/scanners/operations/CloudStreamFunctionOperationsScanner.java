@@ -124,6 +124,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
         String operationName =
                 beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
 
-        return String.format("%s_%s_%s", channelName, operationName, beanData.beanName());
+        return String.format(
+                "%s_%s_%s", channelName, operationName, beanData.method().getName());
     }
 }

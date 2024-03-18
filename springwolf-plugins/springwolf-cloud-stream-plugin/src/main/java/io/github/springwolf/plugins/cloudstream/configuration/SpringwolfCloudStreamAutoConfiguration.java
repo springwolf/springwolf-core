@@ -3,6 +3,7 @@ package io.github.springwolf.plugins.cloudstream.configuration;
 
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
@@ -13,6 +14,8 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 import org.springframework.context.annotation.Bean;
+
+import java.util.List;
 
 /**
  * Autoconfiguration for the springwolf cloudstream plugin.
@@ -27,13 +30,15 @@ public class SpringwolfCloudStreamAutoConfiguration {
             BeanMethodsScanner beanMethodsScanner,
             ComponentsService componentsService,
             BindingServiceProperties cloudstreamBindingServiceProperties,
-            FunctionalChannelBeanBuilder functionalChannelBeanBuilder) {
+            FunctionalChannelBeanBuilder functionalChannelBeanBuilder,
+            List<ChannelBindingProcessor> channelBindingProcessors) {
         return new CloudStreamFunctionChannelsScanner(
                 asyncApiDocketService,
                 beanMethodsScanner,
                 componentsService,
                 cloudstreamBindingServiceProperties,
-                functionalChannelBeanBuilder);
+                functionalChannelBeanBuilder,
+                channelBindingProcessors);
     }
 
     @Bean

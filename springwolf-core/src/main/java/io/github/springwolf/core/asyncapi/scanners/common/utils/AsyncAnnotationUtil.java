@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.utils;
 
+import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -12,6 +13,8 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBind
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.channels.ProcessedChannelBinding;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
@@ -135,5 +138,15 @@ public class AsyncAnnotationUtil {
      */
     public static List<String> getServers(AsyncOperation op, StringValueResolver resolver) {
         return Arrays.stream(op.servers()).map(resolver::resolveStringValue).toList();
+    }
+
+    public static Map<String, ChannelBinding> processChannelBindingFromAnnotation(
+            Method method, List<ChannelBindingProcessor> channelBindingProcessors) {
+        return channelBindingProcessors.stream()
+                .map(channelBindingProcessor -> channelBindingProcessor.process(method))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toMap(
+                        ProcessedChannelBinding::getType, ProcessedChannelBinding::getBinding, (e1, e2) -> e1));
     }
 }

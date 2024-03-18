@@ -50,8 +50,8 @@ class FunctionalChannelBeanBuilderTest {
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
             Assertions.assertThat(data)
-                    .containsExactly(new FunctionalChannelBeanData(
-                            "consumerBean", String.class, CONSUMER, "consumerBean-in-0", null));
+                    .containsExactly(
+                            new FunctionalChannelBeanData(method, String.class, CONSUMER, "consumerBean-in-0"));
         }
 
         @Bean
@@ -69,8 +69,8 @@ class FunctionalChannelBeanBuilderTest {
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
             Assertions.assertThat(data)
-                    .containsExactly(new FunctionalChannelBeanData(
-                            "supplierBean", String.class, SUPPLIER, "supplierBean-out-0", null));
+                    .containsExactly(
+                            new FunctionalChannelBeanData(method, String.class, SUPPLIER, "supplierBean-out-0"));
         }
 
         @Bean
@@ -89,10 +89,8 @@ class FunctionalChannelBeanBuilderTest {
 
             Assertions.assertThat(data)
                     .containsExactlyInAnyOrder(
-                            new FunctionalChannelBeanData(
-                                    "functionBean", String.class, CONSUMER, "functionBean-in-0", null),
-                            new FunctionalChannelBeanData(
-                                    "functionBean", Integer.class, SUPPLIER, "functionBean-out-0", null));
+                            new FunctionalChannelBeanData(method, String.class, CONSUMER, "functionBean-in-0"),
+                            new FunctionalChannelBeanData(method, Integer.class, SUPPLIER, "functionBean-out-0"));
         }
 
         @Bean
@@ -112,8 +110,8 @@ class FunctionalChannelBeanBuilderTest {
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
             Assertions.assertThat(data)
-                    .containsExactly(new FunctionalChannelBeanData(
-                            methodName, String.class, CONSUMER, methodName + "-in-0", null));
+                    .containsExactly(
+                            new FunctionalChannelBeanData(method, String.class, CONSUMER, methodName + "-in-0"));
         }
 
         @Bean
@@ -133,8 +131,8 @@ class FunctionalChannelBeanBuilderTest {
             Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.fromMethodBean(method);
 
             Assertions.assertThat(data)
-                    .containsExactly(new FunctionalChannelBeanData(
-                            methodName, String.class, CONSUMER, methodName + "-in-0", null));
+                    .containsExactly(
+                            new FunctionalChannelBeanData(method, String.class, CONSUMER, methodName + "-in-0"));
         }
 
         @Bean
