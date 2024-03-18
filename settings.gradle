@@ -1,4 +1,4 @@
-rootProject.name = 'springwolf-core'
+rootProject.name = 'springwolf'
 
 include(
         'springwolf-asyncapi',
@@ -15,6 +15,8 @@ include(
         'springwolf-examples:springwolf-kafka-example',
         'springwolf-examples:springwolf-sns-example',
         'springwolf-examples:springwolf-sqs-example',
+        'springwolf-bindings:springwolf-sns-binding',
+        'springwolf-bindings:springwolf-sqs-binding',
         'springwolf-ui',
         'springwolf-add-ons:springwolf-common-model-converters',
         'springwolf-add-ons:springwolf-generic-binding',
