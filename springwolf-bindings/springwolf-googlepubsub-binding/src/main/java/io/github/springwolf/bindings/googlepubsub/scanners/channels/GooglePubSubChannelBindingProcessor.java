@@ -2,6 +2,7 @@
 package io.github.springwolf.bindings.googlepubsub.scanners.channels;
 
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageStoragePolicy;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchemaSettings;
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelBindingProcessor;
@@ -31,17 +32,23 @@ public class GooglePubSubChannelBindingProcessor implements ChannelBindingProces
     }
 
     private ProcessedChannelBinding mapToChannelBinding(GooglePubSubAsyncChannelBinding bindingAnnotation) {
+
+        GooglePubSubMessageStoragePolicy googlePubsubMessageStoragePolicy = new GooglePubSubMessageStoragePolicy(
+                Arrays.stream(bindingAnnotation.messageStoragePolicy().allowedPersistenceRegions())
+                        .toList());
+        GooglePubSubSchemaSettings googlePubSubSchemaSettings = new GooglePubSubSchemaSettings(
+                bindingAnnotation.schemaSettings().encoding(),
+                bindingAnnotation.schemaSettings().firstRevisionId(),
+                bindingAnnotation.schemaSettings().lastRevisionId(),
+                bindingAnnotation.schemaSettings().name());
+
         return new ProcessedChannelBinding(
                 bindingAnnotation.type(),
                 new GooglePubSubChannelBinding(
                         null,
-                        null,
-                        null,
-                        new GooglePubSubSchemaSettings(
-                                bindingAnnotation.schemaSettings().encoding(),
-                                bindingAnnotation.schemaSettings().firstRevisionId(),
-                                bindingAnnotation.schemaSettings().lastRevisionId(),
-                                bindingAnnotation.schemaSettings().name()),
+                        bindingAnnotation.messageRetentionDuration(),
+                        googlePubsubMessageStoragePolicy,
+                        googlePubSubSchemaSettings,
                         bindingAnnotation.bindingVersion()));
     }
 }

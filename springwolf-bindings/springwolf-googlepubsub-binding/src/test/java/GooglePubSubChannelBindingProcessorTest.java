@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubChannelBinding;
+import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageStoragePolicy;
+import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchemaSettings;
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncSchemaSetting;
-import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubsubAsyncMessageStoragePolicy;
 import io.github.springwolf.bindings.googlepubsub.scanners.channels.GooglePubSubChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.channels.ProcessedChannelBinding;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +24,13 @@ public class GooglePubSubChannelBindingProcessorTest {
         ProcessedChannelBinding binding = processor.process(method).get();
 
         assertThat(binding.getType()).isEqualTo("googlepubsub");
-        assertThat(binding.getBinding()).isEqualTo(new GooglePubSubChannelBinding());
+        GooglePubSubMessageStoragePolicy googlePubsubMessageStoragePolicy =
+                new GooglePubSubMessageStoragePolicy(List.of());
+        GooglePubSubSchemaSettings googlePubSubSchemaSettings =
+                new GooglePubSubSchemaSettings("BINARY", "", "", "project/test");
+        assertThat(binding.getBinding())
+                .isEqualTo(new GooglePubSubChannelBinding(
+                        null, "", googlePubsubMessageStoragePolicy, googlePubSubSchemaSettings, "0.2.0"));
     }
 
     @Test
@@ -35,7 +43,6 @@ public class GooglePubSubChannelBindingProcessorTest {
     }
 
     @GooglePubSubAsyncChannelBinding(
-            messageStoragePolicy = @GooglePubsubAsyncMessageStoragePolicy,
             schemaSettings = @GooglePubSubAsyncSchemaSetting(encoding = "BINARY", name = "project/test"))
     public void methodWithAnnotation() {}
 

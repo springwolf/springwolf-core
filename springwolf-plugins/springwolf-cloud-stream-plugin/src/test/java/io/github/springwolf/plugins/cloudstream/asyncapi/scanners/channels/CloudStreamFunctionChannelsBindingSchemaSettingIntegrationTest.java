@@ -4,6 +4,7 @@ package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.channels;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageBinding;
+import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageStoragePolicy;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchemaSettings;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
@@ -14,7 +15,6 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncSchemaSetting;
-import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubsubAsyncMessageStoragePolicy;
 import io.github.springwolf.bindings.googlepubsub.configuration.SpringwolfGooglePubSubBindingAutoConfiguration;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
@@ -44,6 +44,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -90,8 +91,13 @@ public class CloudStreamFunctionChannelsBindingSchemaSettingIntegrationTest {
 
     private GooglePubSubSchemaSettings googlePubSubSchemaSettings =
             new GooglePubSubSchemaSettings("BINARY", "", "", "project/test");
+
+    private GooglePubSubMessageStoragePolicy googlePubsubMessageStoragePolicy =
+            new GooglePubSubMessageStoragePolicy(List.of());
     private Map<String, ChannelBinding> channelBindingGooglePubSub = Map.of(
-            "googlepubsub", new GooglePubSubChannelBinding(null, null, null, googlePubSubSchemaSettings, "0.2.0"));
+            "googlepubsub",
+            new GooglePubSubChannelBinding(
+                    null, "", googlePubsubMessageStoragePolicy, googlePubSubSchemaSettings, "0.2.0"));
 
     @Test
     void testConsumerBinding() {
@@ -128,7 +134,6 @@ public class CloudStreamFunctionChannelsBindingSchemaSettingIntegrationTest {
     public static class Configuration {
         @Bean
         @GooglePubSubAsyncChannelBinding(
-                messageStoragePolicy = @GooglePubsubAsyncMessageStoragePolicy(),
                 schemaSettings = @GooglePubSubAsyncSchemaSetting(encoding = "BINARY", name = "project/test"))
         public Consumer<String> testPubSubConsumer() {
             return System.out::println;
