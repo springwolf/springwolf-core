@@ -1,0 +1,111 @@
+{
+  "NestedClass" : {
+    "type" : "object",
+    "properties" : {
+      "color" : {
+        "type" : "string",
+        "enum" : [ "RED", "GREEN", "BLUE" ]
+      },
+      "id" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "name" : {
+        "type" : "string"
+      }
+    },
+    "required" : [ "color", "id", "name" ]
+  },
+  "SampleEvent" : {
+    "type" : "object",
+    "properties" : {
+      "boolean_field" : {
+        "type" : "boolean"
+      },
+      "byte_field" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "date_field" : {
+        "type" : "string",
+        "format" : "date"
+      },
+      "double_field" : {
+        "type" : "number",
+        "format" : "double"
+      },
+      "enum_field" : {
+        "type" : "string",
+        "enum" : [ "RED", "GREEN", "BLUE" ]
+      },
+      "float_field" : {
+        "type" : "number",
+        "format" : "float"
+      },
+      "int_field" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "list_field" : {
+        "type" : "array",
+        "items" : {
+          "type" : "string"
+        }
+      },
+      "listed_references" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/SampleEvent$NestedClass"
+        }
+      },
+      "long_field" : {
+        "type" : "integer",
+        "format" : "int64"
+      },
+      "map_field" : {
+        "type" : "object",
+        "additionalProperties" : {
+          "type" : "string"
+        }
+      },
+      "nested_class" : {
+        "$ref" : "#/components/schemas/SampleEvent$NestedClass"
+      },
+      "optional_field" : {
+        "type" : "string"
+      },
+      "set_field" : {
+        "type" : "array",
+        "items" : {
+          "type" : "string"
+        },
+        "uniqueItems" : true
+      },
+      "short_field" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "string_field" : {
+        "type" : "string"
+      }
+    },
+    "required" : [ "boolean_field", "byte_field", "date_field", "double_field", "enum_field", "float_field", "int_field", "list_field", "listed_references", "long_field", "map_field", "set_field", "short_field", "string_field" ]
+  },
+  "SampleEvent$NestedClass" : {
+    "type" : "object",
+    "properties" : {
+      "color" : {
+        "type" : "string",
+        "enum" : [ "RED", "GREEN", "BLUE" ]
+      },
+      "id" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "name" : {
+        "type" : "string"
+      }
+    },
+    "required" : [ "color", "id", "name" ]
+  }
+}

@@ -33,9 +33,11 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:${kotlinxSerializationVersion}"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
 
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation "net.javacrumbs.json-unit:json-unit-assertj:${jsonUnitAssertJVersion}"
+
 }
 
 jar {

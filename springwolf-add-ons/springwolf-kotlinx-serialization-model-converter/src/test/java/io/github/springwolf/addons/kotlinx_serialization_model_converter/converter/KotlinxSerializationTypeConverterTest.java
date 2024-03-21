@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.addons.kotlinx_serialization_model_converter.converter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,8 +10,10 @@ import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.oas.models.media.Schema;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class KotlinxSerializationTypeConverterTest {
@@ -21,7 +22,7 @@ class KotlinxSerializationTypeConverterTest {
     private final PrettyPrinter printer = new DefaultPrettyPrinter();
 
     @Test
-    void serializeKotlin() throws JsonProcessingException {
+    void serializeKotlin() {
         final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter();
         final ModelConverters converters = new ModelConverters();
         converters.addConverter(modelConverter);
@@ -46,8 +47,30 @@ class KotlinxSerializationTypeConverterTest {
                 model.getProperties().get("nested_class"),
                 "#/components/schemas/SampleEvent$NestedClass",
                 media.get("NestedClass"));
+    }
 
-        System.out.print(jsonMapper.writer(printer).writeValueAsString(media));
+    @Test
+    void validateGeneratedJson() throws IOException {
+        final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter();
+        final ModelConverters converters = new ModelConverters();
+        converters.addConverter(modelConverter);
+
+        var media = converters.readAll(new AnnotatedType(SampleEvent.class));
+
+        String example = ClasspathUtil.readAsString("/simple.json");
+        assertThatJson(jsonMapper.writer(printer).writeValueAsString(media)).isEqualTo(example);
+    }
+
+    @Test
+    void validateGeneratedFqnJson() throws IOException {
+        final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter(true);
+        final ModelConverters converters = new ModelConverters();
+        converters.addConverter(modelConverter);
+
+        var media = converters.readAll(new AnnotatedType(SampleEvent.class));
+
+        String example = ClasspathUtil.readAsString("/fqn.json");
+        assertThatJson(jsonMapper.writer(printer).writeValueAsString(media)).isEqualTo(example);
     }
 
     private void assertLocalDateField(Schema<?> dateField) {
