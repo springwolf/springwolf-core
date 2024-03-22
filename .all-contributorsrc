@@ -279,6 +279,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "victorlev01",
+      "name": "Victor Levitskiy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18309707?v=4",
+      "profile": "https://www.linkedin.com/in/victor-levitskiy-561956114/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
