@@ -9,6 +9,11 @@ import io.github.springwolf.plugins.kafka.asyncapi.annotations.KafkaAsyncOperati
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Headers;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import javax.money.MonetaryAmount;
@@ -24,6 +29,15 @@ public class ExampleClassLevelKafkaListener {
 
     @KafkaHandler
     public void receiveExamplePayload(ExamplePayloadDto payload) {
+        log.info("Received new message in {}: {}", TOPIC, payload.toString());
+    }
+
+    // FIXME: This is still not working
+    @KafkaHandler
+    public void receiveExamplePayloadWithHeaders(
+            @Headers MessageHeaders headers,
+            @Header(KafkaHeaders.RECEIVED_KEY) String key,
+            @Payload(required = false) ExamplePayloadDto payload) {
         log.info("Received new message in {}: {}", TOPIC, payload.toString());
     }
 
