@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.cloudstream.configuration;
 
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncSchemaSetting;
 import io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto;
 import io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.context.annotation.Bean;
@@ -24,5 +27,12 @@ public class CloudstreamConfiguration {
     @Bean
     public Consumer<AnotherPayloadDto> consumerMethod() {
         return input -> log.info("Received new message in another-topic: {}", input.toString());
+    }
+
+    @GooglePubSubAsyncChannelBinding(
+            schemaSettings = @GooglePubSubAsyncSchemaSetting(encoding = "BINARY", name = "project/test"))
+    @Bean
+    public Consumer<GooglePubSubPayloadDto> googlePubSubConsumerMethod() {
+        return input -> log.info("Received new message in google-pubsub-topic: {}", input.toString());
     }
 }
