@@ -17,7 +17,6 @@ import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
@@ -73,9 +72,6 @@ class SpringAnnotationClassLevelOperationsScannerTest {
         doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())
                 .when(componentsService)
                 .registerSchema(any(Class.class));
-        doAnswer(invocation -> AsyncHeaders.NOT_DOCUMENTED.getSchemaName())
-                .when(componentsService)
-                .registerSchema(any(AsyncHeaders.class));
     }
 
     @Test
@@ -94,7 +90,7 @@ class SpringAnnotationClassLevelOperationsScannerTest {
                 .name(String.class.getName())
                 .title(String.class.getSimpleName())
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED))
                 .bindings(defaultMessageBinding)
                 .build();
 

@@ -14,7 +14,7 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
@@ -71,13 +71,12 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     private Operation buildOperation(FunctionalChannelBeanData beanData, String channelName) {
         Class<?> payloadType = beanData.payloadType();
         String modelName = componentsService.registerSchema(payloadType);
-        String headerModelName = componentsService.registerSchema(AsyncHeaders.NOT_DOCUMENTED);
 
         MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(modelName)
                 .payload(MessagePayload.of(MessageReference.toSchema(modelName)))
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
+                .headers(MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED))
                 .bindings(buildMessageBinding())
                 .build();
 

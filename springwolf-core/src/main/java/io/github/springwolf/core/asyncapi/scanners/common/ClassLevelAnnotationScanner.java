@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
@@ -82,7 +83,7 @@ public abstract class ClassLevelAnnotationScanner<
     protected MessageObject buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
         String modelName = componentsService.registerSchema(payloadType);
-        String headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
+        SchemaObject headers = asyncHeadersBuilder.buildHeaders(payloadType);
 
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
@@ -94,7 +95,7 @@ public abstract class ClassLevelAnnotationScanner<
                 .title(payloadType.getSimpleName())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
+                .headers(MessageHeaders.of(headers))
                 .bindings(messageBinding)
                 .build();
 

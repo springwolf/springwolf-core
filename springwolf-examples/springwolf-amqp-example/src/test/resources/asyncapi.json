@@ -118,13 +118,6 @@
   },
   "components": {
     "schemas": {
-      "HeadersNotDocumented": {
-        "type": "object",
-        "properties": { },
-        "examples": [
-          { }
-        ]
-      },
       "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
         "type": "object",
         "properties": {
@@ -202,7 +195,12 @@
     "messages": {
       "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "title": "HeadersNotDocumented",
+          "type": "object",
+          "properties": { },
+          "examples": [
+            { }
+          ]
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -221,7 +219,12 @@
       },
       "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "title": "HeadersNotDocumented",
+          "type": "object",
+          "properties": { },
+          "examples": [
+            { }
+          ]
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",

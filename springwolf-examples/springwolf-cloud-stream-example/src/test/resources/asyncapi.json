@@ -117,19 +117,17 @@
           "someEnum",
           "someString"
         ]
-      },
-      "HeadersNotDocumented": {
-        "type": "object",
-        "properties": { },
-        "examples": [
-          { }
-        ]
       }
     },
     "messages": {
       "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "title": "HeadersNotDocumented",
+          "type": "object",
+          "properties": { },
+          "examples": [
+            { }
+          ]
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -145,7 +143,12 @@
       },
       "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "title": "HeadersNotDocumented",
+          "type": "object",
+          "properties": { },
+          "examples": [
+            { }
+          ]
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
