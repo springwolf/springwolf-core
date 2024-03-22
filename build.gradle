@@ -122,6 +122,16 @@ allprojects {
         }
     }
 
+    var addons = [
+            'springwolf-common-model-converters' ,
+            'springwolf-generic-binding' ,
+            'springwolf-json-schema'
+    ]
+    var bindings = [
+            'springwolf-googlepubsub-binding',
+            'springwolf-sns-binding',
+            'springwolf-sqs-binding'
+    ]
     var plugins = [
             'springwolf-amqp',
             'springwolf-cloud-stream',
@@ -134,10 +144,9 @@ allprojects {
             project.name == 'springwolf-asyncapi' ||
             project.name == 'springwolf-core' ||
             project.name == 'springwolf-ui' ||
-            project.name == 'springwolf-common-model-converters' ||
-            project.name == 'springwolf-generic-binding' ||
-            project.name == 'springwolf-json-schema' ||
-            plugins.contains(project.name)
+            addons.contains(project.name) ||
+            plugins.contains(project.name) ||
+            bindings.contains(project.name)
     )
     tasks.withType(PublishToMavenRepository).configureEach { it.enabled = publishingEnabled }
     tasks.withType(PublishToMavenLocal).configureEach { it.enabled = publishingEnabled }
