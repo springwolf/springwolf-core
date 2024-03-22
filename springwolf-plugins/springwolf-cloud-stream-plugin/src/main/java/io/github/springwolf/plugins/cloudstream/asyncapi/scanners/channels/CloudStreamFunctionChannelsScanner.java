@@ -69,6 +69,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private ChannelObject buildChannel(FunctionalChannelBeanData beanData) {
         Class<?> payloadType = beanData.payloadType();
         String modelName = componentsService.registerSchema(payloadType);
+        String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
 
         var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
@@ -78,7 +79,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .name(payloadType.getName())
                 .title(modelName)
                 .payload(messagePayload)
-                .headers(MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED))
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
                 .bindings(buildMessageBinding())
                 .build();
         this.componentsService.registerMessage(message);

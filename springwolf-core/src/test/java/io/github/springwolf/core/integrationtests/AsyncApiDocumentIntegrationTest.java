@@ -40,7 +40,7 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getChannels()).containsOnlyKeys("listener-channel");
             assertThat(asyncAPI.getOperations()).containsOnlyKeys("listener-channel_receive_listen");
             assertThat(asyncAPI.getComponents().getMessages()).containsOnlyKeys("java.lang.String");
-            assertThat(asyncAPI.getComponents().getSchemas()).containsOnlyKeys("String");
+            assertThat(asyncAPI.getComponents().getSchemas()).containsOnlyKeys("HeadersNotDocumented", "String");
         }
     }
 
@@ -63,7 +63,7 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getChannels()).containsOnlyKeys("publisher-channel");
             assertThat(asyncAPI.getOperations()).containsOnlyKeys("publisher-channel_send_publish");
             assertThat(asyncAPI.getComponents().getMessages()).containsOnlyKeys("java.lang.String");
-            assertThat(asyncAPI.getComponents().getSchemas()).containsOnlyKeys("String");
+            assertThat(asyncAPI.getComponents().getSchemas()).containsOnlyKeys("HeadersNotDocumented", "String");
         }
     }
 
@@ -91,6 +91,7 @@ public class AsyncApiDocumentIntegrationTest {
             Map<String, SchemaObject> schemas = asyncAPI.getComponents().getSchemas();
             assertThat(schemas)
                     .containsOnlyKeys(
+                            "HeadersNotDocumented",
                             "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Payload",
                             "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet",
                             "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat",

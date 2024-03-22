@@ -117,6 +117,175 @@
   },
   "components": {
     "schemas": {
+      "HeadersNotDocumented": {
+        "type": "object",
+        "examples": [
+          { }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "type": "object"
+        }
+      },
+      "SpringDefaultHeaderAndCloudEvent": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "title": "__TypeId__",
+            "type": "string"
+          },
+          "ce_id": {
+            "title": "ce_id",
+            "type": "string"
+          },
+          "ce_source": {
+            "title": "ce_source",
+            "type": "string"
+          },
+          "ce_specversion": {
+            "title": "ce_specversion",
+            "type": "string"
+          },
+          "ce_subject": {
+            "title": "ce_subject",
+            "type": "string"
+          },
+          "ce_time": {
+            "title": "ce_time",
+            "type": "string"
+          },
+          "ce_type": {
+            "title": "ce_type",
+            "type": "string"
+          },
+          "content-type": {
+            "title": "content-type",
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "string",
+            "ce_id": "string",
+            "ce_source": "string",
+            "ce_specversion": "string",
+            "ce_subject": "string",
+            "ce_time": "string",
+            "ce_type": "string",
+            "content-type": "string"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "title": "__TypeId__",
+              "type": "string"
+            },
+            "ce_id": {
+              "title": "ce_id",
+              "type": "string"
+            },
+            "ce_source": {
+              "title": "ce_source",
+              "type": "string"
+            },
+            "ce_specversion": {
+              "title": "ce_specversion",
+              "type": "string"
+            },
+            "ce_subject": {
+              "title": "ce_subject",
+              "type": "string"
+            },
+            "ce_time": {
+              "title": "ce_time",
+              "type": "string"
+            },
+            "ce_type": {
+              "title": "ce_type",
+              "type": "string"
+            },
+            "content-type": {
+              "title": "content-type",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-AnotherPayloadDto": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "title": "__TypeId__",
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "string"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "title": "__TypeId__",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-ExamplePayloadDto": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "title": "__TypeId__",
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "string"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "title": "__TypeId__",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-MonetaryAmount": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "title": "__TypeId__",
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "string"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "title": "__TypeId__",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
       "String": {
         "type": "string",
         "examples": [
@@ -629,12 +798,7 @@
     "messages": {
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
         "headers": {
-          "title": "HeadersNotDocumented",
-          "type": "object",
-          "properties": { },
-          "examples": [
-            { }
-          ]
+          "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -652,12 +816,7 @@
       },
       "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto": {
         "headers": {
-          "title": "HeadersNotDocumented",
-          "type": "object",
-          "properties": { },
-          "examples": [
-            { }
-          ]
+          "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -675,12 +834,7 @@
       },
       "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
         "headers": {
-          "title": "HeadersNotDocumented",
-          "type": "object",
-          "properties": { },
-          "examples": [
-            { }
-          ]
+          "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -698,21 +852,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto": {
         "headers": {
-          "title": "SpringKafkaDefaultHeaders-AnotherPayloadDto",
-          "type": "object",
-          "properties": {
-            "__TypeId__": {
-              "title": "__TypeId__",
-              "type": "string",
-              "description": "Spring Type Id Header",
-              "enum": [
-                "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
-              ],
-              "examples": [
-                "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
-              ]
-            }
-          }
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-AnotherPayloadDto"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -730,21 +870,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
         "headers": {
-          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto",
-          "type": "object",
-          "properties": {
-            "__TypeId__": {
-              "title": "__TypeId__",
-              "type": "string",
-              "description": "Spring Type Id Header",
-              "enum": [
-                "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
-              ],
-              "examples": [
-                "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
-              ]
-            }
-          }
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -762,74 +888,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.NestedPayloadDto": {
         "headers": {
-          "title": "SpringDefaultHeaderAndCloudEvent",
-          "type": "object",
-          "properties": {
-            "__TypeId__": {
-              "title": "__TypeId__",
-              "type": "string",
-              "description": "Spring Type Id Header",
-              "examples": [
-                "io.github.springwolf.examples.kafka.dtos.NestedPayloadDto"
-              ]
-            },
-            "ce_id": {
-              "title": "ce_id",
-              "type": "string",
-              "description": "CloudEvent Id Header",
-              "examples": [
-                "2c60089e-6f39-459d-8ced-2d6df7e4c03a"
-              ]
-            },
-            "ce_source": {
-              "title": "ce_source",
-              "type": "string",
-              "description": "CloudEvent Source Header",
-              "examples": [
-                "http://localhost"
-              ]
-            },
-            "ce_specversion": {
-              "title": "ce_specversion",
-              "type": "string",
-              "description": "CloudEvent Spec Version Header",
-              "examples": [
-                "1.0"
-              ]
-            },
-            "ce_subject": {
-              "title": "ce_subject",
-              "type": "string",
-              "description": "CloudEvent Subject Header",
-              "examples": [
-                "Springwolf example project - Kafka"
-              ]
-            },
-            "ce_time": {
-              "title": "ce_time",
-              "type": "string",
-              "description": "CloudEvent Time Header",
-              "examples": [
-                "2023-10-28 20:01:23+00:00"
-              ]
-            },
-            "ce_type": {
-              "title": "ce_type",
-              "type": "string",
-              "description": "CloudEvent Payload Type Header",
-              "examples": [
-                "NestedPayloadDto.v1"
-              ]
-            },
-            "content-type": {
-              "title": "content-type",
-              "type": "string",
-              "description": "CloudEvent Content-Type Header",
-              "examples": [
-                "application/json"
-              ]
-            }
-          }
+          "$ref": "#/components/schemas/SpringDefaultHeaderAndCloudEvent"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -855,12 +914,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto": {
         "headers": {
-          "title": "HeadersNotDocumented",
-          "type": "object",
-          "properties": { },
-          "examples": [
-            { }
-          ]
+          "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -879,12 +933,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto": {
         "headers": {
-          "title": "HeadersNotDocumented",
-          "type": "object",
-          "properties": { },
-          "examples": [
-            { }
-          ]
+          "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -903,12 +952,7 @@
       },
       "java.lang.String": {
         "headers": {
-          "title": "HeadersNotDocumented",
-          "type": "object",
-          "properties": { },
-          "examples": [
-            { }
-          ]
+          "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -926,18 +970,7 @@
       },
       "javax.money.MonetaryAmount": {
         "headers": {
-          "title": "SpringKafkaDefaultHeaders-MonetaryAmount",
-          "type": "object",
-          "properties": {
-            "__TypeId__": {
-              "title": "__TypeId__",
-              "type": "string",
-              "description": "Spring Type Id Header",
-              "examples": [
-                "javax.money.MonetaryAmount"
-              ]
-            }
-          }
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-MonetaryAmount"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",

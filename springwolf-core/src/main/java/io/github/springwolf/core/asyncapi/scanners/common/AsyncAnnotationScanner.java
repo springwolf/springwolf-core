@@ -11,6 +11,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
@@ -91,7 +92,9 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
 
         String modelName = this.componentsService.registerSchema(
                 payloadType, operationData.message().contentType());
-        MessageHeaders headers = AsyncAnnotationUtil.getAsyncHeaders(operationData, resolver);
+        SchemaObject asyncHeaders = AsyncAnnotationUtil.getAsyncHeaders(operationData, resolver);
+        String headerModelName = this.componentsService.registerSchema(asyncHeaders);
+        var headers = MessageHeaders.of(MessageReference.toSchema(headerModelName));
 
         var schema = payloadType.getAnnotation(Schema.class);
         String description = schema != null ? schema.description() : null;

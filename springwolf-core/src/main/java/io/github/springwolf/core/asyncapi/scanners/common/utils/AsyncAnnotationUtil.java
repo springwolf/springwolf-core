@@ -3,7 +3,6 @@ package io.github.springwolf.core.asyncapi.scanners.common.utils;
 
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
@@ -29,9 +28,9 @@ import static java.util.stream.Collectors.groupingBy;
 public class AsyncAnnotationUtil {
     private AsyncAnnotationUtil() {}
 
-    public static MessageHeaders getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
+    public static SchemaObject getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
         if (op.headers().values().length == 0) {
-            return MessageHeaders.of(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+            return AsyncHeadersNotDocumented.NOT_DOCUMENTED;
         }
 
         SchemaObject headerSchema = new SchemaObject();
@@ -53,7 +52,7 @@ public class AsyncAnnotationUtil {
                     headerSchema.getProperties().put(propertyName, property);
                 });
 
-        return MessageHeaders.of(headerSchema);
+        return headerSchema;
     }
 
     private static List<Object> getHeaderValues(

@@ -11,6 +11,7 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.TypeNameResolver;
+import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +58,30 @@ public class DefaultComponentsService implements ComponentsService {
         return schemas.entrySet().stream()
                 .map(entry -> Map.entry(entry.getKey(), swaggerSchemaUtil.mapSchema(entry.getValue())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    @Override
+    public String registerSchema(SchemaObject headers) {
+        log.debug("Registering schema for {}", headers.getTitle());
+
+        MapSchema headerSchema = new MapSchema();
+        headerSchema.setName(headers.getTitle());
+        headerSchema.setDescription(headers.getDescription());
+        headers.getProperties().forEach((key, property) -> {
+            SchemaObject s = (SchemaObject) property;
+            // map AsyncApiSchema to SwaggerSchema
+            StringSchema value = new StringSchema();
+            value.setTitle(s.getTitle());
+            value.setDescription(value.getDescription());
+            value.setExamples(value.getExamples());
+
+            headerSchema.addProperty(key, value);
+        });
+
+        this.schemas.put(headers.getTitle(), headerSchema);
+        postProcessSchema(headerSchema, DEFAULT_CONTENT_TYPE);
+
+        return headers.getTitle();
     }
 
     @Override

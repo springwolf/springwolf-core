@@ -52,6 +52,12 @@
   },
   "components": {
     "schemas": {
+      "HeadersNotDocumented": {
+        "type": "object",
+        "examples": [
+          { }
+        ]
+      },
       "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto": {
         "type": "object",
         "properties": {
@@ -129,12 +135,7 @@
     "messages": {
       "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto": {
         "headers": {
-          "title": "HeadersNotDocumented",
-          "type": "object",
-          "properties": { },
-          "examples": [
-            { }
-          ]
+          "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -151,12 +152,7 @@
       },
       "io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto": {
         "headers": {
-          "title": "HeadersNotDocumented",
-          "type": "object",
-          "properties": { },
-          "examples": [
-            { }
-          ]
+          "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
