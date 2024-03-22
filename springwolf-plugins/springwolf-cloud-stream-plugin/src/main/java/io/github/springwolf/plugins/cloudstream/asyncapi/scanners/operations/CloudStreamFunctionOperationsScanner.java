@@ -96,11 +96,13 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     }
 
     private Map<String, MessageBinding> buildMessageBinding() {
+        // FIXME: handle messageBindings from annotations as for the channel
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
     private Map<String, OperationBinding> buildOperationBinding() {
+        // FIXME: handle operationBindings from annotations as for the channel
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyOperationBinding());
     }
@@ -124,6 +126,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
         String operationName =
                 beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
 
-        return String.format("%s_%s_%s", channelName, operationName, beanData.beanName());
+        return String.format(
+                "%s_%s_%s", channelName, operationName, beanData.method().getName());
     }
 }
