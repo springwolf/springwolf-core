@@ -8,6 +8,8 @@
 Note: kafka-schema-registry (avro) and akhq (a kafka ui) are not started by default
 
 ### Run with gradle
+Note: You need to execute the gradle `bootRun` task since the IntelliJ spring application will not include springwolf-ui correctly.
+
 1. Verify kafka (and kafka-schema-registry if you want to test avro as well) are running.
 2. If your kafka is not configured to automatically add topics, manually add a topic named `example-topic`.
 3. Define an environment variable with the bootstrap server details: `$ export BOOTSTRAP_SERVER=localhost:9092`.

@@ -41,6 +41,23 @@
       "bindings": {
         "kafka": { }
       }
+    },
+    "google-pubsub-topic": {
+      "messages": {
+        "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto"
+        }
+      },
+      "bindings": {
+        "googlepubsub": {
+          "messageStoragePolicy": { },
+          "schemaSettings": {
+            "encoding": "BINARY",
+            "name": "project/test"
+          },
+          "bindingVersion": "0.2.0"
+        }
+      }
     }
   },
   "components": {
@@ -118,6 +135,36 @@
           "someString"
         ]
       },
+      "GooglePubSubPayloadDto": {
+        "type": "object",
+        "properties": {
+          "someLong": {
+            "type": "integer",
+            "description": "Some long field",
+            "format": "int64",
+            "examples": [
+              5
+            ]
+          },
+          "someString": {
+            "type": "string",
+            "description": "Some string field",
+            "examples": [
+              "some string value"
+            ]
+          }
+        },
+        "description": "Google pubsub payload model",
+        "examples": [
+          {
+            "someLong": 5,
+            "someString": "some string value"
+          }
+        ],
+        "required": [
+          "someString"
+        ]
+      },
       "HeadersNotDocumented": {
         "type": "object",
         "properties": { },
@@ -156,6 +203,22 @@
         },
         "name": "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto",
         "title": "ExamplePayloadDto",
+        "bindings": {
+          "kafka": { }
+        }
+      },
+      "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/GooglePubSubPayloadDto"
+          }
+        },
+        "name": "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto",
+        "title": "GooglePubSubPayloadDto",
         "bindings": {
           "kafka": { }
         }
@@ -205,6 +268,21 @@
       "messages": [
         {
           "$ref": "#/channels/example-topic/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "google-pubsub-topic_publish_googlePubSubConsumerMethod": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/google-pubsub-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/google-pubsub-topic/messages/io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto"
         }
       ]
     }

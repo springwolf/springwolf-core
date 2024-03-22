@@ -22,35 +22,34 @@ public class FunctionalChannelBeanBuilder {
 
     public Set<FunctionalChannelBeanData> fromMethodBean(Method methodBean) {
         Class<?> returnType = methodBean.getReturnType();
-
         if (Consumer.class.isAssignableFrom(returnType)) {
             Class<?> payloadType = getReturnTypeGenerics(methodBean).get(0);
-            return Set.of(ofConsumer(methodBean.getName(), payloadType));
+            return Set.of(ofConsumer(methodBean, payloadType));
         }
 
         if (Supplier.class.isAssignableFrom(returnType)) {
             Class<?> payloadType = getReturnTypeGenerics(methodBean).get(0);
-            return Set.of(ofSupplier(methodBean.getName(), payloadType));
+            return Set.of(ofSupplier(methodBean, payloadType));
         }
 
         if (Function.class.isAssignableFrom(returnType)) {
             Class<?> inputType = getReturnTypeGenerics(methodBean).get(0);
             Class<?> outputType = getReturnTypeGenerics(methodBean).get(1);
 
-            return Set.of(ofConsumer(methodBean.getName(), inputType), ofSupplier(methodBean.getName(), outputType));
+            return Set.of(ofConsumer(methodBean, inputType), ofSupplier(methodBean, outputType));
         }
 
         return Collections.emptySet();
     }
 
-    private static FunctionalChannelBeanData ofConsumer(String name, Class<?> payloadType) {
+    private static FunctionalChannelBeanData ofConsumer(Method method, Class<?> payloadType) {
         return new FunctionalChannelBeanData(
-                name, payloadType, FunctionalChannelBeanData.BeanType.CONSUMER, name + "-in-0");
+                method, payloadType, FunctionalChannelBeanData.BeanType.CONSUMER, method.getName() + "-in-0");
     }
 
-    private static FunctionalChannelBeanData ofSupplier(String name, Class<?> payloadType) {
+    private static FunctionalChannelBeanData ofSupplier(Method method, Class<?> payloadType) {
         return new FunctionalChannelBeanData(
-                name, payloadType, FunctionalChannelBeanData.BeanType.SUPPLIER, name + "-out-0");
+                method, payloadType, FunctionalChannelBeanData.BeanType.SUPPLIER, method.getName() + "-out-0");
     }
 
     private List<Class<?>> getReturnTypeGenerics(Method methodBean) {

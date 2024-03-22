@@ -17,7 +17,9 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
@@ -27,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,6 +42,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private final ComponentsService componentsService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
+    protected final List<ChannelBindingProcessor> channelBindingProcessors;
 
     @Override
     public Map<String, ChannelObject> scan() {
@@ -84,7 +88,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .build();
         this.componentsService.registerMessage(message);
 
-        Map<String, ChannelBinding> channelBinding = buildChannelBinding();
+        Map<String, ChannelBinding> channelBinding = buildChannelBinding(beanData.method());
         return ChannelObject.builder()
                 .bindings(channelBinding)
                 .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
@@ -92,11 +96,18 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     }
 
     private Map<String, MessageBinding> buildMessageBinding() {
+        // FIXME: handle messageBindings from annotations as for the channel
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private Map<String, ChannelBinding> buildChannelBinding() {
+    private Map<String, ChannelBinding> buildChannelBinding(Method method) {
+        Map<String, ChannelBinding> channelBindingMap =
+                AsyncAnnotationUtil.processChannelBindingFromAnnotation(method, channelBindingProcessors);
+        if (!channelBindingMap.isEmpty()) {
+            return channelBindingMap;
+        }
+
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyChannelBinding());
     }

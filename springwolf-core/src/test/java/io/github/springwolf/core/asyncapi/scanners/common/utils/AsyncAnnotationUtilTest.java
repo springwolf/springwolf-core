@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.utils;
 
+import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -9,6 +10,7 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestAbstractOperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestMessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
 import org.assertj.core.util.Maps;
@@ -177,6 +179,24 @@ class AsyncAnnotationUtilTest {
 
         List<String> servers = AsyncAnnotationUtil.getServers(operation, resolver);
         assertEquals(List.of("server1"), servers);
+    }
+
+    @Test
+    void processChannelBindingFromAnnotation() throws NoSuchMethodException {
+        // given
+        Method m = ClassWithChannelBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
+
+        // when
+        Map<String, ChannelBinding> bindings = AsyncAnnotationUtil.processChannelBindingFromAnnotation(
+                m, Collections.singletonList(new TestChannelBindingProcessor()));
+
+        // then
+        assertEquals(Maps.newHashMap(TestChannelBindingProcessor.TYPE, TestChannelBindingProcessor.BINDING), bindings);
+    }
+
+    private static class ClassWithChannelBindingProcessor {
+        @TestChannelBindingProcessor.TestChannelBinding()
+        private void methodWithAnnotation(String payload) {}
     }
 
     private static class ClassWithOperationBindingProcessor {

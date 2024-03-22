@@ -1,4 +1,4 @@
-rootProject.name = 'springwolf-core'
+rootProject.name = 'springwolf'
 
 include(
         'springwolf-asyncapi',
@@ -15,6 +15,9 @@ include(
         'springwolf-examples:springwolf-kafka-example',
         'springwolf-examples:springwolf-sns-example',
         'springwolf-examples:springwolf-sqs-example',
+        'springwolf-bindings:springwolf-sns-binding',
+        'springwolf-bindings:springwolf-sqs-binding',
+        'springwolf-bindings:springwolf-googlepubsub-binding',
         'springwolf-ui',
         'springwolf-add-ons:springwolf-common-model-converters',
         'springwolf-add-ons:springwolf-generic-binding',
@@ -27,3 +30,4 @@ project(':springwolf-plugins:springwolf-jms-plugin').name = 'springwolf-jms'
 project(':springwolf-plugins:springwolf-kafka-plugin').name = 'springwolf-kafka'
 project(':springwolf-plugins:springwolf-sns-plugin').name = 'springwolf-sns'
 project(':springwolf-plugins:springwolf-sqs-plugin').name = 'springwolf-sqs'
+

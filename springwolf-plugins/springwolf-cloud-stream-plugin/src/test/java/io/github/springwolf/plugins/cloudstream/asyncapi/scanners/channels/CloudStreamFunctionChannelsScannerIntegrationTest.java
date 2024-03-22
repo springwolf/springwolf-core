@@ -439,7 +439,6 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
     @TestConfiguration
     public static class Configuration {
-
         @Bean
         public Consumer<String> testConsumer() {
             return System.out::println;

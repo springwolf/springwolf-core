@@ -31,7 +31,7 @@ ext {
 
     avroVersion = '1.11.3'
 
-    awaitilityVersion = '4.2.0'
+    awaitilityVersion = '4.2.1'
 
     commonsLang3Version = '3.14.0'
 
@@ -40,12 +40,12 @@ ext {
     kafkaAvroSerializerVersion = '7.6.0'
 
     kafkaClientsVersion = '3.6.1'
-    kafkaStreamsVersion = '3.6.1'
+    kafkaStreamsVersion = '3.7.0'
 
     kafkaProtobufSerializerVersion = '7.6.0'
 
     jacksonVersion = '2.16.2'
-    jacksonDatatypeProtobufVersion = '0.9.14'
+    jacksonDatatypeProtobufVersion = '0.9.15'
 
     jakartaAnnotationApiVersion = '2.1.1'
     jakartaValidationApiVersion = '3.0.2'
