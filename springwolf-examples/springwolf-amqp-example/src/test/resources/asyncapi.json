@@ -121,6 +121,14 @@
       "HeadersNotDocumented": {
         "type": "object",
         "properties": { },
+        "description": "There can be headers, but they are not explicitly documented.",
+        "examples": [
+          { }
+        ]
+      },
+      "SpringRabbitListenerDefaultHeaders": {
+        "type": "object",
+        "properties": { },
         "examples": [
           { }
         ]
@@ -221,7 +229,7 @@
       },
       "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
+          "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",

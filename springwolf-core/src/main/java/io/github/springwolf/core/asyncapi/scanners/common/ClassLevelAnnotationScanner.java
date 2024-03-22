@@ -83,7 +83,6 @@ public abstract class ClassLevelAnnotationScanner<
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
         String modelName = componentsService.registerSchema(payloadType);
         String headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
-
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());

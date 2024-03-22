@@ -2,6 +2,7 @@
 package io.github.springwolf.plugins.jms.configuration;
 
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
@@ -44,7 +45,11 @@ public class SpringwolfJmsScannerConfiguration {
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
-                        JmsListener.class, jmsBindingBuilder, payloadClassExtractor, componentsService);
+                        JmsListener.class,
+                        jmsBindingBuilder,
+                        new AsyncHeadersNotDocumented(),
+                        payloadClassExtractor,
+                        componentsService);
 
         return new SpringAnnotationChannelsScanner(classScanner, strategy);
     }
@@ -59,7 +64,11 @@ public class SpringwolfJmsScannerConfiguration {
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
-                        JmsListener.class, jmsBindingBuilder, payloadClassExtractor, componentsService);
+                        JmsListener.class,
+                        jmsBindingBuilder,
+                        new AsyncHeadersNotDocumented(),
+                        payloadClassExtractor,
+                        componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);
     }

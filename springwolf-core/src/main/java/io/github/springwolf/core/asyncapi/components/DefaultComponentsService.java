@@ -67,6 +67,7 @@ public class DefaultComponentsService implements ComponentsService {
 
         MapSchema headerSchema = new MapSchema();
         headerSchema.setName(headers.getSchemaName());
+        headerSchema.setDescription(headers.getDescription());
         headerSchema.properties(headers);
 
         this.schemas.put(headers.getSchemaName(), headerSchema);

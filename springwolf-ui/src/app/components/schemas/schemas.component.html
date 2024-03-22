@@ -15,8 +15,8 @@
         class="flex-column flex-start items-center"
         [ngClass]="{ 'gap-16': schema.value.description }"
       >
-        <markdown [data]="schema.value.description"></markdown>
         <div class="badge type-badge">{{ schema.value.type }}</div>
+        <markdown [data]="schema.value.description"></markdown>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <h4>

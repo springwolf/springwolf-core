@@ -3,6 +3,7 @@ package io.github.springwolf.plugins.sqs.configuration;
 
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
@@ -44,7 +45,11 @@ public class SpringwolfSqsScannerConfiguration {
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
-                        SqsListener.class, sqsBindingBuilder, payloadClassExtractor, componentsService);
+                        SqsListener.class,
+                        sqsBindingBuilder,
+                        new AsyncHeadersNotDocumented(),
+                        payloadClassExtractor,
+                        componentsService);
 
         return new SpringAnnotationChannelsScanner(classScanner, strategy);
     }
@@ -59,7 +64,11 @@ public class SpringwolfSqsScannerConfiguration {
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
-                        SqsListener.class, sqsBindingBuilder, payloadClassExtractor, componentsService);
+                        SqsListener.class,
+                        sqsBindingBuilder,
+                        new AsyncHeadersNotDocumented(),
+                        payloadClassExtractor,
+                        componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);
     }

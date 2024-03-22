@@ -107,11 +107,16 @@ public class SpringwolfKafkaScannerConfiguration {
     public SpringAnnotationChannelsScanner simpleKafkaMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner classScanner,
             KafkaBindingFactory kafkaBindingBuilder,
+            AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadClassExtractor payloadClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<KafkaListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
-                        KafkaListener.class, kafkaBindingBuilder, payloadClassExtractor, componentsService);
+                        KafkaListener.class,
+                        kafkaBindingBuilder,
+                        asyncHeadersForKafkaBuilder,
+                        payloadClassExtractor,
+                        componentsService);
 
         return new SpringAnnotationChannelsScanner(classScanner, strategy);
     }
@@ -125,11 +130,16 @@ public class SpringwolfKafkaScannerConfiguration {
     public SpringAnnotationOperationsScanner simpleKafkaMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner classScanner,
             KafkaBindingFactory kafkaBindingBuilder,
+            AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadClassExtractor payloadClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<KafkaListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
-                        KafkaListener.class, kafkaBindingBuilder, payloadClassExtractor, componentsService);
+                        KafkaListener.class,
+                        kafkaBindingBuilder,
+                        asyncHeadersForKafkaBuilder,
+                        payloadClassExtractor,
+                        componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);
     }

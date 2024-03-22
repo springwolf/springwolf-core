@@ -20,7 +20,7 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
@@ -155,7 +155,8 @@ class AsyncAnnotationChannelsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .description("SimpleFoo Message Description")
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -228,7 +229,8 @@ class AsyncAnnotationChannelsScannerTest {
                 .name(SimpleFoo.class.getName())
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(EMPTY_MAP)
                 .description("SimpleFoo Message Description")
                 .build();
@@ -268,7 +270,8 @@ class AsyncAnnotationChannelsScannerTest {
                 .title("Message Title")
                 .description("Message description")
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -374,7 +377,8 @@ class AsyncAnnotationChannelsScannerTest {
                     .title(String.class.getSimpleName())
                     .description(null)
                     .payload(messagePayload)
-                    .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                    .headers(MessageHeaders.of(
+                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
                     .build();
 
@@ -438,7 +442,8 @@ class AsyncAnnotationChannelsScannerTest {
                     .title(String.class.getSimpleName())
                     .description(null)
                     .payload(messagePayload)
-                    .headers(MessageHeaders.of(MessageReference.toSchema(AsyncHeaders.NOT_DOCUMENTED.getSchemaName())))
+                    .headers(MessageHeaders.of(
+                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
                     .bindings(EMPTY_MAP)
                     .build();
 

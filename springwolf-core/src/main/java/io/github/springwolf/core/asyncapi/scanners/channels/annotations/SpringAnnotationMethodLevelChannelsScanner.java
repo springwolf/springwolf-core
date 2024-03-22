@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
@@ -29,9 +30,10 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
     public SpringAnnotationMethodLevelChannelsScanner(
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<MethodAnnotation> bindingFactory,
+            AsyncHeadersBuilder asyncHeadersBuilder,
             PayloadClassExtractor payloadClassExtractor,
             ComponentsService componentsService) {
-        super(bindingFactory, componentsService);
+        super(bindingFactory, asyncHeadersBuilder, componentsService);
         this.methodAnnotationClass = methodAnnotationClass;
         this.payloadClassExtractor = payloadClassExtractor;
     }

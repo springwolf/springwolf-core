@@ -112,11 +112,16 @@ public class SpringwolfAmqpScannerConfiguration {
     public SpringAnnotationChannelsScanner simpleRabbitMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner classScanner,
             AmqpBindingFactory amqpBindingBuilder,
+            AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadClassExtractor payloadClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<RabbitListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
-                        RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, componentsService);
+                        RabbitListener.class,
+                        amqpBindingBuilder,
+                        asyncHeadersForAmqpBuilder,
+                        payloadClassExtractor,
+                        componentsService);
 
         return new SpringAnnotationChannelsScanner(classScanner, strategy);
     }
@@ -130,11 +135,16 @@ public class SpringwolfAmqpScannerConfiguration {
     public SpringAnnotationOperationsScanner simpleRabbitMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner classScanner,
             AmqpBindingFactory amqpBindingBuilder,
+            AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadClassExtractor payloadClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<RabbitListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
-                        RabbitListener.class, amqpBindingBuilder, payloadClassExtractor, componentsService);
+                        RabbitListener.class,
+                        amqpBindingBuilder,
+                        asyncHeadersForAmqpBuilder,
+                        payloadClassExtractor,
+                        componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);
     }

@@ -9,6 +9,8 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaderSchema;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
+import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotUsed;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
@@ -32,10 +34,16 @@ public class AsyncAnnotationUtil {
 
     public static AsyncHeaders getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
         if (op.headers().values().length == 0) {
-            return AsyncHeaders.NOT_DOCUMENTED;
+            if (op.headers().notUsed()) {
+                return AsyncHeadersNotUsed.NOT_USED;
+            }
+            return AsyncHeadersNotDocumented.NOT_DOCUMENTED;
         }
 
-        AsyncHeaders asyncHeaders = new AsyncHeaders(op.headers().schemaName());
+        String headerDescription = StringUtils.hasText(op.headers().description())
+                ? resolver.resolveStringValue(op.headers().description())
+                : null;
+        AsyncHeaders asyncHeaders = new AsyncHeaders(op.headers().schemaName(), headerDescription);
         Arrays.stream(op.headers().values())
                 .collect(groupingBy(AsyncOperation.Headers.Header::name))
                 .forEach((headerName, headers) -> {
