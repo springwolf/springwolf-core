@@ -8,6 +8,7 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.oas.models.media.Schema;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -20,6 +21,33 @@ class KotlinxSerializationTypeConverterTest {
 
     ObjectMapper jsonMapper = ObjectMapperFactory.createJson31();
     private final PrettyPrinter printer = new DefaultPrettyPrinter();
+
+    @Nested
+    class TestListProperty {
+
+        ModelConverters setUp() {
+            final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter();
+            final ModelConverters converters = new ModelConverters();
+            converters.addConverter(modelConverter);
+            return converters;
+        }
+
+        @Test
+        void testClassWithListProperty() {
+            ModelConverters modelConverters = setUp();
+
+            var result = modelConverters.readAll(new AnnotatedType(ClassWithListProperty.class));
+            Schema schema = result.get(ClassWithListProperty.class.getSimpleName());
+
+            final Schema<?> listField = (Schema<?>) schema.getProperties().get("list_field");
+            assertThat(listField).isNotNull();
+            assertThat(listField.getType()).isEqualTo("array");
+            assertThat(listField.getNullable()).isFalse();
+            assertThat(listField.getItems()).isNotNull();
+            assertThat(listField.getItems().getType()).isEqualTo("string");
+
+        }
+    }
 
     @Test
     void serializeKotlin() {
@@ -42,6 +70,8 @@ class KotlinxSerializationTypeConverterTest {
         assertLocalDateField(model.getProperties().get("date_field"));
 
         assertEnumField(model.getProperties().get("enum_field"));
+
+        assertColorEnum(model.getProperties().get("enum_field"));
 
         assertNestedClass(
                 model.getProperties().get("nested_class"),

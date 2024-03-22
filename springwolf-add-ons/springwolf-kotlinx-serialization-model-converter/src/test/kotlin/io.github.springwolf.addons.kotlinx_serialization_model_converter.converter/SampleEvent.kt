@@ -53,3 +53,9 @@ enum class Color {
     GREEN,
     BLUE
 }
+
+@Serializable
+data class ClassWithListProperty(
+    @SerialName("list_field")
+    val listField: List<String>,
+)

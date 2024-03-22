@@ -13,16 +13,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotation
+import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaType
 import kotlin.reflect.jvm.jvmErasure
 
 class KotlinxSerializationModelConverter(private val useFqn: Boolean = false) : ModelConverter {
-
-    private val qualifiedNameMap: MutableMap<String, String> = ConcurrentHashMap()
 
     override fun resolve(
         annotatedType: AnnotatedType, context: ModelConverterContext, chain: Iterator<ModelConverter>
@@ -60,28 +58,40 @@ class KotlinxSerializationModelConverter(private val useFqn: Boolean = false) : 
         return property.name
     }
 
-    private fun getPropertySchema(property: KProperty1<*,*>, context: ModelConverterContext) : Schema<*> {
+    private fun getPropertySchema(property: KProperty1<*, *>, context: ModelConverterContext): Schema<*> {
         val propertySchema: Schema<*>
 
-        val name = getPropertyName(property)
+       val name = getPropertyName(property)
 
-        if (property.returnType.jvmErasure.java.isAssignableFrom(List::class.java)) {
-            propertySchema = ArraySchema()
-            val value = (property.returnType.javaType as ParameterizedType).actualTypeArguments[0]
-            propertySchema.items = resolveRefSchema(value, context)
-        } else if (property.returnType.jvmErasure.java.isAssignableFrom(Set::class.java)) {
-            propertySchema = ArraySchema()
-            val value = (property.returnType.javaType as ParameterizedType).actualTypeArguments[0]
-            propertySchema.items = resolveRefSchema(value, context)
-            propertySchema.uniqueItems = true
-        } else if (property.returnType.jvmErasure.java.isAssignableFrom(Map::class.java)) {
-            val mapType = (property.returnType.javaType as ParameterizedType)
-            val value = mapType.actualTypeArguments[1]
-            propertySchema = MapSchema().additionalProperties(context.resolve(AnnotatedType(value)))
-        } else if (property.returnType.jvmErasure.java.isAssignableFrom(Byte::class.java)) {
-            propertySchema = IntegerSchema()
-        } else {
-            propertySchema = resolveRefSchema(property.returnType.javaType, context)
+        val propertyType = property.returnType.jvmErasure
+
+        when {
+            propertyType.isSubclassOf(List::class) -> {
+                propertySchema = ArraySchema()
+                val value = (property.returnType.javaType as ParameterizedType).actualTypeArguments[0]
+                propertySchema.items = resolveRefSchema(value, context)
+            }
+
+            propertyType.isSubclassOf(Set::class) -> {
+                propertySchema = ArraySchema()
+                val value = (property.returnType.javaType as ParameterizedType).actualTypeArguments[0]
+                propertySchema.items = resolveRefSchema(value, context)
+                propertySchema.uniqueItems = true
+            }
+
+            propertyType.isSubclassOf(Map::class) -> {
+                val mapType = (property.returnType.javaType as ParameterizedType)
+                val value = mapType.actualTypeArguments[1]
+                propertySchema = MapSchema().additionalProperties(context.resolve(AnnotatedType(value)))
+            }
+
+            propertyType.isSubclassOf(Byte::class) -> {
+                propertySchema = IntegerSchema()
+            }
+
+            else -> {
+                propertySchema = resolveRefSchema(property.returnType.javaType, context)
+            }
         }
         propertySchema.nullable = property.returnType.isMarkedNullable
         propertySchema.name = name
@@ -89,55 +99,22 @@ class KotlinxSerializationModelConverter(private val useFqn: Boolean = false) : 
         return propertySchema
     }
 
-    private fun resolveRefSchema(type: Type, context: ModelConverterContext) : Schema<*> {
+    private fun resolveRefSchema(type: Type, context: ModelConverterContext): Schema<*> {
         val typeSchema = context.resolve(AnnotatedType(type))
         if (typeSchema.type == "object") {
-            val name = getName(type as Class<*>)
+            val name = getClassName(type as Class<*>)
             context.defineModel(name, typeSchema)
             return Schema<Any>().`$ref`(RefUtils.constructRef(name))
         }
         return typeSchema
     }
 
-    private fun getName(type: Class<*>): String {
-        return if (useFqn) type.name else simplifyName(type.name)
-    }
-
-    private fun simplifyName(name: String): String {
-        var name = name
-        val qualifiedName = name
-
-        if (name.isNotEmpty() && !Character.isUpperCase(name[0])) {
-            name = removePrefix(name)
+    private fun getClassName(type: Class<*>): String {
+        val qualifiedName = type.name
+        return if (useFqn) {
+            qualifiedName
+        } else {
+            qualifiedName.substringAfterLast(".")
         }
-
-        val simplifiedName = name
-        var index = 0
-
-        while (true) {
-            val existingName = qualifiedNameMap.putIfAbsent(name, qualifiedName)
-
-            if (existingName == null || existingName == qualifiedName || name == qualifiedName) {
-                break
-            } else {
-                name = simplifiedName + (++index)
-            }
-        }
-
-        return name
-    }
-
-    private fun removePrefix(name: String): String {
-        var result = name
-        var dotIndex = -1
-        while (true) {
-            dotIndex = result.indexOf('.', dotIndex + 1)
-            if (dotIndex < 0 || dotIndex == name.length - 1) break
-            if (Character.isUpperCase(name[dotIndex + 1])) {
-                result = result.substring(dotIndex + 1)
-                break
-            }
-        }
-        return result
     }
 }
