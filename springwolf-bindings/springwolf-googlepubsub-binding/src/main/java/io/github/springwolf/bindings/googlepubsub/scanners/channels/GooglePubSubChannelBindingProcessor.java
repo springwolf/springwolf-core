@@ -7,7 +7,7 @@ import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchema
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
-import io.micrometer.common.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringValueResolver;
 
