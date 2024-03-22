@@ -17,7 +17,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
-import io.github.springwolf.core.asyncapi.scanners.channels.ChannelBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
@@ -96,6 +96,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     }
 
     private Map<String, MessageBinding> buildMessageBinding() {
+        // FIXME: handle messageBindings from annotations as for the channel
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyMessageBinding());
     }
@@ -106,6 +107,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         if (!channelBindingMap.isEmpty()) {
             return channelBindingMap;
         }
+
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyChannelBinding());
     }

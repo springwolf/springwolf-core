@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.channels;
+package io.github.springwolf.core.asyncapi.scanners.bindings.channels;
 
 import java.lang.reflect.Method;
 import java.util.Optional;

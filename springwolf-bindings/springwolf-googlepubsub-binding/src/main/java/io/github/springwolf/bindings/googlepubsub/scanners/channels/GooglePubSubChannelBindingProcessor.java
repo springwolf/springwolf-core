@@ -5,8 +5,9 @@ import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubChanne
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageStoragePolicy;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchemaSettings;
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
-import io.github.springwolf.core.asyncapi.scanners.channels.ChannelBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.channels.ProcessedChannelBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringValueResolver;
 
@@ -33,22 +34,42 @@ public class GooglePubSubChannelBindingProcessor implements ChannelBindingProces
 
     private ProcessedChannelBinding mapToChannelBinding(GooglePubSubAsyncChannelBinding bindingAnnotation) {
 
-        GooglePubSubMessageStoragePolicy googlePubsubMessageStoragePolicy = new GooglePubSubMessageStoragePolicy(
-                Arrays.stream(bindingAnnotation.messageStoragePolicy().allowedPersistenceRegions())
-                        .toList());
-        GooglePubSubSchemaSettings googlePubSubSchemaSettings = new GooglePubSubSchemaSettings(
-                bindingAnnotation.schemaSettings().encoding(),
-                bindingAnnotation.schemaSettings().firstRevisionId(),
-                bindingAnnotation.schemaSettings().lastRevisionId(),
-                bindingAnnotation.schemaSettings().name());
+        GooglePubSubMessageStoragePolicy.GooglePubSubMessageStoragePolicyBuilder policyBuilder =
+                GooglePubSubMessageStoragePolicy.builder();
+        if (bindingAnnotation.messageStoragePolicy().allowedPersistenceRegions().length > 0) {
+            policyBuilder.allowedPersistenceRegions(
+                    Arrays.stream(bindingAnnotation.messageStoragePolicy().allowedPersistenceRegions())
+                            .toList());
+        }
 
-        return new ProcessedChannelBinding(
-                bindingAnnotation.type(),
-                new GooglePubSubChannelBinding(
-                        null,
-                        bindingAnnotation.messageRetentionDuration(),
-                        googlePubsubMessageStoragePolicy,
-                        googlePubSubSchemaSettings,
-                        bindingAnnotation.bindingVersion()));
+        GooglePubSubSchemaSettings.GooglePubSubSchemaSettingsBuilder schemaSettingsBuilder =
+                GooglePubSubSchemaSettings.builder();
+        if (StringUtils.isNotBlank(bindingAnnotation.schemaSettings().encoding())) {
+            schemaSettingsBuilder.encoding(bindingAnnotation.schemaSettings().encoding());
+        }
+        if (StringUtils.isNotBlank(bindingAnnotation.schemaSettings().firstRevisionId())) {
+            schemaSettingsBuilder.firstRevisionId(
+                    bindingAnnotation.schemaSettings().firstRevisionId());
+        }
+        if (StringUtils.isNotBlank(bindingAnnotation.schemaSettings().lastRevisionId())) {
+            schemaSettingsBuilder.lastRevisionId(
+                    bindingAnnotation.schemaSettings().lastRevisionId());
+        }
+        if (StringUtils.isNotBlank(bindingAnnotation.schemaSettings().name())) {
+            schemaSettingsBuilder.name(bindingAnnotation.schemaSettings().name());
+        }
+
+        GooglePubSubChannelBinding.GooglePubSubChannelBindingBuilder bindingBuilder =
+                GooglePubSubChannelBinding.builder()
+                        .messageStoragePolicy(policyBuilder.build())
+                        .schemaSettings(schemaSettingsBuilder.build());
+        if (StringUtils.isNotBlank(bindingAnnotation.messageRetentionDuration())) {
+            bindingBuilder.messageRetentionDuration(bindingAnnotation.messageRetentionDuration());
+        }
+        if (StringUtils.isNotBlank(bindingAnnotation.bindingVersion())) {
+            bindingBuilder.bindingVersion(bindingAnnotation.bindingVersion());
+        }
+
+        return new ProcessedChannelBinding(bindingAnnotation.type(), bindingBuilder.build());
     }
 }

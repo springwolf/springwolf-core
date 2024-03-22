@@ -4,8 +4,8 @@ package io.github.springwolf.core.asyncapi.scanners.bindings.processor;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
-import io.github.springwolf.core.asyncapi.scanners.channels.ChannelBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.channels.ProcessedChannelBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
 import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;

@@ -96,11 +96,13 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     }
 
     private Map<String, MessageBinding> buildMessageBinding() {
+        // FIXME: handle messageBindings from annotations as for the channel
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
     private Map<String, OperationBinding> buildOperationBinding() {
+        // FIXME: handle operationBindings from annotations as for the channel
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyOperationBinding());
     }

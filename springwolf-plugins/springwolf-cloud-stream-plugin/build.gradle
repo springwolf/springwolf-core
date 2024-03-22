@@ -19,7 +19,6 @@ dependencyManagement {
 dependencies {
     api project(":springwolf-asyncapi")
     api project(":springwolf-core")
-    testImplementation project(":springwolf-bindings:springwolf-googlepubsub-binding")
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 

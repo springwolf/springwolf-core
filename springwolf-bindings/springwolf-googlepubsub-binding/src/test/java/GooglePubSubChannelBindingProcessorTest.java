@@ -4,8 +4,9 @@ import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessag
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchemaSettings;
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncSchemaSetting;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubsubAsyncMessageStoragePolicy;
 import io.github.springwolf.bindings.googlepubsub.scanners.channels.GooglePubSubChannelBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.channels.ProcessedChannelBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -19,31 +20,45 @@ public class GooglePubSubChannelBindingProcessorTest {
 
     @Test
     void processTest() throws NoSuchMethodException {
+        // given
         Method method = GooglePubSubChannelBindingProcessorTest.class.getMethod("methodWithAnnotation");
 
+        // when
         ProcessedChannelBinding binding = processor.process(method).get();
 
+        // then
         assertThat(binding.getType()).isEqualTo("googlepubsub");
-        GooglePubSubMessageStoragePolicy googlePubsubMessageStoragePolicy =
-                new GooglePubSubMessageStoragePolicy(List.of());
-        GooglePubSubSchemaSettings googlePubSubSchemaSettings =
-                new GooglePubSubSchemaSettings("BINARY", "", "", "project/test");
         assertThat(binding.getBinding())
                 .isEqualTo(new GooglePubSubChannelBinding(
-                        null, "", googlePubsubMessageStoragePolicy, googlePubSubSchemaSettings, "0.2.0"));
+                        null,
+                        "messageRetentionDuration",
+                        new GooglePubSubMessageStoragePolicy(List.of("region1", "region2")),
+                        new GooglePubSubSchemaSettings("BINARY", "firstRevisionId", "lastRevisionId", "project/test"),
+                        "0.2.0"));
     }
 
     @Test
     void processWithoutAnnotationTest() throws NoSuchMethodException {
+        // given
         Method method = GooglePubSubChannelBindingProcessorTest.class.getMethod("methodWithoutAnnotation");
 
+        // when
         Optional<ProcessedChannelBinding> binding = processor.process(method);
 
+        // then
         assertThat(binding).isNotPresent();
     }
 
     @GooglePubSubAsyncChannelBinding(
-            schemaSettings = @GooglePubSubAsyncSchemaSetting(encoding = "BINARY", name = "project/test"))
+            messageRetentionDuration = "messageRetentionDuration",
+            messageStoragePolicy =
+                    @GooglePubsubAsyncMessageStoragePolicy(allowedPersistenceRegions = {"region1", "region2"}),
+            schemaSettings =
+                    @GooglePubSubAsyncSchemaSetting(
+                            encoding = "BINARY",
+                            firstRevisionId = "firstRevisionId",
+                            lastRevisionId = "lastRevisionId",
+                            name = "project/test"))
     public void methodWithAnnotation() {}
 
     public void methodWithoutAnnotation() {}

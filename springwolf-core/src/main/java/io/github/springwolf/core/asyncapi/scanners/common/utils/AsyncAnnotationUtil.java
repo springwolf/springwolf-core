@@ -9,12 +9,12 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaderSchema;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
-import io.github.springwolf.core.asyncapi.scanners.channels.ChannelBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.channels.ProcessedChannelBinding;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 

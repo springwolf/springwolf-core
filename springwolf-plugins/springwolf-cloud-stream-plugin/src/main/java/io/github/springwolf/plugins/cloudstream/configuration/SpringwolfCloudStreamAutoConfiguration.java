@@ -3,7 +3,7 @@ package io.github.springwolf.plugins.cloudstream.configuration;
 
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
-import io.github.springwolf.core.asyncapi.scanners.channels.ChannelBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
