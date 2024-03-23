@@ -125,7 +125,8 @@ allprojects {
     var addons = [
             'springwolf-common-model-converters' ,
             'springwolf-generic-binding' ,
-            'springwolf-json-schema'
+            'springwolf-json-schema',
+            'springwolf-kotlinx-serialization-model-converter'
     ]
     var bindings = [
             'springwolf-googlepubsub-binding',
