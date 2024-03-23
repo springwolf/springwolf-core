@@ -5,7 +5,6 @@ import io.swagger.v3.core.converter.ModelConverter
 import io.swagger.v3.core.converter.ModelConverterContext
 import io.swagger.v3.core.util.RefUtils
 import io.swagger.v3.oas.models.media.ArraySchema
-import io.swagger.v3.oas.models.media.IntegerSchema
 import io.swagger.v3.oas.models.media.MapSchema
 import io.swagger.v3.oas.models.media.ObjectSchema
 import io.swagger.v3.oas.models.media.Schema
@@ -83,10 +82,6 @@ class KotlinxSerializationModelConverter(private val useFqn: Boolean = false) : 
                 val mapType = (property.returnType.javaType as ParameterizedType)
                 val value = mapType.actualTypeArguments[1]
                 propertySchema = MapSchema().additionalProperties(context.resolve(AnnotatedType(value)))
-            }
-
-            propertyType.isSubclassOf(Byte::class) -> {
-                propertySchema = IntegerSchema()
             }
 
             else -> {

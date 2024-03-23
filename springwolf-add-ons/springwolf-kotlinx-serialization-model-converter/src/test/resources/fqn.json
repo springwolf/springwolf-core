@@ -23,8 +23,8 @@
         "type" : "boolean"
       },
       "byte_field" : {
-        "type" : "integer",
-        "format" : "int32"
+        "type" : "string",
+        "format" : "byte"
       },
       "date_field" : {
         "type" : "string",

@@ -37,7 +37,7 @@ class KotlinxSerializationTypeConverterTest {
             ModelConverters modelConverters = setUp();
 
             var result = modelConverters.readAll(new AnnotatedType(ClassWithListProperty.class));
-            Schema schema = result.get(ClassWithListProperty.class.getSimpleName());
+            Schema<?> schema = result.get(ClassWithListProperty.class.getSimpleName());
 
             final Schema<?> listField = (Schema<?>) schema.getProperties().get("list_field");
             assertThat(listField).isNotNull();
@@ -45,7 +45,6 @@ class KotlinxSerializationTypeConverterTest {
             assertThat(listField.getNullable()).isFalse();
             assertThat(listField.getItems()).isNotNull();
             assertThat(listField.getItems().getType()).isEqualTo("string");
-
         }
     }
 
@@ -156,21 +155,25 @@ class KotlinxSerializationTypeConverterTest {
         final Schema<?> intField = (Schema<?>) model.getProperties().get("int_field");
         assertThat(intField).isNotNull();
         assertThat(intField.getType()).isEqualTo("integer");
+        assertThat(intField.getFormat()).isEqualTo("int32");
         assertThat(intField.getNullable()).isFalse();
 
         final Schema<?> longField = (Schema<?>) model.getProperties().get("long_field");
         assertThat(longField).isNotNull();
         assertThat(longField.getType()).isEqualTo("integer");
+        assertThat(longField.getFormat()).isEqualTo("int64");
         assertThat(longField.getNullable()).isFalse();
 
         final Schema<?> floatField = (Schema<?>) model.getProperties().get("float_field");
         assertThat(floatField).isNotNull();
         assertThat(floatField.getType()).isEqualTo("number");
+        assertThat(floatField.getFormat()).isEqualTo("float");
         assertThat(floatField.getNullable()).isFalse();
 
         final Schema<?> doubleField = (Schema<?>) model.getProperties().get("double_field");
         assertThat(doubleField).isNotNull();
         assertThat(doubleField.getType()).isEqualTo("number");
+        assertThat(doubleField.getFormat()).isEqualTo("double");
         assertThat(doubleField.getNullable()).isFalse();
 
         final Schema<?> shortField = (Schema<?>) model.getProperties().get("short_field");
@@ -180,7 +183,8 @@ class KotlinxSerializationTypeConverterTest {
 
         final Schema<?> byteField = (Schema<?>) model.getProperties().get("byte_field");
         assertThat(byteField).isNotNull();
-        assertThat(byteField.getType()).isEqualTo("integer");
+        assertThat(byteField.getType()).isEqualTo("string");
+        assertThat(byteField.getFormat()).isEqualTo("byte");
         assertThat(byteField.getNullable()).isFalse();
 
         final Schema<?> listField = (Schema<?>) model.getProperties().get("list_field");
