@@ -8,11 +8,11 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.oas.models.media.Schema;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,60 +22,12 @@ class KotlinxSerializationTypeConverterTest {
     ObjectMapper jsonMapper = ObjectMapperFactory.createJson31();
     private final PrettyPrinter printer = new DefaultPrettyPrinter();
 
-    @Nested
-    class TestListProperty {
+    private ModelConverters modelConverters;
 
-        ModelConverters setUp() {
-            final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter();
-            final ModelConverters converters = new ModelConverters();
-            converters.addConverter(modelConverter);
-            return converters;
-        }
-
-        @Test
-        void testClassWithListProperty() {
-            ModelConverters modelConverters = setUp();
-
-            var result = modelConverters.readAll(new AnnotatedType(ClassWithListProperty.class));
-            Schema<?> schema = result.get(ClassWithListProperty.class.getSimpleName());
-
-            final Schema<?> listField = (Schema<?>) schema.getProperties().get("list_field");
-            assertThat(listField).isNotNull();
-            assertThat(listField.getType()).isEqualTo("array");
-            assertThat(listField.getNullable()).isFalse();
-            assertThat(listField.getItems()).isNotNull();
-            assertThat(listField.getItems().getType()).isEqualTo("string");
-        }
-    }
-
-    @Test
-    void serializeKotlin() {
-        final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter();
-        final ModelConverters converters = new ModelConverters();
-        converters.addConverter(modelConverter);
-
-        var media = converters.readAll(new AnnotatedType(SampleEvent.class));
-        // FIXME: The NestedClass is duplicated
-        assertThat(media).hasSize(3);
-        final Schema<?> model = media.get(SampleEvent.class.getSimpleName());
-        assertThat(model).isNotNull();
-        assertThat(model.getType()).isEqualTo("object");
-        assertThat(model.getProperties()).hasSize(16);
-        // FIXME: Shouldn't be 15 ?
-        assertThat(model.getRequired()).hasSize(14);
-
-        assertBasicFieldNames(model);
-
-        assertLocalDateField(model.getProperties().get("date_field"));
-
-        assertEnumField(model.getProperties().get("enum_field"));
-
-        assertColorEnum(model.getProperties().get("enum_field"));
-
-        assertNestedClass(
-                model.getProperties().get("nested_class"),
-                "#/components/schemas/SampleEvent$NestedClass",
-                media.get("NestedClass"));
+    @BeforeEach
+    void setUp() {
+        modelConverters = new ModelConverters();
+        modelConverters.addConverter(new KotlinxSerializationModelConverter());
     }
 
     @Test
@@ -102,37 +54,101 @@ class KotlinxSerializationTypeConverterTest {
         assertThatJson(jsonMapper.writer(printer).writeValueAsString(media)).isEqualTo(example);
     }
 
+    @Nested
+    class TestListProperty {
+        @Test
+        void testClassWithListProperty() {
+            var result = modelConverters.readAll(new AnnotatedType(ClassWithListProperty.class));
+            Schema<?> schema = result.get(ClassWithListProperty.class.getSimpleName());
+
+            final Schema<?> listField = (Schema<?>) schema.getProperties().get("list_field");
+            assertThat(listField).isNotNull();
+            assertThat(listField.getType()).isEqualTo("array");
+            assertThat(listField.getNullable()).isFalse();
+            assertThat(listField.getItems()).isNotNull();
+            assertThat(listField.getItems().getType()).isEqualTo("string");
+        }
+    }
+
+    @Nested
+    class TestSetProperty {
+        @Test
+        void testClassWithSetProperty() {
+            var result = modelConverters.readAll(new AnnotatedType(ClassWithSetProperty.class));
+            Schema<?> schema = result.get(ClassWithSetProperty.class.getSimpleName());
+
+            final Schema<?> setField = (Schema<?>) schema.getProperties().get("set_field");
+            assertThat(setField).isNotNull();
+            assertThat(setField.getType()).isEqualTo("array");
+            assertThat(setField.getNullable()).isFalse();
+            assertThat(setField.getUniqueItems()).isTrue();
+            assertThat(setField.getItems()).isNotNull();
+            assertThat(setField.getItems().getType()).isEqualTo("string");
+        }
+    }
+
+    @Nested
+    class TestEnumProperty {
+        @Test
+        void testClassWithEnumProperty() {
+            var result = modelConverters.readAll(new AnnotatedType(ClassWithEnumProperty.class));
+            Schema<?> schema = result.get(ClassWithEnumProperty.class.getSimpleName());
+
+            final Schema<?> enumField = (Schema<?>) schema.getProperties().get("enum_field");
+            assertThat(enumField).isNotNull();
+            assertThat(enumField.getType()).isEqualTo("string");
+            assertThat(enumField.getNullable()).isFalse();
+            assertThat(enumField.getEnum()).isNotNull();
+            assertThat(enumField.getEnum())
+                    .isEqualTo(Color.getEntries().stream().map(Enum::name).toList());
+        }
+    }
+
+    @Nested
+    class TestNestedClass {
+        @Test
+        void testClassWithNestedProperty() {
+            var result = modelConverters.readAll(new AnnotatedType(ClassWithNestedProperty.class));
+            Schema<?> schema = result.get(ClassWithNestedProperty.class.getSimpleName());
+
+            final Schema<?> nestedClass = (Schema<?>) schema.getProperties().get("nested_class");
+            assertThat(nestedClass).isNotNull();
+            assertThat(nestedClass.getType()).isNull();
+            assertThat(nestedClass.get$ref()).isEqualTo("#/components/schemas/ClassWithNestedProperty$NestedClass");
+
+            final Schema<?> nestedModel = result.get(ClassWithNestedProperty.NestedClass.class.getSimpleName());
+            assertThat(nestedModel).isNotNull();
+            assertThat(nestedModel.getType()).isEqualTo("object");
+            assertThat(nestedModel.getProperties()).hasSize(3);
+            assertThat(nestedModel.getRequired()).hasSize(3);
+        }
+    }
+
+    @Test
+    void serializeKotlin() {
+        final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter();
+        final ModelConverters converters = new ModelConverters();
+        converters.addConverter(modelConverter);
+
+        var media = converters.readAll(new AnnotatedType(SampleEvent.class));
+        // FIXME: The NestedClass is duplicated
+        assertThat(media).hasSize(3);
+        final Schema<?> model = media.get(SampleEvent.class.getSimpleName());
+        assertThat(model).isNotNull();
+        assertThat(model.getType()).isEqualTo("object");
+        assertThat(model.getProperties()).hasSize(16);
+        // With 2 nullable fields, we should have only 14 required fields
+        assertThat(model.getRequired()).hasSize(14);
+
+        assertBasicFieldNames(model);
+
+        assertLocalDateField(model.getProperties().get("date_field"));
+    }
+
     private void assertLocalDateField(Schema<?> dateField) {
         assertThat(dateField).isNotNull();
         assertThat(dateField.getType()).isEqualTo("string");
         assertThat(dateField.getFormat()).isEqualTo("date");
-    }
-
-    private void assertEnumField(Schema<?> enumField) {
-        assertThat(enumField).isNotNull();
-        assertThat(enumField.getType()).isEqualTo("string");
-        assertThat(enumField.getNullable()).isFalse();
-        assertThat(enumField.getEnum()).isNotNull();
-        assertThat(enumField.getEnum())
-                .isEqualTo(Color.getEntries().stream().map(Enum::name).toList());
-    }
-
-    private void assertNestedClass(Schema<?> nestedClass, String expectedRef, Schema<?> nestedModel) {
-        assertThat(nestedClass).isNotNull();
-        assertThat(nestedClass.getType()).isNull();
-        assertThat(nestedClass.getNullable()).isTrue();
-        assertThat(nestedClass.get$ref()).isEqualTo(expectedRef);
-
-        assertThat(nestedModel).isNotNull();
-        assertThat(nestedModel.getType()).isEqualTo("object");
-        assertThat(nestedModel.getProperties()).hasSize(3);
-        assertThat(nestedModel.getRequired()).hasSize(3);
-    }
-
-    private void assertColorEnum(Schema<?> enumModel) {
-        assertThat(enumModel).isNotNull();
-        assertThat(enumModel.getType()).isEqualTo("string");
-        assertThat(enumModel.getEnum()).isEqualTo(List.of("RED", "GREEN", "BLUE"));
     }
 
     private void assertBasicFieldNames(Schema<?> model) {
@@ -144,8 +160,6 @@ class KotlinxSerializationTypeConverterTest {
         final Schema<?> optionalField = (Schema<?>) model.getProperties().get("optional_field");
         assertThat(optionalField).isNotNull();
         assertThat(optionalField.getType()).isEqualTo("string");
-        // FIXME
-        // assertThat(optionalField.getNullable()).isTrue();
 
         final Schema<?> booleanField = (Schema<?>) model.getProperties().get("boolean_field");
         assertThat(booleanField).isNotNull();
@@ -187,13 +201,6 @@ class KotlinxSerializationTypeConverterTest {
         assertThat(byteField.getFormat()).isEqualTo("byte");
         assertThat(byteField.getNullable()).isFalse();
 
-        final Schema<?> listField = (Schema<?>) model.getProperties().get("list_field");
-        assertThat(listField).isNotNull();
-        assertThat(listField.getType()).isEqualTo("array");
-        assertThat(listField.getNullable()).isFalse();
-        assertThat(listField.getItems()).isNotNull();
-        assertThat(listField.getItems().getType()).isEqualTo("string");
-
         final Schema<?> listReferences = (Schema<?>) model.getProperties().get("listed_references");
         assertThat(listReferences).isNotNull();
         assertThat(listReferences.getType()).isEqualTo("array");
@@ -201,14 +208,6 @@ class KotlinxSerializationTypeConverterTest {
         assertThat(listReferences.getItems()).isNotNull();
         assertThat(listReferences.getItems().getType()).isNull();
         assertThat(listReferences.getItems().get$ref()).isEqualTo("#/components/schemas/SampleEvent$NestedClass");
-
-        final Schema<?> setField = (Schema<?>) model.getProperties().get("set_field");
-        assertThat(setField).isNotNull();
-        assertThat(setField.getType()).isEqualTo("array");
-        assertThat(setField.getNullable()).isFalse();
-        assertThat(setField.getUniqueItems()).isTrue();
-        assertThat(listField.getItems()).isNotNull();
-        assertThat(listField.getItems().getType()).isEqualTo("string");
 
         final Schema<?> mapField = (Schema<?>) model.getProperties().get("map_field");
         assertThat(mapField).isNotNull();

@@ -59,3 +59,28 @@ data class ClassWithListProperty(
     @SerialName("list_field")
     val listField: List<String>,
 )
+
+@Serializable
+data class ClassWithSetProperty(
+    @SerialName("set_field")
+    val setField: Set<String>,
+)
+
+@Serializable
+data class ClassWithEnumProperty(
+    @SerialName("enum_field")
+    val enumField: Color,
+)
+
+@Serializable
+data class ClassWithNestedProperty(
+    @SerialName("nested_class")
+    val nestedClass: NestedClass,
+) {
+    @Serializable
+    data class NestedClass(
+        val id: Int,
+        val name: String,
+        val color: Color,
+    )
+}
