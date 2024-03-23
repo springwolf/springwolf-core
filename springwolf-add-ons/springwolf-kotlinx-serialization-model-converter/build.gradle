@@ -20,17 +20,12 @@ dependencies {
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-beans"
 
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
-
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
 
-    implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
-
-    implementation "org.jetbrains:annotations:13.0"
+    implementation "org.jetbrains:annotations"
 
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:${kotlinxSerializationVersion}"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:${kotlinxSerializationVersion}"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
