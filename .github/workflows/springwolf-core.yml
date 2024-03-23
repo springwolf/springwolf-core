@@ -28,7 +28,7 @@ jobs:
       - name: Check formatting (before running tests)
         run: ./gradlew -p springwolf-core spotlessCheck
 
-      - name: Build with Gradle
+      - name: Run build, check, analyzeDependencies
         run: ./gradlew -p springwolf-core build
 
       - name: Publish package
