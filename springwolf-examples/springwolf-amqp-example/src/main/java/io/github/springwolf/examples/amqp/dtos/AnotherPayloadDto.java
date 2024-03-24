@@ -19,5 +19,5 @@ public class AnotherPayloadDto {
     private String foo;
 
     @Schema(description = "Example field", requiredMode = REQUIRED)
-    private ExamplePayloadDto example;
+    private GenericPayloadDto<ExamplePayloadDto> example;
 }

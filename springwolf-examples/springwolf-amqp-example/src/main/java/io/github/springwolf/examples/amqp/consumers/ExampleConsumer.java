@@ -3,6 +3,7 @@ package io.github.springwolf.examples.amqp.consumers;
 
 import io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto;
 import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.amqp.dtos.GenericPayloadDto;
 import io.github.springwolf.examples.amqp.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class ExampleConsumer {
         log.info("Received new message in example-queue: {}", payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
-        example.setExample(payload);
+        example.setExample(new GenericPayloadDto<>(payload));
         example.setFoo("foo");
 
         anotherProducer.sendMessage(example);
