@@ -68,6 +68,19 @@ class KotlinxSerializationTypeConverterTest {
             assertThat(listField.getItems()).isNotNull();
             assertThat(listField.getItems().getType()).isEqualTo("string");
         }
+
+        @Test
+        void testClassWithCollectionProperty() {
+            var result = modelConverters.readAll(new AnnotatedType(ClassWithCollectionProperty.class));
+            Schema<?> schema = result.get(ClassWithCollectionProperty.class.getSimpleName());
+
+            final Schema<?> listField = (Schema<?>) schema.getProperties().get("collection_field");
+            assertThat(listField).isNotNull();
+            assertThat(listField.getType()).isEqualTo("array");
+            assertThat(listField.getNullable()).isFalse();
+            assertThat(listField.getItems()).isNotNull();
+            assertThat(listField.getItems().getType()).isEqualTo("string");
+        }
     }
 
     @Nested
