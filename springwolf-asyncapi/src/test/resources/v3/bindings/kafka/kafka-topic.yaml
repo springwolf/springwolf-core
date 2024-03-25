@@ -4,3 +4,7 @@ topicConfiguration:
   retention.bytes: 1000000000
   delete.retention.ms: 86400000
   max.message.bytes: 1048588
+  confluent.key.schema.validation: true
+  confluent.key.subject.name.strategy: "TopicNameStrategy"
+  confluent.value.schema.validation: true
+  confluent.value.subject.name.strategy: "TopicNameStrategy"
