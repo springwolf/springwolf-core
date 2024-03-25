@@ -21,14 +21,14 @@ public class SpringwolfSnsBindingAutoConfiguration {
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     @ConditionalOnMissingBean
-    public SnsMessageBindingProcessor sqsMessageBindingProcessor() {
+    public SnsMessageBindingProcessor snsMessageBindingProcessor() {
         return new SnsMessageBindingProcessor();
     }
 
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     @ConditionalOnMissingBean
-    public SnsOperationBindingProcessor sqsOperationBindingProcessor() {
+    public SnsOperationBindingProcessor snsOperationBindingProcessor() {
         return new SnsOperationBindingProcessor();
     }
 }
