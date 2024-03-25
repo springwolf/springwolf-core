@@ -114,6 +114,10 @@ class KafkaBindingTest {
                         .retentionBytes(1000000000)
                         .deleteRetentionMs(86400000)
                         .maxMessageBytes(1048588)
+                        .confluentKeySchemaValidation(true)
+                        .confluentKeySubjectNameStrategy("TopicNameStrategy")
+                        .confluentValueSchemaValidation(true)
+                        .confluentValueSubjectNameStrategy("TopicNameStrategy")
                         .build());
 
         // Uses https://github.com/asyncapi/bindings/blob/master/amqp/README.md#example

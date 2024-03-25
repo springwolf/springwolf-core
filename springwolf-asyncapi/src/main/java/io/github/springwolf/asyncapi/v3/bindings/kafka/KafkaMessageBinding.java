@@ -48,5 +48,5 @@ public class KafkaMessageBinding extends MessageBinding {
      */
     @Builder.Default
     @JsonProperty("bindingVersion")
-    private String bindingVersion = "0.4.0";
+    private String bindingVersion = "0.5.0";
 }

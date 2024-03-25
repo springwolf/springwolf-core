@@ -59,4 +59,28 @@ public class KafkaChannelTopicConfiguration {
     @PositiveOrZero
     @JsonProperty("max.message.bytes")
     private Integer maxMessageBytes;
+
+    /**
+     * It shows whether the schema validation for the message key is enabled. Vendor specific config.
+     */
+    @JsonProperty("confluent.key.schema.validation")
+    private Boolean confluentKeySchemaValidation;
+
+    /**
+     * The name of the schema lookup strategy for the message key. Vendor specific config.
+     */
+    @JsonProperty("confluent.key.subject.name.strategy")
+    private String confluentKeySubjectNameStrategy;
+
+    /**
+     * It shows whether the schema validation for the message value is enabled. Vendor specific config.
+     */
+    @JsonProperty("confluent.value.schema.validation")
+    private Boolean confluentValueSchemaValidation;
+
+    /**
+     * The name of the schema lookup strategy for the message value. Vendor specific config.
+     */
+    @JsonProperty("confluent.value.subject.name.strategy")
+    private String confluentValueSubjectNameStrategy;
 }

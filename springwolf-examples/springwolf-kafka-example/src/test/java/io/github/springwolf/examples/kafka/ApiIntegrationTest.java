@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(partitions = 1)
 @DirtiesContext
-public class ApiIntegrationTest {
+class ApiIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;

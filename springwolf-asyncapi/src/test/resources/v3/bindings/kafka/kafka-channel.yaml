@@ -11,4 +11,4 @@ channels:
           retention.bytes: 1000000000
           delete.retention.ms: 86400000
           max.message.bytes: 1048588
-        bindingVersion: '0.4.0'
+        bindingVersion: '0.5.0'

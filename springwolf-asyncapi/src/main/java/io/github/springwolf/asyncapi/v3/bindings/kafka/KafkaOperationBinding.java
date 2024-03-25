@@ -39,5 +39,5 @@ public class KafkaOperationBinding extends OperationBinding {
      */
     @Builder.Default
     @JsonProperty("bindingVersion")
-    private String bindingVersion = "0.4.0";
+    private String bindingVersion = "0.5.0";
 }
