@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.bindings.googlepubsub.annotations;
+package io.github.springwolf.bindings.googlepubsub.annotations.channels;
 
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchemaSettings;
 
