@@ -137,7 +137,7 @@
         "type": "object",
         "properties": {
           "example": {
-            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
           },
           "foo": {
             "type": "string",
@@ -151,9 +151,13 @@
         "examples": [
           {
             "example": {
-              "someEnum": "FOO2",
-              "someLong": 5,
-              "someString": "some string value"
+              "payload": {
+                "localDate": "2015-07-20",
+                "localDateTime": "2015-07-20T15:49:04-07:00",
+                "someEnum": "FOO2",
+                "someLong": 5,
+                "someString": "some string value"
+              }
             },
             "foo": "bar"
           }
@@ -165,6 +169,14 @@
       "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
         "type": "object",
         "properties": {
+          "localDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "localDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
           "someEnum": {
             "type": "string",
             "description": "Some enum field",
@@ -196,6 +208,8 @@
         "description": "Example payload model",
         "examples": [
           {
+            "localDate": "2015-07-20",
+            "localDateTime": "2015-07-20T15:49:04-07:00",
             "someEnum": "FOO2",
             "someLong": 5,
             "someString": "some string value"
@@ -204,6 +218,26 @@
         "required": [
           "someEnum",
           "someString"
+        ]
+      },
+      "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+        "type": "object",
+        "properties": {
+          "payload": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+          }
+        },
+        "description": "Example field",
+        "examples": [
+          {
+            "payload": {
+              "localDate": "2015-07-20",
+              "localDateTime": "2015-07-20T15:49:04-07:00",
+              "someEnum": "FOO2",
+              "someLong": 5,
+              "someString": "some string value"
+            }
+          }
         ]
       }
     },

@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 @Schema(description = "Example payload model")
@@ -21,6 +24,10 @@ public class ExamplePayloadDto {
 
     @Schema(description = "Some enum field", example = "FOO2", requiredMode = REQUIRED)
     private ExampleEnum someEnum;
+
+    private LocalDate localDate;
+
+    private LocalDateTime localDateTime;
 
     public enum ExampleEnum {
         FOO1,
