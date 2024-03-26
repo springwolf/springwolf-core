@@ -4,7 +4,7 @@ package io.github.springwolf.bindings.googlepubsub.scanners.channels;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageStoragePolicy;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchemaSettings;
-import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
+import io.github.springwolf.bindings.googlepubsub.annotations.channels.GooglePubSubAsyncChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
 import org.apache.commons.lang3.StringUtils;
