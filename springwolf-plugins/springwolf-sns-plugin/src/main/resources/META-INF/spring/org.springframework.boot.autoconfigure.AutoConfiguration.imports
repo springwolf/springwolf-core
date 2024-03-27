@@ -1,1 +1,1 @@
-io.github.stavshamir.springwolf.asyncapi.sns.SpringwolfSnsAutoConfiguration
+io.github.springwolf.plugins.sns.configuration.SpringwolfSnsAutoConfiguration

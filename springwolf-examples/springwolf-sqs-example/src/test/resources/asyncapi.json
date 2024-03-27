@@ -24,15 +24,15 @@
   "channels": {
     "another-queue": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
+        "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
         }
       }
     },
     "example-queue": {
       "messages": {
-        "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto": {
-          "$ref": "#/components/messages/io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto"
+        "io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -55,98 +55,114 @@
       "HeadersNotDocumented": {
         "type": "object",
         "properties": { },
-        "example": { }
+        "description": "There can be headers, but they are not explicitly documented.",
+        "examples": [
+          { }
+        ]
       },
-      "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto": {
-        "required": [
-          "example"
-        ],
+      "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto": {
         "type": "object",
         "properties": {
           "example": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto"
           },
           "foo": {
             "type": "string",
             "description": "Foo field",
-            "example": "bar"
+            "examples": [
+              "bar"
+            ]
           }
         },
         "description": "Another payload model",
-        "example": {
-          "example": {
-            "someEnum": "FOO2",
-            "someLong": 5,
-            "someString": "some string value"
-          },
-          "foo": "bar"
-        }
-      },
-      "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto": {
-        "required": [
-          "someEnum",
-          "someString"
+        "examples": [
+          {
+            "example": {
+              "someEnum": "FOO2",
+              "someLong": 5,
+              "someString": "some string value"
+            },
+            "foo": "bar"
+          }
         ],
+        "required": [
+          "example"
+        ]
+      },
+      "io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto": {
         "type": "object",
         "properties": {
           "someEnum": {
             "type": "string",
             "description": "Some enum field",
-            "example": "FOO2",
             "enum": [
               "FOO1",
               "FOO2",
               "FOO3"
+            ],
+            "examples": [
+              "FOO2"
             ]
           },
           "someLong": {
             "type": "integer",
             "description": "Some long field",
             "format": "int64",
-            "example": 5
+            "examples": [
+              5
+            ]
           },
           "someString": {
             "type": "string",
             "description": "Some string field",
-            "example": "some string value"
+            "examples": [
+              "some string value"
+            ]
           }
         },
         "description": "Example payload model",
-        "example": {
-          "someEnum": "FOO2",
-          "someLong": 5,
-          "someString": "some string value"
-        }
+        "examples": [
+          {
+            "someEnum": "FOO2",
+            "someLong": 5,
+            "someString": "some string value"
+          }
+        ],
+        "required": [
+          "someEnum",
+          "someString"
+        ]
       }
     },
     "messages": {
-      "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto": {
+      "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto",
+        "name": "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
+        "description": "Another payload model",
         "bindings": {
           "sqs": { }
         }
       },
-      "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto": {
+      "io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto"
           }
         },
-        "name": "io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto",
+        "name": "io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto",
         "title": "ExamplePayloadDto",
         "bindings": {
           "sqs": { }
@@ -177,7 +193,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-queue/messages/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -205,7 +221,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-queue/messages/io.github.stavshamir.springwolf.example.sqs.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -231,7 +247,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-queue/messages/io.github.stavshamir.springwolf.example.sqs.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-queue/messages/io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto"
         }
       ]
     }

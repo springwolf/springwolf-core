@@ -23,6 +23,8 @@ dependencies {
     runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream")
     annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream")
 
+    implementation project(":springwolf-bindings:springwolf-googlepubsub-binding")
+
     runtimeOnly project(":springwolf-ui")
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
     runtimeOnly "org.springframework.boot:spring-boot-starter-actuator"

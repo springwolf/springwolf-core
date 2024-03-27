@@ -1,0 +1,94 @@
+{
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo" : {
+    "type" : "string",
+    "properties" : {
+      "b" : {
+        "type" : "boolean"
+      },
+      "d" : {
+        "type" : "number",
+        "format" : "double"
+      },
+      "dt" : {
+        "type" : "string",
+        "format" : "date-time"
+      },
+      "f" : {
+        "type" : "number",
+        "format" : "float"
+      },
+      "i" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "n" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested"
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "b: true\nd: 1.1\ndt: 2015-07-20T15:49:04-07:00\nf: 1.1\ni: 0\n\"n\":\n  nba:\n  - YmFzZTY0LWV4YW1wbGU=\n  nc:\n    cyclic: {}\n  nli:\n  - 0\n  nmfm: {}\n  ns: string\n  nsm:\n  - s: string\n  nu: 3fa85f64-5717-4562-b3fc-2c963f66afa6\ns: string\n" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested" : {
+    "type" : "string",
+    "properties" : {
+      "nba" : {
+        "type" : "array",
+        "items" : {
+          "type" : "string",
+          "format" : "byte"
+        }
+      },
+      "nc" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+      },
+      "nli" : {
+        "type" : "array",
+        "items" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "nmfm" : {
+        "type" : "object",
+        "additionalProperties" : {
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$MyClass"
+        }
+      },
+      "ns" : {
+        "type" : "string"
+      },
+      "nsm" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$MyClass"
+        },
+        "uniqueItems" : true
+      },
+      "nu" : {
+        "type" : "string",
+        "format" : "uuid"
+      }
+    },
+    "examples" : [ "nba:\n- YmFzZTY0LWV4YW1wbGU=\nnc:\n  cyclic: {}\nnli:\n- 0\nnmfm: {}\nns: string\nnsm:\n- s: string\nnu: 3fa85f64-5717-4562-b3fc-2c963f66afa6\n" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$Cyclic" : {
+    "type" : "string",
+    "properties" : {
+      "cyclic" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+      }
+    },
+    "examples" : [ "cyclic: {}\n" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$MyClass" : {
+    "type" : "string",
+    "properties" : {
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "s: string\n" ]
+  }
+}

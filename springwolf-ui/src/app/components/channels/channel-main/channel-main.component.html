@@ -35,7 +35,7 @@
             "
           ></textarea>
         </div>
-        <div [hidden]="!(headersExample?.lineCount > 1)" class="flex-column">
+        <div class="flex-column">
           <h4>Header</h4>
           <textarea
             spellcheck="false"
@@ -75,14 +75,16 @@
             color="primary"
             (click)="
               messageTextArea.value = defaultExample.value;
-              exampleTextAreaLineCount = defaultExample.lineCount || 0;
               headersTextArea.value = headersExample?.value;
-              headersTextAreaLineCount = headersExample?.lineCount || 0;
               bindingTextArea.value = createMessageBindingExample(
                 operation.message.bindings.get(operation.protocol)
               )?.value;
-              messageBindingExampleTextAreaLineCount =
-                messageBindingExample?.lineCount || 0
+              recalculateLineCount(
+                'messageBindingExample',
+                bindingTextArea.value
+              );
+              recalculateLineCount('headers', headersTextArea.value);
+              recalculateLineCount('example', messageTextArea.value)
             "
           >
             Default
@@ -114,14 +116,11 @@
         }}</a>
       </h4>
       <app-schema *ngIf="headers" [schema]="headers"></app-schema>
-      <div class="flex-column">
-        <app-json [data]="headersExample?.rawValue"></app-json>
-      </div>
     </mat-tab>
     <mat-tab label="Operation Bindings">
       <div *ngIf="operation.protocol && operation.message.bindings">
         <app-json
-          *ngIf="operation.protocol && operation.message.bindings"
+          *ngIf="operation.protocol && operation.bindings"
           [data]="operation.bindings[operation.protocol]"
         ></app-json>
       </div>
@@ -129,6 +128,7 @@
     <mat-tab label="Message Bindings">
       <div *ngIf="operation.protocol && operation.message.rawBindings">
         <app-json
+          *ngIf="operation.protocol && operation.message"
           [data]="operation.message.rawBindings[operation.protocol]"
         ></app-json>
       </div>

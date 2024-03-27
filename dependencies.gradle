@@ -25,47 +25,50 @@
  * The dependencies are sorted alphabetically.
  */
 ext {
-    assertjCoreVersion = '3.25.1'
+    assertjCoreVersion = '3.25.3'
 
     asyncapiCoreVersion = '1.0.0-EAP-2'
 
     avroVersion = '1.11.3'
 
-    awaitilityVersion = '4.2.0'
+    awaitilityVersion = '4.2.1'
 
     commonsLang3Version = '3.14.0'
 
     jsr305Version = '3.0.2'
 
-    kafkaAvroSerializerVersion = '7.5.1'
+    kafkaAvroSerializerVersion = '7.6.0'
 
     kafkaClientsVersion = '3.6.1'
-    kafkaStreamsVersion = '3.6.1'
+    kafkaStreamsVersion = '3.7.0'
 
-    kafkaProtobufSerializerVersion = '7.5.3'
+    kafkaProtobufSerializerVersion = '7.6.0'
 
-    jacksonVersion = '2.16.1'
-    jacksonDatatypeProtobufVersion = '0.9.14'
+    jacksonVersion = '2.16.2'
+    jacksonDatatypeProtobufVersion = '0.9.15'
+
     jakartaAnnotationApiVersion = '2.1.1'
+    jakartaValidationApiVersion = '3.0.2'
 
-    jsonSchemaValidator = '1.1.0'
+    jsonSchemaValidator = '1.3.3'
 
-    mockitoCoreVersion = '5.9.0'
-    mockitoJunitJupiterVersion = '5.10.0'
+    mockitoCoreVersion = '5.11.0'
+    mockitoJunitJupiterVersion = '5.11.0'
 
-    monetaVersion = '1.4.2'
+    monetaVersion = '1.4.4'
     moneyApiVersion = '1.1'
 
-    protobufJavaVersion = '3.25.2'
+    protobufJavaVersion = '3.25.3'
 
-    junitJupiterVersion = '5.10.1'
-    jsonUnitAssertJVersion = '3.2.2'
+    junitJupiterVersion = '5.10.2'
+    jsonUnitAssertJVersion = '3.2.7'
 
     lombokVersion = '1.18.30'
 
-    slf4jApiVersion = '2.0.11'
+    slf4jApiVersion = '2.0.12'
+    slf4jSimpleVersion = '2.0.12'
 
     swaggerVersion = '2.2.20'
 
-    testcontainersVersion = '1.19.3'
+    testcontainersVersion = '1.19.7'
 }

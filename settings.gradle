@@ -1,4 +1,4 @@
-rootProject.name = 'springwolf-core'
+rootProject.name = 'springwolf'
 
 include(
         'springwolf-asyncapi',
@@ -13,13 +13,16 @@ include(
         'springwolf-examples:springwolf-cloud-stream-example',
         'springwolf-examples:springwolf-jms-example',
         'springwolf-examples:springwolf-kafka-example',
-        'springwolf-examples:springwolf-kafka-protobuf-example',
         'springwolf-examples:springwolf-sns-example',
         'springwolf-examples:springwolf-sqs-example',
+        'springwolf-bindings:springwolf-sns-binding',
+        'springwolf-bindings:springwolf-sqs-binding',
+        'springwolf-bindings:springwolf-googlepubsub-binding',
         'springwolf-ui',
         'springwolf-add-ons:springwolf-common-model-converters',
         'springwolf-add-ons:springwolf-generic-binding',
-        'springwolf-add-ons:springwolf-json-schema'
+        'springwolf-add-ons:springwolf-json-schema',
+        'springwolf-add-ons:springwolf-kotlinx-serialization-model-converter',
 )
 
 project(':springwolf-plugins:springwolf-amqp-plugin').name = 'springwolf-amqp'

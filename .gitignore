@@ -4,8 +4,10 @@ springwolf-add-ons/build/
 springwolf-core/build/
 springwolf-examples/build/
 springwolf-plugins/build/
+springwolf-bindings/build/
 springwolf-ui/build/
 springwolf-add-ons/springwolf-common-model-converters/build/
+springwolf-add-ons/springwolf-kotlinx-serialization-model-converter/build/
 springwolf-examples/springwolf-amqp-example/build/
 springwolf-examples/springwolf-cloud-stream-example/build/
 springwolf-examples/springwolf-kafka-example/build/
@@ -14,6 +16,7 @@ springwolf-plugins/springwolf-amqp-plugin/build/
 springwolf-plugins/springwolf-cloud-stream-plugin/build/
 springwolf-plugins/springwolf-kafka-plugin/build/
 springwolf-plugins/springwolf-sqs-plugin/build/
+springwolf-bindings/springwolf-sqs-binding/build/
 
 .gradle/
 .idea/
@@ -26,3 +29,9 @@ asyncapi.actual.json
 .classpath
 .project
 .settings/
+
+# VsCode
+.vscode/
+
+# Mac
+.DS_Store

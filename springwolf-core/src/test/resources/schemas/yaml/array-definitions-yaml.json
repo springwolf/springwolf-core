@@ -1,0 +1,26 @@
+{
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ArrayFoo" : {
+    "type" : "string",
+    "properties" : {
+      "flist" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SimpleFoo"
+        }
+      }
+    },
+    "examples" : [ "flist:\n- b: true\n  s: string\n" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SimpleFoo" : {
+    "type" : "string",
+    "properties" : {
+      "b" : {
+        "type" : "boolean"
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "b: true\ns: string\n" ]
+  }
+}

@@ -275,7 +275,10 @@ export class AsyncApiMapperService {
     }
   }
 
-  private mapSchemaObj(schemaName: string, schema: ServerAsyncApiSchema) {
+  private mapSchemaObj(
+    schemaName: string,
+    schema: ServerAsyncApiSchema
+  ): Schema {
     const properties = {};
     if (schema.properties !== undefined) {
       Object.entries(schema.properties).forEach(([key, value], index) => {
@@ -288,7 +291,9 @@ export class AsyncApiMapperService {
         ? this.mapSchema(schemaName + "[]", schema.items)
         : undefined;
     const example =
-      schema.example !== undefined ? new Example(schema.example) : undefined;
+      schema.examples !== undefined && 0 < schema.examples.length
+        ? new Example(schema.examples[0])
+        : undefined;
 
     return {
       name: schemaName,
@@ -306,10 +311,16 @@ export class AsyncApiMapperService {
 
       example,
 
-      minimum: schema.minimum,
-      maximum: schema.maximum,
-      exclusiveMinimum: schema.exclusiveMinimum,
-      exclusiveMaximum: schema.exclusiveMaximum,
+      minimum: schema.exclusiveMinimum
+        ? schema.exclusiveMinimum
+        : schema.minimum,
+      maximum: schema.exclusiveMaximum
+        ? schema.exclusiveMinimum
+        : schema.maximum,
+      exclusiveMinimum:
+        schema.minimum == schema.exclusiveMinimum ? true : false,
+      exclusiveMaximum:
+        schema.maximum == schema.exclusiveMaximum ? true : false,
     };
   }
 

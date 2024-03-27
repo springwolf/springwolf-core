@@ -1,29 +1,31 @@
 {
-  "AllOf" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$AllOf" : {
     "type" : "object",
-    "example" : {
+    "examples" : [ {
       "firstOne" : "string",
-      "secondOne" : "string"
-    },
+      "firstTwo" : 0,
+      "secondOne" : "string",
+      "secondTwo" : true
+    } ],
     "allOf" : [ {
-      "$ref" : "#/components/schemas/ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "AnyOf" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$AnyOf" : {
     "type" : "object",
-    "example" : {
+    "examples" : [ {
       "firstOne" : "string",
       "secondOne" : "string"
-    },
+    } ],
     "anyOf" : [ {
-      "$ref" : "#/components/schemas/ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "ImplementationOne" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationOne" : {
     "type" : "object",
     "properties" : {
       "firstOne" : {
@@ -33,12 +35,12 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "firstOne" : "string",
       "secondOne" : "string"
-    }
+    } ]
   },
-  "ImplementationTwo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationTwo" : {
     "type" : "object",
     "properties" : {
       "firstTwo" : {
@@ -49,43 +51,45 @@
         "type" : "boolean"
       }
     },
-    "example" : {
+    "examples" : [ {
       "firstTwo" : 0,
       "secondTwo" : true
-    }
-  },
-  "OneOf" : {
-    "type" : "object",
-    "example" : {
-      "firstOne" : "string",
-      "secondOne" : "string"
-    },
-    "oneOf" : [ {
-      "$ref" : "#/components/schemas/ImplementationOne"
-    }, {
-      "$ref" : "#/components/schemas/ImplementationTwo"
     } ]
   },
-  "SchemaAnnotationFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$OneOf" : {
+    "type" : "object",
+    "examples" : [ {
+      "firstOne" : "string",
+      "secondOne" : "string"
+    } ],
+    "oneOf" : [ {
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+    }, {
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+    } ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
     "type" : "object",
     "properties" : {
       "allOf" : {
-        "$ref" : "#/components/schemas/AllOf"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$AllOf"
       },
       "anyOf" : {
-        "$ref" : "#/components/schemas/AnyOf"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$AnyOf"
       },
       "field" : {
         "type" : "string"
       },
       "oneOf" : {
-        "$ref" : "#/components/schemas/OneOf"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SchemaWithOneOf$OneOf"
       }
     },
-    "example" : {
+    "examples" : [ {
       "allOf" : {
         "firstOne" : "string",
-        "secondOne" : "string"
+        "firstTwo" : 0,
+        "secondOne" : "string",
+        "secondTwo" : true
       },
       "anyOf" : {
         "firstOne" : "string",
@@ -96,6 +100,6 @@
         "firstOne" : "string",
         "secondOne" : "string"
       }
-    }
+    } ]
   }
 }

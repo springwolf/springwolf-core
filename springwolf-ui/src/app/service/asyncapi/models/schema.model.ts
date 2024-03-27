@@ -8,11 +8,11 @@ export interface ServerAsyncApiSchema {
     [key: string]: ServerAsyncApiSchema | { $ref: string };
   };
   items?: ServerAsyncApiSchema | { $ref: string };
-  example?: any;
+  examples?: any[];
 
   required?: string[];
   minimum?: number;
   maximum?: number;
-  exclusiveMinimum?: boolean;
-  exclusiveMaximum?: boolean;
+  exclusiveMinimum?: number;
+  exclusiveMaximum?: number;
 }

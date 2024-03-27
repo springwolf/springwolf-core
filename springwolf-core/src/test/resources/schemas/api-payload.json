@@ -1,8 +1,8 @@
 {
-  "StringEnvelop" : {
-    "maxLength" : 10,
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$AsyncApiPayloadTest$StringEnvelop" : {
     "type" : "string",
     "description" : "The payload in the envelop",
-    "example" : "\"string\""
+    "maxLength" : 10,
+    "examples" : [ "\"string\"" ]
   }
 }

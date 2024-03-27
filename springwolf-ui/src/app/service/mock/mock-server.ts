@@ -4,12 +4,7 @@ import {
   RequestInfo,
   STATUS,
 } from "angular-in-memory-web-api";
-import mockSpringwolfAmqp from "../../../../../springwolf-examples/springwolf-amqp-example/src/test/resources/asyncapi.json";
-import mockSpringwolfCloudStream from "../../../../../springwolf-examples/springwolf-cloud-stream-example/src/test/resources/asyncapi.json";
-import mockSpringwolfKafka from "../../../../../springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json";
-import mockSpringwolfSns from "../../../../../springwolf-examples/springwolf-sns-example/src/test/resources/asyncapi.json";
-import mockSpringwolfSqs from "../../../../../springwolf-examples/springwolf-sqs-example/src/test/resources/asyncapi.json";
-import mockSpringwolfJms from "../../../../../springwolf-examples/springwolf-jms-example/src/test/resources/asyncapi.json";
+import { exampleSchemas } from "./example-data";
 
 export class MockServer implements InMemoryDbService {
   createDb() {
@@ -46,18 +41,14 @@ export class MockServer implements InMemoryDbService {
   private selectMockData() {
     const hostname = window.location.hostname;
 
-    if (hostname.includes("amqp")) {
-      return mockSpringwolfAmqp;
-    } else if (hostname.includes("cloud-stream")) {
-      return mockSpringwolfCloudStream;
-    } else if (hostname.includes("sns")) {
-      return mockSpringwolfSns;
-    } else if (hostname.includes("sqs")) {
-      return mockSpringwolfSqs;
-    } else if (hostname.includes("jms")) {
-      return mockSpringwolfJms;
+    const matchedExample = exampleSchemas.filter((el) =>
+      hostname.includes(el.plugin)
+    );
+    if (0 < matchedExample.length) {
+      return matchedExample[0].value;
     }
+
     // Kafka is default
-    return mockSpringwolfKafka;
+    return exampleSchemas.find((el) => el.plugin === "kafka").value;
   }
 }

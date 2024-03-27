@@ -1,0 +1,66 @@
+{
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$DocumentedSimpleFoo" : {
+    "type" : "string",
+    "properties" : {
+      "bi" : {
+        "type" : "integer"
+      },
+      "dt" : {
+        "type" : "string",
+        "format" : "date-time",
+        "examples" : [ "2000-01-01T02:00:00+02:00" ]
+      },
+      "f" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SimpleFoo"
+      },
+      "ls_plain" : {
+        "type" : "array",
+        "description" : "List without example",
+        "items" : {
+          "type" : "string",
+          "description" : "List without example"
+        }
+      },
+      "mss" : {
+        "type" : "object",
+        "description" : "Map with example",
+        "examples" : [ {
+          "key1" : "value1"
+        } ],
+        "additionalProperties" : {
+          "type" : "string",
+          "description" : "Map with example",
+          "examples" : [ "{\"key1\":\"value1\"}" ]
+        }
+      },
+      "mss_plain" : {
+        "type" : "object",
+        "description" : "Map without example",
+        "additionalProperties" : {
+          "type" : "string",
+          "description" : "Map without example"
+        }
+      },
+      "s" : {
+        "type" : "string",
+        "description" : "s field",
+        "examples" : [ "s value" ]
+      }
+    },
+    "description" : "foo model",
+    "examples" : [ "bi: 0\ndt: 2000-01-01T02:00+02:00\nf:\n  b: true\n  s: string\nls_plain:\n- string\nmss:\n  key1: value1\nmss_plain: {}\ns: s value\n" ],
+    "required" : [ "dt", "f", "s" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SimpleFoo" : {
+    "type" : "string",
+    "properties" : {
+      "b" : {
+        "type" : "boolean"
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "b: true\ns: string\n" ]
+  }
+}

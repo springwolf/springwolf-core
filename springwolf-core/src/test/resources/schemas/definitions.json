@@ -1,23 +1,23 @@
 {
-  "CompositeFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$CompositeFoo" : {
     "type" : "object",
     "properties" : {
       "f" : {
-        "$ref" : "#/components/schemas/SimpleFoo"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SimpleFoo"
       },
       "s" : {
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "f" : {
         "b" : true,
         "s" : "string"
       },
       "s" : "string"
-    }
+    } ]
   },
-  "FooWithEnum" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$FooWithEnum" : {
     "type" : "object",
     "properties" : {
       "b" : {
@@ -28,12 +28,12 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "b" : "BAR1",
       "s" : "string"
-    }
+    } ]
   },
-  "SimpleFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$SimpleFoo" : {
     "type" : "object",
     "properties" : {
       "b" : {
@@ -43,9 +43,9 @@
         "type" : "string"
       }
     },
-    "example" : {
+    "examples" : [ {
       "b" : true,
       "s" : "string"
-    }
+    } ]
   }
 }

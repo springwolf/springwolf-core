@@ -1,0 +1,11 @@
+{
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ListWrapper" : {
+    "type" : "string",
+    "properties" : {
+      "empty" : {
+        "type" : "boolean"
+      }
+    },
+    "examples" : [ "- string\n" ]
+  }
+}

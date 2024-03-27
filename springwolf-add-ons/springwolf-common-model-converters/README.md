@@ -10,7 +10,7 @@
 
 ### About
 
-This module implements common model converters to be used with Sringwolf when needed.
+This module implements common model converters to be used with Springwolf when needed.
 
 Currently, the module includes a model converter that fixes an issue with the `javax.money.MonetaryAmount` type.
 

@@ -36,7 +36,7 @@ dependencies {
 Add a `application.properties` file:
 
 ```properties
-springwolf.docket.base-package=io.github.stavshamir.springwolf.example.consumers
+springwolf.docket.base-package=io.github.springwolf.examples
 
 springwolf.docket.info.title=${spring.application.name}
 springwolf.docket.info.version=1.0.0

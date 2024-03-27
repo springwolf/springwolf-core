@@ -8,9 +8,9 @@ buildscript {
 plugins {
     id 'ca.cutterslade.analyze' version '1.9.1'
     id 'io.spring.dependency-management' version '1.1.4' apply false
-    id 'org.springframework.boot' version '3.2.1' apply false
+    id 'org.springframework.boot' version '3.2.3' apply false
     id 'org.owasp.dependencycheck' version '9.0.9'
-    id 'com.diffplug.spotless' version '6.24.0'
+    id 'com.diffplug.spotless' version '6.25.0'
     id 'com.bmuschko.docker-spring-boot-application' version '9.4.0' apply false
 }
 
@@ -28,6 +28,9 @@ allprojects {
     java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+    tasks.withType(JavaCompile).configureEach {
+        options.compilerArgs += ['-Xlint:deprecation']
     }
 
     javadoc {
@@ -119,19 +122,33 @@ allprojects {
         }
     }
 
+    var addons = [
+            'springwolf-common-model-converters' ,
+            'springwolf-generic-binding' ,
+            'springwolf-json-schema',
+            'springwolf-kotlinx-serialization-model-converter'
+    ]
+    var bindings = [
+            'springwolf-googlepubsub-binding',
+            'springwolf-sns-binding',
+            'springwolf-sqs-binding'
+    ]
+    var plugins = [
+            'springwolf-amqp',
+            'springwolf-cloud-stream',
+            'springwolf-jms',
+            'springwolf-kafka',
+            'springwolf-sns',
+            'springwolf-sqs'
+    ]
     var publishingEnabled = (
             project.name == 'springwolf-asyncapi' ||
             project.name == 'springwolf-core' ||
-            project.name == 'springwolf-amqp' ||
-            project.name == 'springwolf-cloud-stream' ||
-            project.name == 'springwolf-jms' ||
-            project.name == 'springwolf-kafka' ||
-            project.name == 'springwolf-sns' ||
-            project.name == 'springwolf-sqs' ||
             project.name == 'springwolf-ui' ||
-            project.name == 'springwolf-common-model-converters' ||
-            project.name == 'springwolf-generic-binding' ||
-            project.name == 'springwolf-json-schema')
+            addons.contains(project.name) ||
+            plugins.contains(project.name) ||
+            bindings.contains(project.name)
+    )
     tasks.withType(PublishToMavenRepository).configureEach { it.enabled = publishingEnabled }
     tasks.withType(PublishToMavenLocal).configureEach { it.enabled = publishingEnabled }
     publishing {
@@ -173,6 +190,12 @@ allprojects {
                             name = 'David Müller'
                             email = 'david.mueller@codecentric.de'
                         }
+
+                        developer {
+                            id = 'ctasada'
+                            name = 'Carlos Tasada'
+                            email = 'ctasada@gmail.com'
+                        }
                     }
 
                     scm {
@@ -199,6 +222,17 @@ allprojects {
         def signingPassword = project.findProperty("SIGNINGPASSWORD")
         useInMemoryPgpKeys(signingKey, signingPassword)
         sign publishing.publications.mavenJava
+    }
+
+    tasks.register('updateAsyncApiJson') {
+        group 'verification'
+        description 'Update the AsyncAPI JSON files in the examples to match the current state of the plugin'
+
+        plugins.forEach {
+            project
+                    .file('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.actual.json')
+                    .renameTo('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.json')
+        }
     }
 }
 

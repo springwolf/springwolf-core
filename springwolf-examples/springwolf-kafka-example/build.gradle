@@ -9,7 +9,7 @@ plugins {
     id 'org.springdoc.openapi-gradle-plugin' version '1.8.0'
 
     id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
-    id 'com.google.protobuf' version '0.8.17'
+    id 'com.google.protobuf' version '0.9.4'
 }
 
 dependencies {
@@ -104,19 +104,6 @@ test {
     dependsOn generateOpenApiDocs
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs = srcDirs + ['build/generated/source/proto/main/java']
-        }
-    }
-    test {
-        java {
-            srcDirs = srcDirs + ['build/generated/source/proto/test/java']
-        }
-    }
-}
-
 openApi {
     apiDocsUrl = "http://localhost:8080/springwolf/docs"
     // For testing purposes we put the generated json into the test resources, but it could be any other directory
@@ -126,14 +113,7 @@ openApi {
 
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.25.2'
-    }
-    generateProtoTasks {
-        all().each { task ->
-            task.builtins {
-                java { }
-            }
-        }
+        artifact = 'com.google.protobuf:protoc:3.25.3'
     }
 }
 

@@ -11,12 +11,12 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
       matrix:
-        addon: [ "common-model-converters", "generic-binding", "json-schema" ]
-    timeout-minutes: 10
+        addon: [ "common-model-converters", "generic-binding", "json-schema", "kotlinx-serialization-model-converter" ]
 
     env:
       addon: springwolf-add-ons/springwolf-${{ matrix.addon }}
@@ -31,13 +31,16 @@ jobs:
           java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
 
-      - name: Check formatting (before running tests)
+      - name: Check formatting (before running tests) on add-on
         run: ./gradlew -p ${{ env.addon }} spotlessCheck
 
       - name: Run unit tests
         run: ./gradlew -p ${{ env.addon }} test
+
+      - name: Run build, check, analyzeDependencies on add-on
+        run: ./gradlew -p ${{ env.addon }} build
 
       - name: Publish package
         if: github.ref == 'refs/heads/master'

@@ -1,0 +1,11 @@
+{
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ListWrapper" : {
+    "type" : "string",
+    "properties" : {
+      "empty" : {
+        "type" : "boolean"
+      }
+    },
+    "examples" : [ "<ListWrapper>string</ListWrapper>" ]
+  }
+}

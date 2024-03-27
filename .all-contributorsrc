@@ -253,15 +253,42 @@
         "code"
       ]
     },
-	{
-	  "login": "robert-henke",
-	  "name": "Robert Henke",
-	  "avatar_url": "https://avatars.githubusercontent.com/u/157017289?v=4",
-	  "profile": "https://github.com/robert-henke",
-	  "contributions": [
-		"code"
-	  ]
-	}
+    {
+      "login": "robert-henke",
+      "name": "Robert Henke",
+      "avatar_url": "https://avatars.githubusercontent.com/u/157017289?v=4",
+      "profile": "https://github.com/robert-henke",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "raphaeldelio",
+      "name": "Raphael De Lio",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25641721?v=4",
+      "profile": "https://raphaeldelio.com/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "aerfus",
+      "name": "Nikita Marunko",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8309418?v=4",
+      "profile": "https://github.com/aerfus",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "victorlev01",
+      "name": "Victor Levitskiy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18309707?v=4",
+      "profile": "https://www.linkedin.com/in/victor-levitskiy-561956114/",
+      "contributions": [
+        "code"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
   "linkToUsage": false

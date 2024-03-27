@@ -1,12 +1,12 @@
 {
-  "ListWrapper" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$ListWrapper" : {
     "type" : "array",
     "properties" : {
       "empty" : {
         "type" : "boolean"
       }
     },
-    "example" : [ "string" ],
+    "examples" : [ [ "string" ] ],
     "items" : {
       "type" : "string"
     }

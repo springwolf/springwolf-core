@@ -6,44 +6,36 @@
     "start": "ng serve",
     "build": "ng build --configuration production --base-href=./",
     "build_pages": "ng build --base-href=./",
-    "test": "jest",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "test": "jest"
   },
   "private": true,
   "dependencies": {
-    "@angular/cdk": "^17.0.0",
-    "@angular/common": "^17.0.2",
-    "@angular/core": "^17.0.2",
-    "@angular/forms": "^17.0.2",
-    "@angular/material": "^17.0.0",
-    "@angular/platform-browser": "^17.0.2",
-    "@angular/platform-browser-dynamic": "^17.0.2",
-    "@angular/router": "^17.0.2",
+    "@angular/cdk": "^17.2.0",
+    "@angular/common": "^17.2.1",
+    "@angular/core": "^17.2.1",
+    "@angular/forms": "^17.2.1",
+    "@angular/material": "^17.2.0",
+    "@angular/platform-browser": "^17.2.1",
+    "@angular/platform-browser-dynamic": "^17.2.1",
+    "@angular/router": "^17.2.1",
     "font-awesome": "^4.7.0",
     "marked": "^9.1.6",
     "ngx-markdown": "^17.1.1",
     "prismjs": "^1.29.0",
     "rxjs": "^7.8.1",
-    "zone.js": "^0.14.3"
+    "zone.js": "^0.14.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.0.0",
-    "@angular/cli": "^17.0.0",
-    "@angular/compiler-cli": "^17.0.2",
-    "@testing-library/angular": "^15.1.0",
-    "@types/jest": "^29.5.11",
+    "@angular-devkit/build-angular": "^17.2.0",
+    "@angular/cli": "^17.2.0",
+    "@angular/compiler-cli": "^17.2.1",
+    "@asyncapi/parser": "^3.0.10",
+    "@testing-library/angular": "^15.2.0",
+    "@types/jest": "^29.5.12",
     "@types/node": "^18.18.0",
     "angular-in-memory-web-api": "^0.17.0",
     "jest": "^29.7.0",
-    "jest-preset-angular": "^14.0.0",
-    "typescript": "^5.2.2"
-  },
-  "jest": {
-    "preset": "jest-preset-angular",
-    "setupFilesAfterEnv": [
-      "<rootDir>/setup-jest.ts"
-    ],
-    "modulePathIgnorePatterns": ["<rootDir>/build/"]
+    "jest-preset-angular": "^14.0.3",
+    "typescript": "^5.3.3"
   }
 }
