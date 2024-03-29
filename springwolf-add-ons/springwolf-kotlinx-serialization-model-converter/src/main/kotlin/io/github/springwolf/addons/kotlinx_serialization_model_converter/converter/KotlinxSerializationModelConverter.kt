@@ -65,17 +65,14 @@ class KotlinxSerializationModelConverter(private val useFqn: Boolean = false) : 
         val propertyType = property.returnType.jvmErasure
 
         when {
-            propertyType.isSubclassOf(List::class) -> {
+            propertyType.isSubclassOf(Collection::class) -> {
                 propertySchema = ArraySchema()
                 val value = (property.returnType.javaType as ParameterizedType).actualTypeArguments[0]
                 propertySchema.items = resolveRefSchema(value, context)
-            }
 
-            propertyType.isSubclassOf(Set::class) -> {
-                propertySchema = ArraySchema()
-                val value = (property.returnType.javaType as ParameterizedType).actualTypeArguments[0]
-                propertySchema.items = resolveRefSchema(value, context)
-                propertySchema.uniqueItems = true
+                if (propertyType.isSubclassOf(Set::class)) {
+                    propertySchema.uniqueItems = true
+                }
             }
 
             propertyType.isSubclassOf(Map::class) -> {
