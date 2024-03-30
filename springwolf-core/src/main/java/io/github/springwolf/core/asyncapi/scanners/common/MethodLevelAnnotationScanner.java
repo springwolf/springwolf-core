@@ -33,7 +33,7 @@ public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Anno
         MessageHeaders messageHeaders;
         String headerModelName;
 
-        if (headers == null) {
+        if (headers == null || headers.isEmpty()) {
             headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
         } else {
             headerModelName = componentsService.registerSchema(headers);

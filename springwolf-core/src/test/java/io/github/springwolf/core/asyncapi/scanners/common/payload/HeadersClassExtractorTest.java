@@ -18,7 +18,7 @@ class HeadersClassExtractorTest {
 
     @Test
     void getNoDocumentedHeaders() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeaders", String.class);
+        Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
 
         var result = HeaderClassExtractor.extractFrom(m, String.class);
 
@@ -88,7 +88,7 @@ class HeadersClassExtractorTest {
 
     public static class TestClass {
 
-        public void consumeWithoutHeaders(String simpleValue) {}
+        public void consumeWithoutHeadersAnnotation(String simpleValue) {}
 
         public void consumeWithSingleHeaderAnnotation(@Header("kafka_receivedMessageKey") String key) {}
 
