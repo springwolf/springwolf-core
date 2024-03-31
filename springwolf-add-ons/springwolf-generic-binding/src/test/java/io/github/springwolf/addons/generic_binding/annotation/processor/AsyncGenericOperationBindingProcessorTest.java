@@ -22,7 +22,7 @@ class AsyncGenericOperationBindingProcessorTest {
         List<ProcessedOperationBinding> result = getProcessedOperationBindings(ClassWithoutAnnotation.class);
 
         // then
-        assertThat(result).hasSize(0);
+        assertThat(result).isEmpty();
     }
 
     @Test
@@ -41,12 +41,11 @@ class AsyncGenericOperationBindingProcessorTest {
     }
 
     private List<ProcessedOperationBinding> getProcessedOperationBindings(Class<?> testClass) {
-        List<ProcessedOperationBinding> result = Arrays.stream(testClass.getDeclaredMethods())
+        return Arrays.stream(testClass.getDeclaredMethods())
                 .map((m) -> m.getAnnotationsByType(AsyncGenericOperationBinding.class))
                 .flatMap(Arrays::stream)
                 .map(processor::mapToOperationBinding)
                 .toList();
-        return result;
     }
 
     private static class ClassWithoutAnnotation {
@@ -102,6 +101,30 @@ class AsyncGenericOperationBindingProcessorTest {
         }
 
         @Test
+        void arrayPropertyTest() {
+            // given
+            String[] strings = {"key=[value1, value2, value3]"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("key", List.of("value1", "value2", "value3")));
+        }
+
+        @Test
+        void simpleMapPropertyTest() {
+            // given
+            String[] strings = {"map.key1=value1", "map.key2=value2", "map.key3=value3"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("map", Map.of("key1", "value1", "key2", "value2", "key3", "value3")));
+        }
+
+        @Test
         void nestedPropertyTest() {
             // given
             String[] strings = {"nested.key=value"};
@@ -135,6 +158,18 @@ class AsyncGenericOperationBindingProcessorTest {
 
             // then
             assertThat(result).isEqualTo(Map.of("key", "value"));
+        }
+
+        @Test
+        void yamlSyntaxArrayPropertyTest() {
+            // given
+            String[] strings = {"key: [value1, value2, value3]"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("key", List.of("value1", "value2", "value3")));
         }
     }
 }
