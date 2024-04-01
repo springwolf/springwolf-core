@@ -16,7 +16,9 @@ import java.util.regex.Pattern;
 @Slf4j
 public class PropertiesUtil {
 
-    private static final Pattern ARRAY_PATTERN = Pattern.compile("\\[([^\\]]+)\\]");
+    private static final Pattern ARRAY_PATTERN = Pattern.compile("\\[([^]]+)]");
+
+    private PropertiesUtil() {}
 
     public static Map<String, Object> toMap(String[] propertyStrings) {
         return convertPropertiesToNestedMap(buildPropertiesFrom((propertyStrings)));
@@ -63,10 +65,7 @@ public class PropertiesUtil {
             if (matcher.find()) {
                 // Extract the key and values
                 String[] values = matcher.group(1).split(",");
-                for (int i = 0; i < values.length; i++) {
-                    values[i] = values[i].trim();
-                }
-                return Arrays.asList(values);
+                return Arrays.stream(values).map(String::trim).toList();
             }
         }
 
