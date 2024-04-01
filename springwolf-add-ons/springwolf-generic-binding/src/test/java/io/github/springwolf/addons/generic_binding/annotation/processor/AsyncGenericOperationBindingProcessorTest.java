@@ -89,6 +89,18 @@ class AsyncGenericOperationBindingProcessorTest {
         }
 
         @Test
+        void oneLongPropertyTest() {
+            // given
+            String[] strings = {"key=value is long"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("key", "value is long"));
+        }
+
+        @Test
         void twoPropertiesTest() {
             // given
             String[] strings = {"key1=value1", "key2=value2"};
@@ -103,13 +115,13 @@ class AsyncGenericOperationBindingProcessorTest {
         @Test
         void arrayPropertyTest() {
             // given
-            String[] strings = {"key=[value1, value2, value3]"};
+            String[] strings = {"key=[value1, value2, value3 is long]"};
 
             // when
             Map<String, Object> result = PropertiesUtil.toMap(strings);
 
             // then
-            assertThat(result).isEqualTo(Map.of("key", List.of("value1", "value2", "value3")));
+            assertThat(result).isEqualTo(Map.of("key", List.of("value1", "value2", "value3 is long")));
         }
 
         @Test
@@ -163,13 +175,13 @@ class AsyncGenericOperationBindingProcessorTest {
         @Test
         void yamlSyntaxArrayPropertyTest() {
             // given
-            String[] strings = {"key: [value1, value2, value3]"};
+            String[] strings = {"key: [value1, value2, value3 is long]"};
 
             // when
             Map<String, Object> result = PropertiesUtil.toMap(strings);
 
             // then
-            assertThat(result).isEqualTo(Map.of("key", List.of("value1", "value2", "value3")));
+            assertThat(result).isEqualTo(Map.of("key", List.of("value1", "value2", "value3 is long")));
         }
     }
 }
