@@ -20,7 +20,7 @@
     "@angular/router": "^17.2.1",
     "font-awesome": "^4.7.0",
     "marked": "^9.1.6",
-    "ngx-markdown": "^17.1.1",
+    "ngx-markdown": "^17.2.0",
     "prismjs": "^1.29.0",
     "rxjs": "^7.8.1",
     "zone.js": "^0.14.4"
