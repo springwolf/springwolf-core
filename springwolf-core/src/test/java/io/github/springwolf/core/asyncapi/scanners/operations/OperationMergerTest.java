@@ -122,7 +122,7 @@ class OperationMergerTest {
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
         assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationId, it -> {
-            assertThat(it.getMessages()).containsExactlyInAnyOrder(messageRef1, messageRef2);
+            assertThat(it.getMessages()).containsExactly(messageRef2, messageRef1);
         });
     }
 
