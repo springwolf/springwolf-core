@@ -25,13 +25,14 @@ class KotlinxSerializationModelConverter(private val useFqn: Boolean = false) : 
         annotatedType: AnnotatedType, context: ModelConverterContext, chain: Iterator<ModelConverter>
     ): Schema<*>? {
         if (annotatedType.type is Class<*>) {
-            val kClass = (annotatedType.type as Class<*>).kotlin
+            val jClass = annotatedType.type as Class<*>
+            val kClass = jClass.kotlin
             val isKotlinSerializable = kClass.findAnnotation<Serializable>() != null
 
             if (isKotlinSerializable) {
                 val schema = ObjectSchema()
                 schema.nullable = false
-                schema.name = kClass.simpleName
+                schema.name = getClassName(jClass)
 
                 kClass.memberProperties.forEach { property ->
                     val propertySchema = getPropertySchema(property, context)
@@ -94,8 +95,10 @@ class KotlinxSerializationModelConverter(private val useFqn: Boolean = false) : 
     private fun resolveRefSchema(type: Type, context: ModelConverterContext): Schema<*> {
         val typeSchema = context.resolve(AnnotatedType(type))
         if (typeSchema.type == "object") {
-            val name = getClassName(type as Class<*>)
-            context.defineModel(name, typeSchema)
+            val typeClass = type as Class<*>
+            val name = getClassName(typeClass)
+            // Deletes any previously defined model with the simpleName
+            context.defineModel(name, typeSchema, type, typeClass.simpleName)
             return Schema<Any>().`$ref`(RefUtils.constructRef(name))
         }
         return typeSchema
