@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -62,6 +63,9 @@ public class OperationMerger {
         if (otherMessages != null) {
             messageReferences.addAll(otherMessages);
         }
-        return messageReferences.stream().toList();
+
+        return messageReferences.stream()
+                .sorted(Comparator.comparing(MessageReference::getRef))
+                .toList();
     }
 }
