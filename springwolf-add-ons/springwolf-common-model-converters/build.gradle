@@ -6,19 +6,13 @@ plugins {
     id 'ca.cutterslade.analyze'
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "com.fasterxml.jackson:jackson-bom:${jacksonVersion}"
-    }
-}
-
 dependencies {
     implementation "org.springframework:spring-context"
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations"
-    implementation "com.fasterxml.jackson.core:jackson-core"
-    permitUnusedDeclared "com.fasterxml.jackson.core:jackson-core"
-    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    permitUnusedDeclared "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
