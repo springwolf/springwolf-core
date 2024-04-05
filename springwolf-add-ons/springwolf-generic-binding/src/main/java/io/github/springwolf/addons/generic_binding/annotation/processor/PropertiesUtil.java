@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class PropertiesUtil {
 
-    private static final Pattern ARRAY_PATTERN = Pattern.compile("\\[([^]]+)]");
+    private static final Pattern ARRAY_PATTERN = Pattern.compile("^\\[([^]]+)]$");
 
     private PropertiesUtil() {}
 
