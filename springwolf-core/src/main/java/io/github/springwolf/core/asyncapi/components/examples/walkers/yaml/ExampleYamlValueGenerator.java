@@ -30,9 +30,6 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public void initialize() {}
-
-    @Override
     public String lookupSchemaName(Schema schema) {
         return exampleJsonValueGenerator.lookupSchemaName(schema);
     }

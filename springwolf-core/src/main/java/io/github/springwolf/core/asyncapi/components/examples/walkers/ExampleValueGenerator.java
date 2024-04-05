@@ -34,7 +34,7 @@ public interface ExampleValueGenerator<T, R> {
     /**
      * Some internal representation need to be initialized per Schema
      */
-    void initialize();
+    default void initialize() {}
 
     String lookupSchemaName(Schema schema);
 

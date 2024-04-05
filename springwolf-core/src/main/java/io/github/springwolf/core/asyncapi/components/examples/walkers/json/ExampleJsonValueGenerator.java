@@ -34,11 +34,6 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public void initialize() {
-        // Nothing to do
-    }
-
-    @Override
     public String lookupSchemaName(Schema schema) {
         return schema.getName();
     }
