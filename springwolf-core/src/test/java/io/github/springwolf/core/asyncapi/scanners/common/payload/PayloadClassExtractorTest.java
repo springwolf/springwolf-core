@@ -1,46 +1,46 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.payload;
 
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.support.GenericMessage;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 class PayloadClassExtractorTest {
 
-    private final PayloadClassExtractor extractor;
+    private final TypeToClassConverter typeToClassConverter = mock(TypeToClassConverter.class);
 
-    {
-        SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
-        properties.setPayload(new SpringwolfConfigProperties.Payload());
-        extractor = new PayloadClassExtractor(properties);
+    private final PayloadClassExtractor extractor = new PayloadClassExtractor(typeToClassConverter);
+
+    @BeforeEach
+    void setUp() {
+        doReturn(String.class).when(typeToClassConverter).extractClass(any());
     }
 
     @Test
     void getPayloadType() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithString", String.class);
 
-        Class<?> result = extractor.extractFrom(m);
+        Optional<Class<?>> result = extractor.extractFrom(m);
 
-        assertEquals(String.class, result);
+        assertThat(result).hasValue(String.class);
     }
 
     @Test
     void getPayloadTypeWithPayloadAnnotation() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithPayloadAnnotation", String.class, Integer.class);
 
-        Class<?> result = extractor.extractFrom(m);
+        Optional<Class<?>> result = extractor.extractFrom(m);
 
-        assertEquals(String.class, result);
+        assertThat(result).hasValue(String.class);
     }
 
     @Test
@@ -57,58 +57,12 @@ class PayloadClassExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithMessageOfInterfaces() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfGenericClasses", Message.class);
+    void getNoPayload() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithoutPayload");
 
-        Class<?> result = extractor.extractFrom(m);
+        Optional<Class<?>> result = extractor.extractFrom(m);
 
-        assertEquals(Collection.class, result);
-    }
-
-    @Test
-    void getPayloadTypeWithInterface() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithGenericClass", Collection.class);
-
-        Class<?> result = extractor.extractFrom(m);
-
-        assertEquals(Collection.class, result);
-    }
-
-    @Test
-    void getPayloadTypeWithMessageOfStringExtends() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfStringExtends", Message.class);
-
-        Class<?> result = extractor.extractFrom(m);
-
-        // Unable to resolve optional<String>, fallback to root type Message
-        assertEquals(Message.class, result);
-    }
-
-    @Test
-    void getPayloadTypeWithMessageOfListOfString() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfListOfString", Message.class);
-
-        Class<?> result = extractor.extractFrom(m);
-
-        assertEquals(String.class, result);
-    }
-
-    @Test
-    void getPayloadTypeWithMessageOfString() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfString", Message.class);
-
-        Class<?> result = extractor.extractFrom(m);
-
-        assertEquals(String.class, result);
-    }
-
-    @Test
-    void getPayloadTypeWithCustomType() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithCustomType", TestClass.MyType.class);
-
-        Class<?> result = extractor.extractFrom(m);
-
-        assertEquals(TestClass.MyType.class, result);
+        assertThat(result).isEmpty();
     }
 
     public static class TestClass {
@@ -118,22 +72,6 @@ class PayloadClassExtractorTest {
 
         public void consumeWithString(String value) {}
 
-        public void consumeWithGenericClass(Collection<String> value) {}
-
-        public void consumeWithMessageOfGenericClasses(Message<Collection<String>> value) {}
-
-        public void consumeWithMessageOfStringExtends(Message<? extends String> value) {}
-
-        public void consumeWithMessageOfListOfString(Message<List<String>> value) {}
-
-        public void consumeWithMessageOfString(Message<String> value) {}
-
-        public void consumeWithCustomType(MyType value) {}
-
-        public static class MyType extends GenericMessage<String> {
-            public MyType(String payload) {
-                super(payload);
-            }
-        }
+        public void consumeWithoutPayload() {}
     }
 }

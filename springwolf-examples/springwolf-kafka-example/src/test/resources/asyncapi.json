@@ -55,14 +55,26 @@
     },
     "multi-payload-topic": {
       "messages": {
+        "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
+          "$ref": "#/components/messages/io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
+        },
         "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
         },
         "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
-        },
-        "javax.money.MonetaryAmount": {
-          "$ref": "#/components/messages/javax.money.MonetaryAmount"
+        }
+      }
+    },
+    "no-payload-used-topic": {
+      "messages": {
+        "PayloadNotUsed": {
+          "$ref": "#/components/messages/PayloadNotUsed"
+        }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
         }
       }
     },
@@ -140,6 +152,19 @@
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "No headers are present.",
+          "type": "object"
+        }
+      },
+      "PayloadNotUsed": {
+        "type": "object",
+        "properties": { },
+        "description": "No payload specified",
+        "examples": [
+          { }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "No payload specified",
           "type": "object"
         }
       },
@@ -443,16 +468,16 @@
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
-              "javax.money.MonetaryAmount"
+              "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
             ],
             "examples": [
-              "javax.money.MonetaryAmount"
+              "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
             ]
           }
         },
         "examples": [
           {
-            "__TypeId__": "javax.money.MonetaryAmount"
+            "__TypeId__": "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
           }
         ],
         "x-json-schema": {
@@ -461,7 +486,40 @@
             "__TypeId__": {
               "description": "Spring Type Id Header",
               "enum": [
-                "javax.money.MonetaryAmount"
+                "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-PayloadNotUsed": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "PayloadNotUsed"
+            ],
+            "examples": [
+              "PayloadNotUsed"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "PayloadNotUsed"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "PayloadNotUsed"
               ],
               "type": "string"
             }
@@ -566,16 +624,6 @@
             }
           },
           "type": "object"
-        }
-      },
-      "String": {
-        "type": "string",
-        "examples": [
-          "\"string\""
-        ],
-        "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "type": "string"
         }
       },
       "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
@@ -1079,9 +1127,62 @@
           },
           "type": "string"
         }
+      },
+      "java.lang.String": {
+        "type": "string",
+        "examples": [
+          "\"string\""
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "type": "string"
+        }
       }
     },
     "messages": {
+      "PayloadNotUsed": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-PayloadNotUsed"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/PayloadNotUsed"
+          }
+        },
+        "name": "PayloadNotUsed",
+        "title": "PayloadNotUsed",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
+      },
+      "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-MonetaryAmount"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
+          }
+        },
+        "name": "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount",
+        "title": "MonetaryAmount",
+        "bindings": {
+          "kafka": {
+            "key": {
+              "type": "string",
+              "description": "Kafka Consumer Message Key",
+              "examples": [
+                "example-key"
+              ]
+            },
+            "bindingVersion": "0.5.0"
+          }
+        }
+      },
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotUsed"
@@ -1094,6 +1195,7 @@
         },
         "name": "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope",
         "title": "StringEnvelope",
+        "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
         "bindings": {
           "kafka": {
             "bindingVersion": "0.5.0"
@@ -1211,6 +1313,7 @@
         "contentType": "text/xml",
         "name": "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto",
         "title": "XmlPayloadDto",
+        "description": "Showcases a xml based message",
         "bindings": {
           "kafka": {
             "bindingVersion": "0.5.0"
@@ -1230,6 +1333,7 @@
         "contentType": "application/yaml",
         "name": "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto",
         "title": "YamlPayloadDto",
+        "description": "Showcases a yaml based message",
         "bindings": {
           "kafka": {
             "bindingVersion": "0.5.0"
@@ -1243,38 +1347,13 @@
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/String"
+            "$ref": "#/components/schemas/java.lang.String"
           }
         },
         "name": "java.lang.String",
         "title": "String",
         "bindings": {
           "kafka": {
-            "bindingVersion": "0.5.0"
-          }
-        }
-      },
-      "javax.money.MonetaryAmount": {
-        "headers": {
-          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-MonetaryAmount"
-        },
-        "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-          "schema": {
-            "$ref": "#/components/schemas/io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
-          }
-        },
-        "name": "javax.money.MonetaryAmount",
-        "title": "MonetaryAmount",
-        "bindings": {
-          "kafka": {
-            "key": {
-              "type": "string",
-              "description": "Kafka Consumer Message Key",
-              "examples": [
-                "example-key"
-              ]
-            },
             "bindingVersion": "0.5.0"
           }
         }
@@ -1353,10 +1432,10 @@
           "$ref": "#/channels/multi-payload-topic/messages/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
         },
         {
-          "$ref": "#/channels/multi-payload-topic/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/multi-payload-topic/messages/io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
         },
         {
-          "$ref": "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
+          "$ref": "#/channels/multi-payload-topic/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -1386,7 +1465,23 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
+          "$ref": "#/channels/multi-payload-topic/messages/io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
+        }
+      ]
+    },
+    "no-payload-used-topic_receive_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/no-payload-used-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/no-payload-used-topic/messages/PayloadNotUsed"
         }
       ]
     },
@@ -1457,7 +1552,7 @@
         "$ref": "#/channels/xml-topic"
       },
       "title": "xml-topic_receive",
-      "description": "Showcases a xml based message",
+      "description": "Auto-generated description",
       "bindings": {
         "kafka": {
           "bindingVersion": "0.5.0"
@@ -1475,7 +1570,7 @@
         "$ref": "#/channels/yaml-topic"
       },
       "title": "yaml-topic_receive",
-      "description": "Showcases a yaml based message",
+      "description": "Auto-generated description",
       "bindings": {
         "kafka": {
           "bindingVersion": "0.5.0"

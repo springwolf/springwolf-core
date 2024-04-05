@@ -11,7 +11,8 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,17 +29,17 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         extends MethodLevelAnnotationScanner<MethodAnnotation> implements SpringAnnotationOperationsScannerDelegator {
 
     private final Class<MethodAnnotation> methodAnnotationClass;
-    private final PayloadClassExtractor payloadClassExtractor;
+    private final PayloadService payloadService;
 
     public SpringAnnotationMethodLevelOperationsScanner(
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<MethodAnnotation> bindingFactory,
             AsyncHeadersBuilder asyncHeadersBuilder,
-            PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             ComponentsService componentsService) {
         super(bindingFactory, asyncHeadersBuilder, componentsService);
         this.methodAnnotationClass = methodAnnotationClass;
-        this.payloadClassExtractor = payloadClassExtractor;
+        this.payloadService = payloadService;
     }
 
     @Override
@@ -61,13 +62,13 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
 
         String channelName = bindingFactory.getChannelName(annotation);
         String operationId = channelName + "_" + OperationAction.RECEIVE + "_" + method.getName();
-        Class<?> payload = payloadClassExtractor.extractFrom(method);
+        NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
 
-        Operation operation = buildOperation(annotation, payload);
+        Operation operation = buildOperation(annotation, payloadSchema);
         return Map.entry(operationId, operation);
     }
 
-    private Operation buildOperation(MethodAnnotation annotation, Class<?> payloadType) {
+    private Operation buildOperation(MethodAnnotation annotation, NamedSchemaObject payloadType) {
         MessageObject message = buildMessage(annotation, payloadType);
         return buildOperation(annotation, message);
     }

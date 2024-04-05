@@ -20,8 +20,10 @@ public class YamlConsumer {
             operation =
                     @AsyncOperation(
                             channelName = "yaml-topic",
-                            description = "Showcases a yaml based message",
-                            message = @AsyncMessage(contentType = "application/yaml")))
+                            message =
+                                    @AsyncMessage(
+                                            contentType = "application/yaml",
+                                            description = "Showcases a yaml based message")))
     @KafkaAsyncOperationBinding
     @KafkaListener(topics = "yaml-topic")
     public void receiveExamplePayload(YamlPayloadDto payload) {

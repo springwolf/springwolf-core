@@ -14,6 +14,7 @@ import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -61,6 +62,15 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     @Override
+    @Nullable
+    public SchemaObject resolveSchema(String schemaName) {
+        if (schemas.containsKey(schemaName)) {
+            return swaggerSchemaUtil.mapSchema(schemas.get(schemaName));
+        }
+        return null;
+    }
+
+    @Override
     public String registerSchema(SchemaObject headers) {
         log.debug("Registering schema for {}", headers.getTitle());
 
@@ -81,6 +91,7 @@ public class DefaultComponentsService implements ComponentsService {
 
     @Override
     public String registerSchema(Class<?> type) {
+        // FIXME: Move this to the new HeadersService
         return this.registerSchema(type, properties.getDocket().getDefaultContentType());
     }
 
@@ -90,13 +101,13 @@ public class DefaultComponentsService implements ComponentsService {
         String actualContentType =
                 StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
 
-        Map<String, Schema> schemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
+        Map<String, Schema> newSchemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
 
-        String schemaName = getSchemaName(type, schemas);
+        String schemaName = getSchemaName(type, newSchemas);
 
-        preProcessSchemas(schemas, schemaName, type);
-        schemas.forEach(this.schemas::putIfAbsent);
-        schemas.values().forEach(schema -> postProcessSchema(schema, actualContentType));
+        preProcessSchemas(newSchemas, schemaName, type);
+        newSchemas.forEach(this.schemas::putIfAbsent);
+        newSchemas.values().forEach(schema -> postProcessSchema(schema, actualContentType));
 
         return schemaName;
     }
@@ -130,11 +141,22 @@ public class DefaultComponentsService implements ComponentsService {
             return new ArrayList<>(resolvedPayloadModelName).get(0);
         }
 
-        return type.getSimpleName();
+        return getNameFromClass(type);
     }
 
     private void preProcessSchemas(Map<String, Schema> schemas, String schemaName, Class<?> type) {
         processAsyncApiPayloadAnnotation(schemas, schemaName, type);
+        processSchemaAnnotation(schemas, schemaName, type);
+    }
+
+    private void processSchemaAnnotation(Map<String, Schema> schemas, String schemaName, Class<?> type) {
+        Schema schemaForType = schemas.get(schemaName);
+        if (schemaForType != null) {
+            var schemaAnnotation = type.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+            if (schemaAnnotation != null) {
+                schemaForType.setDescription(schemaAnnotation.description());
+            }
+        }
     }
 
     private void processAsyncApiPayloadAnnotation(Map<String, Schema> schemas, String schemaName, Class<?> type) {
@@ -161,9 +183,9 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     private String registerString() {
-        String schemaName = "String";
+        String schemaName = getNameFromClass(String.class);
         StringSchema schema = new StringSchema();
-        schema.setName(String.class.getName());
+        schema.setName(schemaName);
 
         this.schemas.put(schemaName, schema);
         postProcessSchema(schema, DEFAULT_CONTENT_TYPE);
@@ -179,6 +201,13 @@ public class DefaultComponentsService implements ComponentsService {
 
         TypeNameResolver.std.setUseFqn(previousUseFqn);
         return result;
+    }
+
+    private String getNameFromClass(Class<?> type) {
+        if (properties.isUseFqn()) {
+            return type.getName();
+        }
+        return type.getSimpleName();
     }
 
     private void postProcessSchema(Schema schema, String contentType) {

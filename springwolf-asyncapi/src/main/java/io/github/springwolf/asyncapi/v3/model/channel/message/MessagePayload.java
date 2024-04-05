@@ -7,10 +7,12 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @JsonSerialize(using = MessagePayloadSerializer.class)
 @EqualsAndHashCode
+@ToString
 public class MessagePayload {
     private MultiFormatSchema multiFormatSchema;
     private SchemaObject schema;

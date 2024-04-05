@@ -12,6 +12,8 @@ public interface ComponentsService {
 
     Map<String, SchemaObject> getSchemas();
 
+    SchemaObject resolveSchema(String schemaName);
+
     String registerSchema(SchemaObject headers);
 
     String registerSchema(Class<?> type);

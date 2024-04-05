@@ -40,7 +40,8 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getChannels()).containsOnlyKeys("listener-channel");
             assertThat(asyncAPI.getOperations()).containsOnlyKeys("listener-channel_receive_listen");
             assertThat(asyncAPI.getComponents().getMessages()).containsOnlyKeys("java.lang.String");
-            assertThat(asyncAPI.getComponents().getSchemas()).containsOnlyKeys("HeadersNotDocumented", "String");
+            assertThat(asyncAPI.getComponents().getSchemas())
+                    .containsOnlyKeys("HeadersNotDocumented", "java.lang.String");
         }
     }
 
@@ -63,7 +64,8 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getChannels()).containsOnlyKeys("publisher-channel");
             assertThat(asyncAPI.getOperations()).containsOnlyKeys("publisher-channel_send_publish");
             assertThat(asyncAPI.getComponents().getMessages()).containsOnlyKeys("java.lang.String");
-            assertThat(asyncAPI.getComponents().getSchemas()).containsOnlyKeys("HeadersNotDocumented", "String");
+            assertThat(asyncAPI.getComponents().getSchemas())
+                    .containsOnlyKeys("HeadersNotDocumented", "java.lang.String");
         }
     }
 

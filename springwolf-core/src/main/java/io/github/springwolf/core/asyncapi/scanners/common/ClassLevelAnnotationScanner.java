@@ -11,7 +11,8 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public abstract class ClassLevelAnnotationScanner<
     protected final Class<MethodAnnotation> methodAnnotationClass;
     protected final BindingFactory<ClassAnnotation> bindingFactory;
     protected final AsyncHeadersBuilder asyncHeadersBuilder;
-    protected final PayloadClassExtractor payloadClassExtractor;
+    protected final PayloadService payloadService;
     protected final ComponentsService componentsService;
 
     protected enum MessageType {
@@ -67,8 +68,8 @@ public abstract class ClassLevelAnnotationScanner<
             SpringAnnotationClassLevelOperationsScanner.MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
                 .map((Method method) -> {
-                    Class<?> payloadType = payloadClassExtractor.extractFrom(method);
-                    return buildMessage(classAnnotation, payloadType);
+                    NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
+                    return buildMessage(classAnnotation, payloadSchema);
                 })
                 .collect(toSet());
 
@@ -79,18 +80,19 @@ public abstract class ClassLevelAnnotationScanner<
         return toMessagesMap(messages);
     }
 
-    protected MessageObject buildMessage(ClassAnnotation classAnnotation, Class<?> payloadType) {
+    protected MessageObject buildMessage(ClassAnnotation classAnnotation, NamedSchemaObject payloadSchema) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
-        String modelName = componentsService.registerSchema(payloadType);
-        String headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
+
+        String headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadSchema));
+
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(modelName))
+                .schema(SchemaReference.fromSchema(payloadSchema.name()))
                 .build());
 
         MessageObject message = MessageObject.builder()
-                .messageId(payloadType.getName())
-                .name(payloadType.getName())
-                .title(payloadType.getSimpleName())
+                .messageId(payloadSchema.name())
+                .name(payloadSchema.name())
+                .title(payloadSchema.schema().getTitle())
                 .description(null)
                 .payload(payload)
                 .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))

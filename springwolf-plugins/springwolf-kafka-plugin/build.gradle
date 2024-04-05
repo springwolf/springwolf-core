@@ -24,6 +24,8 @@ dependencies {
 
     implementation "org.springframework.kafka:spring-kafka"
 
+    implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
+
     compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
     permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
 

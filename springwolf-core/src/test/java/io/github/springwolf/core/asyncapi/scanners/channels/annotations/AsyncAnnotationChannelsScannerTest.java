@@ -28,6 +28,8 @@ import io.github.springwolf.core.asyncapi.scanners.channels.AsyncAnnotationChann
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -85,7 +87,10 @@ class AsyncAnnotationChannelsScannerTest {
             new DefaultComponentsService(emptyList(), emptyList(), swaggerSchemaUtil, properties);
 
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
-    private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(properties);
+    private final TypeToClassConverter typeToClassConverter = new TypeToClassConverter(properties);
+    private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(typeToClassConverter);
+    private final PayloadService payloadService =
+            new PayloadService(payloadClassExtractor, componentsService, properties);
 
     private final List<OperationBindingProcessor> operationBindingProcessors =
             List.of(new TestOperationBindingProcessor());
@@ -99,6 +104,7 @@ class AsyncAnnotationChannelsScannerTest {
             componentsService,
             asyncApiDocketService,
             payloadClassExtractor,
+            payloadService,
             operationBindingProcessors,
             messageBindingProcessors);
 

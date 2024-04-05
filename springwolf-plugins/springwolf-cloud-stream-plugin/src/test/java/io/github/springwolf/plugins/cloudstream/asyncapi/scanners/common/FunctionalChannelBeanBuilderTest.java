@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common;
 
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.apache.kafka.streams.kstream.KStream;
 import org.assertj.core.api.Assertions;
@@ -23,7 +23,7 @@ import static io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.
 class FunctionalChannelBeanBuilderTest {
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder =
-            new FunctionalChannelBeanBuilder(new PayloadClassExtractor(properties));
+            new FunctionalChannelBeanBuilder(new TypeToClassConverter(properties));
 
     @Nested
     class FromMethod {

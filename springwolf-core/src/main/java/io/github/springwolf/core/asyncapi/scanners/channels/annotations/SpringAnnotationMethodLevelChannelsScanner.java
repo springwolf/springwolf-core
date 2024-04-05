@@ -9,7 +9,8 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,17 +26,17 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
         extends MethodLevelAnnotationScanner<MethodAnnotation> implements SpringAnnotationChannelsScannerDelegator {
 
     private final Class<MethodAnnotation> methodAnnotationClass;
-    private final PayloadClassExtractor payloadClassExtractor;
+    private final PayloadService payloadService;
 
     public SpringAnnotationMethodLevelChannelsScanner(
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<MethodAnnotation> bindingFactory,
             AsyncHeadersBuilder asyncHeadersBuilder,
-            PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             ComponentsService componentsService) {
         super(bindingFactory, asyncHeadersBuilder, componentsService);
         this.methodAnnotationClass = methodAnnotationClass;
-        this.payloadClassExtractor = payloadClassExtractor;
+        this.payloadService = payloadService;
     }
 
     @Override
@@ -56,16 +57,15 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
 
         MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
+        NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
+        ChannelObject channelItem = buildChannelItem(annotation, payloadSchema);
+
         String channelName = bindingFactory.getChannelName(annotation);
-        Class<?> payload = payloadClassExtractor.extractFrom(method);
-
-        ChannelObject channelItem = buildChannelItem(annotation, payload);
-
         return Map.entry(channelName, channelItem);
     }
 
-    private ChannelObject buildChannelItem(MethodAnnotation annotation, Class<?> payloadType) {
-        MessageObject message = buildMessage(annotation, payloadType);
+    private ChannelObject buildChannelItem(MethodAnnotation annotation, NamedSchemaObject payloadSchema) {
+        MessageObject message = buildMessage(annotation, payloadSchema);
         return buildChannelItem(annotation, message);
     }
 

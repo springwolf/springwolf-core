@@ -9,7 +9,7 @@ import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.sqs.asyncapi.scanners.bindings.SqsBindingFactory;
@@ -41,14 +41,14 @@ public class SpringwolfSqsScannerConfiguration {
     public SpringAnnotationChannelsScanner simpleSqsMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner classScanner,
             SqsBindingFactory sqsBindingBuilder,
-            PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         SqsListener.class,
                         sqsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
-                        payloadClassExtractor,
+                        payloadService,
                         componentsService);
 
         return new SpringAnnotationChannelsScanner(classScanner, strategy);
@@ -60,14 +60,14 @@ public class SpringwolfSqsScannerConfiguration {
     public SpringAnnotationOperationsScanner simpleSqsMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner classScanner,
             SqsBindingFactory sqsBindingBuilder,
-            PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         SqsListener.class,
                         sqsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
-                        payloadClassExtractor,
+                        payloadService,
                         componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);

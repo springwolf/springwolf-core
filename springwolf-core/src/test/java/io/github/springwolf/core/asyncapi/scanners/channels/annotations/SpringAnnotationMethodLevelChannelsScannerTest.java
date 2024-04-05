@@ -18,7 +18,8 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,15 +40,11 @@ import static org.mockito.Mockito.when;
 
 class SpringAnnotationMethodLevelChannelsScannerTest {
 
-    private final PayloadClassExtractor payloadClassExtractor = mock(PayloadClassExtractor.class);
+    private final PayloadService payloadService = mock();
     private final BindingFactory<TestListener> bindingFactory = mock(BindingFactory.class);
     private final ComponentsService componentsService = mock(ComponentsService.class);
     SpringAnnotationMethodLevelChannelsScanner<TestListener> scanner = new SpringAnnotationMethodLevelChannelsScanner<>(
-            TestListener.class,
-            bindingFactory,
-            new AsyncHeadersNotDocumented(),
-            payloadClassExtractor,
-            componentsService);
+            TestListener.class, bindingFactory, new AsyncHeadersNotDocumented(), payloadService, componentsService);
 
     private static final String CHANNEL = "test-channel";
     private static final Map<String, OperationBinding> defaultOperationBinding =
@@ -66,7 +63,8 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
         doReturn(defaultChannelBinding).when(bindingFactory).buildChannelBinding(any());
         doReturn(defaultMessageBinding).when(bindingFactory).buildMessageBinding(any());
 
-        doReturn(String.class).when(payloadClassExtractor).extractFrom(any());
+        when(payloadService.extractSchema(any()))
+                .thenReturn(new NamedSchemaObject(String.class.getName(), new SchemaObject()));
         doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())
                 .when(componentsService)
                 .registerSchema(any(Class.class));
@@ -76,10 +74,12 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
 
         var stringMethod =
                 ClassWithMultipleTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
-        doReturn(String.class).when(payloadClassExtractor).extractFrom(stringMethod);
+        when(payloadService.extractSchema(stringMethod))
+                .thenReturn(new NamedSchemaObject(String.class.getName(), new SchemaObject()));
         var simpleFooMethod = ClassWithMultipleTestListenerAnnotation.class.getDeclaredMethod(
                 "anotherMethodWithAnnotation", SimpleFoo.class);
-        doReturn(SimpleFoo.class).when(payloadClassExtractor).extractFrom(simpleFooMethod);
+        when(payloadService.extractSchema(simpleFooMethod))
+                .thenReturn(new NamedSchemaObject(SimpleFoo.class.getName(), new SchemaObject()));
     }
 
     @Test

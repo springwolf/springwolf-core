@@ -17,7 +17,9 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
@@ -42,6 +44,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
 
     protected final AsyncAnnotationProvider<A> asyncAnnotationProvider;
     protected final PayloadClassExtractor payloadClassExtractor;
+    protected final PayloadService payloadService;
     protected final ComponentsService componentsService;
     protected final List<OperationBindingProcessor> operationBindingProcessors;
     protected final List<MessageBindingProcessor> messageBindingProcessors;
@@ -89,30 +92,33 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
     }
 
     protected MessageObject buildMessage(AsyncOperation operationData, Method method) {
-        Class<?> payloadType = operationData.payloadType() != Object.class
-                ? operationData.payloadType()
-                : payloadClassExtractor.extractFrom(method);
+        NamedSchemaObject payloadSchema = payloadService.extractSchema(operationData, method);
 
-        String modelName = this.componentsService.registerSchema(
-                payloadType, operationData.message().contentType());
-        SchemaObject asyncHeaders = AsyncAnnotationUtil.getAsyncHeaders(operationData, resolver);
-        String headerModelName = this.componentsService.registerSchema(asyncHeaders);
-        var headers = MessageHeaders.of(MessageReference.toSchema(headerModelName));
-
-        var schema = payloadType.getAnnotation(Schema.class);
-        String description = schema != null ? schema.description() : null;
+        // TODO: move block to own HeaderService
+        SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, resolver);
+        String headerSchemaName = this.componentsService.registerSchema(headerSchema);
+        var headers = MessageHeaders.of(MessageReference.toSchema(headerSchemaName));
 
         Map<String, MessageBinding> messageBinding =
                 AsyncAnnotationUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
 
         var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(modelName))
+                .schema(SchemaReference.fromSchema(payloadSchema.name()))
                 .build());
 
+        String description = operationData.message().description();
+        if (!StringUtils.hasText(description)) {
+            description = payloadSchema.schema().getDescription();
+        }
+        if (StringUtils.hasText(description)) {
+            description = this.resolver.resolveStringValue(description);
+            description = TextUtils.trimIndent(description);
+        }
+
         var builder = MessageObject.builder()
-                .messageId(payloadType.getName())
-                .name(payloadType.getName())
-                .title(payloadType.getSimpleName())
+                .messageId(payloadSchema.name())
+                .name(payloadSchema.name())
+                .title(payloadSchema.schema().getTitle())
                 .description(description)
                 .payload(messagePayload)
                 .headers(headers)

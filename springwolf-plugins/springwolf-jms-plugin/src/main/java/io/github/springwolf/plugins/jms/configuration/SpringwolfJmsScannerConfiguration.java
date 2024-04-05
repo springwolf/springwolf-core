@@ -8,7 +8,7 @@ import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.JmsBindingFactory;
@@ -41,14 +41,14 @@ public class SpringwolfJmsScannerConfiguration {
     public SpringAnnotationChannelsScanner simpleJmsMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner classScanner,
             JmsBindingFactory jmsBindingBuilder,
-            PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         JmsListener.class,
                         jmsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
-                        payloadClassExtractor,
+                        payloadService,
                         componentsService);
 
         return new SpringAnnotationChannelsScanner(classScanner, strategy);
@@ -60,14 +60,14 @@ public class SpringwolfJmsScannerConfiguration {
     public SpringAnnotationOperationsScanner simpleJmsMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner classScanner,
             JmsBindingFactory jmsBindingBuilder,
-            PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         JmsListener.class,
                         jmsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
-                        payloadClassExtractor,
+                        payloadService,
                         componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);

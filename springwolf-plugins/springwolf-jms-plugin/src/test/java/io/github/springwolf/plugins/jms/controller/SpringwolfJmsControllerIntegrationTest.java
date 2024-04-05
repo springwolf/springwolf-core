@@ -9,6 +9,7 @@ import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvid
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
@@ -47,6 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             PublishingPayloadCreator.class,
             SpringwolfJmsProducer.class,
             PayloadClassExtractor.class,
+            TypeToClassConverter.class,
             DefaultComponentsService.class,
             SwaggerSchemaUtil.class,
             DefaultSchemaWalker.class,
@@ -62,7 +64,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             "springwolf.docket.servers.jms.protocol=jms",
             "springwolf.docket.servers.jms.host=127.0.0.1",
             "springwolf.plugin.jms.publishing.enabled=true",
-            "springwolf.use-fqn=true"
         })
 class SpringwolfJmsControllerIntegrationTest {
 

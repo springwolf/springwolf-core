@@ -9,6 +9,7 @@ import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvid
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
@@ -49,6 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             DefaultComponentsService.class,
             SwaggerSchemaUtil.class,
             PayloadClassExtractor.class,
+            TypeToClassConverter.class,
             DefaultSchemaWalker.class,
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
@@ -62,7 +64,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             "springwolf.docket.servers.kafka.protocol=kafka",
             "springwolf.docket.servers.kafka.host=127.0.0.1",
             "springwolf.plugin.kafka.publishing.enabled=true",
-            "springwolf.use-fqn=true"
         })
 class SpringwolfKafkaControllerIntegrationTest {
 
