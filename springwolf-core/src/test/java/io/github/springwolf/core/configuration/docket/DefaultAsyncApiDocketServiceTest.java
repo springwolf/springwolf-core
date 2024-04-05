@@ -186,7 +186,7 @@ class DefaultAsyncApiDocketServiceTest {
             assertThatThrownBy(docketService::getAsyncApiDocket)
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining(
-                            "One or more required fields (protocol, host) of the server object (name=some-protocol) has been defined in application.properties with path prefix springwolf");
+                            "One or more required fields (protocol, host) of the server object (name=some-protocol) has not been defined in application.properties with path prefix springwolf");
         }
 
         @ParameterizedTest
@@ -201,7 +201,7 @@ class DefaultAsyncApiDocketServiceTest {
             assertThatThrownBy(docketService::getAsyncApiDocket)
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining(
-                            "One or more required fields (protocol, host) of the server object (name=some-protocol) has been defined in application.properties with path prefix springwolf");
+                            "One or more required fields (protocol, host) of the server object (name=some-protocol) has not been defined in application.properties with path prefix springwolf");
         }
     }
 }
