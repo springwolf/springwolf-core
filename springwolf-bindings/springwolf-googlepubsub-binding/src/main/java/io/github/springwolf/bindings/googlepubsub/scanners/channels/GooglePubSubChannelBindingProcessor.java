@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringValueResolver;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -24,8 +24,8 @@ public class GooglePubSubChannelBindingProcessor implements ChannelBindingProces
     }
 
     @Override
-    public Optional<ProcessedChannelBinding> process(Method method) {
-        return Arrays.stream(method.getAnnotations())
+    public Optional<ProcessedChannelBinding> process(AnnotatedElement annotatedElement) {
+        return Arrays.stream(annotatedElement.getAnnotations())
                 .filter(GooglePubSubAsyncChannelBinding.class::isInstance)
                 .map(GooglePubSubAsyncChannelBinding.class::cast)
                 .findAny()

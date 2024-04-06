@@ -58,7 +58,7 @@ ext {
     monetaVersion = '1.4.4'
     moneyApiVersion = '1.1'
 
-    protobufJavaVersion = '3.25.3'
+    protobufJavaVersion = '4.26.1'
 
     junitJupiterVersion = '5.10.2'
     jsonUnitAssertJVersion = '3.2.7'
@@ -68,7 +68,7 @@ ext {
     slf4jApiVersion = '2.0.12'
     slf4jSimpleVersion = '2.0.12'
 
-    swaggerVersion = '2.2.20'
+    swaggerVersion = '2.2.21'
 
     testcontainersVersion = '1.19.7'
 }

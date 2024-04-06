@@ -20,6 +20,7 @@ import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
+import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -29,7 +30,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +42,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final BeanMethodsScanner beanMethodsScanner;
+    private final ComponentClassScanner componentClassScanner;
     private final ComponentsService componentsService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
@@ -48,13 +51,18 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     @Override
     public Map<String, ChannelObject> scan() {
-        Set<Method> beanMethods = beanMethodsScanner.getBeanMethods();
-        return ChannelMerger.mergeChannels(beanMethods.stream()
-                .map(functionalChannelBeanBuilder::fromMethodBean)
+        Set<AnnotatedElement> elements = new HashSet<>();
+        elements.addAll(componentClassScanner.scan());
+        elements.addAll(beanMethodsScanner.getBeanMethods());
+
+        List<Map.Entry<String, ChannelObject>> channels = elements.stream()
+                .map(functionalChannelBeanBuilder::build)
                 .flatMap(Set::stream)
                 .filter(this::isChannelBean)
                 .map(this::toChannelEntry)
-                .toList());
+                .toList();
+
+        return ChannelMerger.mergeChannels(channels);
     }
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {
@@ -91,7 +99,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .build();
         this.componentsService.registerMessage(message);
 
-        Map<String, ChannelBinding> channelBinding = buildChannelBinding(beanData.method());
+        Map<String, ChannelBinding> channelBinding = buildChannelBinding(beanData.annotatedElement());
         return ChannelObject.builder()
                 .bindings(channelBinding)
                 .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
@@ -108,9 +116,9 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private Map<String, ChannelBinding> buildChannelBinding(Method method) {
+    private Map<String, ChannelBinding> buildChannelBinding(AnnotatedElement annotatedElement) {
         Map<String, ChannelBinding> channelBindingMap =
-                AsyncAnnotationUtil.processChannelBindingFromAnnotation(method, channelBindingProcessors);
+                AsyncAnnotationUtil.processChannelBindingFromAnnotation(annotatedElement, channelBindingProcessors);
         if (!channelBindingMap.isEmpty()) {
             return channelBindingMap;
         }

@@ -67,6 +67,12 @@ data class ClassWithSetProperty(
 )
 
 @Serializable
+data class ClassWithCollectionProperty(
+    @SerialName("collection_field")
+    val setField: Collection<String>,
+)
+
+@Serializable
 data class ClassWithEnumProperty(
     @SerialName("enum_field")
     val enumField: Color,

@@ -5,6 +5,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
@@ -29,6 +30,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
     public CloudStreamFunctionChannelsScanner cloudStreamFunctionChannelsScanner(
             AsyncApiDocketService asyncApiDocketService,
             BeanMethodsScanner beanMethodsScanner,
+            ComponentClassScanner componentClassScanner,
             ComponentsService componentsService,
             BindingServiceProperties cloudstreamBindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder,
@@ -37,6 +39,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
         return new CloudStreamFunctionChannelsScanner(
                 asyncApiDocketService,
                 beanMethodsScanner,
+                componentClassScanner,
                 componentsService,
                 cloudstreamBindingServiceProperties,
                 functionalChannelBeanBuilder,
@@ -48,12 +51,14 @@ public class SpringwolfCloudStreamAutoConfiguration {
     public CloudStreamFunctionOperationsScanner cloudStreamFunctionOperationsScanner(
             AsyncApiDocketService asyncApiDocketService,
             BeanMethodsScanner beanMethodsScanner,
+            ComponentClassScanner componentClassScanner,
             ComponentsService componentsService,
             BindingServiceProperties cloudstreamBindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder) {
         return new CloudStreamFunctionOperationsScanner(
                 asyncApiDocketService,
                 beanMethodsScanner,
+                componentClassScanner,
                 componentsService,
                 cloudstreamBindingServiceProperties,
                 functionalChannelBeanBuilder);

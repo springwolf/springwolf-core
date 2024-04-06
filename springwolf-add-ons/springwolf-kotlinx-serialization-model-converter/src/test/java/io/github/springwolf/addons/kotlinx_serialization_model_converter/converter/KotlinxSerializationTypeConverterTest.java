@@ -68,6 +68,19 @@ class KotlinxSerializationTypeConverterTest {
             assertThat(listField.getItems()).isNotNull();
             assertThat(listField.getItems().getType()).isEqualTo("string");
         }
+
+        @Test
+        void testClassWithCollectionProperty() {
+            var result = modelConverters.readAll(new AnnotatedType(ClassWithCollectionProperty.class));
+            Schema<?> schema = result.get(ClassWithCollectionProperty.class.getSimpleName());
+
+            final Schema<?> listField = (Schema<?>) schema.getProperties().get("collection_field");
+            assertThat(listField).isNotNull();
+            assertThat(listField.getType()).isEqualTo("array");
+            assertThat(listField.getNullable()).isFalse();
+            assertThat(listField.getItems()).isNotNull();
+            assertThat(listField.getItems().getType()).isEqualTo("string");
+        }
     }
 
     @Nested
@@ -116,7 +129,7 @@ class KotlinxSerializationTypeConverterTest {
             assertThat(nestedClass.getType()).isNull();
             assertThat(nestedClass.get$ref()).isEqualTo("#/components/schemas/ClassWithNestedProperty$NestedClass");
 
-            final Schema<?> nestedModel = result.get(ClassWithNestedProperty.NestedClass.class.getSimpleName());
+            final Schema<?> nestedModel = result.get("ClassWithNestedProperty$NestedClass");
             assertThat(nestedModel).isNotNull();
             assertThat(nestedModel.getType()).isEqualTo("object");
             assertThat(nestedModel.getProperties()).hasSize(3);
@@ -131,8 +144,7 @@ class KotlinxSerializationTypeConverterTest {
         converters.addConverter(modelConverter);
 
         var media = converters.readAll(new AnnotatedType(SampleEvent.class));
-        // FIXME: The NestedClass is duplicated
-        assertThat(media).hasSize(3);
+        assertThat(media).hasSize(2);
         final Schema<?> model = media.get(SampleEvent.class.getSimpleName());
         assertThat(model).isNotNull();
         assertThat(model.getType()).isEqualTo("object");

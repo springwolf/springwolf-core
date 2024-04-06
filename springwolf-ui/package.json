@@ -20,7 +20,7 @@
     "@angular/router": "^17.2.1",
     "font-awesome": "^4.7.0",
     "marked": "^9.1.6",
-    "ngx-markdown": "^17.1.1",
+    "ngx-markdown": "^17.2.0",
     "prismjs": "^1.29.0",
     "rxjs": "^7.8.1",
     "zone.js": "^0.14.4"
@@ -29,7 +29,7 @@
     "@angular-devkit/build-angular": "^17.2.0",
     "@angular/cli": "^17.2.0",
     "@angular/compiler-cli": "^17.2.1",
-    "@asyncapi/parser": "^3.0.10",
+    "@asyncapi/parser": "^3.0.11",
     "@testing-library/angular": "^15.2.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.18.0",
