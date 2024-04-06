@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -26,7 +27,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,19 +39,25 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final BeanMethodsScanner beanMethodsScanner;
+    private final ComponentClassScanner componentClassScanner;
     private final ComponentsService componentsService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
 
     @Override
     public Map<String, Operation> scan() {
-        Set<Method> beanMethods = beanMethodsScanner.getBeanMethods();
-        return OperationMerger.mergeOperations(beanMethods.stream()
-                .map(functionalChannelBeanBuilder::fromMethodBean)
+        Set<AnnotatedElement> elements = new HashSet<>();
+        elements.addAll(componentClassScanner.scan());
+        elements.addAll(beanMethodsScanner.getBeanMethods());
+
+        List<Map.Entry<String, Operation>> operations = elements.stream()
+                .map(functionalChannelBeanBuilder::build)
                 .flatMap(Set::stream)
                 .filter(this::isChannelBean)
                 .map(this::toOperationEntry)
-                .toList());
+                .toList();
+
+        return OperationMerger.mergeOperations(operations);
     }
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {
@@ -126,7 +134,6 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
         String operationName =
                 beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
 
-        return String.format(
-                "%s_%s_%s", channelName, operationName, beanData.method().getName());
+        return String.format("%s_%s_%s", channelName, operationName, beanData.elementName());
     }
 }

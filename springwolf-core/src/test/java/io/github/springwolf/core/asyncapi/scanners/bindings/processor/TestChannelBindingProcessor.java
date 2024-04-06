@@ -13,7 +13,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -24,8 +24,8 @@ public class TestChannelBindingProcessor implements ChannelBindingProcessor {
     public static final ChannelBinding BINDING = new EmptyChannelBinding();
 
     @Override
-    public Optional<ProcessedChannelBinding> process(Method method) {
-        return Arrays.stream(method.getAnnotations())
+    public Optional<ProcessedChannelBinding> process(AnnotatedElement annotatedElement) {
+        return Arrays.stream(annotatedElement.getAnnotations())
                 .filter(annotation -> annotation instanceof TestChannelBindingProcessor.TestChannelBinding)
                 .map(annotation -> (TestChannelBindingProcessor.TestChannelBinding) annotation)
                 .findAny()
