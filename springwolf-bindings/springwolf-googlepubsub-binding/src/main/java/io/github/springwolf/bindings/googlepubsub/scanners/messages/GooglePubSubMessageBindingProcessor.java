@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringValueResolver;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -23,8 +23,8 @@ public class GooglePubSubMessageBindingProcessor implements MessageBindingProces
     }
 
     @Override
-    public Optional<ProcessedMessageBinding> process(Method method) {
-        return Arrays.stream(method.getAnnotations())
+    public Optional<ProcessedMessageBinding> process(AnnotatedElement annotatedElement) {
+        return Arrays.stream(annotatedElement.getAnnotations())
                 .filter(GooglePubSubAsyncMessageBinding.class::isInstance)
                 .map(GooglePubSubAsyncMessageBinding.class::cast)
                 .findAny()

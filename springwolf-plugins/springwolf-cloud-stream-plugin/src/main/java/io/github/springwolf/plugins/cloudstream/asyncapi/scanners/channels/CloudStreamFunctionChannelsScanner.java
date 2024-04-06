@@ -89,7 +89,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());
 
-        Map<String, MessageBinding> messageBinding = buildMessageBinding(beanData.method());
+        Map<String, MessageBinding> messageBinding = buildMessageBinding(beanData.annotatedElement());
         MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(modelName)
@@ -106,9 +106,9 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .build();
     }
 
-    private Map<String, MessageBinding> buildMessageBinding(Method method) {
+    private Map<String, MessageBinding> buildMessageBinding(AnnotatedElement annotatedElement) {
         Map<String, MessageBinding> messageBindingMap =
-                AsyncAnnotationUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
+                AsyncAnnotationUtil.processMessageBindingFromAnnotation(annotatedElement, messageBindingProcessors);
         if (!messageBindingMap.isEmpty()) {
             return messageBindingMap;
         }

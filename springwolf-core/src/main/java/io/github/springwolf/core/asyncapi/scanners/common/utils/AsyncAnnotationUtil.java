@@ -99,9 +99,9 @@ public class AsyncAnnotationUtil {
     }
 
     public static Map<String, MessageBinding> processMessageBindingFromAnnotation(
-            Method method, List<MessageBindingProcessor> messageBindingProcessors) {
+            AnnotatedElement annotatedElement, List<MessageBindingProcessor> messageBindingProcessors) {
         return messageBindingProcessors.stream()
-                .map(messageBindingProcessor -> messageBindingProcessor.process(method))
+                .map(messageBindingProcessor -> messageBindingProcessor.process(annotatedElement))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toMap(
