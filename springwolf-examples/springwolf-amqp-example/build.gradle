@@ -22,7 +22,7 @@ dependencies {
 
     implementation "org.springframework.amqp:spring-rabbit"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
-    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
 
     implementation "org.springframework.amqp:spring-amqp"
     implementation "org.springframework.boot:spring-boot-autoconfigure"

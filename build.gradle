@@ -237,7 +237,7 @@ allprojects {
 }
 
 dependencyCheck {
-    outputDirectory = "$buildDir/reports/owasp-dependency-check"
+    outputDirectory = "${rootProject.layout.buildDirectory}/reports/owasp-dependency-check"
     formats = [ReportGenerator.Format.SARIF.toString()]
     nvd.apiKey = project.findProperty("OWASP_API_KEY")
     analyzers.ossIndex.warnOnlyOnRemoteErrors = true

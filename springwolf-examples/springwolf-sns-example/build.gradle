@@ -28,7 +28,7 @@ dependencies {
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
-    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
 
     implementation 'io.awspring.cloud:spring-cloud-aws-sns'
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-sns'

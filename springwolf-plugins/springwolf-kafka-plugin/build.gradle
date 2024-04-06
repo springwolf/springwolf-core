@@ -10,8 +10,8 @@ dependencies {
     api project(":springwolf-asyncapi")
     api project(":springwolf-core")
 
-    implementation "io.swagger.core.v3:swagger-models:${swaggerVersion}"
-    permitUnusedDeclared "io.swagger.core.v3:swagger-models:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+    permitUnusedDeclared "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
     implementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
