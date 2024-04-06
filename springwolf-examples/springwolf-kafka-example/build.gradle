@@ -107,7 +107,7 @@ test {
 openApi {
     apiDocsUrl = "http://localhost:8080/springwolf/docs"
     // For testing purposes we put the generated json into the test resources, but it could be any other directory
-    outputDir = file("${rootProject.layout.buildDirectory}/resources/test")
+    outputDir = file("${layout.buildDirectory}/resources/test")
     outputFileName = "openapi-generated.json"
 }
 
