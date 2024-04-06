@@ -20,6 +20,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.operations.Processed
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -149,9 +150,9 @@ public class AsyncAnnotationUtil {
     }
 
     public static Map<String, ChannelBinding> processChannelBindingFromAnnotation(
-            Method method, List<ChannelBindingProcessor> channelBindingProcessors) {
+            AnnotatedElement annotatedElement, List<ChannelBindingProcessor> channelBindingProcessors) {
         return channelBindingProcessors.stream()
-                .map(channelBindingProcessor -> channelBindingProcessor.process(method))
+                .map(channelBindingProcessor -> channelBindingProcessor.process(annotatedElement))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toMap(
