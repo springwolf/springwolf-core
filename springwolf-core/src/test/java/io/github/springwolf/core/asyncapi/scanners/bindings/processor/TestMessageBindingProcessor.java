@@ -13,7 +13,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -24,8 +24,8 @@ public class TestMessageBindingProcessor implements MessageBindingProcessor {
     public static final MessageBinding BINDING = new EmptyMessageBinding();
 
     @Override
-    public Optional<ProcessedMessageBinding> process(Method method) {
-        return Arrays.stream(method.getAnnotations())
+    public Optional<ProcessedMessageBinding> process(AnnotatedElement annotatedElement) {
+        return Arrays.stream(annotatedElement.getAnnotations())
                 .filter(annotation -> annotation instanceof TestOperationBindingProcessor.TestOperationBinding)
                 .map(annotation -> (TestOperationBindingProcessor.TestOperationBinding) annotation)
                 .findAny()

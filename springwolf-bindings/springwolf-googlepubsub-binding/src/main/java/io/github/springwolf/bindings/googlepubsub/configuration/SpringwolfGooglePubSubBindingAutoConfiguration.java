@@ -2,6 +2,7 @@
 package io.github.springwolf.bindings.googlepubsub.configuration;
 
 import io.github.springwolf.bindings.googlepubsub.scanners.channels.GooglePubSubChannelBindingProcessor;
+import io.github.springwolf.bindings.googlepubsub.scanners.messages.GooglePubSubMessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -22,5 +23,12 @@ public class SpringwolfGooglePubSubBindingAutoConfiguration {
     @ConditionalOnMissingBean
     public GooglePubSubChannelBindingProcessor googlePubSubChannelBindingProcessor() {
         return new GooglePubSubChannelBindingProcessor();
+    }
+
+    @Bean
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
+    @ConditionalOnMissingBean
+    public GooglePubSubMessageBindingProcessor googlePubSubMessageBindingProcessor() {
+        return new GooglePubSubMessageBindingProcessor();
     }
 }

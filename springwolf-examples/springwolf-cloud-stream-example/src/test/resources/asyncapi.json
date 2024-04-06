@@ -230,7 +230,12 @@
         "name": "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto",
         "title": "GooglePubSubPayloadDto",
         "bindings": {
-          "kafka": { }
+          "googlepubsub": {
+            "schema": {
+              "name": "project/test"
+            },
+            "bindingVersion": "0.2.0"
+          }
         }
       }
     }

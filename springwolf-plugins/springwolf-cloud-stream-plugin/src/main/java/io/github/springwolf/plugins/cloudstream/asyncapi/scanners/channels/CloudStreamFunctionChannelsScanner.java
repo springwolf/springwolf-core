@@ -18,6 +18,7 @@ import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocu
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
@@ -46,6 +47,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
     protected final List<ChannelBindingProcessor> channelBindingProcessors;
+    protected final List<MessageBindingProcessor> messageBindingProcessors;
 
     @Override
     public Map<String, ChannelObject> scan() {
@@ -87,12 +89,13 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .schema(SchemaReference.fromSchema(modelName))
                 .build());
 
+        Map<String, MessageBinding> messageBinding = buildMessageBinding(beanData.annotatedElement());
         MessageObject message = MessageObject.builder()
                 .name(payloadType.getName())
                 .title(modelName)
                 .payload(messagePayload)
                 .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
-                .bindings(buildMessageBinding())
+                .bindings(messageBinding)
                 .build();
         this.componentsService.registerMessage(message);
 
@@ -103,8 +106,12 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .build();
     }
 
-    private Map<String, MessageBinding> buildMessageBinding() {
-        // FIXME: handle messageBindings from annotations as for the channel
+    private Map<String, MessageBinding> buildMessageBinding(AnnotatedElement annotatedElement) {
+        Map<String, MessageBinding> messageBindingMap =
+                AsyncAnnotationUtil.processMessageBindingFromAnnotation(annotatedElement, messageBindingProcessors);
+        if (!messageBindingMap.isEmpty()) {
+            return messageBindingMap;
+        }
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyMessageBinding());
     }

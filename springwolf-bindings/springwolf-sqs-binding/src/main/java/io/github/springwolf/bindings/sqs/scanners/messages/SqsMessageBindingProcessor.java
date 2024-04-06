@@ -8,7 +8,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMe
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringValueResolver;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -21,8 +21,8 @@ public class SqsMessageBindingProcessor implements MessageBindingProcessor, Embe
     }
 
     @Override
-    public Optional<ProcessedMessageBinding> process(Method method) {
-        return Arrays.stream(method.getAnnotations())
+    public Optional<ProcessedMessageBinding> process(AnnotatedElement annotatedElement) {
+        return Arrays.stream(annotatedElement.getAnnotations())
                 .filter(SqsAsyncOperationBinding.class::isInstance)
                 .map(SqsAsyncOperationBinding.class::cast)
                 .findAny()

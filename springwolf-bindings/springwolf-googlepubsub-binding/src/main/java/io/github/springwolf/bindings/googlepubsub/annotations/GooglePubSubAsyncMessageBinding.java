@@ -8,21 +8,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * {@code @GooglePubSubAsyncChannelBinding} is a method-level annotation.
- * It configures the channel binding for the Google pubsub protocol.
- * @see io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubChannelBinding
+ * {@code @GooglePubSubAsyncMessageBinding} is a method-level annotation.
+ * It configures the message binding for the Google pubsub protocol.
+ * @see io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageBinding
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Inherited
-public @interface GooglePubSubAsyncChannelBinding {
+public @interface GooglePubSubAsyncMessageBinding {
     String type() default "googlepubsub";
 
-    String messageRetentionDuration() default "";
+    String orderingKey() default "";
 
-    GooglePubSubAsyncMessageStoragePolicy messageStoragePolicy() default @GooglePubSubAsyncMessageStoragePolicy;
-
-    GooglePubSubAsyncSchemaSetting schemaSettings();
+    GooglePubSubAsyncMessageSchema schema() default @GooglePubSubAsyncMessageSchema;
 
     String bindingVersion() default "0.2.0";
 }

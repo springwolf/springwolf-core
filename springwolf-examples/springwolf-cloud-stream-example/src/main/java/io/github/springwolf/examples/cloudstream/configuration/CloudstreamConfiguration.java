@@ -2,6 +2,8 @@
 package io.github.springwolf.examples.cloudstream.configuration;
 
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncMessageBinding;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncMessageSchema;
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncSchemaSetting;
 import io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto;
 import io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto;
@@ -31,6 +33,7 @@ public class CloudstreamConfiguration {
 
     @GooglePubSubAsyncChannelBinding(
             schemaSettings = @GooglePubSubAsyncSchemaSetting(encoding = "BINARY", name = "project/test"))
+    @GooglePubSubAsyncMessageBinding(schema = @GooglePubSubAsyncMessageSchema(name = "project/test"))
     @Bean
     public Consumer<GooglePubSubPayloadDto> googlePubSubConsumerMethod() {
         return input -> log.info("Received new message in google-pubsub-topic: {}", input.toString());

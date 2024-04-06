@@ -11,7 +11,7 @@ import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +25,8 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
     }
 
     @Override
-    public Optional<ProcessedMessageBinding> process(Method method) {
-        return Arrays.stream(method.getAnnotations())
+    public Optional<ProcessedMessageBinding> process(AnnotatedElement annotatedElement) {
+        return Arrays.stream(annotatedElement.getAnnotations())
                 .filter(annotation -> annotation instanceof KafkaAsyncOperationBinding)
                 .map(annotation -> (KafkaAsyncOperationBinding) annotation)
                 .findAny()
