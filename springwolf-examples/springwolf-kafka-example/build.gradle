@@ -51,7 +51,7 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
@@ -107,7 +107,7 @@ test {
 openApi {
     apiDocsUrl = "http://localhost:8080/springwolf/docs"
     // For testing purposes we put the generated json into the test resources, but it could be any other directory
-    outputDir = file("${buildDir}/resources/test")
+    outputDir = file("$buildDir/resources/test")
     outputFileName = "openapi-generated.json"
 }
 
