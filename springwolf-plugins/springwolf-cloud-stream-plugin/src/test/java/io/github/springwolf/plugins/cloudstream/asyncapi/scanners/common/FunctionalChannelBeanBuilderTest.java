@@ -166,8 +166,7 @@ class FunctionalChannelBeanBuilderTest {
                 Assertions.assertThat(data).isEmpty();
             }
 
-            private static class TestClass {
-            }
+            private static class TestClass {}
         }
 
         @Nested
@@ -185,8 +184,7 @@ class FunctionalChannelBeanBuilderTest {
 
             private static class TestClass implements Consumer<String> {
                 @Override
-                public void accept(String s) {
-                }
+                public void accept(String s) {}
             }
         }
 
@@ -253,8 +251,7 @@ class FunctionalChannelBeanBuilderTest {
             static class TestClass implements Consumer<Message<String>> {
 
                 @Override
-                public void accept(Message<String> stringMessage) {
-                }
+                public void accept(Message<String> stringMessage) {}
             }
         }
 
@@ -274,9 +271,7 @@ class FunctionalChannelBeanBuilderTest {
 
             static class TestClass implements Consumer<KStream<Void, String>> {
                 @Override
-                public void accept(KStream<Void, String> voidStringKStream) {
-
-                }
+                public void accept(KStream<Void, String> voidStringKStream) {}
             }
         }
     }
