@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.Schema;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -326,9 +327,7 @@ class SwaggerSchemaUtilTest {
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(((ComponentSchema) componentSchema.getAdditionalProperties())
-                            .getSchema()
-                            .getType())
+            assertThat(componentSchema.getAdditionalProperties().getSchema().getType())
                     .isEqualTo(additionalProperties.getType());
         }
 
@@ -489,6 +488,48 @@ class SwaggerSchemaUtilTest {
 
             // then
             assertThat(componentSchema.getMaxItems()).isEqualTo(schema.getMaxItems());
+        }
+    }
+
+    @Nested
+    class MapToSwagger {
+        @Test
+        void mapDescription() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setDescription("description");
+
+            // when
+            Schema componentSchema = swaggerSchemaUtil.mapToSwagger(schema);
+
+            // then
+            assertThat(componentSchema.getDescription()).isEqualTo(schema.getDescription());
+        }
+
+        @Test
+        void mapExamples() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setExamples(List.of("example1", "example2"));
+
+            // when
+            Schema componentSchema = swaggerSchemaUtil.mapToSwagger(schema);
+
+            // then
+            assertThat(componentSchema.getExamples()).isEqualTo(schema.getExamples());
+        }
+
+        @Test
+        void mapEnum() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setEnumValues(List.of("enum1", "enum2"));
+
+            // when
+            Schema componentSchema = swaggerSchemaUtil.mapToSwagger(schema);
+
+            // then
+            assertThat(componentSchema.getEnum()).isEqualTo(schema.getEnumValues());
         }
     }
 }

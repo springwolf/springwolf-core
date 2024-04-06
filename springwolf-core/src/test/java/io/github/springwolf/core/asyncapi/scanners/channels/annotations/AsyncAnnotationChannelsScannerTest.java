@@ -156,7 +156,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .description("SimpleFoo Message Description")
                 .payload(payload)
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -230,7 +230,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(payload)
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(EMPTY_MAP)
                 .description("SimpleFoo Message Description")
                 .build();
@@ -271,7 +271,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .description("Message description")
                 .payload(payload)
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -378,7 +378,7 @@ class AsyncAnnotationChannelsScannerTest {
                     .description(null)
                     .payload(messagePayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(EMPTY_MAP)
                     .build();
 
@@ -443,7 +443,7 @@ class AsyncAnnotationChannelsScannerTest {
                     .description(null)
                     .payload(messagePayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(EMPTY_MAP)
                     .build();
 

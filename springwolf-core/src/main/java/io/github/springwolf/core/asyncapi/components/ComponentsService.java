@@ -5,7 +5,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
 
 import java.util.Map;
 
@@ -13,7 +12,7 @@ public interface ComponentsService {
 
     Map<String, SchemaObject> getSchemas();
 
-    String registerSchema(AsyncHeaders headers);
+    String registerSchema(SchemaObject headers);
 
     String registerSchema(Class<?> type);
 

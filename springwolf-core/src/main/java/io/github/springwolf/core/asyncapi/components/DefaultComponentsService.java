@@ -6,13 +6,12 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.TypeNameResolver;
-import io.swagger.v3.oas.models.media.MapSchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
@@ -62,18 +61,22 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     @Override
-    public String registerSchema(AsyncHeaders headers) {
-        log.debug("Registering schema for {}", headers.getSchemaName());
+    public String registerSchema(SchemaObject headers) {
+        log.debug("Registering schema for {}", headers.getTitle());
 
-        MapSchema headerSchema = new MapSchema();
-        headerSchema.setName(headers.getSchemaName());
+        ObjectSchema headerSchema = new ObjectSchema();
+        headerSchema.setName(headers.getTitle());
         headerSchema.setDescription(headers.getDescription());
-        headerSchema.properties(headers);
+        Map<String, Schema> properties = headers.getProperties().entrySet().stream()
+                .map((property) -> Map.entry(property.getKey(), (Schema<?>)
+                        swaggerSchemaUtil.mapToSwagger((SchemaObject) property.getValue())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        headerSchema.setProperties(properties);
 
-        this.schemas.put(headers.getSchemaName(), headerSchema);
+        this.schemas.put(headers.getTitle(), headerSchema);
         postProcessSchema(headerSchema, DEFAULT_CONTENT_TYPE);
 
-        return headers.getSchemaName();
+        return headers.getTitle();
     }
 
     @Override

@@ -5,10 +5,10 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestAbstractOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestMessageBindingProcessor;
@@ -47,13 +47,14 @@ class AsyncAnnotationUtilTest {
                 .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // then
-        AsyncHeaders headers = AsyncAnnotationUtil.getAsyncHeaders(operation, resolver);
-        assertEquals("TestSchema", headers.getSchemaName());
+        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, resolver);
+        assertEquals("TestSchema", headers.getTitle());
         assertEquals("header-descriptionResolved", headers.getDescription());
-        assertTrue(headers.containsKey("headerResolved"));
-        assertEquals("string", headers.get("headerResolved").getType());
-        assertEquals("valueResolved", headers.get("headerResolved").getExample());
-        assertEquals("descriptionResolved", headers.get("headerResolved").getDescription());
+        assertTrue(headers.getProperties().containsKey("headerResolved"));
+        SchemaObject headerResolved = (SchemaObject) headers.getProperties().get("headerResolved");
+        assertEquals("string", headerResolved.getType());
+        assertEquals("valueResolved", headerResolved.getExamples().get(0));
+        assertEquals("descriptionResolved", headerResolved.getDescription());
     }
 
     @Test
