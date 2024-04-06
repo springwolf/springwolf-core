@@ -25,19 +25,20 @@ public class FunctionalChannelBeanBuilder {
     public Set<FunctionalChannelBeanData> build(AnnotatedElement element) {
         Class<?> type = getRawType(element);
 
-        if (Consumer.class.isAssignableFrom(type)) {
-            Class<?> payloadType = getTypeGenerics(element).get(0);
+        List<Class<?>> typeGenerics = getTypeGenerics(element);
+        if (Consumer.class.isAssignableFrom(type) && typeGenerics.size() >= 1) {
+            Class<?> payloadType = typeGenerics.get(0);
             return Set.of(ofConsumer(element, payloadType));
         }
 
-        if (Supplier.class.isAssignableFrom(type)) {
-            Class<?> payloadType = getTypeGenerics(element).get(0);
+        if (Supplier.class.isAssignableFrom(type) && typeGenerics.size() >= 1) {
+            Class<?> payloadType = typeGenerics.get(0);
             return Set.of(ofSupplier(element, payloadType));
         }
 
-        if (Function.class.isAssignableFrom(type)) {
-            Class<?> inputType = getTypeGenerics(element).get(0);
-            Class<?> outputType = getTypeGenerics(element).get(1);
+        if (Function.class.isAssignableFrom(type) && typeGenerics.size() >= 2) {
+            Class<?> inputType = typeGenerics.get(0);
+            Class<?> outputType = typeGenerics.get(1);
 
             return Set.of(ofConsumer(element, inputType), ofSupplier(element, outputType));
         }
@@ -89,8 +90,11 @@ public class FunctionalChannelBeanBuilder {
 
     private List<Class<?>> getTypeGenerics(AnnotatedElement element) {
         if (element instanceof Method m) {
-            ParameterizedType genericReturnType = (ParameterizedType) m.getGenericReturnType();
-            return getTypeGenerics(genericReturnType);
+            if (m.getGenericReturnType() instanceof ParameterizedType) {
+                ParameterizedType genericReturnType = (ParameterizedType) m.getGenericReturnType();
+                return getTypeGenerics(genericReturnType);
+            }
+            return Collections.emptyList();
         }
 
         if (element instanceof Class<?> c) {

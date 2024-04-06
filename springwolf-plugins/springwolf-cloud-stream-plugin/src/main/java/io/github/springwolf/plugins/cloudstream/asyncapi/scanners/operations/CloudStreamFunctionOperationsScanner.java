@@ -17,7 +17,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
-import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -39,7 +39,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final BeanMethodsScanner beanMethodsScanner;
-    private final ComponentClassScanner componentClassScanner;
+    private final SpringwolfClassScanner classScanner;
     private final ComponentsService componentsService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
@@ -47,7 +47,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     @Override
     public Map<String, Operation> scan() {
         Set<AnnotatedElement> elements = new HashSet<>();
-        elements.addAll(componentClassScanner.scan());
+        elements.addAll(classScanner.scan());
         elements.addAll(beanMethodsScanner.getBeanMethods());
 
         List<Map.Entry<String, Operation>> operations = elements.stream()
