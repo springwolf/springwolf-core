@@ -3,7 +3,7 @@ package io.github.springwolf.bindings.googlepubsub.scanners.messages;
 
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchema;
-import io.github.springwolf.bindings.googlepubsub.annotations.messages.GooglePubSubAsyncMessageBinding;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncMessageBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import org.apache.commons.lang3.StringUtils;

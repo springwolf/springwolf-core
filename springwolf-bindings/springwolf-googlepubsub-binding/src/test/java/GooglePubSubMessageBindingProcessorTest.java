@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchema;
-import io.github.springwolf.bindings.googlepubsub.annotations.messages.GooglePubSubAsyncMessageBinding;
-import io.github.springwolf.bindings.googlepubsub.annotations.messages.GooglePubSubAsyncMessageSchema;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncMessageBinding;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncMessageSchema;
 import io.github.springwolf.bindings.googlepubsub.scanners.messages.GooglePubSubMessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
 import org.junit.jupiter.api.Test;

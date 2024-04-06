@@ -2,9 +2,9 @@
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubMessageStoragePolicy;
 import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchemaSettings;
-import io.github.springwolf.bindings.googlepubsub.annotations.channels.GooglePubSubAsyncChannelBinding;
-import io.github.springwolf.bindings.googlepubsub.annotations.channels.GooglePubSubAsyncSchemaSetting;
-import io.github.springwolf.bindings.googlepubsub.annotations.channels.GooglePubsubAsyncMessageStoragePolicy;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncMessageStoragePolicy;
+import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncSchemaSetting;
 import io.github.springwolf.bindings.googlepubsub.scanners.channels.GooglePubSubChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ public class GooglePubSubChannelBindingProcessorTest {
     @GooglePubSubAsyncChannelBinding(
             messageRetentionDuration = "messageRetentionDuration",
             messageStoragePolicy =
-                    @GooglePubsubAsyncMessageStoragePolicy(allowedPersistenceRegions = {"region1", "region2"}),
+                    @GooglePubSubAsyncMessageStoragePolicy(allowedPersistenceRegions = {"region1", "region2"}),
             schemaSettings =
                     @GooglePubSubAsyncSchemaSetting(
                             encoding = "BINARY",

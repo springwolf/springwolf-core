@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.bindings.googlepubsub.annotations.channels;
+package io.github.springwolf.bindings.googlepubsub.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -20,7 +20,7 @@ public @interface GooglePubSubAsyncChannelBinding {
 
     String messageRetentionDuration() default "";
 
-    GooglePubsubAsyncMessageStoragePolicy messageStoragePolicy() default @GooglePubsubAsyncMessageStoragePolicy;
+    GooglePubSubAsyncMessageStoragePolicy messageStoragePolicy() default @GooglePubSubAsyncMessageStoragePolicy;
 
     GooglePubSubAsyncSchemaSetting schemaSettings();
 
