@@ -5,6 +5,8 @@ import io.github.springwolf.addons.generic_binding.annotation.AsyncGenericOperat
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +24,7 @@ class AsyncGenericOperationBindingProcessorTest {
         List<ProcessedOperationBinding> result = getProcessedOperationBindings(ClassWithoutAnnotation.class);
 
         // then
-        assertThat(result).hasSize(0);
+        assertThat(result).isEmpty();
     }
 
     @Test
@@ -41,12 +43,11 @@ class AsyncGenericOperationBindingProcessorTest {
     }
 
     private List<ProcessedOperationBinding> getProcessedOperationBindings(Class<?> testClass) {
-        List<ProcessedOperationBinding> result = Arrays.stream(testClass.getDeclaredMethods())
+        return Arrays.stream(testClass.getDeclaredMethods())
                 .map((m) -> m.getAnnotationsByType(AsyncGenericOperationBinding.class))
                 .flatMap(Arrays::stream)
                 .map(processor::mapToOperationBinding)
                 .toList();
-        return result;
     }
 
     private static class ClassWithoutAnnotation {
@@ -90,6 +91,18 @@ class AsyncGenericOperationBindingProcessorTest {
         }
 
         @Test
+        void oneLongPropertyTest() {
+            // given
+            String[] strings = {"key=value is long"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("key", "value is long"));
+        }
+
+        @Test
         void twoPropertiesTest() {
             // given
             String[] strings = {"key1=value1", "key2=value2"};
@@ -99,6 +112,43 @@ class AsyncGenericOperationBindingProcessorTest {
 
             // then
             assertThat(result).isEqualTo(Map.of("key1", "value1", "key2", "value2"));
+        }
+
+        @Test
+        void arrayPropertyTest() {
+            // given
+            String[] strings = {"key=[value1, value2, value3 is long]"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("key", List.of("value1", "value2", "value3 is long")));
+        }
+
+        @CsvSource(value = {"asdf[sdf]", "[sdf][sdf]", "[sd[sdf]]", "[kdkd]dkkd", "[kdkd"})
+        @ParameterizedTest
+        void arrayParsingShouldBeIgnored(String value) {
+            // given
+            String[] strings = {"key=" + value};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then value is still a string, ignoring the array conversion
+            assertThat(result).isEqualTo(Map.of("key", value));
+        }
+
+        @Test
+        void simpleMapPropertyTest() {
+            // given
+            String[] strings = {"map.key1=value1", "map.key2=value2", "map.key3=value3"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("map", Map.of("key1", "value1", "key2", "value2", "key3", "value3")));
         }
 
         @Test
@@ -135,6 +185,18 @@ class AsyncGenericOperationBindingProcessorTest {
 
             // then
             assertThat(result).isEqualTo(Map.of("key", "value"));
+        }
+
+        @Test
+        void yamlSyntaxArrayPropertyTest() {
+            // given
+            String[] strings = {"key: [value1, value2, value3 is long]"};
+
+            // when
+            Map<String, Object> result = PropertiesUtil.toMap(strings);
+
+            // then
+            assertThat(result).isEqualTo(Map.of("key", List.of("value1", "value2", "value3 is long")));
         }
     }
 }
