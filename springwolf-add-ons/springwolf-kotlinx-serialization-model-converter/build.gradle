@@ -6,7 +6,7 @@ buildscript {
 }
 
 plugins {
-    id 'java'
+    id 'java-library'
 
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
