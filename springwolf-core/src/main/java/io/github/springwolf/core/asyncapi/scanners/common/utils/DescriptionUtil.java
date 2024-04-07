@@ -5,13 +5,16 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 
+/**
+ * Auxiliary class to manage Description or long texts.
+ */
 public class DescriptionUtil {
     private DescriptionUtil() {}
 
     /**
-     * Returns a string where all leading indentation has been removed from each line.
-     * It detects the smallest common indentation of all the lines in the input string,
+     * This method removes the smallest common indentation from all the lines in the input string,
      * and removes it.
+     * Any leading empty line will be also removed.
      *
      * @param text The original string with possible leading indentation.
      * @return The string with leading indentation removed from each line.
@@ -39,15 +42,21 @@ public class DescriptionUtil {
         return result;
     }
 
+    /**
+     * @return The index of the first non-empty line, or {@code -1} if all lines are empty
+     */
     private static int findFirstNonEmptyIndex(String[] lines) {
         for (int i = 0; i < lines.length; i++) {
             if (!lines[i].trim().isEmpty()) {
-                return i; // Return index of first non-empty line
+                return i;
             }
         }
-        return -1; // If all lines are empty, return -1
+        return -1;
     }
 
+    /**
+     * @return {@code true} if the line ends with a {@code '\n'} or {@code false} otherwise
+     */
     private static boolean endsWithNewline(String text) {
         if (text == null || text.isEmpty()) {
             return false;
