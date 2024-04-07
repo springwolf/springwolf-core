@@ -114,6 +114,7 @@ public class AsyncAnnotationUtil {
             StringValueResolver resolver) {
         String annotationMessageDescription = resolver.resolveStringValue(asyncMessage.description());
         if (StringUtils.hasText(annotationMessageDescription)) {
+            annotationMessageDescription = DescriptionUtil.trimIndent(annotationMessageDescription);
             messageBuilder.description(annotationMessageDescription);
         }
 
