@@ -6,6 +6,7 @@ import { SchemaRangeComponent } from "../range/schema-range.component";
 import { MatChipsModule } from "@angular/material/chips";
 import { MarkdownModule } from "ngx-markdown";
 import { Example } from "../../../models/example.model";
+import { JsonComponent } from "../../json/json.component";
 
 describe("SchemaComponent", () => {
   let component: SchemaComponent;
@@ -15,7 +16,7 @@ describe("SchemaComponent", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SchemaComponent, SchemaRangeComponent],
+      declarations: [SchemaComponent, SchemaRangeComponent, JsonComponent],
       imports: [MatChipsModule, MarkdownModule.forRoot()],
       providers: [
         { provide: SchemaRangeComponent, useValue: mockedSchemaRangeComponent },

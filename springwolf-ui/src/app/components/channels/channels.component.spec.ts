@@ -14,7 +14,8 @@ describe("ChannelsComponent", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ChannelsComponent, MatAccordion],
+      imports: [MatAccordion],
+      declarations: [ChannelsComponent],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
       ],

@@ -14,7 +14,8 @@ describe("SchemasComponent", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SchemasComponent, MatAccordion],
+      imports: [MatAccordion],
+      declarations: [SchemasComponent],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
       ],

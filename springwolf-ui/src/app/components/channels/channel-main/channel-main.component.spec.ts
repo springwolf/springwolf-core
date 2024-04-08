@@ -21,15 +21,14 @@ describe("ChannelMainComponent", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ChannelMainComponent,
-        JsonComponent,
+      imports: [
         MatDivider,
         MatTabGroup,
         MatTab,
         MatTabHeader,
+        MarkdownModule.forRoot(),
       ],
-      imports: [MarkdownModule.forRoot()],
+      declarations: [ChannelMainComponent, JsonComponent],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
         { provide: PublisherService, useValue: mockedPublisherService },
