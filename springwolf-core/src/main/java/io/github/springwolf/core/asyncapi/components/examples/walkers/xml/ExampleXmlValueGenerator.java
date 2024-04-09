@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -57,50 +58,48 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
     @Override
     public String lookupSchemaName(Schema schema) {
-        if (schema.getXml() != null) {
+        // TODO discuss
+        if (schema.getXml() != null && schema.getXml().getName() != null) {
             return schema.getXml().getName();
         }
         return schema.getName();
     }
 
     @Override
-    public Node createIntegerExample(Integer value) {
-        return document.createTextNode(value.toString());
+    public Optional<Node> createIntegerExample(Integer value, Node parent, Schema schema) {
+        return Optional.of(document.createTextNode(value.toString()));
     }
 
     @Override
-    public Node createDoubleExample(Double value) {
-        return document.createTextNode(value.toString());
+    public Optional<Node> createDoubleExample(Double value, Node parent, Schema schema) {
+        return Optional.of(document.createTextNode(value.toString()));
     }
 
     @Override
-    public Node createBooleanExample() {
-        return createBooleanExample(DEFAULT_BOOLEAN_EXAMPLE);
+    public Optional<Node> createBooleanExample(Boolean value, Node parent, Schema schema) {
+        return createNodeOrAddAttribute(value.toString(), parent, schema);
     }
 
     @Override
-    public Node createBooleanExample(Boolean value) {
-        return document.createTextNode(value.toString());
-    }
-
-    @Override
-    public Node createIntegerExample() {
-        return createIntegerExample(DEFAULT_INTEGER_EXAMPLE);
-    }
-
-    @Override
-    public Node createObjectExample(String name, List<PropertyExample<Node>> properties) {
+    public Element createObject(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Object name must not be empty");
         }
+
+        return document.createElement(name);
+    }
+
+    @Override
+    public void addPropertyExamples(Node object, List<PropertyExample<Node>> properties) {
+        if (object == null) {
+            throw new IllegalArgumentException("Element to add properties must not be empty");
+        }
         try {
-            Element rootElement = document.createElement(name);
 
             for (PropertyExample<Node> propertyExample : properties) {
-                rootElement.appendChild(handlePropertyExample(propertyExample));
+                object.appendChild(handlePropertyExample(propertyExample));
             }
 
-            return rootElement;
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -125,68 +124,23 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node createDoubleExample() {
-        return createDoubleExample(DEFAULT_NUMBER_EXAMPLE);
+    public Optional<Node> createStringExample(String value, Node parent, Schema schema) {
+        return createNodeOrAddAttribute(value, parent, schema);
     }
 
     @Override
-    public Node createDateExample() {
-        return document.createTextNode(DEFAULT_DATE_EXAMPLE);
+    public Optional<Node> createEnumExample(String anEnumValue, Node parent, Schema schema) {
+        return createStringExample(anEnumValue, parent, schema);
     }
 
     @Override
-    public Node createDateTimeExample() {
-        return document.createTextNode(DEFAULT_DATE_TIME_EXAMPLE);
+    public Optional<Node> createUnknownSchemaStringTypeExample(String schemaType) {
+        return Optional.of(document.createTextNode("unknown schema type: " + schemaType));
     }
 
     @Override
-    public Node createEmailExample() {
-        return document.createTextNode(DEFAULT_EMAIL_EXAMPLE);
-    }
-
-    @Override
-    public Node createPasswordExample() {
-        return document.createTextNode(DEFAULT_PASSWORD_EXAMPLE);
-    }
-
-    @Override
-    public Node createByteExample() {
-        return document.createTextNode(DEFAULT_BYTE_EXAMPLE);
-    }
-
-    @Override
-    public Node createBinaryExample() {
-        return document.createTextNode(DEFAULT_BINARY_EXAMPLE);
-    }
-
-    @Override
-    public Node createUuidExample() {
-        return document.createTextNode(DEFAULT_UUID_EXAMPLE);
-    }
-
-    @Override
-    public Node createStringExample() {
-        return createStringExample(DEFAULT_STRING_EXAMPLE);
-    }
-
-    @Override
-    public Node createStringExample(String value) {
-        return document.createTextNode(value);
-    }
-
-    @Override
-    public Node createEnumExample(String anEnumValue) {
-        return createStringExample(anEnumValue);
-    }
-
-    @Override
-    public Node createUnknownSchemaStringTypeExample(String schemaType) {
-        return document.createTextNode("unknown schema type: " + schemaType);
-    }
-
-    @Override
-    public Node createUnknownSchemaStringFormatExample(String schemaFormat) {
-        return document.createTextNode("unknown string schema format: " + schemaFormat);
+    public Optional<Node> createUnknownSchemaStringFormatExample(String schemaFormat) {
+        return Optional.of(document.createTextNode("unknown string schema format: " + schemaFormat));
     }
 
     @Override
@@ -241,8 +195,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node createEmptyObjectExample() {
-        return document.createTextNode("");
+    public Optional<Node> createEmptyObjectExample() {
+        return Optional.of(document.createTextNode(""));
     }
 
     private String getCacheKey(Schema schema) {
@@ -262,5 +216,23 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
             log.info("Unable to convert example to XMl Node: {}", xmlString, e);
         }
         return null;
+    }
+
+    private Optional<Node> createNodeOrAddAttribute(String value, Node parent, Schema schema) {
+        if (parent != null && isAttribute(schema)) {
+            if (parent instanceof Element parentElement) {
+                parentElement.setAttribute(lookupSchemaName(schema), value);
+                return Optional.empty();
+            } else {
+                throw new IllegalArgumentException("Cannot add attribute " + lookupSchemaName(schema) + " to node "
+                        + parent.getNodeName() + " because it is not a XML element");
+            }
+        } else {
+            return Optional.of(document.createTextNode(value));
+        }
+    }
+
+    private boolean isAttribute(Schema schema) {
+        return schema.getXml() != null && schema.getXml().getAttribute();
     }
 }

@@ -4,6 +4,7 @@ package io.github.springwolf.core.asyncapi.components.examples.walkers;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Provides the building blocks to generate an example
@@ -12,22 +13,6 @@ import java.util.List;
  * @param <R> The serializable representation of the example
  */
 public interface ExampleValueGenerator<T, R> {
-
-    Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
-
-    String DEFAULT_STRING_EXAMPLE = "string";
-    Integer DEFAULT_INTEGER_EXAMPLE = 0;
-    Double DEFAULT_NUMBER_EXAMPLE = 1.1;
-
-    String DEFAULT_DATE_EXAMPLE = "2015-07-20";
-    String DEFAULT_DATE_TIME_EXAMPLE = "2015-07-20T15:49:04-07:00";
-    String DEFAULT_PASSWORD_EXAMPLE = "string-password";
-    String DEFAULT_BYTE_EXAMPLE = "YmFzZTY0LWV4YW1wbGU=";
-    String DEFAULT_BINARY_EXAMPLE =
-            "0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001";
-
-    String DEFAULT_EMAIL_EXAMPLE = "example@example.com";
-    String DEFAULT_UUID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 
     boolean canHandle(String contentType);
 
@@ -43,45 +28,25 @@ public interface ExampleValueGenerator<T, R> {
      */
     R prepareForSerialization(Schema name, T exampleObject);
 
-    T createIntegerExample(Integer value);
+    Optional<T> createIntegerExample(Integer value, T parent, Schema schema);
 
-    T createDoubleExample(Double value);
+    Optional<T> createDoubleExample(Double value, T parent, Schema schema);
 
-    T createBooleanExample();
+    Optional<T> createBooleanExample(Boolean value, T parent, Schema schema);
 
-    T createBooleanExample(Boolean value);
+    T createObject(String name);
 
-    T createIntegerExample();
+    void addPropertyExamples(T object, List<PropertyExample<T>> properties);
 
-    T createObjectExample(String name, List<PropertyExample<T>> properties);
+    Optional<T> createEmptyObjectExample();
 
-    T createEmptyObjectExample();
+    Optional<T> createStringExample(String value, T parent, Schema schema);
 
-    T createDoubleExample();
+    Optional<T> createEnumExample(String anEnumValue, T parent, Schema schema);
 
-    T createDateExample();
+    Optional<T> createUnknownSchemaStringTypeExample(String schemaType);
 
-    T createDateTimeExample();
-
-    T createEmailExample();
-
-    T createPasswordExample();
-
-    T createByteExample();
-
-    T createBinaryExample();
-
-    T createUuidExample();
-
-    T createStringExample();
-
-    T createStringExample(String value);
-
-    T createEnumExample(String anEnumValue);
-
-    T createUnknownSchemaStringTypeExample(String schemaType);
-
-    T createUnknownSchemaStringFormatExample(String schemaFormat);
+    Optional<T> createUnknownSchemaStringFormatExample(String schemaFormat);
 
     T createArrayExample(String name, T arrayItem);
 
