@@ -12,7 +12,7 @@ services:
       - localstack
 
   localstack:
-    image: localstack/localstack:2.2.0
+    image: localstack/localstack:3.3.0
     environment:
       - DEBUG=${DEBUG-}
       - AWS_REGION=eu-central-1
@@ -21,10 +21,10 @@ services:
       - "4566:4566"            # LocalStack Gateway
 #      - "4510-4559:4510-4559"  # external services port range
     volumes:
-      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "${TMPDIR:-/tmp/localstack}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
   localstack_setup:
-    image: localstack/localstack:2.2.0
+    image: localstack/localstack:3.3.0
     links:
       - localstack
     depends_on:
