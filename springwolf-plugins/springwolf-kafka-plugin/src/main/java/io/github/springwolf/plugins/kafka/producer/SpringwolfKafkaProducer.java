@@ -35,7 +35,7 @@ public class SpringwolfKafkaProducer {
                     .toCompletableFuture()
                     .join();
         } else {
-            log.warn("Kafka producer for topic %s is not configured".formatted(topic));
+            log.warn("Kafka producer for topic {} is not configured", topic);
         }
     }
 

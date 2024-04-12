@@ -44,7 +44,6 @@ public abstract class PublishingBaseController implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        log.debug(
-                "Message publishing via %s is active.".formatted(this.getClass().getSimpleName()));
+        log.debug("Message publishing via {} is active.", this.getClass().getSimpleName());
     }
 }

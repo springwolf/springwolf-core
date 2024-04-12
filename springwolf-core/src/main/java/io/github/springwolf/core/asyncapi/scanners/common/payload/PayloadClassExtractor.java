@@ -99,7 +99,7 @@ public class PayloadClassExtractor {
                 // no generics used - just a normal type
                 return Class.forName(parameterType.getTypeName());
             } catch (Exception ex) {
-                log.info("Unable to extract generic data type of %s".formatted(parameterType), ex);
+                log.info("Unable to extract generic data type of {}", parameterType, ex);
             }
             return Void.class;
         }
@@ -122,7 +122,7 @@ public class PayloadClassExtractor {
             try {
                 return Class.forName(typeName);
             } catch (ClassNotFoundException ex) {
-                log.debug("Unable to find class for type %s".formatted(typeName), ex);
+                log.debug("Unable to find class for type {}", typeName, ex);
             }
 
             return Void.class;
