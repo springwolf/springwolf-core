@@ -4,19 +4,24 @@ package io.github.springwolf.examples.sqs;
 import io.github.springwolf.examples.sqs.consumers.ExampleConsumer;
 import io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto;
 import io.github.springwolf.plugins.sqs.producer.SpringwolfSqsProducer;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import static io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.mockito.Mockito.timeout;
@@ -31,7 +36,7 @@ import static org.mockito.Mockito.verify;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @DirtiesContext
-@TestMethodOrder(OrderAnnotation.class)
+@Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ProducerSystemTest {
 
@@ -41,12 +46,26 @@ public class ProducerSystemTest {
     @SpyBean
     ExampleConsumer exampleConsumer;
 
+    private static final Map<String, String> ENV = new HashMap<>();
+
+    static {
+        try (InputStream input = new FileInputStream(".env")) {
+            var properties = new Properties();
+            properties.load(input);
+            properties.forEach((key, value) -> ENV.put(String.valueOf(key), String.valueOf(value)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Container
-    public static DockerComposeContainer<?> environment =
-            new DockerComposeContainer<>(new File("docker-compose.yml")).withServices("localstack");
+    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+            .withOptions()
+            .withEnv(ENV)
+            .withLogConsumer("localstack", l -> log.debug("localstack: {}", l.getUtf8StringWithoutLineEnding()))
+            .waitingFor("localstack", Wait.forLogMessage(".*Ready.*", 1));
 
     @Test
-    @Order(2)
     void producerCanUseSpringwolfConfigurationToSendMessage() {
         // given
         ExamplePayloadDto payload = new ExamplePayloadDto();

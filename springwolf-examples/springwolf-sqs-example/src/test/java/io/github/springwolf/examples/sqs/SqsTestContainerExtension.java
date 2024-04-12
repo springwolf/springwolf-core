@@ -21,7 +21,7 @@ public class SqsTestContainerExtension implements BeforeAllCallback, ExtensionCo
     private static volatile boolean started = false;
 
     static LocalStackContainer localStack =
-            new LocalStackContainer(DockerImageName.parse("localstack/localstack:2.2.0")).withServices(SQS);
+            new LocalStackContainer(DockerImageName.parse("localstack/localstack:3.3.0")).withServices(SQS);
 
     @Override
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
