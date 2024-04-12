@@ -130,7 +130,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
                         .build()))
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
@@ -174,7 +174,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
                         .build()))
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
@@ -226,7 +226,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .schema(SchemaReference.fromSchema(Integer.class.getSimpleName()))
                         .build()))
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
@@ -251,7 +251,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
                         .build()))
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
@@ -305,7 +305,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .schema(SchemaReference.fromSchema(Integer.class.getSimpleName()))
                         .build()))
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
@@ -330,7 +330,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
                         .build()))
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
@@ -385,7 +385,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .schema(SchemaReference.fromSchema(Integer.class.getSimpleName()))
                         .build()))
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
@@ -405,7 +405,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
                         .build()))
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 

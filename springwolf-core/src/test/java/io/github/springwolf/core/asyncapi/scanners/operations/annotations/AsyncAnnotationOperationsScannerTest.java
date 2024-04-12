@@ -152,7 +152,7 @@ class AsyncAnnotationOperationsScannerTest {
                 .description("SimpleFoo Message Description")
                 .payload(payload)
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -224,7 +224,7 @@ class AsyncAnnotationOperationsScannerTest {
                 .title(SimpleFoo.class.getSimpleName())
                 .payload(payload)
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(EMPTY_MAP)
                 .description("SimpleFoo Message Description")
                 .build();
@@ -273,7 +273,7 @@ class AsyncAnnotationOperationsScannerTest {
                 .description("Message description")
                 .payload(payload)
                 .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(EMPTY_MAP)
                 .build();
 
@@ -385,7 +385,7 @@ class AsyncAnnotationOperationsScannerTest {
                     .description(null)
                     .payload(messagePayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(EMPTY_MAP)
                     .build();
 
@@ -460,7 +460,7 @@ class AsyncAnnotationOperationsScannerTest {
                     .description(null)
                     .payload(messagePayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getSchemaName())))
+                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(EMPTY_MAP)
                     .build();
 

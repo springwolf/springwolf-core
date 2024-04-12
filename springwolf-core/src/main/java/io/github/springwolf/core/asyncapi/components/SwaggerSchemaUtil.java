@@ -141,4 +141,14 @@ public class SwaggerSchemaUtil {
 
         return builder.build();
     }
+
+    public Schema mapToSwagger(SchemaObject asyncApiSchema) {
+        Schema swaggerSchema = new Schema();
+        swaggerSchema.setType("string");
+        swaggerSchema.setDescription(asyncApiSchema.getDescription());
+        swaggerSchema.setExamples(asyncApiSchema.getExamples());
+        swaggerSchema.setEnum(asyncApiSchema.getEnumValues());
+
+        return swaggerSchema;
+    }
 }

@@ -5,10 +5,9 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaderSchema;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeaders;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotUsed;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
@@ -22,7 +21,9 @@ import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,7 +34,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class AsyncAnnotationUtil {
     private AsyncAnnotationUtil() {}
 
-    public static AsyncHeaders getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
+    public static SchemaObject getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
         if (op.headers().values().length == 0) {
             if (op.headers().notUsed()) {
                 return AsyncHeadersNotUsed.NOT_USED;
@@ -44,29 +45,29 @@ public class AsyncAnnotationUtil {
         String headerDescription = StringUtils.hasText(op.headers().description())
                 ? resolver.resolveStringValue(op.headers().description())
                 : null;
-        AsyncHeaders asyncHeaders = new AsyncHeaders(op.headers().schemaName(), headerDescription);
+
+        SchemaObject headerSchema = new SchemaObject();
+        headerSchema.setType("object");
+        headerSchema.setTitle(op.headers().schemaName());
+        headerSchema.setDescription(headerDescription);
+        headerSchema.setProperties(new HashMap<>());
+
         Arrays.stream(op.headers().values())
                 .collect(groupingBy(AsyncOperation.Headers.Header::name))
                 .forEach((headerName, headers) -> {
-                    List<String> values = getHeaderValues(headers, resolver);
-                    String exampleValue = values.stream().findFirst().orElse(null);
-                    asyncHeaders.addHeader(AsyncHeaderSchema.headerBuilder()
-                            .headerName(resolver.resolveStringValue(headerName))
-                            .description(getDescription(headers, resolver))
-                            .enumValue(values)
-                            .example(exampleValue)
-                            .build());
+                    String propertyName = resolver.resolveStringValue(headerName);
 
-                    // FIXME: Replace AsyncHeaders by proper AsyncAPI v3 Headers
-                    // MessageHeaders.of(
-                    //         SchemaObject.builder()
-                    //                 .description(getDescription(headers, resolver))
-                    //                 .enumValues(values)
-                    //                 .examples(value != null ? List.of(value) : null)
-                    //                 .build());
+                    SchemaObject property = new SchemaObject();
+                    property.setType("string");
+                    property.setTitle(propertyName);
+                    property.setDescription(getDescription(headers, resolver));
+                    List<String> values = getHeaderValues(headers, resolver);
+                    property.setExamples(new ArrayList<>(values));
+                    property.setEnumValues(values);
+                    headerSchema.getProperties().put(propertyName, property);
                 });
 
-        return asyncHeaders;
+        return headerSchema;
     }
 
     private static List<String> getHeaderValues(
