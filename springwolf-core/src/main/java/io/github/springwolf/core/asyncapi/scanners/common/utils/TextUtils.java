@@ -26,9 +26,10 @@ public class TextUtils {
         final String newLine = System.lineSeparator();
         String[] lines = text.split(newLine);
         int firstNonEmptyLine = findFirstNonEmptyIndex(lines);
-        if (firstNonEmptyLine != -1) {
-            lines = Arrays.copyOfRange(lines, firstNonEmptyLine, lines.length);
+        if (firstNonEmptyLine == -1) {
+            return text;
         }
+        lines = Arrays.copyOfRange(lines, firstNonEmptyLine, lines.length);
         int minIndent = resolveMinIndent(lines);
         var result = Arrays.stream(lines)
                 .map(line -> line.substring(Math.min(line.length(), minIndent)))
