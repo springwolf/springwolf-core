@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class DescriptionUtilTest {
+class TextUtilsTest {
 
     @Test
     void textWithoutIndentShouldBeUntouched() {
@@ -14,7 +14,7 @@ class DescriptionUtilTest {
                 with two lines
                 """;
 
-        var result = DescriptionUtil.trimIndent(description);
+        var result = TextUtils.trimIndent(description);
 
         assertEquals("This is a string\nwith two lines\n", result);
     }
@@ -26,7 +26,7 @@ class DescriptionUtilTest {
                 with two lines
                 """;
 
-        var result = DescriptionUtil.trimIndent(description);
+        var result = TextUtils.trimIndent(description);
 
         assertEquals("    This is a string\nwith two lines\n", result);
     }
@@ -39,7 +39,7 @@ class DescriptionUtilTest {
                     with two lines
                 """;
 
-        var result = DescriptionUtil.trimIndent(description);
+        var result = TextUtils.trimIndent(description);
 
         assertEquals("This is a string\nwith two lines\n", result);
     }
@@ -53,7 +53,7 @@ class DescriptionUtilTest {
 
                     with two lines
                 """;
-        var result = DescriptionUtil.trimIndent(description);
+        var result = TextUtils.trimIndent(description);
 
         assertEquals("This is a string\n\nwith two lines\n", result);
     }

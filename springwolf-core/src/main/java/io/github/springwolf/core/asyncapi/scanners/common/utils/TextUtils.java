@@ -8,8 +8,8 @@ import java.util.Arrays;
 /**
  * Auxiliary class to manage Description or long texts.
  */
-public class DescriptionUtil {
-    private DescriptionUtil() {}
+public class TextUtils {
+    private TextUtils() {}
 
     /**
      * This method removes the smallest common indentation from all the lines in the input string,
@@ -67,7 +67,7 @@ public class DescriptionUtil {
     private static int resolveMinIndent(String[] lines) {
         return Arrays.stream(lines)
                 .filter(line -> !line.trim().isEmpty())
-                .mapToInt(DescriptionUtil::countLeadingSpaces)
+                .mapToInt(TextUtils::countLeadingSpaces)
                 .min()
                 .orElse(0);
     }
