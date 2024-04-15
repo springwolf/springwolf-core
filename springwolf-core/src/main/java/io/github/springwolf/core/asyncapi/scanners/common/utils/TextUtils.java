@@ -61,7 +61,7 @@ public class TextUtils {
         if (text == null || text.isEmpty()) {
             return false;
         }
-        return text.charAt(text.length() - 1) == '\n';
+        return StringUtils.endsWith(text, "\n");
     }
 
     private static int resolveMinIndent(String[] lines) {
@@ -73,11 +73,10 @@ public class TextUtils {
     }
 
     private static int countLeadingSpaces(String line) {
-        for (int i = 0; i < line.length(); i++) {
-            if (line.charAt(i) != ' ') {
-                return i;
-            }
+        var index = StringUtils.indexOfAnyBut(line, ' ');
+        if (index == -1) {
+            return 0;
         }
-        return 0;
+        return index;
     }
 }
