@@ -35,7 +35,7 @@ public class TextUtils {
                 .reduce((a, b) -> a + newLine + b)
                 .orElse(StringUtils.EMPTY);
 
-        if (endsWithNewline(text)) {
+        if (StringUtils.endsWith(text, "\n")) {
             result = result.concat(newLine);
         }
 
@@ -54,29 +54,12 @@ public class TextUtils {
         return -1;
     }
 
-    /**
-     * @return {@code true} if the line ends with a {@code '\n'} or {@code false} otherwise
-     */
-    private static boolean endsWithNewline(String text) {
-        if (text == null || text.isEmpty()) {
-            return false;
-        }
-        return StringUtils.endsWith(text, "\n");
-    }
-
     private static int resolveMinIndent(String[] lines) {
         return Arrays.stream(lines)
                 .filter(line -> !line.trim().isEmpty())
-                .mapToInt(TextUtils::countLeadingSpaces)
+                .mapToInt(line -> StringUtils.indexOfAnyBut(line, ' '))
+                .filter(i -> i >= 0)
                 .min()
                 .orElse(0);
-    }
-
-    private static int countLeadingSpaces(String line) {
-        var index = StringUtils.indexOfAnyBut(line, ' ');
-        if (index == -1) {
-            return 0;
-        }
-        return index;
     }
 }
