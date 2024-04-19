@@ -1148,7 +1148,11 @@
         },
         "name": "io.github.springwolf.examples.kafka.consumers.Input",
         "title": "Input",
-        "bindings": { }
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
       },
       "io.github.springwolf.examples.kafka.consumers.Output": {
         "headers": {
@@ -1162,7 +1166,11 @@
         },
         "name": "io.github.springwolf.examples.kafka.consumers.Output",
         "title": "Output",
-        "bindings": { }
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
       },
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
         "headers": {
@@ -1371,7 +1379,11 @@
       },
       "title": "INCOMING_REQUEST_receive",
       "description": "Inbound message.",
-      "bindings": { },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      },
       "messages": [
         {
           "$ref": "#/channels/INCOMING_REQUEST/messages/io.github.springwolf.examples.kafka.consumers.Input"
@@ -1385,7 +1397,11 @@
       },
       "title": "OUTBOUND_RESPONSE_send",
       "description": "Outbound message.",
-      "bindings": { },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      },
       "messages": [
         {
           "$ref": "#/channels/OUTBOUND_RESPONSE/messages/io.github.springwolf.examples.kafka.consumers.Output"

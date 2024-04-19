@@ -3,6 +3,7 @@ package io.github.springwolf.examples.kafka.consumers
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher
+import io.github.springwolf.plugins.kafka.asyncapi.annotations.KafkaAsyncOperationBinding
 import org.springframework.stereotype.Component
 import kotlinx.coroutines.*
 
@@ -24,6 +25,7 @@ class AsyncConsumerProducer {
             payloadType = Output::class,
         ),
     )
+    @KafkaAsyncOperationBinding
     suspend fun consumeAndProduce(input: Input) = coroutineScope {
 //  suspend fun consumeAndProduce(@Payload input: Input) = coroutineScope {
 
