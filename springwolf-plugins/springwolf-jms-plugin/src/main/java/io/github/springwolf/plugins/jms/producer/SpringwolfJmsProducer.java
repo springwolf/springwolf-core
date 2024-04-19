@@ -30,7 +30,7 @@ public class SpringwolfJmsProducer {
                         try {
                             message.setStringProperty(name, value);
                         } catch (JMSException ex) {
-                            log.warn("Unable to set JMS Header key=%s value=%s".formatted(name, value), ex);
+                            log.warn("Unable to set JMS Header key={} value={}", name, value, ex);
                         }
                     });
                 }

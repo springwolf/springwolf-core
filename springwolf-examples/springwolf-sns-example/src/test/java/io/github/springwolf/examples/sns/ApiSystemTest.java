@@ -48,7 +48,7 @@ public class ApiSystemTest {
     public DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withExposedService(APP_NAME, APP_PORT)
             .withEnv(ENV)
-            .withLogConsumer(APP_NAME, l -> log.debug("APP: %s".formatted(l.getUtf8StringWithoutLineEnding())));
+            .withLogConsumer(APP_NAME, l -> log.debug("APP: {}", l.getUtf8StringWithoutLineEnding()));
 
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);

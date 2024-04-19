@@ -110,7 +110,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             // value (i.e. OffsetDateTime) is represented as string
             return exampleValueGenerator.createStringExample(exampleValue.toString());
         } catch (IllegalArgumentException ex) {
-            log.debug("Unable to convert example to JSON: %s".formatted(exampleValue.toString()), ex);
+            log.debug("Unable to convert example to JSON: {}", exampleValue, ex);
         }
 
         return exampleValueGenerator.createEmptyObjectExample();
