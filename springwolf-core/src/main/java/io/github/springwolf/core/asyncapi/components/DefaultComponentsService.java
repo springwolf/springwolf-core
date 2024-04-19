@@ -145,8 +145,23 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     private void preProcessSchemas(Map<String, Schema> schemas, String schemaName, Class<?> type) {
+        processCommonModelConverters(schemas);
         processAsyncApiPayloadAnnotation(schemas, schemaName, type);
         processSchemaAnnotation(schemas, schemaName, type);
+    }
+
+    private void processCommonModelConverters(Map<String, Schema> schemas) {
+        schemas.values().stream()
+                .filter(schema -> schema.getType() == null)
+                .filter(schema -> schema.get$ref() != null)
+                .forEach(schema -> {
+                    String targetSchemaName = schema.getName();
+                    String sourceSchemaName = StringUtils.substringAfterLast(schema.get$ref(), "/");
+
+                    Schema<?> actualSchema = schemas.get(sourceSchemaName);
+                    schemas.put(targetSchemaName, actualSchema);
+                    schemas.remove(sourceSchemaName);
+                });
     }
 
     private void processSchemaAnnotation(Map<String, Schema> schemas, String schemaName, Class<?> type) {

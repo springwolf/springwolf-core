@@ -6,7 +6,7 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
 import org.junit.jupiter.api.Test;
 
-import javax.money.MonetaryAmount;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,18 +14,22 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MonetaryAmountConverterTest {
 
-    private MonetaryAmountConverter modelsConverter = new MonetaryAmountConverter();
+    private final MonetaryAmountConverter modelsConverter = new MonetaryAmountConverter();
 
-    private ModelConverters converters = new ModelConverters();
+    private final ModelConverters converters = new ModelConverters();
 
     @Test
     void testMonetaryAmountConverter() {
-
+        // given
         converters.addConverter(modelsConverter);
 
-        final Schema model =
-                converters.readAll(new AnnotatedType(MonetaryAmount.class)).get("MonetaryAmount");
+        // when
+        final Map<String, Schema> models = converters.readAll(new AnnotatedType(javax.money.MonetaryAmount.class));
+
+        // then
+        final Schema model = models.get("MonetaryAmount");
         assertNotNull(model);
+
         assertEquals(2, model.getProperties().size());
 
         final Schema amountProperty = (Schema) model.getProperties().get("amount");
@@ -36,5 +40,12 @@ class MonetaryAmountConverterTest {
 
         final Schema missingProperty = (Schema) model.getProperties().get("missing");
         assertNull(missingProperty);
+
+        // then
+        final Schema originalModel = models.get("javax.money.MonetaryAmount");
+        assertNotNull(originalModel);
+
+        assertNull(originalModel.getType());
+        assertEquals("#/components/schemas/MonetaryAmount", originalModel.get$ref());
     }
 }

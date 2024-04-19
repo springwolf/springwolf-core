@@ -626,43 +626,6 @@
           "type": "object"
         }
       },
-      "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number",
-            "exclusiveMinimum": 0.01,
-            "examples": [
-              99.99
-            ]
-          },
-          "currency": {
-            "type": "string",
-            "examples": [
-              "USD"
-            ]
-          }
-        },
-        "examples": [
-          {
-            "amount": 99.99,
-            "currency": "USD"
-          }
-        ],
-        "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "properties": {
-            "amount": {
-              "exclusiveMinimum": 0.01,
-              "type": "number"
-            },
-            "currency": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
         "type": "string",
         "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
@@ -1139,6 +1102,22 @@
         }
       },
       "javax.money.MonetaryAmount": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "exclusiveMinimum": 0.01,
+            "examples": [
+              99.99
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "examples": [
+              "USD"
+            ]
+          }
+        },
         "examples": [
           {
             "amount": 99.99,
@@ -1146,7 +1125,17 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#"
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "amount": {
+              "exclusiveMinimum": 0.01,
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "type": "object"
         }
       }
     },

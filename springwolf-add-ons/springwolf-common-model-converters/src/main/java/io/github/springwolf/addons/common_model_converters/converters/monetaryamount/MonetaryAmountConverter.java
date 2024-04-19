@@ -19,7 +19,11 @@ public class MonetaryAmountConverter implements ModelConverter {
             Class<?> cls = javaType.getRawClass();
             if (javax.money.MonetaryAmount.class.isAssignableFrom(cls)) {
                 type = new AnnotatedType(MonetaryAmount.class).resolveAsRef(true);
-                return (chain.hasNext()) ? chain.next().resolve(type, context, chain).name(javaType.getRawClass().getName()) : null;
+                Schema<?> schema = (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
+                if (schema != null) {
+                    schema.name(javaType.getRawClass().getName());
+                }
+                return schema;
             }
         }
         return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
