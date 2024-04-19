@@ -28,25 +28,27 @@ public interface ExampleValueGenerator<T, R> {
      */
     R prepareForSerialization(Schema name, T exampleObject);
 
-    Optional<T> createIntegerExample(Integer value, T parent, Schema schema);
+    Optional<T> createIntegerExample(Integer value, Schema schema);
 
-    Optional<T> createDoubleExample(Double value, T parent, Schema schema);
+    Optional<T> createDoubleExample(Double value, Schema schema);
 
-    Optional<T> createBooleanExample(Boolean value, T parent, Schema schema);
-
-    T createObject(String name);
-
-    void addPropertyExamples(T object, List<PropertyExample<T>> properties);
+    Optional<T> createBooleanExample(Boolean value, Schema schema);
 
     Optional<T> createEmptyObjectExample();
 
-    Optional<T> createStringExample(String value, T parent, Schema schema);
+    Optional<T> createStringExample(String value, Schema schema);
 
-    Optional<T> createEnumExample(String anEnumValue, T parent, Schema schema);
+    Optional<T> createEnumExample(String anEnumValue, Schema schema);
 
     Optional<T> createUnknownSchemaStringTypeExample(String schemaType);
 
     Optional<T> createUnknownSchemaStringFormatExample(String schemaFormat);
+
+    T createObject(String name);
+
+    default void finishObject() {}
+
+    void addPropertyExamples(T object, List<PropertyExample<T>> properties);
 
     T createArrayExample(String name, T arrayItem);
 

@@ -51,18 +51,18 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public Optional<JsonNode> createIntegerExample(Integer value, JsonNode parent, Schema schema) {
-        return this.exampleJsonValueGenerator.createIntegerExample(value, parent, schema);
+    public Optional<JsonNode> createIntegerExample(Integer value, Schema schema) {
+        return this.exampleJsonValueGenerator.createIntegerExample(value, schema);
     }
 
     @Override
-    public Optional<JsonNode> createDoubleExample(Double value, JsonNode parent, Schema schema) {
-        return this.exampleJsonValueGenerator.createDoubleExample(value, parent, schema);
+    public Optional<JsonNode> createDoubleExample(Double value, Schema schema) {
+        return this.exampleJsonValueGenerator.createDoubleExample(value, schema);
     }
 
     @Override
-    public Optional<JsonNode> createBooleanExample(Boolean value, JsonNode parent, Schema schema) {
-        return this.exampleJsonValueGenerator.createBooleanExample(value, parent, schema);
+    public Optional<JsonNode> createBooleanExample(Boolean value, Schema schema) {
+        return this.exampleJsonValueGenerator.createBooleanExample(value, schema);
     }
 
     @Override
@@ -81,13 +81,13 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public Optional<JsonNode> createStringExample(String value, JsonNode parent, Schema schema) {
-        return this.exampleJsonValueGenerator.createStringExample(value, parent, schema);
+    public Optional<JsonNode> createStringExample(String value, Schema schema) {
+        return this.exampleJsonValueGenerator.createStringExample(value, schema);
     }
 
     @Override
-    public Optional<JsonNode> createEnumExample(String anEnumValue, JsonNode parent, Schema schema) {
-        return this.exampleJsonValueGenerator.createEnumExample(anEnumValue, parent, schema);
+    public Optional<JsonNode> createEnumExample(String anEnumValue, Schema schema) {
+        return this.exampleJsonValueGenerator.createEnumExample(anEnumValue, schema);
     }
 
     @Override

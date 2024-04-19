@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Stack;
 
 @Slf4j
 public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, String> {
@@ -38,6 +39,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     private final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     private final Map<String, Node> exampleCache = new HashMap<>();
 
+    private final Stack<Element> nodeStack = new Stack<>();
+
     public ExampleXmlValueGenerator(ExampleXmlValueSerializer exampleXmlValueSerializer) {
         this.exampleXmlValueSerializer = exampleXmlValueSerializer;
     }
@@ -50,6 +53,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     @Override
     public void initialize() {
         try {
+            nodeStack.clear();
             document = createDocument();
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
@@ -66,18 +70,18 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Optional<Node> createIntegerExample(Integer value, Node parent, Schema schema) {
-        return Optional.of(document.createTextNode(value.toString()));
+    public Optional<Node> createIntegerExample(Integer value, Schema schema) {
+        return createNodeOrAddAttribute(value.toString(), schema);
     }
 
     @Override
-    public Optional<Node> createDoubleExample(Double value, Node parent, Schema schema) {
-        return Optional.of(document.createTextNode(value.toString()));
+    public Optional<Node> createDoubleExample(Double value, Schema schema) {
+        return createNodeOrAddAttribute(value.toString(), schema);
     }
 
     @Override
-    public Optional<Node> createBooleanExample(Boolean value, Node parent, Schema schema) {
-        return createNodeOrAddAttribute(value.toString(), parent, schema);
+    public Optional<Node> createBooleanExample(Boolean value, Schema schema) {
+        return createNodeOrAddAttribute(value.toString(), schema);
     }
 
     @Override
@@ -86,7 +90,12 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
             throw new IllegalArgumentException("Object name must not be empty");
         }
 
-        return document.createElement(name);
+        return nodeStack.push(document.createElement(name));
+    }
+
+    @Override
+    public void finishObject() {
+        nodeStack.pop();
     }
 
     @Override
@@ -124,13 +133,13 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Optional<Node> createStringExample(String value, Node parent, Schema schema) {
-        return createNodeOrAddAttribute(value, parent, schema);
+    public Optional<Node> createStringExample(String value, Schema schema) {
+        return createNodeOrAddAttribute(value, schema);
     }
 
     @Override
-    public Optional<Node> createEnumExample(String anEnumValue, Node parent, Schema schema) {
-        return createStringExample(anEnumValue, parent, schema);
+    public Optional<Node> createEnumExample(String anEnumValue, Schema schema) {
+        return createStringExample(anEnumValue, schema);
     }
 
     @Override
@@ -218,15 +227,11 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         return null;
     }
 
-    private Optional<Node> createNodeOrAddAttribute(String value, Node parent, Schema schema) {
-        if (parent != null && isAttribute(schema)) {
-            if (parent instanceof Element parentElement) {
-                parentElement.setAttribute(lookupSchemaName(schema), value);
-                return Optional.empty();
-            } else {
-                throw new IllegalArgumentException("Cannot add attribute " + lookupSchemaName(schema) + " to node "
-                        + parent.getNodeName() + " because it is not a XML element");
-            }
+    private Optional<Node> createNodeOrAddAttribute(String value, Schema schema) {
+        if (!nodeStack.isEmpty() && isAttribute(schema)) {
+            Element currentParent = nodeStack.peek();
+            currentParent.setAttribute(lookupSchemaName(schema), value);
+            return Optional.empty();
         } else {
             return Optional.of(document.createTextNode(value));
         }

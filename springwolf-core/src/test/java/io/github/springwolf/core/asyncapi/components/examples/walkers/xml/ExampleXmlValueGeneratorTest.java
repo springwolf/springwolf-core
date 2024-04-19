@@ -24,9 +24,9 @@ class ExampleXmlValueGeneratorTest {
         schema2.setXml(new XML().name("schema1"));
 
         generator.initialize();
-        // TODO fixme
+
         Node example1 = generator
-                .createStringExample("does-not-matter-for-test-1", null, schema1)
+                .createStringExample("does-not-matter-for-test-1", schema1)
                 .get();
         generator.prepareForSerialization(schema1, example1);
 
@@ -54,8 +54,8 @@ class ExampleXmlValueGeneratorTest {
         schema2.setName("schema1");
 
         generator.initialize();
-        // TODO fixme
-        Node example1 = generator.createStringExample("example1", null, schema1).get();
+
+        Node example1 = generator.createStringExample("example1", schema1).get();
         generator.prepareForSerialization(schema1, example1);
 
         generator.initialize();

@@ -40,27 +40,27 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
 
     @NotNull
     @Override
-    public Optional<JsonNode> createBooleanExample(Boolean value, JsonNode parent, Schema schema) {
+    public Optional<JsonNode> createBooleanExample(Boolean value, Schema schema) {
         return Optional.of(BooleanNode.valueOf(value));
     }
 
     @Override
-    public Optional<JsonNode> createIntegerExample(Integer value, JsonNode parent, Schema schema) {
+    public Optional<JsonNode> createIntegerExample(Integer value, Schema schema) {
         return Optional.of(new IntNode(value));
     }
 
     @Override
-    public Optional<JsonNode> createDoubleExample(Double value, JsonNode parent, Schema schema) {
+    public Optional<JsonNode> createDoubleExample(Double value, Schema schema) {
         return Optional.of(new DoubleNode(value));
     }
 
     @Override
-    public Optional<JsonNode> createStringExample(String value, JsonNode parent, Schema schema) {
+    public Optional<JsonNode> createStringExample(String value, Schema schema) {
         return Optional.of(JsonNodeFactory.instance.textNode(value));
     }
 
     @Override
-    public Optional<JsonNode> createEnumExample(String anEnumValue, JsonNode parent, Schema schema) {
+    public Optional<JsonNode> createEnumExample(String anEnumValue, Schema schema) {
         return Optional.of(JsonNodeFactory.instance.textNode(anEnumValue));
     }
 
