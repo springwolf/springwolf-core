@@ -21,7 +21,5 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface SqsAsyncOperationBinding {
 
-    String type() default "sqs";
-
     SqsAsyncQueueBinding[] queues() default {};
 }

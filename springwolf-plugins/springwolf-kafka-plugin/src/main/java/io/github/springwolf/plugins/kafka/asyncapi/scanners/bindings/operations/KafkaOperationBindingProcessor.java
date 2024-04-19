@@ -25,6 +25,6 @@ public class KafkaOperationBindingProcessor extends AbstractOperationBindingProc
             kafkaOperationBindingBuilder.bindingVersion(bindingVersion);
         }
 
-        return new ProcessedOperationBinding(bindingAnnotation.type(), kafkaOperationBindingBuilder.build());
+        return new ProcessedOperationBinding("kafka", kafkaOperationBindingBuilder.build());
     }
 }

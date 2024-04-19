@@ -21,8 +21,6 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface SnsAsyncOperationBinding {
 
-    String type() default "sns";
-
     String protocol();
 
     SnsAsyncOperationBindingIdentifier endpoint();

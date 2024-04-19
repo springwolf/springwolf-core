@@ -70,6 +70,6 @@ public class GooglePubSubChannelBindingProcessor implements ChannelBindingProces
             bindingBuilder.bindingVersion(bindingAnnotation.bindingVersion());
         }
 
-        return new ProcessedChannelBinding(bindingAnnotation.type(), bindingBuilder.build());
+        return new ProcessedChannelBinding("googlepubsub", bindingBuilder.build());
     }
 }

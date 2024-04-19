@@ -30,6 +30,6 @@ public class SnsMessageBindingProcessor implements MessageBindingProcessor, Embe
     }
 
     private ProcessedMessageBinding mapToMessageBinding(SnsAsyncOperationBinding bindingAnnotation) {
-        return new ProcessedMessageBinding(bindingAnnotation.type(), new SNSMessageBinding());
+        return new ProcessedMessageBinding("sns", new SNSMessageBinding());
     }
 }

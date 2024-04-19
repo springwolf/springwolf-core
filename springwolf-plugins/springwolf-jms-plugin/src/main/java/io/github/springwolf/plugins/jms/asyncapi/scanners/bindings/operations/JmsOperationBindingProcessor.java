@@ -10,6 +10,6 @@ public class JmsOperationBindingProcessor extends AbstractOperationBindingProces
 
     @Override
     protected ProcessedOperationBinding mapToOperationBinding(JmsAsyncOperationBinding bindingAnnotation) {
-        return new ProcessedOperationBinding(bindingAnnotation.type(), new JMSOperationBinding());
+        return new ProcessedOperationBinding("jms", new JMSOperationBinding());
     }
 }

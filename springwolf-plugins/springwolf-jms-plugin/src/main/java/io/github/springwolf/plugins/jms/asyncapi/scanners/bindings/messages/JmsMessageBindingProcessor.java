@@ -32,6 +32,6 @@ public class JmsMessageBindingProcessor implements MessageBindingProcessor, Embe
     private ProcessedMessageBinding mapToMessageBinding(JmsAsyncOperationBinding bindingAnnotation) {
         JMSMessageBinding jmsMessageBinding = new JMSMessageBinding();
 
-        return new ProcessedMessageBinding(bindingAnnotation.type(), jmsMessageBinding);
+        return new ProcessedMessageBinding("jms", jmsMessageBinding);
     }
 }

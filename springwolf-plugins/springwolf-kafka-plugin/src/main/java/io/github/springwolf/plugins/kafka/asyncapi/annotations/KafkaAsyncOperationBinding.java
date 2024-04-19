@@ -21,8 +21,6 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface KafkaAsyncOperationBinding {
 
-    String type() default "kafka";
-
     String groupId() default "";
 
     String clientId() default "";

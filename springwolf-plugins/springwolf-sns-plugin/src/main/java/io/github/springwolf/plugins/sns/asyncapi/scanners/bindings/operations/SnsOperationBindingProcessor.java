@@ -25,7 +25,7 @@ public class SnsOperationBindingProcessor extends AbstractOperationBindingProces
                 .build();
         var snsOperationBinding =
                 SNSOperationBinding.builder().consumers(List.of(consumer)).build();
-        return new ProcessedOperationBinding(bindingAnnotation.type(), snsOperationBinding);
+        return new ProcessedOperationBinding("sns", snsOperationBinding);
     }
 
     private SNSOperationBindingConsumer.Protocol readProtocol(String protocol) {

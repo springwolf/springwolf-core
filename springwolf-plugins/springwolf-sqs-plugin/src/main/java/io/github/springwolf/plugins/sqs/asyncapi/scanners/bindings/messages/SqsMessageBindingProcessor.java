@@ -32,6 +32,6 @@ public class SqsMessageBindingProcessor implements MessageBindingProcessor, Embe
     private ProcessedMessageBinding mapToMessageBinding(SqsAsyncOperationBinding bindingAnnotation) {
         SQSMessageBinding sqsMessageBinding = new SQSMessageBinding();
 
-        return new ProcessedMessageBinding(bindingAnnotation.type(), sqsMessageBinding);
+        return new ProcessedMessageBinding("sqs", sqsMessageBinding);
     }
 }

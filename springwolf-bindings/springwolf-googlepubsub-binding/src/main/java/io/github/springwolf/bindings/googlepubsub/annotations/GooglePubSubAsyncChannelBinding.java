@@ -16,7 +16,6 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Inherited
 public @interface GooglePubSubAsyncChannelBinding {
-    String type() default "googlepubsub";
 
     String messageRetentionDuration() default "";
 
