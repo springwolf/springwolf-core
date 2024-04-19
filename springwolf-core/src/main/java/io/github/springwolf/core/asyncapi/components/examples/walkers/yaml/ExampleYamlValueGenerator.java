@@ -66,8 +66,8 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createObject(String name) {
-        return this.exampleJsonValueGenerator.createObject(name);
+    public JsonNode startObject(String name) {
+        return this.exampleJsonValueGenerator.startObject(name);
     }
 
     @Override

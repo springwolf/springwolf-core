@@ -90,7 +90,6 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         }
 
         // Return directly, when we have processed this before
-        // TODO handle properly
         T processedExample = exampleValueGenerator.getExampleOrNull(schema, exampleValue);
         if (processedExample != null) {
             return Optional.of(processedExample);
@@ -101,7 +100,6 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         if (additionalProperties instanceof StringSchema additionalPropertiesSchema) {
             Object exampleValueString = additionalPropertiesSchema.getExample();
             if (exampleValueString != null) {
-                // TODO Proper Handling?
                 return Optional.ofNullable(exampleValueGenerator.createRaw(exampleValueString));
             }
         }
@@ -188,13 +186,13 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
             visited.add(schema);
 
-            T object = exampleValueGenerator.createObject(name);
+            T object = exampleValueGenerator.startObject(name);
 
             List<PropertyExample<T>> propertyList =
                     buildPropertyExampleListFromSchema(properties, definitions, visited);
             exampleValueGenerator.addPropertyExamples(object, propertyList);
 
-            exampleValueGenerator.finishObject();
+            exampleValueGenerator.endObject();
 
             visited.remove(schema);
             return Optional.of(object);
@@ -202,11 +200,15 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
         if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
             List<Schema> schemas = schema.getAllOf();
-            T object = exampleValueGenerator.createObject(name);
+
+            T object = exampleValueGenerator.startObject(name);
+
             List<PropertyExample<T>> mergedProperties =
                     buildPropertyExampleListFromSchemas(schemas, definitions, visited);
             exampleValueGenerator.addPropertyExamples(object, mergedProperties);
-            exampleValueGenerator.finishObject();
+
+            exampleValueGenerator.endObject();
+
             return Optional.of(object);
         }
         if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {

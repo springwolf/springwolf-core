@@ -62,7 +62,6 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
     @Override
     public String lookupSchemaName(Schema schema) {
-        // TODO discuss
         if (schema.getXml() != null && schema.getXml().getName() != null) {
             return schema.getXml().getName();
         }
@@ -85,7 +84,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Element createObject(String name) {
+    public Element startObject(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Object name must not be empty");
         }
@@ -94,7 +93,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public void finishObject() {
+    public void endObject() {
         nodeStack.pop();
     }
 

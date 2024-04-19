@@ -106,7 +106,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createObject(String name) {
+    public JsonNode startObject(String name) {
         return objectMapper.createObjectNode();
     }
 

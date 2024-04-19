@@ -44,9 +44,9 @@ public interface ExampleValueGenerator<T, R> {
 
     Optional<T> createUnknownSchemaStringFormatExample(String schemaFormat);
 
-    T createObject(String name);
+    T startObject(String name);
 
-    default void finishObject() {}
+    default void endObject() {}
 
     void addPropertyExamples(T object, List<PropertyExample<T>> properties);
 
