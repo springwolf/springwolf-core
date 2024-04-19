@@ -1,0 +1,74 @@
+{
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexAttributesFoo" : {
+    "type" : "string",
+    "properties" : {
+      "b" : {
+        "type" : "boolean"
+      },
+      "d" : {
+        "type" : "number",
+        "format" : "double"
+      },
+      "dt" : {
+        "type" : "string",
+        "format" : "date-time"
+      },
+      "f" : {
+        "type" : "number",
+        "format" : "float"
+      },
+      "i" : {
+        "type" : "integer",
+        "format" : "int32"
+      },
+      "n" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexAttributesFoo$Nested"
+      },
+      "s" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "<ComplexAttributesFoo b=\"true\" d=\"1.1\" dt=\"2015-07-20T15:49:04-07:00\" f=\"1.1\" i=\"0\" s=\"string\"><n ns=\"string\"><nli>0</nli><nmfm/><nsm><MyClassWithAttribute s_attribute=\"string\"><s_elem>string</s_elem></MyClassWithAttribute></nsm></n></ComplexAttributesFoo>" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexAttributesFoo$Nested" : {
+    "type" : "string",
+    "properties" : {
+      "nli" : {
+        "type" : "array",
+        "items" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "nmfm" : {
+        "type" : "object",
+        "additionalProperties" : {
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexAttributesFoo$Nested$MyClassWithAttribute"
+        }
+      },
+      "ns" : {
+        "type" : "string"
+      },
+      "nsm" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexAttributesFoo$Nested$MyClassWithAttribute"
+        },
+        "uniqueItems" : true
+      }
+    },
+    "examples" : [ "<NestedWithAttribute ns=\"string\"><nli>0</nli><nmfm/><nsm><MyClassWithAttribute s_attribute=\"string\"><s_elem>string</s_elem></MyClassWithAttribute></nsm></NestedWithAttribute>" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexAttributesFoo$Nested$MyClassWithAttribute" : {
+    "type" : "string",
+    "properties" : {
+      "s_attribute" : {
+        "type" : "string"
+      },
+      "s_elem" : {
+        "type" : "string"
+      }
+    },
+    "examples" : [ "<MyClassWithAttribute s_attribute=\"string\"><s_elem>string</s_elem></MyClassWithAttribute>" ]
+  }
+}

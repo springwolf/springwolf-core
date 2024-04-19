@@ -51,6 +51,8 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${jakartaXmlBindApiVersion}"
+
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
 

@@ -18,24 +18,19 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
 public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode, JsonNode> {
 
     private static final Set<String> SUPPORTED_CONTENT_TYPES = Set.of("application/json");
-    private static final BooleanNode DEFAULT_BOOLEAN_EXAMPLE =
-            BooleanNode.valueOf(ExampleValueGenerator.DEFAULT_BOOLEAN_EXAMPLE);
+
     private static final ObjectMapper objectMapper = Json.mapper();
 
     @Override
     public boolean canHandle(String contentType) {
         return SUPPORTED_CONTENT_TYPES.contains(contentType);
-    }
-
-    @Override
-    public void initialize() {
-        // Nothing to do
     }
 
     @Override
@@ -45,94 +40,38 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
 
     @NotNull
     @Override
-    public JsonNode createBooleanExample() {
-        return DEFAULT_BOOLEAN_EXAMPLE;
-    }
-
-    @NotNull
-    @Override
-    public JsonNode createBooleanExample(Boolean value) {
-        return BooleanNode.valueOf(value);
+    public Optional<JsonNode> createBooleanExample(Boolean value, Schema schema) {
+        return Optional.of(BooleanNode.valueOf(value));
     }
 
     @Override
-    public JsonNode createIntegerExample() {
-        return new IntNode(DEFAULT_INTEGER_EXAMPLE);
+    public Optional<JsonNode> createIntegerExample(Integer value, Schema schema) {
+        return Optional.of(new IntNode(value));
     }
 
     @Override
-    public JsonNode createDoubleExample() {
-        return new DoubleNode(DEFAULT_NUMBER_EXAMPLE);
+    public Optional<JsonNode> createDoubleExample(Double value, Schema schema) {
+        return Optional.of(new DoubleNode(value));
     }
 
     @Override
-    public JsonNode createIntegerExample(Integer value) {
-        return new IntNode(value);
+    public Optional<JsonNode> createStringExample(String value, Schema schema) {
+        return Optional.of(JsonNodeFactory.instance.textNode(value));
     }
 
     @Override
-    public JsonNode createDoubleExample(Double value) {
-        return new DoubleNode(value);
+    public Optional<JsonNode> createEnumExample(String anEnumValue, Schema schema) {
+        return Optional.of(JsonNodeFactory.instance.textNode(anEnumValue));
     }
 
     @Override
-    public JsonNode createStringExample() {
-        return JsonNodeFactory.instance.textNode(DEFAULT_STRING_EXAMPLE);
+    public Optional<JsonNode> createUnknownSchemaStringTypeExample(String type) {
+        return Optional.of(JsonNodeFactory.instance.textNode("unknown schema type: " + type));
     }
 
     @Override
-    public JsonNode createStringExample(String value) {
-        return JsonNodeFactory.instance.textNode(value);
-    }
-
-    @Override
-    public JsonNode createEnumExample(String anEnumValue) {
-        return JsonNodeFactory.instance.textNode(anEnumValue);
-    }
-
-    @Override
-    public JsonNode createDateExample() {
-        return JsonNodeFactory.instance.textNode(DEFAULT_DATE_EXAMPLE);
-    }
-
-    @Override
-    public JsonNode createDateTimeExample() {
-        return JsonNodeFactory.instance.textNode(DEFAULT_DATE_TIME_EXAMPLE);
-    }
-
-    @Override
-    public JsonNode createEmailExample() {
-        return JsonNodeFactory.instance.textNode(DEFAULT_EMAIL_EXAMPLE);
-    }
-
-    @Override
-    public JsonNode createPasswordExample() {
-        return JsonNodeFactory.instance.textNode(DEFAULT_PASSWORD_EXAMPLE);
-    }
-
-    @Override
-    public JsonNode createByteExample() {
-        return JsonNodeFactory.instance.textNode(DEFAULT_BYTE_EXAMPLE);
-    }
-
-    @Override
-    public JsonNode createBinaryExample() {
-        return JsonNodeFactory.instance.textNode(DEFAULT_BINARY_EXAMPLE);
-    }
-
-    @Override
-    public JsonNode createUuidExample() {
-        return JsonNodeFactory.instance.textNode(DEFAULT_UUID_EXAMPLE);
-    }
-
-    @Override
-    public JsonNode createUnknownSchemaStringTypeExample(String type) {
-        return JsonNodeFactory.instance.textNode("unknown schema type: " + type);
-    }
-
-    @Override
-    public JsonNode createUnknownSchemaStringFormatExample(String schemaFormat) {
-        return JsonNodeFactory.instance.textNode("unknown string schema format: " + schemaFormat);
+    public Optional<JsonNode> createUnknownSchemaStringFormatExample(String schemaFormat) {
+        return Optional.of(JsonNodeFactory.instance.textNode("unknown string schema format: " + schemaFormat));
     }
 
     @Override
@@ -167,14 +106,25 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createObjectExample(String name, List<PropertyExample<JsonNode>> properties) {
-        ObjectNode objectNode = objectMapper.createObjectNode();
-        properties.forEach(property -> objectNode.set(property.name(), property.example()));
-        return objectNode;
+    public JsonNode startObject(String name) {
+        return objectMapper.createObjectNode();
     }
 
     @Override
-    public JsonNode createEmptyObjectExample() {
-        return objectMapper.createObjectNode();
+    public void addPropertyExamples(JsonNode object, List<PropertyExample<JsonNode>> properties) {
+        if (object == null) {
+            throw new IllegalArgumentException("JsonNode to add properties must not be empty");
+        }
+
+        if (object instanceof ObjectNode objectNode) {
+            properties.forEach(property -> objectNode.set(property.name(), property.example()));
+        } else {
+            throw new IllegalArgumentException("JsonNode to add properties must be of type ObjectNode");
+        }
+    }
+
+    @Override
+    public Optional<JsonNode> createEmptyObjectExample() {
+        return Optional.of(objectMapper.createObjectNode());
     }
 }

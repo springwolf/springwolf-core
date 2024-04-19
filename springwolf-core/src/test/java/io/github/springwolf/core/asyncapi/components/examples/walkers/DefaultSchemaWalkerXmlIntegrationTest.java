@@ -17,6 +17,7 @@ import io.swagger.v3.oas.models.media.PasswordSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.media.UUIDSchema;
+import io.swagger.v3.oas.models.media.XML;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Node;
@@ -32,7 +33,8 @@ class DefaultSchemaWalkerXmlIntegrationTest {
 
     private final ExampleXmlValueGenerator exampleXmlValueGenerator =
             new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer());
-    private final DefaultSchemaWalker<Node, String> xmlSchemaWalker = new DefaultSchemaWalker(exampleXmlValueGenerator);
+    private final DefaultSchemaWalker<Node, String> xmlSchemaWalker =
+            new DefaultSchemaWalker<>(exampleXmlValueGenerator);
 
     @Nested
     class CanHandle {
@@ -82,6 +84,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         @Test
         void failWhenMissingDefinition() {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName("composite-schema");
 
             Schema referenceSchema = new Schema();
             referenceSchema.set$ref("#/components/schemas/Nested");
@@ -522,6 +525,33 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             public String toString() {
                 return "<foo>Text</bar> with special character =?/\\\"\\'\\b\\f\\t\\r\\n.";
             }
+        }
+    }
+
+    @Nested
+    class TestXmlAttributes {
+        @Test
+        void composite_object_without_ref() {
+            ObjectSchema nestedSchema = new ObjectSchema();
+            nestedSchema.setName("Nested");
+            nestedSchema.addProperty("s_1", new StringSchema().name("s_1").xml(new XML().attribute(true)));
+            nestedSchema.addProperty("b", new BooleanSchema().name("b"));
+
+            ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName("composite_object_with_references_root");
+            compositeSchema.addProperty("s_2", new StringSchema().name("s_2").xml(new XML().attribute(true)));
+            compositeSchema.addProperty("f", nestedSchema);
+
+            String actual = xmlSchemaWalker
+                    .fromSchema(compositeSchema, emptyMap())
+                    .trim()
+                    .stripIndent();
+
+            assertThat(actual)
+                    .isEqualTo(
+                            "<composite_object_with_references_root s_2=\"string\"><f s_1=\"string\"><b>true</b></f></composite_object_with_references_root>"
+                                    .trim()
+                                    .stripIndent());
         }
     }
 }

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -28,9 +29,6 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     public boolean canHandle(String contentType) {
         return SUPPORTED_CONTENT_TYPES.contains(contentType);
     }
-
-    @Override
-    public void initialize() {}
 
     @Override
     public String lookupSchemaName(Schema schema) {
@@ -53,102 +51,52 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createIntegerExample(Integer value) {
-        return this.exampleJsonValueGenerator.createIntegerExample(value);
+    public Optional<JsonNode> createIntegerExample(Integer value, Schema schema) {
+        return this.exampleJsonValueGenerator.createIntegerExample(value, schema);
     }
 
     @Override
-    public JsonNode createDoubleExample(Double value) {
-        return this.exampleJsonValueGenerator.createDoubleExample(value);
+    public Optional<JsonNode> createDoubleExample(Double value, Schema schema) {
+        return this.exampleJsonValueGenerator.createDoubleExample(value, schema);
     }
 
     @Override
-    public JsonNode createBooleanExample() {
-        return this.exampleJsonValueGenerator.createBooleanExample();
+    public Optional<JsonNode> createBooleanExample(Boolean value, Schema schema) {
+        return this.exampleJsonValueGenerator.createBooleanExample(value, schema);
     }
 
     @Override
-    public JsonNode createBooleanExample(Boolean value) {
-        return this.exampleJsonValueGenerator.createBooleanExample(value);
+    public JsonNode startObject(String name) {
+        return this.exampleJsonValueGenerator.startObject(name);
     }
 
     @Override
-    public JsonNode createIntegerExample() {
-        return this.exampleJsonValueGenerator.createIntegerExample();
+    public void addPropertyExamples(JsonNode object, List<PropertyExample<JsonNode>> properties) {
+        this.exampleJsonValueGenerator.addPropertyExamples(object, properties);
     }
 
     @Override
-    public JsonNode createObjectExample(String name, List<PropertyExample<JsonNode>> properties) {
-        return this.exampleJsonValueGenerator.createObjectExample(name, properties);
-    }
-
-    @Override
-    public JsonNode createEmptyObjectExample() {
+    public Optional<JsonNode> createEmptyObjectExample() {
         return this.exampleJsonValueGenerator.createEmptyObjectExample();
     }
 
     @Override
-    public JsonNode createDoubleExample() {
-        return this.exampleJsonValueGenerator.createDoubleExample();
+    public Optional<JsonNode> createStringExample(String value, Schema schema) {
+        return this.exampleJsonValueGenerator.createStringExample(value, schema);
     }
 
     @Override
-    public JsonNode createDateExample() {
-        return this.exampleJsonValueGenerator.createDateExample();
+    public Optional<JsonNode> createEnumExample(String anEnumValue, Schema schema) {
+        return this.exampleJsonValueGenerator.createEnumExample(anEnumValue, schema);
     }
 
     @Override
-    public JsonNode createDateTimeExample() {
-        return this.exampleJsonValueGenerator.createDateTimeExample();
-    }
-
-    @Override
-    public JsonNode createEmailExample() {
-        return this.exampleJsonValueGenerator.createEmailExample();
-    }
-
-    @Override
-    public JsonNode createPasswordExample() {
-        return this.exampleJsonValueGenerator.createPasswordExample();
-    }
-
-    @Override
-    public JsonNode createByteExample() {
-        return this.exampleJsonValueGenerator.createByteExample();
-    }
-
-    @Override
-    public JsonNode createBinaryExample() {
-        return this.exampleJsonValueGenerator.createBinaryExample();
-    }
-
-    @Override
-    public JsonNode createUuidExample() {
-        return this.exampleJsonValueGenerator.createUuidExample();
-    }
-
-    @Override
-    public JsonNode createStringExample() {
-        return this.exampleJsonValueGenerator.createStringExample();
-    }
-
-    @Override
-    public JsonNode createStringExample(String value) {
-        return this.exampleJsonValueGenerator.createStringExample(value);
-    }
-
-    @Override
-    public JsonNode createEnumExample(String anEnumValue) {
-        return this.exampleJsonValueGenerator.createEnumExample(anEnumValue);
-    }
-
-    @Override
-    public JsonNode createUnknownSchemaStringTypeExample(String schemaType) {
+    public Optional<JsonNode> createUnknownSchemaStringTypeExample(String schemaType) {
         return this.exampleJsonValueGenerator.createUnknownSchemaStringTypeExample(schemaType);
     }
 
     @Override
-    public JsonNode createUnknownSchemaStringFormatExample(String schemaFormat) {
+    public Optional<JsonNode> createUnknownSchemaStringFormatExample(String schemaFormat) {
         return this.exampleJsonValueGenerator.createUnknownSchemaStringFormatExample(schemaFormat);
     }
 

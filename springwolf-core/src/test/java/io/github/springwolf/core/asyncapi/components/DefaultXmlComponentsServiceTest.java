@@ -16,6 +16,7 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
+import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,8 +44,10 @@ class DefaultXmlComponentsServiceTest {
                     new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer())))))),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
+
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+
     private static final PrettyPrinter printer =
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
@@ -88,6 +91,17 @@ class DefaultXmlComponentsServiceTest {
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = jsonResource("/schemas/xml/complex-definitions-xml.json");
+
+        System.out.println("Got: " + actualDefinitions);
+        assertEquals(expected, actualDefinitions);
+    }
+
+    @Test
+    void getComplexDefinitionsWithAttributes() throws IOException {
+        componentsService.registerSchema(ComplexAttributesFoo.class, "text/xml");
+
+        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String expected = jsonResource("/schemas/xml/complex-definitions-with-attributes-xml.json");
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -269,6 +283,53 @@ class DefaultXmlComponentsServiceTest {
         public class ImplementationTwo {
             private Integer firstTwo;
             private Boolean secondTwo;
+        }
+    }
+
+    @Data
+    @NoArgsConstructor
+    @XmlRootElement(name = "ComplexAttributesFoo")
+    private static class ComplexAttributesFoo {
+        @XmlAttribute(name = "s")
+        private String s;
+
+        @XmlAttribute(name = "b")
+        private Boolean b;
+
+        @XmlAttribute(name = "i")
+        private Integer i;
+
+        @XmlAttribute(name = "f")
+        private Float f;
+
+        @XmlAttribute(name = "d")
+        private Double d;
+
+        @XmlAttribute(name = "dt")
+        private OffsetDateTime dt;
+
+        private Nested n;
+
+        @Data
+        @NoArgsConstructor
+        @XmlRootElement(name = "NestedWithAttribute")
+        private static class Nested {
+            @XmlAttribute(name = "ns")
+            private String ns;
+
+            private List<Integer> nli;
+            private Set<MyClassWithAttribute> nsm;
+            private Map<Float, MyClassWithAttribute> nmfm;
+
+            @Data
+            @NoArgsConstructor
+            @XmlRootElement(name = "MyClassWithAttribute")
+            private static class MyClassWithAttribute {
+                private String s_elem;
+
+                @XmlAttribute(name = "s_attribute")
+                private String s_attribute;
+            }
         }
     }
 
