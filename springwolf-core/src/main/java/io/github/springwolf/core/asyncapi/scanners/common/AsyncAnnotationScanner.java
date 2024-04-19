@@ -20,6 +20,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.operations.Operation
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +68,8 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
         String description = this.resolver.resolveStringValue(asyncOperation.description());
         if (!StringUtils.hasText(description)) {
             description = "Auto-generated description";
+        } else {
+            description = TextUtils.trimIndent(description);
         }
 
         String operationTitle = channelName + "_" + this.asyncAnnotationProvider.getOperationType().type;
