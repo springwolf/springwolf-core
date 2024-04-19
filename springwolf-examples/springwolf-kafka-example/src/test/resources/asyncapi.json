@@ -991,6 +991,9 @@
       "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto": {
         "type": "string",
         "properties": {
+          "someAttribute": {
+            "type": "string"
+          },
           "someEnum": {
             "type": "string",
             "enum": [
@@ -1008,11 +1011,12 @@
           }
         },
         "examples": [
-          "<io.github.springwolf.examples.kafka.dtos.XmlPayloadDto><someEnum>FOO1</someEnum><someLong>0</someLong><someString>string</someString></io.github.springwolf.examples.kafka.dtos.XmlPayloadDto>"
+          "<io.github.springwolf.examples.kafka.dtos.XmlPayloadDto someAttribute=\"string\"><someEnum>FOO1</someEnum><someLong>0</someLong><someString>string</someString></io.github.springwolf.examples.kafka.dtos.XmlPayloadDto>"
         ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "properties": {
+            "someAttribute": { },
             "someEnum": {
               "enum": [
                 "FOO1",
