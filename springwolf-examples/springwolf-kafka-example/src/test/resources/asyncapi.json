@@ -22,6 +22,20 @@
     }
   },
   "channels": {
+    "INCOMING_REQUEST": {
+      "messages": {
+        "io.github.springwolf.examples.kafka.consumers.Input": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.consumers.Input"
+        }
+      }
+    },
+    "OUTBOUND_RESPONSE": {
+      "messages": {
+        "io.github.springwolf.examples.kafka.consumers.Output": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.consumers.Output"
+        }
+      }
+    },
     "another-topic": {
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto": {
@@ -615,6 +629,50 @@
           "type": "object"
         }
       },
+      "io.github.springwolf.examples.kafka.consumers.Input": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "value": "string"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "value": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "io.github.springwolf.examples.kafka.consumers.Output": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "value": "string"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "value": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
         "type": "string",
         "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
@@ -1078,6 +1136,34 @@
       }
     },
     "messages": {
+      "io.github.springwolf.examples.kafka.consumers.Input": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.consumers.Input"
+          }
+        },
+        "name": "io.github.springwolf.examples.kafka.consumers.Input",
+        "title": "Input",
+        "bindings": { }
+      },
+      "io.github.springwolf.examples.kafka.consumers.Output": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.consumers.Output"
+          }
+        },
+        "name": "io.github.springwolf.examples.kafka.consumers.Output",
+        "title": "Output",
+        "bindings": { }
+      },
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotUsed"
@@ -1278,6 +1364,34 @@
     }
   },
   "operations": {
+    "INCOMING_REQUEST_receive_consumeAndProduce": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/INCOMING_REQUEST"
+      },
+      "title": "INCOMING_REQUEST_receive",
+      "description": "Inbound message.",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/INCOMING_REQUEST/messages/io.github.springwolf.examples.kafka.consumers.Input"
+        }
+      ]
+    },
+    "OUTBOUND_RESPONSE_send_consumeAndProduce": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/OUTBOUND_RESPONSE"
+      },
+      "title": "OUTBOUND_RESPONSE_send",
+      "description": "Outbound message.",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/OUTBOUND_RESPONSE/messages/io.github.springwolf.examples.kafka.consumers.Output"
+        }
+      ]
+    },
     "another-topic_receive_receiveAnotherPayloadBatched": {
       "action": "receive",
       "channel": {

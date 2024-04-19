@@ -1,3 +1,10 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.9.23'
+        kotlinxSerializationVersion = '1.6.3'
+    }
+}
+
 plugins {
     id 'java'
 
@@ -10,11 +17,16 @@ plugins {
 
     id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
     id 'com.google.protobuf' version '0.9.4'
+
+    id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}"
 }
 
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-kafka")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1-Beta")
 
     runtimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
     runtimeOnly project(":springwolf-add-ons:springwolf-json-schema")
