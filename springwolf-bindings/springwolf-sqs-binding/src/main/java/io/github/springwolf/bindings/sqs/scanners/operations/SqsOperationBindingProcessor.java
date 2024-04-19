@@ -23,6 +23,6 @@ public class SqsOperationBindingProcessor extends AbstractOperationBindingProces
                     .build());
         }
         var operationBinding = SQSOperationBinding.builder().queues(queues).build();
-        return new ProcessedOperationBinding(bindingAnnotation.type(), operationBinding);
+        return new ProcessedOperationBinding("sqs", operationBinding);
     }
 }

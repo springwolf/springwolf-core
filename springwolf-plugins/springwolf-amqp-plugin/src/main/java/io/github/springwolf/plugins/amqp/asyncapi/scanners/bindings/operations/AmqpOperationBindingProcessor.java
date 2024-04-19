@@ -23,6 +23,6 @@ public class AmqpOperationBindingProcessor extends AbstractOperationBindingProce
                 .ack(bindingAnnotation.ack())
                 .build();
 
-        return new ProcessedOperationBinding(bindingAnnotation.type(), amqpOperationBinding);
+        return new ProcessedOperationBinding("amqp", amqpOperationBinding);
     }
 }

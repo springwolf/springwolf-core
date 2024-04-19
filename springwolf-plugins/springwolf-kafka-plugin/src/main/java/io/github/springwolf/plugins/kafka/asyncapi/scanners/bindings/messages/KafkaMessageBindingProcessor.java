@@ -45,7 +45,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
             kafkaMessageBindingBuilder.bindingVersion(bindingVersion);
         }
 
-        return new ProcessedMessageBinding(bindingAnnotation.type(), kafkaMessageBindingBuilder.build());
+        return new ProcessedMessageBinding("kafka", kafkaMessageBindingBuilder.build());
     }
 
     private String resolveOrNull(String stringValue) {

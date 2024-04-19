@@ -32,6 +32,6 @@ public class AmqpMessageBindingProcessor implements MessageBindingProcessor, Emb
     private ProcessedMessageBinding mapToMessageBinding(AmqpAsyncOperationBinding bindingAnnotation) {
         AMQPMessageBinding amqpMessageBinding = AMQPMessageBinding.builder().build();
 
-        return new ProcessedMessageBinding(bindingAnnotation.type(), amqpMessageBinding);
+        return new ProcessedMessageBinding("amqp", amqpMessageBinding);
     }
 }

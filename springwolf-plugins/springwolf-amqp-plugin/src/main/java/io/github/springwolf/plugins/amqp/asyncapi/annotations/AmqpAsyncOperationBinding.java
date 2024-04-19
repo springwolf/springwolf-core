@@ -21,8 +21,6 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface AmqpAsyncOperationBinding {
 
-    String type() default "amqp";
-
     int expiration() default 0;
 
     String[] cc() default {};

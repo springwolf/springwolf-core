@@ -44,6 +44,6 @@ public class GooglePubSubMessageBindingProcessor implements MessageBindingProces
         if (StringUtils.isNotBlank(bindingAnnotation.bindingVersion())) {
             bindingBuilder.bindingVersion(bindingAnnotation.bindingVersion());
         }
-        return new ProcessedMessageBinding(bindingAnnotation.type(), bindingBuilder.build());
+        return new ProcessedMessageBinding("googlepubsub", bindingBuilder.build());
     }
 }

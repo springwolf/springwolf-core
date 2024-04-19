@@ -17,7 +17,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @AsyncOperationBinding
-public @interface JmsAsyncOperationBinding {
-
-    String type() default "jms";
-}
+public @interface JmsAsyncOperationBinding {}

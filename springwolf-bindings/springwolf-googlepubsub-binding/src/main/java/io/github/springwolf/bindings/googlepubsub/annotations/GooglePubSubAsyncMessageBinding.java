@@ -16,7 +16,6 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Inherited
 public @interface GooglePubSubAsyncMessageBinding {
-    String type() default "googlepubsub";
 
     String orderingKey() default "";
 
