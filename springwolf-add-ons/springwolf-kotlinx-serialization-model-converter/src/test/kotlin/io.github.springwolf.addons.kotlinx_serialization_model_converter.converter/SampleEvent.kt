@@ -91,3 +91,20 @@ data class ClassWithNestedProperty(
         val color: Color,
     )
 }
+
+@Serializable
+data class ClassWithPolymorphism(
+    @SerialName("pet")
+    val pet: Pet,
+)
+
+@Serializable
+sealed interface Pet
+
+@Serializable
+@SerialName("dog")
+data class Dog(val bark: Boolean, val breed: String) : Pet
+
+@Serializable
+@SerialName("cat")
+data class Cat(val hunt: Boolean, val age: Int) : Pet
