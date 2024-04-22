@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.addons.kotlinx_serialization_model_converter.converter
 
 import kotlinx.serialization.SerialName
@@ -51,7 +52,7 @@ data class SampleEvent(
 enum class Color {
     RED,
     GREEN,
-    BLUE
+    BLUE,
 }
 
 @Serializable

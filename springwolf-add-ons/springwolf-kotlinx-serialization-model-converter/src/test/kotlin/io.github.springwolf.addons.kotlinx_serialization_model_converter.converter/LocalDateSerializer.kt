@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.addons.kotlinx_serialization_model_converter.converter
 
 import kotlinx.serialization.KSerializer
@@ -22,7 +23,10 @@ object LocalDateSerializer : KSerializer<LocalDate> {
         return LocalDate.parse(decoder.decodeString(), dateTimeFormatter)
     }
 
-    override fun serialize(encoder: Encoder, value: LocalDate) {
+    override fun serialize(
+        encoder: Encoder,
+        value: LocalDate,
+    ) {
         encoder.encodeString(value.format(dateTimeFormatter))
     }
 }
