@@ -37,7 +37,7 @@ ext {
 
     jsr305Version = '3.0.2'
 
-    kafkaAvroSerializerVersion = '7.6.0'
+    kafkaAvroSerializerVersion = '7.6.1'
 
     kafkaClientsVersion = '3.6.1'
     kafkaStreamsVersion = '3.7.0'
