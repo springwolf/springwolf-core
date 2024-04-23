@@ -130,6 +130,7 @@ afterEvaluate {
             dependsOn jar
             dependsOn processTestResources
             dependsOn spotlessJava
+            dependsOn spotlessKotlin
             doNotTrackState("See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102")
         }
     }

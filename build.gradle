@@ -67,6 +67,14 @@ allprojects {
             trimTrailingWhitespace()
             endWithNewline()
         }
+
+        kotlin {
+            ktfmt()
+            ktlint("1.1.1")
+
+            licenseHeader("// SPDX-License-Identifier: Apache-2.0", "package|import|public")
+
+        }
     }
 
     test {
