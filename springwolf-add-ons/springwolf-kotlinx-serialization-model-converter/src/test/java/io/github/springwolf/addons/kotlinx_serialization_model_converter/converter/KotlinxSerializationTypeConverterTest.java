@@ -137,6 +137,28 @@ class KotlinxSerializationTypeConverterTest {
         }
     }
 
+    @Nested
+    class TestSealedClass {
+        @Test
+        void testSealedClassSerialization() {
+            var result = modelConverters.readAll(new AnnotatedType(ClassWithPolymorphism.class));
+            assertThat(result).hasSize(3);
+            assertThat(result.get(Dog.class.getSimpleName())).isNotNull();
+            assertThat(result.get(Cat.class.getSimpleName())).isNotNull();
+            assertThat(result.get(Pet.class.getSimpleName())).isNull();
+
+            Schema<?> schema = result.get(ClassWithPolymorphism.class.getSimpleName());
+
+            final Schema<?> sealedClass = (Schema<?>) schema.getProperties().get("pet");
+            assertThat(sealedClass).isNotNull();
+            assertThat(sealedClass.getType()).isNull();
+            assertThat(sealedClass.get$ref()).isNull();
+            assertThat(sealedClass.getOneOf()).hasSize(2);
+            assertThat(sealedClass.getOneOf().get(0).get$ref()).isEqualTo("#/components/schemas/Cat");
+            assertThat(sealedClass.getOneOf().get(1).get$ref()).isEqualTo("#/components/schemas/Dog");
+        }
+    }
+
     @Test
     void serializeKotlin() {
         final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter();
