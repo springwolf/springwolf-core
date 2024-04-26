@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.util.Json;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -99,7 +101,7 @@ class DefaultComponentsServiceTest {
 
         // when
         Class<?> clazz =
-                OneFieldFooWithFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
+                OneFieldFooWithoutFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
         componentsServiceWithFqn.registerSchema(clazz, "content-type-not-relevant");
         String actualDefinitions =
                 objectMapper.writer(printer).writeValueAsString(componentsServiceWithFqn.getSchemas());
@@ -133,6 +135,64 @@ class DefaultComponentsServiceTest {
         verifyNoInteractions(schemasPostProcessor2);
     }
 
+    @Nested
+    class RegisterSchema {
+
+        @Test
+        void Integer() {
+            // when
+            componentsService.registerSchema(Integer.class, "content-type-not-relevant");
+
+            // then
+            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            assertThat(schemas).hasSize(1).containsKey("java.lang.Number");
+            assertThat(schemas.get("java.lang.Number").getType()).isEqualTo("number");
+        }
+
+        @Test
+        void Double() {
+            // when
+            componentsService.registerSchema(Double.class, "content-type-not-relevant");
+
+            // then
+            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            assertThat(schemas).hasSize(1).containsKey("java.lang.Number");
+            assertThat(schemas.get("java.lang.Number").getType()).isEqualTo("number");
+        }
+
+        @Test
+        void String() {
+            // when
+            componentsService.registerSchema(String.class, "content-type-not-relevant");
+
+            // then
+            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            assertThat(schemas).hasSize(1).containsKey("java.lang.String");
+            assertThat(schemas.get("java.lang.String").getType()).isEqualTo("string");
+        }
+
+        @Test
+        void Byte() {
+            // when
+            componentsService.registerSchema(Byte.class, "content-type-not-relevant");
+
+            // then
+            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            assertThat(schemas).hasSize(1).containsKey("java.lang.String");
+            assertThat(schemas.get("java.lang.String").getType()).isEqualTo("string");
+        }
+
+        @Test
+        void Boolean() {
+            // when
+            componentsService.registerSchema(Boolean.class, "content-type-not-relevant");
+
+            // then
+            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            assertThat(schemas).hasSize(1).containsKey("java.lang.Boolean");
+        }
+    }
+
     @Data
     @NoArgsConstructor
     @Schema(name = "DifferentName")
@@ -143,7 +203,7 @@ class DefaultComponentsServiceTest {
 
     @Data
     @NoArgsConstructor
-    private static class OneFieldFooWithFqn {
+    private static class OneFieldFooWithoutFqn {
         private String s;
     }
 }
