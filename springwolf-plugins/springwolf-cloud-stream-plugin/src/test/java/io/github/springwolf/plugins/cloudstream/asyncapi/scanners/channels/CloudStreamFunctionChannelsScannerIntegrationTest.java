@@ -26,6 +26,7 @@ import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocu
 import io.github.springwolf.core.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -63,6 +64,7 @@ import static org.mockito.Mockito.when;
             ComponentClassScanner.class,
             DefaultBeanMethodsScanner.class,
             DefaultComponentsService.class,
+            PayloadService.class,
             SwaggerSchemaUtil.class,
             TypeToClassConverter.class,
             DefaultSchemaWalker.class,

@@ -70,9 +70,6 @@ class SpringAnnotationClassLevelChannelsScannerTest {
 
         when(payloadService.extractSchema(any()))
                 .thenReturn(new NamedSchemaObject(String.class.getName(), new SchemaObject()));
-        doAnswer(invocation -> invocation.<Class<?>>getArgument(0).getSimpleName())
-                .when(componentsService)
-                .registerSchema(any(Class.class));
         doAnswer(invocation -> AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())
                 .when(componentsService)
                 .registerSchema(any(SchemaObject.class));

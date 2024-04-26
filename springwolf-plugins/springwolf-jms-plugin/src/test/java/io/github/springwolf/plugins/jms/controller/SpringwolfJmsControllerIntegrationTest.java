@@ -2,6 +2,7 @@
 package io.github.springwolf.plugins.jms.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
@@ -9,6 +10,7 @@ import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvid
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
@@ -29,6 +31,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
@@ -50,6 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             PayloadClassExtractor.class,
             TypeToClassConverter.class,
             DefaultComponentsService.class,
+            PayloadService.class,
             SwaggerSchemaUtil.class,
             DefaultSchemaWalker.class,
             SchemaWalkerProvider.class,
@@ -86,7 +90,10 @@ class SpringwolfJmsControllerIntegrationTest {
     void setup() {
         when(springwolfJmsProducer.isEnabled()).thenReturn(true);
 
-        componentsService.registerSchema(PayloadDto.class);
+        componentsService.registerSchema(SchemaObject.builder()
+                .title(PayloadDto.class.getName())
+                .properties(new HashMap<>())
+                .build());
     }
 
     @Test

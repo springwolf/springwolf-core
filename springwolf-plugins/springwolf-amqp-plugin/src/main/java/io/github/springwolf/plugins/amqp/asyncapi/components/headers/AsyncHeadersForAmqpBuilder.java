@@ -9,13 +9,11 @@ import java.util.Map;
 
 public class AsyncHeadersForAmqpBuilder implements AsyncHeadersBuilder {
 
-    private static final SchemaObject headers = new SchemaObject();
-
-    static {
-        headers.setType("object");
-        headers.setTitle("SpringRabbitListenerDefaultHeaders");
-        headers.setProperties(Map.of());
-    }
+    private static final SchemaObject headers = SchemaObject.builder()
+            .type("object")
+            .title("SpringRabbitListenerDefaultHeaders")
+            .properties(Map.of())
+            .build();
 
     @Override
     public SchemaObject buildHeaders(NamedSchemaObject payloadSchema) {
