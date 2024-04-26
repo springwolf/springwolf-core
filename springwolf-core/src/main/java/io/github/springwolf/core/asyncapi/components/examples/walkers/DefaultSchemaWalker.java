@@ -7,7 +7,11 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +22,8 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
+
+    private static final SimpleDateFormat ISO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
 
@@ -110,10 +116,12 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         }
 
         // value is represented in their native type
-        if (exampleValue instanceof Boolean) {
-            return exampleValueGenerator.createBooleanExample((Boolean) exampleValue, schema);
-        } else if (exampleValue instanceof Number) {
-            double doubleValue = ((Number) exampleValue).doubleValue();
+        if (exampleValue instanceof Boolean booleanValue) {
+            return exampleValueGenerator.createBooleanExample(booleanValue, schema);
+        }
+
+        if (exampleValue instanceof Number numberValue) {
+            double doubleValue = numberValue.doubleValue();
 
             // Check if it's an integer (whole number)
             if (doubleValue == (int) doubleValue) {
@@ -121,6 +129,16 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             }
 
             return exampleValueGenerator.createDoubleExample(doubleValue, schema);
+        }
+
+        if (exampleValue instanceof Date exampleDate) { // in case of LocalDate, swagger-parser converts it into a Date
+            String formatted = ISO_DATE_FORMAT.format(exampleDate);
+            return exampleValueGenerator.createStringExample(formatted, schema);
+        }
+
+        if (exampleValue instanceof OffsetDateTime exampleOffsetDateTime) {
+            String formatted = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(exampleOffsetDateTime);
+            return exampleValueGenerator.createStringExample(formatted, schema);
         }
 
         try {
