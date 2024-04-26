@@ -44,7 +44,7 @@ public class PayloadService {
         return payloadType.map((type) -> buildSchema(contentType, type)).orElseGet(this::useUnusedPayload);
     }
 
-    public NamedSchemaObject buildSchema(Class<?> payloadType) {
+    private NamedSchemaObject buildSchema(Class<?> payloadType) {
         String contentType = properties.getDocket().getDefaultContentType();
 
         return buildSchema(contentType, payloadType);
@@ -57,6 +57,12 @@ public class PayloadService {
         schema.setTitle(payloadType.getSimpleName());
 
         return new NamedSchemaObject(componentsSchemaName, schema);
+    }
+
+    public String extractSchemaForName(Class<?> payloadType) {
+        String contentType = properties.getDocket().getDefaultContentType();
+
+        return this.componentsService.registerSchema(payloadType, contentType);
     }
 
     private NamedSchemaObject useUnusedPayload() {

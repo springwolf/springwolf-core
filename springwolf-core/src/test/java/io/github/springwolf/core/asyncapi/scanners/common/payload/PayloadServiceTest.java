@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,6 +32,12 @@ class PayloadServiceTest {
 
     @Mock
     private ComponentsService componentsService;
+
+    @Mock
+    private SpringwolfConfigProperties.ConfigDocket docket;
+
+    @Mock
+    private SpringwolfConfigProperties properties;
 
     @InjectMocks
     private PayloadService payloadService;
@@ -59,7 +67,7 @@ class PayloadServiceTest {
     }
 
     @Test
-    public void shouldExtractPayloadFromMethod() {
+    public void shouldExtractPayloadFromMethodWithAnnotation() {
         // given
         AsyncMessage asyncMessage = mock(AsyncMessage.class);
         when(asyncMessage.contentType()).thenReturn("application/json");
@@ -79,6 +87,29 @@ class PayloadServiceTest {
 
         // when
         var result = payloadService.extractSchema(asyncOperation, method);
+
+        // then
+        assertThat(result.name()).isEqualTo(schemaName);
+        assertThat(result.schema()).isEqualTo(schemaObject);
+    }
+
+    @Test
+    public void shouldExtractPayloadFromMethod() {
+        // given
+        when(properties.getDocket()).thenReturn(docket);
+        when(docket.getDefaultContentType()).thenReturn("application/json");
+
+        Method method = mock(Method.class);
+        when(payloadClassExtractor.extractFrom(method)).thenReturn(Optional.of(String.class));
+
+        String schemaName = "my-schema-name";
+        when(componentsService.registerSchema(any(), any())).thenReturn(schemaName);
+
+        SchemaObject schemaObject = SchemaObject.builder().build();
+        when(componentsService.resolveSchema(schemaName)).thenReturn(schemaObject);
+
+        // when
+        var result = payloadService.extractSchema(method);
 
         // then
         assertThat(result.name()).isEqualTo(schemaName);
@@ -106,5 +137,22 @@ class PayloadServiceTest {
         assertThat(result.schema().getTitle()).isEqualTo("PayloadNotUsed");
         assertThat(result.schema().getDescription()).isEqualTo("No payload specified");
         verify(componentsService).registerSchema(PAYLOAD_NOT_USED.schema());
+    }
+
+    @Test
+    public void shouldExtractSchemaForInteger() {
+        // given
+        when(properties.getDocket()).thenReturn(docket);
+        when(docket.getDefaultContentType()).thenReturn("application/json");
+
+        String schemaName = "my-schema-name";
+        when(componentsService.registerSchema(any(), any())).thenReturn(schemaName);
+
+        // when
+        var result = payloadService.extractSchemaForName(Integer.class);
+
+        // then
+        assertThat(result).isEqualTo(schemaName);
+        verifyNoMoreInteractions(componentsService);
     }
 }

@@ -80,7 +80,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
 
     private Operation buildOperation(FunctionalChannelBeanData beanData, String channelName) {
         Class<?> payloadType = beanData.payloadType();
-        String modelName = payloadService.buildSchema(payloadType).name();
+        String modelName = payloadService.extractSchemaForName(payloadType);
         String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
 
         MessageObject message = MessageObject.builder()
