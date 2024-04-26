@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +146,9 @@ class DefaultXmlComponentsServiceTest {
 
         @Schema(example = "2000-01-01T02:00:00+02:00", requiredMode = Schema.RequiredMode.REQUIRED)
         private OffsetDateTime dt;
+
+        @Schema(example = "2024-04-24")
+        private LocalDate ld;
 
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         private SimpleFoo f;
