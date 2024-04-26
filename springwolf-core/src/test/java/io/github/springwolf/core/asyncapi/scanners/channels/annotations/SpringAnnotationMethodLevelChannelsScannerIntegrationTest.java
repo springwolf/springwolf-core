@@ -20,6 +20,8 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.json.Examp
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,7 +52,9 @@ import static org.assertj.core.api.Assertions.assertThat;
             SpringAnnotationMethodLevelChannelsScannerIntegrationTest.TestBindingFactory.class,
             DefaultComponentsService.class,
             SwaggerSchemaUtil.class,
+            PayloadService.class,
             PayloadClassExtractor.class,
+            TypeToClassConverter.class,
             DefaultSchemaWalker.class,
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
@@ -61,7 +65,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
     BindingFactory<TestChannelListener> bindingFactory;
 
     @Autowired
-    PayloadClassExtractor payloadClassExtractor;
+    PayloadService payloadService;
 
     @Autowired
     ComponentsService componentsService;
@@ -74,7 +78,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                 TestChannelListener.class,
                 this.bindingFactory,
                 new AsyncHeadersNotDocumented(),
-                payloadClassExtractor,
+                payloadService,
                 componentsService);
     }
 

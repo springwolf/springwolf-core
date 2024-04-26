@@ -7,6 +7,8 @@ import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.sqs.controller.SpringwolfSqsController;
@@ -48,7 +50,9 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
+                @MockBean(PayloadService.class),
                 @MockBean(PayloadClassExtractor.class),
+                @MockBean(TypeToClassConverter.class),
                 @MockBean(AsyncApiDocketService.class),
                 @MockBean(AsyncApiService.class),
                 @MockBean(SqsTemplate.class)
@@ -89,7 +93,9 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
+                @MockBean(PayloadService.class),
                 @MockBean(PayloadClassExtractor.class),
+                @MockBean(TypeToClassConverter.class),
                 @MockBean(ChannelsService.class),
                 @MockBean(SqsTemplate.class)
             })

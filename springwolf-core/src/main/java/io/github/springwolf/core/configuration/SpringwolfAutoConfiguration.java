@@ -28,6 +28,8 @@ import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
@@ -161,7 +163,22 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public PayloadClassExtractor payloadClassExtractor(SpringwolfConfigProperties springwolfConfigProperties) {
-        return new PayloadClassExtractor(springwolfConfigProperties);
+    public TypeToClassConverter typeToClassConverter(SpringwolfConfigProperties springwolfConfigProperties) {
+        return new TypeToClassConverter(springwolfConfigProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PayloadClassExtractor payloadClassExtractor(TypeToClassConverter typeToClassConverter) {
+        return new PayloadClassExtractor(typeToClassConverter);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PayloadService payloadService(
+            PayloadClassExtractor payloadClassExtractor,
+            ComponentsService componentsService,
+            SpringwolfConfigProperties properties) {
+        return new PayloadService(payloadClassExtractor, componentsService, properties);
     }
 }

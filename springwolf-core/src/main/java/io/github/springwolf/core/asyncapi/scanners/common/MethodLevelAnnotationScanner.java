@@ -11,6 +11,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,18 +26,20 @@ public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Anno
     protected final AsyncHeadersBuilder asyncHeadersBuilder;
     protected final ComponentsService componentsService;
 
-    protected MessageObject buildMessage(MethodAnnotation annotation, Class<?> payloadType) {
+    protected MessageObject buildMessage(MethodAnnotation annotation, NamedSchemaObject payloadSchema) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation);
-        String modelName = componentsService.registerSchema(payloadType);
-        String headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadType));
+
+        // TODO: move block to own HeaderService
+        String headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadSchema));
+
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(modelName))
+                .schema(SchemaReference.fromSchema(payloadSchema.name()))
                 .build());
 
         MessageObject message = MessageObject.builder()
-                .messageId(payloadType.getName())
-                .name(payloadType.getName())
-                .title(payloadType.getSimpleName())
+                .messageId(payloadSchema.name())
+                .name(payloadSchema.name())
+                .title(payloadSchema.schema().getTitle())
                 .description(null)
                 .payload(payload)
                 .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))

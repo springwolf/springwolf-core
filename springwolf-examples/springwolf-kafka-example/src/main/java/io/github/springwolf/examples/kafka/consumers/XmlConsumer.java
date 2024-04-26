@@ -20,8 +20,10 @@ public class XmlConsumer {
             operation =
                     @AsyncOperation(
                             channelName = "xml-topic",
-                            description = "Showcases a xml based message",
-                            message = @AsyncMessage(contentType = "text/xml")))
+                            message =
+                                    @AsyncMessage(
+                                            contentType = "text/xml",
+                                            description = "Showcases a xml based message")))
     @KafkaAsyncOperationBinding
     @KafkaListener(topics = "xml-topic")
     public void receiveExamplePayload(XmlPayloadDto payload) {

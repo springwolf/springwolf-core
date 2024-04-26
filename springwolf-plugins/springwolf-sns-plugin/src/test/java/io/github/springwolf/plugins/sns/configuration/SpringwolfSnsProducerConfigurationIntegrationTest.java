@@ -7,6 +7,7 @@ import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.sns.controller.SpringwolfSnsController;
@@ -49,6 +50,7 @@ public class SpringwolfSnsProducerConfigurationIntegrationTest {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadClassExtractor.class),
+                @MockBean(TypeToClassConverter.class),
                 @MockBean(AsyncApiDocketService.class),
                 @MockBean(AsyncApiService.class),
                 @MockBean(SnsTemplate.class)
@@ -90,6 +92,7 @@ public class SpringwolfSnsProducerConfigurationIntegrationTest {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadClassExtractor.class),
+                @MockBean(TypeToClassConverter.class),
                 @MockBean(ChannelsService.class),
                 @MockBean(SnsTemplate.class)
             })

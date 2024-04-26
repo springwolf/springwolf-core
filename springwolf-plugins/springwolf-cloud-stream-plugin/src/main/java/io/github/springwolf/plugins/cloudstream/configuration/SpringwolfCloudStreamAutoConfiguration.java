@@ -6,7 +6,7 @@ import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.channels.CloudStreamFunctionChannelsScanner;
@@ -65,7 +65,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
     }
 
     @Bean
-    public FunctionalChannelBeanBuilder functionalChannelBeanBuilder(PayloadClassExtractor payloadClassExtractor) {
-        return new FunctionalChannelBeanBuilder(payloadClassExtractor);
+    public FunctionalChannelBeanBuilder functionalChannelBeanBuilder(TypeToClassConverter typeToClassConverter) {
+        return new FunctionalChannelBeanBuilder(typeToClassConverter);
     }
 }

@@ -4,6 +4,8 @@ package io.github.springwolf.plugins.kafka.configuration;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.kafka.controller.SpringwolfKafkaController;
@@ -46,7 +48,9 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
+                @MockBean(PayloadService.class),
                 @MockBean(PayloadClassExtractor.class),
+                @MockBean(TypeToClassConverter.class),
                 @MockBean(AsyncApiDocketService.class)
             })
     class KafkaProducerWillBeCreatedIfEnabledTest {
@@ -85,7 +89,9 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
-                @MockBean(PayloadClassExtractor.class)
+                @MockBean(PayloadService.class),
+                @MockBean(PayloadClassExtractor.class),
+                @MockBean(TypeToClassConverter.class),
             })
     class KafkaProducerWillNotBeCreatedIfDisabledTest {
         @Autowired

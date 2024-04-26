@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClass
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.AsyncAnnotationOperationsScanner;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -74,6 +75,7 @@ public class SpringwolfScannerConfiguration {
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
             PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncAnnotationChannelsScanner<>(
@@ -82,6 +84,7 @@ public class SpringwolfScannerConfiguration {
                 componentsService,
                 asyncApiDocketService,
                 payloadClassExtractor,
+                payloadService,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }
@@ -96,6 +99,7 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncAnnotationOperationsScanner<>(
@@ -103,6 +107,7 @@ public class SpringwolfScannerConfiguration {
                 springwolfClassScanner,
                 componentsService,
                 payloadClassExtractor,
+                payloadService,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }
@@ -118,6 +123,7 @@ public class SpringwolfScannerConfiguration {
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
             PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncAnnotationChannelsScanner<>(
@@ -126,6 +132,7 @@ public class SpringwolfScannerConfiguration {
                 componentsService,
                 asyncApiDocketService,
                 payloadClassExtractor,
+                payloadService,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }
@@ -140,6 +147,7 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             PayloadClassExtractor payloadClassExtractor,
+            PayloadService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         return new AsyncAnnotationOperationsScanner<>(
@@ -147,6 +155,7 @@ public class SpringwolfScannerConfiguration {
                 springwolfClassScanner,
                 componentsService,
                 payloadClassExtractor,
+                payloadService,
                 operationBindingProcessors,
                 messageBindingProcessors);
     }

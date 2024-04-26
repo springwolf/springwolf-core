@@ -3,6 +3,7 @@ package io.github.springwolf.plugins.amqp.asyncapi.components.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class AsyncHeadersForAmqpBuilder implements AsyncHeadersBuilder {
     }
 
     @Override
-    public SchemaObject buildHeaders(Class<?> payloadType) {
+    public SchemaObject buildHeaders(NamedSchemaObject payloadSchema) {
         return headers;
     }
 }

@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.components.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class AsyncHeadersNotDocumented implements AsyncHeadersBuilder {
     }
 
     @Override
-    public SchemaObject buildHeaders(Class<?> payloadType) {
+    public SchemaObject buildHeaders(NamedSchemaObject payloadSchema) {
         return NOT_DOCUMENTED;
     }
 }

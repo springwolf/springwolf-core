@@ -66,6 +66,18 @@
         }
       }
     },
+    "no-payload-used-topic": {
+      "messages": {
+        "PayloadNotUsed": {
+          "$ref": "#/components/messages/PayloadNotUsed"
+        }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      }
+    },
     "protobuf-topic": {
       "messages": {
         "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
@@ -140,6 +152,19 @@
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "No headers are present.",
+          "type": "object"
+        }
+      },
+      "PayloadNotUsed": {
+        "type": "object",
+        "properties": { },
+        "description": "No payload specified",
+        "examples": [
+          { }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "No payload specified",
           "type": "object"
         }
       },
@@ -469,6 +494,39 @@
           "type": "object"
         }
       },
+      "SpringKafkaDefaultHeaders-PayloadNotUsed": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "PayloadNotUsed"
+            ],
+            "examples": [
+              "PayloadNotUsed"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "PayloadNotUsed"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "PayloadNotUsed"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
       "SpringKafkaDefaultHeaders-String": {
         "type": "object",
         "properties": {
@@ -562,53 +620,6 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
               ],
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      "String": {
-        "type": "string",
-        "examples": [
-          "\"string\""
-        ],
-        "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "type": "string"
-        }
-      },
-      "io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number",
-            "exclusiveMinimum": 0.01,
-            "examples": [
-              99.99
-            ]
-          },
-          "currency": {
-            "type": "string",
-            "examples": [
-              "USD"
-            ]
-          }
-        },
-        "examples": [
-          {
-            "amount": 99.99,
-            "currency": "USD"
-          }
-        ],
-        "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "properties": {
-            "amount": {
-              "exclusiveMinimum": 0.01,
-              "type": "number"
-            },
-            "currency": {
               "type": "string"
             }
           },
@@ -1079,9 +1090,74 @@
           },
           "type": "string"
         }
+      },
+      "java.lang.String": {
+        "type": "string",
+        "examples": [
+          "\"string\""
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "type": "string"
+        }
+      },
+      "javax.money.MonetaryAmount": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "exclusiveMinimum": 0.01,
+            "examples": [
+              99.99
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "examples": [
+              "USD"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "amount": 99.99,
+            "currency": "USD"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "amount": {
+              "exclusiveMinimum": 0.01,
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
       }
     },
     "messages": {
+      "PayloadNotUsed": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-PayloadNotUsed"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/PayloadNotUsed"
+          }
+        },
+        "name": "PayloadNotUsed",
+        "title": "PayloadNotUsed",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
+      },
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotUsed"
@@ -1094,6 +1170,7 @@
         },
         "name": "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope",
         "title": "StringEnvelope",
+        "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
         "bindings": {
           "kafka": {
             "bindingVersion": "0.5.0"
@@ -1211,6 +1288,7 @@
         "contentType": "text/xml",
         "name": "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto",
         "title": "XmlPayloadDto",
+        "description": "Showcases a xml based message",
         "bindings": {
           "kafka": {
             "bindingVersion": "0.5.0"
@@ -1230,6 +1308,7 @@
         "contentType": "application/yaml",
         "name": "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto",
         "title": "YamlPayloadDto",
+        "description": "Showcases a yaml based message",
         "bindings": {
           "kafka": {
             "bindingVersion": "0.5.0"
@@ -1243,7 +1322,7 @@
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/String"
+            "$ref": "#/components/schemas/java.lang.String"
           }
         },
         "name": "java.lang.String",
@@ -1261,7 +1340,7 @@
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmount"
+            "$ref": "#/components/schemas/javax.money.MonetaryAmount"
           }
         },
         "name": "javax.money.MonetaryAmount",
@@ -1390,6 +1469,22 @@
         }
       ]
     },
+    "no-payload-used-topic_receive_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/no-payload-used-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/no-payload-used-topic/messages/PayloadNotUsed"
+        }
+      ]
+    },
     "protobuf-topic_receive_receiveExampleProtobufPayload": {
       "action": "receive",
       "channel": {
@@ -1457,7 +1552,7 @@
         "$ref": "#/channels/xml-topic"
       },
       "title": "xml-topic_receive",
-      "description": "Showcases a xml based message",
+      "description": "Auto-generated description",
       "bindings": {
         "kafka": {
           "bindingVersion": "0.5.0"
@@ -1475,7 +1570,7 @@
         "$ref": "#/channels/yaml-topic"
       },
       "title": "yaml-topic_receive",
-      "description": "Showcases a yaml based message",
+      "description": "Auto-generated description",
       "bindings": {
         "kafka": {
           "bindingVersion": "0.5.0"
