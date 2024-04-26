@@ -159,8 +159,11 @@ public class DefaultComponentsService implements ComponentsService {
                     String sourceSchemaName = StringUtils.substringAfterLast(schema.get$ref(), "/");
 
                     Schema<?> actualSchema = schemas.get(sourceSchemaName);
-                    schemas.put(targetSchemaName, actualSchema);
-                    schemas.remove(sourceSchemaName);
+
+                    if (actualSchema != null) {
+                        schemas.put(targetSchemaName, actualSchema);
+                        schemas.remove(sourceSchemaName);
+                    }
                 });
     }
 
