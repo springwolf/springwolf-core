@@ -93,10 +93,8 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
     protected MessageObject buildMessage(AsyncOperation operationData, Method method) {
         NamedSchemaObject payloadSchema = payloadService.extractSchema(operationData, method);
 
-        // TODO: move block to own HeaderService
         SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, resolver);
         String headerSchemaName = this.componentsService.registerSchema(headerSchema);
-        var headers = MessageHeaders.of(MessageReference.toSchema(headerSchemaName));
 
         Map<String, MessageBinding> messageBinding =
                 AsyncAnnotationUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
@@ -120,7 +118,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
                 .title(payloadSchema.schema().getTitle())
                 .description(description)
                 .payload(messagePayload)
-                .headers(headers)
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerSchemaName)))
                 .bindings(messageBinding);
 
         // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher

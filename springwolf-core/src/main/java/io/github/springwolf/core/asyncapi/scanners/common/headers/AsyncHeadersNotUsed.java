@@ -1,22 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.plugins.amqp.asyncapi.components.headers;
+package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 
 import java.util.Map;
 
-public class AsyncHeadersForAmqpBuilder implements AsyncHeadersBuilder {
-
-    private static final SchemaObject headers = SchemaObject.builder()
+public class AsyncHeadersNotUsed implements AsyncHeadersBuilder {
+    /**
+     * Explicitly document that no headers are used.
+     */
+    public static final SchemaObject NOT_USED = SchemaObject.builder()
             .type("object")
-            .title("SpringRabbitListenerDefaultHeaders")
+            .title("HeadersNotUsed")
+            .description("No headers are present.")
             .properties(Map.of())
             .build();
 
     @Override
     public SchemaObject buildHeaders(NamedSchemaObject payloadSchema) {
-        return headers;
+        return NOT_USED;
     }
 }

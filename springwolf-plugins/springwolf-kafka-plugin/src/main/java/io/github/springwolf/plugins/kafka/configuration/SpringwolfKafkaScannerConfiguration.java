@@ -12,10 +12,10 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
-import io.github.springwolf.plugins.kafka.asyncapi.components.header.AsyncHeadersForKafkaBuilder;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.messages.KafkaMessageBindingProcessor;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.operations.KafkaOperationBindingProcessor;
+import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.header.AsyncHeadersForKafkaBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

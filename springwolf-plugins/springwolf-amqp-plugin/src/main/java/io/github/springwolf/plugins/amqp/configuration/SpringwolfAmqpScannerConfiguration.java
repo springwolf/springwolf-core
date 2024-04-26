@@ -12,10 +12,10 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
-import io.github.springwolf.plugins.amqp.asyncapi.components.headers.AsyncHeadersForAmqpBuilder;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.AmqpBindingFactory;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.messages.AmqpMessageBindingProcessor;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.operations.AmqpOperationBindingProcessor;
+import io.github.springwolf.plugins.amqp.asyncapi.scanners.common.headers.AsyncHeadersForAmqpBuilder;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;

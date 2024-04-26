@@ -31,7 +31,7 @@ public class PayloadService {
     public NamedSchemaObject extractSchema(Method method) {
         Optional<Class<?>> payloadType = payloadClassExtractor.extractFrom(method);
 
-        return payloadType.map((type) -> buildSchema(type)).orElseGet(this::useUnusedPayload);
+        return payloadType.map(this::buildSchema).orElseGet(this::useUnusedPayload);
     }
 
     public NamedSchemaObject extractSchema(AsyncOperation operationData, Method method) {
@@ -40,6 +40,7 @@ public class PayloadService {
                 : payloadClassExtractor.extractFrom(method);
 
         String contentType = operationData.message().contentType();
+
         return payloadType.map((type) -> buildSchema(contentType, type)).orElseGet(this::useUnusedPayload);
     }
 

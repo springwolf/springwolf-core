@@ -7,10 +7,11 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
@@ -83,7 +84,8 @@ public abstract class ClassLevelAnnotationScanner<
     protected MessageObject buildMessage(ClassAnnotation classAnnotation, NamedSchemaObject payloadSchema) {
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation);
 
-        String headerModelName = componentsService.registerSchema(asyncHeadersBuilder.buildHeaders(payloadSchema));
+        SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
+        String headerSchemaName = componentsService.registerSchema(headerSchema);
 
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(payloadSchema.name()))
@@ -95,7 +97,7 @@ public abstract class ClassLevelAnnotationScanner<
                 .title(payloadSchema.schema().getTitle())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerSchemaName)))
                 .bindings(messageBinding)
                 .build();
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.components.headers;
+package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 public class AsyncHeadersCloudEventConstants {
     public static final String CONTENT_TYPE = "content-type";
