@@ -35,11 +35,11 @@ public abstract class PublishingBaseController implements InitializingBean {
         }
 
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
-        if (result.payload() != null) {
+        if (result.errorMessage().isEmpty()) {
             publishMessage(topic, message, result.payload());
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.badRequest().body(result.errorMessage());
+        return ResponseEntity.badRequest().body(result.errorMessage().get());
     }
 
     @Override

@@ -119,8 +119,8 @@ export class ChannelMainComponent implements OnInit {
     bindings?: string
   ): void {
     try {
-      const headersJson = JSON.parse(headers);
-      const bindingsJson = JSON.parse(bindings);
+      const headersJson = headers != "" ? JSON.parse(headers) : {};
+      const bindingsJson = bindings != "" ? JSON.parse(bindings) : {};
 
       this.publisherService
         .publish(
@@ -136,9 +136,13 @@ export class ChannelMainComponent implements OnInit {
           (err) => this.handlePublishError(err)
         );
     } catch (error) {
-      this.snackBar.open("Example payload is not valid", "ERROR", {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        "Example payload is not valid " + JSON.stringify(error),
+        "ERROR",
+        {
+          duration: 3000,
+        }
+      );
     }
   }
 
