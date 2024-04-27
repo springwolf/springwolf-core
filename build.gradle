@@ -137,6 +137,7 @@ allprojects {
             'springwolf-kotlinx-serialization-model-converter'
     ]
     var bindings = [
+            'springwolf-amqp-binding',
             'springwolf-googlepubsub-binding',
             'springwolf-jms-binding',
             'springwolf-sns-binding',
