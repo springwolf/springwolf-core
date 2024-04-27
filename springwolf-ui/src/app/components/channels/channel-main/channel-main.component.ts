@@ -8,6 +8,7 @@ import { Operation } from "../../../models/operation.model";
 import { Schema } from "../../../models/schema.model";
 import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
 import { PublisherService } from "../../../service/publisher.service";
+import { wrapException } from "../../../util/error-boundary";
 
 @Component({
   selector: "app-channel-main",
@@ -119,8 +120,20 @@ export class ChannelMainComponent implements OnInit {
     bindings?: string
   ): void {
     try {
-      const headersJson = headers != "" ? JSON.parse(headers) : {};
-      const bindingsJson = bindings != "" ? JSON.parse(bindings) : {};
+      const headersJson =
+        headers === ""
+          ? {}
+          : wrapException(
+              "Unable to convert headers to JSON object (nor is empty)",
+              () => JSON.parse(headers)
+            );
+      const bindingsJson =
+        bindings === ""
+          ? {}
+          : wrapException(
+              "Unable to convert bindings to JSON object (nor is empty)",
+              () => JSON.parse(bindings)
+            );
 
       this.publisherService
         .publish(
@@ -137,7 +150,7 @@ export class ChannelMainComponent implements OnInit {
         );
     } catch (error) {
       this.snackBar.open(
-        "Example payload is not valid " + JSON.stringify(error),
+        "Unable to create publishing payload: " + error.message,
         "ERROR",
         {
           duration: 3000,
