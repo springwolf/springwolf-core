@@ -18,6 +18,7 @@ include(
         'springwolf-bindings:springwolf-amqp-binding',
         'springwolf-bindings:springwolf-googlepubsub-binding',
         'springwolf-bindings:springwolf-jms-binding',
+        'springwolf-bindings:springwolf-kafka-binding',
         'springwolf-bindings:springwolf-sns-binding',
         'springwolf-bindings:springwolf-sqs-binding',
         'springwolf-ui',
