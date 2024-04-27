@@ -138,6 +138,7 @@ allprojects {
     ]
     var bindings = [
             'springwolf-googlepubsub-binding',
+            'springwolf-jms-binding',
             'springwolf-sns-binding',
             'springwolf-sqs-binding'
     ]
