@@ -48,7 +48,7 @@ public class PayloadService {
         String componentsSchemaName = this.componentsService.registerSchema(payloadType, contentType);
 
         SchemaObject schema = componentsService.resolveSchema(componentsSchemaName);
-        if(schema != null) {
+        if (schema != null) {
             schema.setTitle(payloadType.getSimpleName());
         }
 
