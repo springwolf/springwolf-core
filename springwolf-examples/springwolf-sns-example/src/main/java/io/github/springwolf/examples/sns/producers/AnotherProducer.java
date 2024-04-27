@@ -2,11 +2,11 @@
 package io.github.springwolf.examples.sns.producers;
 
 import io.awspring.cloud.sns.core.SnsTemplate;
+import io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBinding;
+import io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBindingIdentifier;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
 import io.github.springwolf.examples.sns.dtos.AnotherPayloadDto;
-import io.github.springwolf.plugins.sns.annotations.SnsAsyncOperationBinding;
-import io.github.springwolf.plugins.sns.annotations.SnsAsyncOperationBindingIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;

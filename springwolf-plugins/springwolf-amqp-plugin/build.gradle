@@ -9,6 +9,7 @@ plugins {
 dependencies {
     api project(":springwolf-core")
     api project(":springwolf-asyncapi")
+    api project(":springwolf-bindings:springwolf-amqp-binding")
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 

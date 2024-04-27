@@ -2,7 +2,6 @@
 package io.github.springwolf.plugins.kafka.configuration;
 
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationClassLevelChannelsScanner;
@@ -142,19 +141,5 @@ public class SpringwolfKafkaScannerConfiguration {
                         componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);
-    }
-
-    @Bean
-    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
-    @ConditionalOnMissingBean
-    public KafkaMessageBindingProcessor kafkaMessageBindingProcessor() {
-        return new KafkaMessageBindingProcessor();
-    }
-
-    @Bean
-    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
-    @ConditionalOnMissingBean
-    public KafkaOperationBindingProcessor kafkaOperationBindingProcessor() {
-        return new KafkaOperationBindingProcessor();
     }
 }
