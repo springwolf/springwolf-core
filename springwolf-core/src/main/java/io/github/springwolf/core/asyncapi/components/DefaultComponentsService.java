@@ -130,7 +130,7 @@ public class DefaultComponentsService implements ComponentsService {
 
     private String getSchemaName(Class<?> type, Map<String, Schema> schemas) {
         if (schemas.isEmpty()) {
-            // swagger-parser does create schemas for primitives
+            // swagger-parser does not create schemas for primitives
             if (type.equals(String.class) || type.equals(Character.class) || type.equals(Byte.class)) {
                 return registerPrimitive(String.class, new StringSchema());
             }
