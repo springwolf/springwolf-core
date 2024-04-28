@@ -1,45 +1,49 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { render, screen } from "@testing-library/angular";
 import { ChannelMainComponent } from "./channel-main.component";
+import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
 import { PublisherService } from "../../../service/publisher.service";
-import { MatDivider } from "@angular/material/divider";
-import { MatTab, MatTabGroup, MatTabHeader } from "@angular/material/tabs";
-import { JsonComponent } from "../../json/json.component";
+import { MaterialModule } from "../../../material.module";
+import { of } from "rxjs";
+import { exampleSchemas } from "../../../service/mock/example-data";
+import { AsyncApiMapperService } from "../../../service/asyncapi/asyncapi-mapper.service";
 import { MarkdownModule } from "ngx-markdown";
+import {
+  mockedAsyncApiService,
+  mockedExampleSchemaMapped,
+} from "../../../service/mock/mock-asyncapi.service";
+import { Component, Input } from "@angular/core";
+import { Schema } from "../../../models/schema.model";
+
+@Component({ selector: "app-json", template: "" })
+export class MockAppJson {
+  @Input() data: any;
+}
+
+@Component({ selector: "app-schema", template: "" })
+export class MockAppSchema {
+  @Input() schema: Schema;
+}
 
 describe("ChannelMainComponent", () => {
-  let component: ChannelMainComponent;
-  let fixture: ComponentFixture<ChannelMainComponent>;
+  beforeEach(async () => {
+    mockedAsyncApiService.getAsyncApi.mockClear();
 
-  let mockedAsyncApiService = {
-    getAsyncApi: jest.fn(),
-  };
-  let mockedPublisherService = {
-    getAsyncApi: jest.fn(),
-  };
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatDivider,
-        MatTabGroup,
-        MatTab,
-        MatTabHeader,
-        MarkdownModule.forRoot(),
-      ],
-      declarations: [ChannelMainComponent, JsonComponent],
+    await render(ChannelMainComponent, {
+      imports: [MaterialModule, MarkdownModule.forRoot()],
+      declarations: [MockAppJson, MockAppSchema],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
-        { provide: PublisherService, useValue: mockedPublisherService },
+        { provide: PublisherService, useValue: {} },
       ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ChannelMainComponent as any);
-    component = fixture.debugElement.componentInstance;
+      componentProperties: {
+        channelName: mockedExampleSchemaMapped.channelOperations[0].name,
+        operation: mockedExampleSchemaMapped.channelOperations[0].operation,
+      },
+    });
   });
 
   it("should create the component", () => {
-    expect(component).toBeTruthy();
+    expect(screen.getByText("Another payload model")).toBeTruthy();
   });
 });
