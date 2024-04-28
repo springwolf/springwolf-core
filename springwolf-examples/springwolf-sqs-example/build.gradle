@@ -17,6 +17,8 @@ dependencyManagement {
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-sqs")
+    permitUnusedDeclared project(":springwolf-plugins:springwolf-sqs")
+    permitUsedUndeclared project(":springwolf-bindings:springwolf-sqs-binding")
 
     annotationProcessor project(":springwolf-plugins:springwolf-sqs")
     runtimeOnly project(":springwolf-ui")

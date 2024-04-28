@@ -11,6 +11,8 @@ plugins {
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-amqp")
+    permitUnusedDeclared project(":springwolf-plugins:springwolf-amqp")
+    permitUsedUndeclared project(":springwolf-bindings:springwolf-amqp-binding")
 
     annotationProcessor project(":springwolf-plugins:springwolf-amqp")
     runtimeOnly project(":springwolf-ui")
