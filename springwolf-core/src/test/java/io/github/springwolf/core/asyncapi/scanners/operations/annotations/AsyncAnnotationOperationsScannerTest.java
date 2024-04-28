@@ -297,6 +297,43 @@ class AsyncAnnotationOperationsScannerTest {
                 .containsExactly(Map.entry("test-channel_send_methodWithAnnotation", expectedOperation));
     }
 
+    @Test
+    void scan_componentHasAsyncMethodAnnotationInAbstractClass() {
+        // Given a class with methods annotated with AsyncListener, where only the channel-name is set
+        setClassToScan(ClassExtendsFromAbstractWithListenerAnnotation.class);
+
+        // When scan is called
+        Map<String, Operation> actualOperations = operationsScanner.scan();
+
+        // Then the returned collection contains the channel
+        MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
+                .schema(SchemaReference.fromSchema(SimpleFoo.class.getSimpleName()))
+                .build());
+
+        MessageObject message = MessageObject.builder()
+                .messageId("simpleFoo")
+                .name("SimpleFooPayLoad")
+                .title("Message Title")
+                .description("Message description")
+                .payload(payload)
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                .bindings(EMPTY_MAP)
+                .build();
+
+        Operation expectedOperation = Operation.builder()
+                .action(OperationAction.SEND)
+                .channel(ChannelReference.fromChannel("abstract-test-channel"))
+                .description("test abstract channel operation description")
+                .title("abstract-test-channel_send")
+                .bindings(EMPTY_MAP)
+                .messages(List.of(MessageReference.toChannelMessage("abstract-test-channel", message)))
+                .build();
+
+        assertThat(actualOperations)
+                .containsExactly(Map.entry("abstract-test-channel_send_methodWithAnnotation", expectedOperation));
+    }
+
     private static class ClassWithoutListenerAnnotation {
 
         private void methodWithoutAnnotation() {}
@@ -368,6 +405,25 @@ class AsyncAnnotationOperationsScannerTest {
         private void methodWithAnnotation(SimpleFoo payload) {}
 
         private void methodWithoutAnnotation() {}
+    }
+
+    private static class ClassExtendsFromAbstractWithListenerAnnotation extends AbstractClassWithListenerAnnotation {}
+
+    private abstract static class AbstractClassWithListenerAnnotation {
+
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "abstract-test-channel",
+                                description = "test abstract channel operation description",
+                                message =
+                                        @AsyncMessage(
+                                                description = "Message description",
+                                                messageId = "simpleFooAbstract",
+                                                name = "SimpleFooPayLoad",
+                                                contentType = "application/json",
+                                                title = "Message Title")))
+        protected void methodWithAnnotation(SimpleFoo payload) {}
     }
 
     @Nested
