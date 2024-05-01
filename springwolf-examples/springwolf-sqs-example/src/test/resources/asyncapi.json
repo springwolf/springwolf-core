@@ -16,7 +16,7 @@
   },
   "defaultContentType": "application/json",
   "servers": {
-    "sqs": {
+    "sqs-server": {
       "host": "http://localhost:4566",
       "protocol": "sqs"
     }
