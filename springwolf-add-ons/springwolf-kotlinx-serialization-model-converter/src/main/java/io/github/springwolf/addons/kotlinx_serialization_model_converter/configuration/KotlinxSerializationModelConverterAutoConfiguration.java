@@ -3,12 +3,10 @@ package io.github.springwolf.addons.kotlinx_serialization_model_converter.config
 
 import io.github.springwolf.addons.kotlinx_serialization_model_converter.converter.KotlinxSerializationModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
-import org.springframework.beans.factory.annotation.Value;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_USE_FQN;
 
 /**
  * Spring AutoConfiguration adding an {@link KotlinxSerializationModelConverter} Bean to the spring context.
@@ -18,8 +16,7 @@ import static io.github.springwolf.core.configuration.properties.SpringwolfConfi
 public class KotlinxSerializationModelConverterAutoConfiguration {
 
     @Bean
-    public KotlinxSerializationModelConverter kotlinxSerializationTypeConverter(
-            @Value("${" + SPRINGWOLF_USE_FQN + ":true}") boolean useFqn) {
-        return new KotlinxSerializationModelConverter(useFqn);
+    public KotlinxSerializationModelConverter kotlinxSerializationTypeConverter(SpringwolfConfigProperties properties) {
+        return new KotlinxSerializationModelConverter(properties.isUseFqn());
     }
 }
