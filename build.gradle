@@ -6,6 +6,7 @@ buildscript {
 }
 
 plugins {
+    id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
     id 'ca.cutterslade.analyze' version '1.9.1'
     id 'io.spring.dependency-management' version '1.1.4' apply false
     id 'org.springframework.boot' version '3.2.5' apply false
@@ -212,16 +213,6 @@ allprojects {
                 }
             }
         }
-
-        repositories {
-            maven {
-                url = project.findProperty('MAVEN_URL')
-                credentials {
-                    username = project.findProperty('MAVEN_USERNAME') ?: ''
-                    password = project.findProperty('MAVEN_PASSWORD') ?: ''
-                }
-            }
-        }
     }
 
     signing {
@@ -242,6 +233,17 @@ allprojects {
                         .file('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.actual.json')
                         .renameTo('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.json')
             }
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        MavenRepository {
+            nexusUrl = uri('https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/')
+            snapshotRepositoryUrl = uri('https://s01.oss.sonatype.org/content/repositories/snapshots/')
+            username = project.findProperty('MAVEN_USERNAME') ?: ''
+            password = project.findProperty('MAVEN_PASSWORD') ?: ''
         }
     }
 }
