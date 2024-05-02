@@ -26,6 +26,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EmbeddedValueResolverAware;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
@@ -58,7 +59,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
         Class<A> annotationClass = this.asyncAnnotationProvider.getAnnotation();
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
-        return Arrays.stream(type.getDeclaredMethods())
+        return Arrays.stream(ReflectionUtils.getAllDeclaredMethods(type))
                 .filter(method -> !method.isBridge())
                 .filter(method -> AnnotationScannerUtil.findAnnotation(annotationClass, method) != null)
                 .peek(method -> log.debug("Mapping method \"{}\" to channels", method.getName()))
