@@ -92,7 +92,6 @@ allprojects {
             exceptionFormat = 'full'
         }
     }
-
     tasks.register('unitTest', Test) {
         enabled = !it.project.name.contains("-example") // Examples do not contain unit tests and would fail otherwise
         dependsOn spotlessApply // Automatically fix code formatting if possible
@@ -111,8 +110,6 @@ allprojects {
             exceptionFormat = 'full'
         }
     }
-
-
     tasks.register('integrationTest', Test) {
         dependsOn spotlessApply // Automatically fix code formatting if possible
 
@@ -128,6 +125,19 @@ allprojects {
 
             events "skipped", "failed"
             exceptionFormat = 'full'
+        }
+    }
+
+    tasks.register('updateAsyncApiJson') {
+        group 'verification'
+        description 'Update the AsyncAPI JSON files in the examples to match the current state of the plugin'
+
+        doLast { // ensure that the code is not executed as part of a gradle refresh
+            plugins.forEach {
+                project
+                        .file('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.actual.json')
+                        .renameTo('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.json')
+            }
         }
     }
 
@@ -221,19 +231,6 @@ allprojects {
         def signingPassword = project.findProperty("SIGNINGPASSWORD")
         useInMemoryPgpKeys(signingKey, signingPassword)
         sign publishing.publications.mavenJava
-    }
-
-    tasks.register('updateAsyncApiJson') {
-        group 'verification'
-        description 'Update the AsyncAPI JSON files in the examples to match the current state of the plugin'
-
-        doLast { // ensure that the code is not executed as part of a gradle refresh
-            plugins.forEach {
-                project
-                        .file('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.actual.json')
-                        .renameTo('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.json')
-            }
-        }
     }
 }
 
