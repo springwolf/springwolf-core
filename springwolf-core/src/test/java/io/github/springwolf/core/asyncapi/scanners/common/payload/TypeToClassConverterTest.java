@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +24,10 @@ class TypeToClassConverterTest {
     {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setPayload(new SpringwolfConfigProperties.Payload());
+        properties
+                .getPayload()
+                .setExtractableClasses(new HashMap<>(properties.getPayload().getExtractableClasses()));
+        properties.getPayload().getExtractableClasses().put(TestClass.CustomPair.class.getName(), 1);
         typeToClassConverter = new TypeToClassConverter(properties);
     }
 
@@ -73,6 +78,16 @@ class TypeToClassConverterTest {
     }
 
     @Test
+    void getPayloadTypeWithMessageOfListOfCustomPair() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfCustomPair", Message.class);
+
+        Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
+
+        // payload is extracted from the second generic argument
+        assertThat(result).isEqualTo(Double.class);
+    }
+
+    @Test
     void getPayloadTypeWithMessageOfString() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfString", Message.class);
 
@@ -112,6 +127,8 @@ class TypeToClassConverterTest {
 
         public void consumeWithMessageOfListOfString(Message<List<String>> value) {}
 
+        public void consumeWithMessageOfCustomPair(Message<CustomPair<Integer, Double>> value) {}
+
         public void consumeWithMessageOfString(Message<String> value) {}
 
         public void consumeWithCustomType(MyType value) {}
@@ -121,6 +138,8 @@ class TypeToClassConverterTest {
                 super(payload);
             }
         }
+
+        public interface CustomPair<K, V> {}
     }
 
     private Type extractFrom(Method method) {
