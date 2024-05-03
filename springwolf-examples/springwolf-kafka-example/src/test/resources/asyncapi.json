@@ -668,17 +668,81 @@
       },
       "io.github.springwolf.examples.kafka.consumers.LearningEvent": {
         "type": "object",
-        "properties": {
-          "courseType": {
-            "type": "string",
-            "description": "the course type",
-            "examples": [
-              "ILT"
-            ]
+        "description": "LMS payload model",
+        "examples": [
+          {
+            "courseType": "ILT",
+            "eventKey": "string",
+            "eventType": "event Type",
+            "firstName": "test"
+          }
+        ],
+        "required": [
+          "courseType"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.consumers.ParentEventDto"
           },
+          {
+            "type": "object",
+            "properties": {
+              "courseType": {
+                "type": "string",
+                "description": "the course type",
+                "examples": [
+                  "ILT"
+                ]
+              }
+            }
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "allOf": [
+            {
+              "description": "parent Event DTO",
+              "properties": {
+                "eventKey": {
+                  "type": "string"
+                },
+                "eventType": {
+                  "description": "this is event type",
+                  "type": "string"
+                },
+                "firstName": {
+                  "description": "the first name of the candidate",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "eventKey"
+              ],
+              "type": "object"
+            },
+            {
+              "properties": {
+                "courseType": {
+                  "description": "the course type",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "LMS payload model",
+          "required": [
+            "courseType"
+          ],
+          "type": "object"
+        }
+      },
+      "io.github.springwolf.examples.kafka.consumers.ParentEventDto": {
+        "discriminator": "eventKey",
+        "type": "object",
+        "properties": {
           "eventKey": {
-            "type": "string",
-            "description": "this is the eventKey used as JsonTypeInfo and discriminatorProperty with visible=true"
+            "type": "string"
           },
           "eventType": {
             "type": "string",
@@ -695,28 +759,22 @@
             ]
           }
         },
-        "description": "LMS payload model",
+        "description": "parent Event DTO",
         "examples": [
           {
-            "courseType": "ILT",
             "eventKey": "string",
             "eventType": "event Type",
             "firstName": "test"
           }
         ],
         "required": [
-          "courseType"
+          "eventKey"
         ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
-          "description": "LMS payload model",
+          "description": "parent Event DTO",
           "properties": {
-            "courseType": {
-              "description": "the course type",
-              "type": "string"
-            },
             "eventKey": {
-              "description": "this is the eventKey used as JsonTypeInfo and discriminatorProperty with visible=true",
               "type": "string"
             },
             "eventType": {
@@ -729,7 +787,7 @@
             }
           },
           "required": [
-            "courseType"
+            "eventKey"
           ],
           "type": "object"
         }

@@ -16,7 +16,8 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIR
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "eventKey", visible = true)
 @JsonSubTypes({@JsonSubTypes.Type(value = LearningEvent.class, name = "LearningEvent") // ,
     // @JsonSubTypes.Type(value = ExamplePayloadDto.class, name = "ExamplePayloadDto") // omitted in demo
-    /*,@JsonSubTypes.Type(value = ParentEventDto.class, name = "events") */ // omitted in demo
+    /*,@JsonSubTypes.Type(value = ParentEventDto.class, name = "events") */
+    // omitted in demo
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(
@@ -33,10 +34,10 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIR
 @JsonDeserialize()
 public class ParentEventDto {
     // Option 1: with extra property: eventKey
-    @Schema(
-            description = "this is the eventKey used as JsonTypeInfo and discriminatorProperty with visible=true",
-            requiredMode = NOT_REQUIRED)
-    private String eventKey;
+    //    @Schema(
+    //            description = "this is the eventKey used as JsonTypeInfo and discriminatorProperty with visible=true",
+    //            requiredMode = NOT_REQUIRED)
+    //    private String eventKey;
 
     @Schema(description = "this is event type", example = "event Type", requiredMode = NOT_REQUIRED)
     private String eventType;

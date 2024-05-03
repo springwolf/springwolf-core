@@ -14,12 +14,11 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
         description = "LMS payload model",
         type = "LearningEvent",
         defaultValue = "test",
-        additionalProperties = Schema.AdditionalPropertiesValue.TRUE
+        additionalProperties = Schema.AdditionalPropertiesValue.TRUE,
         //        discriminatorProperty = "eventKey" // does not matter
 
         // Option 2:
-        //        allOf = {ParentEventDto.class}
-        )
+        allOf = {ParentEventDto.class})
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
