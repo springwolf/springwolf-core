@@ -248,7 +248,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
         return properties.entrySet().stream()
                 .map(propertySchema -> {
-                    String propertyKey = propertySchema.getKey();
+                    String propertyKey = exampleValueGenerator.lookupSchemaName(propertySchema.getValue());
                     Optional<T> propertyValue =
                             buildExample(propertyKey, propertySchema.getValue(), definitions, visited);
 
