@@ -53,6 +53,13 @@
         }
       }
     },
+    "lms": {
+      "messages": {
+        "io.github.springwolf.examples.kafka.consumers.LearningEvent": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.consumers.LearningEvent"
+        }
+      }
+    },
     "multi-payload-topic": {
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto": {
@@ -428,6 +435,39 @@
           "type": "object"
         }
       },
+      "SpringKafkaDefaultHeaders-LearningEvent": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "io.github.springwolf.examples.kafka.consumers.LearningEvent"
+            ],
+            "examples": [
+              "io.github.springwolf.examples.kafka.consumers.LearningEvent"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "io.github.springwolf.examples.kafka.consumers.LearningEvent"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "io.github.springwolf.examples.kafka.consumers.LearningEvent"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
       "SpringKafkaDefaultHeaders-Message": {
         "type": "object",
         "properties": {
@@ -623,6 +663,74 @@
               "type": "string"
             }
           },
+          "type": "object"
+        }
+      },
+      "io.github.springwolf.examples.kafka.consumers.LearningEvent": {
+        "type": "object",
+        "properties": {
+          "courseType": {
+            "type": "string",
+            "description": "the course type",
+            "examples": [
+              "ILT"
+            ]
+          },
+          "eventKey": {
+            "type": "string",
+            "description": "this is the eventKey used as JsonTypeInfo and discriminatorProperty with visible=true"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "this is event type",
+            "examples": [
+              "event Type"
+            ]
+          },
+          "firstName": {
+            "type": "string",
+            "description": "the first name of the candidate",
+            "examples": [
+              "test"
+            ]
+          }
+        },
+        "description": "LMS payload model",
+        "examples": [
+          {
+            "courseType": "ILT",
+            "eventKey": "string",
+            "eventType": "event Type",
+            "firstName": "test"
+          }
+        ],
+        "required": [
+          "courseType"
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "LMS payload model",
+          "properties": {
+            "courseType": {
+              "description": "the course type",
+              "type": "string"
+            },
+            "eventKey": {
+              "description": "this is the eventKey used as JsonTypeInfo and discriminatorProperty with visible=true",
+              "type": "string"
+            },
+            "eventType": {
+              "description": "this is event type",
+              "type": "string"
+            },
+            "firstName": {
+              "description": "the first name of the candidate",
+              "type": "string"
+            }
+          },
+          "required": [
+            "courseType"
+          ],
           "type": "object"
         }
       },
@@ -1158,6 +1266,25 @@
           }
         }
       },
+      "io.github.springwolf.examples.kafka.consumers.LearningEvent": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.consumers.LearningEvent"
+          }
+        },
+        "name": "io.github.springwolf.examples.kafka.consumers.LearningEvent",
+        "title": "LearningEvent",
+        "description": "LMS payload model",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
+      },
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotUsed"
@@ -1414,6 +1541,24 @@
       "messages": [
         {
           "$ref": "#/channels/example-topic/messages/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "lms_receive_receiveExamplePayload2": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/lms"
+      },
+      "title": "lms_receive",
+      "description": "description",
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/lms/messages/io.github.springwolf.examples.kafka.consumers.LearningEvent"
         }
       ]
     },
