@@ -31,7 +31,7 @@ jobs:
           ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Publish maven artifacts
-        run: ./gradlew publish
+        run: ./gradlew publish closeAndReleaseStagingRepositories
         env:
           ORG_GRADLE_PROJECT_SIGNINGKEY: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
