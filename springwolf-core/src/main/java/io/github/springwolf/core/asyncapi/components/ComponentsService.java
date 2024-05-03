@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import jakarta.annotation.Nullable;
 
 import java.util.Map;
 
@@ -12,6 +13,7 @@ public interface ComponentsService {
 
     Map<String, SchemaObject> getSchemas();
 
+    @Nullable
     SchemaObject resolveSchema(String schemaName);
 
     String registerSchema(SchemaObject headers);

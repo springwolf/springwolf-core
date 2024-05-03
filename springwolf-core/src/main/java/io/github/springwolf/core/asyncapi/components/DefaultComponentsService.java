@@ -14,12 +14,10 @@ import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -62,7 +60,6 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     @Override
-    @Nullable
     public SchemaObject resolveSchema(String schemaName) {
         if (schemas.containsKey(schemaName)) {
             return swaggerSchemaUtil.mapSchema(schemas.get(schemaName));
@@ -126,13 +123,13 @@ public class DefaultComponentsService implements ComponentsService {
         }
 
         if (schemas.size() == 1) {
-            return new ArrayList<>(schemas.keySet()).get(0);
+            return schemas.keySet().stream().findFirst().get();
         }
 
         Set<String> resolvedPayloadModelName =
                 runWithFqnSetting((unused) -> converter.read(type).keySet());
         if (!resolvedPayloadModelName.isEmpty()) {
-            return new ArrayList<>(resolvedPayloadModelName).get(0);
+            return resolvedPayloadModelName.stream().findFirst().get();
         }
 
         return getNameFromClass(type);
