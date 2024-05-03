@@ -16,7 +16,6 @@ import { wrapException } from "../../../util/error-boundary";
   styleUrls: ["./channel-main.component.css"],
 })
 export class ChannelMainComponent implements OnInit {
-  @Input() docName: string;
   @Input() channelName: string;
   @Input() operation: Operation;
 
@@ -24,13 +23,13 @@ export class ChannelMainComponent implements OnInit {
   schemaIdentifier: string;
   defaultExample: Example;
   defaultExampleType: string;
-  exampleTextAreaLineCount: number;
+  exampleTextAreaLineCount: number = 1;
   headers: Schema;
   headersSchemaIdentifier: string;
   headersExample: Example;
-  headersTextAreaLineCount: number;
+  headersTextAreaLineCount: number = 1;
   messageBindingExample?: Example;
-  messageBindingExampleTextAreaLineCount: number;
+  messageBindingExampleTextAreaLineCount: number = 1;
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -47,7 +46,7 @@ export class ChannelMainComponent implements OnInit {
       this.schema = schemas.get(this.schemaIdentifier);
 
       this.defaultExample = this.schema.example;
-      this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 0;
+      this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 1;
       this.defaultExampleType = this.operation.message.name;
 
       this.headersSchemaIdentifier = this.operation.message.headers.name.slice(
@@ -55,9 +54,9 @@ export class ChannelMainComponent implements OnInit {
       );
       this.headers = schemas.get(this.headersSchemaIdentifier);
       this.headersExample = this.headers.example;
-      this.headersTextAreaLineCount = this.headersExample?.lineCount || 0;
+      this.headersTextAreaLineCount = this.headersExample?.lineCount || 1;
       this.messageBindingExampleTextAreaLineCount =
-        this.messageBindingExample?.lineCount || 0;
+        this.messageBindingExample?.lineCount || 1;
     });
   }
 

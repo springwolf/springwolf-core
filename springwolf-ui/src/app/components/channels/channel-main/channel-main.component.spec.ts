@@ -1,45 +1,39 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { render, screen } from "@testing-library/angular";
 import { ChannelMainComponent } from "./channel-main.component";
+import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
 import { PublisherService } from "../../../service/publisher.service";
-import { MatDivider } from "@angular/material/divider";
-import { MatTab, MatTabGroup, MatTabHeader } from "@angular/material/tabs";
-import { JsonComponent } from "../../json/json.component";
+import { MaterialModule } from "../../../material.module";
 import { MarkdownModule } from "ngx-markdown";
+import {
+  mockedAsyncApiService,
+  mockedExampleSchemaMapped,
+} from "../../../service/mock/mock-asyncapi.service";
+import { MockAppJson, MockAppSchema } from "../../mock-components.spec";
 
 describe("ChannelMainComponent", () => {
-  let component: ChannelMainComponent;
-  let fixture: ComponentFixture<ChannelMainComponent>;
+  const mockData = mockedExampleSchemaMapped.channelOperations[0];
 
-  let mockedAsyncApiService = {
-    getAsyncApi: jest.fn(),
-  };
-  let mockedPublisherService = {
-    getAsyncApi: jest.fn(),
-  };
+  beforeEach(async () => {
+    mockedAsyncApiService.getAsyncApi.mockClear();
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatDivider,
-        MatTabGroup,
-        MatTab,
-        MatTabHeader,
-        MarkdownModule.forRoot(),
-      ],
-      declarations: [ChannelMainComponent, JsonComponent],
+    await render(ChannelMainComponent, {
+      imports: [MaterialModule, MarkdownModule.forRoot()],
+      declarations: [MockAppJson, MockAppSchema],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
-        { provide: PublisherService, useValue: mockedPublisherService },
+        { provide: PublisherService, useValue: {} },
       ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ChannelMainComponent as any);
-    component = fixture.debugElement.componentInstance;
+      componentProperties: {
+        channelName: mockData.name,
+        operation: mockData.operation,
+      },
+    });
   });
 
-  it("should create the component", () => {
-    expect(component).toBeTruthy();
+  it("should render the component and data", () => {
+    expect(
+      screen.getByText(mockData.operation.message.description)
+    ).toBeTruthy();
   });
 });

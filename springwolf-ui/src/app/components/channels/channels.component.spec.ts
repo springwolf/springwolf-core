@@ -1,31 +1,35 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { render, screen } from "@testing-library/angular";
 import { ChannelsComponent } from "./channels.component";
-import { MatAccordion } from "@angular/material/expansion";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import {
+  mockedAsyncApiService,
+  mockedExampleSchemaMapped,
+} from "../../service/mock/mock-asyncapi.service";
+import { MaterialModule } from "../../material.module";
+import { MockChannelMainComponent } from "../mock-components.spec";
 
 describe("ChannelsComponent", () => {
-  let component: ChannelsComponent;
-  let fixture: ComponentFixture<ChannelsComponent>;
+  beforeEach(async () => {
+    mockedAsyncApiService.getAsyncApi.mockClear();
 
-  let mockedAsyncApiService = {
-    getAsyncApi: jest.fn(),
-  };
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [MatAccordion],
-      declarations: [ChannelsComponent],
+    await render(ChannelsComponent, {
+      imports: [MaterialModule],
+      declarations: [MockChannelMainComponent],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
       ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ChannelsComponent as any);
-    component = fixture.debugElement.componentInstance;
+    });
   });
 
-  it("should create the component", () => {
-    expect(component).toBeTruthy();
+  it("should render the component and data", () => {
+    expect(screen.getByText("Channels")).toBeTruthy();
+
+    mockedExampleSchemaMapped.channelOperations.forEach((channelOperation) => {
+      expect(screen.getAllByText(channelOperation.name)[0]).toBeTruthy();
+      expect(
+        screen.getAllByText(channelOperation.operation.message.title)[0]
+      ).toBeTruthy();
+    });
   });
 });

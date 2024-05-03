@@ -15,7 +15,6 @@ import { Location } from "@angular/common";
 export class ChannelsComponent implements OnInit {
   channels: ChannelOperation[];
   selectedChannel: string;
-  docName: string;
 
   constructor(
     private asyncApiService: AsyncApiService,

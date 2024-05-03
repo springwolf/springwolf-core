@@ -1,27 +1,32 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { render, screen } from "@testing-library/angular";
 import { ServersComponent } from "./servers.component";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import {
+  mockedAsyncApiService,
+  mockedExampleSchemaMapped,
+} from "../../service/mock/mock-asyncapi.service";
+import { MaterialModule } from "../../material.module";
 
 describe("ServerComponent", () => {
-  let component: ServersComponent;
-  let fixture: ComponentFixture<ServersComponent>;
+  mockedAsyncApiService.getAsyncApi.mockClear();
 
-  let mockedAsyncApiService!: { getAsyncApi: jest.Mock };
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [ServersComponent],
+  beforeEach(async () => {
+    await render(ServersComponent, {
+      imports: [MaterialModule],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
       ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ServersComponent as any);
-    component = fixture.debugElement.componentInstance;
+    });
   });
 
-  it("should create the component", () => {
-    expect(component).toBeTruthy();
+  it("should render the component and data", () => {
+    expect(screen.getByText("Servers")).toBeTruthy();
+
+    mockedExampleSchemaMapped.servers.forEach((server, key) => {
+      expect(screen.getAllByText(key)[0]).toBeTruthy();
+      expect(screen.getAllByText(server.protocol)[0]).toBeTruthy();
+      expect(screen.getAllByText(server.host)[0]).toBeTruthy();
+    });
   });
 });
