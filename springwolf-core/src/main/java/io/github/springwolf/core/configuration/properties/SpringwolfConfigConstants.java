@@ -10,6 +10,8 @@ public class SpringwolfConfigConstants {
 
     public static final String SPRINGWOLF_ENABLED = SPRINGWOLF_CONFIG_PREFIX + ENABLED;
 
+    public static final String SPRINGWOLF_USE_FQN = SPRINGWOLF_CONFIG_PREFIX + ".use-fqn";
+
     public static final String ENDPOINT_ACTUATOR = ".endpoint.actuator";
 
     public static final String SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED =

@@ -17,8 +17,10 @@ plugins {
 }
 
 dependencies {
+    api project(":springwolf-core")
+
     implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-beans"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
 
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
