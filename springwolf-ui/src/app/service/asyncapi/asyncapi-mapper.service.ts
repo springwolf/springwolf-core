@@ -2,15 +2,18 @@
 import { AsyncApi } from "../../models/asyncapi.model";
 import { Server } from "../../models/server.model";
 import {
-  ChannelOperation,
   CHANNEL_ANCHOR_PREFIX,
+  ChannelOperation,
 } from "../../models/channel.model";
 import { Schema } from "../../models/schema.model";
 import { Injectable } from "@angular/core";
 import { Example } from "../../models/example.model";
 import { Info } from "../../models/info.model";
 import { ServerAsyncApi } from "./models/asyncapi.model";
-import { ServerAsyncApiSchema } from "./models/schema.model";
+import {
+  ServerAsyncApiSchema,
+  ServerAsyncApiSchemaOrRef,
+} from "./models/schema.model";
 import { ServerBinding, ServerBindings } from "./models/bindings.model";
 import {
   ServerOperation,
@@ -252,44 +255,54 @@ export class AsyncApiMapperService {
   private mapSchemas(
     schemas: ServerComponents["schemas"]
   ): Map<string, Schema> {
-    const s = new Map<string, Schema>();
-    Object.entries(schemas).forEach(([k, v]) => {
-      const schema = this.parsingErrorBoundary("schema with name " + k, () =>
-        this.mapSchema(k, v)
+    const mappedSchemas = new Map<string, Schema>();
+    Object.entries(schemas).forEach(([schemaName, schema]) => {
+      const mappedSchema = this.parsingErrorBoundary(
+        "schema with name " + schemaName,
+        () => this.mapSchema(schemaName, schema, schemas)
       );
 
-      if (schema != undefined) {
-        s.set(k, schema);
+      if (mappedSchema != undefined) {
+        mappedSchemas.set(schemaName, mappedSchema);
       }
     });
-    return s;
+    return mappedSchemas;
   }
 
   private mapSchema(
     schemaName: string,
-    schema: ServerAsyncApiSchema | { $ref: string }
+    schema: ServerAsyncApiSchemaOrRef,
+    schemas: ServerComponents["schemas"]
   ): Schema {
     if ("$ref" in schema) {
       return this.mapSchemaRef(schemaName, schema);
     } else {
-      return this.mapSchemaObj(schemaName, schema);
+      return this.mapSchemaObj(schemaName, schema, schemas);
     }
   }
 
   private mapSchemaObj(
     schemaName: string,
-    schema: ServerAsyncApiSchema
+    schema: ServerAsyncApiSchema,
+    schemas: ServerComponents["schemas"]
   ): Schema {
     const properties = {};
-    if (schema.properties !== undefined) {
-      Object.entries(schema.properties).forEach(([key, value], index) => {
-        properties[key] = this.mapSchema(key, value);
+    this.addPropertiesToSchema(schema, properties, schemas);
+    if (schema.allOf !== undefined) {
+      schema.allOf.forEach((schema, index) => {
+        this.addPropertiesToSchema(schema, properties, schemas);
       });
+    }
+    if (schema.anyOf !== undefined && schema.oneOf.length > 0) {
+      this.addPropertiesToSchema(schema.anyOf[0], properties, schemas);
+    }
+    if (schema.oneOf !== undefined && schema.oneOf.length > 0) {
+      this.addPropertiesToSchema(schema.oneOf[0], properties, schemas);
     }
 
     const items =
       schema.items !== undefined
-        ? this.mapSchema(schemaName + "[]", schema.items)
+        ? this.mapSchema(schemaName + "[]", schema.items, schemas)
         : undefined;
     const example =
       schema.examples !== undefined && 0 < schema.examples.length
@@ -323,6 +336,38 @@ export class AsyncApiMapperService {
       exclusiveMaximum:
         schema.maximum == schema.exclusiveMaximum ? true : false,
     };
+  }
+
+  private addPropertiesToSchema(
+    schema: ServerAsyncApiSchemaOrRef,
+    properties: {},
+    schemas: ServerComponents["schemas"]
+  ) {
+    let actualSchema = this.resolveSchema(schema, schemas);
+
+    if ("properties" in actualSchema) {
+      Object.entries(actualSchema.properties).forEach(([key, value], index) => {
+        properties[key] = this.mapSchema(key, value, schemas);
+      });
+    }
+  }
+
+  private resolveSchema(
+    schema: ServerAsyncApiSchemaOrRef,
+    schemas: ServerComponents["schemas"]
+  ): ServerAsyncApiSchema {
+    let actualSchema = schema;
+
+    while ("$ref" in actualSchema) {
+      const refName = this.resolveRef(actualSchema.$ref);
+      const refSchema = schemas[refName];
+      if (refSchema !== undefined) {
+        actualSchema = refSchema;
+      } else {
+        return undefined;
+      }
+    }
+    return actualSchema;
   }
 
   private mapSchemaRef(schemaName: string, schema: { $ref: string }): Schema {
