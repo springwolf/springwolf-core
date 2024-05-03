@@ -237,6 +237,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     private boolean isAttribute(Schema schema) {
-        return schema.getXml() != null && schema.getXml().getAttribute();
+        return schema.getXml() != null
+                && schema.getXml().getAttribute() != null
+                && schema.getXml().getAttribute();
     }
 }
