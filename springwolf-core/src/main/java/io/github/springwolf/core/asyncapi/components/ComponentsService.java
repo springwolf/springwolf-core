@@ -16,8 +16,6 @@ public interface ComponentsService {
 
     String registerSchema(SchemaObject headers);
 
-    String registerSchema(Class<?> type);
-
     String registerSchema(Class<?> type, String contentType);
 
     Map<String, Message> getMessages();

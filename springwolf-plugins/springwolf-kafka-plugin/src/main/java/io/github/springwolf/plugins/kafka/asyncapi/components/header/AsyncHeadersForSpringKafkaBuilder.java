@@ -15,10 +15,11 @@ public class AsyncHeadersForSpringKafkaBuilder {
     }
 
     public AsyncHeadersForSpringKafkaBuilder(String schemaName) {
-        this.headers = new SchemaObject();
-        this.headers.setType("object");
-        this.headers.setTitle(schemaName);
-        this.headers.setProperties(new HashMap<>());
+        this.headers = SchemaObject.builder()
+                .type("object")
+                .title(schemaName)
+                .properties(new HashMap<>())
+                .build();
     }
 
     public AsyncHeadersForSpringKafkaBuilder withTypeIdHeader(String exampleTypeId) {

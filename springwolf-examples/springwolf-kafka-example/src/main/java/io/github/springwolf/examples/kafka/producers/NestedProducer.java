@@ -3,7 +3,7 @@ package io.github.springwolf.examples.kafka.producers;
 
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
-import io.github.springwolf.core.asyncapi.components.headers.AsyncHeadersCloudEventConstants;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersCloudEventConstants;
 import io.github.springwolf.examples.kafka.configuration.KafkaConfiguration;
 import io.github.springwolf.examples.kafka.dtos.NestedPayloadDto;
 import io.github.springwolf.plugins.kafka.asyncapi.annotations.KafkaAsyncOperationBinding;

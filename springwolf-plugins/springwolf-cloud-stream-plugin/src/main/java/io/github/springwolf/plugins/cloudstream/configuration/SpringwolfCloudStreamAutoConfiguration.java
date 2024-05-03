@@ -6,6 +6,7 @@ import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
@@ -32,6 +33,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
             BeanMethodsScanner beanMethodsScanner,
             ComponentClassScanner componentClassScanner,
             ComponentsService componentsService,
+            PayloadService payloadService,
             BindingServiceProperties cloudstreamBindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder,
             List<ChannelBindingProcessor> channelBindingProcessors,
@@ -41,6 +43,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
                 beanMethodsScanner,
                 componentClassScanner,
                 componentsService,
+                payloadService,
                 cloudstreamBindingServiceProperties,
                 functionalChannelBeanBuilder,
                 channelBindingProcessors,
@@ -53,6 +56,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
             BeanMethodsScanner beanMethodsScanner,
             ComponentClassScanner componentClassScanner,
             ComponentsService componentsService,
+            PayloadService payloadService,
             BindingServiceProperties cloudstreamBindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder) {
         return new CloudStreamFunctionOperationsScanner(
@@ -60,6 +64,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
                 beanMethodsScanner,
                 componentClassScanner,
                 componentsService,
+                payloadService,
                 cloudstreamBindingServiceProperties,
                 functionalChannelBeanBuilder);
     }
