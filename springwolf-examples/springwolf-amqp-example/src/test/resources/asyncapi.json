@@ -19,7 +19,7 @@
   },
   "defaultContentType": "application/json",
   "servers": {
-    "amqp": {
+    "amqp-server": {
       "host": "amqp:5672",
       "protocol": "amqp"
     }

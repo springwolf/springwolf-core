@@ -16,7 +16,7 @@
   },
   "defaultContentType": "application/json",
   "servers": {
-    "sns": {
+    "sns-server": {
       "host": "http://localhost:4566",
       "protocol": "sns"
     }

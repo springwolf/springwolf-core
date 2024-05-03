@@ -16,7 +16,7 @@
   },
   "defaultContentType": "application/json",
   "servers": {
-    "kafka": {
+    "kafka-server": {
       "host": "kafka:29092",
       "protocol": "kafka"
     }
