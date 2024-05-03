@@ -50,7 +50,7 @@ public class TypeToClassConverter {
         String typeName = rawParameterTypeName;
 
         while (type instanceof ParameterizedType && extractableClassToArgumentIndex.containsKey(typeName)) {
-            Integer index = extractableClassToArgumentIndex.get(rawParameterTypeName);
+            Integer index = extractableClassToArgumentIndex.get(typeName);
 
             type = ((ParameterizedType) type).getActualTypeArguments()[index];
 
