@@ -2,20 +2,12 @@
 import { render, screen } from "@testing-library/angular";
 import { ChannelsComponent } from "./channels.component";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
-import { MatAccordion } from "@angular/material/expansion";
-import { mockedAsyncApiService } from "../../service/mock/mock-asyncapi.service";
+import {
+  mockedAsyncApiService,
+  mockedExampleSchemaMapped,
+} from "../../service/mock/mock-asyncapi.service";
 import { MaterialModule } from "../../material.module";
-import { Operation } from "../../models/operation.model";
-import { Component, Input } from "@angular/core";
-
-@Component({
-  selector: "app-channel-main",
-  template: "",
-})
-export class MockChannelMainComponent {
-  @Input() channelName: string;
-  @Input() operation: Operation;
-}
+import { MockChannelMainComponent } from "../mock-components.spec";
 
 describe("ChannelsComponent", () => {
   beforeEach(async () => {
@@ -30,7 +22,14 @@ describe("ChannelsComponent", () => {
     });
   });
 
-  it("should create the component", () => {
+  it("should render the component and data", () => {
     expect(screen.getByText("Channels")).toBeTruthy();
+
+    mockedExampleSchemaMapped.channelOperations.forEach((channelOperation) => {
+      expect(screen.getAllByText(channelOperation.name)[0]).toBeTruthy();
+      expect(
+        screen.getAllByText(channelOperation.operation.message.title)[0]
+      ).toBeTruthy();
+    });
   });
 });

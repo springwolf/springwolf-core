@@ -2,7 +2,10 @@
 import { render, screen } from "@testing-library/angular";
 import { ServersComponent } from "./servers.component";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
-import { mockedAsyncApiService } from "../../service/mock/mock-asyncapi.service";
+import {
+  mockedAsyncApiService,
+  mockedExampleSchemaMapped,
+} from "../../service/mock/mock-asyncapi.service";
 import { MaterialModule } from "../../material.module";
 
 describe("ServerComponent", () => {
@@ -17,7 +20,13 @@ describe("ServerComponent", () => {
     });
   });
 
-  it("should create the component", () => {
+  it("should render the component and data", () => {
     expect(screen.getByText("Servers")).toBeTruthy();
+
+    mockedExampleSchemaMapped.servers.forEach((server, key) => {
+      expect(screen.getAllByText(key)[0]).toBeTruthy();
+      expect(screen.getAllByText(server.protocol)[0]).toBeTruthy();
+      expect(screen.getAllByText(server.host)[0]).toBeTruthy();
+    });
   });
 });
