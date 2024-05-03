@@ -29,7 +29,7 @@ public class ExampleConsumer {
         anotherProducer.sendMessage(example);
     }
 
-    @KafkaListener(topics = "another-topic", groupId = "example-group-id", batch = "true")
+    @KafkaListener(topicPattern = "another-topic", groupId = "example-group-id", batch = "true")
     public void receiveAnotherPayloadBatched(List<AnotherPayloadDto> payloads) {
         log.info("Received new messages in another-topic: {}", payloads.toString());
     }
