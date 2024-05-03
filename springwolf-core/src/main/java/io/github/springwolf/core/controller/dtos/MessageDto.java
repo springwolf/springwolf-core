@@ -11,13 +11,14 @@ import java.util.Map;
 @Builder
 @Jacksonized
 public class MessageDto {
+    public static final String EMPTY = "";
 
     private final Map<String, String> bindings;
 
     private final Map<String, String> headers;
 
     @Builder.Default
-    private final String payload = "";
+    private final String payload = EMPTY;
 
     @Builder.Default
     private final String payloadType = String.class.getCanonicalName();

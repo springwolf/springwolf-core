@@ -24,6 +24,7 @@ import { ServerComponents } from "./models/components.model";
 import { Binding, Bindings } from "../../models/bindings.model";
 import { Message } from "../../models/message.model";
 import { Operation } from "../../models/operation.model";
+import { catchException } from "../../util/error-boundary";
 
 @Injectable()
 export class AsyncApiMapperService {
@@ -353,13 +354,10 @@ export class AsyncApiMapperService {
   }
 
   private parsingErrorBoundary<T>(path: string, f: () => T): T | undefined {
-    try {
-      return f();
-    } catch (e) {
+    return catchException(f, (e) => {
       this.notificationService.showError(
         "Error parsing AsyncAPI " + path + ": " + e.message
       );
-      return undefined;
-    }
+    });
   }
 }

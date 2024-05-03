@@ -5,11 +5,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.controller.dtos.MessageDto;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.MessageFormat;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -26,6 +28,10 @@ public class PublishingPayloadCreator {
     public Result createPayloadObject(MessageDto message) {
         String messagePayloadType = message.getPayloadType();
 
+        if (MessageDto.EMPTY.equals(message.getPayload())) {
+            return new Result(null, Optional.empty());
+        }
+
         Set<String> knownSchemaNames = componentsService.getSchemas().keySet();
         for (String schemaPayloadType : knownSchemaNames) {
             // security: match against user input, but always use our controlled data from the DefaultSchemaService
@@ -33,12 +39,12 @@ public class PublishingPayloadCreator {
                 try {
                     Class<?> payloadClass = Class.forName(schemaPayloadType);
                     Object payload = objectMapper.readValue(message.getPayload(), payloadClass);
-                    return new Result(payload, null);
+                    return new Result(payload, Optional.empty());
                 } catch (ClassNotFoundException | JsonProcessingException ex) {
                     String errorMessage = MessageFormat.format(
                             "Unable to create payload {0} from data: {1}", schemaPayloadType, message.getPayload());
                     log.info(errorMessage, ex);
-                    return new Result(null, errorMessage);
+                    return new Result(null, Optional.of(errorMessage));
                 }
             }
         }
@@ -47,9 +53,9 @@ public class PublishingPayloadCreator {
                 "Specified payloadType {0} is not a registered springwolf schema.", messagePayloadType);
         String knownPayloadsMessage =
                 MessageFormat.format(" Known payloadTypes: [{0}]", StringUtils.join(knownSchemaNames, ", "));
-        log.info(errorMessage + knownPayloadsMessage);
-        return new Result(null, errorMessage);
+        log.info("{}{}", errorMessage, knownPayloadsMessage);
+        return new Result(null, Optional.of(errorMessage));
     }
 
-    public record Result(Object payload, String errorMessage) {}
+    public record Result(@Nullable Object payload, Optional<String> errorMessage) {}
 }

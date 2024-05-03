@@ -39,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -97,40 +96,36 @@ class SpringwolfKafkaControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldReturnBadRequestIfPayloadIsEmpty() {
-        try {
-            String content =
-                    """
+    void testControllerShouldReturnBadRequestIfPayloadIsEmpty() throws Exception {
+        String content =
+                """
                             {
                               "bindings": null,
                               "headers": null,
                               "payload": ""
                             }""";
-            mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(content))
-                    .andExpect(status().isBadRequest());
-        } catch (Exception e) {
-            verifyNoInteractions(springwolfKafkaProducer);
-        }
+        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().is2xxSuccessful());
+
+        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), eq(null));
     }
 
     @Test
-    void testControllerShouldReturnBadRequestIfPayloadIsNotSet() {
-        try {
-            String content =
-                    """
+    void testControllerShouldAcceptIfPayloadIsNotSet() throws Exception {
+        String content =
+                """
                             {
                               "bindings": null,
                               "headers": null
                             }""";
-            mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(content))
-                    .andExpect(status().isBadRequest());
-        } catch (Exception e) {
-            verifyNoInteractions(springwolfKafkaProducer);
-        }
+        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().is2xxSuccessful());
+
+        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), eq(null));
     }
 
     @Test

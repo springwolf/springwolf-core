@@ -9,6 +9,8 @@ export class Example {
 
     if (typeof exampleObject === "string") {
       this.value = exampleObject;
+    } else if (Object.keys(exampleObject).length === 0) {
+      this.value = "";
     } else {
       this.value = JSON.stringify(exampleObject, null, 2);
     }
