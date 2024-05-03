@@ -1,13 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+export type ServerAsyncApiSchemaOrRef = ServerAsyncApiSchema | { $ref: string };
+
 export interface ServerAsyncApiSchema {
   description?: string;
   type: string;
   format?: string;
   enum?: string[];
+
   properties?: {
-    [key: string]: ServerAsyncApiSchema | { $ref: string };
+    [key: string]: ServerAsyncApiSchemaOrRef;
   };
-  items?: ServerAsyncApiSchema | { $ref: string };
+  allOf?: ServerAsyncApiSchemaOrRef[];
+  anyOf?: ServerAsyncApiSchemaOrRef[];
+  oneOf?: ServerAsyncApiSchemaOrRef[];
+
+  items?: ServerAsyncApiSchemaOrRef;
   examples?: any[];
 
   required?: string[];
