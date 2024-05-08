@@ -23,7 +23,7 @@
     "ngx-markdown": "^17.2.1",
     "prismjs": "^1.29.0",
     "rxjs": "^7.8.1",
-    "zone.js": "^0.14.4"
+    "zone.js": "^0.14.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.2.0",
