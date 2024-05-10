@@ -5,6 +5,7 @@
   <mat-expansion-panel
     *ngFor="let channel of channels"
     [id]="channel.anchorIdentifier"
+    [attr.data-testid]="channel.anchorIdentifier"
     [expanded]="selectedChannel == channel.anchorIdentifier"
     (opened)="this.setChannelSelection(channel)"
   >

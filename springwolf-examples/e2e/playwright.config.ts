@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { getExampleProject } from './util/example';
 
 /**
  * Read environment variables from file.
@@ -28,6 +29,11 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    screenshot: {
+      mode: 'on',
+      fullPage: true
+    },
   },
 
   /* Configure projects for major browsers */
@@ -70,7 +76,7 @@ export default defineConfig({
 
   /* Run your loal dev server before starting the tests */
   webServer: {
-    cwd: '../springwolf-' + (process.env.SPRINGWOLF_EXAMPLE || 'kafka') + '-example',
+    cwd: '../springwolf-' + getExampleProject() + '-example',
     command: 'docker compose up',
     url: 'http://127.0.0.1:8080/springwolf/docs.json',
     reuseExistingServer: !process.env.CI,

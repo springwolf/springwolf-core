@@ -26,7 +26,7 @@ spotless {
   def nodeExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/node.exe' : '/bin/node'
 
   format 'styling', {
-    target 'tests/**/*.ts', 'tests/**/*.js','util/**/*.ts', 'util/**/*.js'
+    target 'tests/**/*.ts', 'tests/**/*.js', 'util/**/*.ts', 'util/**/*.js'
 
     prettier()
       .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")

@@ -29,7 +29,7 @@ public class SpringwolfAmqpController extends PublishingBaseController {
 
     @Override
     protected void publishMessage(String topic, MessageDto message, Object payload) {
-        log.debug("Publishing to amqp queue {}: {}", topic, message.getPayload());
+        log.debug("Publishing to amqp queue {}: {}", topic, message);
         producer.send(topic, payload);
     }
 }

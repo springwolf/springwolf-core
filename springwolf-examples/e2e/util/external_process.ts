@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { spawn } from "child_process";
+import { getExampleProject } from "./example";
 
 export interface MonitorDockerLogsResponse {
   messages: string[];
@@ -10,7 +11,7 @@ export interface MonitorDockerLogsResponse {
 
 export function monitorDockerLogs(): MonitorDockerLogsResponse {
   const process = spawn("docker", ["compose", "logs", "-f", "app"], {
-    cwd: "../springwolf-kafka-example",
+    cwd: "../springwolf-" + getExampleProject() + "-example",
   });
 
   const response: MonitorDockerLogsResponse = {
