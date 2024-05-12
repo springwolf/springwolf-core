@@ -6,7 +6,7 @@
   "scripts": {
     "start": "playwright test --ui",
     "test": "playwright test",
-    "postinstall": "npx playwright install --with-deps"
+    "postinstall": "npx playwright install --with-deps chromium"
   },
   "keywords": [],
   "author": "",
