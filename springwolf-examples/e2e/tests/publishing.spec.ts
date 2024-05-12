@@ -92,21 +92,29 @@ function testPublishingEveryChannelItem() {
           const button = locatePublishButton(channel);
           await button.click();
 
-          await expect
-            .poll(
-              async () => {
-                const found = dockerLogs.messages
-                  .filter((m) => m.includes("Publishing to"))
-                  .filter((m) => m.includes(channelName))
-                  .filter((m) => m.includes(payload)).length;
-                console.debug("Polling for publish message and found=" + found);
-                return found;
-              },
-              { message: "Expected publishing message in application logs" }
-            )
-            .toBeGreaterThanOrEqual(1);
-
+          await verifyMessageIsPublished();
           if (action === "receive") {
+            await verifyMessageIsReceived();
+          }
+
+          async function verifyMessageIsPublished() {
+            await expect
+              .poll(
+                async () => {
+                  const found = dockerLogs.messages
+                    .filter((m) => m.includes("Publishing to"))
+                    .filter((m) => m.includes(channelName))
+                    .filter((m) => m.includes(payload)).length;
+                  console.debug(
+                    "Polling for publish message and found=" + found
+                  );
+                  return found;
+                },
+                { message: "Expected publishing message in application logs" }
+              )
+              .toBeGreaterThanOrEqual(1);
+          }
+          async function verifyMessageIsReceived() {
             await expect
               .poll(
                 async () => {
