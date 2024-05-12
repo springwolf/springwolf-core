@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +26,7 @@ public class SpringContextIntegrationTest {
                 "springwolf.docket.servers.test-protocol.protocol=amqp",
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
             })
+    @ActiveProfiles("test")
     class ApplicationPropertiesConfigurationTest {
 
         @Autowired
@@ -56,6 +58,7 @@ public class SpringContextIntegrationTest {
                 "springwolf.scanner.producer-data.enabled=false",
                 "springwolf.plugin.amqp.scanner.rabbit-listener.enabled=false",
             })
+    @ActiveProfiles("test")
     class DisabledScannerTest {
 
         @Autowired

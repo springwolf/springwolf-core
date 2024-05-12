@@ -69,7 +69,7 @@ test.describe("Publishing for " + getExampleProject() + " plugin", () => {
       return; // publishing is not possible for these
     }
 
-    test(channelName + " with " + payload, async ({ page }) => {
+    test(action + " " + channelName + " with " + payload, async ({ page }) => {
       const channel = locateChannel(
         page,
         protocol,

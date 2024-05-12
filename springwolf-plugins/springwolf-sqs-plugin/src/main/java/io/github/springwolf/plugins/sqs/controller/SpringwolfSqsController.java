@@ -28,7 +28,7 @@ public class SpringwolfSqsController extends PublishingBaseController {
 
     @Override
     protected void publishMessage(String topic, MessageDto message, Object payload) {
-        log.debug("Publishing to SQS queue {}: {}", topic, message);
+        log.debug("Publishing to sqs queue {}: {}", topic, message);
         producer.send(topic, payload);
     }
 }

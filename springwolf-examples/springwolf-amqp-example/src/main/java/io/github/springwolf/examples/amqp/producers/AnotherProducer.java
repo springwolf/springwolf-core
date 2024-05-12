@@ -17,7 +17,7 @@ public class AnotherProducer {
     @AsyncPublisher(
             operation =
                     @AsyncOperation(
-                            channelName = "example-producer-channel-publisher",
+                            channelName = "example-topic-exchange",
                             description = "Custom, optional description defined in the AsyncPublisher annotation"))
     @AmqpAsyncOperationBinding()
     public void sendMessage(AnotherPayloadDto msg) {

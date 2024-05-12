@@ -45,13 +45,6 @@
         }
       }
     },
-    "example-producer-channel-publisher": {
-      "messages": {
-        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
-        }
-      }
-    },
     "example-queue": {
       "messages": {
         "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
@@ -69,6 +62,13 @@
             "vhost": "/"
           },
           "bindingVersion": "0.3.0"
+        }
+      }
+    },
+    "example-topic-exchange": {
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       }
     },
@@ -268,31 +268,6 @@
         }
       ]
     },
-    "example-producer-channel-publisher_send_sendMessage": {
-      "action": "send",
-      "channel": {
-        "$ref": "#/channels/example-producer-channel-publisher"
-      },
-      "title": "example-producer-channel-publisher_send",
-      "description": "Custom, optional description defined in the AsyncPublisher annotation",
-      "bindings": {
-        "amqp": {
-          "expiration": 0,
-          "cc": [ ],
-          "priority": 0,
-          "deliveryMode": 1,
-          "mandatory": false,
-          "timestamp": false,
-          "ack": false,
-          "bindingVersion": "0.3.0"
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/example-producer-channel-publisher/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
-        }
-      ]
-    },
     "example-queue_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
@@ -310,6 +285,31 @@
       "messages": [
         {
           "$ref": "#/channels/example-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "example-topic-exchange_send_sendMessage": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/example-topic-exchange"
+      },
+      "title": "example-topic-exchange_send",
+      "description": "Custom, optional description defined in the AsyncPublisher annotation",
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "cc": [ ],
+          "priority": 0,
+          "deliveryMode": 1,
+          "mandatory": false,
+          "timestamp": false,
+          "ack": false,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-topic-exchange/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       ]
     },
