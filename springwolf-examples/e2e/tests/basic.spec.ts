@@ -1,10 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { test, expect } from "@playwright/test";
-import {
-  locateChannelItems,
-  locatePublishButton,
-  locateSnackbar,
-} from "../util/page_object";
+import { locateChannelItems } from "../util/page_object";
+import { getExampleAsyncApi } from "../util/example";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("");
@@ -14,7 +11,7 @@ test("has title", async ({ page }) => {
   await expect(page).toHaveTitle(/Springwolf/);
 });
 
-test("can click download and get asyncapi.json in new tab", async ({
+test("can click download and get original asyncapi.json in new tab", async ({
   page,
 }) => {
   const newPagePromise = page.waitForEvent("popup");
@@ -27,6 +24,7 @@ test("can click download and get asyncapi.json in new tab", async ({
   const asyncApiJson = JSON.parse(content!!);
 
   expect(asyncApiJson.info.title).toContain("Springwolf example project");
+  expect(asyncApiJson).toStrictEqual(getExampleAsyncApi());
 });
 
 test("has channels and channel item", async ({ page }) => {

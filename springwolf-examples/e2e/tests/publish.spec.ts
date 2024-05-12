@@ -3,6 +3,7 @@ import { test, expect } from "@playwright/test";
 import {
   monitorDockerLogs,
   MonitorDockerLogsResponse,
+  verifyNoErrorLogs,
 } from "../util/external_process";
 import {
   locateChannel,
@@ -12,13 +13,13 @@ import {
 } from "../util/page_object";
 import { getExampleAsyncApi, getExampleProject } from "../util/example";
 
-test.describe("Publishing for " + getExampleProject() + " plugin", () => {
+let dockerLogs: MonitorDockerLogsResponse;
+test.describe("Publishing in " + getExampleProject() + " example", () => {
   test.skip(
     ["cloud-stream", "sns"].includes(getExampleProject()),
-    "Plugin does not support publishing"
+    "Example/Plugin does not support publishing"
   );
 
-  let dockerLogs: MonitorDockerLogsResponse;
   test.beforeAll(async () => {
     dockerLogs = monitorDockerLogs();
   });
@@ -26,13 +27,14 @@ test.describe("Publishing for " + getExampleProject() + " plugin", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("");
 
-    console.log("---\nProcessMessages---\n", dockerLogs.messages.join("\n"));
     dockerLogs.clearMessages();
-    dockerLogs.log = true;
   });
 
   test.afterAll(async () => {
     expect(dockerLogs.errors).toHaveLength(0);
+    verifyNoErrorLogs(dockerLogs);
+
+    console.debug("---\nProcessMessages---\n", dockerLogs.messages.join("\n"));
   });
 
   test("shows success notification when publishing", async ({ page }) => {
@@ -46,6 +48,10 @@ test.describe("Publishing for " + getExampleProject() + " plugin", () => {
     await expect(snackBar).toContainText("Example payload sent");
   });
 
+  testPublishingEveryChannelItem();
+});
+
+function testPublishingEveryChannelItem() {
   const operations = getExampleAsyncApi().operations;
   Object.keys(operations).forEach((key: string) => {
     const operation = operations[key];
@@ -59,14 +65,15 @@ test.describe("Publishing for " + getExampleProject() + " plugin", () => {
       .pop();
 
     if (
-      payload === "AnotherPayloadAvroDto" ||
-      payload === "XmlPayloadDto" ||
-      payload === "YamlPayloadDto" ||
-      payload === "MonetaryAmount" ||
-      payload === "StringConsumer$StringEnvelope" ||
-      payload === "ExamplePayloadProtobufDto$Message"
+      payload === "AnotherPayloadAvroDto" || // Avro publishing is not supported
+      payload === "XmlPayloadDto" || // Unable to create correct xml payload
+      payload === "YamlPayloadDto" || // Unable to create correct yaml payload
+      payload === "MonetaryAmount" || // Issue with either MonetaryAmount of ModelConverters
+      payload === "StringConsumer$StringEnvelope" || // Unable to instantiate class
+      payload === "ExamplePayloadProtobufDto$Message" || // Unable to instantiate class
+      channelName === "example-topic-routing-key" // Publishing through amqp exchange is not supported GH-366
     ) {
-      return; // publishing is not possible for these
+      return; // skip
     }
 
     test(action + " " + channelName + " with " + payload, async ({ page }) => {
@@ -88,7 +95,8 @@ test.describe("Publishing for " + getExampleProject() + " plugin", () => {
             dockerLogs.messages
               .filter((m) => m.includes("Publishing to"))
               .filter((m) => m.includes(channelName))
-              .filter((m) => m.includes(payload)).length
+              .filter((m) => m.includes(payload)).length,
+          { message: "Expected publishing message in application logs" }
         )
         .toBeGreaterThanOrEqual(1);
 
@@ -98,10 +106,11 @@ test.describe("Publishing for " + getExampleProject() + " plugin", () => {
             async () =>
               dockerLogs.messages
                 .filter((m) => m.includes("Received new message in"))
-                .filter((m) => m.includes(channelName)).length
+                .filter((m) => m.includes(channelName)).length,
+            { message: "Expected receiving message in appliation logs" }
           )
           .toBeGreaterThanOrEqual(1);
       }
     });
   });
-});
+}

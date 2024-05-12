@@ -82,7 +82,7 @@
         "amqp": {
           "is": "routingKey",
           "exchange": {
-            "name": "example-bindings-exchange-name",
+            "name": "example-topic-exchange",
             "type": "topic",
             "durable": true,
             "autoDelete": false,
@@ -103,11 +103,11 @@
       },
       "bindings": {
         "amqp": {
-          "is": "routingKey",
-          "exchange": {
-            "name": "example-topic-exchange",
-            "type": "topic",
+          "is": "queue",
+          "queue": {
+            "name": "multi-payload-queue",
             "durable": true,
+            "exclusive": false,
             "autoDelete": false,
             "vhost": "/"
           },
@@ -342,7 +342,7 @@
         "amqp": {
           "expiration": 0,
           "cc": [
-            "example-topic-routing-key"
+            "multi-payload-queue"
           ],
           "bindingVersion": "0.3.0"
         }

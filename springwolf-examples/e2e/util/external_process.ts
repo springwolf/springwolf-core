@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { spawn } from "child_process";
 import { getExampleProject } from "./example";
+import { expect } from "@playwright/test";
 
 export interface MonitorDockerLogsResponse {
   messages: string[];
@@ -24,8 +25,8 @@ export function monitorDockerLogs(): MonitorDockerLogsResponse {
   };
 
   process.stdout.on("data", (data) => {
-    const strData = data.toString();
-    response.messages.push(strData);
+    const strData = data.toString().split("\n") as string[];
+    response.messages.push(...strData);
 
     if (response.log) {
       console.log(strData);
@@ -33,8 +34,8 @@ export function monitorDockerLogs(): MonitorDockerLogsResponse {
   });
 
   process.stderr.on("data", (data) => {
-    const strData = data.toString();
-    response.errors.push(strData);
+    const strData = data.toString().split("\n") as string[];
+    response.errors.push(...strData);
 
     if (response.log) {
       console.log(strData);
@@ -46,4 +47,14 @@ export function monitorDockerLogs(): MonitorDockerLogsResponse {
   });
 
   return response;
+}
+
+export function verifyNoErrorLogs(dockerLogs: MonitorDockerLogsResponse) {
+  const errorMessages = dockerLogs.messages
+    .filter((message) => message.includes("i.g.s")) // io.github.springwolf
+    .filter((message) => message.includes("ERROR") || message.includes("WARN"));
+
+  expect(errorMessages, {
+    message: "Unexpected Springwolf ERROR or WARN log messages found",
+  }).toHaveLength(0);
 }
