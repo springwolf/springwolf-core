@@ -15,7 +15,6 @@ import { getExampleAsyncApi, getExampleProject } from "../util/example";
 
 let dockerLogs: MonitorDockerLogsResponse;
 test.describe("Publishing in " + getExampleProject() + " example", () => {
-  test.slow();
   test.skip(
     ["cloud-stream", "sns"].includes(getExampleProject()),
     "Example/Plugin does not support publishing"
@@ -59,15 +58,20 @@ function testPublishingEveryChannelItem() {
       const action = operation.action;
       const protocol = Object.keys(operation.bindings)[0];
       const channelName = operation.channel.$ref.split("/").pop();
-      const payload = messageReference.$ref.split("/").pop().split(".").pop(); // TODO: forEach payload
+      const payload = messageReference.$ref
+        .split("/")
+        .pop()
+        .split(".")
+        .pop()
+        .split("$")
+        .pop();
 
       if (
         payload === "AnotherPayloadAvroDto" || // Avro publishing is not supported
         payload === "XmlPayloadDto" || // Unable to create correct xml payload
         payload === "YamlPayloadDto" || // Unable to create correct yaml payload
         payload === "MonetaryAmount" || // Issue with either MonetaryAmount of ModelConverters
-        payload === "StringConsumer$StringEnvelope" || // Unable to instantiate class
-        payload === "ExamplePayloadProtobufDto$Message" || // Unable to instantiate class
+        payload === "Message" || // Unable to instantiate ExamplePayloadProtobufDto$Message class
         channelName === "example-topic-routing-key" // Publishing through amqp exchange is not supported, see GH-366
       ) {
         return; // skip

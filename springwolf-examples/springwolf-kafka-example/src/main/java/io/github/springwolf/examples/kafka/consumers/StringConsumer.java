@@ -6,7 +6,9 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.plugins.kafka.asyncapi.annotations.KafkaAsyncOperationBinding;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -33,11 +35,13 @@ public class StringConsumer {
     }
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     static class StringEnvelope {
         @AsyncApiPayload
         @Schema(
                 description = "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
                 maxLength = 100)
-        private final String payload;
+        private String payload;
     }
 }
