@@ -61,7 +61,7 @@ jobs:
         with:
           name: playwright-report-${{ matrix.plugin }}
           path: springwolf-examples/e2e/playwright-report/
-          retention-days: 30
+          retention-days: 14
 
       - name: Publish docker image
         if: github.ref == 'refs/heads/master'

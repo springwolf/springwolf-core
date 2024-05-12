@@ -9,7 +9,7 @@ import mockSpringwolfJms from "../../../springwolf-examples/springwolf-jms-examp
 type ExampleProject = "amqp" | "cloud-stream" | "kafka" | "sns" | "sqs" | "jms";
 
 export function getExampleProject(): ExampleProject {
-  return process.env.SPRINGWOLF_EXAMPLE || "amqp";
+  return process.env.SPRINGWOLF_EXAMPLE || "kafka";
 }
 
 export function getExampleAsyncApi() {

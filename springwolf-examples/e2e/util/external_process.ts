@@ -29,7 +29,7 @@ export function monitorDockerLogs(): MonitorDockerLogsResponse {
     response.messages.push(...strData);
 
     if (response.log) {
-      console.log(strData);
+      console.debug(strData);
     }
   });
 
@@ -38,23 +38,25 @@ export function monitorDockerLogs(): MonitorDockerLogsResponse {
     response.errors.push(...strData);
 
     if (response.log) {
-      console.log(strData);
+      console.debug(strData);
     }
   });
 
   process.on("close", (code) => {
-    console.error("Child exited with", code, "and stdout has been saved");
+    console.error("Child exited with ", code, " and stdout has been saved");
   });
 
   return response;
 }
 
 export function verifyNoErrorLogs(dockerLogs: MonitorDockerLogsResponse) {
+  expect(dockerLogs.errors).toHaveLength(0);
+
   const errorMessages = dockerLogs.messages
     .filter((message) => message.includes("i.g.s")) // io.github.springwolf
     .filter((message) => message.includes("ERROR") || message.includes("WARN"));
 
   expect(errorMessages, {
-    message: "Unexpected Springwolf ERROR or WARN log messages found",
+    message: "expect: No Springwolf ERROR or WARN log messages found",
   }).toHaveLength(0);
 }
