@@ -1,0 +1,27 @@
+{
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$ClassA" : {
+    "type" : "string",
+    "properties" : {
+      "classB" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$ClassB"
+      },
+      "reference" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$Reference"
+      }
+    },
+    "examples" : [ "<ClassA><ClassB><Reference/></ClassB><Reference/></ClassA>" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$ClassB" : {
+    "type" : "string",
+    "properties" : {
+      "reference" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$Reference"
+      }
+    },
+    "examples" : [ "<ClassB><Reference/></ClassB>" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$Reference" : {
+    "type" : "string",
+    "examples" : [ "<Reference/>" ]
+  }
+}

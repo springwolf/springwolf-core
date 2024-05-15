@@ -61,11 +61,11 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public String lookupSchemaName(Schema schema) {
+    public Optional<String> lookupSchemaName(Schema schema) {
         if (schema.getXml() != null && schema.getXml().getName() != null) {
-            return schema.getXml().getName();
+            return Optional.of(schema.getXml().getName());
         }
-        return schema.getName();
+        return Optional.ofNullable(schema.getName());
     }
 
     @Override
@@ -158,15 +158,19 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
     @Override
     public String prepareForSerialization(Schema schema, Node exampleObject) {
-        final Node objectToWrite;
+        final Optional<Node> objectToWrite;
         if (exampleObject instanceof Element) {
-            objectToWrite = exampleObject;
+            objectToWrite = Optional.of(exampleObject);
         } else {
-            final String name = lookupSchemaName(schema);
-            objectToWrite = wrapNode(name, exampleObject);
+            objectToWrite = lookupSchemaName(schema).map(name -> wrapNode(name, exampleObject));
         }
+
+        if (objectToWrite.isEmpty()) {
+            return null;
+        }
+
         try {
-            document.appendChild(objectToWrite);
+            document.appendChild(objectToWrite.get());
 
             String xml = exampleXmlValueSerializer.writeDocumentAsXmlString(document);
             exampleCache.putIfAbsent(getCacheKey(schema), exampleObject);
@@ -177,7 +181,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
             return xml;
         } catch (TransformerException | DOMException e) {
-            log.error("Serialize {}", schema.getName(), e);
+            log.error("Unable to serialize example for schema {}", schema.getName(), e);
             return null;
         }
     }
@@ -229,7 +233,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     private Optional<Node> createNodeOrAddAttribute(String value, Schema schema) {
         if (!nodeStack.isEmpty() && isAttribute(schema)) {
             Element currentParent = nodeStack.peek();
-            currentParent.setAttribute(lookupSchemaName(schema), value);
+            lookupSchemaName(schema).ifPresent(name -> currentParent.setAttribute(name, value));
             return Optional.empty();
         } else {
             return Optional.of(document.createTextNode(value));

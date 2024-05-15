@@ -21,7 +21,7 @@ public interface ExampleValueGenerator<T, R> {
      */
     default void initialize() {}
 
-    String lookupSchemaName(Schema schema);
+    Optional<String> lookupSchemaName(Schema schema);
 
     /**
      * @return The serializable representation of the example (object for json and yaml, string for others)

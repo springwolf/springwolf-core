@@ -52,14 +52,18 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     public R fromSchema(Schema schema, Map<String, Schema> definitions) {
         exampleValueGenerator.initialize();
 
-        String schemaName = exampleValueGenerator.lookupSchemaName(schema);
         try {
+            String schemaName = exampleValueGenerator
+                    .lookupSchemaName(schema)
+                    .orElseThrow(() ->
+                            new ExampleGeneratingException("There is no name set for Schema: " + schema.toString()));
+
             T generatedExample = buildExample(schemaName, schema, definitions, new HashSet<>())
                     .orElseThrow(() -> new ExampleGeneratingException("Something went wrong"));
 
             return exampleValueGenerator.prepareForSerialization(schema, generatedExample);
         } catch (ExampleGeneratingException ex) {
-            log.info("Failed to build example for schema {}", schemaName, ex);
+            log.info("Failed to build example for schema: {}", ex.getMessage(), ex);
         }
         return null;
     }
@@ -154,13 +158,17 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     private Optional<T> buildArrayExample(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         Schema arrayItemSchema =
                 resolveSchemaFromRef(schema.getItems(), definitions).orElse(schema.getItems());
-        String arrayItemName = exampleValueGenerator.lookupSchemaName(arrayItemSchema);
 
-        Optional<T> arrayItem = buildExample(arrayItemName, arrayItemSchema, definitions, visited);
+        Optional<String> arrayName = exampleValueGenerator.lookupSchemaName(schema);
 
-        String arrayName = exampleValueGenerator.lookupSchemaName(schema);
-
-        return arrayItem.map(array -> exampleValueGenerator.createArrayExample(arrayName, array));
+        return exampleValueGenerator
+                .lookupSchemaName(arrayItemSchema)
+                .or(() -> arrayName)
+                .flatMap(arrayItemName -> buildExample(arrayItemName, arrayItemSchema, definitions, visited))
+                .map(arrayItem -> exampleValueGenerator.createArrayExample(
+                        arrayName.orElseThrow(
+                                () -> new ExampleGeneratingException("Array schema does not have a name: " + schema)),
+                        arrayItem));
     }
 
     private Optional<T> buildFromStringSchema(Schema schema) {
@@ -248,7 +256,12 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
         return properties.entrySet().stream()
                 .map(propertySchema -> {
-                    String propertyKey = exampleValueGenerator.lookupSchemaName(propertySchema.getValue());
+                    // There can be instances where the schema has no name and only the property is named
+                    // in this case we se the key as schema name
+                    String propertyKey = exampleValueGenerator
+                            .lookupSchemaName(propertySchema.getValue())
+                            .orElse(propertySchema.getKey());
+
                     Optional<T> propertyValue =
                             buildExample(propertyKey, propertySchema.getValue(), definitions, visited);
 
@@ -279,7 +292,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             String schemaName = MessageReference.extractRefName(ref);
             Schema<?> resolvedSchema = definitions.get(schemaName);
             if (resolvedSchema == null) {
-                throw new ExampleGeneratingException("Missing schema during example json generation: " + schemaName);
+                throw new ExampleGeneratingException("Missing schema during example generation: " + schemaName);
             }
             return Optional.of(resolvedSchema);
         }

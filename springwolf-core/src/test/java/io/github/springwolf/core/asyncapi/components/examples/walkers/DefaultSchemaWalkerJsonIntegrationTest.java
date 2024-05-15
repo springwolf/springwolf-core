@@ -21,6 +21,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.media.UUIDSchema;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -62,8 +63,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     class FromSchema {
 
         @Test
-        void build() throws JsonProcessingException {
+        void build(TestInfo testInfo) throws JsonProcessingException {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -72,8 +74,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void failWhenMissingDefinition() {
+        void failWhenMissingDefinition(TestInfo testInfo) {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
 
             Schema referenceSchema = new Schema();
             referenceSchema.set$ref("#/components/schemas/Nested");
@@ -87,8 +90,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     @Nested
     class TestSimpleSchema {
         @Test
-        void type_boolean() throws JsonProcessingException {
+        void type_boolean(TestInfo testInfo) throws JsonProcessingException {
             BooleanSchema schema = new BooleanSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -97,8 +101,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_boolean_example_set() throws JsonProcessingException {
+        void type_boolean_example_set(TestInfo testInfo) throws JsonProcessingException {
             BooleanSchema schema = new BooleanSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample(Boolean.FALSE);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -108,8 +113,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_integer() throws JsonProcessingException {
+        void type_integer(TestInfo testInfo) throws JsonProcessingException {
             IntegerSchema schema = new IntegerSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -118,8 +124,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_integer_example_set() throws JsonProcessingException {
+        void type_integer_example_set(TestInfo testInfo) throws JsonProcessingException {
             IntegerSchema schema = new IntegerSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample(Integer.parseInt("123"));
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -129,8 +136,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_integer_format_long() throws JsonProcessingException {
+        void type_integer_format_long(TestInfo testInfo) throws JsonProcessingException {
             IntegerSchema schema = new IntegerSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("int64");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -140,8 +148,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_number_format_float() throws JsonProcessingException {
+        void type_number_format_float(TestInfo testInfo) throws JsonProcessingException {
             Schema<BigDecimal> schema = new NumberSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("float");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -151,8 +160,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_number_format_double() throws JsonProcessingException {
+        void type_number_format_double(TestInfo testInfo) throws JsonProcessingException {
             Schema<BigDecimal> schema = new NumberSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("double");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -162,8 +172,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_number_example_set() throws JsonProcessingException {
+        void type_number_example_set(TestInfo testInfo) throws JsonProcessingException {
             Schema<BigDecimal> schema = new NumberSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample(new BigDecimal("123.45"));
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -173,8 +184,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string() throws JsonProcessingException {
+        void type_string(TestInfo testInfo) throws JsonProcessingException {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -183,8 +195,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_example_set() throws JsonProcessingException {
+        void type_string_example_set(TestInfo testInfo) throws JsonProcessingException {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample("custom-example-value");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -194,8 +207,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_from_enum() throws JsonProcessingException {
+        void type_string_from_enum(TestInfo testInfo) throws JsonProcessingException {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.addEnumItem("EnumItem1");
             schema.addEnumItem("EnumItem2");
 
@@ -206,8 +220,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_byte() throws JsonProcessingException {
+        void type_string_format_byte(TestInfo testInfo) throws JsonProcessingException {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("byte");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -217,8 +232,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_binary() throws JsonProcessingException {
+        void type_string_format_binary(TestInfo testInfo) throws JsonProcessingException {
             BinarySchema schema = new BinarySchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -229,8 +245,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_date() throws JsonProcessingException {
+        void type_string_format_date(TestInfo testInfo) throws JsonProcessingException {
             DateSchema schema = new DateSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -239,8 +256,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_datetime() throws JsonProcessingException {
+        void type_string_format_datetime(TestInfo testInfo) throws JsonProcessingException {
             DateTimeSchema schema = new DateTimeSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -249,8 +267,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_email() throws JsonProcessingException {
+        void type_string_format_email(TestInfo testInfo) throws JsonProcessingException {
             EmailSchema schema = new EmailSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -259,8 +278,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_password() throws JsonProcessingException {
+        void type_string_format_password(TestInfo testInfo) throws JsonProcessingException {
             PasswordSchema schema = new PasswordSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -269,8 +289,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_uuid() throws JsonProcessingException {
+        void type_string_format_uuid(TestInfo testInfo) throws JsonProcessingException {
             UUIDSchema schema = new UUIDSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -279,8 +300,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_unknown() throws JsonProcessingException {
+        void type_string_format_unknown(TestInfo testInfo) throws JsonProcessingException {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("unknown");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -290,14 +312,15 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_unknown_schema() throws JsonProcessingException {
+        void type_unknown_schema(TestInfo testInfo) throws JsonProcessingException {
             class TestSchema extends Schema<StringSchema> {
                 TestSchema() {
-                    super("test-schema", (String) null);
+                    super("test-schema", null);
                 }
             }
 
             TestSchema schema = new TestSchema();
+            schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
             String actualString = jsonMapper.writeValueAsString(actual);
@@ -306,8 +329,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_primitive_array() throws JsonProcessingException {
+        void type_primitive_array(TestInfo testInfo) throws JsonProcessingException {
             ArraySchema schema = new ArraySchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setItems(new StringSchema());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -320,12 +344,13 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     @Nested
     class TestObjectSchema {
         @Test
-        void type_object_array() throws JsonProcessingException {
+        void type_object_array(TestInfo testInfo) throws JsonProcessingException {
             ObjectSchema itemSchema = new ObjectSchema();
             itemSchema.addProperty("s", new StringSchema());
             itemSchema.addProperty("b", new BooleanSchema());
 
             ArraySchema schema = new ArraySchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setItems(itemSchema);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -335,8 +360,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void composite_object_without_references() throws JsonProcessingException {
+        void composite_object_without_references(TestInfo testInfo) throws JsonProcessingException {
             ObjectSchema schema = new ObjectSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.addProperty("s", new StringSchema());
             schema.addProperty("b", new BooleanSchema());
 
@@ -347,11 +373,12 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void composite_object_with_references() throws JsonProcessingException {
+        void composite_object_with_references(TestInfo testInfo) throws JsonProcessingException {
             Schema referenceSchema = new Schema();
             referenceSchema.set$ref("#/components/schemas/Nested");
 
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
             compositeSchema.addProperty("s", new StringSchema());
             compositeSchema.addProperty("f", referenceSchema);
 
@@ -365,8 +392,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void object_with_anyOf() throws JsonProcessingException {
+        void object_with_anyOf(TestInfo testInfo) throws JsonProcessingException {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
 
             Schema propertySchema = new ObjectSchema();
             propertySchema.setAnyOf(List.of(new StringSchema(), new NumberSchema()));
@@ -379,8 +407,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void object_with_oneOf() throws JsonProcessingException {
+        void object_with_oneOf(TestInfo testInfo) throws JsonProcessingException {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
 
             Schema propertySchema = new ObjectSchema();
             propertySchema.setOneOf(List.of(new StringSchema(), new NumberSchema()));
@@ -393,8 +422,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void object_with_allOf() throws JsonProcessingException {
+        void object_with_allOf(TestInfo testInfo) throws JsonProcessingException {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
 
             ObjectSchema schema1 = new ObjectSchema();
             schema1.setProperties(Map.of("field1", new StringSchema()));
@@ -413,8 +443,9 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void schema_with_problematic_object_toString_example() throws JsonProcessingException {
+        void schema_with_problematic_object_toString_example(TestInfo testInfo) throws JsonProcessingException {
             ObjectSchema schema = new ObjectSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample(new ClassWithToString());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, Map.of());

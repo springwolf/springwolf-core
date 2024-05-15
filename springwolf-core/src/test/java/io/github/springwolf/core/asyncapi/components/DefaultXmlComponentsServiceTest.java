@@ -338,14 +338,14 @@ class DefaultXmlComponentsServiceTest {
     }
 
     @Nested
-    class TimonTesting {
+    class XmlSchemaName {
         @Test
-        void testSchemaWithOneOf() throws IOException {
-            componentsService.registerSchema(TimonTesting.ClassB.class, "text/xml");
-            componentsService.registerSchema(TimonTesting.ClassA.class, "text/xml");
+        void testSchemasWithSharedProperty() throws IOException {
+            componentsService.registerSchema(XmlSchemaName.ClassB.class, "text/xml");
+            componentsService.registerSchema(XmlSchemaName.ClassA.class, "text/xml");
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/xml/tback.json");
+            String expected = jsonResource("/schemas/xml/schema-with-shared-property.json");
 
             System.out.println("Got: " + actualDefinitions);
             assertEquals(expected, actualDefinitions);
