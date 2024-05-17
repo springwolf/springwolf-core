@@ -21,6 +21,7 @@ dependencies {
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
 
     implementation "org.springframework.amqp:spring-rabbit"
+    permitUsedUndeclared 'com.rabbitmq:amqp-client'
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
     implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
 

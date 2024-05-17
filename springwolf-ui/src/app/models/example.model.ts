@@ -7,12 +7,14 @@ export class Example {
   constructor(exampleObject: object | string) {
     this.rawValue = exampleObject;
 
-    if (typeof exampleObject === "string") {
-      this.value = exampleObject;
-    } else if (Object.keys(exampleObject).length === 0) {
-      this.value = "";
+    if (typeof exampleObject === "object") {
+      if (Object.keys(exampleObject).length > 0) {
+        this.value = JSON.stringify(exampleObject, null, 2);
+      } else {
+        this.value = "";
+      }
     } else {
-      this.value = JSON.stringify(exampleObject, null, 2);
+      this.value = "" + exampleObject;
     }
 
     this.lineCount = this.value.split("\n").length;

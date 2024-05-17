@@ -20,7 +20,7 @@ public class ExampleConsumer {
 
     @KafkaListener(topics = "example-topic")
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in example-queue: {}", payload.toString());
+        log.info("Received new message in example-topic: {}", payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
@@ -31,6 +31,6 @@ public class ExampleConsumer {
 
     @KafkaListener(topicPattern = "another-topic", groupId = "example-group-id", batch = "true")
     public void receiveAnotherPayloadBatched(List<AnotherPayloadDto> payloads) {
-        log.info("Received new messages in another-topic: {}", payloads.toString());
+        log.info("Received new message in another-topic: {}", payloads.toString());
     }
 }

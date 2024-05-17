@@ -9,6 +9,7 @@ include(
         'springwolf-plugins:springwolf-kafka-plugin',
         'springwolf-plugins:springwolf-sns-plugin',
         'springwolf-plugins:springwolf-sqs-plugin',
+        'springwolf-examples:e2e',
         'springwolf-examples:springwolf-amqp-example',
         'springwolf-examples:springwolf-cloud-stream-example',
         'springwolf-examples:springwolf-jms-example',

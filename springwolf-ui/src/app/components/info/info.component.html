@@ -3,7 +3,9 @@
 <h5>
   API version {{ info?.version || "not specified" }}
   -
-  <a href="javascript:void(0);" (click)="download()">Download AsyncAPI file</a>
+  <a *ngIf="info?.asyncApiJson" href="javascript:void(0);" (click)="download()"
+    >Download AsyncAPI file</a
+  >
 </h5>
 
 <p class="info-chips">

@@ -1,0 +1,44 @@
+plugins {
+  id 'java'
+  id 'com.github.node-gradle.node' version '7.0.2'
+}
+
+node {
+  version = '18.16.1'
+  npmVersion = '9.5.1'
+  download = true
+}
+
+npm_run_test {
+  dependsOn spotlessCheck
+
+  inputs.files fileTree("tests")
+  inputs.files fileTree("util")
+  inputs.file 'playwright.config.ts'
+  inputs.file 'package.json'
+  inputs.file 'package-lock.json'
+}
+
+spotless {
+  encoding 'UTF-8'
+
+  def npmExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/npm.cmd' : '/bin/npm'
+  def nodeExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/node.exe' : '/bin/node'
+
+  format 'styling', {
+    target 'tests/**/*.ts', 'tests/**/*.js', 'util/**/*.ts', 'util/**/*.js'
+
+    prettier()
+      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
+      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+
+    licenseHeader("/* SPDX-License-Identifier: Apache-2.0 */", "import|export|.* \\{")
+
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
+}
+
+tasks.named('spotlessStyling').configure {
+  it.dependsOn('nodeSetup', 'npmSetup')
+}

@@ -52,6 +52,17 @@ jobs:
       - name: Run build, check, analyzeDependencies on example
         run: ./gradlew -p ${{ env.example }} build
 
+      - name: Run e2e tests
+        run: ./gradlew -p springwolf-examples/e2e npm_run_test
+        env:
+          SPRINGWOLF_EXAMPLE: ${{ matrix.plugin }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ matrix.plugin }}
+          path: springwolf-examples/e2e/playwright-report/
+          retention-days: 14
+
       - name: Publish docker image
         if: github.ref == 'refs/heads/master'
         run: ./gradlew -p ${{ env.example }} dockerBuildImage dockerPushImage

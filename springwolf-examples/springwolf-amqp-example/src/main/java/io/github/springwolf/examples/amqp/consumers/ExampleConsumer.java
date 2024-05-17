@@ -39,7 +39,7 @@ public class ExampleConsumer {
     @RabbitListener(
             bindings = {
                 @QueueBinding(
-                        exchange = @Exchange(name = "example-bindings-exchange-name", type = ExchangeTypes.TOPIC),
+                        exchange = @Exchange(name = "example-topic-exchange", type = ExchangeTypes.TOPIC),
                         value =
                                 @Queue(
                                         name = "example-bindings-queue",
@@ -49,7 +49,10 @@ public class ExampleConsumer {
                         key = "example-topic-routing-key")
             })
     public void bindingsExample(AnotherPayloadDto payload) {
-        log.info("Received new message in example-bindings-queue: {}", payload.toString());
+        log.info(
+                "Received new message in example-bindings-queue"
+                        + " through exchange example-topic-exchange using routing key example-topic-routing-key: {}",
+                payload.toString());
     }
 
     @RabbitListener(queues = "multi-payload-queue")

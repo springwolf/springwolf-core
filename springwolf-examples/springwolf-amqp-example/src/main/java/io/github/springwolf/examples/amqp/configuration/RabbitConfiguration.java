@@ -42,13 +42,13 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    public Queue exampleTopicQueue() {
+    public Queue multiPayloadQueue() {
         return new Queue("multi-payload-queue");
     }
 
     @Bean
-    public Binding exampleTopicBinding(Queue exampleTopicQueue, Exchange exampleTopicExchange) {
-        return BindingBuilder.bind(exampleTopicQueue)
+    public Binding exampleTopicBinding(Queue exampleBindingsQueue, Exchange exampleTopicExchange) {
+        return BindingBuilder.bind(exampleBindingsQueue)
                 .to(exampleTopicExchange)
                 .with("example-topic-routing-key")
                 .noargs();

@@ -18,8 +18,8 @@ public class MessageDto {
     private final Map<String, String> headers;
 
     @Builder.Default
-    private final String payload = EMPTY;
+    private final String payloadType = String.class.getCanonicalName();
 
     @Builder.Default
-    private final String payloadType = String.class.getCanonicalName();
+    private final String payload = EMPTY;
 }
