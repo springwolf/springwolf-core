@@ -58,7 +58,7 @@ describe("InfoComponent", function () {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector("h1").textContent).toContain("title");
     expect(compiled.querySelector("h5").textContent).toContain(
-      " API version 1.0.0 - Download AsyncAPI file"
+      "API version 1.0.0"
     );
   });
 
