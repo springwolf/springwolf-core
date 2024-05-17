@@ -1,0 +1,21 @@
+name: Update issue comment
+
+on:
+  issue_comment:
+
+jobs:
+  when_user_comments_remove_label_waiting_for_feedback:
+    runs-on: ubuntu-latest
+    if: >-
+      !github.event.issue.pull_request &&
+      github.event.action == 'created' &&
+      github.event.pull_request.author_association != 'CONTRIBUTOR' &&
+      github.event.pull_request.author_association != 'MEMBER' &&
+      contains(github.event.issue.labels.*.name, 'waiting for feedback')
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_ISSUE_NUMBER: ${{ github.event.issue.number }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Remove label "waiting for feedback"
+        run: gh issue edit ${{ env.GH_ISSUE_NUMBER }} --remove-label "waiting for feedback"

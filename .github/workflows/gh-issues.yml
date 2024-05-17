@@ -1,0 +1,45 @@
+name: Update issue
+
+on:
+  issues:
+
+jobs:
+  comment_when_issue_labeled_staged_for_release:
+    runs-on: ubuntu-latest
+    if: >-
+      !github.event.issue.pull_request &&
+      github.event.action == 'labeled' && 
+      github.event.label.name == 'staged for release'
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_ISSUE_NUMBER: ${{ github.event.issue.number }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Comment on issue
+        run: |
+          cat << EOF | gh issue comment ${{ env.GH_ISSUE_NUMBER }} -F -
+          The change is staged for release and will be part of the next release.
+
+          If you want to try and verify it in your application today,
+          use the latest 1.X.0-SNAPSHOT build as described in our [README.md > Testing SNAPSHOT version](https://github.com/springwolf/springwolf-core)
+
+          Thank you for the report/contribution!
+          EOF
+  comment_when_staged_for_release_issue_is_closed:
+    runs-on: ubuntu-latest
+    if: >-
+      !github.event.issue.pull_request &&
+      github.event.action == 'closed' && 
+      contains(github.event.issue.labels.*.name, 'staged for release')
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_ISSUE_NUMBER: ${{ github.event.issue.number }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Comment on issue
+        run: |
+          cat << EOF | gh issue comment ${{ env.GH_ISSUE_NUMBER }} -F -
+          The change is available in the latest release. 🎉
+
+          Thank you for the report/contribution and making Springwolf better!
+          EOF
