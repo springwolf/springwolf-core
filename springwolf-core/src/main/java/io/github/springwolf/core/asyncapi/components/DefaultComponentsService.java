@@ -11,6 +11,8 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.TypeNameResolver;
+import io.swagger.v3.oas.models.media.BooleanSchema;
+import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -118,8 +120,17 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     private String getSchemaName(Class<?> type, Map<String, Schema> schemas) {
-        if (schemas.isEmpty() && type.equals(String.class)) {
-            return registerString();
+        if (schemas.isEmpty()) {
+            // swagger-parser does not create schemas for primitives
+            if (type.equals(String.class) || type.equals(Character.class) || type.equals(Byte.class)) {
+                return registerPrimitive(String.class, new StringSchema());
+            }
+            if (Boolean.class.isAssignableFrom(type)) {
+                return registerPrimitive(Boolean.class, new BooleanSchema());
+            }
+            if (Number.class.isAssignableFrom(type)) {
+                return registerPrimitive(Number.class, new NumberSchema());
+            }
         }
 
         if (schemas.size() == 1) {
@@ -191,9 +202,8 @@ public class DefaultComponentsService implements ComponentsService {
         }
     }
 
-    private String registerString() {
-        String schemaName = getNameFromClass(String.class);
-        StringSchema schema = new StringSchema();
+    private String registerPrimitive(Class<?> type, Schema schema) {
+        String schemaName = getNameFromClass(type);
         schema.setName(schemaName);
 
         this.schemas.put(schemaName, schema);

@@ -53,6 +53,18 @@
         }
       }
     },
+    "integer-topic": {
+      "messages": {
+        "java.lang.Number": {
+          "$ref": "#/components/messages/java.lang.Number"
+        }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      }
+    },
     "multi-payload-topic": {
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto": {
@@ -421,6 +433,39 @@
               "description": "Spring Type Id Header",
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-Integer": {
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "java.lang.Number"
+            ],
+            "examples": [
+              "java.lang.Number"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "java.lang.Number"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "java.lang.Number"
               ],
               "type": "string"
             }
@@ -1091,6 +1136,16 @@
           "type": "string"
         }
       },
+      "java.lang.Number": {
+        "type": "number",
+        "examples": [
+          1.1
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "type": "number"
+        }
+      },
       "java.lang.String": {
         "type": "string",
         "examples": [
@@ -1315,6 +1370,24 @@
           }
         }
       },
+      "java.lang.Number": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-Integer"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/java.lang.Number"
+          }
+        },
+        "name": "java.lang.Number",
+        "title": "Integer",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
+      },
       "java.lang.String": {
         "headers": {
           "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-String"
@@ -1414,6 +1487,22 @@
       "messages": [
         {
           "$ref": "#/channels/example-topic/messages/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "integer-topic_receive_receiveIntegerPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/integer-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/integer-topic/messages/java.lang.Number"
         }
       ]
     },
