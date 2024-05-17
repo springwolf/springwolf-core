@@ -7,14 +7,14 @@ Typical examples are click interactions through `springwolf-ui`.
 
 This project uses [playwright](https://playwright.dev).
 
-To install the dependencies, run `npm install` (or `../gradlew npmInstall`)
+To install the dependencies, run `npm install` (or `../../gradlew npmInstall`)
 
 To use the playwright ui, run
 ```bash
 npm run start
 ```
 
-For ci/cd or cli environments, use `../gradlew npm_run_test` or
+For ci/cd or cli environments, use `../../gradlew npm_run_test` or
 ```bash
 npm run test
 ```

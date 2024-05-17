@@ -51,20 +51,16 @@ test.describe("Publishing in " + getExampleProject() + " example", () => {
 });
 
 function testPublishingEveryChannelItem() {
-  const operations = getExampleAsyncApi().operations;
+  const asyncApiDoc = getExampleAsyncApi();
+  const operations = asyncApiDoc.operations;
   Object.keys(operations).forEach((key: string) => {
     const operation = operations[key];
     operation.messages.forEach((messageReference) => {
       const action = operation.action;
       const protocol = Object.keys(operation.bindings)[0];
       const channelName = operation.channel.$ref.split("/").pop();
-      const payload = messageReference.$ref
-        .split("/")
-        .pop()
-        .split(".")
-        .pop()
-        .split("$")
-        .pop();
+      const schemaType = messageReference.$ref.split("/").pop();
+      const payload = asyncApiDoc.components.messages[schemaType]?.title;
 
       if (
         payload === "AnotherPayloadAvroDto" || // Avro publishing is not supported
@@ -104,7 +100,7 @@ function testPublishingEveryChannelItem() {
                   const found = dockerLogs.messages
                     .filter((m) => m.includes("Publishing to"))
                     .filter((m) => m.includes(channelName))
-                    .filter((m) => m.includes(payload)).length;
+                    .filter((m) => m.includes(schemaType)).length;
                   console.debug(
                     "Polling for publish message and found=" + found
                   );
