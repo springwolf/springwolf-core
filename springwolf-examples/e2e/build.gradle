@@ -11,6 +11,8 @@ node {
 
 npm_run_test {
   dependsOn spotlessCheck
+  def springwolfExample = System.getenv("SPRINGWOLF_EXAMPLE") ?: "kafka"
+  dependsOn(":springwolf-examples:springwolf-$springwolfExample-example:dockerBuildImage")
 
   inputs.files fileTree("tests")
   inputs.files fileTree("util")
