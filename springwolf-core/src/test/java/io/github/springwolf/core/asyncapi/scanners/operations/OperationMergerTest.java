@@ -79,17 +79,14 @@ class OperationMergerTest {
         String channelName = "channel";
         String operationId = "operation";
         MessageObject message1 = MessageObject.builder()
-                .messageId("message1")
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
         MessageObject message2 = MessageObject.builder()
-                .messageId("message2")
                 .name(Integer.class.getCanonicalName())
                 .description("This is an integer")
                 .build();
         MessageObject message3 = MessageObject.builder()
-                .messageId("message3")
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
@@ -137,7 +134,7 @@ class OperationMergerTest {
                 .build();
         ChannelObject publisherChannel1 = ChannelObject.builder().build();
         ChannelObject publisherChannel2 = ChannelObject.builder()
-                .messages(Map.of(message2.getName(), message2))
+                .messages(Map.of(message2.getMessageId(), message2))
                 .build();
 
         // when
@@ -145,7 +142,7 @@ class OperationMergerTest {
                 Arrays.asList(Map.entry(channelName, publisherChannel1), Map.entry(channelName, publisherChannel2)));
 
         // then expectedMessage message2
-        var expectedMessages = Map.of(message2.getName(), message2);
+        var expectedMessages = Map.of(message2.getMessageId(), message2);
 
         assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
             assertThat(it.getMessages()).hasSize(1);

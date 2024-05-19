@@ -27,23 +27,23 @@ public class MessageReference implements Message, Reference {
     /**
      * Convenient Builder to create a Message reference to an existing Message
      *
-     * @param message Message to create the reference to. This Message MUST have a 'messageName' field
-     * @return a Message with the 'ref' field pointing to "#/components/messages/{messageName}"
+     * @param message Message to create the reference to. This Message MUST have a 'messageId' field
+     * @return a Message with the 'ref' field pointing to "#/components/messages/{messageId}"
      */
     public static MessageReference toComponentMessage(MessageObject message) {
-        return toComponentMessage(message.getName());
+        return toComponentMessage(message.getMessageId());
     }
 
-    public static MessageReference toComponentMessage(String messageName) {
-        return new MessageReference("#/components/messages/" + messageName);
+    public static MessageReference toComponentMessage(String messageId) {
+        return new MessageReference("#/components/messages/" + messageId);
     }
 
     public static MessageReference toChannelMessage(String channelName, MessageObject message) {
-        return new MessageReference("#/channels/" + channelName + "/messages/" + message.getName());
+        return new MessageReference("#/channels/" + channelName + "/messages/" + message.getMessageId());
     }
 
-    public static MessageReference toChannelMessage(String channelName, String messageName) {
-        return new MessageReference("#/channels/" + channelName + "/messages/" + messageName);
+    public static MessageReference toChannelMessage(String channelName, String messageId) {
+        return new MessageReference("#/channels/" + channelName + "/messages/" + messageId);
     }
 
     public static MessageReference toSchema(String schemaName) {

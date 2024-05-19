@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class MessageHelper {
-    private static final Comparator<MessageObject> byMessageName = Comparator.comparing(MessageObject::getName);
+    private static final Comparator<MessageObject> byMessageId = Comparator.comparing(MessageObject::getMessageId);
 
-    private static final Supplier<Set<MessageObject>> messageSupplier = () -> new TreeSet<>(byMessageName);
+    private static final Supplier<Set<MessageObject>> messageSupplier = () -> new TreeSet<>(byMessageId);
 
     private MessageHelper() {}
 
@@ -27,7 +27,7 @@ public class MessageHelper {
         }
 
         return new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier)))
-                .stream().collect(Collectors.toMap(MessageObject::getName, MessageReference::toComponentMessage));
+                .stream().collect(Collectors.toMap(MessageObject::getMessageId, MessageReference::toComponentMessage));
     }
 
     public static Map<String, MessageReference> toOperationsMessagesMap(
@@ -43,7 +43,7 @@ public class MessageHelper {
         return new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier)))
                 .stream()
                         .collect(Collectors.toMap(
-                                MessageObject::getName,
-                                e -> MessageReference.toChannelMessage(channelName, e.getName())));
+                                MessageObject::getMessageId,
+                                e -> MessageReference.toChannelMessage(channelName, e.getMessageId())));
     }
 }

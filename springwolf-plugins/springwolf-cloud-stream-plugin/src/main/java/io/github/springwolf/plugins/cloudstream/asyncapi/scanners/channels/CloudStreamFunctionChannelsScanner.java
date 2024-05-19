@@ -104,7 +104,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         Map<String, ChannelBinding> channelBinding = buildChannelBinding(beanData.annotatedElement());
         return ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
     }
 

@@ -79,7 +79,7 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation> extends AsyncA
         MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 
         ChannelObject channelItem = channelBuilder
-                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
         return Map.entry(channelName, channelItem);
     }

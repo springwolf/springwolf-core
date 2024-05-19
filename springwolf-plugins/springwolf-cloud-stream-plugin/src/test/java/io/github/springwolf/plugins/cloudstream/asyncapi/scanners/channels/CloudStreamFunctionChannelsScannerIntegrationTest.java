@@ -140,7 +140,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         Operation expectedOperation = Operation.builder()
@@ -193,7 +193,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
@@ -245,7 +245,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject subscribeChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(subscribeMessage.getName(), MessageReference.toComponentMessage(subscribeMessage)))
+                .messages(
+                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
@@ -270,7 +271,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject publishChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(publishMessage.getName(), MessageReference.toComponentMessage(publishMessage)))
+                .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
         assertThat(actualChannels)
@@ -324,7 +325,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject subscribeChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(subscribeMessage.getName(), MessageReference.toComponentMessage(subscribeMessage)))
+                .messages(
+                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
@@ -349,7 +351,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         ChannelObject publishChannel = ChannelObject.builder()
                 .bindings(channelBinding)
-                .messages(Map.of(publishMessage.getName(), MessageReference.toComponentMessage(publishMessage)))
+                .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
         assertThat(actualChannels)
@@ -426,9 +428,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         ChannelObject mergedChannel = ChannelObject.builder()
                 .bindings(channelBinding)
                 .messages(Map.of(
-                        publishMessage.getName(),
+                        publishMessage.getMessageId(),
                         MessageReference.toComponentMessage(publishMessage),
-                        subscribeMessage.getName(),
+                        subscribeMessage.getMessageId(),
                         MessageReference.toComponentMessage(subscribeMessage)))
                 .build();
 
