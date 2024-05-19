@@ -178,6 +178,7 @@ export class AsyncApiMapperService {
               payload: {
                 name: message.payload.schema.$ref,
                 title: this.resolveRef(message.payload.schema.$ref),
+                type: this.resolveRef(message.payload.schema.$ref),
                 anchorUrl:
                   AsyncApiMapperService.BASE_URL +
                   this.resolveRef(message.payload.schema.$ref),

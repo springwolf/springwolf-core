@@ -3,6 +3,7 @@ package io.github.springwolf.examples.kafka.consumers;
 
 import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
+import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.plugins.kafka.asyncapi.annotations.KafkaAsyncOperationBinding;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,6 +29,7 @@ public class StringConsumer {
                             description =
                                     "Final classes (like String) can be documented using an envelope class and the @AsyncApiPayload annotation.",
                             payloadType = StringEnvelope.class,
+                            message = @AsyncMessage(name = "StringPayload"),
                             headers = @AsyncOperation.Headers(notUsed = true)))
     @KafkaAsyncOperationBinding
     public void receiveStringPayload(String stringPayload) {
