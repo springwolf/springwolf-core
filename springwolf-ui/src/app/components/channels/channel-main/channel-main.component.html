@@ -1,10 +1,17 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <section>
   <mat-divider></mat-divider>
-  <div *ngIf="operation.message.description">
-    <p>
-      <markdown [data]="operation.message.description"></markdown>
-    </p>
+  <div *ngIf="operation.description || operation.message.description">
+    <div class="table">
+      <div *ngIf="operation.description" class="table-row">
+        <span>Operation description</span>
+        <markdown [data]="operation.description"></markdown>
+      </div>
+      <div *ngIf="operation.message.description" class="table-row">
+        <span>Message description</span>
+        <markdown [data]="operation.message.description"></markdown>
+      </div>
+    </div>
     <mat-divider></mat-divider>
   </div>
   <mat-tab-group animationDuration="0ms">
