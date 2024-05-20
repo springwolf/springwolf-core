@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,14 @@ public abstract class PublishingBaseController implements InitializingBean {
     protected abstract boolean isEnabled();
 
     protected abstract void publishMessage(String topic, MessageDto message, Object payload);
+
+    @GetMapping("/publish")
+    public ResponseEntity<String> canPublish() {
+        if (!isEnabled()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/publish")
     public ResponseEntity<String> publish(@RequestParam String topic, @RequestBody MessageDto message) {
