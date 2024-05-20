@@ -69,10 +69,10 @@ export default defineConfig({
     // },
   ],
 
-  /* Run your loal dev server before starting the tests */
+  /* Run your local dev server before starting the tests */
   webServer: {
     cwd: '../springwolf-' + getExampleProject() + '-example',
-    command: 'docker compose up',
+    command: 'docker compose down -v && docker compose up',
     url: 'http://127.0.0.1:8080/springwolf/docs.json',
     reuseExistingServer: !process.env.CI,
   },
