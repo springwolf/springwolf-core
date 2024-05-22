@@ -32,7 +32,6 @@ export class ChannelMainComponent implements OnInit {
   messageBindingExample?: Example;
   messageBindingExampleTextAreaLineCount: number = 1;
   canPublish: boolean = false;
-  canPublishSubscription?: Subscription;
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -61,10 +60,7 @@ export class ChannelMainComponent implements OnInit {
       this.messageBindingExampleTextAreaLineCount =
         this.messageBindingExample?.lineCount || 1;
 
-      if (this.canPublishSubscription !== undefined) {
-        this.canPublishSubscription.unsubscribe();
-      }
-      this.canPublishSubscription = this.publisherService
+      this.publisherService
         .canPublish(this.operation.protocol)
         .subscribe((response) => {
           this.canPublish = response;
