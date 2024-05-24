@@ -17,6 +17,7 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -238,7 +239,6 @@ class DefaultXmlComponentsServiceTest {
     }
 
     @Nested
-    @XmlRootElement(name = "SchemaWithOneOf")
     class SchemaWithOneOf {
         @Test
         void testSchemaWithOneOf() throws IOException {
@@ -334,6 +334,47 @@ class DefaultXmlComponentsServiceTest {
                 @XmlAttribute(name = "s_attribute")
                 private String s_attribute;
             }
+        }
+    }
+
+    @Nested
+    class XmlSchemaName {
+        @Test
+        void testSchemasWithSharedProperty() throws IOException {
+            componentsService.registerSchema(XmlSchemaName.ClassB.class, "text/xml");
+            componentsService.registerSchema(XmlSchemaName.ClassA.class, "text/xml");
+
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+            String expected = jsonResource("/schemas/xml/schema-with-shared-property.json");
+
+            System.out.println("Got: " + actualDefinitions);
+            assertEquals(expected, actualDefinitions);
+        }
+
+        @Data
+        @NoArgsConstructor
+        @XmlRootElement(name = "ClassA")
+        private static class ClassA {
+            @XmlElement(name = "Reference")
+            private Reference reference;
+
+            @XmlElement(name = "ClassB")
+            private ClassB classB;
+        }
+
+        @Data
+        @NoArgsConstructor
+        @XmlRootElement(name = "ClassB")
+        private static class ClassB {
+            @XmlElement(name = "Reference")
+            private Reference reference;
+        }
+
+        @XmlRootElement(name = "Reference")
+        public class Reference {
+
+            @XmlAttribute
+            private final String value = "test";
         }
     }
 

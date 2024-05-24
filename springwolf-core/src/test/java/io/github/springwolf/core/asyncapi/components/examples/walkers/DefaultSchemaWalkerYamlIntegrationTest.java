@@ -20,6 +20,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.media.UUIDSchema;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -60,8 +61,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
     class FromSchema {
 
         @Test
-        void build() {
+        void build(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -71,8 +73,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void failWhenMissingDefinition() {
+        void failWhenMissingDefinition(TestInfo testInfo) {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
 
             Schema referenceSchema = new Schema();
             referenceSchema.set$ref("#/components/schemas/Nested");
@@ -86,8 +89,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
     @Nested
     class TestSimpleSchema {
         @Test
-        void type_boolean() {
+        void type_boolean(TestInfo testInfo) {
             BooleanSchema schema = new BooleanSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -97,8 +101,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_boolean_example_set() {
+        void type_boolean_example_set(TestInfo testInfo) {
             BooleanSchema schema = new BooleanSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample(Boolean.FALSE);
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -109,8 +114,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_integer() {
+        void type_integer(TestInfo testInfo) {
             IntegerSchema schema = new IntegerSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -120,8 +126,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_integer_example_set() {
+        void type_integer_example_set(TestInfo testInfo) {
             IntegerSchema schema = new IntegerSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample(Integer.parseInt("123"));
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -132,8 +139,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_integer_format_long() {
+        void type_integer_format_long(TestInfo testInfo) {
             IntegerSchema schema = new IntegerSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("int64");
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -144,8 +152,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_number_format_float() {
+        void type_number_format_float(TestInfo testInfo) {
             Schema<BigDecimal> schema = new NumberSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("float");
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -156,8 +165,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_number_format_double() {
+        void type_number_format_double(TestInfo testInfo) {
             Schema<BigDecimal> schema = new NumberSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("double");
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -168,8 +178,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_number_example_set() {
+        void type_number_example_set(TestInfo testInfo) {
             Schema<BigDecimal> schema = new NumberSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample(new BigDecimal("123.45"));
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -180,8 +191,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string() {
+        void type_string(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -191,8 +203,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_example_set() {
+        void type_string_example_set(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample("custom-example-value");
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -203,8 +216,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_from_enum() {
+        void type_string_from_enum(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.addEnumItem("EnumItem1");
             schema.addEnumItem("EnumItem2");
 
@@ -216,8 +230,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_format_byte() {
+        void type_string_format_byte(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("byte");
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -228,8 +243,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_format_binary() {
+        void type_string_format_binary(TestInfo testInfo) {
             BinarySchema schema = new BinarySchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -241,8 +257,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_format_date() {
+        void type_string_format_date(TestInfo testInfo) {
             DateSchema schema = new DateSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -252,8 +269,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_format_datetime() {
+        void type_string_format_datetime(TestInfo testInfo) {
             DateTimeSchema schema = new DateTimeSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -264,8 +282,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_format_email() {
+        void type_string_format_email(TestInfo testInfo) {
             EmailSchema schema = new EmailSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -275,8 +294,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_format_password() {
+        void type_string_format_password(TestInfo testInfo) {
             PasswordSchema schema = new PasswordSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -286,8 +306,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_format_uuid() {
+        void type_string_format_uuid(TestInfo testInfo) {
             UUIDSchema schema = new UUIDSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -298,8 +319,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_string_format_unknown() {
+        void type_string_format_unknown(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setFormat("unknown");
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -311,7 +333,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_unknown_schema() {
+        void type_unknown_schema(TestInfo testInfo) {
             class TestSchema extends Schema<StringSchema> {
                 TestSchema() {
                     super("test-schema", null);
@@ -319,6 +341,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             }
 
             TestSchema schema = new TestSchema();
+            schema.setName(testInfo.getDisplayName());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
@@ -329,8 +352,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void type_primitive_array() {
+        void type_primitive_array(TestInfo testInfo) {
             ArraySchema schema = new ArraySchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setItems(new StringSchema());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -344,12 +368,13 @@ class DefaultSchemaWalkerYamlIntegrationTest {
     @Nested
     class TestObjectSchema {
         @Test
-        void type_object_array() {
+        void type_object_array(TestInfo testInfo) {
             ObjectSchema itemSchema = new ObjectSchema();
             itemSchema.addProperty("s", new StringSchema());
             itemSchema.addProperty("b", new BooleanSchema());
 
             ArraySchema schema = new ArraySchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setItems(itemSchema);
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
@@ -363,8 +388,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void composite_object_without_references() {
+        void composite_object_without_references(TestInfo testInfo) {
             ObjectSchema schema = new ObjectSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.addProperty("s", new StringSchema());
             schema.addProperty("b", new BooleanSchema());
 
@@ -378,11 +404,12 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void composite_object_with_references() {
+        void composite_object_with_references(TestInfo testInfo) {
             Schema referenceSchema = new Schema();
             referenceSchema.set$ref("#/components/schemas/Nested");
 
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
             compositeSchema.addProperty("s", new StringSchema());
             compositeSchema.addProperty("f", referenceSchema);
 
@@ -402,8 +429,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void object_with_anyOf() {
+        void object_with_anyOf(TestInfo testInfo) {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
 
             Schema propertySchema = new ObjectSchema();
             propertySchema.setAnyOf(List.of(new StringSchema(), new NumberSchema()));
@@ -417,8 +445,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void object_with_oneOf() {
+        void object_with_oneOf(TestInfo testInfo) {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
 
             Schema propertySchema = new ObjectSchema();
             propertySchema.setOneOf(List.of(new StringSchema(), new NumberSchema()));
@@ -432,8 +461,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void object_with_allOf() {
+        void object_with_allOf(TestInfo testInfo) {
             ObjectSchema compositeSchema = new ObjectSchema();
+            compositeSchema.setName(testInfo.getDisplayName());
 
             ObjectSchema schema1 = new ObjectSchema();
             schema1.setProperties(Map.of("field1", new StringSchema()));
@@ -457,8 +487,9 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
-        void schema_with_problematic_object_toString_example() {
+        void schema_with_problematic_object_toString_example(TestInfo testInfo) {
             ObjectSchema schema = new ObjectSchema();
+            schema.setName(testInfo.getDisplayName());
             schema.setExample(new ClassWithToString());
 
             String actualString = jsonSchemaWalker.fromSchema(schema, Map.of());

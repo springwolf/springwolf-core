@@ -309,7 +309,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         void type_unknown_schema() {
             class TestSchema extends Schema<StringSchema> {
                 TestSchema() {
-                    super("test-schema", (String) null);
+                    super("test-schema", null);
                 }
             }
 
@@ -432,7 +432,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         @Test
         void composite_object_without_ref() {
             ObjectSchema nestedSchema = new ObjectSchema();
-            nestedSchema.setName("Nested");
+            // nested schema does not have a name when created by swagger-parser from a real class
             nestedSchema.addProperty("s", new StringSchema());
             nestedSchema.addProperty("b", new BooleanSchema());
 
@@ -532,8 +532,8 @@ class DefaultSchemaWalkerXmlIntegrationTest {
     class TestXmlAttributes {
         @Test
         void composite_object_without_ref() {
+            // nested schema does not have a name when created by swagger-parser from a real class
             ObjectSchema nestedSchema = new ObjectSchema();
-            nestedSchema.setName("Nested");
             nestedSchema.addProperty("s_1", new StringSchema().name("s_1").xml(new XML().attribute(true)));
             nestedSchema.addProperty("b", new BooleanSchema().name("b"));
 
