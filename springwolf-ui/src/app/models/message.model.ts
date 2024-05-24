@@ -7,6 +7,7 @@ export interface Message {
   description?: string;
   payload: {
     name: string;
+    type: string;
     title: string;
     anchorUrl: string;
   };

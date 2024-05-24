@@ -111,7 +111,8 @@ export class AsyncApiMapperService {
                 channels[channelName],
                 message,
                 operation.action,
-                operation.bindings
+                operation.bindings,
+                operation.description
               )
           );
 
@@ -129,12 +130,14 @@ export class AsyncApiMapperService {
     channel: ServerChannel,
     message: Message,
     operationType: ServerOperation["action"],
-    operationBinding: ServerBindings
+    operationBinding: ServerBindings,
+    description?: string
   ): ChannelOperation {
     const operation = this.mapOperation(
       operationType,
       message,
-      operationBinding
+      operationBinding,
+      description
     );
 
     return {
@@ -178,6 +181,7 @@ export class AsyncApiMapperService {
               payload: {
                 name: message.payload.schema.$ref,
                 title: this.resolveRef(message.payload.schema.$ref),
+                type: this.resolveRef(message.payload.schema.$ref),
                 anchorUrl:
                   AsyncApiMapperService.BASE_URL +
                   this.resolveRef(message.payload.schema.$ref),
@@ -233,11 +237,13 @@ export class AsyncApiMapperService {
   private mapOperation(
     operationType: ServerOperation["action"],
     message: Message,
-    bindings?: Bindings
+    bindings?: Bindings,
+    description?: string
   ): Operation {
     return {
       protocol: this.getProtocol(bindings),
       operationType: operationType == "send" ? "send" : "receive",
+      description,
       message,
       bindings,
     };

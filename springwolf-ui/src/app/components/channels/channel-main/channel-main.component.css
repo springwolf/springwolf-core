@@ -33,6 +33,20 @@ button {
   height: 50px;
 }
 
+.table {
+  display: table;
+}
+.table .table-row {
+  display: table-row;
+}
+.table-row * {
+  display: table-cell;
+}
+.table-row *:first-child {
+  font-weight: bold;
+  padding-right: 8px;
+}
+
 [hidden] {
   display: none !important;
 }

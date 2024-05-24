@@ -7,6 +7,7 @@ export interface ServerOperations {
 
 export interface ServerOperation {
   action: string;
+  description?: string;
   channel: {
     $ref: string;
   };

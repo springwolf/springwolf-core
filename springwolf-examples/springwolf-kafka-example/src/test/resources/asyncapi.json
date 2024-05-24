@@ -104,8 +104,8 @@
     },
     "string-topic": {
       "messages": {
-        "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope"
+        "StringPayload": {
+          "$ref": "#/components/messages/StringPayload"
         },
         "java.lang.String": {
           "$ref": "#/components/messages/java.lang.String"
@@ -1213,7 +1213,7 @@
           }
         }
       },
-      "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
+      "StringPayload": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotUsed"
         },
@@ -1223,7 +1223,7 @@
             "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope"
           }
         },
-        "name": "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope",
+        "name": "StringPayload",
         "title": "StringEnvelope",
         "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
         "bindings": {
@@ -1604,7 +1604,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/string-topic/messages/io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope"
+          "$ref": "#/channels/string-topic/messages/StringPayload"
         },
         {
           "$ref": "#/channels/string-topic/messages/java.lang.String"

@@ -8,7 +8,7 @@ import { exampleSchemas } from "./example-data";
 
 export class MockServer implements InMemoryDbService {
   createDb() {
-    return { kafka: [] };
+    return {};
   }
 
   get(reqInfo: RequestInfo) {
