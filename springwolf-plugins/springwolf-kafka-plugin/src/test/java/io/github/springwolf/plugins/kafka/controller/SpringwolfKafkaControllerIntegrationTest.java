@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -40,6 +41,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -93,6 +95,23 @@ class SpringwolfKafkaControllerIntegrationTest {
                 .title(PayloadDto.class.getName())
                 .properties(new HashMap<>())
                 .build());
+    }
+
+    @Nested
+    class CanPublish {
+        @Test
+        void testControllerShouldReturnOkWhenPublishingIsEnabled() throws Exception {
+            mvc.perform(get("/springwolf/kafka/publish").contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is2xxSuccessful());
+        }
+
+        @Test
+        void testControllerShouldReturnNotFoundWhenPublishingIsDisabled() throws Exception {
+            when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
+
+            mvc.perform(get("/springwolf/kafka/publish").contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is4xxClientError());
+        }
     }
 
     @Test

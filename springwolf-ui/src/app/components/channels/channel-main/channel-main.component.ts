@@ -9,6 +9,7 @@ import { Schema } from "../../../models/schema.model";
 import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
 import { PublisherService } from "../../../service/publisher.service";
 import { wrapException } from "../../../util/error-boundary";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-channel-main",
@@ -30,6 +31,7 @@ export class ChannelMainComponent implements OnInit {
   headersTextAreaLineCount: number = 1;
   messageBindingExample?: Example;
   messageBindingExampleTextAreaLineCount: number = 1;
+  canPublish: boolean = false;
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -57,6 +59,12 @@ export class ChannelMainComponent implements OnInit {
       this.headersTextAreaLineCount = this.headersExample?.lineCount || 1;
       this.messageBindingExampleTextAreaLineCount =
         this.messageBindingExample?.lineCount || 1;
+
+      this.publisherService
+        .canPublish(this.operation.protocol)
+        .subscribe((response) => {
+          this.canPublish = response;
+        });
     });
   }
 

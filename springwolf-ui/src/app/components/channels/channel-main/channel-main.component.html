@@ -66,6 +66,7 @@
           <button
             mat-raised-button
             color="primary"
+            [disabled]="!canPublish"
             (click)="
               publish(
                 messageTextArea.value,
