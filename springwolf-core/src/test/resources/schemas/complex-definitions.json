@@ -35,7 +35,7 @@
       "f" : 1.1,
       "i" : 0,
       "n" : {
-        "nba" : [ "YmFzZTY0LWV4YW1wbGU=" ],
+        "nba" : "YmFzZTY0LWV4YW1wbGU=",
         "nc" : {
           "cyclic" : { }
         },
@@ -54,11 +54,8 @@
     "type" : "object",
     "properties" : {
       "nba" : {
-        "type" : "array",
-        "items" : {
-          "type" : "string",
-          "format" : "byte"
-        }
+        "type" : "string",
+        "format" : "byte"
       },
       "nc" : {
         "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$ComplexFoo$Nested$Cyclic"
@@ -92,7 +89,7 @@
       }
     },
     "examples" : [ {
-      "nba" : [ "YmFzZTY0LWV4YW1wbGU=" ],
+      "nba" : "YmFzZTY0LWV4YW1wbGU=",
       "nc" : {
         "cyclic" : { }
       },

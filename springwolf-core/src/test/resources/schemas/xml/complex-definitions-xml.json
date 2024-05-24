@@ -34,11 +34,8 @@
     "type" : "string",
     "properties" : {
       "nba" : {
-        "type" : "array",
-        "items" : {
-          "type" : "string",
-          "format" : "byte"
-        }
+        "type" : "string",
+        "format" : "byte"
       },
       "nc" : {
         "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
