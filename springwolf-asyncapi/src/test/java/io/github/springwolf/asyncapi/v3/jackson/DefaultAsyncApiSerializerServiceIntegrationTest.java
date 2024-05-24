@@ -86,7 +86,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         Operation newUserOperation = Operation.builder()
                 .action(OperationAction.SEND)
                 .channel(ChannelReference.fromChannel("new-user"))
-                .messages(List.of(MessageReference.toChannelMessage("new-user", message.getName())))
+                .messages(List.of(MessageReference.toChannelMessage("new-user", message)))
                 .bindings(Map.of("kafka", operationBinding))
                 .build();
 

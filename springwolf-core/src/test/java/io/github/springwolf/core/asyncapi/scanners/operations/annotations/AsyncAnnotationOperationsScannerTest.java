@@ -311,7 +311,7 @@ class AsyncAnnotationOperationsScannerTest {
                 .build());
 
         MessageObject message = MessageObject.builder()
-                .messageId("simpleFoo")
+                .messageId("simpleFooAbstract")
                 .name("SimpleFooPayLoad")
                 .title("Message Title")
                 .description("Message description")

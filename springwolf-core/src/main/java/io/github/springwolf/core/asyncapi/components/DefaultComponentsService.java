@@ -112,9 +112,9 @@ public class DefaultComponentsService implements ComponentsService {
 
     @Override
     public MessageReference registerMessage(MessageObject message) {
-        log.debug("Registering message for {}", message.getName());
+        log.debug("Registering message for {}", message.getMessageId());
 
-        messages.putIfAbsent(message.getName(), message);
+        messages.putIfAbsent(message.getMessageId(), message);
 
         return MessageReference.toComponentMessage(message);
     }

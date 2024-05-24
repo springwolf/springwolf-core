@@ -271,7 +271,7 @@ class AsyncAnnotationChannelsScannerTest {
                 .build());
 
         MessageObject message = MessageObject.builder()
-                .messageId("simpleFoo")
+                .messageId("simpleFooId")
                 .name("SimpleFooPayLoad")
                 .title("Message Title")
                 .description("Message description")
@@ -283,7 +283,7 @@ class AsyncAnnotationChannelsScannerTest {
 
         ChannelObject expectedChannel = ChannelObject.builder()
                 .bindings(null)
-                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
         assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
@@ -353,7 +353,7 @@ class AsyncAnnotationChannelsScannerTest {
                                 message =
                                         @AsyncMessage(
                                                 description = "Message description",
-                                                messageId = "simpleFoo",
+                                                messageId = "simpleFooId",
                                                 name = "SimpleFooPayLoad",
                                                 contentType = "application/json",
                                                 title = "Message Title")))

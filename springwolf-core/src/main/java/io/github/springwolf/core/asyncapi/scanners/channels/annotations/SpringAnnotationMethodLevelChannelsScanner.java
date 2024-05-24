@@ -73,7 +73,7 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
         Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(annotation);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         return ChannelObject.builder()
-                .messages(Map.of(message.getName(), MessageReference.toComponentMessage(message)))
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(chBinding)
                 .build();
     }

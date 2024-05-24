@@ -70,28 +70,25 @@ class ChannelMergerTest {
         // given
         String channelName = "channel";
         MessageObject message1 = MessageObject.builder()
-                .messageId("message1")
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
         MessageObject message2 = MessageObject.builder()
-                .messageId("message2")
                 .name(Integer.class.getCanonicalName())
                 .description("This is an integer")
                 .build();
         MessageObject message3 = MessageObject.builder()
-                .messageId("message3")
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
         ChannelObject publisherChannel1 = ChannelObject.builder()
-                .messages(Map.of(message1.getName(), MessageReference.toComponentMessage(message1)))
+                .messages(Map.of(message1.getMessageId(), MessageReference.toComponentMessage(message1)))
                 .build();
         ChannelObject publisherChannel2 = ChannelObject.builder()
-                .messages(Map.of(message2.getName(), MessageReference.toComponentMessage(message2)))
+                .messages(Map.of(message2.getMessageId(), MessageReference.toComponentMessage(message2)))
                 .build();
         ChannelObject publisherChannel3 = ChannelObject.builder()
-                .messages(Map.of(message3.getName(), MessageReference.toComponentMessage(message3)))
+                .messages(Map.of(message3.getMessageId(), MessageReference.toComponentMessage(message3)))
                 .build();
 
         // when
@@ -113,7 +110,6 @@ class ChannelMergerTest {
         // given
         String channelName = "channel";
         MessageObject message2 = MessageObject.builder()
-                .messageId(String.class.getCanonicalName())
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
