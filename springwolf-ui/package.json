@@ -28,7 +28,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.2.0",
     "@angular/cli": "^17.2.0",
-    "@angular/compiler-cli": "^17.2.1",
+    "@angular/compiler-cli": "^18.0.0",
     "@asyncapi/parser": "^3.0.14",
     "@testing-library/angular": "^16.0.0",
     "@types/jest": "^29.5.12",
