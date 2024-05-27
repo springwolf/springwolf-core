@@ -47,7 +47,7 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
                 methodAnnotationClass.getName());
 
         return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(method -> !method.isBridge())
+                .filter(AnnotationScannerUtil::isMethodInSourceCode)
                 .filter(method -> AnnotationScannerUtil.findAnnotation(methodAnnotationClass, method) != null)
                 .map(this::mapMethodToChannel);
     }
