@@ -126,7 +126,8 @@ Add the following to the `repositories` closure in `build.gradle`:
 repositories {
     // ...
     maven {
-        url "https://s01.oss.sonatype.org/content/repositories/snapshots"
+        url "https://s01.oss.sonatype.org/content/repositories/snapshots" // build.gradle
+        // url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots") // build.gradle.kts
     }
 }
 ```
@@ -149,7 +150,9 @@ Or add the `repository` to your `pom.xml` if you are using maven:
 
 #### Local Snapshot Build
 
-To work with local builds, run the `publishToMavenLocal` task. The current version number is set in [`.env`](.env) file.
+To test with local builds, run the `publishToMavenLocal` gradle task. The current version number is set in [`.env`](.env) file.
+
+Do not forget to add `mavenLocal()` to the `repositories` section.
 </details>
 
 ### 👏  Contributors
