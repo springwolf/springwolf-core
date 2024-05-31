@@ -48,7 +48,7 @@ ext {
     jacksonDatatypeProtobufVersion = '0.9.15'
 
     jakartaAnnotationApiVersion = '3.0.0'
-    jakartaValidationApiVersion = '3.0.2'
+    jakartaValidationApiVersion = '3.1.0'
 
     jakartaXmlBindApiVersion = '4.0.2'
 
