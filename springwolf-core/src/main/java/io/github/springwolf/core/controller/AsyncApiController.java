@@ -19,10 +19,12 @@ public class AsyncApiController {
     private final AsyncApiSerializerService serializer;
 
     @GetMapping(
-            path = {"${springwolf.paths.docs:/springwolf/docs}",
-                    "${springwolf.paths.docs:/springwolf/docs}.json",
-                    "${springwolf.path.base:/springwolf}/${springwolf.path.docs:/docs}",
-                    "${springwolf.path.base:/springwolf}/${springwolf.path.docs:/docs}.json"},
+            path = {
+                "${springwolf.paths.docs:/springwolf/docs}",
+                "${springwolf.paths.docs:/springwolf/docs}.json",
+                "${springwolf.path.base:/springwolf}/${springwolf.path.docs:/docs}",
+                "${springwolf.path.base:/springwolf}/${springwolf.path.docs:/docs}.json"
+            },
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String asyncApiJson() throws JsonProcessingException {
         log.debug("Returning AsyncApi.json document");
@@ -31,10 +33,12 @@ public class AsyncApiController {
         return serializer.toJsonString(asyncAPI);
     }
 
-    @GetMapping(path = {
-            "${springwolf.paths.docs:/springwolf/docs}.yaml",
-            "${springwolf.path.base:/springwolf}/${springwolf.path.docs:/docs}.yaml"
-    }, produces = "application/yaml")
+    @GetMapping(
+            path = {
+                "${springwolf.paths.docs:/springwolf/docs}.yaml",
+                "${springwolf.path.base:/springwolf}/${springwolf.path.docs:/docs}.yaml"
+            },
+            produces = "application/yaml")
     public String asyncApiYaml() throws JsonProcessingException {
         log.debug("Returning AsyncApi.yaml document");
 

@@ -72,7 +72,6 @@ public class SpringwolfConfigProperties {
     @Nullable
     private Payload payload = new Payload();
 
-
     @Getter
     @Setter
     public static class Paths {
