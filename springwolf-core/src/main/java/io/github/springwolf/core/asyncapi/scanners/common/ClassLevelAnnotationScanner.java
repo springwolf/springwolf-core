@@ -18,7 +18,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScanne
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -58,8 +57,8 @@ public abstract class ClassLevelAnnotationScanner<
                 methodAnnotationClass.getName());
 
         return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(method -> !method.isBridge())
-                .filter(method -> AnnotationUtils.findAnnotation(method, methodAnnotationClass) != null)
+                .filter(AnnotationScannerUtil::isMethodInSourceCode)
+                .filter(method -> AnnotationScannerUtil.findAnnotation(methodAnnotationClass, method) != null)
                 .collect(toSet());
     }
 

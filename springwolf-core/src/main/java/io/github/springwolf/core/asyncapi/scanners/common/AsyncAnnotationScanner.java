@@ -60,7 +60,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
         log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
         return Arrays.stream(ReflectionUtils.getAllDeclaredMethods(type))
-                .filter(method -> !method.isBridge())
+                .filter(AnnotationScannerUtil::isMethodInSourceCode)
                 .filter(method -> AnnotationScannerUtil.findAnnotation(annotationClass, method) != null)
                 .peek(method -> log.debug("Mapping method \"{}\" to channels", method.getName()))
                 .flatMap(method -> AnnotationScannerUtil.findAnnotations(annotationClass, method).stream()
