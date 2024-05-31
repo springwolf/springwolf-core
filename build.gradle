@@ -240,7 +240,7 @@ allprojects {
 nexusPublishing {
     repositories {
         MavenRepository {
-            nexusUrl = uri('https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/')
+            nexusUrl = uri('https://s01.oss.sonatype.org/service/local/')
             snapshotRepositoryUrl = uri('https://s01.oss.sonatype.org/content/repositories/snapshots/')
             username = project.findProperty('MAVEN_USERNAME') ?: ''
             password = project.findProperty('MAVEN_PASSWORD') ?: ''
