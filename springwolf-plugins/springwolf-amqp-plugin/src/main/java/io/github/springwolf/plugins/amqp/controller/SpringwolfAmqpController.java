@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/springwolf/amqp")
+@RequestMapping("${springwolf.path.base}/amqp")
 @Slf4j
 public class SpringwolfAmqpController extends PublishingBaseController {
 

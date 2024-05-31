@@ -56,6 +56,11 @@ public class SpringwolfConfigProperties {
      */
     private boolean useFqn = true;
 
+    @Deprecated(forRemoval = true)
+    private Paths paths = new Paths();
+
+    private Path path = new Path();
+
     @Nullable
     private Endpoint endpoint;
 
@@ -66,6 +71,26 @@ public class SpringwolfConfigProperties {
 
     @Nullable
     private Payload payload = new Payload();
+
+
+    @Getter
+    @Setter
+    public static class Paths {
+
+        /**
+         * Deprecated in favor of springwolf.path.docs to control
+         * only the sub path for the docs endpoint
+         */
+        @Deprecated(forRemoval = true)
+        private String docs = "/springwolf/docs";
+    }
+
+    @Getter
+    @Setter
+    public static class Path {
+        private String base = "/springwolf";
+        private String docs = "/docs";
+    }
 
     @Getter
     @Setter

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/springwolf/kafka")
+@RequestMapping("${springwolf.path.base}/kafka")
 @Slf4j
 public class SpringwolfKafkaController extends PublishingBaseController {
 

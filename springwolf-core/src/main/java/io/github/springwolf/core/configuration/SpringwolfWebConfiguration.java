@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import static io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED;
 
@@ -20,6 +21,7 @@ import static io.github.springwolf.core.configuration.properties.SpringwolfConfi
  * Spring-Configuration defining the web controller beans.
  */
 @Configuration(proxyBeanMethods = false)
+@Import(SpringwolfUiResourceConfiguration.class)
 public class SpringwolfWebConfiguration {
 
     @Bean

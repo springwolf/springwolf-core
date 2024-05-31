@@ -33,6 +33,7 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
 
     compileOnly "org.springframework.boot:spring-boot-actuator"
+    compileOnly "org.springframework:spring-webmvc"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"

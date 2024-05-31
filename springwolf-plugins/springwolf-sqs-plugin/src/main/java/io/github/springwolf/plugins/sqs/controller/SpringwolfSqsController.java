@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/springwolf/sqs")
+@RequestMapping("${springwolf.path.base}/sqs")
 @Slf4j
 public class SpringwolfSqsController extends PublishingBaseController {
 
