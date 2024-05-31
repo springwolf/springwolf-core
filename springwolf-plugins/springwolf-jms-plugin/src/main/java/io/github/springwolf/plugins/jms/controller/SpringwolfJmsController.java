@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("${springwolf.path.base}/jms")
+@RequestMapping("${springwolf.path.base:/springwolf}/jms")
 @Slf4j
 public class SpringwolfJmsController extends PublishingBaseController {
 

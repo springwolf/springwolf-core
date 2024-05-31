@@ -10,6 +10,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class SpringwolfUiResourceConfiguration implements WebMvcConfigurer {
     }
 
     private String[] buildStaticLocation() {
-        List<String> staticLocations = Arrays.asList(webProperties.getResources().getStaticLocations());
+        List<String> staticLocations = new ArrayList<>(Arrays.asList(webProperties.getResources().getStaticLocations()));
         staticLocations.add("classpath:/META-INF/resources/springwolf/");
 
         return staticLocations.toArray(new String[0]);
