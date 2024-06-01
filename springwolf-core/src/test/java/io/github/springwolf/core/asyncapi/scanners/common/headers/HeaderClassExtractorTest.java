@@ -38,7 +38,7 @@ class HeaderClassExtractorTest {
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
-        val result = headerClassExtractor.extractFrom(m, payloadSchemaName);
+        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         assertEquals(AsyncHeadersNotDocumented.NOT_DOCUMENTED, result);
@@ -52,7 +52,7 @@ class HeaderClassExtractorTest {
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithSingleHeaderAnnotation", String.class);
-        val result = headerClassExtractor.extractFrom(m, payloadSchemaName);
+        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
@@ -72,7 +72,7 @@ class HeaderClassExtractorTest {
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithMultipleHeaderAnnotation", String.class, String.class);
-        val result = headerClassExtractor.extractFrom(m, payloadSchemaName);
+        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
@@ -84,10 +84,6 @@ class HeaderClassExtractorTest {
 
         assertEquals(expectedHeaders, result);
     }
-
-    // FIXME: We should have more tests
-    //   Number, Integer, Boolean and Array Header types
-    //   Map type headers can be tricky, since during the parsing process we don't have access to the keys
 
     public static class TestClass {
 

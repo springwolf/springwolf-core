@@ -68,7 +68,7 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         String channelName = bindingFactory.getChannelName(annotation);
         String operationId = channelName + "_" + OperationAction.RECEIVE + "_" + method.getName();
         NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
-        SchemaObject headerSchema = headerClassExtractor.extractFrom(method, payloadSchema);
+        SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
 
         Operation operation = buildOperation(annotation, payloadSchema, headerSchema);
         return Map.entry(operationId, operation);

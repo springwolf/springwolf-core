@@ -72,7 +72,7 @@ public abstract class ClassLevelAnnotationScanner<
         Set<MessageObject> messages = methods.stream()
                 .map((Method method) -> {
                     NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
-                    SchemaObject headerSchema = headerClassExtractor.extractFrom(method, payloadSchema);
+                    SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
                     return buildMessage(classAnnotation, payloadSchema, headerSchema);
                 })
                 .collect(toSet());

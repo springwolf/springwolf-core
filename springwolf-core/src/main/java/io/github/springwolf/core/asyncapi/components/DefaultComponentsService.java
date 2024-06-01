@@ -42,20 +42,6 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     @Override
-    public Map<String, Message> getMessages() {
-        return this.messages;
-    }
-
-    @Override
-    public MessageReference registerMessage(MessageObject message) {
-        log.debug("Registering message for {}", message.getMessageId());
-
-        messages.putIfAbsent(message.getMessageId(), message);
-
-        return MessageReference.toComponentMessage(message);
-    }
-
-    @Override
     public String registerSchema(SchemaObject headers) {
         log.debug("Registering schema for {}", headers.getTitle());
 
@@ -73,5 +59,19 @@ public class DefaultComponentsService implements ComponentsService {
         schemas.schemas().forEach(this.schemas::putIfAbsent);
 
         return schemas.schemaName();
+    }
+
+    @Override
+    public Map<String, Message> getMessages() {
+        return this.messages;
+    }
+
+    @Override
+    public MessageReference registerMessage(MessageObject message) {
+        log.debug("Registering message for {}", message.getMessageId());
+
+        messages.putIfAbsent(message.getMessageId(), message);
+
+        return MessageReference.toComponentMessage(message);
     }
 }
