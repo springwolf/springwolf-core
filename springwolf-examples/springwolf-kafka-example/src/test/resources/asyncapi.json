@@ -433,10 +433,16 @@
             ]
           },
           "kafka_offset": {
-            "type": "number"
+            "type": "number",
+            "examples": [
+              1.1
+            ]
           },
           "kafka_receivedMessageKey": {
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "\"string\""
+            ]
           }
         },
         "examples": [
@@ -1511,7 +1517,10 @@
         "bindings": {
           "kafka": {
             "key": {
-              "type": "string"
+              "type": "string",
+              "examples": [
+                "\"string\""
+              ]
             },
             "bindingVersion": "0.5.0"
           }

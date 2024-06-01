@@ -10,7 +10,8 @@ public class SchemaObjectMerger {
                 continue;
             }
 
-            schema.getProperties().forEach((key, value) -> initial.getProperties().putIfAbsent(key, value));
+            schema.getProperties()
+                    .forEach((key, value) -> initial.getProperties().putIfAbsent(key, value));
         }
         return initial;
     }

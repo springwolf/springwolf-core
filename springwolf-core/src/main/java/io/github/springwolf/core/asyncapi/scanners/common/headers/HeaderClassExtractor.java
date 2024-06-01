@@ -3,7 +3,9 @@ package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.schemas.SchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.swagger.v3.oas.models.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Header;
@@ -15,7 +17,8 @@ import java.util.HashMap;
 @Slf4j
 @AllArgsConstructor
 public class HeaderClassExtractor {
-    private final TypeToClassConverter typeToClassConverter;
+    private final SchemaService schemaService;
+    private final SwaggerSchemaUtil swaggerSchemaUtil;
 
     public SchemaObject extractFrom(Method method, NamedSchemaObject payload) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
@@ -29,11 +32,11 @@ public class HeaderClassExtractor {
         for (Parameter argument : method.getParameters()) {
             if (argument.isAnnotationPresent(Header.class)) {
                 Header headerAnnotation = argument.getAnnotation(Header.class);
-                var clazz = typeToClassConverter.extractClass(argument.getType());
-
                 String headerName = getHeaderAnnotationName(headerAnnotation);
-                SchemaObject headerSchema = getSchema(clazz);
-                headers.getProperties().put(headerName, headerSchema);
+
+                SchemaObject schema = getHeaderSchema(argument);
+
+                headers.getProperties().put(headerName, schema);
             }
         }
 
@@ -52,15 +55,8 @@ public class HeaderClassExtractor {
         return annotation.value();
     }
 
-    private static SchemaObject getSchema(Class<?> type) {
-        // FIXME: merge/extract with code from DefaultComponentsService
-        if (type.equals(String.class) || type.equals(Character.class) || type.equals(Byte.class)) {
-            return SchemaObject.builder().type("string").build();
-        } else if (Boolean.class.isAssignableFrom(type)) {
-            return SchemaObject.builder().type("boolean").build();
-        } else if (Number.class.isAssignableFrom(type)) {
-            return SchemaObject.builder().type("number").build();
-        }
-        return SchemaObject.builder().type("object").build();
+    private SchemaObject getHeaderSchema(Parameter argument) {
+        Schema swaggerSchema = schemaService.createSchema(argument.getType()).getSchema();
+        return swaggerSchemaUtil.mapSchema(swaggerSchema);
     }
 }

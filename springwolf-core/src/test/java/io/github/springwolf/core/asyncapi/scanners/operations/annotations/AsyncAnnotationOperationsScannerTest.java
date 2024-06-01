@@ -27,6 +27,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.schemas.SchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -80,8 +81,9 @@ class AsyncAnnotationOperationsScannerTest {
     private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
     private final ClassScanner classScanner = mock(ClassScanner.class);
-    private final ComponentsService componentsService =
-            new DefaultComponentsService(emptyList(), emptyList(), swaggerSchemaUtil, properties);
+    private final SchemaService schemaService =
+            new SchemaService(emptyList(), emptyList(), swaggerSchemaUtil, properties);
+    private final ComponentsService componentsService = new DefaultComponentsService(swaggerSchemaUtil, schemaService);
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
     private final TypeToClassConverter typeToClassConverter = new TypeToClassConverter(properties);
     private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(typeToClassConverter);

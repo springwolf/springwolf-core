@@ -120,7 +120,7 @@ class KafkaListenerUtilTest {
             // then
             assertEquals(1, messageBinding.size());
             assertEquals(Sets.newTreeSet("kafka"), messageBinding.keySet());
-            assertEquals(KafkaMessageBinding.builder().key(keySchema), messageBinding.get("kafka"));
+            assertEquals(KafkaMessageBinding.builder().key(keySchema).build(), messageBinding.get("kafka"));
         }
     }
 }

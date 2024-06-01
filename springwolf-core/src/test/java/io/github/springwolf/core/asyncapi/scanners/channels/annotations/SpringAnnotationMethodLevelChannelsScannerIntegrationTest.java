@@ -23,6 +23,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.schemas.SchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.Data;
@@ -53,6 +54,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         classes = {
             SpringAnnotationMethodLevelChannelsScannerIntegrationTest.TestBindingFactory.class,
             DefaultComponentsService.class,
+            SchemaService.class,
             SwaggerSchemaUtil.class,
             PayloadService.class,
             PayloadClassExtractor.class,

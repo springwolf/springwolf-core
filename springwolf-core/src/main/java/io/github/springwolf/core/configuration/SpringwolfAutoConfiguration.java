@@ -30,6 +30,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.schemas.SchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
@@ -99,13 +100,18 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ComponentsService schemasService(
+    public ComponentsService componentsService(SwaggerSchemaUtil swaggerSchemaUtil, SchemaService schemaService) {
+        return new DefaultComponentsService(swaggerSchemaUtil, schemaService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SchemaService schemasService(
             List<ModelConverter> modelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
             SwaggerSchemaUtil swaggerSchemaUtil,
             SpringwolfConfigProperties springwolfConfigProperties) {
-        return new DefaultComponentsService(
-                modelConverters, schemaPostProcessors, swaggerSchemaUtil, springwolfConfigProperties);
+        return new SchemaService(modelConverters, schemaPostProcessors, swaggerSchemaUtil, springwolfConfigProperties);
     }
 
     @Bean
@@ -176,8 +182,8 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public HeaderClassExtractor headerClassExtractor(TypeToClassConverter typeToClassConverter) {
-        return new HeaderClassExtractor(typeToClassConverter);
+    public HeaderClassExtractor headerClassExtractor(SchemaService schemaService, SwaggerSchemaUtil swaggerSchemaUtil) {
+        return new HeaderClassExtractor(schemaService, swaggerSchemaUtil);
     }
 
     @Bean

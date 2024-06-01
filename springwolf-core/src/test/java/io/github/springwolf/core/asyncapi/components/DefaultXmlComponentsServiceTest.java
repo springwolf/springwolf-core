@@ -12,6 +12,7 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSch
 import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.DefaultExampleXmlValueSerializer;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.ExampleXmlValueGenerator;
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
+import io.github.springwolf.core.asyncapi.schemas.SchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.util.Json;
@@ -41,12 +42,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultXmlComponentsServiceTest {
-    private final ComponentsService componentsService = new DefaultComponentsService(
+    private final SchemaService schemaService = new SchemaService(
             List.of(),
             List.of(new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(
                     new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer())))))),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
+    private final ComponentsService componentsService =
+            new DefaultComponentsService(new SwaggerSchemaUtil(), schemaService);
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);

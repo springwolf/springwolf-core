@@ -3,30 +3,41 @@ package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.asyncapi.schemas.SchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.handler.annotation.Header;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class HeaderClassExtractorTest {
-    private final TypeToClassConverter typeToClassConverter =
-            new TypeToClassConverter(new SpringwolfConfigProperties());
-    private final HeaderClassExtractor headerClassExtractor = new HeaderClassExtractor(typeToClassConverter);
+
+    private final SchemaService schemaService = mock(SchemaService.class);
+    private final HeaderClassExtractor headerClassExtractor =
+            new HeaderClassExtractor(schemaService, new SwaggerSchemaUtil());
 
     private final NamedSchemaObject payloadSchemaName = new NamedSchemaObject("payloadSchemaName", new SchemaObject());
     private final SchemaObject stringSchema =
             SchemaObject.builder().type("string").build();
+    private final Schema stringSwaggerSchema = new StringSchema();
 
     @Test
     void getNoDocumentedHeaders() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
+        // given
+        when(schemaService.createSchema(String.class))
+                .thenReturn(new SchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
 
+        // when
+        Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
         val result = headerClassExtractor.extractFrom(m, payloadSchemaName);
 
         // then
@@ -35,8 +46,12 @@ class HeaderClassExtractorTest {
 
     @Test
     void getHeaderWithSingleHeaderAnnotation() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithSingleHeaderAnnotation", String.class);
+        // given
+        when(schemaService.createSchema(String.class))
+                .thenReturn(new SchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
 
+        // when
+        Method m = TestClass.class.getDeclaredMethod("consumeWithSingleHeaderAnnotation", String.class);
         val result = headerClassExtractor.extractFrom(m, payloadSchemaName);
 
         // then
@@ -51,8 +66,12 @@ class HeaderClassExtractorTest {
 
     @Test
     void getHeaderWithMultipleHeaderAnnotation() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithMultipleHeaderAnnotation", String.class, String.class);
+        // given
+        when(schemaService.createSchema(String.class))
+                .thenReturn(new SchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
 
+        // when
+        Method m = TestClass.class.getDeclaredMethod("consumeWithMultipleHeaderAnnotation", String.class, String.class);
         val result = headerClassExtractor.extractFrom(m, payloadSchemaName);
 
         // then
