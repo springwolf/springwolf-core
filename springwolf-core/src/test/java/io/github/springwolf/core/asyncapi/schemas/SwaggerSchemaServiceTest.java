@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 @ExtendWith(MockitoExtension.class)
-class SchemaServiceTest {
+class SwaggerSchemaServiceTest {
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
@@ -44,11 +44,11 @@ class SchemaServiceTest {
     @Mock
     private SchemasPostProcessor schemasPostProcessor2;
 
-    private SchemaService schemaService;
+    private SwaggerSchemaService schemaService;
 
     @BeforeEach
     void setUp() {
-        schemaService = new SchemaService(
+        schemaService = new SwaggerSchemaService(
                 List.of(),
                 List.of(schemasPostProcessor, schemasPostProcessor2),
                 new SwaggerSchemaUtil(),
@@ -70,8 +70,8 @@ class SchemaServiceTest {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setUseFqn(false);
 
-        SchemaService schemaServiceWithFqn =
-                new SchemaService(List.of(), List.of(), new SwaggerSchemaUtil(), properties);
+        SwaggerSchemaService schemaServiceWithFqn =
+                new SwaggerSchemaService(List.of(), List.of(), new SwaggerSchemaUtil(), properties);
 
         // when
         Class<?> clazz =

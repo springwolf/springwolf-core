@@ -11,7 +11,7 @@ import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvid
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
-import io.github.springwolf.core.asyncapi.schemas.SchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.util.Json;
@@ -41,14 +41,14 @@ class DefaultJsonComponentsServiceTest {
 
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
-    private final SchemaService schemaService = new SchemaService(
+    private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
             List.of(),
             List.of(new ExampleGeneratorPostProcessor(
                     new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(new ExampleJsonValueGenerator()))))),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
     private final ComponentsService componentsService =
-            new DefaultComponentsService(new SwaggerSchemaUtil(), schemaService);
+            new DefaultComponentsService(schemaService, new SwaggerSchemaUtil());
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);

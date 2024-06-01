@@ -3,7 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
-import io.github.springwolf.core.asyncapi.schemas.SchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 class HeaderClassExtractorTest {
 
-    private final SchemaService schemaService = mock(SchemaService.class);
+    private final SwaggerSchemaService schemaService = mock(SwaggerSchemaService.class);
     private final HeaderClassExtractor headerClassExtractor =
             new HeaderClassExtractor(schemaService, new SwaggerSchemaUtil());
 
@@ -34,7 +34,7 @@ class HeaderClassExtractorTest {
     void getNoDocumentedHeaders() throws NoSuchMethodException {
         // given
         when(schemaService.createSchema(String.class))
-                .thenReturn(new SchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
+                .thenReturn(new SwaggerSchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
@@ -48,7 +48,7 @@ class HeaderClassExtractorTest {
     void getHeaderWithSingleHeaderAnnotation() throws NoSuchMethodException {
         // given
         when(schemaService.createSchema(String.class))
-                .thenReturn(new SchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
+                .thenReturn(new SwaggerSchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithSingleHeaderAnnotation", String.class);
@@ -68,7 +68,7 @@ class HeaderClassExtractorTest {
     void getHeaderWithMultipleHeaderAnnotation() throws NoSuchMethodException {
         // given
         when(schemaService.createSchema(String.class))
-                .thenReturn(new SchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
+                .thenReturn(new SwaggerSchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithMultipleHeaderAnnotation", String.class, String.class);

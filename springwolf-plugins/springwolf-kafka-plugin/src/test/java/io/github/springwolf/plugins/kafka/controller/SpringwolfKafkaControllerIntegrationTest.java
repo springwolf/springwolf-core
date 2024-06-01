@@ -11,7 +11,7 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.json.Examp
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
-import io.github.springwolf.core.asyncapi.schemas.SchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
@@ -53,7 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             PublishingPayloadCreator.class,
             SpringwolfKafkaProducer.class,
             DefaultComponentsService.class,
-            SchemaService.class,
+            SwaggerSchemaService.class,
             PayloadService.class,
             SwaggerSchemaUtil.class,
             PayloadClassExtractor.class,

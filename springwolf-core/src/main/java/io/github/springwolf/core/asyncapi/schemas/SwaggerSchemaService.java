@@ -29,13 +29,13 @@ import java.util.stream.Collectors;
 import static io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE;
 
 @Slf4j
-public class SchemaService {
+public class SwaggerSchemaService {
     private final ModelConverters converter = ModelConverters.getInstance();
     private final List<SchemasPostProcessor> schemaPostProcessors;
     private final SwaggerSchemaUtil swaggerSchemaUtil;
     private final SpringwolfConfigProperties properties;
 
-    public SchemaService(
+    public SwaggerSchemaService(
             List<ModelConverter> externalModelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
             SwaggerSchemaUtil swaggerSchemaUtil,

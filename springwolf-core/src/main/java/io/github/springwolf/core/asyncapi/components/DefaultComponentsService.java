@@ -5,7 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.core.asyncapi.schemas.SchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DefaultComponentsService implements ComponentsService {
 
+    private final SwaggerSchemaService schemaService;
     private final SwaggerSchemaUtil swaggerSchemaUtil;
-    private final SchemaService schemaService;
 
     private final Map<String, Schema> schemas = new HashMap<>();
     private final Map<String, Message> messages = new HashMap<>();
@@ -69,7 +69,7 @@ public class DefaultComponentsService implements ComponentsService {
     public String registerSchema(Class<?> type, String contentType) {
         log.debug("Registering schema for {}", type.getSimpleName());
 
-        SchemaService.NewSchema schemas = schemaService.createSchema(type, contentType);
+        SwaggerSchemaService.NewSchema schemas = schemaService.createSchema(type, contentType);
         schemas.schemas().forEach(this.schemas::putIfAbsent);
 
         return schemas.schemaName();

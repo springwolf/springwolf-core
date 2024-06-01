@@ -7,7 +7,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.springwolf.core.asyncapi.schemas.SchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.core.util.Json;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,13 +29,13 @@ class DefaultComponentsServiceTest {
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @Mock
-    private SchemaService schemaService;
+    private SwaggerSchemaService schemaService;
 
     private ComponentsService componentsService;
 
     @BeforeEach
     void setUp() {
-        componentsService = new DefaultComponentsService(new SwaggerSchemaUtil(), schemaService);
+        componentsService = new DefaultComponentsService(schemaService, new SwaggerSchemaUtil());
     }
 
     @Test

@@ -30,7 +30,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
-import io.github.springwolf.core.asyncapi.schemas.SchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
@@ -100,18 +100,20 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ComponentsService componentsService(SwaggerSchemaUtil swaggerSchemaUtil, SchemaService schemaService) {
-        return new DefaultComponentsService(swaggerSchemaUtil, schemaService);
+    public ComponentsService componentsService(
+            SwaggerSchemaUtil swaggerSchemaUtil, SwaggerSchemaService schemaService) {
+        return new DefaultComponentsService(schemaService, swaggerSchemaUtil);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public SchemaService schemasService(
+    public SwaggerSchemaService schemasService(
             List<ModelConverter> modelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
             SwaggerSchemaUtil swaggerSchemaUtil,
             SpringwolfConfigProperties springwolfConfigProperties) {
-        return new SchemaService(modelConverters, schemaPostProcessors, swaggerSchemaUtil, springwolfConfigProperties);
+        return new SwaggerSchemaService(
+                modelConverters, schemaPostProcessors, swaggerSchemaUtil, springwolfConfigProperties);
     }
 
     @Bean
@@ -182,7 +184,8 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public HeaderClassExtractor headerClassExtractor(SchemaService schemaService, SwaggerSchemaUtil swaggerSchemaUtil) {
+    public HeaderClassExtractor headerClassExtractor(
+            SwaggerSchemaService schemaService, SwaggerSchemaUtil swaggerSchemaUtil) {
         return new HeaderClassExtractor(schemaService, swaggerSchemaUtil);
     }
 

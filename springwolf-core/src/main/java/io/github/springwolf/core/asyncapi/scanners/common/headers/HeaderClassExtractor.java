@@ -3,7 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
-import io.github.springwolf.core.asyncapi.schemas.SchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 @Slf4j
 @AllArgsConstructor
 public class HeaderClassExtractor {
-    private final SchemaService schemaService;
+    private final SwaggerSchemaService schemaService;
     private final SwaggerSchemaUtil swaggerSchemaUtil;
 
     public SchemaObject extractFrom(Method method, NamedSchemaObject payload) {
