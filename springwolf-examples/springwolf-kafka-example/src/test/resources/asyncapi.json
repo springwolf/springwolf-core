@@ -431,11 +431,19 @@
             "examples": [
               "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
             ]
+          },
+          "kafka_offset": {
+            "type": "number"
+          },
+          "kafka_receivedMessageKey": {
+            "type": "string"
           }
         },
         "examples": [
           {
-            "__TypeId__": "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
+            "__TypeId__": "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto",
+            "kafka_offset": 1.1,
+            "kafka_receivedMessageKey": "string"
           }
         ],
         "x-json-schema": {
@@ -446,6 +454,12 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
               ],
+              "type": "string"
+            },
+            "kafka_offset": {
+              "type": "number"
+            },
+            "kafka_receivedMessageKey": {
               "type": "string"
             }
           },
@@ -1496,6 +1510,9 @@
         "title": "ExamplePayloadDto",
         "bindings": {
           "kafka": {
+            "key": {
+              "type": "string"
+            },
             "bindingVersion": "0.5.0"
           }
         }
