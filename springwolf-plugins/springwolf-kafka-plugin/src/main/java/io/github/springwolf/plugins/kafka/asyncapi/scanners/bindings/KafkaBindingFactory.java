@@ -4,6 +4,7 @@ package io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.KafkaListenerUtil;
 import lombok.NoArgsConstructor;
@@ -33,8 +34,8 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener>, Embed
     }
 
     @Override
-    public Map<String, MessageBinding> buildMessageBinding(KafkaListener annotation) {
-        return KafkaListenerUtil.buildMessageBinding();
+    public Map<String, MessageBinding> buildMessageBinding(KafkaListener annotation, SchemaObject headerSchema) {
+        return KafkaListenerUtil.buildMessageBinding(headerSchema);
     }
 
     @Override

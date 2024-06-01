@@ -20,6 +20,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import lombok.Data;
@@ -42,6 +43,7 @@ import static org.mockito.Mockito.when;
 class SpringAnnotationClassLevelOperationsScannerTest {
 
     private final PayloadService payloadService = mock();
+    private final HeaderClassExtractor headerClassExtractor = mock(HeaderClassExtractor.class);
     private final BindingFactory<TestClassListener> bindingFactory = mock(BindingFactory.class);
     private final ComponentsService componentsService = mock(ComponentsService.class);
     SpringAnnotationClassLevelOperationsScanner<TestClassListener, TestMethodListener> scanner =
@@ -51,6 +53,7 @@ class SpringAnnotationClassLevelOperationsScannerTest {
                     bindingFactory,
                     new AsyncHeadersNotDocumented(),
                     payloadService,
+                    headerClassExtractor,
                     componentsService);
 
     private static final String CHANNEL = "test-channel";
@@ -68,7 +71,7 @@ class SpringAnnotationClassLevelOperationsScannerTest {
 
         doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any());
         doReturn(defaultChannelBinding).when(bindingFactory).buildChannelBinding(any());
-        doReturn(defaultMessageBinding).when(bindingFactory).buildMessageBinding(any());
+        doReturn(defaultMessageBinding).when(bindingFactory).buildMessageBinding(any(), any());
 
         when(payloadService.extractSchema(any()))
                 .thenReturn(new NamedSchemaObject(String.class.getName(), new SchemaObject()));

@@ -5,10 +5,12 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
@@ -27,16 +29,19 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
 
     private final Class<MethodAnnotation> methodAnnotationClass;
     private final PayloadService payloadService;
+    private final HeaderClassExtractor headerClassExtractor;
 
     public SpringAnnotationMethodLevelChannelsScanner(
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<MethodAnnotation> bindingFactory,
             AsyncHeadersBuilder asyncHeadersBuilder,
             PayloadService payloadService,
+            HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         super(bindingFactory, asyncHeadersBuilder, componentsService);
         this.methodAnnotationClass = methodAnnotationClass;
         this.payloadService = payloadService;
+        this.headerClassExtractor = headerClassExtractor;
     }
 
     @Override
@@ -58,14 +63,16 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
         MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
-        ChannelObject channelItem = buildChannelItem(annotation, payloadSchema);
+        SchemaObject headerSchema = headerClassExtractor.extractFrom(method, payloadSchema);
+        ChannelObject channelItem = buildChannelItem(annotation, payloadSchema, headerSchema);
 
         String channelName = bindingFactory.getChannelName(annotation);
         return Map.entry(channelName, channelItem);
     }
 
-    private ChannelObject buildChannelItem(MethodAnnotation annotation, NamedSchemaObject payloadSchema) {
-        MessageObject message = buildMessage(annotation, payloadSchema);
+    private ChannelObject buildChannelItem(
+            MethodAnnotation annotation, NamedSchemaObject payloadSchema, SchemaObject headerSchema) {
+        MessageObject message = buildMessage(annotation, payloadSchema, headerSchema);
         return buildChannelItem(annotation, message);
     }
 

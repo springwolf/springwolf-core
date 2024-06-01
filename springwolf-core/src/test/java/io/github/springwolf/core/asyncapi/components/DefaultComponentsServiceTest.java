@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;

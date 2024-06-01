@@ -13,6 +13,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
+import io.github.springwolf.core.asyncapi.schemas.SchemaObjectMerger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,11 +28,13 @@ public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Anno
     protected final AsyncHeadersBuilder asyncHeadersBuilder;
     protected final ComponentsService componentsService;
 
-    protected MessageObject buildMessage(MethodAnnotation annotation, NamedSchemaObject payloadSchema) {
-        Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation);
-
+    protected MessageObject buildMessage(
+            MethodAnnotation annotation, NamedSchemaObject payloadSchema, SchemaObject headers) {
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
-        String headerModelName = componentsService.registerSchema(headerSchema);
+        SchemaObject mergedHeaderSchema = SchemaObjectMerger.merge(headerSchema, headers);
+        String headerModelName = componentsService.registerSchema(mergedHeaderSchema);
+
+        Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation, mergedHeaderSchema);
 
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
                 .schema(SchemaReference.fromSchema(payloadSchema.name()))

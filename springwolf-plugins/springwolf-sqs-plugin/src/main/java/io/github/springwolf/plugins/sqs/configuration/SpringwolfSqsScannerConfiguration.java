@@ -9,6 +9,7 @@ import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChan
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
@@ -42,6 +43,7 @@ public class SpringwolfSqsScannerConfiguration {
             SpringwolfClassScanner classScanner,
             SqsBindingFactory sqsBindingBuilder,
             PayloadService payloadService,
+            HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
@@ -49,6 +51,7 @@ public class SpringwolfSqsScannerConfiguration {
                         sqsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
                         payloadService,
+                        headerClassExtractor,
                         componentsService);
 
         return new SpringAnnotationChannelsScanner(classScanner, strategy);
@@ -61,6 +64,7 @@ public class SpringwolfSqsScannerConfiguration {
             SpringwolfClassScanner classScanner,
             SqsBindingFactory sqsBindingBuilder,
             PayloadService payloadService,
+            HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
@@ -68,6 +72,7 @@ public class SpringwolfSqsScannerConfiguration {
                         sqsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
                         payloadService,
+                        headerClassExtractor,
                         componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);

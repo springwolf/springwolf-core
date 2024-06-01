@@ -19,7 +19,6 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
@@ -30,6 +29,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;

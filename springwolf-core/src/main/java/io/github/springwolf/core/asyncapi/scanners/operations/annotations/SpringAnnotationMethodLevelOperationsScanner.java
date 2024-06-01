@@ -7,10 +7,12 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
@@ -30,16 +32,19 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
 
     private final Class<MethodAnnotation> methodAnnotationClass;
     private final PayloadService payloadService;
+    private final HeaderClassExtractor headerClassExtractor;
 
     public SpringAnnotationMethodLevelOperationsScanner(
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<MethodAnnotation> bindingFactory,
             AsyncHeadersBuilder asyncHeadersBuilder,
             PayloadService payloadService,
+            HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         super(bindingFactory, asyncHeadersBuilder, componentsService);
         this.methodAnnotationClass = methodAnnotationClass;
         this.payloadService = payloadService;
+        this.headerClassExtractor = headerClassExtractor;
     }
 
     @Override
@@ -63,13 +68,15 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         String channelName = bindingFactory.getChannelName(annotation);
         String operationId = channelName + "_" + OperationAction.RECEIVE + "_" + method.getName();
         NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
+        SchemaObject headerSchema = headerClassExtractor.extractFrom(method, payloadSchema);
 
-        Operation operation = buildOperation(annotation, payloadSchema);
+        Operation operation = buildOperation(annotation, payloadSchema, headerSchema);
         return Map.entry(operationId, operation);
     }
 
-    private Operation buildOperation(MethodAnnotation annotation, NamedSchemaObject payloadType) {
-        MessageObject message = buildMessage(annotation, payloadType);
+    private Operation buildOperation(
+            MethodAnnotation annotation, NamedSchemaObject payloadType, SchemaObject headerSchema) {
+        MessageObject message = buildMessage(annotation, payloadType, headerSchema);
         return buildOperation(annotation, message);
     }
 

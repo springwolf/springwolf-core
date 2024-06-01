@@ -10,18 +10,20 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -54,6 +56,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             SwaggerSchemaUtil.class,
             PayloadService.class,
             PayloadClassExtractor.class,
+            HeaderClassExtractor.class,
             TypeToClassConverter.class,
             DefaultSchemaWalker.class,
             SchemaWalkerProvider.class,
@@ -68,6 +71,9 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
     PayloadService payloadService;
 
     @Autowired
+    HeaderClassExtractor headerClassExtractor;
+
+    @Autowired
     ComponentsService componentsService;
 
     private SpringAnnotationMethodLevelChannelsScanner<TestChannelListener> scanner;
@@ -79,6 +85,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                 this.bindingFactory,
                 new AsyncHeadersNotDocumented(),
                 payloadService,
+                headerClassExtractor,
                 componentsService);
     }
 
@@ -286,7 +293,8 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
         }
 
         @Override
-        public Map<String, MessageBinding> buildMessageBinding(TestChannelListener annotation) {
+        public Map<String, MessageBinding> buildMessageBinding(
+                TestChannelListener annotation, SchemaObject headerSchema) {
             return defaultMessageBinding;
         }
 

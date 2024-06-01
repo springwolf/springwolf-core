@@ -8,6 +8,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.ClassLevelAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class SpringAnnotationClassLevelChannelsScanner<
             BindingFactory<ClassAnnotation> bindingFactory,
             AsyncHeadersBuilder asyncHeadersBuilder,
             PayloadService payloadService,
+            HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         super(
                 classAnnotationClass,
@@ -38,6 +40,7 @@ public class SpringAnnotationClassLevelChannelsScanner<
                 bindingFactory,
                 asyncHeadersBuilder,
                 payloadService,
+                headerClassExtractor,
                 componentsService);
     }
 

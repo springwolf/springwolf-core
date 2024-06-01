@@ -13,6 +13,7 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.json.Examp
 import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.DefaultExampleYamlValueSerializer;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.ExampleYamlValueGenerator;
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;

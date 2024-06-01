@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -82,7 +83,7 @@ public class DefaultComponentsService implements ComponentsService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         headerSchema.setProperties(properties);
 
-        this.schemas.put(headers.getTitle(), headerSchema);
+        this.schemas.putIfAbsent(headers.getTitle(), headerSchema);
         postProcessSchema(headerSchema, DEFAULT_CONTENT_TYPE);
 
         return headers.getTitle();

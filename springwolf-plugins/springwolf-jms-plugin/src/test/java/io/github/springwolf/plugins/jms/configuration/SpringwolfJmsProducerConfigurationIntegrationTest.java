@@ -5,6 +5,7 @@ import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
@@ -54,6 +55,7 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 @MockBean(AsyncApiService.class),
                 @MockBean(PayloadService.class),
                 @MockBean(PayloadClassExtractor.class),
+                @MockBean(HeaderClassExtractor.class),
                 @MockBean(TypeToClassConverter.class),
                 @MockBean(JmsTemplate.class)
             })
@@ -96,6 +98,7 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 @MockBean(ChannelsService.class),
                 @MockBean(PayloadService.class),
                 @MockBean(PayloadClassExtractor.class),
+                @MockBean(HeaderClassExtractor.class),
                 @MockBean(TypeToClassConverter.class),
                 @MockBean(JmsTemplate.class)
             })
