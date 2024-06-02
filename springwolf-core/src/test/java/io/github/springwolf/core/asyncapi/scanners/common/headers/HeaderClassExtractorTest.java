@@ -33,8 +33,8 @@ class HeaderClassExtractorTest {
     @Test
     void getNoDocumentedHeaders() throws NoSuchMethodException {
         // given
-        when(schemaService.createSchema(String.class))
-                .thenReturn(new SwaggerSchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
+        when(schemaService.extractSchema(String.class))
+                .thenReturn(new SwaggerSchemaService.ExtractedSchemas("String", Map.of("String", stringSwaggerSchema)));
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
@@ -47,8 +47,8 @@ class HeaderClassExtractorTest {
     @Test
     void getHeaderWithSingleHeaderAnnotation() throws NoSuchMethodException {
         // given
-        when(schemaService.createSchema(String.class))
-                .thenReturn(new SwaggerSchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
+        when(schemaService.extractSchema(String.class))
+                .thenReturn(new SwaggerSchemaService.ExtractedSchemas("String", Map.of("String", stringSwaggerSchema)));
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithSingleHeaderAnnotation", String.class);
@@ -67,8 +67,8 @@ class HeaderClassExtractorTest {
     @Test
     void getHeaderWithMultipleHeaderAnnotation() throws NoSuchMethodException {
         // given
-        when(schemaService.createSchema(String.class))
-                .thenReturn(new SwaggerSchemaService.NewSchema("String", Map.of("String", stringSwaggerSchema)));
+        when(schemaService.extractSchema(String.class))
+                .thenReturn(new SwaggerSchemaService.ExtractedSchemas("String", Map.of("String", stringSwaggerSchema)));
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithMultipleHeaderAnnotation", String.class, String.class);

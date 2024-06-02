@@ -45,7 +45,7 @@ public class DefaultComponentsService implements ComponentsService {
     public String registerSchema(SchemaObject headers) {
         log.debug("Registering schema for {}", headers.getTitle());
 
-        ObjectSchema headerSchema = schemaService.createSchema(headers);
+        ObjectSchema headerSchema = schemaService.extractSchema(headers);
         this.schemas.putIfAbsent(headers.getTitle(), headerSchema);
 
         return headers.getTitle();
@@ -55,10 +55,10 @@ public class DefaultComponentsService implements ComponentsService {
     public String registerSchema(Class<?> type, String contentType) {
         log.debug("Registering schema for {}", type.getSimpleName());
 
-        SwaggerSchemaService.NewSchema schemas = schemaService.createSchema(type, contentType);
+        SwaggerSchemaService.ExtractedSchemas schemas = schemaService.extractSchema(type, contentType);
         schemas.schemas().forEach(this.schemas::putIfAbsent);
 
-        return schemas.schemaName();
+        return schemas.rootSchemaName();
     }
 
     @Override

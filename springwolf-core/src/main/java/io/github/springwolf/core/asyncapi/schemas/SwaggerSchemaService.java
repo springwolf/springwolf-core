@@ -47,13 +47,13 @@ public class SwaggerSchemaService {
         this.properties = properties;
     }
 
-    public record NewSchema(String schemaName, Map<String, Schema> schemas) {
-        public Schema getSchema() {
-            return schemas.get(schemaName);
+    public record ExtractedSchemas(String rootSchemaName, Map<String, Schema> schemas) {
+        public Schema getRootSchema() {
+            return schemas.get(rootSchemaName);
         }
     }
 
-    public ObjectSchema createSchema(SchemaObject headers) {
+    public ObjectSchema extractSchema(SchemaObject headers) {
         String schemaName = headers.getTitle();
 
         ObjectSchema headerSchema = new ObjectSchema();
@@ -70,11 +70,11 @@ public class SwaggerSchemaService {
         return headerSchema;
     }
 
-    public NewSchema createSchema(Class<?> type) {
-        return this.createSchema(type, "");
+    public ExtractedSchemas extractSchema(Class<?> type) {
+        return this.extractSchema(type, "");
     }
 
-    public NewSchema createSchema(Class<?> type, String contentType) {
+    public ExtractedSchemas extractSchema(Class<?> type, String contentType) {
         String actualContentType =
                 StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
 
@@ -88,7 +88,7 @@ public class SwaggerSchemaService {
             postProcessSchema(schema, postProcessedSchemas, actualContentType);
         }
 
-        return new NewSchema(schemaName, postProcessedSchemas);
+        return new ExtractedSchemas(schemaName, postProcessedSchemas);
     }
 
     private String getSchemaName(Class<?> type, Map<String, Schema> schemas) {

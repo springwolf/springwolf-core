@@ -56,7 +56,7 @@ public class HeaderClassExtractor {
     }
 
     private SchemaObject getHeaderSchema(Parameter argument) {
-        Schema swaggerSchema = schemaService.createSchema(argument.getType()).getSchema();
+        Schema swaggerSchema = schemaService.extractSchema(argument.getType()).getRootSchema();
         return swaggerSchemaUtil.mapSchema(swaggerSchema);
     }
 }

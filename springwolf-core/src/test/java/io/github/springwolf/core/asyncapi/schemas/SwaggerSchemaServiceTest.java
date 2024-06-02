@@ -58,8 +58,8 @@ class SwaggerSchemaServiceTest {
     @Test
     void classWithSchemaAnnotation() {
         String modelName = schemaService
-                .createSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant")
-                .schemaName();
+                .extractSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant")
+                .rootSchemaName();
 
         assertThat(modelName).isEqualTo("DifferentName");
     }
@@ -77,7 +77,7 @@ class SwaggerSchemaServiceTest {
         Class<?> clazz =
                 OneFieldFooWithoutFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
         Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaServiceWithFqn
-                .createSchema(clazz, "content-type-not-relevant")
+                .extractSchema(clazz, "content-type-not-relevant")
                 .schemas();
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemas);
 
@@ -89,7 +89,7 @@ class SwaggerSchemaServiceTest {
 
     @Test
     void postProcessorsAreCalled() {
-        schemaService.createSchema(ClassWithSchemaAnnotation.class, "some-content-type");
+        schemaService.extractSchema(ClassWithSchemaAnnotation.class, "some-content-type");
 
         verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
         verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
@@ -105,7 +105,7 @@ class SwaggerSchemaServiceTest {
                 .when(schemasPostProcessor)
                 .process(any(), any(), any());
 
-        schemaService.createSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
+        schemaService.extractSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
 
         verifyNoInteractions(schemasPostProcessor2);
     }
@@ -117,7 +117,7 @@ class SwaggerSchemaServiceTest {
         void Integer() {
             // when
             Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
-                    .createSchema(Integer.class, "content-type-not-relevant")
+                    .extractSchema(Integer.class, "content-type-not-relevant")
                     .schemas();
 
             // then
@@ -129,7 +129,7 @@ class SwaggerSchemaServiceTest {
         void Double() {
             // when
             Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
-                    .createSchema(Double.class, "content-type-not-relevant")
+                    .extractSchema(Double.class, "content-type-not-relevant")
                     .schemas();
 
             // then
@@ -141,7 +141,7 @@ class SwaggerSchemaServiceTest {
         void String() {
             // when
             Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
-                    .createSchema(String.class, "content-type-not-relevant")
+                    .extractSchema(String.class, "content-type-not-relevant")
                     .schemas();
 
             // then
@@ -153,7 +153,7 @@ class SwaggerSchemaServiceTest {
         void Byte() {
             // when
             Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
-                    .createSchema(Byte.class, "content-type-not-relevant")
+                    .extractSchema(Byte.class, "content-type-not-relevant")
                     .schemas();
 
             // then
@@ -165,7 +165,7 @@ class SwaggerSchemaServiceTest {
         void Boolean() {
             // when
             Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
-                    .createSchema(Boolean.class, "content-type-not-relevant")
+                    .extractSchema(Boolean.class, "content-type-not-relevant")
                     .schemas();
 
             // then
