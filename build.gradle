@@ -17,6 +17,29 @@ plugins {
 
 applyDotEnvFileAsGradleProperties()
 
+var addons = [
+        'springwolf-common-model-converters' ,
+        'springwolf-generic-binding' ,
+        'springwolf-json-schema',
+        'springwolf-kotlinx-serialization-model-converter'
+]
+var bindings = [
+        'springwolf-amqp-binding',
+        'springwolf-googlepubsub-binding',
+        'springwolf-jms-binding',
+        'springwolf-kafka-binding',
+        'springwolf-sns-binding',
+        'springwolf-sqs-binding'
+]
+var plugins = [
+        'springwolf-amqp',
+        'springwolf-cloud-stream',
+        'springwolf-jms',
+        'springwolf-kafka',
+        'springwolf-sns',
+        'springwolf-sqs'
+]
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -141,28 +164,6 @@ allprojects {
         }
     }
 
-    var addons = [
-            'springwolf-common-model-converters' ,
-            'springwolf-generic-binding' ,
-            'springwolf-json-schema',
-            'springwolf-kotlinx-serialization-model-converter'
-    ]
-    var bindings = [
-            'springwolf-amqp-binding',
-            'springwolf-googlepubsub-binding',
-            'springwolf-jms-binding',
-            'springwolf-kafka-binding',
-            'springwolf-sns-binding',
-            'springwolf-sqs-binding'
-    ]
-    var plugins = [
-            'springwolf-amqp',
-            'springwolf-cloud-stream',
-            'springwolf-jms',
-            'springwolf-kafka',
-            'springwolf-sns',
-            'springwolf-sqs'
-    ]
     var publishingEnabled = (
             project.name == 'springwolf-asyncapi' ||
             project.name == 'springwolf-core' ||
