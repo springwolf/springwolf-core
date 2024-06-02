@@ -47,13 +47,13 @@ public class SwaggerSchemaService {
         this.properties = properties;
     }
 
-    public record ExtractedSchemas(String rootSchemaName, Map<String, Schema> schemas) {
-        public Schema getRootSchema() {
+    public record ExtractedSchemas(String rootSchemaName, Map<String, SchemaObject> schemas) {
+        public SchemaObject getRootSchema() {
             return schemas.get(rootSchemaName);
         }
     }
 
-    public ObjectSchema extractSchema(SchemaObject headers) {
+    public SchemaObject extractSchema(SchemaObject headers) {
         String schemaName = headers.getTitle();
 
         ObjectSchema headerSchema = new ObjectSchema();
@@ -67,7 +67,7 @@ public class SwaggerSchemaService {
 
         postProcessSchema(headerSchema, new HashMap<>(Map.of(schemaName, headerSchema)), DEFAULT_CONTENT_TYPE);
 
-        return headerSchema;
+        return swaggerSchemaUtil.mapSchema(headerSchema);
     }
 
     public ExtractedSchemas extractSchema(Class<?> type) {
@@ -78,17 +78,21 @@ public class SwaggerSchemaService {
         String actualContentType =
                 StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
 
-        Map<String, Schema> schemas = new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
+        Map<String, Schema> swaggerSchemas =
+                new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
 
-        String schemaName = getSchemaName(type, schemas);
-        preProcessSchemas(schemas, schemaName, type);
+        String schemaName = getSchemaName(type, swaggerSchemas);
+        preProcessSchemas(swaggerSchemas, schemaName, type);
 
-        Map<String, Schema> postProcessedSchemas = new HashMap<>(schemas);
-        for (Schema schema : schemas.values()) {
+        Map<String, Schema> postProcessedSchemas = new HashMap<>(swaggerSchemas);
+        for (Schema schema : swaggerSchemas.values()) {
             postProcessSchema(schema, postProcessedSchemas, actualContentType);
         }
 
-        return new ExtractedSchemas(schemaName, postProcessedSchemas);
+        Map<String, SchemaObject> schemas = postProcessedSchemas.entrySet().stream()
+                .map(entry -> Map.entry(entry.getKey(), swaggerSchemaUtil.mapSchema(entry.getValue())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return new ExtractedSchemas(schemaName, schemas);
     }
 
     private String getSchemaName(Class<?> type, Map<String, Schema> schemas) {

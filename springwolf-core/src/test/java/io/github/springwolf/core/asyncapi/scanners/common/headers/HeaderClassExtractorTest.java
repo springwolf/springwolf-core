@@ -4,9 +4,6 @@ package io.github.springwolf.core.asyncapi.scanners.common.headers;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.handler.annotation.Header;
@@ -22,13 +19,13 @@ import static org.mockito.Mockito.when;
 class HeaderClassExtractorTest {
 
     private final SwaggerSchemaService schemaService = mock(SwaggerSchemaService.class);
-    private final HeaderClassExtractor headerClassExtractor =
-            new HeaderClassExtractor(schemaService, new SwaggerSchemaUtil());
+    private final HeaderClassExtractor headerClassExtractor = new HeaderClassExtractor(schemaService);
 
     private final NamedSchemaObject payloadSchemaName = new NamedSchemaObject("payloadSchemaName", new SchemaObject());
     private final SchemaObject stringSchema =
             SchemaObject.builder().type("string").build();
-    private final Schema stringSwaggerSchema = new StringSchema();
+    private final SchemaObject stringSwaggerSchema =
+            SchemaObject.builder().type("string").build();
 
     @Test
     void getNoDocumentedHeaders() throws NoSuchMethodException {

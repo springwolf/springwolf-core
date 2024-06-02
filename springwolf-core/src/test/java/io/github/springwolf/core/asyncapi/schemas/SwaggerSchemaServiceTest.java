@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.util.Json;
@@ -76,7 +77,7 @@ class SwaggerSchemaServiceTest {
         // when
         Class<?> clazz =
                 OneFieldFooWithoutFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
-        Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaServiceWithFqn
+        Map<String, SchemaObject> schemas = schemaServiceWithFqn
                 .extractSchema(clazz, "content-type-not-relevant")
                 .schemas();
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemas);
@@ -116,7 +117,7 @@ class SwaggerSchemaServiceTest {
         @Test
         void Integer() {
             // when
-            Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
+            Map<String, SchemaObject> schemas = schemaService
                     .extractSchema(Integer.class, "content-type-not-relevant")
                     .schemas();
 
@@ -128,7 +129,7 @@ class SwaggerSchemaServiceTest {
         @Test
         void Double() {
             // when
-            Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
+            Map<String, SchemaObject> schemas = schemaService
                     .extractSchema(Double.class, "content-type-not-relevant")
                     .schemas();
 
@@ -140,7 +141,7 @@ class SwaggerSchemaServiceTest {
         @Test
         void String() {
             // when
-            Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
+            Map<String, SchemaObject> schemas = schemaService
                     .extractSchema(String.class, "content-type-not-relevant")
                     .schemas();
 
@@ -152,7 +153,7 @@ class SwaggerSchemaServiceTest {
         @Test
         void Byte() {
             // when
-            Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
+            Map<String, SchemaObject> schemas = schemaService
                     .extractSchema(Byte.class, "content-type-not-relevant")
                     .schemas();
 
@@ -164,7 +165,7 @@ class SwaggerSchemaServiceTest {
         @Test
         void Boolean() {
             // when
-            Map<String, io.swagger.v3.oas.models.media.Schema> schemas = schemaService
+            Map<String, SchemaObject> schemas = schemaService
                     .extractSchema(Boolean.class, "content-type-not-relevant")
                     .schemas();
 

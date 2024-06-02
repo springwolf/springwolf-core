@@ -61,6 +61,7 @@
         ]
       },
       "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto": {
+        "title": "AnotherPayloadDto",
         "type": "object",
         "properties": {
           "example": {
@@ -90,6 +91,7 @@
         ]
       },
       "io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto": {
+        "title": "ExamplePayloadDto",
         "type": "object",
         "properties": {
           "someEnum": {

@@ -53,6 +53,7 @@
         }
       },
       "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto": {
+        "title": "AnotherPayloadDto",
         "type": "object",
         "properties": {
           "example": {
@@ -110,6 +111,7 @@
                 "someEnum",
                 "someString"
               ],
+              "title": "ExamplePayloadDto",
               "type": "object"
             },
             "foo": {
@@ -120,10 +122,12 @@
           "required": [
             "example"
           ],
+          "title": "AnotherPayloadDto",
           "type": "object"
         }
       },
       "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto": {
+        "title": "ExamplePayloadDto",
         "type": "object",
         "properties": {
           "someEnum": {
@@ -193,6 +197,7 @@
             "someEnum",
             "someString"
           ],
+          "title": "ExamplePayloadDto",
           "type": "object"
         }
       }

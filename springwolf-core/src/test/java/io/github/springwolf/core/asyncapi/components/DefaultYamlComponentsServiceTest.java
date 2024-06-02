@@ -52,8 +52,7 @@ class DefaultYamlComponentsServiceTest {
                     new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(exampleYamlValueGenerator))))),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
-    private final ComponentsService componentsService =
-            new DefaultComponentsService(schemaService, new SwaggerSchemaUtil());
+    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);

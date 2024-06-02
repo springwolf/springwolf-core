@@ -737,6 +737,7 @@
         }
       },
       "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
+        "title": "StringEnvelope",
         "type": "string",
         "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
         "maxLength": 100,
@@ -747,10 +748,12 @@
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
           "maxLength": 100,
+          "title": "StringEnvelope",
           "type": "string"
         }
       },
       "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto": {
+        "title": "AnotherPayloadAvroDto",
         "type": "object",
         "properties": {
           "examplePayloadAvroDto": {
@@ -798,6 +801,7 @@
               "type": "string"
             }
           },
+          "title": "AnotherPayloadAvroDto",
           "type": "object"
         }
       },
@@ -833,6 +837,7 @@
         }
       },
       "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
+        "title": "Message",
         "type": "object",
         "properties": {
           "someEnum": {
@@ -879,10 +884,12 @@
               "type": "string"
             }
           },
+          "title": "Message",
           "type": "object"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto": {
+        "title": "AnotherPayloadDto",
         "type": "object",
         "properties": {
           "example": {
@@ -940,6 +947,7 @@
                 "someEnum",
                 "someString"
               ],
+              "title": "ExamplePayloadDto",
               "type": "object"
             },
             "foo": {
@@ -950,10 +958,12 @@
           "required": [
             "example"
           ],
+          "title": "AnotherPayloadDto",
           "type": "object"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
+        "title": "ExamplePayloadDto",
         "type": "object",
         "properties": {
           "someEnum": {
@@ -1023,10 +1033,12 @@
             "someEnum",
             "someString"
           ],
+          "title": "ExamplePayloadDto",
           "type": "object"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.NestedPayloadDto": {
+        "title": "NestedPayloadDto",
         "type": "object",
         "properties": {
           "examplePayloads": {
@@ -1093,6 +1105,7 @@
                   "someEnum",
                   "someString"
                 ],
+                "title": "ExamplePayloadDto",
                 "type": "object"
               },
               "type": "array"
@@ -1106,10 +1119,12 @@
               "uniqueItems": true
             }
           },
+          "title": "NestedPayloadDto",
           "type": "object"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto": {
+        "title": "XmlPayloadDto",
         "type": "string",
         "properties": {
           "someAttribute": {
@@ -1154,10 +1169,12 @@
               "type": "string"
             }
           },
+          "title": "XmlPayloadDto",
           "type": "string"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto": {
+        "title": "YamlPayloadDto",
         "type": "string",
         "properties": {
           "someEnum": {
@@ -1198,11 +1215,13 @@
               "type": "string"
             }
           },
+          "title": "YamlPayloadDto",
           "type": "string"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase": {
         "discriminator": "vehicleType",
+        "title": "VehicleBase",
         "type": "object",
         "properties": {
           "powerSource": {
@@ -1237,6 +1256,7 @@
             },
             "vehicleType": { }
           },
+          "title": "VehicleBase",
           "type": "object"
         }
       },
@@ -1285,6 +1305,7 @@
                 },
                 "vehicleType": { }
               },
+              "title": "VehicleBase",
               "type": "object"
             },
             {
@@ -1339,6 +1360,7 @@
                 },
                 "vehicleType": { }
               },
+              "title": "VehicleBase",
               "type": "object"
             },
             {
@@ -1353,26 +1375,31 @@
         }
       },
       "java.lang.Number": {
+        "title": "Integer",
         "type": "number",
         "examples": [
           1.1
         ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
+          "title": "Integer",
           "type": "number"
         }
       },
       "java.lang.String": {
+        "title": "String",
         "type": "string",
         "examples": [
           "\"string\""
         ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
+          "title": "String",
           "type": "string"
         }
       },
       "javax.money.MonetaryAmount": {
+        "title": "MonetaryAmount",
         "type": "object",
         "properties": {
           "amount": {
@@ -1406,6 +1433,7 @@
               "type": "string"
             }
           },
+          "title": "MonetaryAmount",
           "type": "object"
         }
       }

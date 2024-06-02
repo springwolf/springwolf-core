@@ -4,8 +4,6 @@ package io.github.springwolf.core.asyncapi.scanners.common.headers;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
-import io.swagger.v3.oas.models.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Header;
@@ -18,7 +16,6 @@ import java.util.HashMap;
 @AllArgsConstructor
 public class HeaderClassExtractor {
     private final SwaggerSchemaService schemaService;
-    private final SwaggerSchemaUtil swaggerSchemaUtil;
 
     public SchemaObject extractHeader(Method method, NamedSchemaObject payload) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
@@ -34,7 +31,8 @@ public class HeaderClassExtractor {
                 Header headerAnnotation = argument.getAnnotation(Header.class);
                 String headerName = getHeaderAnnotationName(headerAnnotation);
 
-                SchemaObject schema = getHeaderSchema(argument);
+                SchemaObject schema =
+                        schemaService.extractSchema(argument.getType()).getRootSchema();
 
                 headers.getProperties().put(headerName, schema);
             }
@@ -53,10 +51,5 @@ public class HeaderClassExtractor {
         }
 
         return annotation.value();
-    }
-
-    private SchemaObject getHeaderSchema(Parameter argument) {
-        Schema swaggerSchema = schemaService.extractSchema(argument.getType()).getRootSchema();
-        return swaggerSchemaUtil.mapSchema(swaggerSchema);
     }
 }

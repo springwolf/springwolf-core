@@ -86,8 +86,7 @@ class AsyncAnnotationChannelsScannerTest {
     private final ClassScanner classScanner = mock(ClassScanner.class);
     private final SwaggerSchemaService schemaService =
             new SwaggerSchemaService(emptyList(), emptyList(), swaggerSchemaUtil, properties);
-    private final ComponentsService componentsService = new DefaultComponentsService(schemaService, swaggerSchemaUtil);
-
+    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
     private final TypeToClassConverter typeToClassConverter = new TypeToClassConverter(properties);
     private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(typeToClassConverter);

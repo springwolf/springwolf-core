@@ -6,37 +6,30 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
-import io.swagger.v3.oas.models.media.ObjectSchema;
-import io.swagger.v3.oas.models.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
 public class DefaultComponentsService implements ComponentsService {
 
     private final SwaggerSchemaService schemaService;
-    private final SwaggerSchemaUtil swaggerSchemaUtil;
 
-    private final Map<String, Schema> schemas = new HashMap<>();
+    private final Map<String, SchemaObject> schemas = new HashMap<>();
     private final Map<String, Message> messages = new HashMap<>();
 
     @Override
     public Map<String, SchemaObject> getSchemas() {
-        return schemas.entrySet().stream()
-                .map(entry -> Map.entry(entry.getKey(), swaggerSchemaUtil.mapSchema(entry.getValue())))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return schemas;
     }
 
     @Override
     public SchemaObject resolveSchema(String schemaName) {
         if (schemas.containsKey(schemaName)) {
-            return swaggerSchemaUtil.mapSchema(schemas.get(schemaName));
+            return schemas.get(schemaName);
         }
         return null;
     }
@@ -45,7 +38,7 @@ public class DefaultComponentsService implements ComponentsService {
     public String registerSchema(SchemaObject headers) {
         log.debug("Registering schema for {}", headers.getTitle());
 
-        ObjectSchema headerSchema = schemaService.extractSchema(headers);
+        SchemaObject headerSchema = schemaService.extractSchema(headers);
         this.schemas.putIfAbsent(headers.getTitle(), headerSchema);
 
         return headers.getTitle();

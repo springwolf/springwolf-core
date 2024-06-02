@@ -100,9 +100,8 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ComponentsService componentsService(
-            SwaggerSchemaUtil swaggerSchemaUtil, SwaggerSchemaService schemaService) {
-        return new DefaultComponentsService(schemaService, swaggerSchemaUtil);
+    public ComponentsService componentsService(SwaggerSchemaService schemaService) {
+        return new DefaultComponentsService(schemaService);
     }
 
     @Bean
@@ -184,9 +183,8 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public HeaderClassExtractor headerClassExtractor(
-            SwaggerSchemaService schemaService, SwaggerSchemaUtil swaggerSchemaUtil) {
-        return new HeaderClassExtractor(schemaService, swaggerSchemaUtil);
+    public HeaderClassExtractor headerClassExtractor(SwaggerSchemaService schemaService) {
+        return new HeaderClassExtractor(schemaService);
     }
 
     @Bean
