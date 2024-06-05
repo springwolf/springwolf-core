@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.amqp.consumers;
 
+import io.github.springwolf.examples.amqp.AmqpConstants;
 import io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto;
 import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
 import io.github.springwolf.examples.amqp.producers.AnotherProducer;
@@ -20,9 +21,9 @@ public class ExampleConsumer {
 
     private final AnotherProducer anotherProducer;
 
-    @RabbitListener(queues = "example-queue")
+    @RabbitListener(queues = AmqpConstants.EXAMPLE_QUEUE)
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in example-queue: {}", payload.toString());
+        log.info("Received new message in {}: {}", AmqpConstants.EXAMPLE_QUEUE, payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
@@ -31,37 +32,45 @@ public class ExampleConsumer {
         anotherProducer.sendMessage(example);
     }
 
-    @RabbitListener(queues = "another-queue")
+    @RabbitListener(queues = AmqpConstants.ANOTHER_QUEUE)
     public void receiveAnotherPayload(AnotherPayloadDto payload) {
-        log.info("Received new message in another-queue: {}", payload.toString());
+        log.info("Received new message in {}: {}", AmqpConstants.ANOTHER_QUEUE, payload.toString());
     }
 
     @RabbitListener(
             bindings = {
                 @QueueBinding(
-                        exchange = @Exchange(name = "example-topic-exchange", type = ExchangeTypes.TOPIC),
+                        exchange = @Exchange(name = AmqpConstants.EXAMPLE_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
                         value =
                                 @Queue(
-                                        name = "example-bindings-queue",
+                                        name = AmqpConstants.EXAMPLE_BINDINGS_QUEUE,
                                         durable = "false",
                                         exclusive = "true",
                                         autoDelete = "true"),
-                        key = "example-topic-routing-key")
+                        key = AmqpConstants.EXAMPLE_TOPIC_ROUTING_KEY)
             })
     public void bindingsExample(AnotherPayloadDto payload) {
         log.info(
-                "Received new message in example-bindings-queue"
-                        + " through exchange example-topic-exchange using routing key example-topic-routing-key: {}",
+                "Received new message in {}" + " through exchange {}" + " using routing key {}: {}",
+                AmqpConstants.EXAMPLE_BINDINGS_QUEUE,
+                AmqpConstants.EXAMPLE_TOPIC_EXCHANGE,
+                AmqpConstants.EXAMPLE_TOPIC_ROUTING_KEY,
                 payload.toString());
     }
 
-    @RabbitListener(queues = "multi-payload-queue")
+    @RabbitListener(queues = AmqpConstants.MULTI_PAYLOAD_QUEUE)
     public void bindingsBeanExample(AnotherPayloadDto payload) {
-        log.info("Received new message in multi-payload-queue (AnotherPayloadDto): {}", payload.toString());
+        log.info(
+                "Received new message in {} (AnotherPayloadDto): {}",
+                AmqpConstants.MULTI_PAYLOAD_QUEUE,
+                payload.toString());
     }
 
-    @RabbitListener(queues = "multi-payload-queue")
+    @RabbitListener(queues = AmqpConstants.MULTI_PAYLOAD_QUEUE)
     public void bindingsBeanExample(ExamplePayloadDto payload) {
-        log.info("Received new message in multi-payload-queue (ExamplePayloadDto): {}", payload.toString());
+        log.info(
+                "Received new message in {} (ExamplePayloadDto): {}",
+                AmqpConstants.MULTI_PAYLOAD_QUEUE,
+                payload.toString());
     }
 }

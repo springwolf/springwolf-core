@@ -79,7 +79,7 @@ public class ProducerSystemTest {
         payload.setSomeEnum(FOO1);
 
         // when
-        springwolfAmqpProducer.send("example-queue", payload);
+        springwolfAmqpProducer.send(AmqpConstants.EXAMPLE_QUEUE, payload);
 
         // then
         verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);

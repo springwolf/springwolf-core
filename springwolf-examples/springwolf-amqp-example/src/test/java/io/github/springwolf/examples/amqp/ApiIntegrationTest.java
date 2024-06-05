@@ -25,13 +25,36 @@ class ApiIntegrationTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    void asyncApiResourceArtifactTest() throws IOException {
+    void asyncApiResourceJsonArtifactTest() throws IOException {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actual);
 
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        String expected;
+        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
+            assert s != null;
+            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        }
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void asyncApiResourceYamlArtifactTest() throws IOException {
+        String url = "/springwolf/docs.yaml";
+        String actual = restTemplate
+                .getForObject(url, String.class)
+                .replaceAll("\r", "")
+                .trim();
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.yaml"), actual);
+
+        String expected;
+        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.yaml")) {
+            assert s != null;
+            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8)
+                    .replaceAll("\r", "")
+                    .trim();
+        }
 
         assertEquals(expected, actual);
     }
