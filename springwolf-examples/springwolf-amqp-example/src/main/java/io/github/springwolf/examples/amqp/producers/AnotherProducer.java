@@ -18,12 +18,14 @@ public class AnotherProducer {
     @AsyncPublisher(
             operation =
                     @AsyncOperation(
-                            channelName = AmqpConstants.EXAMPLE_TOPIC_EXCHANGE,
+                            channelName = AmqpConstants.EXCHANGE_EXAMPLE_TOPIC_EXCHANGE,
                             description = "Custom, optional description defined in the AsyncPublisher annotation"))
     @AmqpAsyncOperationBinding()
     public void sendMessage(AnotherPayloadDto msg) {
         // send
         rabbitTemplate.convertAndSend(
-                AmqpConstants.EXAMPLE_TOPIC_EXCHANGE, AmqpConstants.EXAMPLE_TOPIC_ROUTING_KEY, msg);
+                AmqpConstants.EXCHANGE_EXAMPLE_TOPIC_EXCHANGE,
+                AmqpConstants.ROUTING_KEY_EXAMPLE_TOPIC_ROUTING_KEY,
+                msg);
     }
 }

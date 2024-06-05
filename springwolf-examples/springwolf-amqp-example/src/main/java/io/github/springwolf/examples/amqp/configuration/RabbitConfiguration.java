@@ -24,34 +24,39 @@ public class RabbitConfiguration {
 
     @Bean
     public Queue exampleQueue() {
-        return new Queue(AmqpConstants.EXAMPLE_QUEUE, false);
+        return new Queue(AmqpConstants.QUEUE_EXAMPLE_QUEUE, false);
     }
 
     @Bean
     public Queue anotherQueue() {
-        return new Queue(AmqpConstants.ANOTHER_QUEUE, false);
+        return new Queue(AmqpConstants.QUEUE_ANOTHER_QUEUE, false);
     }
 
     @Bean
     public Queue exampleBindingsQueue() {
-        return new Queue(AmqpConstants.EXAMPLE_BINDINGS_QUEUE, false, true, true);
+        return new Queue(AmqpConstants.QUEUE_EXAMPLE_BINDINGS_QUEUE, false, true, true);
+    }
+
+    @Bean
+    public Queue queueRead() {
+        return new Queue(AmqpConstants.QUEUE_READ, false);
     }
 
     @Bean
     public Exchange exampleTopicExchange() {
-        return new TopicExchange(AmqpConstants.EXAMPLE_TOPIC_EXCHANGE);
+        return new TopicExchange(AmqpConstants.EXCHANGE_EXAMPLE_TOPIC_EXCHANGE);
     }
 
     @Bean
     public Queue multiPayloadQueue() {
-        return new Queue(AmqpConstants.MULTI_PAYLOAD_QUEUE);
+        return new Queue(AmqpConstants.QUEUE_MULTI_PAYLOAD_QUEUE);
     }
 
     @Bean
     public Binding exampleTopicBinding(Queue exampleBindingsQueue, Exchange exampleTopicExchange) {
         return BindingBuilder.bind(exampleBindingsQueue)
                 .to(exampleTopicExchange)
-                .with(AmqpConstants.EXAMPLE_TOPIC_ROUTING_KEY)
+                .with(AmqpConstants.ROUTING_KEY_EXAMPLE_TOPIC_ROUTING_KEY)
                 .noargs();
     }
 }
