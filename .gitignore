@@ -24,6 +24,7 @@ springwolf-bindings/springwolf-sqs-binding/build/
 node_modules/
 
 asyncapi.actual.json
+asyncapi.actual.yaml
 
 # Eclipse IDE
 .classpath

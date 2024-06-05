@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.amqp.configuration;
 
+import io.github.springwolf.examples.amqp.AmqpConstants;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
@@ -23,34 +24,34 @@ public class RabbitConfiguration {
 
     @Bean
     public Queue exampleQueue() {
-        return new Queue("example-queue", false);
+        return new Queue(AmqpConstants.EXAMPLE_QUEUE, false);
     }
 
     @Bean
     public Queue anotherQueue() {
-        return new Queue("another-queue", false);
+        return new Queue(AmqpConstants.ANOTHER_QUEUE, false);
     }
 
     @Bean
     public Queue exampleBindingsQueue() {
-        return new Queue("example-bindings-queue", false, true, true);
+        return new Queue(AmqpConstants.EXAMPLE_BINDINGS_QUEUE, false, true, true);
     }
 
     @Bean
     public Exchange exampleTopicExchange() {
-        return new TopicExchange("example-topic-exchange");
+        return new TopicExchange(AmqpConstants.EXAMPLE_TOPIC_EXCHANGE);
     }
 
     @Bean
     public Queue multiPayloadQueue() {
-        return new Queue("multi-payload-queue");
+        return new Queue(AmqpConstants.MULTI_PAYLOAD_QUEUE);
     }
 
     @Bean
     public Binding exampleTopicBinding(Queue exampleBindingsQueue, Exchange exampleTopicExchange) {
         return BindingBuilder.bind(exampleBindingsQueue)
                 .to(exampleTopicExchange)
-                .with("example-topic-routing-key")
+                .with(AmqpConstants.EXAMPLE_TOPIC_ROUTING_KEY)
                 .noargs();
     }
 }
