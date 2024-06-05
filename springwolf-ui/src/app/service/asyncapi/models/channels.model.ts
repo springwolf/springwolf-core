@@ -8,7 +8,7 @@ export interface ServerChannels {
 export interface ServerChannel {
   address: string;
   description?: string;
-  messages: {
+  messages?: {
     [key: string]: {
       $ref: string;
     };

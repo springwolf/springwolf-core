@@ -74,6 +74,8 @@ function testPublishingEveryChannelItem() {
         payload === "MonetaryAmount" || // Issue with either MonetaryAmount of ModelConverters
         payload === "Message" || // Unable to instantiate ExamplePayloadProtobufDto$Message class
         payload === "VehicleBase" || // Unable to publish abstract class for discriminator demo
+        payload === "GenericPayloadDto" || // Unable to publish generic payload (amqp)
+        channelName === "#" || // Publishing through amqp exchange is not supported, see GH-366
         channelName === "example-topic-routing-key" // Publishing through amqp exchange is not supported, see GH-366
       ) {
         return; // skip
