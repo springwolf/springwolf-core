@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/springwolf/sns")
+@RequestMapping("${springwolf.path.base:/springwolf}/sns")
 public class SpringwolfSnsController extends PublishingBaseController {
 
     private final SpringwolfSnsProducer producer;
