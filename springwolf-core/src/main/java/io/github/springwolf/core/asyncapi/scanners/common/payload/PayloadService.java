@@ -68,7 +68,11 @@ public class PayloadService {
     }
 
     private NamedSchemaObject useUnusedPayload() {
-        this.componentsService.registerSchema(PAYLOAD_NOT_USED.schema());
+        SchemaObject schema = PAYLOAD_NOT_USED.schema();
+        if (schema != null) {
+            this.componentsService.registerSchema(schema);
+        }
+
         return PAYLOAD_NOT_USED;
     }
 }
