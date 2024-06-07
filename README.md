@@ -103,12 +103,13 @@ More details in the documentation.
 ### 🚀 Who's Using Springwolf
 
 - [2bPrecise](https://2bprecisehealth.com/)
+- [aconium](https://www.aconium.eu)
+- [Alten Italia](https://www.alten.it/)
 - [b.well Connected Health](https://www.icanbwell.com/)
 - [DGARNE - Public Service of Wallonia (BE)](https://agriculture.wallonie.be/accueil)
 - [LVM Versicherung](https://www.lvm.de/privatkunden/)
 - [OTTO](https://www.otto.de)
 - [Teambank](https://www.teambank.de)
-- [aconium](https://www.aconium.eu)
 
 Comment in [this PR](https://github.com/springwolf/springwolf-core/issues/342) to add your company and spread the word
 
