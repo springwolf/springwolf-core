@@ -2,7 +2,6 @@
 package io.github.springwolf.plugins.jms.configuration;
 
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
@@ -12,9 +11,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.JmsBindingFactory;
-import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.messages.JmsMessageBindingProcessor;
-import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.operations.JmsOperationBindingProcessor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,19 +67,5 @@ public class SpringwolfJmsScannerConfiguration {
                         componentsService);
 
         return new SpringAnnotationOperationsScanner(classScanner, strategy);
-    }
-
-    @Bean
-    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
-    @ConditionalOnMissingBean
-    public JmsMessageBindingProcessor jmsMessageBindingProcessor() {
-        return new JmsMessageBindingProcessor();
-    }
-
-    @Bean
-    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
-    @ConditionalOnMissingBean
-    public JmsOperationBindingProcessor jmsOperationBindingProcessor() {
-        return new JmsOperationBindingProcessor();
     }
 }

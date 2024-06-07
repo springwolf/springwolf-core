@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka.producers;
 
+import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersCloudEventConstants;
 import io.github.springwolf.examples.kafka.configuration.KafkaConfiguration;
 import io.github.springwolf.examples.kafka.dtos.NestedPayloadDto;
-import io.github.springwolf.plugins.kafka.asyncapi.annotations.KafkaAsyncOperationBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.KafkaTemplate;

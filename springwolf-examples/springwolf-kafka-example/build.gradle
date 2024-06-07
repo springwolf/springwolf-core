@@ -15,6 +15,8 @@ plugins {
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-kafka")
+    permitUnusedDeclared project(":springwolf-plugins:springwolf-kafka")
+    permitUsedUndeclared project(":springwolf-bindings:springwolf-kafka-binding")
 
     runtimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
     runtimeOnly project(":springwolf-add-ons:springwolf-json-schema")

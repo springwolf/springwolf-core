@@ -13,8 +13,9 @@ dependencyManagement {
 }
 
 dependencies {
-    api project(":springwolf-asyncapi")
     api project(":springwolf-core")
+    api project(":springwolf-bindings:springwolf-sns-binding")
+    permitUnusedDeclared project(":springwolf-bindings:springwolf-sns-binding")
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 

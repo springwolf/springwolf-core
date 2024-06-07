@@ -9,6 +9,8 @@ plugins {
 dependencies {
     api project(":springwolf-asyncapi")
     api project(":springwolf-core")
+    api project(":springwolf-bindings:springwolf-jms-binding")
+    permitUnusedDeclared project(":springwolf-bindings:springwolf-jms-binding")
 
     implementation "jakarta.jms:jakarta.jms-api"
 
