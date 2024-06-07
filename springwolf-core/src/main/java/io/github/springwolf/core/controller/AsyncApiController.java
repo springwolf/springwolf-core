@@ -22,8 +22,8 @@ public class AsyncApiController {
             path = {
                 "${springwolf.paths.docs:/springwolf/docs}",
                 "${springwolf.paths.docs:/springwolf/docs}.json",
-                "${springwolf.path.base:/springwolf}/${springwolf.path.docs:/docs}",
-                "${springwolf.path.base:/springwolf}/${springwolf.path.docs:/docs}.json"
+                "${springwolf.path.base:/springwolf}${springwolf.path.docs:/docs}",
+                "${springwolf.path.base:/springwolf}${springwolf.path.docs:/docs}.json"
             },
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String asyncApiJson() throws JsonProcessingException {
@@ -36,7 +36,7 @@ public class AsyncApiController {
     @GetMapping(
             path = {
                 "${springwolf.paths.docs:/springwolf/docs}.yaml",
-                "${springwolf.path.base:/springwolf}/${springwolf.path.docs:/docs}.yaml"
+                "${springwolf.path.base:/springwolf}${springwolf.path.docs:/docs}.yaml"
             },
             produces = "application/yaml")
     public String asyncApiYaml() throws JsonProcessingException {
