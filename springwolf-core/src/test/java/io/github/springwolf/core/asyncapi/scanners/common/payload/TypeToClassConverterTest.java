@@ -59,16 +59,6 @@ class TypeToClassConverterTest {
     }
 
     @Test
-    void getPayloadTypeWithMessageOfStringExtends() throws NoSuchMethodException {
-        Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfStringExtends", Message.class);
-
-        Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
-
-        // Unable to resolve optional<String>, fallback to root type Message
-        assertThat(result).isEqualTo(Message.class);
-    }
-
-    @Test
     void getPayloadTypeWithMessageOfListOfString() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfListOfString", Message.class);
 
@@ -94,6 +84,44 @@ class TypeToClassConverterTest {
         Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
 
         assertThat(result).isEqualTo(String.class);
+    }
+
+    @Test
+    void getPayloadTypeWithCustomMessageExtendsInterface() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessageExtendsInterface", List.class);
+
+        Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
+
+        assertThat(result).isEqualTo(TestClass.CustomMessage.class);
+    }
+
+    @Test
+    void getPayloadTypeWithCustomMessagePairExtendsInterface() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessagePairExtendsInterface", List.class);
+
+        Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
+
+        // payload is extracted from the second generic argument
+        assertThat(result).isEqualTo(Double.class);
+    }
+
+    @Test
+    void getPayloadTypeWithCustomMessageSuperInterface() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessageSuperInterface", List.class);
+
+        Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
+
+        assertThat(result).isEqualTo(TestClass.CustomMessage.class);
+    }
+
+    @Test
+    void getPayloadTypeWithCustomMessagePairSuperInterface() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessagePairSuperInterface", List.class);
+
+        Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
+
+        // payload is extracted from the second generic argument
+        assertThat(result).isEqualTo(Double.class);
     }
 
     @Test
@@ -123,13 +151,19 @@ class TypeToClassConverterTest {
 
         public void consumeWithMessageOfGenericClasses(Message<Collection<String>> value) {}
 
-        public void consumeWithMessageOfStringExtends(Message<? extends String> value) {}
-
         public void consumeWithMessageOfListOfString(Message<List<String>> value) {}
 
         public void consumeWithMessageOfCustomPair(Message<CustomPair<Integer, Double>> value) {}
 
         public void consumeWithMessageOfString(Message<String> value) {}
+
+        public void consumeWithCustomMessageExtendsInterface(List<? extends CustomMessage> value) {}
+
+        public void consumeWithCustomMessagePairExtendsInterface(List<? extends CustomPair<Integer, Double>> value) {}
+
+        public void consumeWithCustomMessageSuperInterface(List<? super CustomMessage> value) {}
+
+        public void consumeWithCustomMessagePairSuperInterface(List<? super CustomPair<Integer, Double>> value) {}
 
         public void consumeWithCustomType(MyType value) {}
 
@@ -140,6 +174,8 @@ class TypeToClassConverterTest {
         }
 
         public interface CustomPair<K, V> {}
+
+        public interface CustomMessage {}
     }
 
     private Type extractFrom(Method method) {

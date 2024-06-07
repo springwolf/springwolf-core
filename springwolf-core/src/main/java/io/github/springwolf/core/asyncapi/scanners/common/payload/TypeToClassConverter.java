@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
 import java.util.Map;
 
 @Slf4j
@@ -53,8 +54,21 @@ public class TypeToClassConverter {
             Integer index = extractableClassToArgumentIndex.get(typeName);
 
             type = ((ParameterizedType) type).getActualTypeArguments()[index];
-
             typeName = type.getTypeName();
+
+            if (type instanceof WildcardType) {
+                Type[] upperBounds = ((WildcardType) type).getUpperBounds();
+                Type[] lowerBounds = ((WildcardType) type).getLowerBounds();
+                if (upperBounds.length > 0 && upperBounds[0] != Object.class) {
+                    type = upperBounds[0];
+                    typeName = upperBounds[0].getTypeName();
+                }
+                if (lowerBounds.length > 0 && lowerBounds[0] != Object.class) {
+                    type = lowerBounds[0];
+                    typeName = lowerBounds[0].getTypeName();
+                }
+            }
+
             if (type instanceof ParameterizedType) {
                 typeName = ((ParameterizedType) type).getRawType().getTypeName();
             }
