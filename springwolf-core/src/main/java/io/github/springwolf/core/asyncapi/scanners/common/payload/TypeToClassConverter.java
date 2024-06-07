@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -23,37 +24,45 @@ public class TypeToClassConverter {
     }
 
     public Class<?> extractClass(Type parameterType) {
+        // this uses the error boundary pattern
         try {
-            if (parameterType instanceof ParameterizedType) {
-                Type rawParameterType = ((ParameterizedType) parameterType).getRawType();
-                String rawParameterTypeName = rawParameterType.getTypeName();
+            return extractClassUnsafe(parameterType);
+        } catch (Exception ex) {
+            log.debug("Unable to extract class for type {}", parameterType.getTypeName(), ex);
+        }
 
-                Class<?> actualPayloadClass =
-                        extractActualGenericClass((ParameterizedType) parameterType, rawParameterTypeName);
-                if (actualPayloadClass != Void.class) {
-                    return actualPayloadClass;
-                }
+        return Void.class;
+    }
 
-                // nested generic class - fallback to most outer container
-                return Class.forName(rawParameterTypeName);
+    public Class<?> extractClassUnsafe(Type parameterType) {
+        if (parameterType instanceof ParameterizedType parameterTypeParameterized) {
+            Type rawParameterType = parameterTypeParameterized.getRawType();
+
+            Class<?> actualPayloadClass =
+                    extractActualGenericClass(parameterTypeParameterized, rawParameterType.getTypeName());
+            if (actualPayloadClass != Void.class) {
+                return actualPayloadClass;
             }
 
-            // no generics used - just a normal type
-            return Class.forName(parameterType.getTypeName());
-        } catch (Exception ex) {
-            log.info("Unable to extract generic data type of {}", parameterType, ex);
+            // nested generic class - fallback to most outer container
+            String typeName = getTypeName(rawParameterType, rawParameterType.getTypeName());
+            return loadClass(typeName);
         }
-        return Void.class;
+
+        // no generics used - just a normal type
+        String typeName = getTypeName(parameterType, parameterType.getTypeName());
+        return loadClass(typeName);
     }
 
     private Class<?> extractActualGenericClass(ParameterizedType parameterType, String rawParameterTypeName) {
         Type type = parameterType;
         String typeName = rawParameterTypeName;
 
-        while (type instanceof ParameterizedType && extractableClassToArgumentIndex.containsKey(typeName)) {
+        while (type instanceof ParameterizedType typeParameterized
+                && extractableClassToArgumentIndex.containsKey(typeName)) {
             Integer index = extractableClassToArgumentIndex.get(typeName);
 
-            type = ((ParameterizedType) type).getActualTypeArguments()[index];
+            type = typeParameterized.getActualTypeArguments()[index];
             typeName = type.getTypeName();
 
             if (type instanceof WildcardType) {
@@ -72,14 +81,62 @@ public class TypeToClassConverter {
             if (type instanceof ParameterizedType) {
                 typeName = ((ParameterizedType) type).getRawType().getTypeName();
             }
+
+            typeName = getTypeName(type, typeName);
         }
 
+        return loadClass(typeName);
+    }
+
+    private Class<?> loadClass(String typeName) {
         try {
-            return Class.forName(typeName);
+            return ClassForNameUtil.forName(typeName);
         } catch (ClassNotFoundException ex) {
-            log.debug("Unable to find class for type {}", typeName, ex);
+            log.debug("Unable to load class for type {}", typeName, ex);
         }
 
         return Void.class;
+    }
+
+    private String getTypeName(Type type, String fallback) {
+        if (type instanceof Class && ((Class<?>) type).getComponentType() != null) {
+            return ((Class<?>) type).componentType().getTypeName();
+        }
+        return fallback;
+    }
+
+    public static final class ClassForNameUtil {
+        private ClassForNameUtil() {}
+
+        private static final Map<String, Class<?>> PRIMITIVE_CLASSES;
+
+        static {
+            Class<?>[] classes = {
+                void.class,
+                boolean.class,
+                char.class,
+                byte.class,
+                short.class,
+                int.class,
+                long.class,
+                float.class,
+                double.class
+            };
+
+            PRIMITIVE_CLASSES = new HashMap<>();
+            for (Class<?> cls : classes) {
+                PRIMITIVE_CLASSES.put(cls.getName(), cls);
+            }
+        }
+
+        public static Class<?> forName(final String name) throws ClassNotFoundException {
+            Class<?> clazz = PRIMITIVE_CLASSES.get(name);
+
+            if (clazz != null) {
+                return clazz;
+            }
+
+            return Class.forName(name);
+        }
     }
 }

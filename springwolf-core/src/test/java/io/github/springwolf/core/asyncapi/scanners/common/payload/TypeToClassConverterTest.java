@@ -125,6 +125,33 @@ class TypeToClassConverterTest {
     }
 
     @Test
+    void getPayloadTypeWithPrimitive() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithPrimitive", int.class);
+
+        Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
+
+        assertThat(result).isEqualTo(int.class);
+    }
+
+    @Test
+    void getPayloadTypeWithPrimitiveArray() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithPrimitiveArray", int[].class);
+
+        Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
+
+        assertThat(result).isEqualTo(int.class);
+    }
+
+    @Test
+    void getPayloadTypeWithListOfPrimitiveArray() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithCollectionOfPrimitiveArray", List.class);
+
+        Class<?> result = typeToClassConverter.extractClass(extractFrom(m));
+
+        assertThat(result).isEqualTo(int.class);
+    }
+
+    @Test
     void getPayloadTypeWithCustomType() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomType", TestClass.MyType.class);
 
@@ -164,6 +191,12 @@ class TypeToClassConverterTest {
         public void consumeWithCustomMessageSuperInterface(List<? super CustomMessage> value) {}
 
         public void consumeWithCustomMessagePairSuperInterface(List<? super CustomPair<Integer, Double>> value) {}
+
+        public void consumeWithPrimitive(int value) {}
+
+        public void consumeWithPrimitiveArray(int[] value) {}
+
+        public void consumeWithCollectionOfPrimitiveArray(List<int[]> value) {}
 
         public void consumeWithCustomType(MyType value) {}
 
