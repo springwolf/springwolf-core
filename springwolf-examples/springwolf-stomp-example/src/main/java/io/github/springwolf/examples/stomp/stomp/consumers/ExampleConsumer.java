@@ -11,23 +11,22 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.EXAMPLE_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTOUSER_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTOUSER_RESPONSE_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTO_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTO_RESPONSE_QUEUE;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
 public class ExampleConsumer {
-    private final String QUEUE = "/queue/example-queue";
-
-    private final String SENDTO_QUEUE = "/queue/sendto-queue";
-    private final String SENDTO_RESPONSE_QUEUE = "/topic/sendto-response-queue";
-
-    private final String SENDTOUSER_QUEUE = "/queue/sendtouser-queue";
-    private final String SENDTOUSER_RESPONSE_QUEUE = "/queue/sendtouser-response-queue";
 
     private final AnotherProducer anotherProducer;
 
-    @MessageMapping(QUEUE)
+    @MessageMapping(EXAMPLE_QUEUE)
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in {}: {}", QUEUE, payload.toString());
+        log.info("Received new message in {}: {}", EXAMPLE_QUEUE, payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);

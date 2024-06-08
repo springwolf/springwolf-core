@@ -17,6 +17,15 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.ANOTHER_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.EXAMPLE_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTOUSER_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTOUSER_RESPONSE_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTO_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTO_RESPONSE_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.WEBSOCKET_ENDPOINT;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.WEBSOCKET_PREFIX_APP;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.WEBSOCKET_PREFIX_USER;
 import static io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,7 +42,7 @@ public class SpringwolfStompExampleResponseIntegrationTest {
 
     @BeforeEach
     void setup() {
-        wsPath = String.format("ws://localhost:%d/myendpoint", port);
+        wsPath = String.format("ws://localhost:%d/%s", port, WEBSOCKET_ENDPOINT);
         webSocketStompClient = new WebSocketStompClient(
                 new SockJsClient(List.of(new WebSocketTransport(new StandardWebSocketClient()))));
 
@@ -45,11 +54,11 @@ public class SpringwolfStompExampleResponseIntegrationTest {
     @Test
     void publishWithAnotherProducerTest() throws ExecutionException, InterruptedException, TimeoutException {
         // given
-        BaseStompUtil<AnotherPayloadDto> stompTestUtil = new BaseStompUtil<>(
-                webSocketStompClient, wsPath, List.of("/queue/another-queue"), AnotherPayloadDto.class);
+        BaseStompUtil<AnotherPayloadDto> stompTestUtil =
+                new BaseStompUtil<>(webSocketStompClient, wsPath, List.of(ANOTHER_QUEUE), AnotherPayloadDto.class);
 
         // when
-        stompTestUtil.send("/app/queue/example-queue", payload);
+        stompTestUtil.send(WEBSOCKET_PREFIX_APP + EXAMPLE_QUEUE, payload);
 
         // then
         AnotherPayloadDto response = stompTestUtil.getMessage();
@@ -60,10 +69,10 @@ public class SpringwolfStompExampleResponseIntegrationTest {
     void publishWithSendTo() throws ExecutionException, InterruptedException, TimeoutException {
         // given
         BaseStompUtil<ExamplePayloadDto> stompTestUtil = new BaseStompUtil<>(
-                webSocketStompClient, wsPath, List.of("/topic/sendto-response-queue"), ExamplePayloadDto.class);
+                webSocketStompClient, wsPath, List.of(SENDTO_RESPONSE_QUEUE), ExamplePayloadDto.class);
 
         // when
-        stompTestUtil.send("/app/queue/sendto-queue", payload);
+        stompTestUtil.send(WEBSOCKET_PREFIX_APP + SENDTO_QUEUE, payload);
 
         // then
         ExamplePayloadDto response = stompTestUtil.getMessage();
@@ -76,11 +85,11 @@ public class SpringwolfStompExampleResponseIntegrationTest {
         BaseStompUtil<ExamplePayloadDto> stompTestUtil = new BaseStompUtil<>(
                 webSocketStompClient,
                 wsPath,
-                List.of("/user/queue/sendtouser-response-queue"),
+                List.of(WEBSOCKET_PREFIX_USER + SENDTOUSER_RESPONSE_QUEUE),
                 ExamplePayloadDto.class);
 
         // when
-        stompTestUtil.send("/app/queue/sendtouser-queue", payload);
+        stompTestUtil.send(WEBSOCKET_PREFIX_APP + SENDTOUSER_QUEUE, payload);
 
         // then
         ExamplePayloadDto response = stompTestUtil.getMessage();

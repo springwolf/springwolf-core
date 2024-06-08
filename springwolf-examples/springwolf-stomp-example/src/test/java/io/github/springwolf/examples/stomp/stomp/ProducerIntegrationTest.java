@@ -14,15 +14,13 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
-import org.testcontainers.containers.DockerComposeContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.ANOTHER_QUEUE;
+import static io.github.springwolf.examples.stomp.stomp.config.Constants.WEBSOCKET_ENDPOINT;
 import static io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,18 +31,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(
         classes = {SpringwolfStompExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Testcontainers
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ProducerSystemTest {
+public class ProducerIntegrationTest {
 
     //    @Autowired
     //    SpringwolfStompProducer springwolfStompProducer; // TODO:
 
     @SpyBean
     ExampleConsumer exampleConsumer;
-
-    @Container
-    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"));
 
     @LocalServerPort
     private int port;
@@ -56,7 +50,7 @@ public class ProducerSystemTest {
 
     @BeforeEach
     void setup() {
-        wsPath = String.format("ws://localhost:%d/myendpoint", port);
+        wsPath = String.format("ws://localhost:%d/%s", port, WEBSOCKET_ENDPOINT);
         webSocketStompClient = new WebSocketStompClient(
                 new SockJsClient(List.of(new WebSocketTransport(new StandardWebSocketClient()))));
 
@@ -69,8 +63,8 @@ public class ProducerSystemTest {
     void producerCanUseSpringwolfConfigurationToSendMessage()
             throws ExecutionException, InterruptedException, TimeoutException {
         // given
-        BaseStompUtil<AnotherPayloadDto> stompTestUtil = new BaseStompUtil<>(
-                webSocketStompClient, wsPath, List.of("/queue/another-queue"), AnotherPayloadDto.class);
+        BaseStompUtil<AnotherPayloadDto> stompTestUtil =
+                new BaseStompUtil<>(webSocketStompClient, wsPath, List.of(ANOTHER_QUEUE), AnotherPayloadDto.class);
 
         // when
         //        springwolfStompProducer.send("example-queue", payload); // TODO:
