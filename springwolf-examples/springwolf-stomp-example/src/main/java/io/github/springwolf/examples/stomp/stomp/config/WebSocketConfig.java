@@ -1,4 +1,5 @@
-package io.github.stavshamir.springwolf.example.stomp.config;
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.examples.stomp.stomp.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

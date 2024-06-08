@@ -1,8 +1,9 @@
-package io.github.stavshamir.springwolf.example.stomp;
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.examples.stomp.stomp;
 
-import io.github.stavshamir.springwolf.example.stomp.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.example.stomp.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.example.stomp.util.BaseStompUtil;
+import io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.stomp.stomp.util.BaseStompUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import static io.github.stavshamir.springwolf.example.stomp.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
+import static io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

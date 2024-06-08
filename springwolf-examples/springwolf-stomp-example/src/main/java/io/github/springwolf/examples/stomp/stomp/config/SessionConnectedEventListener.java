@@ -1,4 +1,5 @@
-package io.github.stavshamir.springwolf.example.stomp.config;
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.examples.stomp.stomp.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -14,13 +15,16 @@ public class SessionConnectedEventListener implements ApplicationListener<Sessio
     @Override
     public void onApplicationEvent(SessionConnectedEvent sessionConnectedEvent) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(sessionConnectedEvent.getMessage());
-        log.debug("Client connected with session id: " + headerAccessor.getSessionId() + " and username: "
-                + sessionConnectedEvent.getUser().getName());
+        log.debug(
+                "Client connected with session id: {} and username: {}",
+                headerAccessor.getSessionId(),
+                sessionConnectedEvent.getUser().getName());
     }
 
     @EventListener
     public void onSessoinDisconnect(SessionDisconnectEvent sessionDisconnectEvent) {
-        log.debug("Client disconnected with username: "
-                + sessionDisconnectEvent.getUser().getName());
+        log.debug(
+                "Client disconnected with username: {}",
+                sessionDisconnectEvent.getUser().getName());
     }
 }

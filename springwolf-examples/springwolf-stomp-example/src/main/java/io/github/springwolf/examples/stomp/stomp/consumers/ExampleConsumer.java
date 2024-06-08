@@ -1,8 +1,9 @@
-package io.github.stavshamir.springwolf.example.stomp.consumers;
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.examples.stomp.stomp.consumers;
 
-import io.github.stavshamir.springwolf.example.stomp.dtos.AnotherPayloadDto;
-import io.github.stavshamir.springwolf.example.stomp.dtos.ExamplePayloadDto;
-import io.github.stavshamir.springwolf.example.stomp.producers.AnotherProducer;
+import io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.stomp.stomp.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;

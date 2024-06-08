@@ -1,4 +1,5 @@
-package io.github.stavshamir.springwolf.example.stomp.dtos;
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.examples.stomp.stomp.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

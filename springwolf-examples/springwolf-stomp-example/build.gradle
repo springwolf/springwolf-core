@@ -5,7 +5,7 @@ plugins {
     id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
 
-    id 'com.bmuschko.docker-spring-boot-application' version '9.3.2'
+    id 'com.bmuschko.docker-spring-boot-application'
 }
 
 dependencies {
@@ -18,6 +18,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-websocket" // TODO: move to plugin
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}" // TODO: move to plugin
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}" // TODO: move to plugin
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor" // TODO: move to plugin
 
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
@@ -31,8 +32,6 @@ dependencies {
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 
-    testImplementation "com.vaadin.external.google:android-json:${androidJsonVersion}"
-
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
@@ -44,6 +43,9 @@ dependencies {
 
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
 docker {
@@ -62,11 +64,4 @@ docker {
 
 test {
     dependsOn dockerBuildImage
-    dependsOn spotlessApply // Automatically fix code formatting if possible
-
-    useJUnitPlatform()
-
-    testLogging {
-        exceptionFormat = 'full'
-    }
 }
