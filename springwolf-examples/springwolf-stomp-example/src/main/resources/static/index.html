@@ -7,6 +7,7 @@
   <meta content="" name="author">
 
   <title>Springwolf example project - STOMP</title>
+  <link rel="stylesheet" href="bootstrap.min.css" />
 </head>
 <body>
 
@@ -33,7 +34,8 @@
       });
 
       stompClient.subscribe("/user/queue/sendtouser-response-queue", function(messageOutput) {
-        showSendToUserMessageOutput(messageOutput.body);
+        const data = JSON.parse(messageOutput.body);
+        showSendToUserMessageOutput(data);
       });
 
       sendMessage();
@@ -72,23 +74,27 @@
 
 
 <!-- Page Content -->
-<div class="container">
-  <h1 class="mt-5">Username: <span id="username"></span></h1>
+<div class="container-fluid">
+  <h1>Springwolf STOMP demo</h1>
+  <h2 class="mt-5">Username: <span id="username"></span></h2>
   <div class="row">
     <div class="col-lg-12 text-center">
       <h1 class="mt-5">Chat (via producer)</h1>
-      <textarea id="chat-message">initial message</textarea>
+      <textarea id="chat-message">initial message send at startup</textarea>
       <button onclick="sendMessage()">send message</button>
-      <div class="card-header" id="server-comm"></div>
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-6 text-center">
-      <h1 class="mt-5">SendTo notifications (chat)</h1>
+    <div class="col-lg-4 text-center">
+      <h3 class="mt-5">/queue/another-queue (all messages)</h3>
+      <div class="card-header" id="server-comm"></div>
+    </div>
+    <div class="col-lg-4 text-center">
+      <h3 class="mt-5">/topic/sendto-response-queue (all messages)</h3>
       <div class="card-header" id="server-comm-sendTo"></div>
     </div>
-    <div class="col-lg-6 text-center">
-      <h1 class="mt-5">SendToUser notifications (your messages only)</h1>
+    <div class="col-lg-4 text-center">
+      <h3 class="mt-5">/user/queue/sendtouser-response-queue (your messages only)</h3>
       <div class="card-header" id="server-comm-sendToUser"></div>
     </div>
   </div>

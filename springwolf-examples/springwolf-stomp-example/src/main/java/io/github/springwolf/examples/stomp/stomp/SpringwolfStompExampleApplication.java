@@ -3,7 +3,7 @@ package io.github.springwolf.examples.stomp.stomp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.task.TaskExecutorBuilder;
+import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.TaskExecutor;
@@ -15,7 +15,7 @@ public class SpringwolfStompExampleApplication {
     @Bean
     @Primary
     public TaskExecutor primaryTaskExecutor() {
-        return new TaskExecutorBuilder().build();
+        return new ThreadPoolTaskExecutorBuilder().build();
     }
 
     public static void main(String[] args) {
