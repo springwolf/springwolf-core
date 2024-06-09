@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
+import java.util.List;
+
 import static io.github.springwolf.plugins.sqs.configuration.properties.SpringwolfSqsConfigConstants.SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED;
 
 /**
@@ -67,6 +69,7 @@ public class SpringwolfSqsScannerConfiguration {
                         SqsListener.class,
                         sqsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
+                        List.of(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);

@@ -17,6 +17,8 @@ import io.github.springwolf.plugins.stomp.asyncapi.scanners.bindings.StompBindin
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.bindings.StompBindingSendToFactory;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.bindings.StompBindingSendToUserFactory;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.common.header.AsyncHeadersForStompBuilder;
+import io.github.springwolf.plugins.stomp.asyncapi.scanners.operation.annotations.SendToCustomizer;
+import io.github.springwolf.plugins.stomp.asyncapi.scanners.operation.annotations.SendToUserCustomizer;
 import io.github.springwolf.plugins.stomp.configuration.properties.SpringwolfStompConfigProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.SendToUser;
+
+import java.util.List;
 
 import static io.github.springwolf.plugins.stomp.configuration.properties.SpringwolfStompConfigConstants.SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED;
 import static io.github.springwolf.plugins.stomp.configuration.properties.SpringwolfStompConfigConstants.SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED;
@@ -68,6 +72,23 @@ public class SpringwolfStompScannerConfiguration {
             matchIfMissing = true)
     public AsyncHeadersForStompBuilder stompAsyncHeadersBuilder() {
         return new AsyncHeadersForStompBuilder();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED, havingValue = "true", matchIfMissing = true)
+    public SendToCustomizer sendToCustomizer(
+            StompBindingSendToFactory bindingFactory, PayloadMethodReturnService payloadService) {
+        return new SendToCustomizer(bindingFactory, payloadService);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_USER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    public SendToUserCustomizer sendToUserCustomizer(
+            StompBindingSendToUserFactory bindingFactory, PayloadMethodReturnService payloadService) {
+        return new SendToUserCustomizer(bindingFactory, payloadService);
     }
 
     @Bean
@@ -152,12 +173,15 @@ public class SpringwolfStompScannerConfiguration {
             StompBindingMessageMappingFactory stompBindingBuilder,
             AsyncHeadersForStompBuilder asyncHeadersForStompBuilder,
             PayloadMethodParameterService payloadService,
-            ComponentsService componentsService) {
+            ComponentsService componentsService,
+            SendToCustomizer sendToCustomizer,
+            SendToUserCustomizer sendToUserCustomizer) {
         SpringAnnotationMethodLevelOperationsScanner<MessageMapping> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         MessageMapping.class,
                         stompBindingBuilder,
                         asyncHeadersForStompBuilder,
+                        List.of(sendToCustomizer, sendToUserCustomizer),
                         payloadService,
                         componentsService);
 

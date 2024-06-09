@@ -147,6 +147,7 @@ public class SpringwolfAmqpScannerConfiguration {
                         RabbitListener.class,
                         amqpBindingBuilder,
                         asyncHeadersForAmqpBuilder,
+                        List.of(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);

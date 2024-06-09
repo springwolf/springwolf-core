@@ -252,7 +252,17 @@
         {
           "$ref": "#/channels/_app_queue_sendto-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
         }
-      ]
+      ],
+      "reply": {
+        "channel": {
+          "$ref": "#/channels/_app_topic_sendto-response-queue"
+        },
+        "messages": [
+          {
+            "$ref": "#/channels/_app_topic_sendto-response-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
+          }
+        ]
+      }
     },
     "_app_queue_sendtouser-queue_receive_receiveExamplePayloadSendToUser": {
       "action": "receive",
@@ -266,7 +276,17 @@
         {
           "$ref": "#/channels/_app_queue_sendtouser-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
         }
-      ]
+      ],
+      "reply": {
+        "channel": {
+          "$ref": "#/channels/_user_queue_sendtouser-response-queue"
+        },
+        "messages": [
+          {
+            "$ref": "#/channels/_user_queue_sendtouser-response-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
+          }
+        ]
+      }
     }
   }
 }

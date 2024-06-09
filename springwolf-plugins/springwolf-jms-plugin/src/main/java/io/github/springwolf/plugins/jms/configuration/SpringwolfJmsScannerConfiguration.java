@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.jms.annotation.JmsListener;
 
+import java.util.List;
+
 import static io.github.springwolf.plugins.jms.configuration.properties.SpringwolfJmsConfigConstants.SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED;
 
 /**
@@ -67,6 +69,7 @@ public class SpringwolfJmsScannerConfiguration {
                         JmsListener.class,
                         jmsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
+                        List.of(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);

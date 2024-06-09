@@ -15,11 +15,7 @@ import org.springframework.lang.Nullable;
 @Setter
 public class SpringwolfStompConfigProperties {
 
-    @Nullable
     private Endpoint endpoint = new Endpoint();
-
-    @Nullable
-    private Publishing publishing;
 
     @Nullable
     private Scanner scanner;
@@ -34,19 +30,11 @@ public class SpringwolfStompConfigProperties {
 
     @Getter
     @Setter
-    public static class Publishing {
-
-        /**
-         * Enables/Disables the possibility to publish messages through springwolf on the configured stomp instance.
-         */
-        private boolean enabled = false;
-    }
-
-    @Getter
-    @Setter
     public static class Scanner {
 
         private static StompMessageMapping stompMessageMapping;
+        private static StompSendTo stompSendTo;
+        private static StompSendToUser stompSendToUser;
 
         @Getter
         @Setter
@@ -54,6 +42,26 @@ public class SpringwolfStompConfigProperties {
 
             /**
              * This mirrors the ConfigConstant {@see SpringwolfStompConfigConstants#SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED}
+             */
+            private boolean enabled = true;
+        }
+
+        @Getter
+        @Setter
+        public static class StompSendTo {
+
+            /**
+             * This mirrors the ConfigConstant {@see SpringwolfStompConfigConstants#SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED}
+             */
+            private boolean enabled = true;
+        }
+
+        @Getter
+        @Setter
+        public static class StompSendToUser {
+
+            /**
+             * This mirrors the ConfigConstant {@see SpringwolfStompConfigConstants#SPRINGWOLF_SCANNER_STOMP_SEND_TO_USER_ENABLED}
              */
             private boolean enabled = true;
         }
