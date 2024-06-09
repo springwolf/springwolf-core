@@ -10,18 +10,17 @@ plugins {
 
 dependencies {
     implementation project(":springwolf-core")
-//    implementation project(":springwolf-plugins:springwolf-stomp")
-
-//    annotationProcessor project(":springwolf-plugins:springwolf-stomp")
+    implementation project(":springwolf-plugins:springwolf-stomp")
+    annotationProcessor project(":springwolf-plugins:springwolf-stomp")
     runtimeOnly project(":springwolf-ui")
 
-    implementation "org.springframework.boot:spring-boot-starter-websocket" // TODO: move to plugin
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}" // TODO: move to plugin
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}" // TODO: move to plugin
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor" // TODO: move to plugin
-
+    implementation "org.springframework.boot:spring-boot-starter-websocket"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
@@ -29,6 +28,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-messaging"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 

@@ -6,6 +6,7 @@ import io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto;
 import io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto;
 import io.github.springwolf.examples.stomp.stomp.util.BaseStompUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         classes = {SpringwolfStompExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
+@Disabled("SpringwolfStompProducer has not been implemented yet.")
 public class ProducerIntegrationTest {
 
     //    @Autowired

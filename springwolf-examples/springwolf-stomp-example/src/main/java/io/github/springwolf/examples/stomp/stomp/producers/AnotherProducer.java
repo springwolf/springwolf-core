@@ -20,7 +20,7 @@ public class AnotherProducer {
     @AsyncPublisher(
             operation =
                     @AsyncOperation(
-                            channelName = ANOTHER_QUEUE,
+                            channelName = "/app" + ANOTHER_QUEUE,
                             description = "Custom, optional description defined in the AsyncPublisher annotation"))
     //    @StompAsyncOperationBinding // TODO:
     public void sendMessage(AnotherPayloadDto msg) {

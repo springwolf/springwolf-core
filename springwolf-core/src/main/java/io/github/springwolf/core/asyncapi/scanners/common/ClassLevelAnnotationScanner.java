@@ -48,6 +48,11 @@ public abstract class ClassLevelAnnotationScanner<
         CHANNEL,
         OPERATION
     }
+    /**
+     * Internal interface to indicate that all methods of a class should be used in scanners
+     * instead of filtering for a specific annotation.
+     */
+    public @interface AllMethods {}
 
     protected boolean isClassAnnotated(Class<?> component) {
         return AnnotationScannerUtil.findAnnotation(classAnnotationClass, component) != null;
@@ -60,9 +65,14 @@ public abstract class ClassLevelAnnotationScanner<
                 methodAnnotationClass.getName());
 
         return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(AnnotationScannerUtil::isMethodInSourceCode)
-                .filter(method -> AnnotationScannerUtil.findAnnotation(methodAnnotationClass, method) != null)
+                .filter(this::isRelevantMethod)
                 .collect(toSet());
+    }
+
+    private boolean isRelevantMethod(Method method) {
+        return AnnotationScannerUtil.isMethodInSourceCode(method)
+                && (methodAnnotationClass == AllMethods.class
+                        || AnnotationScannerUtil.findAnnotation(methodAnnotationClass, method) != null);
     }
 
     protected Map<String, MessageReference> buildMessages(

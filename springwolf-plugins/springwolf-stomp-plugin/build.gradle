@@ -1,0 +1,76 @@
+plugins {
+    id 'java-library'
+
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
+}
+
+dependencies {
+    api project(":springwolf-asyncapi")
+    api project(":springwolf-core")
+//    api project(":springwolf-bindings:springwolf-stomp-binding")
+//    permitUnusedDeclared project(":springwolf-bindings:springwolf-stomp-binding")
+
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+    permitUnusedDeclared "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+
+    implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-core"
+    implementation "org.springframework:spring-messaging"
+    implementation "org.springframework:spring-web"
+
+    implementation "org.springframework.boot:spring-boot"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.springframework.boot:spring-boot-starter-websocket"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
+    permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testRuntimeOnly "org.springframework.boot:spring-boot-starter-web"
+
+    testImplementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-test-autoconfigure"
+    testImplementation "org.springframework.boot:spring-boot-test"
+
+    testImplementation "org.springframework:spring-beans"
+    testImplementation "org.springframework:spring-test"
+
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+}
+
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+bootJar.enabled = false
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'springwolf-stomp'
+                description = 'Automated JSON API documentation for STOMP listeners (websocket) built with Spring'
+            }
+        }
+    }
+}
