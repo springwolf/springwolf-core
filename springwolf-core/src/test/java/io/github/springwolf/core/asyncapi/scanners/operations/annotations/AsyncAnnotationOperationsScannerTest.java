@@ -24,9 +24,10 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestOperat
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
@@ -87,9 +88,9 @@ class AsyncAnnotationOperationsScannerTest {
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
     private final TypeToClassConverter typeToClassConverter = new TypeToClassConverter(properties);
     private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(typeToClassConverter);
-
-    private final PayloadService payloadService =
-            new PayloadService(payloadClassExtractor, componentsService, properties);
+    private final PayloadService payloadService = new PayloadService(componentsService, properties);
+    private final PayloadAsyncOperationService payloadAsyncOperationService =
+            new PayloadAsyncOperationService(payloadClassExtractor, payloadService);
 
     private final List<OperationBindingProcessor> operationBindingProcessors =
             List.of(new TestOperationBindingProcessor());
@@ -103,7 +104,7 @@ class AsyncAnnotationOperationsScannerTest {
                     classScanner,
                     componentsService,
                     payloadClassExtractor,
-                    payloadService,
+                    payloadAsyncOperationService,
                     operationBindingProcessors,
                     messageBindingProcessors);
 

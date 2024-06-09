@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common.payload;
+package io.github.springwolf.core.asyncapi.scanners.common.payload.internal;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.extern.slf4j.Slf4j;
