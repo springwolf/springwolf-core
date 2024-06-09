@@ -76,7 +76,7 @@ class OperationMergerTest {
     @Test
     void shouldMergeDifferentMessageForSameOperation() {
         // given
-        String channelName = "channel";
+        String channelId = "channel";
         String operationId = "operation";
         MessageObject message1 = MessageObject.builder()
                 .name(String.class.getCanonicalName())
@@ -90,9 +90,9 @@ class OperationMergerTest {
                 .name(Integer.class.getCanonicalName())
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
-        MessageReference messageRef1 = MessageReference.toChannelMessage(channelName, message1);
-        MessageReference messageRef2 = MessageReference.toChannelMessage(channelName, message2);
-        MessageReference messageRef3 = MessageReference.toChannelMessage(channelName, message3);
+        MessageReference messageRef1 = MessageReference.toChannelMessage(channelId, message1);
+        MessageReference messageRef2 = MessageReference.toChannelMessage(channelId, message2);
+        MessageReference messageRef3 = MessageReference.toChannelMessage(channelId, message3);
 
         Operation senderOperation1 = Operation.builder()
                 .action(OperationAction.SEND)
@@ -126,7 +126,7 @@ class OperationMergerTest {
     @Test
     void shouldUseOtherMessageIfFirstMessageIsMissingForChannels() {
         // given
-        String channelName = "channel";
+        String channelId = "channel";
         MessageObject message2 = MessageObject.builder()
                 .messageId(String.class.getCanonicalName())
                 .name(String.class.getCanonicalName())
@@ -139,12 +139,12 @@ class OperationMergerTest {
 
         // when
         Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelName, publisherChannel1), Map.entry(channelName, publisherChannel2)));
+                Arrays.asList(Map.entry(channelId, publisherChannel1), Map.entry(channelId, publisherChannel2)));
 
         // then expectedMessage message2
         var expectedMessages = Map.of(message2.getMessageId(), message2);
 
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
+        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> {
             assertThat(it.getMessages()).hasSize(1);
             assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages);
         });
@@ -153,7 +153,7 @@ class OperationMergerTest {
     @Test
     void shouldUseOtherMessageIfFirstMessageIsMissingForOperations() {
         // given
-        String channelName = "channel-name";
+        String channelId = "channel-name-id";
         MessageObject message2 = MessageObject.builder()
                 .messageId(String.class.getCanonicalName())
                 .name(String.class.getCanonicalName())
@@ -166,14 +166,14 @@ class OperationMergerTest {
         Operation publishOperation2 = Operation.builder()
                 .action(OperationAction.SEND)
                 .title("publisher2")
-                .messages(List.of(MessageReference.toChannelMessage(channelName, message2)))
+                .messages(List.of(MessageReference.toChannelMessage(channelId, message2)))
                 .build();
 
         // when
         Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(
                 Arrays.asList(Map.entry("publisher1", publishOperation1), Map.entry("publisher1", publishOperation2)));
         // then expectedMessage message2
-        var expectedMessage = MessageReference.toChannelMessage(channelName, message2);
+        var expectedMessage = MessageReference.toChannelMessage(channelId, message2);
 
         assertThat(mergedOperations).hasSize(1).hasEntrySatisfying("publisher1", it -> {
             assertThat(it.getMessages()).hasSize(1);

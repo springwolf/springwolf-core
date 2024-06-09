@@ -23,6 +23,7 @@
   },
   "channels": {
     "another-topic": {
+      "address": "another-topic",
       "messages": {
         "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
@@ -30,6 +31,7 @@
       }
     },
     "example-topic": {
+      "address": "example-topic",
       "messages": {
         "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.sns.dtos.ExamplePayloadDto"

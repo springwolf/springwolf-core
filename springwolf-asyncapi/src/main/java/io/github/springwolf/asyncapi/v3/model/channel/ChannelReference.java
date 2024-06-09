@@ -21,7 +21,11 @@ public class ChannelReference implements Channel, Reference {
         return ref;
     }
 
-    public static ChannelReference fromChannel(String channelName) {
-        return new ChannelReference("#/channels/" + channelName);
+    public static ChannelReference fromChannel(ChannelObject channel) {
+        return new ChannelReference("#/channels/" + channel.getChannelId());
+    }
+
+    public static ChannelReference fromChannel(String channelId) {
+        return new ChannelReference("#/channels/" + channelId);
     }
 }

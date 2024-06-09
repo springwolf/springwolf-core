@@ -72,14 +72,14 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     }
 
     private Map.Entry<String, ChannelObject> toChannelEntry(FunctionalChannelBeanData beanData) {
-        String channelName = cloudStreamBindingsProperties
+        String channelId = cloudStreamBindingsProperties
                 .getBindings()
                 .get(beanData.cloudStreamBinding())
                 .getDestination();
 
         ChannelObject channelItem = buildChannel(beanData);
 
-        return Map.entry(channelName, channelItem);
+        return Map.entry(channelId, channelItem);
     }
 
     private ChannelObject buildChannel(FunctionalChannelBeanData beanData) {

@@ -67,18 +67,18 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     }
 
     private Map.Entry<String, Operation> toOperationEntry(FunctionalChannelBeanData beanData) {
-        String channelName = cloudStreamBindingsProperties
+        String channelId = cloudStreamBindingsProperties
                 .getBindings()
                 .get(beanData.cloudStreamBinding())
                 .getDestination();
 
-        String operationId = buildOperationId(beanData, channelName);
-        Operation operation = buildOperation(beanData, channelName);
+        String operationId = buildOperationId(beanData, channelId);
+        Operation operation = buildOperation(beanData, channelId);
 
         return Map.entry(operationId, operation);
     }
 
-    private Operation buildOperation(FunctionalChannelBeanData beanData, String channelName) {
+    private Operation buildOperation(FunctionalChannelBeanData beanData, String channelId) {
         Class<?> payloadType = beanData.payloadType();
         String modelName = payloadService.buildSchema(payloadType).name();
         String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
@@ -93,8 +93,8 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
 
         var builder = Operation.builder()
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(channelName))
-                .messages(List.of(MessageReference.toChannelMessage(channelName, message)))
+                .channel(ChannelReference.fromChannel(channelId))
+                .messages(List.of(MessageReference.toChannelMessage(channelId, message)))
                 .bindings(buildOperationBinding());
         if (beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER) {
             builder.action(OperationAction.RECEIVE);
@@ -132,10 +132,10 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                         new IllegalStateException("There must be at least one server define in the AsyncApiDocker"));
     }
 
-    private String buildOperationId(FunctionalChannelBeanData beanData, String channelName) {
+    private String buildOperationId(FunctionalChannelBeanData beanData, String channelId) {
         String operationName =
                 beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
 
-        return String.format("%s_%s_%s", channelName, operationName, beanData.elementName());
+        return String.format("%s_%s_%s", channelId, operationName, beanData.elementName());
     }
 }

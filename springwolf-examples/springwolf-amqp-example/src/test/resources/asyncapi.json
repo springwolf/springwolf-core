@@ -26,6 +26,7 @@
   },
   "channels": {
     "another-queue": {
+      "address": "another-queue",
       "messages": {
         "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
@@ -46,6 +47,7 @@
       }
     },
     "example-queue": {
+      "address": "example-queue",
       "messages": {
         "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
@@ -66,6 +68,7 @@
       }
     },
     "example-topic-exchange": {
+      "address": "example-topic-exchange",
       "messages": {
         "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
@@ -73,6 +76,7 @@
       }
     },
     "example-topic-routing-key": {
+      "address": "example-topic-routing-key",
       "messages": {
         "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
@@ -93,6 +97,7 @@
       }
     },
     "multi-payload-queue": {
+      "address": "multi-payload-queue",
       "messages": {
         "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"

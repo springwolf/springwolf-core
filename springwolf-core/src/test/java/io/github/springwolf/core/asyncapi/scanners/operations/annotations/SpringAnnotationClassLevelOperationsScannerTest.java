@@ -56,7 +56,7 @@ class SpringAnnotationClassLevelOperationsScannerTest {
                     headerClassExtractor,
                     componentsService);
 
-    private static final String CHANNEL = "test-channel";
+    private static final String CHANNEL_ID = "test-channel-id";
     private static final Map<String, OperationBinding> defaultOperationBinding =
             Map.of("protocol", new AMQPOperationBinding());
     private static final Map<String, MessageBinding> defaultMessageBinding =
@@ -67,7 +67,7 @@ class SpringAnnotationClassLevelOperationsScannerTest {
     @BeforeEach
     void setUp() {
         // when
-        when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL);
+        when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL_ID);
 
         doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any());
         doReturn(defaultChannelBinding).when(bindingFactory).buildChannelBinding(any());
@@ -103,11 +103,11 @@ class SpringAnnotationClassLevelOperationsScannerTest {
 
         Operation expectedOperation = Operation.builder()
                 .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(CHANNEL))
-                .messages(List.of(MessageReference.toChannelMessage(CHANNEL, message)))
+                .channel(ChannelReference.fromChannel(CHANNEL_ID))
+                .messages(List.of(MessageReference.toChannelMessage(CHANNEL_ID, message)))
                 .bindings(Map.of("protocol", AMQPOperationBinding.builder().build()))
                 .build();
-        String operationName = CHANNEL + "_receive_ClassWithTestListenerAnnotation";
+        String operationName = CHANNEL_ID + "_receive_ClassWithTestListenerAnnotation";
         assertThat(operations).containsExactly(Map.entry(operationName, expectedOperation));
     }
 

@@ -16,31 +16,31 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ChannelMergerTest {
 
     @Test
-    void shouldNotMergeDifferentChannelNames() {
+    void shouldNotMergeDifferentchannelIds() {
         // given
-        String channelName1 = "channel1";
-        String channelName2 = "channel2";
+        String channelId1 = "channel1";
+        String channelId2 = "channel2";
         ChannelObject publisherChannel = ChannelObject.builder().build();
         ChannelObject subscriberChannel = ChannelObject.builder().build();
 
         // when
         Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelName1, publisherChannel), Map.entry(channelName2, subscriberChannel)));
+                Arrays.asList(Map.entry(channelId1, publisherChannel), Map.entry(channelId2, subscriberChannel)));
 
         // then
         assertThat(mergedChannels).hasSize(2);
     }
 
     @Test
-    void shouldMergeEqualChannelNamesIntoOneChannel() {
+    void shouldMergeEqualchannelIdsIntoOneChannel() {
         // given
-        String channelName = "channel";
+        String channelId = "channel";
         ChannelObject publisherChannel = ChannelObject.builder().build();
         ChannelObject subscriberChannel = ChannelObject.builder().build();
 
         // when
         Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelName, publisherChannel), Map.entry(channelName, subscriberChannel)));
+                Arrays.asList(Map.entry(channelId, publisherChannel), Map.entry(channelId, subscriberChannel)));
 
         // then
         assertThat(mergedChannels).hasSize(1);
@@ -49,7 +49,7 @@ class ChannelMergerTest {
     @Test
     void shouldUseFirstChannelFound() {
         // given
-        String channelName = "channel";
+        String channelId = "channel";
         ChannelObject publisherChannel1 =
                 ChannelObject.builder().title("channel1").build();
         ChannelObject publisherChannel2 =
@@ -57,10 +57,10 @@ class ChannelMergerTest {
 
         // when
         Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelName, publisherChannel1), Map.entry(channelName, publisherChannel2)));
+                Arrays.asList(Map.entry(channelId, publisherChannel1), Map.entry(channelId, publisherChannel2)));
 
         // then
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
+        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> {
             assertThat(it.getTitle()).isEqualTo("channel1");
         });
     }
@@ -68,7 +68,7 @@ class ChannelMergerTest {
     @Test
     void shouldMergeDifferentMessagesForSameChannel() {
         // given
-        String channelName = "channel";
+        String channelId = "channel";
         MessageObject message1 = MessageObject.builder()
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
@@ -93,14 +93,14 @@ class ChannelMergerTest {
 
         // when
         Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(Arrays.asList(
-                Map.entry(channelName, publisherChannel1),
-                Map.entry(channelName, publisherChannel2),
-                Map.entry(channelName, publisherChannel3)));
+                Map.entry(channelId, publisherChannel1),
+                Map.entry(channelId, publisherChannel2),
+                Map.entry(channelId, publisherChannel3)));
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
         var expectedMessages = MessageHelper.toMessagesMap(Set.of(message1, message2));
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
+        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> {
             assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages);
         });
     }
@@ -108,7 +108,7 @@ class ChannelMergerTest {
     @Test
     void shouldUseOtherMessageIfFirstMessageIsMissingForChannels() {
         // given
-        String channelName = "channel";
+        String channelId = "channel";
         MessageObject message2 = MessageObject.builder()
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
@@ -120,12 +120,12 @@ class ChannelMergerTest {
 
         // when
         Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelName, publisherChannel1), Map.entry(channelName, publisherChannel2)));
+                Arrays.asList(Map.entry(channelId, publisherChannel1), Map.entry(channelId, publisherChannel2)));
 
         // then expectedMessage message2
         var expectedMessages = Map.of(message2.getName(), message2);
 
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelName, it -> {
+        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> {
             assertThat(it.getMessages()).hasSize(1);
             assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages);
         });

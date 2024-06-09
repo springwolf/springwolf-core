@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common;
 
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,7 @@ public class MessageHelper {
                 .stream()
                         .collect(Collectors.toMap(
                                 MessageObject::getMessageId,
-                                e -> MessageReference.toChannelMessage(channelName, e.getMessageId())));
+                                e -> MessageReference.toChannelMessage(
+                                        ReferenceUtil.toValidId(channelName), e.getMessageId())));
     }
 }

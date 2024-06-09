@@ -17,6 +17,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationClassLevelChannelsScannerIntegrationTest.TestBindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
@@ -54,7 +55,7 @@ class SpringAnnotationClassLevelChannelsScannerTest {
                     headerClassExtractor,
                     componentsService);
 
-    private static final String CHANNEL = "test-channel";
+    private static final String CHANNEL = "test/channel";
     private static final Map<String, OperationBinding> defaultOperationBinding =
             Map.of("protocol", new AMQPOperationBinding());
     private static final Map<String, MessageBinding> defaultMessageBinding =
@@ -100,11 +101,13 @@ class SpringAnnotationClassLevelChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannelItem = ChannelObject.builder()
+                .channelId(TestBindingFactory.CHANNEL_ID)
+                .address(TestBindingFactory.CHANNEL)
                 .bindings(defaultChannelBinding)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));
+        assertThat(channels).containsExactly(Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannelItem));
     }
 
     @TestClassListener

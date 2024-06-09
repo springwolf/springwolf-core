@@ -9,6 +9,7 @@ import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService
 import io.github.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.springwolf.asyncapi.v3.model.Tag;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

@@ -1,17 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.model.channel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.model.ExtendableObject;
 import io.github.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.springwolf.asyncapi.v3.model.Tag;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +31,15 @@ import java.util.Map;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ChannelObject extends ExtendableObject implements Channel {
+    /**
+     * An identifier for the described channel.
+     * The channelId value is case-sensitive.
+     * Tools and libraries MAY use the channelId to uniquely identify a channel,
+     * therefore, it is RECOMMENDED to follow common programming naming conventions.
+     */
+    @JsonIgnore
+    @Setter(AccessLevel.NONE)
+    private String channelId;
 
     /**
      * An optional string representation of this channel's address. The address is typically the "topic name",
@@ -102,4 +115,14 @@ public class ChannelObject extends ExtendableObject implements Channel {
      */
     @JsonProperty(value = "bindings")
     private Map<String, ChannelBinding> bindings;
+
+    /*
+     * Override the getChannelId to guarantee that there's always a value. Defaults to 'address'
+     */
+    public String getChannelId() {
+        if (channelId == null) {
+            return this.address;
+        }
+        return channelId;
+    }
 }

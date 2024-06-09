@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
@@ -12,6 +13,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -53,10 +55,14 @@ public class AsyncAnnotationOperationsScanner<A extends Annotation> extends Asyn
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
         String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
-        String operationId = channelName + "_" + this.asyncAnnotationProvider.getOperationType().type + "_"
-                + methodAndAnnotation.method().getName();
+        String channelId = ReferenceUtil.toValidId(channelName);
+        String operationId = StringUtils.joinWith(
+                "_",
+                channelId,
+                this.asyncAnnotationProvider.getOperationType().type,
+                methodAndAnnotation.method().getName());
 
-        Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelName);
+        Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelId);
         operation.setAction(this.asyncAnnotationProvider.getOperationType());
 
         return Map.entry(operationId, operation);

@@ -4,6 +4,7 @@ package io.github.springwolf.core.asyncapi.scanners.channels.annotations;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -137,11 +138,13 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
+                    .channelId(TestBindingFactory.CHANNEL_ID)
+                    .address(TestBindingFactory.CHANNEL)
                     .bindings(defaultChannelBinding)
                     .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
+            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannel));
         }
 
         private static class ClassWithListenerAnnotation {
@@ -190,20 +193,24 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .build();
 
             ChannelObject expectedChannelItem = ChannelObject.builder()
+                    .channelId(TestBindingFactory.CHANNEL_ID)
+                    .address(TestBindingFactory.CHANNEL)
                     .messages(Map.of(
                             messageSimpleFoo.getMessageId(), MessageReference.toComponentMessage(messageSimpleFoo)))
                     .bindings(defaultChannelBinding)
                     .build();
 
             ChannelObject expectedChannelItem2 = ChannelObject.builder()
+                    .channelId(TestBindingFactory.CHANNEL_ID)
+                    .address(TestBindingFactory.CHANNEL)
                     .bindings(defaultChannelBinding)
                     .messages(Map.of(messageString.getMessageId(), MessageReference.toComponentMessage(messageString)))
                     .build();
 
             assertThat(channels)
                     .containsExactlyInAnyOrder(
-                            Map.entry(TestBindingFactory.CHANNEL, expectedChannelItem),
-                            Map.entry(TestBindingFactory.CHANNEL, expectedChannelItem2));
+                            Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannelItem),
+                            Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannelItem2));
         }
 
         private static class ClassWithTestListenerAnnotationMultiplePayloads {
@@ -240,11 +247,13 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
+                    .channelId(TestBindingFactory.CHANNEL_ID)
+                    .address(TestBindingFactory.CHANNEL)
                     .bindings(defaultChannelBinding)
                     .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL, expectedChannel));
+            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannel));
         }
 
         private static class ClassWithListenerMetaAnnotation {
@@ -276,13 +285,14 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
 
     static class TestBindingFactory implements BindingFactory<TestChannelListener> {
 
-        public static final String CHANNEL = "test-channel";
+        public static final String CHANNEL = "test/channel";
+        public static final String CHANNEL_ID = ReferenceUtil.toValidId(CHANNEL);
         public static final Map<String, MessageBinding> defaultMessageBinding =
-                Map.of(CHANNEL, new TestBindingFactory.TestMessageBinding());
+                Map.of(CHANNEL_ID, new TestBindingFactory.TestMessageBinding());
         public static final Map<String, ChannelBinding> defaultChannelBinding =
-                Map.of(CHANNEL, new TestBindingFactory.TestChannelBinding());
+                Map.of(CHANNEL_ID, new TestBindingFactory.TestChannelBinding());
         public static final Map<String, OperationBinding> defaultOperationBinding =
-                Map.of(CHANNEL, new TestBindingFactory.TestOperationBinding());
+                Map.of(CHANNEL_ID, new TestBindingFactory.TestOperationBinding());
 
         @Override
         public String getChannelName(TestChannelListener annotation) {

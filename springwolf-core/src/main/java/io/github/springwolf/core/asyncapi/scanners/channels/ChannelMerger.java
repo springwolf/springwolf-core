@@ -23,7 +23,7 @@ public class ChannelMerger {
      * Messages within channels are merged
      *
      * @param channelEntries Ordered pairs of channel name to Channel
-     * @return A map of channelName to a single Channel
+     * @return A map of channelId to a single Channel
      */
     public static Map<String, ChannelObject> mergeChannels(List<Map.Entry<String, ChannelObject>> channelEntries) {
         Map<String, ChannelObject> mergedChannels = new HashMap<>();

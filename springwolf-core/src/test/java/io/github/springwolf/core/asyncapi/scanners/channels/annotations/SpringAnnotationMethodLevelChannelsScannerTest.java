@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -53,7 +54,8 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
             headerClassExtractor,
             componentsService);
 
-    private static final String CHANNEL = "test-channel";
+    private static final String CHANNEL = "test/channel";
+    private static final String CHANNEL_ID = ReferenceUtil.toValidId(CHANNEL);
     private static final Map<String, OperationBinding> defaultOperationBinding =
             Map.of("protocol", new AMQPOperationBinding());
     private static final Map<String, MessageBinding> defaultMessageBinding =
@@ -108,11 +110,13 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannelItem = ChannelObject.builder()
+                .channelId(CHANNEL_ID)
+                .address(CHANNEL)
                 .bindings(defaultChannelBinding)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        assertThat(channels).containsExactly(Map.entry(CHANNEL, expectedChannelItem));
+        assertThat(channels).containsExactly(Map.entry(CHANNEL_ID, expectedChannelItem));
     }
 
     private static class ClassWithTestListenerAnnotation {
@@ -158,10 +162,14 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
                 .build();
 
         ChannelObject methodChannel = ChannelObject.builder()
+                .channelId(CHANNEL_ID)
+                .address(CHANNEL)
                 .bindings(defaultChannelBinding)
                 .messages(Map.of(stringMessage.getMessageId(), MessageReference.toComponentMessage(stringMessage)))
                 .build();
         ChannelObject anotherMethodChannel = ChannelObject.builder()
+                .channelId(CHANNEL_ID)
+                .address(CHANNEL)
                 .bindings(defaultChannelBinding)
                 .messages(
                         Map.of(simpleFooMessage.getMessageId(), MessageReference.toComponentMessage(simpleFooMessage)))
@@ -169,7 +177,7 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
 
         assertThat(channels)
                 .containsExactlyInAnyOrderElementsOf(
-                        List.of(Map.entry(CHANNEL, methodChannel), Map.entry(CHANNEL, anotherMethodChannel)));
+                        List.of(Map.entry(CHANNEL_ID, methodChannel), Map.entry(CHANNEL_ID, anotherMethodChannel)));
     }
 
     private static class ClassWithMultipleTestListenerAnnotation {

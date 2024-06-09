@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
@@ -14,6 +15,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -65,7 +67,8 @@ public class SpringAnnotationClassLevelOperationsScanner<
         }
 
         String channelName = bindingFactory.getChannelName(classAnnotation);
-        String operationId = channelName + "_" + OperationAction.RECEIVE + "_" + component.getSimpleName();
+        String operationId = StringUtils.joinWith(
+                "_", ReferenceUtil.toValidId(channelName), OperationAction.RECEIVE, component.getSimpleName());
 
         Operation operation = buildOperation(classAnnotation, annotatedMethods);
 
@@ -84,7 +87,7 @@ public class SpringAnnotationClassLevelOperationsScanner<
 
         return Operation.builder()
                 .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(channelName))
+                .channel(ChannelReference.fromChannel(ReferenceUtil.toValidId(channelName)))
                 .messages(messages.values().stream().toList())
                 .bindings(opBinding)
                 .build();

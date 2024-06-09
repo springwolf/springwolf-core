@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.channels;
 
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.springwolf.asyncapi.v3.model.channel.ServerReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
@@ -64,8 +65,9 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation> extends AsyncA
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
         String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
+        String channelId = ReferenceUtil.toValidId(channelName);
 
-        Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelName);
+        Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelId);
 
         List<String> servers = AsyncAnnotationUtil.getServers(operationAnnotation, resolver);
         if (servers != null && !servers.isEmpty()) {
@@ -76,9 +78,11 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation> extends AsyncA
         MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 
         ChannelObject channelItem = channelBuilder
+                .channelId(channelId)
+                .address(channelName)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
-        return Map.entry(channelName, channelItem);
+        return Map.entry(channelItem.getChannelId(), channelItem);
     }
 
     /**
