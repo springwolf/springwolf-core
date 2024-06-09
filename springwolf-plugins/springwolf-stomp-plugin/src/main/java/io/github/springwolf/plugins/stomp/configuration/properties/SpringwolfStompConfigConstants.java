@@ -11,4 +11,8 @@ public class SpringwolfStompConfigConstants {
 
     public static final String SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED =
             SPRINGWOLF_STOMP_CONFIG_PREFIX + SCANNER + ".stomp-message-mapping" + ENABLED;
+    public static final String SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED =
+            SPRINGWOLF_STOMP_CONFIG_PREFIX + SCANNER + ".stomp-send-to" + ENABLED;
+    public static final String SPRINGWOLF_SCANNER_STOMP_SEND_TO_USER_ENABLED =
+            SPRINGWOLF_STOMP_CONFIG_PREFIX + SCANNER + ".stomp-send-to-user" + ENABLED;
 }
