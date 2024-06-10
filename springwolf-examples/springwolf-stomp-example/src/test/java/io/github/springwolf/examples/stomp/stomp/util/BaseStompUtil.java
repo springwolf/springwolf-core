@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.stomp.stomp.util;
 
-import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
@@ -22,9 +23,9 @@ import java.util.concurrent.TimeoutException;
 
 @Slf4j
 public class BaseStompUtil<R> {
-    private MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-    private StompSession session;
-    private BlockingQueue<R> blockingQueue = new ArrayBlockingQueue<>(1);
+    private final MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+    private final StompSession session;
+    private final BlockingQueue<R> blockingQueue = new ArrayBlockingQueue<>(1);
 
     public BaseStompUtil(
             WebSocketStompClient webSocketStompClient, String wsPath, List<String> subscriptions, Type responseType)
@@ -33,38 +34,39 @@ public class BaseStompUtil<R> {
 
         StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
             @Override
-            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+            public void afterConnected(@NonNull StompSession session, @NonNull StompHeaders connectedHeaders) {
                 log.info("Connected to Stomp session");
             }
 
             @Override
             public void handleException(
-                    StompSession session,
+                    @NonNull StompSession session,
                     StompCommand command,
-                    StompHeaders headers,
-                    byte[] payload,
-                    Throwable exception) {
+                    @NonNull StompHeaders headers,
+                    @NonNull byte[] payload,
+                    @NonNull Throwable exception) {
                 log.error("handleException", exception);
                 super.handleException(session, command, headers, payload, exception);
             }
 
             @Override
-            public void handleTransportError(StompSession session, Throwable exception) {
+            public void handleTransportError(@NonNull StompSession session, @NonNull Throwable exception) {
                 log.error("handleTransportError", exception);
                 super.handleTransportError(session, exception);
             }
         };
 
-        session = webSocketStompClient.connect(wsPath, sessionHandler).get(1, TimeUnit.SECONDS);
+        session = webSocketStompClient.connectAsync(wsPath, sessionHandler).get(1, TimeUnit.SECONDS);
 
         subscriptions.forEach(subscription -> session.subscribe(subscription, new StompFrameHandler() {
             @Override
-            public Type getPayloadType(StompHeaders headers) {
+            public Type getPayloadType(@NonNull StompHeaders headers) {
                 return responseType;
             }
 
             @Override
-            public void handleFrame(StompHeaders headers, Object payload) {
+            @SuppressWarnings("unchecked")
+            public void handleFrame(@NonNull StompHeaders headers, Object payload) {
                 log.info("handleFrame {} with headers {}", payload, headers);
                 blockingQueue.add((R) payload);
             }

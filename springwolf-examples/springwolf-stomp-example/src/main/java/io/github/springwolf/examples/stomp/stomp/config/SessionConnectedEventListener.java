@@ -22,7 +22,7 @@ public class SessionConnectedEventListener implements ApplicationListener<Sessio
     }
 
     @EventListener
-    public void onSessoinDisconnect(SessionDisconnectEvent sessionDisconnectEvent) {
+    public void onSessionDisconnect(SessionDisconnectEvent sessionDisconnectEvent) {
         log.debug(
                 "Client disconnected with username: {}",
                 sessionDisconnectEvent.getUser().getName());
