@@ -54,7 +54,7 @@ public @interface AsyncOperation {
 
             String description() default "";
 
-            String value();
+            String value() default "";
         }
     }
 }

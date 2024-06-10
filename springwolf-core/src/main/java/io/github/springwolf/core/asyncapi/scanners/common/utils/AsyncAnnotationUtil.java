@@ -74,6 +74,7 @@ public class AsyncAnnotationUtil {
             List<AsyncOperation.Headers.Header> value, StringValueResolver resolver) {
         return value.stream()
                 .map(AsyncOperation.Headers.Header::value)
+                .filter(StringUtils::hasText)
                 .map(resolver::resolveStringValue)
                 .sorted()
                 .toList();
