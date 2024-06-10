@@ -35,8 +35,6 @@ ext {
 
     commonsLang3Version = '3.14.0'
 
-    jsr305Version = '3.0.2'
-
     kafkaAvroSerializerVersion = '7.6.0'
 
     kafkaClientsVersion = '3.7.0'

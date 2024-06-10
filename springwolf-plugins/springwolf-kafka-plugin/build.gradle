@@ -26,9 +26,6 @@ dependencies {
 
     implementation "org.springframework.kafka:spring-kafka"
 
-    compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
-    permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
-
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 

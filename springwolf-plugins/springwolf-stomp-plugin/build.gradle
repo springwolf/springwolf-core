@@ -26,9 +26,6 @@ dependencies {
     permitUnusedDeclared("org.springframework.boot:spring-boot-starter-websocket")
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-    compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
-    permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
-
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
