@@ -50,11 +50,23 @@ class AsyncAnnotationUtilTest {
         SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, resolver);
         assertEquals("TestSchema", headers.getTitle());
         assertEquals("header-descriptionResolved", headers.getDescription());
-        assertTrue(headers.getProperties().containsKey("headerResolved"));
+        assertTrue(
+                headers.getProperties().containsKey("headerResolved"),
+                headers.getProperties() + " does not contain key 'headerResolved'");
         SchemaObject headerResolved = (SchemaObject) headers.getProperties().get("headerResolved");
         assertEquals("string", headerResolved.getType());
         assertEquals("valueResolved", headerResolved.getExamples().get(0));
         assertEquals("descriptionResolved", headerResolved.getDescription());
+
+        assertTrue(
+                headers.getProperties().containsKey("headerWithoutValueResolved"),
+                headers.getProperties() + " does not contain key 'headerWithoutValueResolved'");
+        SchemaObject headerWithoutValueResolved =
+                (SchemaObject) headers.getProperties().get("headerWithoutValueResolved");
+        assertEquals("string", headerWithoutValueResolved.getType());
+        assertTrue(headerWithoutValueResolved.getExamples().isEmpty());
+        assertTrue(headerWithoutValueResolved.getEnumValues().isEmpty());
+        assertEquals("descriptionResolved", headerWithoutValueResolved.getDescription());
     }
 
     @Test
@@ -215,6 +227,9 @@ class AsyncAnnotationUtilTest {
                                                     @AsyncOperation.Headers.Header(
                                                             name = "header",
                                                             value = "value",
+                                                            description = "description"),
+                                                    @AsyncOperation.Headers.Header(
+                                                            name = "headerWithoutValue",
                                                             description = "description")
                                                 })))
         @TestOperationBindingProcessor.TestOperationBinding()
@@ -259,6 +274,9 @@ class AsyncAnnotationUtilTest {
                                                     @AsyncOperation.Headers.Header(
                                                             name = "header",
                                                             value = "value",
+                                                            description = "description"),
+                                                    @AsyncOperation.Headers.Header(
+                                                            name = "headerWithoutValue",
                                                             description = "description")
                                                 })))
         @TestAbstractOperationBindingProcessor.TestOperationBinding()
