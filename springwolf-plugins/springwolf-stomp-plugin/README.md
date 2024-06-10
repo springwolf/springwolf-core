@@ -40,7 +40,7 @@ springwolf.docket.servers.stomp.protocol=stomp
 springwolf.docket.servers.stomp.host=localhost:8080
 ```
 
-The basePackage field must be set with the name of the package containing the classes to be scanned for `@KafkaListener`
+The basePackage field must be set with the name of the package containing the classes to be scanned for `@MessageMapping`
 annotated methods.
 
 #### Verify
@@ -50,4 +50,4 @@ If not, try the following endpoint: `localhost:8080/springwolf/docs`.
 
 ### Example Project
 
-See [springwolf-kafka-example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-stomp-example).
+See [springwolf-stomp-example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-stomp-example).
