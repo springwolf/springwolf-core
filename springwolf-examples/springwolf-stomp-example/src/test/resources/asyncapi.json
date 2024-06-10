@@ -191,7 +191,9 @@
         "name": "io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
         "description": "Another payload model",
-        "bindings": { }
+        "bindings": {
+          "stomp": { }
+        }
       },
       "io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto": {
         "headers": {
@@ -219,7 +221,9 @@
       },
       "title": "_app_queue_another-queue_send",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
-      "bindings": { },
+      "bindings": {
+        "stomp": { }
+      },
       "messages": [
         {
           "$ref": "#/channels/_app_queue_another-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto"

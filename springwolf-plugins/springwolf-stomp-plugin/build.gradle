@@ -9,8 +9,8 @@ plugins {
 dependencies {
     api project(":springwolf-asyncapi")
     api project(":springwolf-core")
-//    api project(":springwolf-bindings:springwolf-stomp-binding")
-//    permitUnusedDeclared project(":springwolf-bindings:springwolf-stomp-binding")
+    api project(":springwolf-bindings:springwolf-stomp-binding")
+    permitUnusedDeclared project(":springwolf-bindings:springwolf-stomp-binding")
 
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
     permitUnusedDeclared "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
