@@ -4,6 +4,7 @@
 1. Copy the `docker-compose.yml` file to your machine.
 2. Run `$ docker-compose up`.
 3. Visit `localhost:8080/springwolf/asyncapi-ui.html` or try the API: `$ curl localhost:8080/springwolf/docs`.
+4. ActiveMQ Management: `http://localhost:8161` using `artemis:artemis` as login
 
 ### Run with gradle
 Note: You need to execute the gradle `bootRun` task since the IntelliJ spring application will not include springwolf-ui correctly.
