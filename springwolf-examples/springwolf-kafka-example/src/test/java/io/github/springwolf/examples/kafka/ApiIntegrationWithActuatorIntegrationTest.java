@@ -38,7 +38,7 @@ public class ApiIntegrationWithActuatorIntegrationTest {
 
     @Test
     void asyncApiResourceArtifactTest() throws IOException {
-        String url = "http://localhost:" + managementPort + "/actuator/springwolf/docs";
+        String url = "http://localhost:" + managementPort + "/actuator/springwolf";
         String actual = restTemplate.getForObject(url, String.class);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
