@@ -1,7 +1,7 @@
 buildscript {
     ext {
         kotlinVersion = '2.0.0'
-        kotlinxSerializationVersion = '1.6.3'
+        kotlinxSerializationVersion = '1.7.0'
     }
 }
 
