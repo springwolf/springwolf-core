@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <app-header></app-header>
-<main class="flex-column">
-  <app-info></app-info>
+<main class="flex-column dark-theme">
+  <app-info *ngIf="!isNewUi"></app-info>
   <app-servers></app-servers>
   <app-channels></app-channels>
   <app-schemas></app-schemas>

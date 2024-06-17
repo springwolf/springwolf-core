@@ -4,7 +4,12 @@
     <img src="assets/springwolf-logo.png" class="logo" alt="Logo" />
   </a>
   <h2>Springwolf</h2>
-  <a href="https://github.com/springwolf/springwolf-core" target="_blank">
-    <i class="fa fa-github fa-2x"></i>
-  </a>
+  <div>
+    <mat-slide-toggle (change)="toggleIsNewUi($event.checked)"
+      >New UI</mat-slide-toggle
+    >
+    <a href="https://github.com/springwolf/springwolf-core" target="_blank">
+      <i class="fa fa-github fa-2x"></i>
+    </a>
+  </div>
 </mat-toolbar>

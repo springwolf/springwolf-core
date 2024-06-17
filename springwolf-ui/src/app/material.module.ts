@@ -13,6 +13,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatChipsModule } from "@angular/material/chips";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 const modules = [
   MatButtonModule,
@@ -27,6 +28,7 @@ const modules = [
   MatFormFieldModule,
   MatSelectModule,
   MatChipsModule,
+  MatSlideToggleModule,
 ];
 
 @NgModule({
