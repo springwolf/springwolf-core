@@ -208,10 +208,14 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     private Optional<T> buildFromObjectSchema(
             String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         Map<String, Schema> properties = schema.getProperties();
-        if (properties != null && !visited.contains(schema)) {
+        if (visited.contains(schema)) {
+            return exampleValueGenerator.createEmptyObjectExample();
+        }
+        visited.add(schema);
 
-            visited.add(schema);
-
+        // i.e. A MapSchema is type=object, but has properties=null
+        Optional<T> exampleValue = exampleValueGenerator.createEmptyObjectExample();
+        if (properties != null) {
             T object = exampleValueGenerator.startObject(name);
 
             List<PropertyExample<T>> propertyList =
@@ -220,11 +224,8 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
             exampleValueGenerator.endObject();
 
-            visited.remove(schema);
-            return Optional.of(object);
-        }
-
-        if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
+            exampleValue = Optional.of(object);
+        } else if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
             List<Schema> schemas = schema.getAllOf();
 
             T object = exampleValueGenerator.startObject(name);
@@ -235,21 +236,20 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
             exampleValueGenerator.endObject();
 
-            return Optional.of(object);
-        }
-        if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
+            exampleValue = Optional.of(object);
+        } else if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
             List<Schema> schemas = schema.getAnyOf();
             Schema anyOfSchema = schemas.get(0);
-            return buildExample(name, anyOfSchema, definitions, visited);
-        }
-        if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
+            exampleValue = buildExample(name, anyOfSchema, definitions, visited);
+        } else if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
             List<Schema> schemas = schema.getOneOf();
             Schema oneOfSchema = schemas.get(0);
-            return buildExample(name, oneOfSchema, definitions, visited);
+            exampleValue = buildExample(name, oneOfSchema, definitions, visited);
         }
 
-        // i.e. A MapSchema is type=object, but has properties=null
-        return exampleValueGenerator.createEmptyObjectExample();
+        visited.remove(schema);
+
+        return exampleValue;
     }
 
     private List<PropertyExample<T>> buildPropertyExampleListFromSchema(
