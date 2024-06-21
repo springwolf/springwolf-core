@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
@@ -207,49 +208,53 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
     private Optional<T> buildFromObjectSchema(
             String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        Map<String, Schema> properties = schema.getProperties();
         if (visited.contains(schema)) {
             return exampleValueGenerator.createEmptyObjectExample();
         }
         visited.add(schema);
 
-        // i.e. A MapSchema is type=object, but has properties=null
-        Optional<T> exampleValue = exampleValueGenerator.createEmptyObjectExample();
+        final Optional<T> exampleValue;
+
+        Map<String, Schema> properties = schema.getProperties();
+        List<Schema> schemasAllOf = schema.getAllOf();
+        List<Schema> schemasAnyOf = schema.getAnyOf();
+        List<Schema> schemasOneOf = schema.getOneOf();
         if (properties != null) {
-            T object = exampleValueGenerator.startObject(name);
-
-            List<PropertyExample<T>> propertyList =
-                    buildPropertyExampleListFromSchema(properties, definitions, visited);
-            exampleValueGenerator.addPropertyExamples(object, propertyList);
-
-            exampleValueGenerator.endObject();
-
-            exampleValue = Optional.of(object);
-        } else if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
-            List<Schema> schemas = schema.getAllOf();
-
-            T object = exampleValueGenerator.startObject(name);
-
-            List<PropertyExample<T>> mergedProperties =
-                    buildPropertyExampleListFromSchemas(schemas, definitions, visited);
-            exampleValueGenerator.addPropertyExamples(object, mergedProperties);
-
-            exampleValueGenerator.endObject();
-
-            exampleValue = Optional.of(object);
-        } else if (schema.getAnyOf() != null && !schema.getAnyOf().isEmpty()) {
-            List<Schema> schemas = schema.getAnyOf();
-            Schema anyOfSchema = schemas.get(0);
-            exampleValue = buildExample(name, anyOfSchema, definitions, visited);
-        } else if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
-            List<Schema> schemas = schema.getOneOf();
-            Schema oneOfSchema = schemas.get(0);
-            exampleValue = buildExample(name, oneOfSchema, definitions, visited);
+            exampleValue = buildFromObjectSchemaWithProperties(name, properties, definitions, visited);
+        } else if (!CollectionUtils.isEmpty(schemasAllOf)) {
+            exampleValue = buildFromObjectSchemaWithAllOf(name, schemasAllOf, definitions, visited);
+        } else if (!CollectionUtils.isEmpty(schemasAnyOf)) {
+            exampleValue = buildExample(name, schemasAnyOf.get(0), definitions, visited);
+        } else if (!CollectionUtils.isEmpty(schemasOneOf)) {
+            exampleValue = buildExample(name, schemasOneOf.get(0), definitions, visited);
+        } else {
+            // i.e. A MapSchema is type=object, but has properties=null
+            exampleValue = exampleValueGenerator.createEmptyObjectExample();
         }
 
         visited.remove(schema);
 
         return exampleValue;
+    }
+
+    private Optional<T> buildFromObjectSchemaWithProperties(
+            String name, Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
+        T object = exampleValueGenerator.startObject(name);
+        exampleValueGenerator.addPropertyExamples(
+                object, buildPropertyExampleListFromSchema(properties, definitions, visited));
+        exampleValueGenerator.endObject();
+
+        return Optional.of(object);
+    }
+
+    private Optional<T> buildFromObjectSchemaWithAllOf(
+            String name, List<Schema> schemasAllOf, Map<String, Schema> definitions, Set<Schema> visited) {
+        T object = exampleValueGenerator.startObject(name);
+        exampleValueGenerator.addPropertyExamples(
+                object, buildPropertyExampleListFromSchemas(schemasAllOf, definitions, visited));
+        exampleValueGenerator.endObject();
+
+        return Optional.of(object);
     }
 
     private List<PropertyExample<T>> buildPropertyExampleListFromSchema(
