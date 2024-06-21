@@ -6,6 +6,7 @@ on:
       - master
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
+  workflow_dispatch:
 
 env:
   project: springwolf-ui
