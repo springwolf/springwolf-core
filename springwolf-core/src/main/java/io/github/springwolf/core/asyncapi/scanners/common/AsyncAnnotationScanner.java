@@ -44,7 +44,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
 
     protected final AsyncAnnotationProvider<A> asyncAnnotationProvider;
     protected final PayloadClassExtractor payloadClassExtractor;
-    protected final PayloadAsyncOperationService payloadService;
+    protected final PayloadAsyncOperationService payloadAsyncOperationService;
     protected final ComponentsService componentsService;
     protected final List<OperationBindingProcessor> operationBindingProcessors;
     protected final List<MessageBindingProcessor> messageBindingProcessors;
@@ -92,7 +92,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
     }
 
     protected MessageObject buildMessage(AsyncOperation operationData, Method method) {
-        NamedSchemaObject payloadSchema = payloadService.extractSchema(operationData, method);
+        NamedSchemaObject payloadSchema = payloadAsyncOperationService.extractSchema(operationData, method);
 
         SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, resolver);
         String headerSchemaName = this.componentsService.registerSchema(headerSchema);

@@ -38,7 +38,7 @@ public class SpringwolfJmsScannerConfiguration {
     public SpringAnnotationChannelsScanner simpleJmsMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner classScanner,
             JmsBindingFactory jmsBindingBuilder,
-            PayloadMethodParameterService payloadService,
+            PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<JmsListener> strategy =
@@ -46,7 +46,7 @@ public class SpringwolfJmsScannerConfiguration {
                         JmsListener.class,
                         jmsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
-                        payloadService,
+                        payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
@@ -59,7 +59,7 @@ public class SpringwolfJmsScannerConfiguration {
     public SpringAnnotationOperationsScanner simpleJmsMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner classScanner,
             JmsBindingFactory jmsBindingBuilder,
-            PayloadMethodParameterService payloadService,
+            PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<JmsListener> strategy =
@@ -67,7 +67,7 @@ public class SpringwolfJmsScannerConfiguration {
                         JmsListener.class,
                         jmsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
-                        payloadService,
+                        payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 

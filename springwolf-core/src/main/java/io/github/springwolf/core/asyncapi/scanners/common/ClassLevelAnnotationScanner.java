@@ -40,7 +40,7 @@ public abstract class ClassLevelAnnotationScanner<
     protected final Class<MethodAnnotation> methodAnnotationClass;
     protected final BindingFactory<ClassAnnotation> bindingFactory;
     protected final AsyncHeadersBuilder asyncHeadersBuilder;
-    protected final PayloadMethodService payloadService;
+    protected final PayloadMethodService payloadMethodService;
     protected final HeaderClassExtractor headerClassExtractor;
     protected final ComponentsService componentsService;
 
@@ -71,7 +71,7 @@ public abstract class ClassLevelAnnotationScanner<
             SpringAnnotationClassLevelOperationsScanner.MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
                 .map((Method method) -> {
-                    NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
+                    NamedSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
                     SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
                     return buildMessage(classAnnotation, payloadSchema, headerSchema);
                 })

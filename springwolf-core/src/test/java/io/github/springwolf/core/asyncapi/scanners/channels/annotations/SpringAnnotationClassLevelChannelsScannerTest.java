@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 
 class SpringAnnotationClassLevelChannelsScannerTest {
 
-    private final PayloadMethodService payloadService = mock();
+    private final PayloadMethodService payloadMethodService = mock();
     private final HeaderClassExtractor headerClassExtractor = mock(HeaderClassExtractor.class);
     private final BindingFactory<TestClassListener> bindingFactory = mock(BindingFactory.class);
     private final ComponentsService componentsService = mock(ComponentsService.class);
@@ -50,7 +50,7 @@ class SpringAnnotationClassLevelChannelsScannerTest {
                     TestMethodListener.class,
                     bindingFactory,
                     new AsyncHeadersNotDocumented(),
-                    payloadService,
+                    payloadMethodService,
                     headerClassExtractor,
                     componentsService);
 
@@ -71,7 +71,7 @@ class SpringAnnotationClassLevelChannelsScannerTest {
         doReturn(defaultChannelBinding).when(bindingFactory).buildChannelBinding(any());
         doReturn(defaultMessageBinding).when(bindingFactory).buildMessageBinding(any(), any());
 
-        when(payloadService.extractSchema(any()))
+        when(payloadMethodService.extractSchema(any()))
                 .thenReturn(new NamedSchemaObject(String.class.getName(), new SchemaObject()));
         doAnswer(invocation -> AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())
                 .when(componentsService)

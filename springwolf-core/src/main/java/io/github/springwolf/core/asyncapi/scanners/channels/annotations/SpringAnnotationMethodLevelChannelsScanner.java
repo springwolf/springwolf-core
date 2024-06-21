@@ -28,19 +28,19 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
         extends MethodLevelAnnotationScanner<MethodAnnotation> implements SpringAnnotationChannelsScannerDelegator {
 
     private final Class<MethodAnnotation> methodAnnotationClass;
-    private final PayloadMethodService payloadService;
+    private final PayloadMethodService payloadMethodService;
     private final HeaderClassExtractor headerClassExtractor;
 
     public SpringAnnotationMethodLevelChannelsScanner(
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<MethodAnnotation> bindingFactory,
             AsyncHeadersBuilder asyncHeadersBuilder,
-            PayloadMethodService payloadService,
+            PayloadMethodService payloadMethodService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         super(bindingFactory, asyncHeadersBuilder, componentsService);
         this.methodAnnotationClass = methodAnnotationClass;
-        this.payloadService = payloadService;
+        this.payloadMethodService = payloadMethodService;
         this.headerClassExtractor = headerClassExtractor;
     }
 
@@ -62,7 +62,7 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
 
         MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
-        NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
+        NamedSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
         ChannelObject channelItem = buildChannelItem(annotation, payloadSchema, headerSchema);
 

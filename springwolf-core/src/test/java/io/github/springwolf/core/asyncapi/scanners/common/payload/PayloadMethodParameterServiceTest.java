@@ -6,6 +6,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -21,9 +22,15 @@ class PayloadMethodParameterServiceTest {
     private ComponentsService componentsService = mock(ComponentsService.class);
     private SpringwolfConfigProperties.ConfigDocket docket = mock(SpringwolfConfigProperties.ConfigDocket.class);
     private SpringwolfConfigProperties properties = mock(SpringwolfConfigProperties.class);
-    private PayloadService payloadService = new PayloadService(componentsService, properties);
-    private PayloadMethodParameterService payloadMethodParameterService =
-            new PayloadMethodParameterService(payloadClassExtractor, payloadService);
+
+    private PayloadService payloadService;
+    private PayloadMethodParameterService payloadMethodParameterService;
+
+    @BeforeEach
+    void setUp() {
+        payloadService = new PayloadService(componentsService, properties);
+        payloadMethodParameterService = new PayloadMethodParameterService(payloadClassExtractor, payloadService);
+    }
 
     @Test
     public void shouldExtractPayloadFromMethod() {

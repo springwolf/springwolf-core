@@ -37,13 +37,13 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation> extends AsyncA
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
             PayloadClassExtractor payloadClassExtractor,
-            PayloadAsyncOperationService payloadService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         super(
                 asyncAnnotationProvider,
                 payloadClassExtractor,
-                payloadService,
+                payloadAsyncOperationService,
                 componentsService,
                 operationBindingProcessors,
                 messageBindingProcessors);

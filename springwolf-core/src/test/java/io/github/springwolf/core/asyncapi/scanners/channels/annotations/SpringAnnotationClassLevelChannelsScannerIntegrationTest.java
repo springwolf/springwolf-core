@@ -74,7 +74,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
     BindingFactory<TestClassListener> bindingFactory;
 
     @Autowired
-    PayloadMethodService payloadService;
+    PayloadMethodService payloadMethodService;
 
     @Autowired
     HeaderClassExtractor headerClassExtractor;
@@ -91,7 +91,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                 TestMethodListener.class,
                 this.bindingFactory,
                 new AsyncHeadersNotDocumented(),
-                payloadService,
+                payloadMethodService,
                 headerClassExtractor,
                 componentsService);
     }

@@ -29,13 +29,13 @@ public class AsyncAnnotationOperationsScanner<A extends Annotation> extends Asyn
             ClassScanner classScanner,
             ComponentsService componentsService,
             PayloadClassExtractor payloadClassExtractor,
-            PayloadAsyncOperationService payloadService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         super(
                 asyncAnnotationProvider,
                 payloadClassExtractor,
-                payloadService,
+                payloadAsyncOperationService,
                 componentsService,
                 operationBindingProcessors,
                 messageBindingProcessors);

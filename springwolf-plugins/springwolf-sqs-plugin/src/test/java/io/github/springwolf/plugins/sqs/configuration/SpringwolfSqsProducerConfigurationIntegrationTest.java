@@ -48,6 +48,7 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadMethodParameterService.class),
+                @MockBean(HeaderClassExtractor.class),
                 @MockBean(SqsTemplate.class)
             })
     @Nested
@@ -87,6 +88,7 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadMethodParameterService.class),
+                @MockBean(HeaderClassExtractor.class),
                 @MockBean(SqsTemplate.class)
             })
     @Nested

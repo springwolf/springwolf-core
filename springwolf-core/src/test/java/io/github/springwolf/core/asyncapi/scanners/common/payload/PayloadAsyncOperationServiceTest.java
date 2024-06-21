@@ -8,6 +8,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -25,9 +26,15 @@ class PayloadAsyncOperationServiceTest {
     private PayloadClassExtractor payloadClassExtractor = mock(PayloadClassExtractor.class);
     private ComponentsService componentsService = mock(ComponentsService.class);
     private SpringwolfConfigProperties properties = mock(SpringwolfConfigProperties.class);
-    private PayloadService payloadService = new PayloadService(componentsService, properties);
-    private PayloadAsyncOperationService payloadAsyncOperationService =
-            new PayloadAsyncOperationService(payloadClassExtractor, payloadService);
+
+    private PayloadService payloadService;
+    private PayloadAsyncOperationService payloadAsyncOperationService;
+
+    @BeforeEach
+    void setUp() {
+        payloadService = new PayloadService(componentsService, properties);
+        payloadAsyncOperationService = new PayloadAsyncOperationService(payloadClassExtractor, payloadService);
+    }
 
     @Test
     public void shouldUsePayloadFromAsyncOperationAnnotation() {

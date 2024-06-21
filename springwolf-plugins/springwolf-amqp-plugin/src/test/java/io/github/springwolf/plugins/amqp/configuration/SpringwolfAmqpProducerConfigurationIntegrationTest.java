@@ -53,6 +53,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadAsyncOperationService.class),
                 @MockBean(PayloadMethodParameterService.class),
+                @MockBean(HeaderClassExtractor.class),
                 @MockBean(AsyncApiDocketService.class)
             })
     @Nested
@@ -95,6 +96,7 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadAsyncOperationService.class),
                 @MockBean(PayloadMethodParameterService.class),
+                @MockBean(HeaderClassExtractor.class),
             })
     @Nested
     class AmqpProducerWillNotBeCreatedIfDisabledTest {

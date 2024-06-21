@@ -88,7 +88,8 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadAsyncOperationService.class),
-                @MockBean(PayloadMethodParameterService.class)
+                @MockBean(PayloadMethodParameterService.class),
+                @MockBean(HeaderClassExtractor.class),
             })
     class KafkaProducerWillNotBeCreatedIfDisabledTest {
         @Autowired

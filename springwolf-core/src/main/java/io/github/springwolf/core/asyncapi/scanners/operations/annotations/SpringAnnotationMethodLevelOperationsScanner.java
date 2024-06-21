@@ -31,19 +31,19 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         extends MethodLevelAnnotationScanner<MethodAnnotation> implements SpringAnnotationOperationsScannerDelegator {
 
     private final Class<MethodAnnotation> methodAnnotationClass;
-    private final PayloadMethodParameterService payloadService;
+    private final PayloadMethodParameterService payloadMethodParameterService;
     private final HeaderClassExtractor headerClassExtractor;
 
     public SpringAnnotationMethodLevelOperationsScanner(
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<MethodAnnotation> bindingFactory,
             AsyncHeadersBuilder asyncHeadersBuilder,
-            PayloadMethodParameterService payloadService,
+            PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         super(bindingFactory, asyncHeadersBuilder, componentsService);
         this.methodAnnotationClass = methodAnnotationClass;
-        this.payloadService = payloadService;
+        this.payloadMethodParameterService = payloadMethodParameterService;
         this.headerClassExtractor = headerClassExtractor;
     }
 
@@ -67,7 +67,7 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
 
         String channelName = bindingFactory.getChannelName(annotation);
         String operationId = channelName + "_" + OperationAction.RECEIVE + "_" + method.getName();
-        NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
+        NamedSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method);
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
 
         Operation operation = buildOperation(annotation, payloadSchema, headerSchema);

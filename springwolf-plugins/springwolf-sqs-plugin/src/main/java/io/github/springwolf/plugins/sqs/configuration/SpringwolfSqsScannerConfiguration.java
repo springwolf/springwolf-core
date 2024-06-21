@@ -38,7 +38,7 @@ public class SpringwolfSqsScannerConfiguration {
     public SpringAnnotationChannelsScanner simpleSqsMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner classScanner,
             SqsBindingFactory sqsBindingBuilder,
-            PayloadMethodParameterService payloadService,
+            PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<SqsListener> strategy =
@@ -46,7 +46,7 @@ public class SpringwolfSqsScannerConfiguration {
                         SqsListener.class,
                         sqsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
-                        payloadService,
+                        payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
@@ -59,7 +59,7 @@ public class SpringwolfSqsScannerConfiguration {
     public SpringAnnotationOperationsScanner simpleSqsMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner classScanner,
             SqsBindingFactory sqsBindingBuilder,
-            PayloadMethodParameterService payloadService,
+            PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<SqsListener> strategy =
@@ -67,7 +67,7 @@ public class SpringwolfSqsScannerConfiguration {
                         SqsListener.class,
                         sqsBindingBuilder,
                         new AsyncHeadersNotDocumented(),
-                        payloadService,
+                        payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
