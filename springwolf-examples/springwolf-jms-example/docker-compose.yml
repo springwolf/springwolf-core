@@ -11,9 +11,11 @@ services:
       - activemq
 
   activemq:
-    image: apache/activemq-artemis:2.31.2
+    image: apache/activemq-artemis:2.34.0
     environment:
       EXTRA_ARGS: --http-host 0.0.0.0 --relax-jolokia --nio
+      ARTEMIS_USER: artemis
+      ARTEMIS_PASSWORD: artemis
     ports:
       - "61616:61616"
       - "8161:8161"
