@@ -20,9 +20,12 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.json.Examp
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -54,6 +57,8 @@ import static org.assertj.core.api.Assertions.assertThat;
             DefaultComponentsService.class,
             SwaggerSchemaService.class,
             SwaggerSchemaUtil.class,
+            PayloadMethodParameterService.class,
+            PayloadAsyncOperationService.class,
             PayloadService.class,
             PayloadClassExtractor.class,
             HeaderClassExtractor.class,
@@ -69,7 +74,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
     BindingFactory<TestClassListener> bindingFactory;
 
     @Autowired
-    PayloadService payloadService;
+    PayloadMethodService payloadMethodService;
 
     @Autowired
     HeaderClassExtractor headerClassExtractor;
@@ -86,7 +91,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                 TestMethodListener.class,
                 this.bindingFactory,
                 new AsyncHeadersNotDocumented(),
-                payloadService,
+                payloadMethodService,
                 headerClassExtractor,
                 componentsService);
     }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common;
 
-import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.AnnotatedElement;

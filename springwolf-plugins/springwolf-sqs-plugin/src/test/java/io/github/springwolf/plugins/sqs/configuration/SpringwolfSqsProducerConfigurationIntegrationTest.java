@@ -2,15 +2,10 @@
 package io.github.springwolf.plugins.sqs.configuration;
 
 import io.awspring.cloud.sqs.operations.SqsTemplate;
-import io.github.springwolf.core.asyncapi.AsyncApiService;
-import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
-import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.sqs.controller.SpringwolfSqsController;
 import io.github.springwolf.plugins.sqs.producer.SpringwolfSqsProducer;
@@ -34,6 +29,7 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
     @ContextConfiguration(
             classes = {
                 SpringwolfSqsAutoConfiguration.class,
+                ComponentsService.class,
                 PublishingPayloadCreator.class,
                 ObjectMapperTestConfiguration.class
             })
@@ -51,12 +47,8 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
-                @MockBean(PayloadService.class),
-                @MockBean(PayloadClassExtractor.class),
+                @MockBean(PayloadMethodParameterService.class),
                 @MockBean(HeaderClassExtractor.class),
-                @MockBean(TypeToClassConverter.class),
-                @MockBean(AsyncApiDocketService.class),
-                @MockBean(AsyncApiService.class),
                 @MockBean(SqsTemplate.class)
             })
     @Nested
@@ -95,11 +87,8 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
             value = {
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
-                @MockBean(PayloadService.class),
-                @MockBean(PayloadClassExtractor.class),
+                @MockBean(PayloadMethodParameterService.class),
                 @MockBean(HeaderClassExtractor.class),
-                @MockBean(TypeToClassConverter.class),
-                @MockBean(ChannelsService.class),
                 @MockBean(SqsTemplate.class)
             })
     @Nested

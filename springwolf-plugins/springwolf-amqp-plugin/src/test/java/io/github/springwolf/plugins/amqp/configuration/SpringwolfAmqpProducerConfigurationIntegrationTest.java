@@ -5,9 +5,8 @@ import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.amqp.controller.SpringwolfAmqpController;
@@ -52,10 +51,9 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 @MockBean(RabbitTemplate.class),
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
-                @MockBean(PayloadService.class),
-                @MockBean(PayloadClassExtractor.class),
+                @MockBean(PayloadAsyncOperationService.class),
+                @MockBean(PayloadMethodParameterService.class),
                 @MockBean(HeaderClassExtractor.class),
-                @MockBean(TypeToClassConverter.class),
                 @MockBean(AsyncApiDocketService.class)
             })
     @Nested
@@ -96,10 +94,9 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 @MockBean(RabbitTemplate.class),
                 @MockBean(SpringwolfClassScanner.class),
                 @MockBean(ComponentsService.class),
-                @MockBean(PayloadService.class),
-                @MockBean(PayloadClassExtractor.class),
+                @MockBean(PayloadAsyncOperationService.class),
+                @MockBean(PayloadMethodParameterService.class),
                 @MockBean(HeaderClassExtractor.class),
-                @MockBean(TypeToClassConverter.class),
             })
     @Nested
     class AmqpProducerWillNotBeCreatedIfDisabledTest {

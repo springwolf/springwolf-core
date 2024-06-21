@@ -27,9 +27,12 @@ import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodReturnService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -189,10 +192,27 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public PayloadService payloadService(
-            PayloadClassExtractor payloadClassExtractor,
-            ComponentsService componentsService,
-            SpringwolfConfigProperties properties) {
-        return new PayloadService(payloadClassExtractor, componentsService, properties);
+    public PayloadService payloadService(ComponentsService componentsService, SpringwolfConfigProperties properties) {
+        return new PayloadService(componentsService, properties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PayloadAsyncOperationService payloadAsyncOperationService(
+            PayloadClassExtractor payloadClassExtractor, PayloadService payloadService) {
+        return new PayloadAsyncOperationService(payloadClassExtractor, payloadService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PayloadMethodParameterService payloadMethodParameterService(
+            PayloadClassExtractor payloadClassExtractor, PayloadService payloadService) {
+        return new PayloadMethodParameterService(payloadClassExtractor, payloadService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PayloadMethodReturnService payloadMethodReturnService(PayloadService payloadService) {
+        return new PayloadMethodReturnService(payloadService);
     }
 }

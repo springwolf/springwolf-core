@@ -73,6 +73,7 @@
   "components": {
     "schemas": {
       "AnotherPayloadDto": {
+        "title": "AnotherPayloadDto",
         "type": "object",
         "properties": {
           "example": {
@@ -102,6 +103,7 @@
         ]
       },
       "ExamplePayloadDto": {
+        "title": "ExamplePayloadDto",
         "type": "object",
         "properties": {
           "someEnum": {
@@ -146,6 +148,7 @@
         ]
       },
       "GooglePubSubPayloadDto": {
+        "title": "GooglePubSubPayloadDto",
         "type": "object",
         "properties": {
           "someLong": {

@@ -14,7 +14,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.schemas.SchemaObjectMerger;
@@ -40,7 +40,7 @@ public abstract class ClassLevelAnnotationScanner<
     protected final Class<MethodAnnotation> methodAnnotationClass;
     protected final BindingFactory<ClassAnnotation> bindingFactory;
     protected final AsyncHeadersBuilder asyncHeadersBuilder;
-    protected final PayloadService payloadService;
+    protected final PayloadMethodService payloadMethodService;
     protected final HeaderClassExtractor headerClassExtractor;
     protected final ComponentsService componentsService;
 
@@ -71,7 +71,7 @@ public abstract class ClassLevelAnnotationScanner<
             SpringAnnotationClassLevelOperationsScanner.MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
                 .map((Method method) -> {
-                    NamedSchemaObject payloadSchema = payloadService.extractSchema(method);
+                    NamedSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
                     SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
                     return buildMessage(classAnnotation, payloadSchema, headerSchema);
                 })
