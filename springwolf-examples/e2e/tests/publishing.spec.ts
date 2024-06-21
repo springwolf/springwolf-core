@@ -16,7 +16,7 @@ import { getExampleAsyncApi, getExampleProject } from "../util/example";
 let dockerLogs: MonitorDockerLogsResponse;
 test.describe("Publishing in " + getExampleProject() + " example", () => {
   test.skip(
-    ["cloud-stream", "sns"].includes(getExampleProject()),
+    ["cloud-stream", "sns", "stomp"].includes(getExampleProject()),
     "Example/Plugin does not support publishing"
   );
 

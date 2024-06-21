@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        binding: [ "amqp", "googlepubsub", "jms", "kafka", "sns", "sqs" ]
+        binding: [ "amqp", "googlepubsub", "jms", "kafka", "sns", "sqs", "stomp" ]
 
     env:
       binding: springwolf-bindings/springwolf-${{ matrix.binding }}-binding

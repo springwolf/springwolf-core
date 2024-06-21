@@ -1,0 +1,5 @@
+services:
+  app:
+    image: stavshamir/springwolf-stomp-example:${SPRINGWOLF_VERSION}
+    ports:
+      - "8080:8080"

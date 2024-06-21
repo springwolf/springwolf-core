@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <meta content="" name="description">
+  <meta content="" name="author">
+
+  <title>Springwolf example project - STOMP</title>
+  <link rel="stylesheet" href="bootstrap.min.css" />
+</head>
+<body>
+
+<script src="sockjs-0.3.4.js"></script>
+<script src="stomp.js"></script>
+<script type="text/javascript">
+  var stompClient = null;
+
+  function connect() {
+    var socket = new SockJS("/myendpoint");
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function(frame) {
+      console.log("Connected: " + JSON.stringify(frame));
+      document.getElementById("username").innerText = frame.headers["user-name"];
+
+      stompClient.subscribe("/queue/another-queue", function(messageOutput) {
+        const data = JSON.parse(messageOutput.body);
+        showMessageOutput(data);
+      });
+
+      stompClient.subscribe("/topic/sendto-response-queue", function(messageOutput) {
+        const data = JSON.parse(messageOutput.body);
+        showSendToMessageOutput(data);
+      });
+
+      stompClient.subscribe("/user/queue/sendtouser-response-queue", function(messageOutput) {
+        const data = JSON.parse(messageOutput.body);
+        showSendToUserMessageOutput(data);
+      });
+
+      sendMessage();
+    }, function() {
+      setTimeout(() => {
+        connect();
+      }, 1000);
+    });
+  }
+
+  function sendMessage() {
+    var message = document.getElementById("chat-message").value;
+    let body = JSON.stringify({ "someString": message, "someLong": Date.now(), "someEnum": "FOO1" });
+
+    stompClient.send("/app/queue/example-queue", {}, body);
+    stompClient.send("/app/queue/sendto-queue", {}, body);
+    stompClient.send("/app/queue/sendtouser-queue", {}, body);
+  }
+
+  function showMessageOutput(messageOutput) {
+    console.log(messageOutput);
+    document.getElementById("server-comm").innerHTML += "<p>" + JSON.stringify(messageOutput) + "</p>";
+  }
+
+  function showSendToMessageOutput(messageOutput) {
+    console.log(messageOutput);
+    document.getElementById("server-comm-sendTo").innerHTML += "<p>" + JSON.stringify(messageOutput) + "</p>";
+  }
+  function showSendToUserMessageOutput(messageOutput) {
+    console.log(messageOutput);
+    document.getElementById("server-comm-sendToUser").innerHTML += "<p>" + JSON.stringify(messageOutput) + "</p>";
+  }
+
+  connect();
+</script>
+
+
+<!-- Page Content -->
+<div class="container-fluid">
+  <h1>Springwolf STOMP demo</h1>
+  <h2 class="mt-5">Username: <span id="username"></span></h2>
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <h1 class="mt-5">Chat (via producer)</h1>
+      <textarea id="chat-message">initial message send at startup</textarea>
+      <button onclick="sendMessage()">send message</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 text-center">
+      <h3 class="mt-5">/queue/another-queue (all messages)</h3>
+      <div class="card-header" id="server-comm"></div>
+    </div>
+    <div class="col-lg-4 text-center">
+      <h3 class="mt-5">/topic/sendto-response-queue (all messages)</h3>
+      <div class="card-header" id="server-comm-sendTo"></div>
+    </div>
+    <div class="col-lg-4 text-center">
+      <h3 class="mt-5">/user/queue/sendtouser-response-queue (your messages only)</h3>
+      <div class="card-header" id="server-comm-sendToUser"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -33,6 +33,7 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         extends MethodLevelAnnotationScanner<MethodAnnotation> implements SpringAnnotationOperationsScannerDelegator {
 
     private final Class<MethodAnnotation> methodAnnotationClass;
+    private final List<OperationCustomizer> customizers;
     private final PayloadMethodParameterService payloadMethodParameterService;
     private final HeaderClassExtractor headerClassExtractor;
 
@@ -40,10 +41,12 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<MethodAnnotation> bindingFactory,
             AsyncHeadersBuilder asyncHeadersBuilder,
+            List<OperationCustomizer> customizers,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         super(bindingFactory, asyncHeadersBuilder, componentsService);
+        this.customizers = customizers;
         this.methodAnnotationClass = methodAnnotationClass;
         this.payloadMethodParameterService = payloadMethodParameterService;
         this.headerClassExtractor = headerClassExtractor;
@@ -75,16 +78,13 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
 
         Operation operation = buildOperation(annotation, payloadSchema, headerSchema);
+        customizers.forEach(customizer -> customizer.customize(operation, method));
         return Map.entry(operationId, operation);
     }
 
     private Operation buildOperation(
             MethodAnnotation annotation, NamedSchemaObject payloadType, SchemaObject headerSchema) {
         MessageObject message = buildMessage(annotation, payloadType, headerSchema);
-        return buildOperation(annotation, message);
-    }
-
-    private Operation buildOperation(MethodAnnotation annotation, MessageObject message) {
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(annotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
         String channelId = ReferenceUtil.toValidId(bindingFactory.getChannelName(annotation));

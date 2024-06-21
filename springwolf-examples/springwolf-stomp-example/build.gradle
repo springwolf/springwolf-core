@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'ca.cutterslade.analyze'
+
+    id 'com.bmuschko.docker-spring-boot-application'
+}
+
+dependencies {
+    implementation project(":springwolf-core")
+    implementation project(":springwolf-plugins:springwolf-stomp")
+    permitUnusedDeclared project(":springwolf-plugins:springwolf-stomp")
+    permitUsedUndeclared project(":springwolf-bindings:springwolf-stomp-binding")
+
+    runtimeOnly project(":springwolf-ui")
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation "org.springframework:spring-jcl"
+    implementation "org.springframework:spring-web"
+    implementation "org.springframework:spring-websocket"
+
+    implementation "org.springframework.boot:spring-boot"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-messaging"
+
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
+
+    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-test"
+    testImplementation "org.springframework:spring-beans"
+    testImplementation "org.springframework:spring-core"
+    testImplementation "org.springframework:spring-test"
+    permitTestUnusedDeclared "org.springframework:spring-test"
+    testImplementation "org.springframework:spring-web"
+
+    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+}
+
+docker {
+    springBootApplication {
+        maintainer = 'shamir.stav@gmail.com'
+        baseImage = 'eclipse-temurin:17-jre-focal'
+        ports = [8080]
+        images = ["stavshamir/springwolf-stomp-example:${project.version}"]
+    }
+
+    registryCredentials {
+        username = project.findProperty('DOCKERHUB_USERNAME') ?: ''
+        password = project.findProperty('DOCKERHUB_TOKEN') ?: ''
+    }
+}
+
+test {
+    dependsOn dockerBuildImage
+}

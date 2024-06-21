@@ -21,6 +21,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 
+import java.util.List;
+
 import static io.github.springwolf.plugins.kafka.configuration.properties.SpringwolfKafkaConfigConstants.SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED;
 
 /**
@@ -142,6 +144,7 @@ public class SpringwolfKafkaScannerConfiguration {
                         KafkaListener.class,
                         kafkaBindingBuilder,
                         asyncHeadersForKafkaBuilder,
+                        List.of(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
