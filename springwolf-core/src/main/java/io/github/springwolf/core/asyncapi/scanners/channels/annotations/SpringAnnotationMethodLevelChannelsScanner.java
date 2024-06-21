@@ -65,7 +65,7 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
 
         NamedSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
 
-SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
+        SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
         ChannelObject channelItem = buildChannelItem(annotation, payloadSchema, headerSchema);
         return Map.entry(channelItem.getChannelId(), channelItem);
     }
