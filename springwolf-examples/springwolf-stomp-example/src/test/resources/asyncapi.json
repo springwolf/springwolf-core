@@ -104,6 +104,7 @@
         ]
       },
       "io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto": {
+        "title": "AnotherPayloadDto",
         "type": "object",
         "properties": {
           "example": {
@@ -133,6 +134,7 @@
         ]
       },
       "io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto": {
+        "title": "ExamplePayloadDto",
         "type": "object",
         "properties": {
           "someEnum": {
