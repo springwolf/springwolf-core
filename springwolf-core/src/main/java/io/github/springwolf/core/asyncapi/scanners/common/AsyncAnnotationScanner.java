@@ -105,7 +105,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
                 .build());
 
         String description = operationData.message().description();
-        if (!StringUtils.hasText(description)) {
+        if (!StringUtils.hasText(description) && payloadSchema.schema() != null) {
             description = payloadSchema.schema().getDescription();
         }
         if (StringUtils.hasText(description)) {
@@ -116,7 +116,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
         var builder = MessageObject.builder()
                 .messageId(payloadSchema.name())
                 .name(payloadSchema.name())
-                .title(payloadSchema.schema().getTitle())
+                .title(payloadSchema.title())
                 .description(description)
                 .payload(messagePayload)
                 .headers(MessageHeaders.of(MessageReference.toSchema(headerSchemaName)))

@@ -99,7 +99,7 @@ public abstract class ClassLevelAnnotationScanner<
         MessageObject message = MessageObject.builder()
                 .messageId(payloadSchema.name())
                 .name(payloadSchema.name())
-                .title(payloadSchema.schema().getTitle())
+                .title(payloadSchema.title())
                 .description(null)
                 .payload(payload)
                 .headers(MessageHeaders.of(MessageReference.toSchema(headerSchemaName)))

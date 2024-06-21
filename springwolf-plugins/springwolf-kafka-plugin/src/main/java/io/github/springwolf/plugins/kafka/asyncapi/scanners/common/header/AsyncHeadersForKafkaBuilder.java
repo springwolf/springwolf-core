@@ -9,8 +9,7 @@ import io.github.springwolf.plugins.kafka.asyncapi.components.header.AsyncHeader
 public class AsyncHeadersForKafkaBuilder implements AsyncHeadersBuilder {
     @Override
     public SchemaObject buildHeaders(NamedSchemaObject payloadSchema) {
-        return new AsyncHeadersForSpringKafkaBuilder(
-                        "SpringKafkaDefaultHeaders-" + payloadSchema.schema().getTitle())
+        return new AsyncHeadersForSpringKafkaBuilder("SpringKafkaDefaultHeaders-" + payloadSchema.title())
                 .withTypeIdHeader(payloadSchema.name())
                 .build();
     }
