@@ -23,6 +23,7 @@
   },
   "channels": {
     "another-queue": {
+      "address": "another-queue",
       "messages": {
         "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.jms.dtos.AnotherPayloadDto"
@@ -30,6 +31,7 @@
       }
     },
     "example-queue": {
+      "address": "example-queue",
       "messages": {
         "io.github.springwolf.examples.jms.dtos.ExamplePayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.jms.dtos.ExamplePayloadDto"

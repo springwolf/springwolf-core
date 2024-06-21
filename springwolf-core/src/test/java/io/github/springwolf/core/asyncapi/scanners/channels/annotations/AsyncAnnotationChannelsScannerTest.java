@@ -1,19 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.channels.annotations;
 
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.springwolf.asyncapi.v3.model.channel.ServerReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
-import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
@@ -64,6 +63,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AsyncAnnotationChannelsScannerTest {
+    private static final String CHANNEL = "test/channel";
+    private static final String CHANNEL_ID = ReferenceUtil.toValidId(CHANNEL);
 
     private final AsyncAnnotationScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
             new AsyncAnnotationScanner.AsyncAnnotationProvider<>() {
@@ -122,7 +123,7 @@ class AsyncAnnotationChannelsScannerTest {
         channelScanner.setEmbeddedValueResolver(stringValueResolver);
         when(stringValueResolver.resolveStringValue(any()))
                 .thenAnswer(invocation -> switch ((String) invocation.getArgument(0)) {
-                    case "${test.property.test-channel}" -> "test-channel";
+                    case "${test.property.test-channel}" -> CHANNEL;
                     case "${test.property.description}" -> "description";
                     case "${test.property.server1}" -> "server1";
                     case "${test.property.server2}" -> "server2";
@@ -169,11 +170,13 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
+                .channelId(CHANNEL_ID)
+                .address(CHANNEL)
                 .bindings(null)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(CHANNEL_ID, expectedChannel));
     }
 
     @Test
@@ -184,7 +187,7 @@ class AsyncAnnotationChannelsScannerTest {
         assertThatThrownBy(channelScanner::scan)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(
-                        "Operation 'test-channel_send' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
+                        "Operation 'test_channel_send' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
     }
 
     @Test
@@ -211,12 +214,14 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
+                .channelId(CHANNEL_ID)
+                .address(CHANNEL)
                 .bindings(null)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .servers(List.of(ServerReference.fromServer("server1"), ServerReference.fromServer("server2")))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(CHANNEL_ID, expectedChannel));
     }
 
     @Test
@@ -244,11 +249,15 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannel1 = ChannelObject.builder()
+                .channelId("test-channel-1")
+                .address("test-channel-1")
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(null)
                 .build();
 
         ChannelObject expectedChannel2 = ChannelObject.builder()
+                .channelId("test-channel-2")
+                .address("test-channel-2")
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(null)
                 .build();
@@ -284,11 +293,13 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
+                .channelId(CHANNEL_ID)
+                .address(CHANNEL)
                 .bindings(null)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(CHANNEL_ID, expectedChannel));
     }
 
     private static class ClassWithoutListenerAnnotation {
@@ -298,7 +309,7 @@ class AsyncAnnotationChannelsScannerTest {
 
     private static class ClassWithListenerAnnotation {
 
-        @AsyncListener(operation = @AsyncOperation(channelName = "test-channel"))
+        @AsyncListener(operation = @AsyncOperation(channelName = CHANNEL))
         private void methodWithAnnotation(SimpleFoo payload) {}
 
         private void methodWithoutAnnotation() {}
@@ -309,7 +320,7 @@ class AsyncAnnotationChannelsScannerTest {
         @AsyncListener(
                 operation =
                         @AsyncOperation(
-                                channelName = "test-channel",
+                                channelName = CHANNEL,
                                 description = "test channel operation description",
                                 servers = {"server3"}))
         private void methodWithAnnotation(SimpleFoo payload) {}
@@ -350,7 +361,7 @@ class AsyncAnnotationChannelsScannerTest {
         @AsyncListener(
                 operation =
                         @AsyncOperation(
-                                channelName = "test-channel",
+                                channelName = CHANNEL,
                                 description = "test channel operation description",
                                 message =
                                         @AsyncMessage(
@@ -391,20 +402,20 @@ class AsyncAnnotationChannelsScannerTest {
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
+                    .channelId(CHANNEL_ID)
+                    .address(CHANNEL)
                     .bindings(null)
                     .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+            assertThat(actualChannels).containsExactly(Map.entry(CHANNEL_ID, expectedChannel));
         }
 
         private static class ClassImplementingInterface implements ClassInterface<String> {
 
             @AsyncListener(
                     operation =
-                            @AsyncOperation(
-                                    channelName = "test-channel",
-                                    description = "test channel operation description"))
+                            @AsyncOperation(channelName = CHANNEL, description = "test channel operation description"))
             @Override
             public void methodFromInterface(String payload) {}
         }
@@ -422,9 +433,7 @@ class AsyncAnnotationChannelsScannerTest {
         interface ClassInterfaceWithAnnotation<T> {
             @AsyncListener(
                     operation =
-                            @AsyncOperation(
-                                    channelName = "test-channel",
-                                    description = "test channel operation description"))
+                            @AsyncOperation(channelName = CHANNEL, description = "test channel operation description"))
             void methodFromInterface(T payload);
         }
     }
@@ -455,21 +464,14 @@ class AsyncAnnotationChannelsScannerTest {
                     .bindings(EMPTY_MAP)
                     .build();
 
-            Operation expectedOperation = Operation.builder()
-                    .action(OperationAction.SEND)
-                    .channel(ChannelReference.fromChannel("test-channel"))
-                    .description("test channel operation description")
-                    .title("test-channel_send")
-                    .bindings(EMPTY_MAP)
-                    .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
-                    .build();
-
             ChannelObject expectedChannel = ChannelObject.builder()
+                    .channelId(CHANNEL_ID)
+                    .address(CHANNEL)
                     .bindings(null)
                     .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry("test-channel", expectedChannel));
+            assertThat(actualChannels).containsExactly(Map.entry(CHANNEL_ID, expectedChannel));
         }
 
         public static class ClassWithMetaAnnotation {
@@ -481,10 +483,7 @@ class AsyncAnnotationChannelsScannerTest {
         @Retention(RetentionPolicy.RUNTIME)
         @Inherited
         @AsyncListener(
-                operation =
-                        @AsyncOperation(
-                                channelName = "test-channel",
-                                description = "test channel operation description"))
+                operation = @AsyncOperation(channelName = CHANNEL, description = "test channel operation description"))
         public @interface AsyncListenerMetaAnnotation {}
     }
 

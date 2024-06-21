@@ -24,9 +24,9 @@ import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationU
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.Annotation;
@@ -65,15 +65,16 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
     }
 
-    protected Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelName) {
+    protected Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelId) {
         String description = this.resolver.resolveStringValue(asyncOperation.description());
-        if (!StringUtils.hasText(description)) {
+        if (StringUtils.isBlank(description)) {
             description = "Auto-generated description";
         } else {
             description = TextUtils.trimIndent(description);
         }
 
-        String operationTitle = channelName + "_" + this.asyncAnnotationProvider.getOperationType().type;
+        String operationTitle =
+                StringUtils.joinWith("_", channelId, this.asyncAnnotationProvider.getOperationType().type);
 
         Map<String, OperationBinding> operationBinding =
                 AsyncAnnotationUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
@@ -81,10 +82,10 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
         MessageObject message = buildMessage(asyncOperation, method);
 
         return Operation.builder()
-                .channel(ChannelReference.fromChannel(channelName))
+                .channel(ChannelReference.fromChannel(channelId))
                 .description(description)
                 .title(operationTitle)
-                .messages(List.of(MessageReference.toChannelMessage(channelName, message)))
+                .messages(List.of(MessageReference.toChannelMessage(channelId, message)))
                 .bindings(opBinding)
                 .build();
     }
@@ -103,10 +104,10 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
                 .build());
 
         String description = operationData.message().description();
-        if (!StringUtils.hasText(description) && payloadSchema.schema() != null) {
+        if (StringUtils.isBlank(description) && payloadSchema.schema() != null) {
             description = payloadSchema.schema().getDescription();
         }
-        if (StringUtils.hasText(description)) {
+        if (StringUtils.isNotBlank(description)) {
             description = this.resolver.resolveStringValue(description);
             description = TextUtils.trimIndent(description);
         }

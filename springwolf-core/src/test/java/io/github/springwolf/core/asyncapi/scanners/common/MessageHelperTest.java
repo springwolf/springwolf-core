@@ -25,7 +25,7 @@ class MessageHelperTest {
     @Test
     void toOperationsMessageObjectOrComposition_emptySet() {
         // When messages set is empty, the method should fail
-        assertThatThrownBy(() -> toOperationsMessagesMap("channel", Collections.emptySet()))
+        assertThatThrownBy(() -> toOperationsMessagesMap("channelId", Collections.emptySet()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -56,11 +56,11 @@ class MessageHelperTest {
     void toOperationsMessagesMap_oneMessage() {
         MessageObject message = MessageObject.builder().name("foo").build();
 
-        var messagesMap = toOperationsMessagesMap("channelName", Set.of(message));
+        var messagesMap = toOperationsMessagesMap("channelId", Set.of(message));
 
         assertThat(messagesMap)
                 .containsExactlyInAnyOrderEntriesOf(
-                        Map.of("foo", MessageReference.toChannelMessage("channelName", message)));
+                        Map.of("foo", MessageReference.toChannelMessage("channelId", message)));
     }
 
     @Test
@@ -85,14 +85,14 @@ class MessageHelperTest {
 
         MessageObject message2 = MessageObject.builder().name("bar").build();
 
-        var messages = toOperationsMessagesMap("channelName", Set.of(message1, message2));
+        var messages = toOperationsMessagesMap("channelId", Set.of(message1, message2));
 
         assertThat(messages)
                 .containsExactlyInAnyOrderEntriesOf(Map.of(
                         "bar",
-                        MessageReference.toChannelMessage("channelName", message2),
+                        MessageReference.toChannelMessage("channelId", message2),
                         "foo",
-                        MessageReference.toChannelMessage("channelName", message1)));
+                        MessageReference.toChannelMessage("channelId", message1)));
     }
 
     @Test
@@ -140,14 +140,14 @@ class MessageHelperTest {
                 .description("This is message 3, but in essence the same payload type as message 2")
                 .build();
 
-        var messages = toOperationsMessagesMap("channelName", Set.of(message1, message2, message3));
+        var messages = toOperationsMessagesMap("channelId", Set.of(message1, message2, message3));
 
         // we do not have any guarantee whether message2 or message3 won the deduplication.
         assertThat(messages)
                 .hasSize(2)
-                .containsValue(MessageReference.toChannelMessage("channelName", message1))
+                .containsValue(MessageReference.toChannelMessage("channelId", message1))
                 .containsAnyOf(
-                        entry("bar", MessageReference.toChannelMessage("channelName", message2)),
-                        entry("bar", MessageReference.toChannelMessage("channelName", message3)));
+                        entry("bar", MessageReference.toChannelMessage("channelId", message2)),
+                        entry("bar", MessageReference.toChannelMessage("channelId", message3)));
     }
 }

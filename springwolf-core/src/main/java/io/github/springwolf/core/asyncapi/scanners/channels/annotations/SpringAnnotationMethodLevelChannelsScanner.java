@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.channels.annotations;
 
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
@@ -63,11 +64,10 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
         MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         NamedSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
+
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
         ChannelObject channelItem = buildChannelItem(annotation, payloadSchema, headerSchema);
-
-        String channelName = bindingFactory.getChannelName(annotation);
-        return Map.entry(channelName, channelItem);
+        return Map.entry(channelItem.getChannelId(), channelItem);
     }
 
     private ChannelObject buildChannelItem(
@@ -79,7 +79,10 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
     private ChannelObject buildChannelItem(MethodAnnotation annotation, MessageObject message) {
         Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(annotation);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
+        String channelName = bindingFactory.getChannelName(annotation);
         return ChannelObject.builder()
+                .channelId(ReferenceUtil.toValidId(channelName))
+                .address(channelName)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(chBinding)
                 .build();

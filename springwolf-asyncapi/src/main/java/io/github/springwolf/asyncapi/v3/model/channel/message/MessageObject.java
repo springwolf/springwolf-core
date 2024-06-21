@@ -8,11 +8,13 @@ import io.github.springwolf.asyncapi.v3.model.ExtendableObject;
 import io.github.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.springwolf.asyncapi.v3.model.Tag;
 import io.github.springwolf.asyncapi.v3.model.channel.CorrelationID;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,7 @@ public class MessageObject extends ExtendableObject implements Message {
      * naming conventions.
      */
     @JsonIgnore
+    @Setter(AccessLevel.NONE)
     private String messageId;
 
     /**

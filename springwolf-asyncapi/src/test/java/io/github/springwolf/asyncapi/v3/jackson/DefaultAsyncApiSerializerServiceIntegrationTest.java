@@ -8,7 +8,6 @@ import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.springwolf.asyncapi.v3.model.channel.ServerReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
@@ -23,6 +22,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -110,7 +110,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .info(info)
                 .defaultContentType("application/json")
                 .servers(Map.of("production", productionServer))
-                .channels(Map.of("new-user", newUserChannel))
+                .channels(Map.of(newUserChannel.getChannelId(), newUserChannel))
                 .components(
                         Components.builder().schemas(schemas).messages(messages).build())
                 .operations(Map.of("new-user_listenerMethod_subscribe", newUserOperation))

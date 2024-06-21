@@ -38,12 +38,12 @@ public class MessageReference implements Message, Reference {
         return new MessageReference("#/components/messages/" + messageId);
     }
 
-    public static MessageReference toChannelMessage(String channelName, MessageObject message) {
-        return new MessageReference("#/channels/" + channelName + "/messages/" + message.getMessageId());
+    public static MessageReference toChannelMessage(String channelId, MessageObject message) {
+        return new MessageReference("#/channels/" + channelId + "/messages/" + message.getMessageId());
     }
 
-    public static MessageReference toChannelMessage(String channelName, String messageId) {
-        return new MessageReference("#/channels/" + channelName + "/messages/" + messageId);
+    public static MessageReference toChannelMessage(String channelId, String messageId) {
+        return new MessageReference("#/channels/" + channelId + "/messages/" + messageId);
     }
 
     public static MessageReference toSchema(String schemaName) {

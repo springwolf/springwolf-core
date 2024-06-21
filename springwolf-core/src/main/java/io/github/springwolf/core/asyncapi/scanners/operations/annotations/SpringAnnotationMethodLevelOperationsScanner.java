@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
@@ -17,6 +18,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObj
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -66,7 +68,9 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         String channelName = bindingFactory.getChannelName(annotation);
-        String operationId = channelName + "_" + OperationAction.RECEIVE + "_" + method.getName();
+        String operationId = StringUtils.joinWith(
+                "_", ReferenceUtil.toValidId(channelName), OperationAction.RECEIVE, method.getName());
+
         NamedSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method);
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
 
@@ -83,12 +87,12 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
     private Operation buildOperation(MethodAnnotation annotation, MessageObject message) {
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(annotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        String channelName = bindingFactory.getChannelName(annotation);
+        String channelId = ReferenceUtil.toValidId(bindingFactory.getChannelName(annotation));
 
         return Operation.builder()
                 .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(channelName))
-                .messages(List.of(MessageReference.toChannelMessage(channelName, message)))
+                .channel(ChannelReference.fromChannel(channelId))
+                .messages(List.of(MessageReference.toChannelMessage(channelId, message)))
                 .bindings(opBinding)
                 .build();
     }
