@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -17,8 +19,11 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -309,6 +314,43 @@ class DefaultJsonComponentsServiceTest {
             @AsyncApiPayload
             @Schema(description = "The payload in the envelop", maxLength = 10)
             String payload;
+        }
+    }
+
+    @Nested
+    class RecursionTest {
+        @Test
+        void registerSchemaWithoutStackOverflowException() throws IOException {
+            componentsService.registerSchema(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_JSON);
+
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+
+            assertThat(actualDefinitions).contains("subCriteriaList");
+        }
+
+        @Getter
+        @Setter
+        @AllArgsConstructor
+        @NoArgsConstructor
+        @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, defaultImpl = CriteriaMessage.class)
+        @JsonSubTypes({@JsonSubTypes.Type(value = LegacyCriteriaMessage.class)})
+        public class CriteriaMessage {
+            private String criteriaId;
+            private String note;
+            private String expectedValue;
+        }
+
+        @Getter
+        @Setter
+        @NoArgsConstructor
+        public class LegacyCriteriaMessage extends CriteriaMessage {
+            private List<LegacyCriteriaMessage> subCriteriaList;
+
+            public LegacyCriteriaMessage(
+                    String criteriaId, String note, String expectedValue, List<LegacyCriteriaMessage> subCriteriaList) {
+                super(criteriaId, note, expectedValue);
+                this.subCriteriaList = subCriteriaList;
+            }
         }
     }
 }
