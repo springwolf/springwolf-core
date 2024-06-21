@@ -4,8 +4,10 @@ package io.github.springwolf.plugins.stomp.asyncapi.scanners.bindings;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.common.SendToUserUtil;
+import io.github.springwolf.plugins.stomp.asyncapi.scanners.common.SendToUtil;
 import io.github.springwolf.plugins.stomp.configuration.properties.SpringwolfStompConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.EmbeddedValueResolverAware;
@@ -35,8 +37,8 @@ public class StompBindingSendToUserFactory implements BindingFactory<SendToUser>
     }
 
     @Override
-    public Map<String, MessageBinding> buildMessageBinding(SendToUser annotation) {
-        return SendToUserUtil.buildMessageBinding();
+    public Map<String, MessageBinding> buildMessageBinding(SendToUser annotation, SchemaObject headerSchema) {
+        return SendToUtil.buildMessageBinding();
     }
 
     @Override
