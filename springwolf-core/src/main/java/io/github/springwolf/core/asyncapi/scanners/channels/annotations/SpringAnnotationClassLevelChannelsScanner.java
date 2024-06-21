@@ -31,7 +31,7 @@ public class SpringAnnotationClassLevelChannelsScanner<
             Class<MethodAnnotation> methodAnnotationClass,
             BindingFactory<ClassAnnotation> bindingFactory,
             AsyncHeadersBuilder asyncHeadersBuilder,
-            PayloadMethodService payloadService,
+            PayloadMethodService payloadMethodService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         super(
@@ -39,7 +39,7 @@ public class SpringAnnotationClassLevelChannelsScanner<
                 methodAnnotationClass,
                 bindingFactory,
                 asyncHeadersBuilder,
-                payloadService,
+                payloadMethodService,
                 headerClassExtractor,
                 componentsService);
     }

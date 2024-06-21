@@ -103,7 +103,6 @@ class AsyncAnnotationOperationsScannerTest {
                     asyncAnnotationProvider,
                     classScanner,
                     componentsService,
-                    payloadClassExtractor,
                     payloadAsyncOperationService,
                     operationBindingProcessors,
                     messageBindingProcessors);

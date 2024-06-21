@@ -19,7 +19,6 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBind
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
@@ -43,7 +42,6 @@ import java.util.stream.Stream;
 public abstract class AsyncAnnotationScanner<A extends Annotation> implements EmbeddedValueResolverAware {
 
     protected final AsyncAnnotationProvider<A> asyncAnnotationProvider;
-    protected final PayloadClassExtractor payloadClassExtractor;
     protected final PayloadAsyncOperationService payloadAsyncOperationService;
     protected final ComponentsService componentsService;
     protected final List<OperationBindingProcessor> operationBindingProcessors;

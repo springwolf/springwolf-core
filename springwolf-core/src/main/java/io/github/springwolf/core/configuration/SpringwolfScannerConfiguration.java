@@ -17,7 +17,6 @@ import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClass
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.AsyncAnnotationOperationsScanner;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -74,7 +73,6 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
-            PayloadClassExtractor payloadClassExtractor,
             PayloadAsyncOperationService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
@@ -83,7 +81,6 @@ public class SpringwolfScannerConfiguration {
                 springwolfClassScanner,
                 componentsService,
                 asyncApiDocketService,
-                payloadClassExtractor,
                 payloadService,
                 operationBindingProcessors,
                 messageBindingProcessors);
@@ -98,7 +95,6 @@ public class SpringwolfScannerConfiguration {
     public AsyncAnnotationOperationsScanner<AsyncListener> asyncListenerAnnotationOperationScanner(
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
-            PayloadClassExtractor payloadClassExtractor,
             PayloadAsyncOperationService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
@@ -106,7 +102,6 @@ public class SpringwolfScannerConfiguration {
                 buildAsyncListenerAnnotationProvider(),
                 springwolfClassScanner,
                 componentsService,
-                payloadClassExtractor,
                 payloadService,
                 operationBindingProcessors,
                 messageBindingProcessors);
@@ -122,7 +117,6 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
-            PayloadClassExtractor payloadClassExtractor,
             PayloadAsyncOperationService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
@@ -131,7 +125,6 @@ public class SpringwolfScannerConfiguration {
                 springwolfClassScanner,
                 componentsService,
                 asyncApiDocketService,
-                payloadClassExtractor,
                 payloadService,
                 operationBindingProcessors,
                 messageBindingProcessors);
@@ -146,7 +139,6 @@ public class SpringwolfScannerConfiguration {
     public AsyncAnnotationOperationsScanner<AsyncPublisher> asyncPublisherOperationAnnotationScanner(
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
-            PayloadClassExtractor payloadClassExtractor,
             PayloadAsyncOperationService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
@@ -154,7 +146,6 @@ public class SpringwolfScannerConfiguration {
                 buildAsyncPublisherAnnotationProvider(),
                 springwolfClassScanner,
                 componentsService,
-                payloadClassExtractor,
                 payloadService,
                 operationBindingProcessors,
                 messageBindingProcessors);

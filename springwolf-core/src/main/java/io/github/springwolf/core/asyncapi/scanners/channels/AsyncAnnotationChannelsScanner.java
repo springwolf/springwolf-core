@@ -15,7 +15,6 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.operations.Operation
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,13 +35,11 @@ public class AsyncAnnotationChannelsScanner<A extends Annotation> extends AsyncA
             ClassScanner classScanner,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
-            PayloadClassExtractor payloadClassExtractor,
             PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
         super(
                 asyncAnnotationProvider,
-                payloadClassExtractor,
                 payloadAsyncOperationService,
                 componentsService,
                 operationBindingProcessors,

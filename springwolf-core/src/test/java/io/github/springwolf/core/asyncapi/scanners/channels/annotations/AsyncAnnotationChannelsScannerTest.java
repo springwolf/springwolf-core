@@ -106,7 +106,6 @@ class AsyncAnnotationChannelsScannerTest {
             classScanner,
             componentsService,
             asyncApiDocketService,
-            payloadClassExtractor,
             payloadAsyncOperationService,
             operationBindingProcessors,
             messageBindingProcessors);
