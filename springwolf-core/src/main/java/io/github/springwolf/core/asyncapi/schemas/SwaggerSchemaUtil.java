@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.components;
+package io.github.springwolf.core.asyncapi.schemas;
 
 import io.github.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
@@ -144,7 +144,7 @@ public class SwaggerSchemaUtil {
 
     public Schema mapToSwagger(SchemaObject asyncApiSchema) {
         Schema swaggerSchema = new Schema();
-        swaggerSchema.setType("string");
+        swaggerSchema.setType(asyncApiSchema.getType());
         swaggerSchema.setDescription(asyncApiSchema.getDescription());
         swaggerSchema.setExamples(asyncApiSchema.getExamples());
         swaggerSchema.setEnum(asyncApiSchema.getEnumValues());

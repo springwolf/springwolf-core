@@ -4,6 +4,7 @@ package io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
@@ -39,7 +40,7 @@ public class AmqpBindingFactory implements BindingFactory<RabbitListener>, Embed
     }
 
     @Override
-    public Map<String, MessageBinding> buildMessageBinding(RabbitListener annotation) {
+    public Map<String, MessageBinding> buildMessageBinding(RabbitListener annotation, SchemaObject headerSchema) {
         return RabbitListenerUtil.buildMessageBinding();
     }
 

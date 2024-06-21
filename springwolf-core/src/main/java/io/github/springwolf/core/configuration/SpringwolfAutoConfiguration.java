@@ -9,7 +9,6 @@ import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.channels.DefaultChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.SchemaWalker;
@@ -27,9 +26,12 @@ import io.github.springwolf.core.asyncapi.operations.DefaultOperationsService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
@@ -98,12 +100,18 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ComponentsService schemasService(
+    public ComponentsService componentsService(SwaggerSchemaService schemaService) {
+        return new DefaultComponentsService(schemaService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SwaggerSchemaService schemasService(
             List<ModelConverter> modelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
             SwaggerSchemaUtil swaggerSchemaUtil,
             SpringwolfConfigProperties springwolfConfigProperties) {
-        return new DefaultComponentsService(
+        return new SwaggerSchemaService(
                 modelConverters, schemaPostProcessors, swaggerSchemaUtil, springwolfConfigProperties);
     }
 
@@ -171,6 +179,12 @@ public class SpringwolfAutoConfiguration {
     @ConditionalOnMissingBean
     public PayloadClassExtractor payloadClassExtractor(TypeToClassConverter typeToClassConverter) {
         return new PayloadClassExtractor(typeToClassConverter);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public HeaderClassExtractor headerClassExtractor(SwaggerSchemaService schemaService) {
+        return new HeaderClassExtractor(schemaService);
     }
 
     @Bean

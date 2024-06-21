@@ -7,11 +7,13 @@ import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import org.assertj.core.util.Arrays;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
@@ -92,14 +94,33 @@ class KafkaListenerUtilTest {
         assertEquals(expectedOperationBinding, operationBinding.get("kafka"));
     }
 
-    @Test
-    void buildMessageBinding() {
-        // when
-        Map<String, MessageBinding> messageBinding = KafkaListenerUtil.buildMessageBinding();
+    @Nested
+    class MessageBindingTest {
+        @Test
+        void buildMessageBinding() {
+            // when
+            Map<String, MessageBinding> messageBinding = KafkaListenerUtil.buildMessageBinding(new SchemaObject());
 
-        // then
-        assertEquals(1, messageBinding.size());
-        assertEquals(Sets.newTreeSet("kafka"), messageBinding.keySet());
-        assertEquals(new KafkaMessageBinding(), messageBinding.get("kafka"));
+            // then
+            assertEquals(1, messageBinding.size());
+            assertEquals(Sets.newTreeSet("kafka"), messageBinding.keySet());
+            assertEquals(new KafkaMessageBinding(), messageBinding.get("kafka"));
+        }
+
+        @Test
+        void includeKafkaKeyHeader() {
+            // given
+            SchemaObject headerSchema = new SchemaObject();
+            SchemaObject keySchema = SchemaObject.builder().type("string").build();
+            headerSchema.setProperties(Map.of(KafkaHeaders.RECEIVED_KEY, keySchema));
+
+            // when
+            Map<String, MessageBinding> messageBinding = KafkaListenerUtil.buildMessageBinding(headerSchema);
+
+            // then
+            assertEquals(1, messageBinding.size());
+            assertEquals(Sets.newTreeSet("kafka"), messageBinding.keySet());
+            assertEquals(KafkaMessageBinding.builder().key(keySchema).build(), messageBinding.get("kafka"));
+        }
     }
 }

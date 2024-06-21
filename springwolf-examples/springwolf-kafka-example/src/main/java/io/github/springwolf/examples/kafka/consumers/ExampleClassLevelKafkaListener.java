@@ -9,6 +9,9 @@ import io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import javax.money.MonetaryAmount;
@@ -23,7 +26,10 @@ public class ExampleClassLevelKafkaListener {
     protected static final String TOPIC = "multi-payload-topic";
 
     @KafkaHandler
-    public void receiveExamplePayload(ExamplePayloadDto payload) {
+    public void receiveExamplePayload(
+            @Header(KafkaHeaders.RECEIVED_KEY) String key,
+            @Header(KafkaHeaders.OFFSET) Integer offset,
+            @Payload ExamplePayloadDto payload) {
         log.info("Received new message in {}: {}", TOPIC, payload.toString());
     }
 

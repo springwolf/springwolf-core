@@ -53,6 +53,7 @@
         ]
       },
       "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto": {
+        "title": "AnotherPayloadDto",
         "type": "object",
         "properties": {
           "example": {
@@ -82,6 +83,7 @@
         ]
       },
       "io.github.springwolf.examples.jms.dtos.ExamplePayloadDto": {
+        "title": "ExamplePayloadDto",
         "type": "object",
         "properties": {
           "someEnum": {

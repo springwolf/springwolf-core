@@ -4,6 +4,7 @@ package io.github.springwolf.core.asyncapi.components;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.ObjectSchema;
@@ -530,6 +531,19 @@ class SwaggerSchemaUtilTest {
 
             // then
             assertThat(componentSchema.getEnum()).isEqualTo(schema.getEnumValues());
+        }
+
+        @Test
+        void mapType() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setType("string");
+
+            // when
+            Schema componentSchema = swaggerSchemaUtil.mapToSwagger(schema);
+
+            // then
+            assertThat(componentSchema.getType()).isEqualTo(schema.getType());
         }
     }
 }

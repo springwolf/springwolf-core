@@ -13,6 +13,8 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.json.Examp
 import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.DefaultExampleYamlValueSerializer;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.ExampleYamlValueGenerator;
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,12 +46,13 @@ class DefaultYamlComponentsServiceTest {
     private final ExampleYamlValueGenerator exampleYamlValueGenerator =
             new ExampleYamlValueGenerator(new ExampleJsonValueGenerator(), new DefaultExampleYamlValueSerializer());
 
-    private final ComponentsService componentsService = new DefaultComponentsService(
+    private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
             List.of(),
             List.of(new ExampleGeneratorPostProcessor(
                     new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(exampleYamlValueGenerator))))),
             new SwaggerSchemaUtil(),
             new SpringwolfConfigProperties());
+    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);

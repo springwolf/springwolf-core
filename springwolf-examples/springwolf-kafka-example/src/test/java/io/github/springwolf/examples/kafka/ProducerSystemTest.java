@@ -94,7 +94,7 @@ public class ProducerSystemTest {
         springwolfKafkaProducer.send("example-topic", "key", headers, payload);
 
         // then
-        verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
+        verify(exampleConsumer, timeout(10000)).receiveExamplePayload("key", 0, payload);
     }
 
     @Test

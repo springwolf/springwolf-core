@@ -4,6 +4,7 @@ package io.github.springwolf.plugins.jms.asyncapi.scanners.bindings;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import lombok.NoArgsConstructor;
 import org.springframework.context.EmbeddedValueResolverAware;
@@ -32,7 +33,7 @@ public class JmsBindingFactory implements BindingFactory<JmsListener>, EmbeddedV
     }
 
     @Override
-    public Map<String, MessageBinding> buildMessageBinding(JmsListener annotation) {
+    public Map<String, MessageBinding> buildMessageBinding(JmsListener annotation, SchemaObject headerSchema) {
         return JmsListenerUtil.buildMessageBinding();
     }
 

@@ -18,7 +18,6 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.components.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
@@ -29,6 +28,8 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
@@ -65,6 +66,7 @@ import static org.mockito.Mockito.when;
             ComponentClassScanner.class,
             DefaultBeanMethodsScanner.class,
             DefaultComponentsService.class,
+            SwaggerSchemaService.class,
             PayloadService.class,
             PayloadClassExtractor.class,
             SwaggerSchemaUtil.class,

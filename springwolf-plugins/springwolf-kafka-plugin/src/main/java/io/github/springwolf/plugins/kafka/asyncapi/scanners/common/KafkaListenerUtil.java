@@ -12,6 +12,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringValueResolver;
 
@@ -87,7 +88,14 @@ public class KafkaListenerUtil {
         return null;
     }
 
-    public static Map<String, MessageBinding> buildMessageBinding() {
-        return Map.of("kafka", new KafkaMessageBinding());
+    public static Map<String, MessageBinding> buildMessageBinding(SchemaObject headerSchema) {
+        KafkaMessageBinding kafkaMessageBinding = new KafkaMessageBinding();
+
+        Map<String, Object> properties = headerSchema.getProperties();
+        if (properties != null && properties.containsKey(KafkaHeaders.RECEIVED_KEY)) {
+            kafkaMessageBinding.setKey((SchemaObject) properties.get(KafkaHeaders.RECEIVED_KEY));
+        }
+
+        return Map.of("kafka", kafkaMessageBinding);
     }
 }

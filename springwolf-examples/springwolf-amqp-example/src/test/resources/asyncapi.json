@@ -134,6 +134,7 @@
         ]
       },
       "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+        "title": "AnotherPayloadDto",
         "type": "object",
         "properties": {
           "example": {
@@ -163,6 +164,7 @@
         ]
       },
       "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+        "title": "ExamplePayloadDto",
         "type": "object",
         "properties": {
           "someEnum": {

@@ -7,6 +7,9 @@ import io.github.springwolf.examples.kafka.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +22,10 @@ public class ExampleConsumer {
     private final AnotherProducer anotherProducer;
 
     @KafkaListener(topics = "example-topic")
-    public void receiveExamplePayload(ExamplePayloadDto payload) {
+    public void receiveExamplePayload(
+            @Header(KafkaHeaders.RECEIVED_KEY) String key,
+            @Header(KafkaHeaders.OFFSET) Integer offset,
+            @Payload ExamplePayloadDto payload) {
         log.info("Received new message in example-topic: {}", payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
