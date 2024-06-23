@@ -26,6 +26,7 @@ import { FormsModule } from "@angular/forms";
 import { JsonComponent } from "./components/json/json.component";
 import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
 import { MarkdownModule, provideMarkdown } from "ngx-markdown";
+import { UiService } from "./service/ui.service";
 
 export const declarations = [
   AppComponent,
@@ -56,6 +57,7 @@ export const providers = [
   AsyncApiMapperService,
   { provide: INotificationService, useClass: NotificationService },
   PublisherService,
+  UiService,
   provideMarkdown(),
 ];
 
