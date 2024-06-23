@@ -14,6 +14,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatListModule } from "@angular/material/list";
 
 const modules = [
   MatButtonModule,
@@ -23,6 +24,7 @@ const modules = [
   MatExpansionModule,
   MatTabsModule,
   MatDividerModule,
+  MatListModule,
   ClipboardModule,
   MatSnackBarModule,
   MatFormFieldModule,
