@@ -39,7 +39,7 @@ public class SpringwolfAmqpScannerConfiguration {
             name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    public AmqpBindingFactory amqpBindingBuilder(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
+    public AmqpBindingFactory amqpBindingFactory(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
         return new AmqpBindingFactory(queues, exchanges, bindings);
     }
 
@@ -59,8 +59,8 @@ public class SpringwolfAmqpScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleRabbitClassLevelListenerAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            AmqpBindingFactory amqpBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            AmqpBindingFactory amqpBindingFactory,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -69,13 +69,13 @@ public class SpringwolfAmqpScannerConfiguration {
                 new SpringAnnotationClassLevelChannelsScanner<>(
                         RabbitListener.class,
                         RabbitHandler.class,
-                        amqpBindingBuilder,
+                        amqpBindingFactory,
                         asyncHeadersForAmqpBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -85,8 +85,8 @@ public class SpringwolfAmqpScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationOperationsScanner simpleRabbitClassLevelListenerAnnotationOperationsScanner(
-            SpringwolfClassScanner classScanner,
-            AmqpBindingFactory amqpBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            AmqpBindingFactory amqpBindingFactory,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -95,13 +95,13 @@ public class SpringwolfAmqpScannerConfiguration {
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         RabbitListener.class,
                         RabbitHandler.class,
-                        amqpBindingBuilder,
+                        amqpBindingFactory,
                         asyncHeadersForAmqpBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(classScanner, strategy);
+        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -111,8 +111,8 @@ public class SpringwolfAmqpScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleRabbitMethodLevelListenerAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            AmqpBindingFactory amqpBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            AmqpBindingFactory amqpBindingFactory,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -120,13 +120,13 @@ public class SpringwolfAmqpScannerConfiguration {
         SpringAnnotationMethodLevelChannelsScanner<RabbitListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         RabbitListener.class,
-                        amqpBindingBuilder,
+                        amqpBindingFactory,
                         asyncHeadersForAmqpBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -136,8 +136,8 @@ public class SpringwolfAmqpScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationOperationsScanner simpleRabbitMethodLevelListenerAnnotationOperationsScanner(
-            SpringwolfClassScanner classScanner,
-            AmqpBindingFactory amqpBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            AmqpBindingFactory amqpBindingFactory,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -145,13 +145,13 @@ public class SpringwolfAmqpScannerConfiguration {
         SpringAnnotationMethodLevelOperationsScanner<RabbitListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         RabbitListener.class,
-                        amqpBindingBuilder,
+                        amqpBindingFactory,
                         asyncHeadersForAmqpBuilder,
                         List.of(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(classScanner, strategy);
+        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
 }

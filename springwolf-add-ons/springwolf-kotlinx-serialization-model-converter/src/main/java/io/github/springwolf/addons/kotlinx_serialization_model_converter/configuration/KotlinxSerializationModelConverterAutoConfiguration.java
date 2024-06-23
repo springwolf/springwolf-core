@@ -16,7 +16,8 @@ import org.springframework.context.annotation.Configuration;
 public class KotlinxSerializationModelConverterAutoConfiguration {
 
     @Bean
-    public KotlinxSerializationModelConverter kotlinxSerializationTypeConverter(SpringwolfConfigProperties properties) {
-        return new KotlinxSerializationModelConverter(properties.isUseFqn());
+    public KotlinxSerializationModelConverter kotlinxSerializationModelConverter(
+            SpringwolfConfigProperties springwolfConfigProperties) {
+        return new KotlinxSerializationModelConverter(springwolfConfigProperties.isUseFqn());
     }
 }
