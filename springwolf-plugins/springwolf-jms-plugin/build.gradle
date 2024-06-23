@@ -14,6 +14,7 @@ dependencies {
 
     implementation "jakarta.jms:jakarta.jms-api"
 
+    implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     runtimeOnly "org.apache.activemq:activemq-broker"

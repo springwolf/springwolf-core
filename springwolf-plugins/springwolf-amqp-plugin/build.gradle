@@ -25,6 +25,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
+    implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
+
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"

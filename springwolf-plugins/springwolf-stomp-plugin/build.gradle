@@ -14,6 +14,8 @@ dependencies {
 
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
     permitUnusedDeclared "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+
+    implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "org.springframework:spring-context"

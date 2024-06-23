@@ -10,10 +10,10 @@ import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.Schema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
+import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.lang.Nullable;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Arrays;
