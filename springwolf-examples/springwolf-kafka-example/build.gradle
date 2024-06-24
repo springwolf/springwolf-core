@@ -6,7 +6,7 @@ plugins {
     id 'ca.cutterslade.analyze'
 
     id 'com.bmuschko.docker-spring-boot-application'
-    id 'org.springdoc.openapi-gradle-plugin' version '1.8.0'
+    id 'org.springdoc.openapi-gradle-plugin' version '1.9.0'
 
     id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
     id 'com.google.protobuf' version '0.9.4'
