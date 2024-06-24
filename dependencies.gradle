@@ -52,7 +52,7 @@ ext {
 
     jakartaXmlBindApiVersion = '4.0.2'
 
-    jsonSchemaValidator = '1.4.0'
+    jsonSchemaValidator = '1.4.2'
 
     mockitoCoreVersion = '5.12.0'
     mockitoJunitJupiterVersion = '5.12.0'
