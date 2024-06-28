@@ -29,7 +29,8 @@ var bindings = [
         'springwolf-jms-binding',
         'springwolf-kafka-binding',
         'springwolf-sns-binding',
-        'springwolf-sqs-binding'
+        'springwolf-sqs-binding',
+        'springwolf–stomp–binding'
 ]
 var plugins = [
         'springwolf-amqp',
@@ -37,7 +38,8 @@ var plugins = [
         'springwolf-jms',
         'springwolf-kafka',
         'springwolf-sns',
-        'springwolf-sqs'
+        'springwolf-sqs',
+        'springwolf–stomp'
 ]
 
 allprojects {
