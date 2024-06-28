@@ -9,7 +9,7 @@
         }
       }
     },
-    "examples" : [ "flist:\n- b: true\n  s: string\n" ]
+    "examples" : [ "flist:\n- b: true\n  s: \"string\"\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SimpleFoo" : {
     "type" : "string",
@@ -21,6 +21,6 @@
         "type" : "string"
       }
     },
-    "examples" : [ "b: true\ns: string\n" ]
+    "examples" : [ "b: true\ns: \"string\"\n" ]
   }
 }

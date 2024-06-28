@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.ExampleValueGenerator;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.PropertyExample;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
 
     private final ExampleJsonValueGenerator exampleJsonValueGenerator;
     private final ExampleYamlValueSerializer exampleYamlValueSerializer;
+    private final SpringwolfConfigProperties springwolfConfigProperties;
 
     @Override
     public boolean canHandle(String contentType) {
@@ -39,9 +41,12 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     public String prepareForSerialization(Schema schema, JsonNode exampleObject) {
         final String name = schema.getName();
         try {
-            // spec workaround to embedded yaml examples as string https://github.com/asyncapi/spec/issues/1038
-            schema.setType(OVERRIDE_SCHEMA.getType());
-            schema.setTypes(OVERRIDE_SCHEMA.getTypes());
+            if (springwolfConfigProperties.isStudioCompatibility()) {
+
+                // spec workaround to embedded yaml examples as string https://github.com/asyncapi/spec/issues/1038
+                schema.setType(OVERRIDE_SCHEMA.getType());
+                schema.setTypes(OVERRIDE_SCHEMA.getTypes());
+            }
 
             return exampleYamlValueSerializer.writeDocumentAsYamlString(exampleObject);
         } catch (JsonProcessingException e) {

@@ -6,6 +6,6 @@
         "type" : "boolean"
       }
     },
-    "examples" : [ "- string\n" ]
+    "examples" : [ "- \"string\"\n" ]
   }
 }

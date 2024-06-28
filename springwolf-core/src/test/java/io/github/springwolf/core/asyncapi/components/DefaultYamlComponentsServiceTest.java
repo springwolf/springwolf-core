@@ -43,8 +43,11 @@ class DefaultYamlComponentsServiceTest {
 
     private static final String CONTENT_TYPE_APPLICATION_YAML = "application/yaml";
 
-    private final ExampleYamlValueGenerator exampleYamlValueGenerator =
-            new ExampleYamlValueGenerator(new ExampleJsonValueGenerator(), new DefaultExampleYamlValueSerializer());
+    private final SpringwolfConfigProperties springwolfConfigProperties = new SpringwolfConfigProperties();
+    private final ExampleYamlValueGenerator exampleYamlValueGenerator = new ExampleYamlValueGenerator(
+            new ExampleJsonValueGenerator(),
+            new DefaultExampleYamlValueSerializer(springwolfConfigProperties),
+            springwolfConfigProperties);
 
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
             List.of(),

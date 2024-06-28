@@ -3,6 +3,6 @@
     "type" : "string",
     "description" : "The payload in the envelop",
     "maxLength" : 10,
-    "examples" : [ "string\n" ]
+    "examples" : [ "\"string\"\n" ]
   }
 }

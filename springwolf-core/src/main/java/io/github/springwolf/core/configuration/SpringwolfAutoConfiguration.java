@@ -162,14 +162,17 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ExampleYamlValueSerializer defaultExampleYamlValueSerializer() {
-        return new DefaultExampleYamlValueSerializer();
+    public ExampleYamlValueSerializer defaultExampleYamlValueSerializer(
+            SpringwolfConfigProperties springwolfConfigProperties) {
+        return new DefaultExampleYamlValueSerializer(springwolfConfigProperties);
     }
 
     @Bean
-    public SchemaWalker yamlSchemaWalker(ExampleYamlValueSerializer exampleYamlValueSerializer) {
-        return new DefaultSchemaWalker<>(
-                new ExampleYamlValueGenerator(new ExampleJsonValueGenerator(), exampleYamlValueSerializer));
+    public SchemaWalker yamlSchemaWalker(
+            ExampleYamlValueSerializer exampleYamlValueSerializer,
+            SpringwolfConfigProperties springwolfConfigProperties) {
+        return new DefaultSchemaWalker<>(new ExampleYamlValueGenerator(
+                new ExampleJsonValueGenerator(), exampleYamlValueSerializer, springwolfConfigProperties));
     }
 
     @Bean
