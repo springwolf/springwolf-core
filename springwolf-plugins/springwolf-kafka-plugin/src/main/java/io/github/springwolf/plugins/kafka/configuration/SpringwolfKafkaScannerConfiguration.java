@@ -36,7 +36,7 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    public KafkaBindingFactory kafkaBindingBuilder() {
+    public KafkaBindingFactory kafkaBindingFactory() {
         return new KafkaBindingFactory();
     }
 
@@ -45,7 +45,7 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    public AsyncHeadersForKafkaBuilder kafkaAsyncHeadersBuilder() {
+    public AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder() {
         return new AsyncHeadersForKafkaBuilder();
     }
 
@@ -56,8 +56,8 @@ public class SpringwolfKafkaScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleKafkaClassLevelListenerAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            KafkaBindingFactory kafkaBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            KafkaBindingFactory kafkaBindingFactory,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -66,13 +66,13 @@ public class SpringwolfKafkaScannerConfiguration {
                 new SpringAnnotationClassLevelChannelsScanner<>(
                         KafkaListener.class,
                         KafkaHandler.class,
-                        kafkaBindingBuilder,
+                        kafkaBindingFactory,
                         asyncHeadersForKafkaBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -82,8 +82,8 @@ public class SpringwolfKafkaScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationOperationsScanner simpleKafkaClassLevelListenerAnnotationOperationScanner(
-            SpringwolfClassScanner classScanner,
-            KafkaBindingFactory kafkaBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            KafkaBindingFactory kafkaBindingFactory,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -92,13 +92,13 @@ public class SpringwolfKafkaScannerConfiguration {
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         KafkaListener.class,
                         KafkaHandler.class,
-                        kafkaBindingBuilder,
+                        kafkaBindingFactory,
                         asyncHeadersForKafkaBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(classScanner, strategy);
+        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -108,8 +108,8 @@ public class SpringwolfKafkaScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleKafkaMethodLevelListenerAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            KafkaBindingFactory kafkaBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            KafkaBindingFactory kafkaBindingFactory,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -117,13 +117,13 @@ public class SpringwolfKafkaScannerConfiguration {
         SpringAnnotationMethodLevelChannelsScanner<KafkaListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         KafkaListener.class,
-                        kafkaBindingBuilder,
+                        kafkaBindingFactory,
                         asyncHeadersForKafkaBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -133,8 +133,8 @@ public class SpringwolfKafkaScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationOperationsScanner simpleKafkaMethodLevelListenerAnnotationOperationsScanner(
-            SpringwolfClassScanner classScanner,
-            KafkaBindingFactory kafkaBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            KafkaBindingFactory kafkaBindingFactory,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -142,13 +142,13 @@ public class SpringwolfKafkaScannerConfiguration {
         SpringAnnotationMethodLevelOperationsScanner<KafkaListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         KafkaListener.class,
-                        kafkaBindingBuilder,
+                        kafkaBindingFactory,
                         asyncHeadersForKafkaBuilder,
                         List.of(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(classScanner, strategy);
+        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
 }

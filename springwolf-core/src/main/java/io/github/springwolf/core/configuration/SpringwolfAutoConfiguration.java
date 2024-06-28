@@ -67,8 +67,8 @@ public class SpringwolfAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public SpringwolfInitApplicationListener springwolfInitApplicationListener(
-            AsyncApiService asyncApiService, SpringwolfConfigProperties configProperties) {
-        return new SpringwolfInitApplicationListener(asyncApiService, configProperties);
+            AsyncApiService asyncApiService, SpringwolfConfigProperties springwolfConfigProperties) {
+        return new SpringwolfInitApplicationListener(asyncApiService, springwolfConfigProperties);
     }
 
     @Bean
@@ -140,7 +140,7 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SchemaWalkerProvider exampleGeneratorProvider(List<SchemaWalker> schemaWalkers) {
+    public SchemaWalkerProvider schemaWalkerProvider(List<SchemaWalker> schemaWalkers) {
         return new SchemaWalkerProvider(schemaWalkers);
     }
 
@@ -192,8 +192,9 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public PayloadService payloadService(ComponentsService componentsService, SpringwolfConfigProperties properties) {
-        return new PayloadService(componentsService, properties);
+    public PayloadService payloadService(
+            ComponentsService componentsService, SpringwolfConfigProperties springwolfConfigProperties) {
+        return new PayloadService(componentsService, springwolfConfigProperties);
     }
 
     @Bean

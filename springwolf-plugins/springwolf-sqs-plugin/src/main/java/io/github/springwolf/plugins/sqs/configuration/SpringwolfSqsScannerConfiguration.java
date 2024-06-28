@@ -30,7 +30,7 @@ public class SpringwolfSqsScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
-    public SqsBindingFactory sqsBindingBuilder() {
+    public SqsBindingFactory sqsBindingFactory() {
         return new SqsBindingFactory();
     }
 
@@ -38,42 +38,42 @@ public class SpringwolfSqsScannerConfiguration {
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleSqsMethodLevelListenerAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            SqsBindingFactory sqsBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            SqsBindingFactory sqsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         SqsListener.class,
-                        sqsBindingBuilder,
+                        sqsBindingFactory,
                         new AsyncHeadersNotDocumented(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationOperationsScanner simpleSqsMethodLevelListenerAnnotationOperationsScanner(
-            SpringwolfClassScanner classScanner,
-            SqsBindingFactory sqsBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            SqsBindingFactory sqsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         SqsListener.class,
-                        sqsBindingBuilder,
+                        sqsBindingFactory,
                         new AsyncHeadersNotDocumented(),
                         List.of(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(classScanner, strategy);
+        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
 }

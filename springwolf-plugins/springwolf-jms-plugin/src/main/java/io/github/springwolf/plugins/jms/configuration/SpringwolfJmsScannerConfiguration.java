@@ -30,7 +30,7 @@ public class SpringwolfJmsScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
-    public JmsBindingFactory jmsBindingBuilder() {
+    public JmsBindingFactory jmsBindingFactory() {
         return new JmsBindingFactory();
     }
 
@@ -38,42 +38,42 @@ public class SpringwolfJmsScannerConfiguration {
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleJmsMethodLevelListenerAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            JmsBindingFactory jmsBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            JmsBindingFactory jmsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         JmsListener.class,
-                        jmsBindingBuilder,
+                        jmsBindingFactory,
                         new AsyncHeadersNotDocumented(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationOperationsScanner simpleJmsMethodLevelListenerAnnotationOperationsScanner(
-            SpringwolfClassScanner classScanner,
-            JmsBindingFactory jmsBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            JmsBindingFactory jmsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelOperationsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         JmsListener.class,
-                        jmsBindingBuilder,
+                        jmsBindingFactory,
                         new AsyncHeadersNotDocumented(),
                         List.of(),
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(classScanner, strategy);
+        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
 }

@@ -72,15 +72,16 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    public AsyncHeadersForStompBuilder stompAsyncHeadersBuilder() {
+    public AsyncHeadersForStompBuilder asyncHeadersForStompBuilder() {
         return new AsyncHeadersForStompBuilder();
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED, havingValue = "true", matchIfMissing = true)
     public SendToCustomizer sendToCustomizer(
-            StompBindingSendToFactory bindingFactory, PayloadMethodReturnService payloadService) {
-        return new SendToCustomizer(bindingFactory, payloadService);
+            StompBindingSendToFactory stompBindingSendToFactory,
+            PayloadMethodReturnService payloadMethodReturnService) {
+        return new SendToCustomizer(stompBindingSendToFactory, payloadMethodReturnService);
     }
 
     @Bean
@@ -89,8 +90,9 @@ public class SpringwolfStompScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     public SendToUserCustomizer sendToUserCustomizer(
-            StompBindingSendToUserFactory bindingFactory, PayloadMethodReturnService payloadService) {
-        return new SendToUserCustomizer(bindingFactory, payloadService);
+            StompBindingSendToUserFactory stompBindingSendToUserFactory,
+            PayloadMethodReturnService payloadMethodReturnService) {
+        return new SendToUserCustomizer(stompBindingSendToUserFactory, payloadMethodReturnService);
     }
 
     @Bean
@@ -100,8 +102,8 @@ public class SpringwolfStompScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleStompClassLevelListenerAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            StompBindingMessageMappingFactory stompBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            StompBindingMessageMappingFactory stompBindingMessageMappingFactory,
             AsyncHeadersForStompBuilder asyncHeadersForStompBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -110,13 +112,13 @@ public class SpringwolfStompScannerConfiguration {
                 new SpringAnnotationClassLevelChannelsScanner<>(
                         MessageMapping.class,
                         ClassLevelAnnotationScanner.AllMethods.class,
-                        stompBindingBuilder,
+                        stompBindingMessageMappingFactory,
                         asyncHeadersForStompBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -126,8 +128,8 @@ public class SpringwolfStompScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationOperationsScanner simpleStompClassLevelListenerAnnotationOperationScanner(
-            SpringwolfClassScanner classScanner,
-            StompBindingMessageMappingFactory stompBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            StompBindingMessageMappingFactory stompBindingMessageMappingFactory,
             AsyncHeadersForStompBuilder asyncHeadersForStompBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -136,13 +138,13 @@ public class SpringwolfStompScannerConfiguration {
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         MessageMapping.class,
                         ClassLevelAnnotationScanner.AllMethods.class,
-                        stompBindingBuilder,
+                        stompBindingMessageMappingFactory,
                         asyncHeadersForStompBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(classScanner, strategy);
+        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -152,8 +154,8 @@ public class SpringwolfStompScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleStompMethodLevelListenerAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            StompBindingMessageMappingFactory stompBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            StompBindingMessageMappingFactory stompBindingMessageMappingFactory,
             AsyncHeadersForStompBuilder asyncHeadersForStompBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -161,13 +163,13 @@ public class SpringwolfStompScannerConfiguration {
         SpringAnnotationMethodLevelChannelsScanner<MessageMapping> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         MessageMapping.class,
-                        stompBindingBuilder,
+                        stompBindingMessageMappingFactory,
                         asyncHeadersForStompBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -177,8 +179,8 @@ public class SpringwolfStompScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationOperationsScanner simpleStompMethodLevelListenerAnnotationOperationsScanner(
-            SpringwolfClassScanner classScanner,
-            StompBindingMessageMappingFactory stompBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            StompBindingMessageMappingFactory stompBindingMessageMappingFactory,
             AsyncHeadersForStompBuilder asyncHeadersForStompBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
@@ -187,35 +189,35 @@ public class SpringwolfStompScannerConfiguration {
         SpringAnnotationMethodLevelOperationsScanner<MessageMapping> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         MessageMapping.class,
-                        stompBindingBuilder,
+                        stompBindingMessageMappingFactory,
                         asyncHeadersForStompBuilder,
                         operationCustomizers,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(classScanner, strategy);
+        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleStompMethodLevelListenerSendToAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            StompBindingSendToFactory stompBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            StompBindingSendToFactory stompBindingMessageMappingFactory,
             AsyncHeadersForStompBuilder asyncHeadersForStompBuilder,
             PayloadMethodReturnService payloadMethodReturnService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
         SpringAnnotationMethodLevelChannelsScanner<SendTo> strategy = new SpringAnnotationMethodLevelChannelsScanner<>(
                 SendTo.class,
-                stompBindingBuilder,
+                stompBindingMessageMappingFactory,
                 asyncHeadersForStompBuilder,
                 payloadMethodReturnService,
                 headerClassExtractor,
                 componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -225,8 +227,8 @@ public class SpringwolfStompScannerConfiguration {
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public SpringAnnotationChannelsScanner simpleStompMethodLevelListenerSendToUserAnnotationChannelsScanner(
-            SpringwolfClassScanner classScanner,
-            StompBindingSendToUserFactory stompBindingBuilder,
+            SpringwolfClassScanner springwolfClassScanner,
+            StompBindingSendToUserFactory stompBindingMessageMappingFactory,
             AsyncHeadersForStompBuilder asyncHeadersForStompBuilder,
             PayloadMethodReturnService payloadMethodReturnService,
             HeaderClassExtractor headerClassExtractor,
@@ -234,12 +236,12 @@ public class SpringwolfStompScannerConfiguration {
         SpringAnnotationMethodLevelChannelsScanner<SendToUser> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         SendToUser.class,
-                        stompBindingBuilder,
+                        stompBindingMessageMappingFactory,
                         asyncHeadersForStompBuilder,
                         payloadMethodReturnService,
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(classScanner, strategy);
+        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
     }
 }
