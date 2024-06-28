@@ -25,6 +25,8 @@
  * The dependencies are sorted alphabetically.
  */
 ext {
+    annotationApiVersion = '3.0.0'
+
     assertjCoreVersion = '3.26.0'
 
     asyncapiCoreVersion = '1.0.0-EAP-2'
@@ -34,8 +36,6 @@ ext {
     awaitilityVersion = '4.2.1'
 
     commonsLang3Version = '3.14.0'
-
-    jsr305Version = '3.0.2'
 
     kafkaAvroSerializerVersion = '7.6.0'
 

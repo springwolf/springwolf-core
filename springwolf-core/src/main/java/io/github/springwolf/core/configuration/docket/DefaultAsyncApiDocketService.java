@@ -4,9 +4,9 @@ package io.github.springwolf.core.configuration.docket;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 import java.util.Map;

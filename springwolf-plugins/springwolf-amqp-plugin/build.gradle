@@ -22,11 +22,10 @@ dependencies {
     implementation "org.springframework.amqp:spring-amqp"
     implementation "org.springframework.amqp:spring-rabbit"
 
-    compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
-    permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
-
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 

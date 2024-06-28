@@ -14,6 +14,8 @@ dependencies {
 
     implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
     permitUnusedDeclared "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+
+    implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
     implementation "org.springframework:spring-context"
@@ -25,9 +27,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-websocket"
     permitUnusedDeclared("org.springframework.boot:spring-boot-starter-websocket")
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
-    compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
-    permitUnusedDeclared "com.google.code.findbugs:jsr305:${jsr305Version}"
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
