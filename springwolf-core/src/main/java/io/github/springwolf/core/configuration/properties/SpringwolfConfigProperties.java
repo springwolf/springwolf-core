@@ -56,6 +56,13 @@ public class SpringwolfConfigProperties {
      */
     private boolean useFqn = true;
 
+    /**
+     * Feature toggle to enable/disable all workarounds for AsyncApi Studio
+     * to ensure a best-effort out-of-the-box experience.
+     * @see https://studio.asyncapi.com/
+     */
+    private boolean studioCompatibility = true;
+
     @Deprecated(forRemoval = true)
     private Paths paths = new Paths();
 

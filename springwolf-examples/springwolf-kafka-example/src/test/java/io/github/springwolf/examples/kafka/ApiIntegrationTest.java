@@ -43,4 +43,18 @@ class ApiIntegrationTest {
 
         assertEquals(expected, actualPatched);
     }
+
+    @Test
+    void asyncApiResourceArtifactYamlTest() throws IOException {
+        String url = "/springwolf/docs.yaml";
+        String actual = restTemplate.getForObject(url, String.class);
+        // When running with EmbeddedKafka, the kafka bootstrap server does run on random ports
+        String actualPatched = actual.replace(bootstrapServers, "kafka:29092");
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.yaml"), actualPatched);
+
+        InputStream s = this.getClass().getResourceAsStream("/asyncapi.yaml");
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
+
+        assertEquals(expected, actualPatched);
+    }
 }

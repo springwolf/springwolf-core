@@ -1,7 +1,7 @@
 {
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AllOf" : {
     "type" : "string",
-    "examples" : [ "firstOne: string\nfirstTwo: 0\nsecondOne: string\nsecondTwo: true\n" ],
+    "examples" : [ "firstOne: \"string\"\nfirstTwo: 0\nsecondOne: \"string\"\nsecondTwo: true\n" ],
     "allOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
@@ -10,7 +10,7 @@
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AnyOf" : {
     "type" : "string",
-    "examples" : [ "firstOne: string\nsecondOne: string\n" ],
+    "examples" : [ "firstOne: \"string\"\nsecondOne: \"string\"\n" ],
     "anyOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
@@ -27,7 +27,7 @@
         "type" : "string"
       }
     },
-    "examples" : [ "firstOne: string\nsecondOne: string\n" ]
+    "examples" : [ "firstOne: \"string\"\nsecondOne: \"string\"\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo" : {
     "type" : "string",
@@ -44,7 +44,7 @@
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$OneOf" : {
     "type" : "string",
-    "examples" : [ "|\n  firstOne: string\n  secondOne: string\n" ],
+    "examples" : [ "\"firstOne: \\\"string\\\"\\nsecondOne: \\\"string\\\"\\n\"\n" ],
     "oneOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
     }, {
@@ -67,6 +67,6 @@
         "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$OneOf"
       }
     },
-    "examples" : [ "allOf: |\n  firstOne: string\n  firstTwo: 0\n  secondOne: string\n  secondTwo: true\nanyOf: |\n  firstOne: string\n  secondOne: string\nfield: string\noneOf: |\n  |\n    firstOne: string\n    secondOne: string\n" ]
+    "examples" : [ "allOf: \"firstOne: \\\"string\\\"\\nfirstTwo: 0\\nsecondOne: \\\"string\\\"\\nsecondTwo: true\\n\"\nanyOf: \"firstOne: \\\"string\\\"\\nsecondOne: \\\"string\\\"\\n\"\nfield: \"string\"\noneOf: \"\\\"firstOne: \\\\\\\"string\\\\\\\"\\\\nsecondOne: \\\\\\\"string\\\\\\\"\\\\n\\\"\\n\"\n" ]
   }
 }
