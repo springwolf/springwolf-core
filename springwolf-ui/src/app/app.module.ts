@@ -7,7 +7,9 @@ import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
 import { environment } from "./../environments/environment";
 import { AppComponent } from "./app.component";
 import { ChannelMainComponent } from "./components/channels/channel-main/channel-main.component";
+import { ChannelMainComponent as ChannelMainComponentNew } from "./components/new/channels/channel-main/channel-main.component";
 import { ChannelsComponent } from "./components/channels/channels.component";
+import { ChannelsComponent as ChannelsComponentNew } from "./components/new/channels/channels.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { InfoComponent } from "./components/info/info.component";
 import { MaterialModule } from "./material.module";
@@ -34,7 +36,9 @@ export const declarations = [
   InfoComponent,
   ServersComponent,
   ChannelsComponent,
+  ChannelsComponentNew,
   ChannelMainComponent,
+  ChannelMainComponentNew,
   SchemasComponent,
   SchemaComponent,
   SchemaRangeComponent,

@@ -19,18 +19,25 @@
         }
       </mat-nav-list>
     </mat-sidenav>
+
     <section id="info">
       <app-info></app-info>
     </section>
+    <mat-divider></mat-divider>
+
     <section id="servers">
       <app-servers></app-servers>
     </section>
-    <section id="channels">
-      <app-channels></app-channels>
-    </section>
-    <section id="operations">
+    <mat-divider></mat-divider>
 
+    <section id="channels">
+      <app-channels-new></app-channels-new>
     </section>
+    <mat-divider></mat-divider>
+
+    <section id="operations"></section>
+    <mat-divider></mat-divider>
+
     <section id="schemas">
       <app-schemas></app-schemas>
     </section>

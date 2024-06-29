@@ -21,29 +21,29 @@ export class AppComponent implements OnInit {
     {
       name: "Info",
       url: "#info",
-      isActive: true
+      isActive: true,
     },
     {
       name: "Servers",
       url: "#servers",
-      isActive: false
+      isActive: false,
     },
     {
       name: "Channels",
       url: "#channels",
-      isActive: false
+      isActive: false,
     },
     {
       name: "Operations",
       url: "#operations",
-      isActive: false
+      isActive: false,
     },
     {
       name: "Schemas",
       url: "#schemas",
-      isActive: false
-    }
-  ]
+      isActive: false,
+    },
+  ];
   folders: Section[] = [
     {
       name: "Photos",

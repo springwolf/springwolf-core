@@ -1,18 +1,20 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h1>
   {{ info?.title }}
- {{ info?.version ? 'v' + info.version : '' }}
+  {{ info?.version ? "v" + info.version : "" }}
 </h1>
 
 <p class="info-chips">
-
-  
   <mat-chip>
-  <a *ngIf="info?.asyncApiJson" href="javascript:void(0);" (click)="download()">
-  AsyncAPI JSON
-</a>
-</mat-chip>
-<mat-chip *ngIf="info?.license?.name">
+    <a
+      *ngIf="info?.asyncApiJson"
+      href="javascript:void(0);"
+      (click)="download()"
+    >
+      AsyncAPI JSON
+    </a>
+  </mat-chip>
+  <mat-chip *ngIf="info?.license?.name">
     <a
       *ngIf="info?.license?.url; else licenseElseBlock"
       [href]="info.license.url"
