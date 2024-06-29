@@ -3,14 +3,16 @@
   {{ info?.title }}
  {{ info?.version ? 'v' + info.version : '' }}
 </h1>
-<h5>
-  <a *ngIf="info?.asyncApiJson" href="javascript:void(0);" (click)="download()"
-    >Download AsyncAPI file</a
-  >
-</h5>
 
 <p class="info-chips">
-  <mat-chip *ngIf="info?.license?.name">
+
+  
+  <mat-chip>
+  <a *ngIf="info?.asyncApiJson" href="javascript:void(0);" (click)="download()">
+  AsyncAPI JSON
+</a>
+</mat-chip>
+<mat-chip *ngIf="info?.license?.name">
     <a
       *ngIf="info?.license?.url; else licenseElseBlock"
       [href]="info.license.url"
