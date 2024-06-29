@@ -17,6 +17,33 @@ export class AppComponent implements OnInit {
   json = {
     field: 1,
   };
+  links = [
+    {
+      name: "Info",
+      url: "#info",
+      isActive: true
+    },
+    {
+      name: "Servers",
+      url: "#servers",
+      isActive: false
+    },
+    {
+      name: "Channels",
+      url: "#channels",
+      isActive: false
+    },
+    {
+      name: "Operations",
+      url: "#operations",
+      isActive: false
+    },
+    {
+      name: "Schemas",
+      url: "#schemas",
+      isActive: false
+    }
+  ]
   folders: Section[] = [
     {
       name: "Photos",

@@ -7,5 +7,11 @@
 
 main {
   margin: 0 64px;
-  padding-bottom: 32px;
+  height: calc(100% - 64px - 16px);
+  padding-bottom: 16px;
+}
+main.newUi {
+  margin: 0;
+  height: calc(100% - 64px);
+  padding: 0;
 }

@@ -6,68 +6,33 @@
   <app-channels></app-channels>
   <app-schemas></app-schemas>
 </main>
-<main>
-  <mat-list *ngIf="isNewUi">
-    <app-info></app-info>
-    <div mat-subheader>Servers</div>
-    @for (folder of folders; track folder) {
-    <mat-list-item>
-      <mat-icon matListItemIcon>folder</mat-icon>
-      <div matListItemTitle>{{ folder.name }}</div>
-      <div matListItemLine>{{ folder.updated | date }}</div>
-      asdfasdf asdfasdfasdf
-    </mat-list-item>
-    }
-    <mat-divider></mat-divider>
-    <div mat-subheader>Operations</div>
-    @for (folder of folders; track folder) {
-    <mat-list-item lines="999">
-      <mat-icon matListItemIcon>folder</mat-icon>
-      <mat-icon matListItemIcon>folder</mat-icon>
-      <div matListItemTitle>{{ folder.name }}</div>
-      <div matListItemLine>{{ folder.updated | date }}</div>
-      <div>
-        234 asdfasdfasdf 345
+<main *ngIf="isNewUi" class="newUi">
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        @for (link of links; track link) {
+        <a matListItemTitle [href]="link.url">
+          <mat-list-item [activated]="link.isActive">
+            {{ link.name }}
+          </mat-list-item>
+        </a>
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+    <section id="info">
+      <app-info></app-info>
+    </section>
+    <section id="servers">
+      <app-servers></app-servers>
+    </section>
+    <section id="channels">
+      <app-channels></app-channels>
+    </section>
+    <section id="operations">
 
-        <div class="grid">
-          <textarea
-            class="width-12/12 width-6/12-m"
-            spellcheck="false"
-            #headersTextArea
-            [rows]="3"
-            [value]="json"
-          ></textarea>
-          <app-json [data]="json" class="width-12/12 width-6/12-m"></app-json>
-        </div>
-      </div>
-    </mat-list-item>
-    }
-    <mat-divider></mat-divider>
-    <div mat-subheader>Channels</div>
-    @for (note of notes; track note) {
-    <mat-list-item lines="999">
-      <mat-icon matListItemIcon>note</mat-icon>
-      <div matListItemTitle>{{ note.name }}</div>
-      <div matListItemLine>{{ note.updated | date }}</div>
-    </mat-list-item>
-    }
-    <mat-divider></mat-divider>
-    <div mat-subheader>Messages</div>
-    @for (note of notes; track note) {
-    <mat-list-item lines="999">
-      <mat-icon matListItemIcon>note</mat-icon>
-      <div matListItemTitle>{{ note.name }}</div>
-      <div matListItemLine>{{ note.updated | date }}</div>
-    </mat-list-item>
-    }
-    <mat-divider></mat-divider>
-    <div mat-subheader>Channels</div>
-    @for (note of notes; track note) {
-    <mat-list-item lines="999">
-      <mat-icon matListItemIcon>note</mat-icon>
-      <div matListItemTitle>{{ note.name }}</div>
-      <div matListItemLine>{{ note.updated | date }}</div>
-    </mat-list-item>
-    }
-  </mat-list>
+    </section>
+    <section id="schemas">
+      <app-schemas></app-schemas>
+    </section>
+  </mat-sidenav-container>
 </main>
