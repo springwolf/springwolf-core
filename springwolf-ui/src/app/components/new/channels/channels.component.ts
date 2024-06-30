@@ -14,17 +14,18 @@ import { Location } from "@angular/common";
 })
 export class ChannelsComponent implements OnInit {
   channels: ChannelOperation[] = [];
-  selectedChannel: string = "";
+  selectedChannel: string | undefined =
+    this.updateChannelSelectionFromLocation();
 
   constructor(
     private asyncApiService: AsyncApiService,
     private location: Location
-  ) {
-    this.setChannelSelectionFromLocation();
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.location.subscribe((): void => this.setChannelSelectionFromLocation());
+    this.location.subscribe((): void => {
+      this.updateChannelSelectionFromLocation();
+    });
 
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       this.channels = this.sortChannels(asyncapi.channelOperations);
@@ -60,10 +61,12 @@ export class ChannelsComponent implements OnInit {
   setChannelSelection(channel: ChannelOperation): void {
     window.location.hash = channel.anchorIdentifier;
   }
-  setChannelSelectionFromLocation(): void {
+  updateChannelSelectionFromLocation(): string | undefined {
     const anchor = window.location.hash;
     if (anchor.startsWith(CHANNEL_ANCHOR_PREFIX)) {
       this.selectedChannel = anchor;
+      return anchor;
     }
+    return undefined;
   }
 }

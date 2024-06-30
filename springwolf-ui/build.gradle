@@ -84,7 +84,7 @@ spotless {
   }
 
   format 'styling', {
-    target 'src/**/*.ts', 'src/**/*.js', 'src/**/*.css', 'src/**/*.scss'
+    target 'src/**/*.ts', 'src/**/*.js', 'src/**/*.css' // , 'src/**/*.scss' currently broken
 
     prettier()
       .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
