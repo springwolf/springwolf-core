@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
+import { NgModule, provideZoneChangeDetection } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
@@ -29,6 +33,7 @@ import { JsonComponent } from "./components/json/json.component";
 import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
 import { MarkdownModule, provideMarkdown } from "ngx-markdown";
 import { UiService } from "./service/ui.service";
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 
 export const declarations = [
   AppComponent,
@@ -46,10 +51,7 @@ export const declarations = [
 ];
 export const imports = [
   BrowserModule,
-  BrowserAnimationsModule,
   MaterialModule,
-
-  HttpClientModule,
   FormsModule,
   MarkdownModule.forRoot(),
   environment.production
@@ -57,12 +59,17 @@ export const imports = [
     : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 }),
 ];
 export const providers = [
+  provideZoneChangeDetection({ eventCoalescing: true }),
+  provideAnimationsAsync(),
+  provideAnimationsAsync(),
+  provideHttpClient(withInterceptorsFromDi()),
+  provideMarkdown(),
+
   AsyncApiService,
   AsyncApiMapperService,
   { provide: INotificationService, useClass: NotificationService },
   PublisherService,
   UiService,
-  provideMarkdown(),
 ];
 
 export const ngModule = {
