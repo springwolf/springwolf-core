@@ -51,6 +51,11 @@ body {
   grid-template-columns: repeat(12, 1fr);
   grid-gap: 1em;
 }
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: 1em;
+}
 .width-1\/12 {
   grid-column: span 1;
 }
@@ -99,74 +104,74 @@ body {
   grid-column: span 12;
 }
 
-.width-1\/12\-m {
-  @media (min-width: 96em) {
+.width-1\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 1;
   }
 }
 
-.width-2\/12\-m {
-  @media (min-width: 96em) {
+.width-2\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 2;
   }
 }
 
-.width-3\/12\-m {
-  @media (min-width: 96em) {
+.width-3\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 3;
   }
 }
 
-.width-4\/12\-m {
-  @media (min-width: 96em) {
+.width-4\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 4;
   }
 }
 
-.width-5\/12\-m {
-  @media (min-width: 96em) {
+.width-5\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 5;
   }
 }
 
-.width-6\/12\-m {
-  @media (min-width: 96em) {
+.width-6\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 6;
   }
 }
 
-.width-7\/12\-m {
-  @media (min-width: 96em) {
+.width-7\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 7;
   }
 }
 
-.width-8\/12\-m {
-  @media (min-width: 96em) {
+.width-8\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 8;
   }
 }
 
-.width-9\/12\-m {
-  @media (min-width: 96em) {
+.width-9\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 9;
   }
 }
 
-.width-10\/12\-m {
-  @media (min-width: 96em) {
+.width-10\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 10;
   }
 }
 
-.width-11\/12\-m {
-  @media (min-width: 96em) {
+.width-11\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 11;
   }
 }
 
-.width-12\/12\-m {
-  @media (min-width: 96em) {
+.width-12\/12\-s {
+  @media (max-width: 64em) {
     grid-column: span 12;
   }
 }
