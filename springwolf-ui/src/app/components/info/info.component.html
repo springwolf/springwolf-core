@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h1>
-  {{ info?.title }}
-  {{ info?.version ? "v" + info.version : "" }}
+  {{ info.title }}
+  {{ info.version ? "v" + info.version : "" }}
 </h1>
 
 <p class="info-chips">
@@ -32,7 +32,7 @@
       {{ info.contact.url }}
     </a>
   </mat-chip>
-  <mat-chip *ngIf="info?.contact?.email">
+  <mat-chip *ngIf="info.contact.email">
     <a [href]="info.contact.email.href" target="_blank">
       {{ info.contact.email.name }}
     </a>

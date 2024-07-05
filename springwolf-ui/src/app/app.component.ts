@@ -13,7 +13,7 @@ export interface Section {
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
-  isNewUi: boolean;
+  isNewUi: boolean = true;
   json = {
     field: 1,
   };

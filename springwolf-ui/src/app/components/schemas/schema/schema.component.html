@@ -1,6 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <div>
-  <app-json [data]="schema.example.rawValue"></app-json>
+  <app-json [data]="schema.example?.rawValue"></app-json>
 </div>
 <table class="schema">
   <tbody>
@@ -13,7 +13,7 @@
       </ng-container>
     </tr>
     <!--  Objects  -->
-    <tr *ngFor="let property of schema?.properties | keyvalue">
+    <tr *ngFor="let property of schema?.properties || {} | keyvalue">
       <td class="key">
         {{ property.key }}
         <span class="required" *ngIf="schema.required?.includes(property.key)"

@@ -6,7 +6,7 @@ export type OperationType = "receive" | "send";
 export interface Operation {
   description?: string;
   message: Message;
-  bindings?: Bindings;
-  protocol?: string;
+  bindings: Bindings;
+  protocol: string;
   operationType: OperationType;
 }

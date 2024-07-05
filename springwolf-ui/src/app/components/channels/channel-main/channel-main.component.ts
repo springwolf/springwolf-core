@@ -10,6 +10,11 @@ import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
 import { PublisherService } from "../../../service/publisher.service";
 import { wrapException } from "../../../util/error-boundary";
 import { Subscription } from "rxjs";
+import {
+  initExample,
+  initOperation,
+  initSchema,
+} from "../../../service/mock/init-values";
 
 @Component({
   selector: "app-channel-main",
@@ -17,17 +22,17 @@ import { Subscription } from "rxjs";
   styleUrls: ["./channel-main.component.css"],
 })
 export class ChannelMainComponent implements OnInit {
-  @Input() channelName: string;
-  @Input() operation: Operation;
+  @Input() channelName: string = "";
+  @Input() operation: Operation = initOperation;
 
-  schema: Schema;
-  schemaIdentifier: string;
-  defaultExample: Example;
-  defaultExampleType: string;
+  schema: Schema = initSchema;
+  schemaIdentifier: string = "";
+  defaultExample: Example = initExample;
+  defaultExampleType: string = "";
   exampleTextAreaLineCount: number = 1;
-  headers: Schema;
-  headersSchemaIdentifier: string;
-  headersExample: Example;
+  headers: Schema = initSchema;
+  headersSchemaIdentifier: string = "";
+  headersExample: Example = initExample;
   headersTextAreaLineCount: number = 1;
   messageBindingExample?: Example;
   messageBindingExampleTextAreaLineCount: number = 1;
@@ -45,17 +50,17 @@ export class ChannelMainComponent implements OnInit {
       this.schemaIdentifier = this.operation.message.payload.name.slice(
         this.operation.message.payload.name.lastIndexOf("/") + 1
       );
-      this.schema = schemas.get(this.schemaIdentifier);
+      this.schema = schemas.get(this.schemaIdentifier)!!;
 
-      this.defaultExample = this.schema.example;
+      this.defaultExample = this.schema.example!!;
       this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 1;
       this.defaultExampleType = this.operation.message.payload.type;
 
       this.headersSchemaIdentifier = this.operation.message.headers.name.slice(
         this.operation.message.headers.name.lastIndexOf("/") + 1
       );
-      this.headers = schemas.get(this.headersSchemaIdentifier);
-      this.headersExample = this.headers.example;
+      this.headers = schemas.get(this.headersSchemaIdentifier)!!;
+      this.headersExample = this.headers.example!!;
       this.headersTextAreaLineCount = this.headersExample?.lineCount || 1;
       this.messageBindingExampleTextAreaLineCount =
         this.messageBindingExample?.lineCount || 1;
@@ -81,7 +86,7 @@ export class ChannelMainComponent implements OnInit {
       return undefined;
     }
 
-    const bindingExampleObject = {};
+    const bindingExampleObject: { [key: string]: any } = {};
     Object.keys(messageBinding).forEach((bindingKey) => {
       if (bindingKey !== "bindingVersion") {
         bindingExampleObject[bindingKey] = this.getExampleValue(
@@ -100,8 +105,11 @@ export class ChannelMainComponent implements OnInit {
   getExampleValue(bindingValue: string | Binding): any {
     if (typeof bindingValue === "string") {
       return bindingValue;
-    } else if (typeof bindingValue.examples === "object") {
-      return bindingValue.examples["0"];
+    } else if (
+      "examples" in bindingValue &&
+      typeof bindingValue["examples"] == "object"
+    ) {
+      return bindingValue["examples"]["0"];
     }
     return undefined;
   }
@@ -132,14 +140,14 @@ export class ChannelMainComponent implements OnInit {
           ? {}
           : wrapException(
               "Unable to convert headers to JSON object (nor is empty)",
-              () => JSON.parse(headers)
+              () => JSON.parse(headers || "")
             );
       const bindingsJson =
         bindings === ""
           ? {}
           : wrapException(
               "Unable to convert bindings to JSON object (nor is empty)",
-              () => JSON.parse(bindings)
+              () => JSON.parse(bindings || "")
             );
 
       this.publisherService
@@ -155,9 +163,9 @@ export class ChannelMainComponent implements OnInit {
           (_) => this.handlePublishSuccess(),
           (err) => this.handlePublishError(err)
         );
-    } catch (error) {
+    } catch (error: any) {
       this.snackBar.open(
-        "Unable to create publishing payload: " + error.message,
+        "Unable to create publishing payload: " + error?.message,
         "ERROR",
         {
           duration: 3000,

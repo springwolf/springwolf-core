@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use '@angular/material' as mat;
+
+$light-theme: mat.define-theme();
+$dark-theme: mat.define-theme((
+  color: (
+    theme-type: dark
+  )
+));
+
+html {
+  // Apply the base theme at the root, so it will be inherited by the whole app.
+  @include mat.all-component-themes($light-theme);
+}
+
+main.dark-theme {
+  // Override the colors to create a dark sidenav.
+  @include mat.all-component-colors($dark-theme);
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -48,7 +48,7 @@
             spellcheck="false"
             #headersTextArea
             [rows]="headersTextAreaLineCount"
-            [value]="headersExample?.value"
+            [value]="headersExample.value || ''"
             (keyup)="recalculateLineCount('headers', headersTextArea.value)"
           ></textarea>
         </div>
@@ -58,7 +58,7 @@
             spellcheck="false"
             #messageTextArea
             [rows]="exampleTextAreaLineCount"
-            [value]="defaultExample?.value"
+            [value]="defaultExample.value || ''"
             (keyup)="recalculateLineCount('example', messageTextArea.value)"
           ></textarea>
         </div>
@@ -83,10 +83,11 @@
             color="primary"
             (click)="
               messageTextArea.value = defaultExample.value;
-              headersTextArea.value = headersExample?.value;
-              bindingTextArea.value = createMessageBindingExample(
-                operation.message.bindings.get(operation.protocol)
-              )?.value;
+              headersTextArea.value = headersExample.value || '';
+              bindingTextArea.value =
+                createMessageBindingExample(
+                  operation.message.bindings.get(operation.protocol)
+                )?.value || '';
               recalculateLineCount(
                 'messageBindingExample',
                 bindingTextArea.value

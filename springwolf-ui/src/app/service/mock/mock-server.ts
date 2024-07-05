@@ -53,6 +53,6 @@ export class MockServer implements InMemoryDbService {
     }
 
     // Kafka is default
-    return exampleSchemas.find((el) => el.plugin === "kafka").value;
+    return exampleSchemas.find((el) => el.plugin === "kafka")!!.value;
   }
 }

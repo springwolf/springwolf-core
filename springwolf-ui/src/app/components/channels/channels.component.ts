@@ -13,8 +13,8 @@ import { Location } from "@angular/common";
   styleUrls: ["./channels.component.css"],
 })
 export class ChannelsComponent implements OnInit {
-  channels: ChannelOperation[];
-  selectedChannel: string;
+  channels: ChannelOperation[] = [];
+  selectedChannel: string = "";
 
   constructor(
     private asyncApiService: AsyncApiService,

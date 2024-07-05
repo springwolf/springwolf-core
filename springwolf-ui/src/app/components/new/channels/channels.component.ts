@@ -13,8 +13,8 @@ import { Location } from "@angular/common";
   styleUrls: ["./channels.component.css"],
 })
 export class ChannelsComponent implements OnInit {
-  channels: ChannelOperation[];
-  selectedChannel: string;
+  channels: ChannelOperation[] = [];
+  selectedChannel: string = "";
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -49,7 +49,7 @@ export class ChannelsComponent implements OnInit {
             b.operation.operationType
           );
         }
-      } else if (a.operation.protocol != null) {
+      } else if (a.operation.protocol != null && b.operation.protocol != null) {
         return a.operation.protocol.localeCompare(b.operation.protocol);
       } else {
         return 0;

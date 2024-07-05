@@ -35,7 +35,7 @@ export class AsyncApiMapperService {
 
   constructor(private notificationService: INotificationService) {}
 
-  public toAsyncApi(item: ServerAsyncApi): AsyncApi {
+  public toAsyncApi(item: ServerAsyncApi): AsyncApi | undefined {
     try {
       return {
         info: this.mapInfo(item),
@@ -49,9 +49,9 @@ export class AsyncApiMapperService {
           schemas: this.mapSchemas(item.components.schemas),
         },
       };
-    } catch (e) {
+    } catch (e: any) {
       this.notificationService.showError(
-        "Error parsing AsyncAPI: " + e.message
+        "Error parsing AsyncAPI: " + e?.message
       );
       return undefined;
     }
@@ -64,10 +64,12 @@ export class AsyncApiMapperService {
       description: item.info.description,
       contact: {
         url: item.info.contact?.url,
-        email: item.info.contact?.email && {
-          name: item.info.contact?.email,
-          href: "mailto:" + item.info.contact?.email,
-        },
+        email:
+          (item.info.contact?.email && {
+            name: item.info.contact?.email,
+            href: "mailto:" + item.info.contact?.email,
+          }) ||
+          undefined,
       },
       license: {
         name: item.info.license?.name,
@@ -130,7 +132,7 @@ export class AsyncApiMapperService {
     channel: ServerChannel,
     message: Message,
     operationType: ServerOperation["action"],
-    operationBinding: ServerBindings,
+    operationBinding: ServerBindings | undefined,
     description?: string
   ): ChannelOperation {
     const operation = this.mapOperation(
@@ -152,7 +154,7 @@ export class AsyncApiMapperService {
         ].join("-"),
       description: channel.description,
       operation,
-      bindings: channel.bindings,
+      bindings: channel.bindings || {},
     };
   }
 
@@ -162,7 +164,7 @@ export class AsyncApiMapperService {
     messages: ServerComponents["messages"],
     operationMessages: ServerOperationMessage[]
   ): Message[] {
-    return operationMessages
+    const result = operationMessages
       .map((operationMessage) => {
         return this.parsingErrorBoundary(
           "message of channel " + channelName,
@@ -174,7 +176,7 @@ export class AsyncApiMapperService {
 
             this.verifyBindings(message.bindings, "message " + message.name);
 
-            return {
+            const mappedMessage: Message = {
               name: message.name,
               title: message.title,
               description: message.description,
@@ -188,18 +190,22 @@ export class AsyncApiMapperService {
               },
               headers: {
                 name: message.headers.$ref,
-                title: message.headers.$ref?.split("/")?.pop(),
+                title:
+                  message.headers.$ref?.split("/")?.pop() ||
+                  "undefined-header-title",
                 anchorUrl:
                   AsyncApiMapperService.BASE_URL +
                   this.resolveRef(message.headers.$ref),
               },
               bindings: this.mapServerAsyncApiMessageBindings(message.bindings),
-              rawBindings: message.bindings,
+              rawBindings: message.bindings || {},
             };
+            return mappedMessage;
           }
         );
       })
-      .filter((el) => el != undefined);
+      .filter((el) => el !== undefined);
+    return result as Message[];
   }
 
   private mapServerAsyncApiMessageBindings(
@@ -241,11 +247,11 @@ export class AsyncApiMapperService {
     description?: string
   ): Operation {
     return {
-      protocol: this.getProtocol(bindings),
+      protocol: this.getProtocol(bindings) || "unsupported-protocol",
       operationType: operationType == "send" ? "send" : "receive",
       description,
       message,
-      bindings,
+      bindings: bindings || {},
     };
   }
 
@@ -299,7 +305,7 @@ export class AsyncApiMapperService {
         this.addPropertiesToSchema(schema, properties, schemas);
       });
     }
-    if (schema.anyOf !== undefined && schema.oneOf.length > 0) {
+    if (schema.anyOf !== undefined && schema.anyOf.length > 0) {
       this.addPropertiesToSchema(schema.anyOf[0], properties, schemas);
     }
     if (schema.oneOf !== undefined && schema.oneOf.length > 0) {
@@ -317,7 +323,7 @@ export class AsyncApiMapperService {
 
     return {
       name: schemaName,
-      title: schemaName.split(".")?.pop(),
+      title: schemaName.split(".")?.pop() || "undefined-title",
       description: schema.description,
       anchorIdentifier: "#" + schemaName,
 
@@ -346,13 +352,13 @@ export class AsyncApiMapperService {
 
   private addPropertiesToSchema(
     schema: ServerAsyncApiSchemaOrRef,
-    properties: {},
+    properties: { [key: string]: any },
     schemas: ServerComponents["schemas"]
   ) {
     let actualSchema = this.resolveSchema(schema, schemas);
 
-    if ("properties" in actualSchema) {
-      Object.entries(actualSchema.properties).forEach(([key, value], index) => {
+    if ("properties" in actualSchema && actualSchema.properties !== undefined) {
+      Object.entries(actualSchema.properties).forEach(([key, value]) => {
         properties[key] = this.mapSchema(key, value, schemas);
       });
     }
@@ -370,7 +376,7 @@ export class AsyncApiMapperService {
       if (refSchema !== undefined) {
         actualSchema = refSchema;
       } else {
-        return undefined;
+        throw new Error("Schema " + refName + " not found");
       }
     }
     return actualSchema;
@@ -379,7 +385,7 @@ export class AsyncApiMapperService {
   private mapSchemaRef(schemaName: string, schema: { $ref: string }): Schema {
     return {
       name: schemaName,
-      title: schemaName.split(".")?.pop(),
+      title: schemaName.split(".")?.pop() as string,
 
       refName: schema.$ref,
       refTitle: this.resolveRef(schema.$ref),
@@ -390,7 +396,7 @@ export class AsyncApiMapperService {
   }
 
   private resolveRef(ref: string) {
-    return ref?.split("/")?.pop();
+    return ref?.split("/")?.pop()!!;
   }
 
   private verifyBindings(

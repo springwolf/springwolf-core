@@ -10,8 +10,8 @@ import { Schema } from "../../models/schema.model";
   styleUrls: ["./schemas.component.css"],
 })
 export class SchemasComponent implements OnInit {
-  schemas: Map<string, Schema>;
-  selectedSchema: string;
+  schemas: Map<string, Schema> = new Map<string, Schema>();
+  selectedSchema: string = "";
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -28,7 +28,9 @@ export class SchemasComponent implements OnInit {
   }
 
   setSchemaSelection(schema: Schema): void {
-    window.location.hash = schema.anchorIdentifier;
+    if (schema.anchorIdentifier) {
+      window.location.hash = schema.anchorIdentifier;
+    }
   }
   setSchemaSelectionFromLocation(): void {
     this.selectedSchema = window.location.hash;

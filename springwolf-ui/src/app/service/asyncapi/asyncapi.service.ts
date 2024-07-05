@@ -2,8 +2,8 @@
 import { AsyncApi } from "../../models/asyncapi.model";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, share } from "rxjs";
-import { map } from "rxjs/operators";
+import { Observable, shareReplay } from "rxjs";
+import { map, filter } from "rxjs/operators";
 import { EndpointService } from "../endpoint.service";
 import { AsyncApiMapperService } from "./asyncapi-mapper.service";
 import { ServerAsyncApi } from "./models/asyncapi.model";
@@ -20,7 +20,8 @@ export class AsyncApiService {
       map((item) => {
         return this.asyncApiMapperService.toAsyncApi(item);
       }),
-      share()
+      filter((item): item is AsyncApi => item !== undefined),
+      shareReplay()
     );
   }
 

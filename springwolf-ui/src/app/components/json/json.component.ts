@@ -7,7 +7,7 @@ import { Component, OnChanges, Input } from "@angular/core";
 })
 export class JsonComponent implements OnChanges {
   @Input() data: any;
-  json: string;
+  json: string = "";
 
   ngOnChanges(): void {
     this.json = "```json\n" + JSON.stringify(this.data, null, 2) + "\n```";

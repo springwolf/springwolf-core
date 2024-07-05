@@ -8,7 +8,7 @@ import { UiService } from "../../service/ui.service";
   styleUrls: ["./header.component.css"],
 })
 export class HeaderComponent implements OnInit {
-  isNewUi: boolean;
+  isNewUi: boolean = true;
 
   constructor(private uiService: UiService) {}
 
