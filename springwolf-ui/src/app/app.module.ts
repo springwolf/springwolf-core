@@ -32,6 +32,7 @@ import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.servic
 import { MarkdownModule, provideMarkdown } from "ngx-markdown";
 import { UiService } from "./service/ui.service";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+import { SidenavComponent } from "./components/new/sidenav/sidenav.component";
 
 export const declarations = [
   AppComponent,
@@ -39,13 +40,14 @@ export const declarations = [
   InfoComponent,
   ServersComponent,
   ChannelsComponent,
-  ChannelsComponentNew,
   ChannelMainComponent,
-  ChannelMainComponentNew,
   SchemasComponent,
   SchemaComponent,
   SchemaRangeComponent,
   JsonComponent,
+  SidenavComponent,
+  ChannelsComponentNew,
+  ChannelMainComponentNew,
 ];
 export const imports = [
   BrowserModule,

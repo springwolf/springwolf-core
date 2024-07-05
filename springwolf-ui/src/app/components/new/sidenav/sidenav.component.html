@@ -1,0 +1,16 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      @for (link of links; track link) {
+      <a matListItemTitle [href]="link.url">
+        <mat-list-item [activated]="link.isActive">
+          {{ link.name }}
+        </mat-list-item>
+      </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <ng-content></ng-content>
+</mat-sidenav-container>

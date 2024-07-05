@@ -7,19 +7,7 @@
   <app-schemas></app-schemas>
 </main>
 <main *ngIf="isNewUi" class="new-ui">
-  <mat-sidenav-container>
-    <mat-sidenav mode="side" opened>
-      <mat-nav-list>
-        @for (link of links; track link) {
-        <a matListItemTitle [href]="link.url">
-          <mat-list-item [activated]="link.isActive">
-            {{ link.name }}
-          </mat-list-item>
-        </a>
-        }
-      </mat-nav-list>
-    </mat-sidenav>
-
+  <app-sidenav>
     <section id="info">
       <app-info></app-info>
     </section>
@@ -41,5 +29,5 @@
     <section id="schemas">
       <app-schemas></app-schemas>
     </section>
-  </mat-sidenav-container>
+  </app-sidenav>
 </main>
