@@ -17,7 +17,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/springwolf-ui",
+            "outputPath": {
+              "base": "dist/springwolf-ui",
+              "browser": ""
+            },
             "index": "src/asyncapi-ui.html",
             "browser": "src/main.ts",
             "polyfills": [
