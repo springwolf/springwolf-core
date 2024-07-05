@@ -52,6 +52,7 @@ export const declarations = [
 export const imports = [
   BrowserModule,
   MaterialModule,
+  HttpClientModule, // TODO: deprecated
   FormsModule,
   MarkdownModule.forRoot(),
   environment.production
@@ -59,10 +60,10 @@ export const imports = [
     : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 }),
 ];
 export const providers = [
-  provideZoneChangeDetection({ eventCoalescing: true }),
+//   provideZoneChangeDetection({ eventCoalescing: true }), // TODO:
   provideAnimationsAsync(),
   provideAnimationsAsync(),
-  provideHttpClient(withInterceptorsFromDi()),
+//   provideHttpClient(withInterceptorsFromDi()),
   provideMarkdown(),
 
   AsyncApiService,
