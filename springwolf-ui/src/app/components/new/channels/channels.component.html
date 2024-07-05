@@ -1,40 +1,37 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h1>Channels</h1>
-
 @for (channel of channels; track channel) {
-<h2
-  [id]="channel.anchorIdentifier"
-  [attr.data-testid]="channel.anchorIdentifier"
->
-  {{ channel.name }}
-</h2>
+<article appNavigationTarget [id]="channel.anchorIdentifier">
+  <h2 [attr.data-testid]="channel.anchorIdentifier">
+    {{ channel.name }}
+  </h2>
 
-<span class="flex-column gap-16 flex-start items-center">
-  <span class="badge protocol-badge" *ngIf="channel.operation.protocol">
-    {{ channel.operation.protocol }}
+  <span class="flex-column gap-16 flex-start items-center">
+    <span class="badge protocol-badge" *ngIf="channel.operation.protocol">
+      {{ channel.operation.protocol }}
+    </span>
+    <span
+      class="badge"
+      [ngClass]="{
+        'send-badge': channel.operation.operationType === 'send',
+        'receive-badge': channel.operation.operationType === 'receive'
+      }"
+    >
+      {{ channel.operation.operationType }}
+      <i
+        class="fa {{
+          channel.operation.operationType == 'receive'
+            ? 'fa-arrow-circle-down'
+            : 'fa-arrow-circle-up'
+        }}"
+      ></i>
+    </span>
+    <span class="payload-name">{{ channel.operation.message.title }}</span>
   </span>
-  <span
-    class="badge"
-    [ngClass]="{
-      'send-badge': channel.operation.operationType === 'send',
-      'receive-badge': channel.operation.operationType === 'receive'
-    }"
-  >
-    {{ channel.operation.operationType }}
-    <i
-      class="fa {{
-        channel.operation.operationType == 'receive'
-          ? 'fa-arrow-circle-down'
-          : 'fa-arrow-circle-up'
-      }}"
-    ></i>
-  </span>
-  <span class="payload-name">{{ channel.operation.message.title }}</span>
-</span>
 
-<app-channel-main-new
-  [channelName]="channel.name"
-  [operation]="channel.operation"
-></app-channel-main-new>
-
+  <app-channel-main-new
+    [channelName]="channel.name"
+    [operation]="channel.operation"
+  ></app-channel-main-new>
+</article>
 }

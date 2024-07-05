@@ -325,7 +325,7 @@ export class AsyncApiMapperService {
       name: schemaName,
       title: schemaName.split(".")?.pop() || "undefined-title",
       description: schema.description,
-      anchorIdentifier: "#" + schemaName,
+      anchorIdentifier: schemaName,
 
       type: schema.type,
       required: schema.required,
@@ -390,7 +390,7 @@ export class AsyncApiMapperService {
       refName: schema.$ref,
       refTitle: this.resolveRef(schema.$ref),
 
-      anchorIdentifier: "#" + schemaName,
+      anchorIdentifier: schemaName,
       anchorUrl: AsyncApiMapperService.BASE_URL + this.resolveRef(schema.$ref),
     };
   }

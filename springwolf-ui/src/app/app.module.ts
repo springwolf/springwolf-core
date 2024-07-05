@@ -33,6 +33,14 @@ import { MarkdownModule, provideMarkdown } from "ngx-markdown";
 import { UiService } from "./service/ui.service";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { SidenavComponent } from "./components/new/sidenav/sidenav.component";
+import { NavigationTargetDirective } from "./components/new/sidenav/navigation.directive";
+
+@NgModule({
+  imports: [],
+  declarations: [NavigationTargetDirective],
+  exports: [NavigationTargetDirective],
+})
+export class DirectivesModule {}
 
 export const declarations = [
   AppComponent,
@@ -50,6 +58,7 @@ export const declarations = [
   ChannelMainComponentNew,
 ];
 export const imports = [
+  DirectivesModule,
   BrowserModule,
   MaterialModule,
   FormsModule,

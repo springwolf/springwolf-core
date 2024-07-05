@@ -1,4 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-p {
-  /* empty */
+.sidenav .entry .entry {
+  padding-left: 20px;
+}
+
+.sidenav .entry {
+  border-left: 3px solid transparent;
+}
+.sidenav .entry.selected {
+  border-left: 3px solid black;
 }

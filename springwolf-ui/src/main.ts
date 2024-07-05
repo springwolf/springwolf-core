@@ -15,3 +15,4 @@ platformBrowserDynamic()
 // TODO: as casting (as string)
 // TODO: verify all !! casting
 // TODO: verify if Example field can be mandatory
+// TODO: verify anchorIdentifier -> deepLink

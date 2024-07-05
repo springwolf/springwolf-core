@@ -2,7 +2,7 @@
 import { Bindings } from "./bindings.model";
 import { Operation } from "./operation.model";
 
-export const CHANNEL_ANCHOR_PREFIX = "#channel-";
+export const CHANNEL_ANCHOR_PREFIX = "channel-";
 export interface ChannelOperation {
   name: string;
   anchorIdentifier: string;

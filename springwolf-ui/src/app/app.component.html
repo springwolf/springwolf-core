@@ -8,25 +8,26 @@
 </main>
 <main *ngIf="isNewUi" class="new-ui">
   <app-sidenav>
-    <section id="info">
+    <section appNavigationTarget id="info">
       <app-info></app-info>
+      <mat-divider></mat-divider>
     </section>
-    <mat-divider></mat-divider>
 
-    <section id="servers">
+    <section appNavigationTarget id="servers">
       <app-servers></app-servers>
+      <mat-divider></mat-divider>
     </section>
-    <mat-divider></mat-divider>
 
-    <section id="channels">
-      <app-channels-new></app-channels-new>
+    <section appNavigationTarget id="channels">
+      <app-channels-new> </app-channels-new>
+      <mat-divider></mat-divider>
     </section>
-    <mat-divider></mat-divider>
 
-    <section id="operations"></section>
-    <mat-divider></mat-divider>
+    <section appNavigationTarget id="operations">
+      <mat-divider></mat-divider>
+    </section>
 
-    <section id="schemas">
+    <section appNavigationTarget id="schemas">
       <app-schemas></app-schemas>
     </section>
   </app-sidenav>

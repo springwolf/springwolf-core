@@ -1,16 +1,28 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <mat-sidenav-container>
-  <mat-sidenav mode="side" opened>
-    <mat-nav-list>
-      @for (link of links; track link) {
-      <a matListItemTitle [href]="link.url">
-        <mat-list-item [activated]="link.isActive">
-          {{ link.name }}
-        </mat-list-item>
-      </a>
-      }
-    </mat-nav-list>
+  <mat-sidenav mode="side" opened class="sidenav">
+    @for (link of navigation; track link) {
+    <div class="entry" [ngClass]="{ selected: link.selected }">
+      <span>
+        <a [href]="link.href"> {{ link.name }}</a>
+        <mat-icon *ngIf="link.selected" fontIcon="home"></mat-icon>
+      </span>
+
+      <div>
+        @for (child of link.children; track child) {
+        <span class="entry" [ngClass]="{ selected: child.selected }">
+          <a [href]="child.href"> {{ child.name }}</a>
+          <mat-icon *ngIf="child.selected" fontIcon="home"></mat-icon> </span
+        ><br />
+        }
+      </div>
+    </div>
+    }
   </mat-sidenav>
 
-  <ng-content></ng-content>
+  <mat-sidenav-content>
+    <div #scrollableElement style="overflow-y: auto; height: 100%">
+      <ng-content></ng-content>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>
