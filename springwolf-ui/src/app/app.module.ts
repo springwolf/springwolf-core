@@ -1,13 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import {
-  HttpClientModule,
   provideHttpClient,
   withInterceptorsFromDi,
 } from "@angular/common/http";
-import { NgModule, provideZoneChangeDetection } from "@angular/core";
+import { importProvidersFrom, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
+import { InMemoryWebApiModule } from "angular-in-memory-web-api";
 import { environment } from "./../environments/environment";
 import { AppComponent } from "./app.component";
 import { ChannelMainComponent } from "./components/channels/channel-main/channel-main.component";
@@ -52,18 +50,19 @@ export const declarations = [
 export const imports = [
   BrowserModule,
   MaterialModule,
-  HttpClientModule, // TODO: deprecated
   FormsModule,
   MarkdownModule.forRoot(),
-  environment.production
-    ? []
-    : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 }),
 ];
 export const providers = [
-//   provideZoneChangeDetection({ eventCoalescing: true }), // TODO:
+  // provideExperimentalZonelessChangeDetection(),
   provideAnimationsAsync(),
   provideAnimationsAsync(),
-//   provideHttpClient(withInterceptorsFromDi()),
+  provideHttpClient(withInterceptorsFromDi()),
+  environment.production
+    ? []
+    : importProvidersFrom(
+        InMemoryWebApiModule.forRoot(MockServer, { delay: 100 })
+      ),
   provideMarkdown(),
 
   AsyncApiService,
