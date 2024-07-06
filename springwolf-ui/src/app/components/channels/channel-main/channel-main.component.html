@@ -1,15 +1,15 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <section>
   <mat-divider></mat-divider>
-  <div *ngIf="operation.description || operation.message.description">
+  <div *ngIf="operation().description || operation().message.description">
     <div class="table">
-      <div *ngIf="operation.description" class="table-row">
+      <div *ngIf="operation().description" class="table-row">
         <span>Operation description</span>
-        <markdown [data]="operation.description"></markdown>
+        <markdown [data]="operation().description"></markdown>
       </div>
-      <div *ngIf="operation.message.description" class="table-row">
+      <div *ngIf="operation().message.description" class="table-row">
         <span>Message description</span>
-        <markdown [data]="operation.message.description"></markdown>
+        <markdown [data]="operation().message.description"></markdown>
       </div>
     </div>
     <mat-divider></mat-divider>
@@ -19,8 +19,10 @@
       <div class="flex-column">
         <div
           [hidden]="
-            operation.protocol == undefined ||
-            isEmptyObject(operation.message.bindings.get(operation.protocol))
+            operation().protocol == undefined ||
+            isEmptyObject(
+              operation().message.bindings.get(operation().protocol)
+            )
           "
           class="flex-column"
         >
@@ -31,7 +33,7 @@
             [rows]="messageBindingExampleTextAreaLineCount"
             [value]="
               createMessageBindingExample(
-                operation.message.bindings.get(operation.protocol)
+                operation().message.bindings.get(operation().protocol)
               )?.value
             "
             (keyup)="
@@ -86,7 +88,7 @@
               headersTextArea.value = headersExample.value || '';
               bindingTextArea.value =
                 createMessageBindingExample(
-                  operation.message.bindings.get(operation.protocol)
+                  operation().message.bindings.get(operation().protocol)
                 )?.value || '';
               recalculateLineCount(
                 'messageBindingExample',
@@ -111,8 +113,8 @@
     <mat-tab label="Schema">
       <h4>
         Schema:
-        <a [href]="operation.message.payload.anchorUrl">{{
-          operation.message.payload.name
+        <a [href]="operation().message.payload.anchorUrl">{{
+          operation().message.payload.name
         }}</a>
       </h4>
       <app-schema *ngIf="schema" [schema]="schema"></app-schema>
@@ -120,25 +122,25 @@
     <mat-tab label="Headers">
       <h4>
         Schema:
-        <a [href]="operation.message.headers.anchorUrl">{{
-          operation.message.headers.name
+        <a [href]="operation().message.headers.anchorUrl">{{
+          operation().message.headers.name
         }}</a>
       </h4>
       <app-schema *ngIf="headers" [schema]="headers"></app-schema>
     </mat-tab>
     <mat-tab label="Operation Bindings">
-      <div *ngIf="operation.protocol && operation.message.bindings">
+      <div *ngIf="operation().protocol && operation().message.bindings">
         <app-json
-          *ngIf="operation.protocol && operation.bindings"
-          [data]="operation.bindings[operation.protocol]"
+          *ngIf="operation().protocol && operation().bindings"
+          [data]="operation().bindings[operation().protocol]"
         ></app-json>
       </div>
     </mat-tab>
     <mat-tab label="Message Bindings">
-      <div *ngIf="operation.protocol && operation.message.rawBindings">
+      <div *ngIf="operation().protocol && operation().message.rawBindings">
         <app-json
-          *ngIf="operation.protocol && operation.message"
-          [data]="operation.message.rawBindings[operation.protocol]"
+          *ngIf="operation().protocol && operation().message"
+          [data]="operation().message.rawBindings[operation().protocol]"
         ></app-json>
       </div>
     </mat-tab>

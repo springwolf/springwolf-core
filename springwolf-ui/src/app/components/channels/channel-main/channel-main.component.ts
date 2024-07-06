@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, input, Input, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { STATUS } from "angular-in-memory-web-api";
 import { Binding } from "../../../models/bindings.model";
@@ -22,8 +22,8 @@ import {
   styleUrls: ["./channel-main.component.css"],
 })
 export class ChannelMainComponent implements OnInit {
-  @Input() channelName: string = "";
-  @Input() operation: Operation = initOperation;
+  channelName = input.required<string>();
+  operation = input.required<Operation>();
 
   schema: Schema = initSchema;
   schemaIdentifier: string = "";
@@ -47,18 +47,19 @@ export class ChannelMainComponent implements OnInit {
   ngOnInit(): void {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       const schemas: Map<string, Schema> = asyncapi.components.schemas;
-      this.schemaIdentifier = this.operation.message.payload.name.slice(
-        this.operation.message.payload.name.lastIndexOf("/") + 1
+      this.schemaIdentifier = this.operation().message.payload.name.slice(
+        this.operation().message.payload.name.lastIndexOf("/") + 1
       );
       this.schema = schemas.get(this.schemaIdentifier)!!;
 
       this.defaultExample = this.schema.example!!;
       this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 1;
-      this.defaultExampleType = this.operation.message.payload.type;
+      this.defaultExampleType = this.operation().message.payload.type;
 
-      this.headersSchemaIdentifier = this.operation.message.headers.name.slice(
-        this.operation.message.headers.name.lastIndexOf("/") + 1
-      );
+      this.headersSchemaIdentifier =
+        this.operation().message.headers.name.slice(
+          this.operation().message.headers.name.lastIndexOf("/") + 1
+        );
       this.headers = schemas.get(this.headersSchemaIdentifier)!!;
       this.headersExample = this.headers.example!!;
       this.headersTextAreaLineCount = this.headersExample?.lineCount || 1;
@@ -66,7 +67,7 @@ export class ChannelMainComponent implements OnInit {
         this.messageBindingExample?.lineCount || 1;
 
       this.publisherService
-        .canPublish(this.operation.protocol)
+        .canPublish(this.operation().protocol)
         .subscribe((response) => {
           this.canPublish = response;
         });
@@ -152,8 +153,8 @@ export class ChannelMainComponent implements OnInit {
 
       this.publisherService
         .publish(
-          this.operation.protocol,
-          this.channelName,
+          this.operation().protocol,
+          this.channelName(),
           example,
           payloadType,
           headersJson,
@@ -176,7 +177,7 @@ export class ChannelMainComponent implements OnInit {
 
   private handlePublishSuccess() {
     return this.snackBar.open(
-      "Example payload sent to: " + this.channelName,
+      "Example payload sent to: " + this.channelName(),
       "PUBLISHED",
       {
         duration: 3000,
@@ -187,7 +188,7 @@ export class ChannelMainComponent implements OnInit {
   private handlePublishError(err: { status?: number }) {
     let msg = "Publish failed";
     if (err?.status === STATUS.NOT_FOUND) {
-      msg += ": no publisher was provided for " + this.operation.protocol;
+      msg += ": no publisher was provided for " + this.operation().protocol;
     }
 
     return this.snackBar.open(msg, "ERROR", {

@@ -63,7 +63,6 @@ export class SidenavComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.navigationTargets);
     this.scrollableElement.nativeElement.addEventListener(
       "scroll",
       (event: Event) => {

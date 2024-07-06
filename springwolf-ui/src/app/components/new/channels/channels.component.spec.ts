@@ -1,21 +1,21 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { render, screen } from "@testing-library/angular";
-import { ChannelsComponent } from "./channels.component";
+import { ChannelsNewComponent } from "./channels.component";
 import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
 import {
   mockedAsyncApiService,
   mockedExampleSchemaMapped,
 } from "../../../service/mock/mock-asyncapi.service";
 import { MaterialModule } from "../../../material.module";
-import { MockChannelMainComponent } from "../../mock-components.spec";
+import { MockChannelMainNewComponent } from "../../mock-components.spec";
 
-describe("ChannelsComponent", () => {
+describe("ChannelsNewComponent", () => {
   beforeEach(async () => {
     mockedAsyncApiService.getAsyncApi.mockClear();
 
-    await render(ChannelsComponent, {
+    await render(ChannelsNewComponent, {
       imports: [MaterialModule],
-      declarations: [MockChannelMainComponent],
+      declarations: [MockChannelMainNewComponent],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
       ],

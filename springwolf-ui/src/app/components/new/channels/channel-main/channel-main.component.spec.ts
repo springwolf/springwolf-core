@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { render, screen } from "@testing-library/angular";
-import { ChannelMainComponent } from "./channel-main.component";
+import { ChannelMainNewComponent } from "./channel-main.component";
 import { AsyncApiService } from "../../../../service/asyncapi/asyncapi.service";
 import { PublisherService } from "../../../../service/publisher.service";
 import { MaterialModule } from "../../../../material.module";
@@ -11,20 +11,20 @@ import {
 } from "../../../../service/mock/mock-asyncapi.service";
 import { MockAppJson, MockAppSchema } from "../../../mock-components.spec";
 
-describe("ChannelMainComponent", () => {
+describe("ChannelMainNewComponent", () => {
   const mockData = mockedExampleSchemaMapped.channelOperations[0];
 
   beforeEach(async () => {
     mockedAsyncApiService.getAsyncApi.mockClear();
 
-    await render(ChannelMainComponent, {
-      imports: [MaterialModule, MarkdownModule.forRoot()],
+    await render(ChannelMainNewComponent, {
       declarations: [MockAppJson, MockAppSchema],
+      imports: [MaterialModule, MarkdownModule.forRoot()],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
         { provide: PublisherService, useValue: {} },
       ],
-      componentProperties: {
+      componentInputs: {
         channelName: mockData.name,
         operation: mockData.operation,
       },
@@ -33,7 +33,7 @@ describe("ChannelMainComponent", () => {
 
   it("should render the component and data", () => {
     expect(
-      screen.getByText(mockData.operation.message.description)
+      screen.getByText(mockData.operation.message.description!!)
     ).toBeTruthy();
   });
 });

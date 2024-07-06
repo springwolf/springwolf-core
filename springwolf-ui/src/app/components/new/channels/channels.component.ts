@@ -12,7 +12,7 @@ import { Location } from "@angular/common";
   templateUrl: "./channels.component.html",
   styleUrls: ["./channels.component.css"],
 })
-export class ChannelsComponent implements OnInit {
+export class ChannelsNewComponent implements OnInit {
   channels: ChannelOperation[] = [];
   selectedChannel: string | undefined =
     this.updateChannelSelectionFromLocation();

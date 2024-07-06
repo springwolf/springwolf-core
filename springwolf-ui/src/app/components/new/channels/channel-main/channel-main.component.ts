@@ -21,7 +21,7 @@ import {
   templateUrl: "./channel-main.component.html",
   styleUrls: ["./channel-main.component.css"],
 })
-export class ChannelMainComponent implements OnInit {
+export class ChannelMainNewComponent implements OnInit {
   channelName = input.required<string>();
   operation = input.required<Operation>();
 

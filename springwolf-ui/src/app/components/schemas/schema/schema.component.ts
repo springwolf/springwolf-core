@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, Input } from "@angular/core";
+import { Component, input, Input } from "@angular/core";
 import { Schema } from "../../../models/schema.model";
 import { Example } from "../../../models/example.model";
 import { initSchema } from "../../../service/mock/init-values";
@@ -10,5 +10,5 @@ import { initSchema } from "../../../service/mock/init-values";
   styleUrls: ["./schema.component.css"],
 })
 export class SchemaComponent {
-  @Input() schema: Schema = initSchema;
+  schema = input.required<Schema>();
 }

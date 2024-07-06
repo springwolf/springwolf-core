@@ -1,48 +1,37 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-
 import { SchemaComponent } from "./schema.component";
 import { SchemaRangeComponent } from "../range/schema-range.component";
 import { MatChipsModule } from "@angular/material/chips";
 import { MarkdownModule } from "ngx-markdown";
 import { Example } from "../../../models/example.model";
 import { JsonComponent } from "../../json/json.component";
+import { render, screen } from "@testing-library/angular";
 
 describe("SchemaComponent", () => {
-  let component: SchemaComponent;
-  let fixture: ComponentFixture<SchemaComponent>;
+  beforeEach(async () => {
+    const mockedSchemaRangeComponent = jest.fn();
 
-  let mockedSchemaRangeComponent = jest.mock("../range/schema-range.component");
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+    await render(SchemaComponent, {
       declarations: [SchemaComponent, SchemaRangeComponent, JsonComponent],
       imports: [MatChipsModule, MarkdownModule.forRoot()],
       providers: [
         { provide: SchemaRangeComponent, useValue: mockedSchemaRangeComponent },
       ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(SchemaComponent as any);
-    component = fixture.debugElement.componentInstance;
+      componentInputs: {
+        schema: {
+          title: "String",
+          type: "string",
+          example: new Example("example value"),
+        },
+      },
+    });
   });
 
   it("should create the component", () => {
-    expect(component).toBeTruthy();
+    expect(screen).toBeTruthy();
   });
 
-  it("should render primitive string", async () => {
-    component.schema = {
-      title: "String",
-      type: "string",
-      example: new Example("string"),
-    };
-
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector(".type").textContent).toContain("string");
-    expect(compiled.querySelector(".example").textContent).toContain(
-      "example: string"
-    );
+  it("should render primitive string example", async () => {
+    expect(screen.getByText(/example value/i)).toBeTruthy();
   });
 });

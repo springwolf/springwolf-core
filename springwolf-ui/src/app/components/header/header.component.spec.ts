@@ -2,6 +2,7 @@
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { HeaderComponent } from "./header.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 describe("HeaderComponent", () => {
   let component: HeaderComponent;
@@ -10,7 +11,7 @@ describe("HeaderComponent", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent],
-      imports: [MatToolbarModule],
+      imports: [MatToolbarModule, MatSlideToggleModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent as any);

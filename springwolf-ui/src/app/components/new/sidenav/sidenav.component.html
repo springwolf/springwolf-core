@@ -2,18 +2,18 @@
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened class="sidenav">
     @for (link of navigation; track link) {
+    <!-- TODO: convert to list? ul li -->
     <div class="entry" [ngClass]="{ selected: link.selected }">
       <span>
         <a [href]="link.href"> {{ link.name }}</a>
-        <mat-icon *ngIf="link.selected" fontIcon="home"></mat-icon>
       </span>
 
       <div>
         @for (child of link.children; track child) {
         <span class="entry" [ngClass]="{ selected: child.selected }">
           <a [href]="child.href"> {{ child.name }}</a>
-          <mat-icon *ngIf="child.selected" fontIcon="home"></mat-icon> </span
-        ><br />
+          <br />
+        </span>
         }
       </div>
     </div>
