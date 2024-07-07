@@ -1,7 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import {AsyncApiService} from "../../../service/asyncapi/asyncapi.service";
-import {AfterViewInit, Component, ContentChildren, ElementRef, OnInit, QueryList, ViewChild,} from "@angular/core";
-import {NavigationTargetDirective} from "./navigation.directive";
+import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
+import {
+  AfterViewInit,
+  Component,
+  ContentChildren,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+} from "@angular/core";
+import { NavigationTargetDirective } from "./navigation.directive";
 
 interface NavigationEntry {
   name: string;
@@ -30,7 +38,11 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
       newNavigation.push({ name: "Info", href: "#info", selected: true });
 
-      newNavigation.push({ name: "Servers", href: "#servers", selected: false, });
+      newNavigation.push({
+        name: "Servers",
+        href: "#servers",
+        selected: false,
+      });
 
       const channels = {
         name: "Channels",
@@ -38,13 +50,32 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         selected: false,
         children: [] as NavigationEntry[],
       };
+      let lastChannel: NavigationEntry | undefined = undefined;
       asyncapi.channelOperations.forEach((value) => {
-        channels.children.push({
+        const channel = {
           name: value.name,
           href: "#" + value.anchorIdentifier,
           selected: false,
-        });
+          children: [
+            {
+              name: value.name,
+              href: "#" + value.anchorIdentifier,
+              selected: false,
+            },
+          ] as NavigationEntry[],
+        };
+        if (channel.name === lastChannel?.name) {
+          lastChannel.children?.push(channel);
+        } else {
+          if (lastChannel !== undefined) {
+            channels.children.push(lastChannel);
+          }
+          lastChannel = channel;
+        }
       });
+      if (lastChannel !== undefined) {
+        channels.children.push(lastChannel);
+      }
       newNavigation.push(channels);
 
       const schemas = {
@@ -91,7 +122,12 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         this.navigation.forEach((link) => {
           let childSelected = false;
           link.children?.forEach((child) => {
-            child.selected = currentAnchor == child.href;
+            let subChildSelected = false;
+            child.children?.forEach((subChild) => {
+              subChild.selected = currentAnchor == subChild.href;
+              subChildSelected = subChildSelected || subChild.selected;
+            });
+            child.selected = currentAnchor == child.href || subChildSelected;
             childSelected = childSelected || child.selected;
           });
           link.selected = currentAnchor == link.href || childSelected;
