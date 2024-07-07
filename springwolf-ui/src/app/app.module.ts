@@ -34,6 +34,7 @@ import { UiService } from "./service/ui.service";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { SidenavComponent } from "./components/new/sidenav/sidenav.component";
 import { NavigationTargetDirective } from "./components/new/sidenav/navigation.directive";
+import { PrismEditorComponent } from "./components/new/code/prism-editor.component";
 
 @NgModule({
   imports: [],
@@ -53,6 +54,7 @@ export const declarations = [
   SchemaComponent,
   SchemaRangeComponent,
   JsonComponent,
+  PrismEditorComponent,
   SidenavComponent,
   ChannelsNewComponent,
   ChannelMainNewComponent,

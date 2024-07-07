@@ -20,14 +20,29 @@
 
 <div class="row">
   <div class="width-6/12 width-12/12-s">
-    <h3>Message Binding</h3>
+    <h3>Operation Binding</h3>
   </div>
   <div class="width-6/12 width-12/12-s">
-    <div *ngIf="operation().protocol && operation().message.bindings">
+    <div *ngIf="operation().protocol">
       <app-json
         *ngIf="operation().protocol && operation().bindings"
         [data]="operation().bindings[operation().protocol]"
       ></app-json>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="width-6/12 width-12/12-s">
+    <h3>Message Binding</h3>
+  </div>
+  <div class="width-6/12 width-12/12-s">
+    <div>
+      <app-json
+        *ngIf="messageBindingExampleString"
+        [data]="messageBindingExampleString"
+      ></app-json>
+      <span *ngIf="!messageBindingExampleString"><i>none</i></span>
     </div>
   </div>
 </div>
@@ -40,7 +55,7 @@
     }}</a>
   </div>
   <div class="width-6/12 width-12/12-s">
-    <app-schema *ngIf="headers" [schema]="headers"></app-schema>
+    <app-prism-editor [(code)]="headersExample.value" language="json" />
   </div>
 </div>
 
@@ -53,94 +68,26 @@
 
     <app-schema *ngIf="schema" [schema]="schema"></app-schema>
   </div>
+
   <div class="width-6/12 width-12/12-s">
-    <div class="flex-column">
-      <div
-        [hidden]="
-          operation().protocol == undefined ||
-          isEmptyObject(operation().message.bindings.get(operation().protocol))
-        "
-        class="flex-column"
+    <app-prism-editor [(code)]="defaultExample.value" language="json" />
+    <div class="button-container flex gap-8">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!canPublish"
+        (click)="publish()"
       >
-        <h4>Message Binding</h4>
-        <textarea
-          spellcheck="false"
-          #bindingTextArea
-          [rows]="messageBindingExampleTextAreaLineCount"
-          [value]="
-            createMessageBindingExample(
-              operation().message.bindings.get(operation().protocol)
-            )?.value
-          "
-          (keyup)="
-            recalculateLineCount('messageBindingExample', bindingTextArea.value)
-          "
-        ></textarea>
-      </div>
-      <div class="flex-column">
-        <h4>Header</h4>
-        <textarea
-          spellcheck="false"
-          #headersTextArea
-          [rows]="headersTextAreaLineCount"
-          [value]="headersExample.value"
-          (keyup)="recalculateLineCount('headers', headersTextArea.value)"
-        ></textarea>
-      </div>
-      <div class="flex-column">
-        <h4>Message</h4>
-        <textarea
-          spellcheck="false"
-          #messageTextArea
-          [rows]="exampleTextAreaLineCount"
-          [value]="defaultExample.value"
-          (keyup)="recalculateLineCount('example', messageTextArea.value)"
-        ></textarea>
-      </div>
-      <div class="button-container flex gap-8">
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="!canPublish"
-          (click)="
-            publish(
-              messageTextArea.value,
-              defaultExampleType,
-              headersTextArea?.value,
-              bindingTextArea?.value
-            )
-          "
-        >
-          Publish
-        </button>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="
-            messageTextArea.value = defaultExample.value;
-            headersTextArea.value = headersExample.value || '';
-            bindingTextArea.value =
-              createMessageBindingExample(
-                operation().message.bindings.get(operation().protocol)
-              )?.value || '';
-            recalculateLineCount(
-              'messageBindingExample',
-              bindingTextArea.value
-            );
-            recalculateLineCount('headers', headersTextArea.value);
-            recalculateLineCount('example', messageTextArea.value)
-          "
-        >
-          Default
-        </button>
-        <button
-          mat-raised-button
-          color="primary"
-          [cdkCopyToClipboard]="messageTextArea.value"
-        >
-          Copy
-        </button>
-      </div>
+        Publish
+      </button>
+      <button mat-raised-button color="primary">Reset (TODO)</button>
+      <button
+        mat-raised-button
+        color="primary"
+        [cdkCopyToClipboard]="defaultExample.value"
+      >
+        Copy
+      </button>
     </div>
   </div>
 </div>

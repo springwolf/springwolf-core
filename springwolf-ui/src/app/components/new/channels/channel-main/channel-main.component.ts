@@ -1,20 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, input, Input, OnInit, signal } from "@angular/core";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { STATUS } from "angular-in-memory-web-api";
-import { Binding } from "../../../../models/bindings.model";
-import { Example } from "../../../../models/example.model";
-import { Operation } from "../../../../models/operation.model";
-import { Schema } from "../../../../models/schema.model";
-import { AsyncApiService } from "../../../../service/asyncapi/asyncapi.service";
-import { PublisherService } from "../../../../service/publisher.service";
-import { wrapException } from "../../../../util/error-boundary";
-import { Subscription } from "rxjs";
-import {
-  initExample,
-  initOperation,
-  initSchema,
-} from "../../../../service/mock/init-values";
+import {Component, input, OnInit} from "@angular/core";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {STATUS} from "angular-in-memory-web-api";
+import {Binding} from "../../../../models/bindings.model";
+import {Example} from "../../../../models/example.model";
+import {Operation} from "../../../../models/operation.model";
+import {Schema} from "../../../../models/schema.model";
+import {AsyncApiService} from "../../../../service/asyncapi/asyncapi.service";
+import {PublisherService} from "../../../../service/publisher.service";
+import {wrapException} from "../../../../util/error-boundary";
+import {initExample, initSchema,} from "../../../../service/mock/init-values";
 
 @Component({
   selector: "app-channel-main-new",
@@ -29,13 +24,10 @@ export class ChannelMainNewComponent implements OnInit {
   schemaIdentifier: string = "";
   defaultExample: Example = initExample;
   defaultExampleType: string = "";
-  exampleTextAreaLineCount: number = 1;
   headers: Schema = initSchema;
   headersSchemaIdentifier: string = "";
   headersExample: Example = initExample;
-  headersTextAreaLineCount: number = 1;
-  messageBindingExample?: Example;
-  messageBindingExampleTextAreaLineCount: number = 1;
+  messageBindingExampleString?: string;
   canPublish: boolean = false;
 
   constructor(
@@ -53,18 +45,16 @@ export class ChannelMainNewComponent implements OnInit {
       this.schema = schemas.get(this.schemaIdentifier)!!;
 
       this.defaultExample = this.schema.example!!;
-      this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 1;
       this.defaultExampleType = this.operation().message.payload.type;
-
       this.headersSchemaIdentifier =
         this.operation().message.headers.name.slice(
           this.operation().message.headers.name.lastIndexOf("/") + 1
         );
       this.headers = schemas.get(this.headersSchemaIdentifier)!!;
       this.headersExample = this.headers.example!!;
-      this.headersTextAreaLineCount = this.headersExample?.lineCount || 1;
-      this.messageBindingExampleTextAreaLineCount =
-        this.messageBindingExample?.lineCount || 1;
+      this.messageBindingExampleString = this.createMessageBindingExample(
+        this.operation().message.bindings.get(this.operation().protocol)
+      )?.value;
 
       this.publisherService
         .canPublish(this.operation().protocol)
@@ -72,14 +62,6 @@ export class ChannelMainNewComponent implements OnInit {
           this.canPublish = response;
         });
     });
-  }
-
-  isEmptyObject(object?: any): boolean {
-    return (
-      object === undefined ||
-      object === null ||
-      Object.keys(object).length === 0
-    );
   }
 
   createMessageBindingExample(messageBinding?: Binding): Example | undefined {
@@ -96,11 +78,7 @@ export class ChannelMainNewComponent implements OnInit {
       }
     });
 
-    const bindingExample = new Example(bindingExampleObject);
-
-    this.messageBindingExampleTextAreaLineCount = bindingExample.lineCount;
-
-    return bindingExample;
+    return new Example(bindingExampleObject);
   }
 
   getExampleValue(bindingValue: string | Binding): any {
@@ -115,26 +93,11 @@ export class ChannelMainNewComponent implements OnInit {
     return undefined;
   }
 
-  recalculateLineCount(field: string, text: string): void {
-    switch (field) {
-      case "example":
-        this.exampleTextAreaLineCount = text.split("\n").length;
-        break;
-      case "headers":
-        this.headersTextAreaLineCount = text.split("\n").length;
-        break;
-      case "messageBindingExample":
-        this.messageBindingExampleTextAreaLineCount = text.split("\n").length;
-        break;
-    }
-  }
-
-  publish(
-    example: string,
-    payloadType: string,
-    headers?: string,
-    bindings?: string
-  ): void {
+  publish(): void {
+    const example = this.defaultExample.value;
+    const payloadType = this.defaultExampleType;
+    const headers = this.headersExample.value;
+    const bindings = this.messageBindingExampleString;
     try {
       const headersJson =
         headers === ""
@@ -177,7 +140,7 @@ export class ChannelMainNewComponent implements OnInit {
 
   private handlePublishSuccess() {
     return this.snackBar.open(
-      "Example payload sent to: " + this.channelName,
+      "Example payload sent to: " + this.channelName(),
       "PUBLISHED",
       {
         duration: 3000,

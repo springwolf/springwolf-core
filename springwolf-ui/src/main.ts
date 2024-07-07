@@ -16,3 +16,4 @@ platformBrowserDynamic()
 // TODO: verify all !! casting
 // TODO: verify if Example field can be mandatory
 // TODO: verify anchorIdentifier -> deepLink
+// TODO: remove prism in angular.json + dependency after using new theme

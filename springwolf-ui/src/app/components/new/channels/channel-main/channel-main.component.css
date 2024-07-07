@@ -50,3 +50,7 @@ button {
 [hidden] {
   display: none !important;
 }
+
+a {
+  word-wrap: break-word;
+}
