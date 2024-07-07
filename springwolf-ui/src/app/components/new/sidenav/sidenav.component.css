@@ -1,11 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+.sidenav {
+  padding-left: .1em;
+}
+
 .sidenav .entry .entry {
-  padding-left: 20px;
+  padding-left: .5em;
 }
 
 .sidenav .entry {
-  border-left: 3px solid transparent;
+  border-left: .3em solid transparent;
+  padding-left: .1em;
 }
 .sidenav .entry.selected {
-  border-left: 3px solid black;
+  border-left: .3em solid black;
 }

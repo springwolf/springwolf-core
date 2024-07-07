@@ -1,15 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  QueryList,
-  AfterViewInit,
-  ViewChild,
-  ContentChildren,
-} from "@angular/core";
-import { NavigationTargetDirective } from "./navigation.directive";
+import {AsyncApiService} from "../../../service/asyncapi/asyncapi.service";
+import {AfterViewInit, Component, ContentChildren, ElementRef, OnInit, QueryList, ViewChild,} from "@angular/core";
+import {NavigationTargetDirective} from "./navigation.directive";
 
 interface NavigationEntry {
   name: string;
@@ -37,17 +29,14 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       const newNavigation: NavigationEntry[] = [];
 
       newNavigation.push({ name: "Info", href: "#info", selected: true });
-      newNavigation.push({
-        name: "Servers",
-        href: "#servers",
-        selected: false,
-      });
-      const children: NavigationEntry[] = [];
+
+      newNavigation.push({ name: "Servers", href: "#servers", selected: false, });
+
       const channels = {
         name: "Channels",
         href: "#channels",
         selected: false,
-        children: children,
+        children: [] as NavigationEntry[],
       };
       asyncapi.channelOperations.forEach((value) => {
         channels.children.push({
@@ -57,6 +46,21 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         });
       });
       newNavigation.push(channels);
+
+      const schemas = {
+        name: "Schemas",
+        href: "#schemas",
+        selected: false,
+        children: [] as NavigationEntry[],
+      };
+      asyncapi.components.schemas.forEach((value) => {
+        schemas.children.push({
+          name: value.title,
+          href: "#" + value.anchorIdentifier,
+          selected: false,
+        });
+      });
+      newNavigation.push(schemas);
 
       this.navigation = newNavigation;
     });
