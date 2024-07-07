@@ -9,7 +9,7 @@ import {
   mockedAsyncApiService,
   mockedExampleSchemaMapped,
 } from "../../../../service/mock/mock-asyncapi.service";
-import { MockAppJson, MockAppSchema } from "../../../mock-components.spec";
+import {MockAppJson, MockAppSchema, MockPrismEditorComponent} from "../../../mock-components.spec";
 
 describe("ChannelMainNewComponent", () => {
   const mockData = mockedExampleSchemaMapped.channelOperations[0];
@@ -18,7 +18,7 @@ describe("ChannelMainNewComponent", () => {
     mockedAsyncApiService.getAsyncApi.mockClear();
 
     await render(ChannelMainNewComponent, {
-      declarations: [MockAppJson, MockAppSchema],
+      declarations: [MockAppJson, MockAppSchema, MockPrismEditorComponent],
       imports: [MaterialModule, MarkdownModule.forRoot()],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },

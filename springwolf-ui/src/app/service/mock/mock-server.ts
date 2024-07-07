@@ -13,7 +13,6 @@ export class MockServer implements InMemoryDbService {
 
   get(reqInfo: RequestInfo) {
     if (reqInfo.req.url.endsWith("/docs")) {
-      console.log("Returning mock data");
       const body = this.selectMockData();
       return reqInfo.utils.createResponse$(() => {
         return {

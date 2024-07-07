@@ -33,3 +33,8 @@ export class MockChannelMainNewComponent {
   channelName = input.required<string>();
   operation = input.required<Operation>();
 }
+
+@Component({ selector: "app-prism-editor", template: "" })
+export class MockPrismEditorComponent {
+  code = input<string>('')
+}
