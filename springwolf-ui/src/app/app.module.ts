@@ -35,6 +35,7 @@ import { provideAnimationsAsync } from "@angular/platform-browser/animations/asy
 import { SidenavComponent } from "./components/new/sidenav/sidenav.component";
 import { NavigationTargetDirective } from "./components/new/sidenav/navigation.directive";
 import { PrismEditorComponent } from "./components/new/code/prism-editor.component";
+import { SchemaNewComponent } from "./components/new/schema/schema.component";
 
 @NgModule({
   imports: [],
@@ -58,6 +59,7 @@ export const declarations = [
   SidenavComponent,
   ChannelsNewComponent,
   ChannelMainNewComponent,
+  SchemaNewComponent,
 ];
 export const imports = [
   DirectivesModule,

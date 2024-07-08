@@ -2,7 +2,7 @@
 <div class="row">
   <div
     *ngIf="operation().description || operation().message.description"
-    class="width-6/12 width-12/12-s"
+    class="width-12/12 width-12/12-s"
   >
     <div class="table">
       <div *ngIf="operation().description" class="table-row">
@@ -22,7 +22,7 @@
   <div class="width-6/12 width-12/12-s">
     <h3>Operation Binding</h3>
   </div>
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6/12 width-12/12-s align-content-center">
     <div *ngIf="operation().protocol">
       <app-json
         *ngIf="operation().protocol && operation().bindings"
@@ -36,7 +36,7 @@
   <div class="width-6/12 width-12/12-s">
     <h3>Message Binding</h3>
   </div>
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6/12 width-12/12-s align-content-center">
     <div>
       <app-json
         *ngIf="messageBindingExampleString"
@@ -50,11 +50,12 @@
 <div class="row">
   <div class="width-6/12 width-12/12-s">
     <h3>Headers</h3>
+  </div>
+  <div class="width-6/12 width-12/12-s align-content-center">
     <a [href]="operation().message.headers.anchorUrl">{{
       operation().message.headers.name
     }}</a>
-  </div>
-  <div class="width-6/12 width-12/12-s">
+
     <app-prism-editor [(code)]="headersExample.value" language="json" />
   </div>
 </div>
@@ -62,14 +63,15 @@
 <div class="row">
   <div class="width-6/12 width-12/12-s">
     <h3>Payload</h3>
+
+    <app-schema-new *ngIf="schema" [schema]="schema"></app-schema-new>
+  </div>
+
+  <div class="width-6/12 width-12/12-s align-content-center">
     <a [href]="operation().message.payload.anchorUrl">{{
       operation().message.payload.name
     }}</a>
 
-    <app-schema *ngIf="schema" [schema]="schema"></app-schema>
-  </div>
-
-  <div class="width-6/12 width-12/12-s">
     <app-prism-editor [(code)]="defaultExample.value" language="json" />
     <div class="button-container flex gap-8">
       <button

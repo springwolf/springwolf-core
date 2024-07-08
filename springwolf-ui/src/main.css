@@ -39,11 +39,17 @@ body {
 .justify-center {
   justify-content: center;
 }
+.align-items-baseline {
+  align-items: baseline;
+}
 .items-center {
   align-items: center;
 }
 .flex-start {
   align-items: start;
+}
+.flex-start {
+  align-items: end;
 }
 
 .grid {

@@ -52,5 +52,8 @@ button {
 }
 
 a {
-  word-wrap: break-word;
+  word-break: break-all;
+}
+.align-content-center {
+  align-content: center;
 }

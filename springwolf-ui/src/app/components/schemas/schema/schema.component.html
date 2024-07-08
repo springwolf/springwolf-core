@@ -8,7 +8,7 @@
     <tr *ngIf="schema().type !== 'object'">
       <ng-container
         [ngTemplateOutlet]="valueContent"
-        [ngTemplateOutletContext]="{ value: schema }"
+        [ngTemplateOutletContext]="{ value: schema() }"
       >
       </ng-container>
     </tr>

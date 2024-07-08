@@ -1,15 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import {Component, input, OnInit} from "@angular/core";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {STATUS} from "angular-in-memory-web-api";
-import {Binding} from "../../../../models/bindings.model";
-import {Example} from "../../../../models/example.model";
-import {Operation} from "../../../../models/operation.model";
-import {Schema} from "../../../../models/schema.model";
-import {AsyncApiService} from "../../../../service/asyncapi/asyncapi.service";
-import {PublisherService} from "../../../../service/publisher.service";
-import {wrapException} from "../../../../util/error-boundary";
-import {initExample, initSchema,} from "../../../../service/mock/init-values";
+import { Component, input, OnInit } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { STATUS } from "angular-in-memory-web-api";
+import { Binding } from "../../../../models/bindings.model";
+import { Example } from "../../../../models/example.model";
+import { Operation } from "../../../../models/operation.model";
+import { Schema } from "../../../../models/schema.model";
+import { AsyncApiService } from "../../../../service/asyncapi/asyncapi.service";
+import { PublisherService } from "../../../../service/publisher.service";
+import { wrapException } from "../../../../util/error-boundary";
+import { initExample, initSchema } from "../../../../service/mock/init-values";
 
 @Component({
   selector: "app-channel-main-new",

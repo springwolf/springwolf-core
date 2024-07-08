@@ -1,0 +1,69 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<div class="schema">
+  <!--  Primitive types  -->
+  <ng-container
+    *ngIf="schema().type !== 'object'"
+    [ngTemplateOutlet]="valueContent"
+    [ngTemplateOutletContext]="{ value: schema() }"
+  >
+  </ng-container>
+
+  <!--  Objects  -->
+  <p *ngFor="let property of schema().properties || {} | keyvalue">
+    <span class="key">
+      <b>- {{ property.key }}</b>
+      <span class="required" *ngIf="schema().required?.includes(property.key)"
+        >*</span
+      >
+      &nbsp;
+    </span>
+
+    <ng-container
+      [ngTemplateOutlet]="valueContent"
+      [ngTemplateOutletContext]="{ value: property.value }"
+    >
+    </ng-container>
+  </p>
+</div>
+
+<ng-template #valueContent let-value="value">
+  <!-- normal property -->
+  <span class="type" *ngIf="!value?.items?.type">
+    {{ value.type }}
+    <span class="format" *ngIf="value.format">({{ value.format }})</span>
+  </span>
+  <!-- array of refs -->
+  <span class="type" *ngIf="value?.items?.type && value?.items?.anchorUrl">
+    <a [href]="value.items.anchorUrl">
+      <!-- schema ref -->
+      {{ value.items.refTitle }}[]
+    </a>
+  </span>
+  <!-- array of primitive -->
+  <span class="type" *ngIf="value?.items?.type && !value?.items?.anchorUrl">
+    {{ value.items.type }}[]
+  </span>
+  <span class="type" *ngIf="value.refTitle">
+    <a [href]="value.anchorUrl">{{ value.refTitle }}</a>
+  </span>
+
+  <div class="description">
+    <markdown [data]="value.description"></markdown>
+  </div>
+
+  <span class="example" *ngIf="value.example">
+    <i>Example:</i>
+    &nbsp;
+    <span *ngIf="!value.enum">
+      {{ value.example.value }}
+    </span>
+    <mat-select *ngIf="value.enum" placeholder="Enum">
+      <mat-option *ngFor="let enumValue of value.enum" [value]="enumValue">
+        {{ enumValue }}
+      </mat-option>
+    </mat-select>
+  </span>
+  <app-schema-range [schema]="value"> </app-schema-range>
+
+  <hr />
+</ng-template>
