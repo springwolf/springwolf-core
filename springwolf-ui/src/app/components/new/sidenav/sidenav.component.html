@@ -15,6 +15,10 @@
               @for (subchild of child.children; track subchild) {
               <li class="entry" [ngClass]="{ selected: subchild.selected }">
                 <a [href]="subchild.href"> {{ subchild.name }}</a>
+
+                @for (subChildTag of subchild.tags; track subChildTag) {
+                <span>{{ subChildTag }}</span>
+                }
               </li>
               }
             </ul>

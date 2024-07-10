@@ -15,6 +15,7 @@ interface NavigationEntry {
   name: string;
   href: string | undefined;
   selected: boolean;
+  tags?: string[];
   children?: NavigationEntry[];
 }
 
@@ -56,10 +57,12 @@ export class SidenavComponent implements OnInit, AfterViewInit {
           name: value.name,
           href: "#" + value.anchorIdentifier,
           selected: false,
+          tags: [value.operation.operationType],
           children: [
             {
               name: value.name,
               href: "#" + value.anchorIdentifier,
+              tags: [value.operation.operationType],
               selected: false,
             },
           ] as NavigationEntry[],

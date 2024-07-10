@@ -15,3 +15,18 @@
 .sidenav .entry.selected {
   border-left: 0.3em solid black;
 }
+
+.entry .entry .entry {
+  display: flex;
+  justify-content: space-between;
+}
+.entry .entry .entry span {
+  color: var(--mdc-chip-focus-state-layer-color);
+  text-transform: uppercase;
+  font-size: smaller;
+
+  word-break: break-all;
+
+  border: 1px solid gray;
+  border-radius: 0.3em;
+}
