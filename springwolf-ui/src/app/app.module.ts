@@ -37,6 +37,7 @@ import { NavigationTargetDirective } from "./components/new/sidenav/navigation.d
 import { PrismEditorComponent } from "./components/new/code/prism-editor.component";
 import { SchemaNewComponent } from "./components/new/schema/schema.component";
 import { ServersNewComponent } from "./components/new/servers/servers.component";
+import { SchemasNewComponent } from "./components/new/schemas/schemas.component";
 
 @NgModule({
   imports: [],
@@ -61,6 +62,7 @@ export const declarations = [
   ServersNewComponent,
   ChannelsNewComponent,
   ChannelMainNewComponent,
+  SchemasNewComponent,
   SchemaNewComponent,
 ];
 export const imports = [

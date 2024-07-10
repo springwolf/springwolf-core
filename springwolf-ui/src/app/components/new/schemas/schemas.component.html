@@ -1,0 +1,20 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<h1>Schemas</h1>
+@for(schema of schemas | keyvalue; track schema) {
+<article appNavigationTarget [id]="schema.value.anchorIdentifier">
+  <span class="flex space-between align-items-baseline">
+    <h2>{{ schema.value.title }}</h2>
+
+    <span class="flex-column flex-start items-center">
+      <div class="badge type-badge">{{ schema.value.type }}</div>
+    </span>
+  </span>
+
+  <markdown [data]="schema.value.description"></markdown>
+
+  <h4>
+    Title: <span class="schema-name">{{ schema.value.name }}</span>
+  </h4>
+  <app-schema [schema]="schema.value"></app-schema>
+</article>
+}
