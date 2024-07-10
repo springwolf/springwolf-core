@@ -10,6 +10,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { NavigationTargetDirective } from "./navigation.directive";
+import { Server } from "../../../models/server.model";
 
 interface NavigationEntry {
   name: string;
@@ -17,6 +18,13 @@ interface NavigationEntry {
   selected: boolean;
   tags?: string[];
   children?: NavigationEntry[];
+}
+
+function transformMap<K, V, U>(
+  source: Map<K, V>,
+  func: (key: K, value: V) => U
+): Map<K, U> {
+  return new Map(Array.from(source, (v) => [v[0], func(v[0], v[1])]));
 }
 
 @Component({
@@ -39,14 +47,22 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
       newNavigation.push({ name: "Info", href: "#info", selected: true });
 
+      const servers: NavigationEntry[] = Array.from(
+        asyncapi.servers.keys()
+      ).map((key) => ({
+        name: key,
+        href: "#" + asyncapi.servers.get(key)!.anchorIdentifier,
+        selected: false,
+      }));
       newNavigation.push({
         name: "Servers",
         href: "#servers",
         selected: false,
+        children: servers,
       });
 
       const channels = {
-        name: "Channels",
+        name: "Channels & Operations",
         href: "#channels",
         selected: false,
         children: [] as NavigationEntry[],

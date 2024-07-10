@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { AsyncApi } from "../../models/asyncapi.model";
-import { Server } from "../../models/server.model";
+import { Server, SERVER_ANCHOR_PREFIX } from "../../models/server.model";
 import {
   CHANNEL_ANCHOR_PREFIX,
   ChannelOperation,
@@ -66,8 +66,8 @@ export class AsyncApiMapperService {
         url: item.info.contact?.url,
         email:
           (item.info.contact?.email && {
-            name: item.info.contact?.email,
-            href: "mailto:" + item.info.contact?.email,
+            name: item.info.contact.email,
+            href: "mailto:" + item.info.contact.email,
           }) ||
           undefined,
       },
@@ -81,7 +81,14 @@ export class AsyncApiMapperService {
 
   private mapServers(servers: ServerServers): Map<string, Server> {
     const s = new Map<string, Server>();
-    Object.entries(servers).forEach(([k, v]) => s.set(k, v));
+    Object.entries(servers).forEach(([k, v]) => {
+      const server: Server = {
+        host: v.host,
+        protocol: v.protocol,
+        anchorIdentifier: SERVER_ANCHOR_PREFIX + k,
+      };
+      s.set(k, server);
+    });
     return s;
   }
 

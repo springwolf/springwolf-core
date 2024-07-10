@@ -36,6 +36,7 @@ import { SidenavComponent } from "./components/new/sidenav/sidenav.component";
 import { NavigationTargetDirective } from "./components/new/sidenav/navigation.directive";
 import { PrismEditorComponent } from "./components/new/code/prism-editor.component";
 import { SchemaNewComponent } from "./components/new/schema/schema.component";
+import { ServersNewComponent } from "./components/new/servers/servers.component";
 
 @NgModule({
   imports: [],
@@ -57,6 +58,7 @@ export const declarations = [
   JsonComponent,
   PrismEditorComponent,
   SidenavComponent,
+  ServersNewComponent,
   ChannelsNewComponent,
   ChannelMainNewComponent,
   SchemaNewComponent,

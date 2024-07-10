@@ -1,0 +1,26 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<h1>Servers</h1>
+@for (server of servers | keyvalue; track server) {
+<article appNavigationTarget [id]="server.value.anchorIdentifier">
+  <h2>{{ server.key }}</h2>
+
+  <table>
+    <tbody>
+      <tr>
+        <td>- Protocol</td>
+        <td>
+          <span class="badge protocol-badge">
+            {{ server.value.protocol }}
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>- Host</td>
+        <td>
+          {{ server.value.host }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+}

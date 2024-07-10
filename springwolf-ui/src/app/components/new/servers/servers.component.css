@@ -1,0 +1,14 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+.badge {
+  border-radius: 4px;
+  padding: 8px;
+  font-size: small;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.protocol-badge {
+  background-color: #347aeb;
+  color: #fff;
+  text-transform: uppercase;
+}

@@ -5,7 +5,7 @@
   <span class="flex space-between align-items-baseline">
     <span class="flex gap-16">
       <span class="badge protocol-badge" *ngIf="channel.operation.protocol">
-        {{ channel.operation.protocol.toUpperCase() }}
+        {{ channel.operation.protocol }}
       </span>
       <span
         class="badge"
@@ -14,7 +14,7 @@
           'receive-badge': channel.operation.operationType === 'receive'
         }"
       >
-        {{ channel.operation.operationType.toUpperCase() }}
+        {{ channel.operation.operationType }}
         <i
           class="fa {{
             channel.operation.operationType == 'receive'

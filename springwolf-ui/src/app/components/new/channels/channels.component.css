@@ -5,6 +5,7 @@
   font-size: small;
   font-weight: bold;
   display: inline-block;
+  text-transform: uppercase;
 }
 
 .send-badge {

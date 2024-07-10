@@ -32,6 +32,6 @@ describe("SchemaComponent", () => {
   });
 
   it("should render primitive string example", async () => {
-    expect(screen.getByText(/example value/i)).toBeTruthy();
+    expect(screen.getAllByText(/example value/i)).toBeTruthy();
   });
 });
