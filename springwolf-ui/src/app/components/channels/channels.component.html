@@ -22,13 +22,6 @@
           }"
         >
           {{ channel.operation.operationType }}
-          <i
-            class="fa {{
-              channel.operation.operationType == 'receive'
-                ? 'fa-arrow-circle-down'
-                : 'fa-arrow-circle-up'
-            }}"
-          ></i>
         </div>
         <h3>{{ channel.name }}</h3>
         <span class="payload-name">{{ channel.operation.message.title }}</span>
