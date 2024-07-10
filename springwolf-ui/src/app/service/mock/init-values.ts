@@ -24,12 +24,14 @@ export const initMessage: Message = {
   payload: { anchorUrl: "", name: "", title: "", type: "" },
   rawBindings: {},
   title: "",
+  contentType: "",
 };
 export const initOperation: Operation = {
   bindings: initBindings,
   message: initMessage,
   operationType: "send",
   protocol: "",
+  servers: [],
 };
 
 export const initSchema: Schema = {

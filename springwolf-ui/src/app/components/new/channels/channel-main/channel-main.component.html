@@ -1,9 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <div class="row">
-  <div
-    *ngIf="operation().description || operation().message.description"
-    class="width-12/12 width-12/12-s"
-  >
+  <div class="width-12/12 width-12/12-s">
     <div class="table">
       <div *ngIf="operation().description" class="table-row">
         <span>Operation description</span>
@@ -12,6 +9,18 @@
       <div *ngIf="operation().message.description" class="table-row">
         <span>Message description</span>
         <markdown [data]="operation().message.description"></markdown>
+      </div>
+      <div *ngIf="operation().message.contentType" class="table-row">
+        <span>Content-Type</span>
+        <markdown [data]="operation().message.contentType"></markdown>
+      </div>
+      <div class="table-row">
+        <span>Servers</span>
+        <span>
+          @for (server of operation().servers; track server) {
+          <a href="{{ server.anchorUrl }}">{{ server.name }}</a>
+          }
+        </span>
       </div>
     </div>
     <mat-divider></mat-divider>

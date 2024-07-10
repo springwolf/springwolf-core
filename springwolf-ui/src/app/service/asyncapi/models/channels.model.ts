@@ -12,5 +12,8 @@ export interface ServerChannel {
       $ref: string;
     };
   };
+  servers?: {
+    $ref: string;
+  }[];
   bindings?: ServerBindings;
 }

@@ -5,4 +5,5 @@ export interface Server {
   protocol: string;
 
   anchorIdentifier: string;
+  anchorUrl: string;
 }

@@ -26,7 +26,7 @@ import { INotificationService } from "../notification.service";
 import { ServerComponents } from "./models/components.model";
 import { Binding, Bindings } from "../../models/bindings.model";
 import { Message } from "../../models/message.model";
-import { Operation } from "../../models/operation.model";
+import { Operation, OperationServer } from "../../models/operation.model";
 import { catchException } from "../../util/error-boundary";
 
 @Injectable()
@@ -43,7 +43,9 @@ export class AsyncApiMapperService {
         channelOperations: this.mapChannelOperations(
           item.channels,
           item.operations,
-          item.components.messages
+          item.components.messages,
+          item.servers,
+          item.defaultContentType
         ),
         components: {
           schemas: this.mapSchemas(item.components.schemas),
@@ -86,6 +88,7 @@ export class AsyncApiMapperService {
         host: v.host,
         protocol: v.protocol,
         anchorIdentifier: SERVER_ANCHOR_PREFIX + k,
+        anchorUrl: AsyncApiMapperService.BASE_URL + SERVER_ANCHOR_PREFIX + k,
       };
       s.set(k, server);
     });
@@ -95,7 +98,9 @@ export class AsyncApiMapperService {
   private mapChannelOperations(
     channels: ServerChannels,
     operations: ServerOperations,
-    messages: ServerComponents["messages"]
+    messages: ServerComponents["messages"],
+    servers: ServerServers,
+    defaultContentType: string
   ): ChannelOperation[] {
     const s = new Array<ChannelOperation>();
     for (let operationsKey in operations) {
@@ -109,7 +114,8 @@ export class AsyncApiMapperService {
           channelName,
           channels[channelName],
           messages,
-          operation.messages
+          operation.messages,
+          defaultContentType
         );
         operationMessages.forEach((message) => {
           const channelOperation = this.parsingErrorBoundary(
@@ -118,10 +124,9 @@ export class AsyncApiMapperService {
               this.mapChannelOperation(
                 channelName,
                 channels[channelName],
+                operation,
                 message,
-                operation.action,
-                operation.bindings,
-                operation.description
+                servers
               )
           );
 
@@ -137,16 +142,30 @@ export class AsyncApiMapperService {
   private mapChannelOperation(
     channelName: string,
     channel: ServerChannel,
+    operation: ServerOperation,
     message: Message,
-    operationType: ServerOperation["action"],
-    operationBinding: ServerBindings | undefined,
-    description?: string
+    servers: ServerServers
   ): ChannelOperation {
-    const operation = this.mapOperation(
-      operationType,
+    const mappedServers =
+      channel?.servers?.map((server) => this.resolveRef(server.$ref)) ||
+      Object.keys(servers);
+    const mappedOperationServers: OperationServer[] = mappedServers.map(
+      (serverKey) => {
+        return {
+          name: serverKey,
+          anchorIdentifier: SERVER_ANCHOR_PREFIX + serverKey,
+          anchorUrl:
+            AsyncApiMapperService.BASE_URL + SERVER_ANCHOR_PREFIX + serverKey,
+        };
+      }
+    );
+
+    const mappedOperation = this.mapOperation(
+      operation.action,
+      mappedOperationServers,
       message,
-      operationBinding,
-      description
+      operation.bindings,
+      operation.description
     );
 
     return {
@@ -154,13 +173,13 @@ export class AsyncApiMapperService {
       anchorIdentifier:
         CHANNEL_ANCHOR_PREFIX +
         [
-          operation.protocol,
+          mappedOperation.protocol,
           channelName,
-          operation.operationType,
-          operation.message.title,
+          mappedOperation.operationType,
+          mappedOperation.message.title,
         ].join("-"),
       description: channel.description,
-      operation,
+      operation: mappedOperation,
       bindings: channel.bindings || {},
     };
   }
@@ -169,7 +188,8 @@ export class AsyncApiMapperService {
     channelName: string,
     channel: ServerChannel,
     messages: ServerComponents["messages"],
-    operationMessages: ServerOperationMessage[]
+    operationMessages: ServerOperationMessage[],
+    defaultContentType: string
   ): Message[] {
     const result = operationMessages
       .map((operationMessage) => {
@@ -187,6 +207,7 @@ export class AsyncApiMapperService {
               name: message.name,
               title: message.title,
               description: message.description,
+              contentType: message.contentType || defaultContentType,
               payload: {
                 name: message.payload.schema.$ref,
                 title: this.resolveRef(message.payload.schema.$ref),
@@ -249,16 +270,18 @@ export class AsyncApiMapperService {
 
   private mapOperation(
     operationType: ServerOperation["action"],
+    servers: OperationServer[],
     message: Message,
     bindings?: Bindings,
     description?: string
   ): Operation {
     return {
       protocol: this.getProtocol(bindings) || "unsupported-protocol",
+      bindings: bindings || {},
+      servers: servers,
       operationType: operationType == "send" ? "send" : "receive",
       description,
       message,
-      bindings: bindings || {},
     };
   }
 

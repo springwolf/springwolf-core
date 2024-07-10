@@ -5,6 +5,7 @@ export interface Message {
   name: string;
   title: string;
   description?: string;
+  contentType: string;
   payload: {
     name: string;
     type: string;

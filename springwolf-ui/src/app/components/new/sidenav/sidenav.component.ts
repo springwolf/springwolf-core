@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { NavigationTargetDirective } from "./navigation.directive";
-import { Server } from "../../../models/server.model";
+import { AsyncApiMapperService } from "../../../service/asyncapi/asyncapi-mapper.service";
 
 interface NavigationEntry {
   name: string;
@@ -45,25 +45,31 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       const newNavigation: NavigationEntry[] = [];
 
-      newNavigation.push({ name: "Info", href: "#info", selected: true });
+      newNavigation.push({
+        name: "Info",
+        href: AsyncApiMapperService.BASE_URL + "info",
+        selected: true,
+      });
 
       const servers: NavigationEntry[] = Array.from(
         asyncapi.servers.keys()
       ).map((key) => ({
         name: key,
-        href: "#" + asyncapi.servers.get(key)!.anchorIdentifier,
+        href:
+          AsyncApiMapperService.BASE_URL +
+          asyncapi.servers.get(key)!.anchorIdentifier,
         selected: false,
       }));
       newNavigation.push({
         name: "Servers",
-        href: "#servers",
+        href: AsyncApiMapperService.BASE_URL + "servers",
         selected: false,
         children: servers,
       });
 
       const channels = {
         name: "Channels & Operations",
-        href: "#channels",
+        href: AsyncApiMapperService.BASE_URL + "channels",
         selected: false,
         children: [] as NavigationEntry[],
       };
@@ -71,13 +77,13 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       asyncapi.channelOperations.forEach((value) => {
         const channel = {
           name: value.name,
-          href: "#" + value.anchorIdentifier,
+          href: AsyncApiMapperService.BASE_URL + value.anchorIdentifier,
           selected: false,
           tags: [value.operation.operationType],
           children: [
             {
               name: value.name,
-              href: "#" + value.anchorIdentifier,
+              href: AsyncApiMapperService.BASE_URL + value.anchorIdentifier,
               tags: [value.operation.operationType],
               selected: false,
             },
@@ -99,14 +105,14 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
       const schemas = {
         name: "Schemas",
-        href: "#schemas",
+        href: AsyncApiMapperService.BASE_URL + "schemas",
         selected: false,
         children: [] as NavigationEntry[],
       };
       asyncapi.components.schemas.forEach((value) => {
         schemas.children.push({
           name: value.title,
-          href: "#" + value.anchorIdentifier,
+          href: AsyncApiMapperService.BASE_URL + "" + value.anchorIdentifier,
           selected: false,
         });
       });
@@ -134,7 +140,10 @@ export class SidenavComponent implements OnInit, AfterViewInit {
               scrollPosition >= anchorPosition &&
               scrollPosition < anchorPosition + anchorHeight
             ) {
-              currentAnchor = "#" + nativeElement.getAttribute("id");
+              currentAnchor =
+                AsyncApiMapperService.BASE_URL +
+                "" +
+                nativeElement.getAttribute("id");
             }
           });
 

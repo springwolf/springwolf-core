@@ -8,5 +8,12 @@ export interface Operation {
   message: Message;
   bindings: Bindings;
   protocol: string;
+  servers: OperationServer[];
   operationType: OperationType;
+}
+
+export interface OperationServer {
+  name: string;
+  anchorIdentifier: string;
+  anchorUrl: string;
 }

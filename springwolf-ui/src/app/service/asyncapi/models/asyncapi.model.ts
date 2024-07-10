@@ -8,6 +8,7 @@ import { ServerOperations } from "./operations.model";
 export interface ServerAsyncApi {
   asyncapi: string;
   info: ServerAsyncApiInfo;
+  defaultContentType: string;
   servers: ServerServers;
   channels: ServerChannels;
   operations: ServerOperations;
