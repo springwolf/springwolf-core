@@ -9,13 +9,15 @@ import { Schema } from "../../../models/schema.model";
   styleUrls: ["./schemas.component.css"],
 })
 export class SchemasNewComponent implements OnInit {
-  schemas: Map<string, Schema> = new Map<string, Schema>();
+  schemas: Schema[] = [];
 
   constructor(private asyncApiService: AsyncApiService) {}
 
   ngOnInit(): void {
     this.asyncApiService
       .getAsyncApi()
-      .subscribe((asyncapi) => (this.schemas = asyncapi.components.schemas));
+      .subscribe(
+        (asyncapi) => (this.schemas = [...asyncapi.components.schemas.values()])
+      );
   }
 }

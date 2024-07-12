@@ -1,20 +1,20 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h2>Schemas</h2>
-@for(schema of schemas | keyvalue; track schema) {
-<article appNavigationTarget [id]="schema.value.anchorIdentifier">
+@for(schema of schemas; track schema) {
+<article appNavigationTarget [id]="schema.anchorIdentifier">
   <span class="flex space-between align-items-baseline">
-    <h3>{{ schema.value.title }}</h3>
+    <h3>{{ schema.title }}</h3>
 
     <span class="flex-column flex-start items-center">
-      <div class="badge type-badge">{{ schema.value.type }}</div>
+      <div class="badge type-badge">{{ schema.type }}</div>
     </span>
   </span>
 
-  <markdown [data]="schema.value.description"></markdown>
+  <markdown [data]="schema.description"></markdown>
 
   <h4>
-    Title: <span class="schema-name">{{ schema.value.name }}</span>
+    Title: <span class="schema-name">{{ schema.name }}</span>
   </h4>
-  <app-schema [schema]="schema.value"></app-schema>
+  <app-schema [schema]="schema"></app-schema>
 </article>
 }

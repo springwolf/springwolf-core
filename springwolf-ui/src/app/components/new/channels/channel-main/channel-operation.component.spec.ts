@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { render, screen } from "@testing-library/angular";
-import { ChannelMainNewComponent } from "./channel-main.component";
+import { ChannelOperationComponent } from "./channel-operation.component";
 import { AsyncApiService } from "../../../../service/asyncapi/asyncapi.service";
 import { PublisherService } from "../../../../service/publisher.service";
 import { MaterialModule } from "../../../../material.module";
@@ -15,13 +15,13 @@ import {
   MockPrismEditorComponent,
 } from "../../../mock-components.spec";
 
-describe("ChannelMainNewComponent", () => {
+describe("ChannelOperationComponent", () => {
   const mockData = mockedExampleSchemaMapped.channelOperations[0];
 
   beforeEach(async () => {
     mockedAsyncApiService.getAsyncApi.mockClear();
 
-    await render(ChannelMainNewComponent, {
+    await render(ChannelOperationComponent, {
       declarations: [
         MockAppJson,
         MockAppSchemaNewComponent,

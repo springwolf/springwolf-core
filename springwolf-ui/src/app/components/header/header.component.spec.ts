@@ -1,24 +1,22 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { HeaderComponent } from "./header.component";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { render } from "@testing-library/angular";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import { mockedAsyncApiService } from "../../service/mock/mock-asyncapi.service";
 
 describe("HeaderComponent", () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [HeaderComponent],
+  beforeEach(async () => {
+    await render(HeaderComponent, {
       imports: [MatToolbarModule, MatSlideToggleModule],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(HeaderComponent as any);
-    component = fixture.debugElement.componentInstance;
+      providers: [
+        { provide: AsyncApiService, useValue: mockedAsyncApiService },
+      ],
+    });
   });
 
   it("should create the component", () => {
-    expect(component).toBeTruthy();
+    expect(screen).toBeTruthy();
   });
 });

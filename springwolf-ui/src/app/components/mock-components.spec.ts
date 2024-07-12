@@ -28,8 +28,8 @@ export class MockChannelMainComponent {
   operation = input.required<Operation>();
 }
 
-@Component({ selector: "app-channel-main-new", template: "" })
-export class MockChannelMainNewComponent {
+@Component({ selector: "app-channel-operation", template: "" })
+export class MockChannelOperationComponent {
   channelName = input.required<string>();
   operation = input.required<Operation>();
 }

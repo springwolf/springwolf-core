@@ -33,6 +33,7 @@ describe("InfoComponent", function () {
       of({
         info: info,
         servers: new Map<string, Server>(),
+        channels: [],
         channelOperations: [],
         components: {
           schemas: new Map<string, Schema>(),

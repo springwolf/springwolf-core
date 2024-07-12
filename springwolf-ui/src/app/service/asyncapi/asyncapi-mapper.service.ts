@@ -352,7 +352,11 @@ export class AsyncApiMapperService {
         mappedSchemas.set(schemaName, mappedSchema);
       }
     });
-    return mappedSchemas;
+    return new Map(
+      [...mappedSchemas.entries()].sort((a, b) =>
+        a[1].title.localeCompare(b[1].title)
+      )
+    );
   }
 
   private mapSchema(

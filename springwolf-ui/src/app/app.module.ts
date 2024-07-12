@@ -9,7 +9,7 @@ import { InMemoryWebApiModule } from "angular-in-memory-web-api";
 import { environment } from "./../environments/environment";
 import { AppComponent } from "./app.component";
 import { ChannelMainComponent } from "./components/channels/channel-main/channel-main.component";
-import { ChannelMainNewComponent } from "./components/new/channels/channel-main/channel-main.component";
+import { ChannelOperationComponent } from "./components/new/channels/channel-main/channel-operation.component";
 import { ChannelsComponent } from "./components/channels/channels.component";
 import { ChannelsNewComponent } from "./components/new/channels/channels.component";
 import { HeaderComponent } from "./components/header/header.component";
@@ -61,7 +61,7 @@ export const declarations = [
   SidenavComponent,
   ServersNewComponent,
   ChannelsNewComponent,
-  ChannelMainNewComponent,
+  ChannelOperationComponent,
   SchemasNewComponent,
   SchemaNewComponent,
 ];

@@ -12,11 +12,11 @@ import { wrapException } from "../../../../util/error-boundary";
 import { initExample, initSchema } from "../../../../service/mock/init-values";
 
 @Component({
-  selector: "app-channel-main-new",
-  templateUrl: "./channel-main.component.html",
-  styleUrls: ["./channel-main.component.css"],
+  selector: "app-channel-operation",
+  templateUrl: "./channel-operation.component.html",
+  styleUrls: ["./channel-operation.component.css"],
 })
-export class ChannelMainNewComponent implements OnInit {
+export class ChannelOperationComponent implements OnInit {
   channelName = input.required<string>();
   operation = input.required<Operation>();
 
