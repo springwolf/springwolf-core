@@ -13,6 +13,7 @@ import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.EmailSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.PasswordSchema;
@@ -440,6 +441,20 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             String actualString = jsonMapper.writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("{\"allOfField\":{\"field1\":\"string\",\"field2\":1.1}}");
+        }
+
+        @Test
+        void object_with_map(TestInfo testInfo) throws JsonProcessingException {
+            MapSchema mapSchema = new MapSchema();
+            mapSchema.setName(testInfo.getDisplayName());
+
+            Schema propertySchema = new StringSchema();
+            mapSchema.setAdditionalProperties(propertySchema);
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(mapSchema, Map.of("Nested", propertySchema));
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("{\"key\":\"string\"}");
         }
 
         @Test

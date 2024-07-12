@@ -509,6 +509,18 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         }
 
         @Test
+        void object_with_map() {
+            MapSchema mapSchema = new MapSchema();
+            mapSchema.setName("object_with_map");
+
+            Schema propertySchema = new StringSchema();
+            mapSchema.setAdditionalProperties(propertySchema);
+
+            String actual = xmlSchemaWalker.fromSchema(mapSchema, Map.of("Nested", propertySchema));
+            assertThat(actual).isEqualTo("<object_with_map><key>string</key></object_with_map>");
+        }
+
+        @Test
         void schema_with_problematic_object_toString_example() {
             ObjectSchema schema = new ObjectSchema();
             schema.setExample(new ClassWithToString());
