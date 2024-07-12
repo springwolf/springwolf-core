@@ -160,7 +160,7 @@ class DefaultXmlComponentsServiceTest {
         @Schema(description = "List without example")
         private List<String> ls_plain;
 
-        @Schema(description = "Map with example", example = "<key1>value1</key1>")
+        @Schema(description = "Map with example", example = "<mss><key1>value1</key1></mss>")
         private Map<String, String> mss;
 
         @Schema(description = "Map without example")

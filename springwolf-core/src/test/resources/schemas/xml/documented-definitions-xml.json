@@ -29,11 +29,11 @@
       "mss" : {
         "type" : "object",
         "description" : "Map with example",
-        "examples" : [ "<key1>value1</key1>" ],
+        "examples" : [ "<mss><key1>value1</key1></mss>" ],
         "additionalProperties" : {
           "type" : "string",
           "description" : "Map with example",
-          "examples" : [ "<key1>value1</key1>" ]
+          "examples" : [ "<mss><key1>value1</key1></mss>" ]
         }
       },
       "mss_plain" : {
@@ -51,7 +51,7 @@
       }
     },
     "description" : "foo model",
-    "examples" : [ "<DocumentedSimpleFoo><bi>0</bi><dt>2000-01-01T02:00:00+02:00</dt><f><b>true</b><s>string</s></f><ld>2024-04-24</ld><ls_plain>string</ls_plain><mss/><mss_plain/><s>s value</s></DocumentedSimpleFoo>" ],
+    "examples" : [ "<DocumentedSimpleFoo><bi>0</bi><dt>2000-01-01T02:00:00+02:00</dt><f><b>true</b><s>string</s></f><ld>2024-04-24</ld><ls_plain>string</ls_plain><mss><key1>value1</key1></mss><mss_plain><key>string</key></mss_plain><s>s value</s></DocumentedSimpleFoo>" ],
     "required" : [ "dt", "f", "s" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$SimpleFoo" : {

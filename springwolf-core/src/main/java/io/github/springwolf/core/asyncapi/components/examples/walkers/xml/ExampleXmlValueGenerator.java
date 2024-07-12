@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,6 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -223,7 +225,9 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     private Node readXmlString(String xmlString) {
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            return documentBuilder.parse(xmlString);
+            InputSource is = new InputSource(new StringReader(xmlString));
+            Element element = documentBuilder.parse(is).getDocumentElement();
+            return document.importNode(element, true);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             log.info("Unable to convert example to XMl Node: {}", xmlString, e);
         }
