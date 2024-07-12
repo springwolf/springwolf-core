@@ -62,7 +62,7 @@ ext {
 
     protobufJavaVersion = '4.27.2'
 
-    junitJupiterVersion = '5.10.2'
+    junitJupiterVersion = '5.10.3'
     jsonUnitAssertJVersion = '3.4.0'
 
     lombokVersion = '1.18.32'
