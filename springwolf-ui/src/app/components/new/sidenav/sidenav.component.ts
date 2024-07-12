@@ -152,15 +152,18 @@ export class SidenavComponent implements OnInit, AfterViewInit {
           subChildSelected = subChildSelected || subChild.selected;
         });
         child.selected = currentAnchor == child.href || subChildSelected;
-        child.collapsed = false;
+        childSelected = childSelected || child.selected;
 
         child.children?.forEach((subChild) => {
           subChild.collapsed = !child.selected;
         });
-
-        childSelected = childSelected || child.selected;
       });
       link.selected = currentAnchor == link.href || childSelected;
+
+      link.children?.forEach((child) => {
+        child.collapsed = !link.selected;
+      });
+
       link.collapsed = false;
     });
   };
