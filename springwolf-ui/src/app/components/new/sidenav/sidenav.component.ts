@@ -11,6 +11,7 @@ import {
 } from "@angular/core";
 import { NavigationTargetDirective } from "./navigation.directive";
 import { AsyncApiMapperService } from "../../../service/asyncapi/asyncapi-mapper.service";
+import { Location } from "@angular/common";
 
 interface NavigationEntry {
   name: string;
@@ -39,9 +40,14 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
   navigation: NavigationEntry[] = [];
 
-  constructor(private asyncApiService: AsyncApiService) {}
+  constructor(
+    private asyncApiService: AsyncApiService,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
+    this.location.subscribe(this.scrollToUrlLocation);
+
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       const newNavigation: NavigationEntry[] = [];
 
@@ -119,48 +125,62 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       newNavigation.push(schemas);
 
       this.navigation = newNavigation;
+
+      this.scrollToUrlLocation();
     });
   }
 
   ngAfterViewInit() {
     this.scrollableElement.nativeElement.addEventListener(
       "scroll",
-      (event: Event) => {
-        let currentAnchor = "";
-        const scrollPosition = this.scrollableElement.nativeElement.scrollTop;
-
-        document
-          .querySelectorAll("[appNavigationTarget]")
-          // this.navigationTargets .map((el: NavigationTargetDirective)=> el.el.nativeElement)
-          .forEach((element: Element) => {
-            const nativeElement = element as HTMLElement;
-            const anchorPosition = nativeElement.offsetTop;
-            const anchorHeight = nativeElement.offsetHeight;
-            if (
-              scrollPosition >= anchorPosition &&
-              scrollPosition < anchorPosition + anchorHeight
-            ) {
-              currentAnchor =
-                AsyncApiMapperService.BASE_URL +
-                "" +
-                nativeElement.getAttribute("id");
-            }
-          });
-
-        this.navigation.forEach((link) => {
-          let childSelected = false;
-          link.children?.forEach((child) => {
-            let subChildSelected = false;
-            child.children?.forEach((subChild) => {
-              subChild.selected = currentAnchor == subChild.href;
-              subChildSelected = subChildSelected || subChild.selected;
-            });
-            child.selected = currentAnchor == child.href || subChildSelected;
-            childSelected = childSelected || child.selected;
-          });
-          link.selected = currentAnchor == link.href || childSelected;
-        });
-      }
+      this.updateNavigationSelection
     );
   }
+
+  private updateNavigationSelection = (event: Event) => {
+    let currentAnchor = "";
+    const scrollPosition = this.scrollableElement.nativeElement.scrollTop;
+
+    document
+      .querySelectorAll("[appNavigationTarget]")
+      // this.navigationTargets .map((el: NavigationTargetDirective)=> el.el.nativeElement)
+      .forEach((element: Element) => {
+        const nativeElement = element as HTMLElement;
+        const anchorPosition = nativeElement.offsetTop;
+        const anchorHeight = nativeElement.offsetHeight;
+        if (
+          scrollPosition >= anchorPosition &&
+          scrollPosition < anchorPosition + anchorHeight
+        ) {
+          currentAnchor =
+            AsyncApiMapperService.BASE_URL +
+            "" +
+            nativeElement.getAttribute("id");
+        }
+      });
+
+    this.navigation.forEach((link) => {
+      let childSelected = false;
+      link.children?.forEach((child) => {
+        let subChildSelected = false;
+        child.children?.forEach((subChild) => {
+          subChild.selected = currentAnchor == subChild.href;
+          subChildSelected = subChildSelected || subChild.selected;
+        });
+        child.selected = currentAnchor == child.href || subChildSelected;
+        childSelected = childSelected || child.selected;
+      });
+      link.selected = currentAnchor == link.href || childSelected;
+    });
+  };
+
+  private scrollToUrlLocation = () => {
+    setTimeout(() => {
+      const element = document.getElementById(
+        window.location.hash.substring(1)
+      );
+      element?.scrollIntoView();
+      console.log(element);
+    }, 10);
+  };
 }
