@@ -6,6 +6,8 @@ import {
   AfterViewInit,
   input,
   model,
+  OnChanges,
+  SimpleChanges,
 } from "@angular/core";
 import { basicEditor } from "prism-code-editor/setups";
 import { copyButton } from "prism-code-editor/copy-button";
@@ -28,7 +30,7 @@ import { PrismEditor } from "prism-code-editor";
     `,
   ],
 })
-export class PrismEditorComponent implements AfterViewInit {
+export class PrismEditorComponent implements AfterViewInit, OnChanges {
   code = model<string>("");
   language = input<string>("markdown");
   readonly = input<boolean, string>(false, {
@@ -40,23 +42,35 @@ export class PrismEditorComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.editorContainer.nativeElement) {
-      this.editor = basicEditor(this.editorContainer.nativeElement, {
-        value: this.code(),
-        language: this.language(),
-        theme: "prism-okaidia",
-        lineNumbers: false,
-        wordWrap: true,
-        readOnly: this.readonly(),
-
-        onUpdate: (code: string) => {
-          this.code.set(code);
-        },
-      });
-      this.editor.addExtensions(copyButton());
-
-      this.code.subscribe((code) => {
-        this.editor?.update();
-      });
+      this.editor = this.initEditor();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["code"].previousValue !== changes["code"].currentValue) {
+      this.editor?.setOptions({ value: changes["code"].currentValue });
+    }
+  }
+
+  initEditor(): PrismEditor {
+    const editor = basicEditor(this.editorContainer.nativeElement, {
+      value: this.code(),
+      language: this.language(),
+      theme: "prism-okaidia",
+      lineNumbers: false,
+      wordWrap: true,
+      readOnly: this.readonly(),
+
+      onUpdate: (code: string) => {
+        this.code.set(code);
+      },
+    });
+    editor.addExtensions(copyButton());
+
+    this.code.subscribe((code) => {
+      this.editor?.update();
+    });
+
+    return editor;
   }
 }

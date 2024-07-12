@@ -33,6 +33,7 @@
     </div>
   </div>
 </div>
+
 <mat-divider></mat-divider>
 <div class="row">
   <div class="width-6/12 width-12/12-s">
@@ -40,10 +41,12 @@
   </div>
   <div class="width-6/12 width-12/12-s">
     <div *ngIf="operation().protocol">
-      <app-json
-        *ngIf="operation().protocol && operation().bindings"
-        [data]="operation().bindings[operation().protocol]"
-      ></app-json>
+      <app-prism-editor
+        *ngIf="operationBindingExampleString"
+        [(code)]="operationBindingExampleString"
+        language="json"
+        readonly="true"
+      />
     </div>
   </div>
 </div>
@@ -55,10 +58,12 @@
   </div>
   <div class="width-6/12 width-12/12-s">
     <div>
-      <app-json
+      <app-prism-editor
         *ngIf="messageBindingExampleString"
-        [data]="messageBindingExampleString"
-      ></app-json>
+        [(code)]="messageBindingExampleString"
+        language="json"
+        readonly="true"
+      />
       <span *ngIf="!messageBindingExampleString"><i>none</i></span>
     </div>
   </div>
@@ -95,7 +100,10 @@
       >
     </mat-chip-set>
 
-    <app-schema-new *ngIf="schema" [schema]="schema"></app-schema-new>
+    <app-schema-new
+      *ngIf="defaultSchema"
+      [schema]="defaultSchema"
+    ></app-schema-new>
   </div>
 
   <div class="width-6/12 width-12/12-s">
@@ -111,9 +119,9 @@
         <mat-icon fontIcon="send" />
         Publish
       </button>
-      <button mat-raised-button color="primary">
+      <button mat-raised-button color="primary" (click)="reset()">
         <mat-icon fontIcon="restart_alt" />
-        Reset (TODO)
+        Reset
       </button>
       <button
         mat-raised-button

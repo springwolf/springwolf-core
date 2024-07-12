@@ -20,14 +20,18 @@ export class ChannelOperationComponent implements OnInit {
   channelName = input.required<string>();
   operation = input.required<Operation>();
 
-  schema: Schema = initSchema;
-  schemaIdentifier: string = "";
+  defaultSchema: Schema = initSchema;
   defaultExample: Example = initExample;
   defaultExampleType: string = "";
+  originalDefaultExample: string | object = this.defaultExample.rawValue;
+
   headers: Schema = initSchema;
-  headersSchemaIdentifier: string = "";
   headersExample: Example = initExample;
+  originalHeadersExample: string | object = this.headersExample.rawValue;
+
+  operationBindingExampleString?: string;
   messageBindingExampleString?: string;
+
   canPublish: boolean = false;
 
   constructor(
@@ -40,22 +44,29 @@ export class ChannelOperationComponent implements OnInit {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       const schemas: Map<string, Schema> = asyncapi.components.schemas;
 
-      this.schemaIdentifier = this.operation().message.payload.name.slice(
+      const schemaIdentifier = this.operation().message.payload.name.slice(
         this.operation().message.payload.name.lastIndexOf("/") + 1
       );
-      this.schema = schemas.get(this.schemaIdentifier)!!;
-
-      this.defaultExample = this.schema.example!!;
+      const schema = schemas.get(schemaIdentifier)!!;
+      this.defaultSchema = schema;
+      this.originalDefaultExample = schema.example!!.rawValue;
       this.defaultExampleType = this.operation().message.payload.type;
-      this.headersSchemaIdentifier =
+
+      const headersSchemaIdentifier =
         this.operation().message.headers.name.slice(
           this.operation().message.headers.name.lastIndexOf("/") + 1
         );
-      this.headers = schemas.get(this.headersSchemaIdentifier)!!;
-      this.headersExample = this.headers.example!!;
-      this.messageBindingExampleString = this.createMessageBindingExample(
+      this.headers = schemas.get(headersSchemaIdentifier)!!;
+      this.originalHeadersExample = this.headers.example!!.rawValue;
+
+      this.operationBindingExampleString = new Example(
+        this.operation().bindings[this.operation().protocol]
+      )?.value;
+      this.messageBindingExampleString = this.createBindingExample(
         this.operation().message.bindings.get(this.operation().protocol)
       )?.value;
+
+      this.reset();
 
       this.publisherService
         .canPublish(this.operation().protocol)
@@ -65,16 +76,16 @@ export class ChannelOperationComponent implements OnInit {
     });
   }
 
-  createMessageBindingExample(messageBinding?: Binding): Example | undefined {
-    if (messageBinding === undefined || messageBinding === null) {
+  createBindingExample(binding?: Binding): Example | undefined {
+    if (binding === undefined || binding === null) {
       return undefined;
     }
 
     const bindingExampleObject: { [key: string]: any } = {};
-    Object.keys(messageBinding).forEach((bindingKey) => {
+    Object.keys(binding).forEach((bindingKey) => {
       if (bindingKey !== "bindingVersion") {
         bindingExampleObject[bindingKey] = this.getExampleValue(
-          messageBinding[bindingKey]
+          binding[bindingKey]
         );
       }
     });
@@ -92,6 +103,11 @@ export class ChannelOperationComponent implements OnInit {
       return bindingValue["examples"][0];
     }
     return undefined;
+  }
+
+  reset(): void {
+    this.defaultExample = new Example(this.originalDefaultExample);
+    this.headersExample = new Example(this.originalHeadersExample);
   }
 
   publish(): void {
@@ -159,4 +175,6 @@ export class ChannelOperationComponent implements OnInit {
       duration: 4000,
     });
   }
+
+  protected readonly JSON = JSON;
 }
