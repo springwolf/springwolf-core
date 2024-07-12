@@ -1,6 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <div class="row">
   <div class="width-12/12 width-12/12-s">
+    <mat-divider></mat-divider>
     <div class="table">
       <div *ngIf="operation().description" class="table-row">
         <span>Operation description</span>
@@ -17,16 +18,20 @@
       <div class="table-row">
         <span>Servers</span>
         <span>
-          @for (server of operation().servers; track server) {
-          <a href="{{ server.anchorUrl }}">{{ server.name }}</a>
-          }
+          <mat-chip-set>
+            @for (server of operation().servers; track server) {
+            <mat-chip>
+              <mat-icon fontIcon="dns"></mat-icon>
+              <a href="{{ server.anchorUrl }}">{{ server.name }}</a>
+            </mat-chip>
+            }
+          </mat-chip-set>
         </span>
       </div>
     </div>
-    <mat-divider></mat-divider>
   </div>
 </div>
-
+<mat-divider></mat-divider>
 <div class="row">
   <div class="width-6/12 width-12/12-s">
     <h3>Operation Binding</h3>
@@ -41,6 +46,7 @@
   </div>
 </div>
 
+<mat-divider></mat-divider>
 <div class="row">
   <div class="width-6/12 width-12/12-s">
     <h3>Message Binding</h3>
@@ -56,19 +62,25 @@
   </div>
 </div>
 
+<mat-divider></mat-divider>
 <div class="row">
   <div class="width-6/12 width-12/12-s">
     <h3>Headers</h3>
+    <mat-chip-set>
+      <mat-chip>
+        <mat-icon>schema</mat-icon>
+        <a [href]="operation().message.headers.anchorUrl">{{
+          operation().message.headers.title
+        }}</a>
+      </mat-chip>
+    </mat-chip-set>
   </div>
   <div class="width-6/12 width-12/12-s align-content-center">
-    <a [href]="operation().message.headers.anchorUrl">{{
-      operation().message.headers.name
-    }}</a>
-
     <app-prism-editor [(code)]="headersExample.value" language="json" />
   </div>
 </div>
 
+<mat-divider></mat-divider>
 <div class="row">
   <div class="width-6/12 width-12/12-s">
     <h3>Payload</h3>

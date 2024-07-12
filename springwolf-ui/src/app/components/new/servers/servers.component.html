@@ -1,26 +1,34 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h1>Servers</h1>
-@for (server of servers | keyvalue; track server) {
-<article appNavigationTarget [id]="server.value.anchorIdentifier">
-  <h2>{{ server.key }}</h2>
-
-  <table>
-    <tbody>
-      <tr>
-        <td>- Protocol</td>
-        <td>
+<div class="row">
+  @for (server of servers | keyvalue; track server) {
+  <article
+    appNavigationTarget
+    [id]="server.value.anchorIdentifier"
+    class="width-6/12 width-12/12-s"
+  >
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>
+          {{ server.key }}
           <span class="badge protocol-badge">
             {{ server.value.protocol }}
           </span>
-        </td>
-      </tr>
-      <tr>
-        <td>- Host</td>
-        <td>
-          {{ server.value.host }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</article>
-}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table>
+          <tbody>
+            <tr>
+              <td>Host</td>
+              <td>
+                {{ server.value.host }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </article>
+  }
+</div>
