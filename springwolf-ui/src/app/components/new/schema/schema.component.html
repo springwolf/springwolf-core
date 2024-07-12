@@ -10,7 +10,9 @@
 
   <!--  Objects  -->
   <p *ngFor="let property of schema().properties || {} | keyvalue">
-    <span class="key">
+    <mat-divider></mat-divider>
+
+    <span class="key text-console">
       <b>{{ property.key }}</b>
       <span class="required" *ngIf="schema().required?.includes(property.key)"
         >*</span
@@ -23,31 +25,46 @@
       [ngTemplateOutletContext]="{ value: property.value }"
     >
     </ng-container>
-    @if (!last){
-    <mat-divider></mat-divider>
-    }
   </p>
 </div>
 
 <ng-template #valueContent let-value="value">
-  <!-- normal property -->
-  <span class="type" *ngIf="!value?.items?.type">
+  <!-- primitive property -->
+  <span class="type text-console" *ngIf="value?.type != 'array'">
     {{ value.type }}
     <span class="format" *ngIf="value.format">({{ value.format }})</span>
   </span>
+  <!-- ref to other class -->
+  <span class="type" *ngIf="value.refTitle">
+    <mat-chip-set>
+      <a [href]="value.anchorUrl">
+        <mat-chip>
+          <mat-icon matChipAvatar fontIcon="schema" />
+          {{ value.refTitle }}
+        </mat-chip></a
+      >
+    </mat-chip-set>
+  </span>
   <!-- array of refs -->
-  <span class="type" *ngIf="value?.items?.type && value?.items?.anchorUrl">
-    <a [href]="value.items.anchorUrl">
-      <!-- schema ref -->
-      {{ value.items.refTitle }}[]
-    </a>
+  <span
+    class="type text-console"
+    *ngIf="value?.type == 'array' && value?.items?.anchorUrl"
+  >
+    <mat-chip-set>
+      <a [href]="value.items.anchorUrl">
+        <mat-chip>
+          <mat-icon matChipAvatar fontIcon="schema" />
+          {{ value.items.refTitle }}[]
+        </mat-chip></a
+      >
+    </mat-chip-set>
   </span>
   <!-- array of primitive -->
-  <span class="type" *ngIf="value?.items?.type && !value?.items?.anchorUrl">
+  <span
+    class="type text-console"
+    *ngIf="value?.type == 'array' && !value?.items?.anchorUrl"
+  >
     {{ value.items.type }}[]
-  </span>
-  <span class="type" *ngIf="value.refTitle">
-    <a [href]="value.anchorUrl">{{ value.refTitle }}</a>
   </span>
 
   <div class="description">
@@ -57,7 +74,7 @@
   <span class="example" *ngIf="value.example">
     <i>Example:</i>
     &nbsp;
-    <span *ngIf="!value.enum">
+    <span *ngIf="!value.enum" class="text-console">
       {{ value.example.value }}
     </span>
     <mat-select *ngIf="value.enum" placeholder="Enum">

@@ -181,3 +181,7 @@ body {
     grid-column: span 12;
   }
 }
+
+.text-console {
+  font-family: Consolas, monospace;
+}

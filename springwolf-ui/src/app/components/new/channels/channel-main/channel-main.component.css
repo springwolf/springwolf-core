@@ -53,7 +53,13 @@ button {
 
 a {
   word-break: break-all;
+  max-width: 100%;
 }
 .align-content-center {
   align-content: center;
+}
+
+mat-chip {
+  width: 100%;
+  overflow: hidden;
 }

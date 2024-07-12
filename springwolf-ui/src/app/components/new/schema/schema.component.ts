@@ -13,4 +13,5 @@ import { last } from "rxjs";
 export class SchemaNewComponent {
   schema = input.required<Schema>();
   protected readonly last = last;
+  protected readonly JSON = JSON;
 }

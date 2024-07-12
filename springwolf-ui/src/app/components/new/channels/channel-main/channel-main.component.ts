@@ -39,6 +39,7 @@ export class ChannelMainNewComponent implements OnInit {
   ngOnInit(): void {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       const schemas: Map<string, Schema> = asyncapi.components.schemas;
+
       this.schemaIdentifier = this.operation().message.payload.name.slice(
         this.operation().message.payload.name.lastIndexOf("/") + 1
       );

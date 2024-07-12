@@ -20,10 +20,12 @@
         <span>
           <mat-chip-set>
             @for (server of operation().servers; track server) {
-            <mat-chip>
-              <mat-icon fontIcon="dns"></mat-icon>
-              <a href="{{ server.anchorUrl }}">{{ server.name }}</a>
-            </mat-chip>
+            <a href="{{ server.anchorUrl }}">
+              <mat-chip>
+                <mat-icon matChipAvatar fontIcon="dns" />
+                {{ server.name }}
+              </mat-chip>
+            </a>
             }
           </mat-chip-set>
         </span>
@@ -36,7 +38,7 @@
   <div class="width-6/12 width-12/12-s">
     <h6>Operation Binding</h6>
   </div>
-  <div class="width-6/12 width-12/12-s align-content-center">
+  <div class="width-6/12 width-12/12-s">
     <div *ngIf="operation().protocol">
       <app-json
         *ngIf="operation().protocol && operation().bindings"
@@ -51,7 +53,7 @@
   <div class="width-6/12 width-12/12-s">
     <h6>Message Binding</h6>
   </div>
-  <div class="width-6/12 width-12/12-s align-content-center">
+  <div class="width-6/12 width-12/12-s">
     <div>
       <app-json
         *ngIf="messageBindingExampleString"
@@ -67,15 +69,15 @@
   <div class="width-6/12 width-12/12-s">
     <h6>Headers</h6>
     <mat-chip-set>
-      <mat-chip>
-        <mat-icon>schema</mat-icon>
-        <a [href]="operation().message.headers.anchorUrl">{{
-          operation().message.headers.title
-        }}</a>
-      </mat-chip>
+      <a [href]="operation().message.headers.anchorUrl">
+        <mat-chip>
+          <mat-icon matChipAvatar fontIcon="schema" />
+          {{ operation().message.headers.title }}
+        </mat-chip></a
+      >
     </mat-chip-set>
   </div>
-  <div class="width-6/12 width-12/12-s align-content-center">
+  <div class="width-6/12 width-12/12-s">
     <app-prism-editor [(code)]="headersExample.value" language="json" />
   </div>
 </div>
@@ -84,16 +86,21 @@
 <div class="row">
   <div class="width-6/12 width-12/12-s">
     <h6>Payload</h6>
+    <mat-chip-set>
+      <a [href]="operation().message.payload.anchorUrl">
+        <mat-chip>
+          <mat-icon matChipAvatar fontIcon="schema" />
+          {{ operation().message.payload.title }}
+        </mat-chip></a
+      >
+    </mat-chip-set>
 
     <app-schema-new *ngIf="schema" [schema]="schema"></app-schema-new>
   </div>
 
-  <div class="width-6/12 width-12/12-s align-content-center">
-    <a [href]="operation().message.payload.anchorUrl">{{
-      operation().message.payload.name
-    }}</a>
-
+  <div class="width-6/12 width-12/12-s">
     <app-prism-editor [(code)]="defaultExample.value" language="json" />
+
     <div class="button-container flex gap-8">
       <button
         mat-raised-button
@@ -101,14 +108,19 @@
         [disabled]="!canPublish"
         (click)="publish()"
       >
+        <mat-icon fontIcon="send" />
         Publish
       </button>
-      <button mat-raised-button color="primary">Reset (TODO)</button>
+      <button mat-raised-button color="primary">
+        <mat-icon fontIcon="restart_alt" />
+        Reset (TODO)
+      </button>
       <button
         mat-raised-button
         color="primary"
         [cdkCopyToClipboard]="defaultExample.value"
       >
+        <mat-icon fontIcon="content_copy" />
         Copy
       </button>
     </div>
