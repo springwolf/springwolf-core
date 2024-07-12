@@ -16,7 +16,8 @@ import { Location } from "@angular/common";
 interface NavigationEntry {
   name: string;
   href: string | undefined;
-  selected: boolean;
+  selected?: boolean;
+  collapsed?: boolean;
   tags?: string[];
   children?: NavigationEntry[];
 }
@@ -54,7 +55,6 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       newNavigation.push({
         name: "Info",
         href: AsyncApiMapperService.BASE_URL + "info",
-        selected: true,
       });
 
       const servers: NavigationEntry[] = Array.from(
@@ -64,33 +64,28 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         href:
           AsyncApiMapperService.BASE_URL +
           asyncapi.servers.get(key)!.anchorIdentifier,
-        selected: false,
       }));
       newNavigation.push({
         name: "Servers",
         href: AsyncApiMapperService.BASE_URL + "servers",
-        selected: false,
         children: servers,
       });
 
       const channels = {
         name: "Channels & Operations",
         href: AsyncApiMapperService.BASE_URL + "channels",
-        selected: false,
         children: [] as NavigationEntry[],
       };
       asyncapi.channels.forEach((value) => {
         const channel = {
           name: value.name,
           href: AsyncApiMapperService.BASE_URL + value.anchorIdentifier,
-          selected: false,
           tags: [],
           children: value.operations.map((operation) => {
             return {
               name: operation.operation.message.title,
               href: AsyncApiMapperService.BASE_URL + operation.anchorIdentifier,
               tags: [operation.operation.operationType],
-              selected: false,
             };
           }),
         };
@@ -101,14 +96,12 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       const schemas = {
         name: "Schemas",
         href: AsyncApiMapperService.BASE_URL + "schemas",
-        selected: false,
         children: [] as NavigationEntry[],
       };
       asyncapi.components.schemas.forEach((value) => {
         schemas.children.push({
           name: value.title,
           href: AsyncApiMapperService.BASE_URL + "" + value.anchorIdentifier,
-          selected: false,
         });
       });
       newNavigation.push(schemas);
@@ -126,7 +119,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private updateNavigationSelection = (event: Event) => {
+  private updateNavigationSelection = () => {
     let currentAnchor = "";
     const scrollPosition = this.scrollableElement.nativeElement.scrollTop;
 
@@ -154,12 +147,21 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         let subChildSelected = false;
         child.children?.forEach((subChild) => {
           subChild.selected = currentAnchor == subChild.href;
+          subChild.collapsed = !subChild.selected;
+
           subChildSelected = subChildSelected || subChild.selected;
         });
         child.selected = currentAnchor == child.href || subChildSelected;
+        child.collapsed = false;
+
+        child.children?.forEach((subChild) => {
+          subChild.collapsed = !child.selected;
+        });
+
         childSelected = childSelected || child.selected;
       });
       link.selected = currentAnchor == link.href || childSelected;
+      link.collapsed = false;
     });
   };
 
@@ -169,7 +171,8 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         window.location.hash.substring(1)
       );
       element?.scrollIntoView();
-      console.log(element);
+
+      this.updateNavigationSelection();
     }, 10);
   };
 }

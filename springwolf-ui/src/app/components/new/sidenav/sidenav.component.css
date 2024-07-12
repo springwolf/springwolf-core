@@ -11,9 +11,16 @@
 .sidenav .entry {
   border-left: 0.3em solid transparent;
   padding-left: 0.1em;
+  transition: max-height 0.5s ease-out;
+  max-height: 100%;
+  opacity: 1;
 }
 .sidenav .entry.selected {
   border-left: 0.3em solid black;
+}
+.sidenav .entry.collapsed {
+  max-height: 0;
+  opacity: 0;
 }
 
 .entry .entry .entry {

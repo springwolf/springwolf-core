@@ -151,9 +151,38 @@ export class AsyncApiMapperService {
         });
       });
     }
-    return Object.values(mappedChannels);
-  }
 
+    Object.values(mappedChannels).forEach((channel) => {
+      channel.operations = channel.operations.sort((a, b) => {
+        if (a.operation.protocol === b.operation.protocol) {
+          if (a.operation.operationType === b.operation.operationType) {
+            if (a.name === b.name) {
+              return a.operation.message.name.localeCompare(
+                b.operation.message.name
+              );
+            } else {
+              return a.name.localeCompare(b.name);
+            }
+          } else {
+            return a.operation.operationType.localeCompare(
+              b.operation.operationType
+            );
+          }
+        } else if (
+          a.operation.protocol != null &&
+          b.operation.protocol != null
+        ) {
+          return a.operation.protocol.localeCompare(b.operation.protocol);
+        } else {
+          return 0;
+        }
+      });
+    });
+
+    return Object.values(mappedChannels).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+  }
   private mapChannelOperation(
     channelName: string,
     channel: ServerChannel,

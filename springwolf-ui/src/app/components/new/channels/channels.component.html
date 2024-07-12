@@ -3,34 +3,46 @@
 @for (channel of channels; track channel) {
 <article appNavigationTarget [id]="channel.anchorIdentifier">
   <h3>{{ channel.name }}</h3>
-  <mat-card appearance="outlined">
+  @for (channelOperation of channel.operations; track channelOperation) {
+  <mat-card
+    appearance="outlined"
+    appNavigationTarget
+    [id]="channelOperation.anchorIdentifier"
+  >
     <mat-card-header>
       <mat-card-title [attr.data-testid]="channel.anchorIdentifier">
-        {{ channel.operation.message.title }}
+        {{ channelOperation.operation.message.title }}
       </mat-card-title>
       <span class="flex gap-16">
-        <span class="badge protocol-badge" *ngIf="channel.operation.protocol">
-          {{ channel.operation.protocol }}
+        <span
+          class="badge protocol-badge"
+          *ngIf="channelOperation.operation.protocol"
+        >
+          {{ channelOperation.operation.protocol }}
         </span>
         <span
           class="badge"
           [ngClass]="{
-            'send-badge': channel.operation.operationType === 'send',
-            'receive-badge': channel.operation.operationType === 'receive'
+            'send-badge': channelOperation.operation.operationType === 'send',
+            'receive-badge':
+              channelOperation.operation.operationType === 'receive'
           }"
         >
-          {{ channel.operation.operationType }}
+          {{ channelOperation.operation.operationType }}
         </span>
       </span>
     </mat-card-header>
     <mat-card-content>
       <app-channel-main-new
         [channelName]="channel.name"
-        [operation]="channel.operation"
+        [operation]="channelOperation.operation"
       ></app-channel-main-new>
     </mat-card-content>
   </mat-card>
+
   @if (!$last) {
+  <br />
+  } } @if (!$last) {
   <br />
   }
 </article>

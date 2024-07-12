@@ -2,18 +2,30 @@
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened class="sidenav">
     @for (link of navigation; track link) {
-    <ul class="entry" [ngClass]="{ selected: link.selected }">
+    <ul
+      class="entry"
+      [ngClass]="{ selected: link.selected, collapsed: link.collapsed }"
+    >
       <li>
         <a [href]="link.href"> {{ link.name }}</a>
 
         <ul>
           @for (child of link.children; track child) {
-          <li class="entry" [ngClass]="{ selected: child.selected }">
+          <li
+            class="entry"
+            [ngClass]="{ selected: child.selected, collapsed: child.collapsed }"
+          >
             <a [href]="child.href"> {{ child.name }}</a>
 
             <ul>
               @for (subchild of child.children; track subchild) {
-              <li class="entry" [ngClass]="{ selected: subchild.selected }">
+              <li
+                class="entry"
+                [ngClass]="{
+                  selected: subchild.selected,
+                  collapsed: subchild.collapsed
+                }"
+              >
                 <a [href]="subchild.href"> {{ subchild.name }}</a>
 
                 @for (subChildTag of subchild.tags; track subChildTag) {
