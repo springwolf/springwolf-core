@@ -10,3 +10,11 @@ export interface ChannelOperation {
   operation: Operation;
   bindings: Bindings;
 }
+
+export interface Channel {
+  name: string;
+  anchorIdentifier: string;
+  description?: string;
+  operations: ChannelOperation[];
+  bindings: Bindings;
+}

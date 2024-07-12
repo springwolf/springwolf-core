@@ -2,6 +2,7 @@
 import { AsyncApi } from "../../models/asyncapi.model";
 import { Server, SERVER_ANCHOR_PREFIX } from "../../models/server.model";
 import {
+  Channel,
   CHANNEL_ANCHOR_PREFIX,
   ChannelOperation,
 } from "../../models/channel.model";
@@ -37,16 +38,18 @@ export class AsyncApiMapperService {
 
   public toAsyncApi(item: ServerAsyncApi): AsyncApi | undefined {
     try {
+      const channels = this.mapChannels(
+        item.channels,
+        item.operations,
+        item.components.messages,
+        item.servers,
+        item.defaultContentType
+      );
       return {
         info: this.mapInfo(item),
         servers: this.mapServers(item.servers),
-        channelOperations: this.mapChannelOperations(
-          item.channels,
-          item.operations,
-          item.components.messages,
-          item.servers,
-          item.defaultContentType
-        ),
+        channels: channels,
+        channelOperations: channels.flatMap((c) => c.operations),
         components: {
           schemas: this.mapSchemas(item.components.schemas),
         },
@@ -95,14 +98,26 @@ export class AsyncApiMapperService {
     return s;
   }
 
-  private mapChannelOperations(
+  private mapChannels(
     channels: ServerChannels,
     operations: ServerOperations,
     messages: ServerComponents["messages"],
     servers: ServerServers,
     defaultContentType: string
-  ): ChannelOperation[] {
-    const s = new Array<ChannelOperation>();
+  ): Channel[] {
+    const mappedChannels: { [key: string]: Channel } = {};
+    for (let channelKey in channels) {
+      this.parsingErrorBoundary("channel " + channelKey, () => {
+        const channel = channels[channelKey];
+        mappedChannels[channelKey] = {
+          name: channelKey,
+          anchorIdentifier: "channel-" + channelKey,
+          operations: [],
+          bindings: channel.bindings || {},
+        };
+      });
+    }
+
     for (let operationsKey in operations) {
       this.parsingErrorBoundary("operation " + operationsKey, () => {
         const operation = operations[operationsKey];
@@ -131,12 +146,12 @@ export class AsyncApiMapperService {
           );
 
           if (channelOperation != undefined) {
-            s.push(channelOperation);
+            mappedChannels[channelName].operations.push(channelOperation);
           }
         });
       });
     }
-    return s;
+    return Object.values(mappedChannels);
   }
 
   private mapChannelOperation(

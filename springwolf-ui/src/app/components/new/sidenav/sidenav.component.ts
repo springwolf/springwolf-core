@@ -79,34 +79,23 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         selected: false,
         children: [] as NavigationEntry[],
       };
-      let lastChannel: NavigationEntry | undefined = undefined;
-      asyncapi.channelOperations.forEach((value) => {
+      asyncapi.channels.forEach((value) => {
         const channel = {
           name: value.name,
           href: AsyncApiMapperService.BASE_URL + value.anchorIdentifier,
           selected: false,
-          tags: [value.operation.operationType],
-          children: [
-            {
-              name: value.name,
-              href: AsyncApiMapperService.BASE_URL + value.anchorIdentifier,
-              tags: [value.operation.operationType],
+          tags: [],
+          children: value.operations.map((operation) => {
+            return {
+              name: operation.operation.message.title,
+              href: AsyncApiMapperService.BASE_URL + operation.anchorIdentifier,
+              tags: [operation.operation.operationType],
               selected: false,
-            },
-          ] as NavigationEntry[],
+            };
+          }),
         };
-        if (channel.name === lastChannel?.name) {
-          lastChannel.children?.push(channel);
-        } else {
-          if (lastChannel !== undefined) {
-            channels.children.push(lastChannel);
-          }
-          lastChannel = channel;
-        }
+        channels.children.push(channel);
       });
-      if (lastChannel !== undefined) {
-        channels.children.push(lastChannel);
-      }
       newNavigation.push(channels);
 
       const schemas = {
