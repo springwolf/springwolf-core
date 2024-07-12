@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.components.examples.walkers;
 
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
     Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
 
+    String DEFAULT_MAP_KEY_EXAMPLE = "key";
     String DEFAULT_STRING_EXAMPLE = "string";
     Integer DEFAULT_INTEGER_EXAMPLE = 0;
     Double DEFAULT_NUMBER_EXAMPLE = 1.1;
@@ -215,10 +217,11 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
         final Optional<T> exampleValue;
 
-        Map<String, Schema> properties = schema.getProperties();
-        List<Schema> schemasAllOf = schema.getAllOf();
-        List<Schema> schemasAnyOf = schema.getAnyOf();
-        List<Schema> schemasOneOf = schema.getOneOf();
+        final Map<String, Schema> properties = schema.getProperties();
+        final Object additionalProperties = schema.getAdditionalProperties();
+        final List<Schema> schemasAllOf = schema.getAllOf();
+        final List<Schema> schemasAnyOf = schema.getAnyOf();
+        final List<Schema> schemasOneOf = schema.getOneOf();
         if (properties != null) {
             exampleValue = buildFromObjectSchemaWithProperties(name, properties, definitions, visited);
         } else if (!CollectionUtils.isEmpty(schemasAllOf)) {
@@ -227,14 +230,26 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             exampleValue = buildExample(name, schemasAnyOf.get(0), definitions, visited);
         } else if (!CollectionUtils.isEmpty(schemasOneOf)) {
             exampleValue = buildExample(name, schemasOneOf.get(0), definitions, visited);
+        } else if (schema instanceof MapSchema && additionalProperties instanceof Schema<?>) {
+            exampleValue = buildMapExample(name, (Schema) additionalProperties, definitions, visited);
         } else {
-            // i.e. A MapSchema is type=object, but has properties=null
             exampleValue = exampleValueGenerator.createEmptyObjectExample();
         }
 
         visited.remove(schema);
 
         return exampleValue;
+    }
+
+    private Optional<T> buildMapExample(
+            String name, Schema additionalProperties, Map<String, Schema> definitions, Set<Schema> visited) {
+        T object = exampleValueGenerator.startObject(name);
+        Map<String, Schema> mapProperties = Map.of(DEFAULT_MAP_KEY_EXAMPLE, additionalProperties);
+        exampleValueGenerator.addPropertyExamples(
+                object, buildPropertyExampleListFromSchema(mapProperties, definitions, visited));
+        exampleValueGenerator.endObject();
+
+        return Optional.of(object);
     }
 
     private Optional<T> buildFromObjectSchemaWithProperties(

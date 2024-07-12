@@ -65,7 +65,9 @@
       "mss" : {
         "key1" : "value1"
       },
-      "mss_plain" : { },
+      "mss_plain" : {
+        "key" : "string"
+      },
       "s" : "s value"
     } ],
     "required" : [ "dt", "f", "s" ]

@@ -40,7 +40,11 @@
           "cyclic" : { }
         },
         "nli" : [ 0 ],
-        "nmfm" : { },
+        "nmfm" : {
+          "key" : {
+            "s" : "string"
+          }
+        },
         "ns" : "string",
         "nsm" : [ {
           "s" : "string"
@@ -94,7 +98,11 @@
         "cyclic" : { }
       },
       "nli" : [ 0 ],
-      "nmfm" : { },
+      "nmfm" : {
+        "key" : {
+          "s" : "string"
+        }
+      },
       "ns" : "string",
       "nsm" : [ {
         "s" : "string"

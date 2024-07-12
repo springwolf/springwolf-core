@@ -13,6 +13,7 @@ import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.EmailSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.PasswordSchema;
@@ -488,6 +489,19 @@ class DefaultSchemaWalkerYamlIntegrationTest {
                       field1: "string"
                       field2: 1.1
                     """);
+        }
+
+        @Test
+        void object_with_map(TestInfo testInfo) {
+            MapSchema mapSchema = new MapSchema();
+            mapSchema.setName(testInfo.getDisplayName());
+
+            Schema propertySchema = new StringSchema();
+            mapSchema.setAdditionalProperties(propertySchema);
+
+            String actualString = jsonSchemaWalker.fromSchema(mapSchema, Map.of("Nested", propertySchema));
+
+            assertThat(actualString).isEqualTo("key: \"string\"\n");
         }
 
         @Test

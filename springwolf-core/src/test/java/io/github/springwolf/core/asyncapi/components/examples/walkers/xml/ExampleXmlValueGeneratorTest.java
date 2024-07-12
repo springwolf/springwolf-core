@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Node;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ExampleXmlValueGeneratorTest {
 
@@ -62,5 +63,18 @@ class ExampleXmlValueGeneratorTest {
         Node exampleFromCache = generator.getExampleOrNull(schema2, "example-string");
 
         assertThat(exampleFromCache).isNull();
+    }
+
+    @Test
+    void shouldCreateRawFromXmlString() {
+        // given
+        ExampleXmlValueGenerator generator = new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer());
+        generator.initialize();
+
+        // when
+        Node result = generator.createRaw("<xml>example</xml>");
+
+        // then
+        assertNotNull(result);
     }
 }
