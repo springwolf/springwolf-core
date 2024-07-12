@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<h1>Schemas</h1>
+<h2>Schemas</h2>
 @for(schema of schemas | keyvalue; track schema) {
 <article appNavigationTarget [id]="schema.value.anchorIdentifier">
   <span class="flex space-between align-items-baseline">
-    <h2>{{ schema.value.title }}</h2>
+    <h3>{{ schema.value.title }}</h3>
 
     <span class="flex-column flex-start items-center">
       <div class="badge type-badge">{{ schema.value.type }}</div>
