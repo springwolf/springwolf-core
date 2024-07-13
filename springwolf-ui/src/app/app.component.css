@@ -15,3 +15,7 @@ main.new-ui {
   height: calc(100% - 64px);
   padding: 0;
 }
+
+section {
+  margin: 2em 1em;
+}

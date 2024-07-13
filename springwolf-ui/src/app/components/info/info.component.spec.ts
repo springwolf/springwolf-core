@@ -59,7 +59,7 @@ describe("InfoComponent", function () {
   });
 
   it("should render the license information", async () => {
-    expect(screen.queryByText("License: Apache License 2.0")).toBeTruthy();
+    expect(screen.queryByText("Apache License 2.0")).toBeTruthy();
     expect(screen.queryByText("https://test.com")).toBeTruthy();
     expect(screen.queryByText("springwolf")).toBeTruthy();
   });

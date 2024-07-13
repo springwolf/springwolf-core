@@ -12,7 +12,7 @@
       </div>
       <div *ngIf="operation().message.contentType" class="table-row">
         <span>Content-Type</span>
-        <span>{{ operation().message.contentType }}</span>
+        <span class="text-console">{{ operation().message.contentType }}</span>
       </div>
       <div class="table-row">
         <span>Servers</span>
@@ -108,7 +108,17 @@
   <div class="width-6/12 width-12/12-s">
     <app-prism-editor [(code)]="defaultExample.value" language="json" />
 
-    <div class="button-container flex gap-8">
+    <div class="flex space-between">
+      <div class="flex gap-8">
+        <button mat-raised-button [cdkCopyToClipboard]="defaultExample.value">
+          <mat-icon fontIcon="content_copy" />
+          Copy
+        </button>
+        <button mat-raised-button (click)="reset()">
+          <mat-icon fontIcon="restart_alt" />
+          Reset
+        </button>
+      </div>
       <button
         mat-raised-button
         color="primary"
@@ -117,18 +127,6 @@
       >
         <mat-icon fontIcon="send" />
         Publish
-      </button>
-      <button mat-raised-button color="primary" (click)="reset()">
-        <mat-icon fontIcon="restart_alt" />
-        Reset
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        [cdkCopyToClipboard]="defaultExample.value"
-      >
-        <mat-icon fontIcon="content_copy" />
-        Copy
       </button>
     </div>
   </div>

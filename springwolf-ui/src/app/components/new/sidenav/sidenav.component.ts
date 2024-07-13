@@ -66,6 +66,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         href:
           AsyncApiMapperService.BASE_URL +
           asyncapi.servers.get(key)!.anchorIdentifier,
+        tags: [asyncapi.servers.get(key)!.protocol],
       }));
       newNavigation.push({
         name: "Servers",
@@ -81,18 +82,24 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         children: [] as NavigationEntry[],
       };
       asyncapi.channels.forEach((value) => {
+        let children = value.operations.map((operation) => {
+          return {
+            name: operation.operation.message.title,
+            href: AsyncApiMapperService.BASE_URL + operation.anchorIdentifier,
+            tags: [operation.operation.operationType],
+          };
+        });
+        const tags = children
+          .flatMap((child) => child.tags)
+          .flatMap((tags) => tags);
+
         const channel = {
           name: value.name,
           href: AsyncApiMapperService.BASE_URL + value.anchorIdentifier,
-          tags: [],
-          children: value.operations.map((operation) => {
-            return {
-              name: operation.operation.message.title,
-              href: AsyncApiMapperService.BASE_URL + operation.anchorIdentifier,
-              tags: [operation.operation.operationType],
-            };
-          }),
+          tags: Array.from(new Set(tags)).sort(),
+          children: children,
         };
+
         channels.children.push(channel);
       });
       newNavigation.push(channels);
@@ -166,7 +173,8 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       link.selected = currentAnchor == link.href || childSelected;
 
       link.children?.forEach((child) => {
-        child.collapsed = !link.selected;
+        // child.collapsed = !link.selected;
+        child.collapsed = false;
       });
 
       link.collapsed = false;

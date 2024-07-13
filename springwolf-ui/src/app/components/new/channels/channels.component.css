@@ -7,14 +7,16 @@
 }
 
 .protocol-badge {
-  background-color: #347aeb;
-  color: #fff;
+  color: var(--springwolf-badge-color-protocol);
+  background-color: var(--springwolf-badge-color-background-protocol);
 }
 
 .send-badge {
-  background-color: #ffd580;
+  color: var(--springwolf-badge-color-send);
+  background-color: var(--springwolf-badge-color-background-send);
 }
 
 .receive-badge {
-  background-color: #9bd279;
+  color: var(--springwolf-badge-color-receive);
+  background-color: var(--springwolf-badge-color-background-receive);
 }

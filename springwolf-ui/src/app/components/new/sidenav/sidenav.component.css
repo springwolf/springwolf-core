@@ -3,6 +3,11 @@
   padding-left: 0.1em;
   border-right: 0.1em solid gray;
 }
+.sidenav a,
+.sidenav a:visited {
+  color: #373737;
+  text-decoration: none;
+}
 
 .sidenav ul {
   list-style-type: none;
@@ -11,14 +16,14 @@
 
 .sidenav .entry {
   border-right: 0.3em solid transparent;
-  transition: max-height 0.5s ease-out;
+  /*transition: max-height 0.5s ease-out;*/
   max-height: 100%;
   opacity: 1;
 }
 .sidenav .entry.selected {
   border-right: 0.3em solid gray;
 }
-.sidenav .entry.selected > a {
+.sidenav .entry.selected > span > a {
   font-weight: bold;
 }
 .sidenav .entry.collapsed {
@@ -26,10 +31,11 @@
   opacity: 0;
 }
 
-.entry .entry .entry {
+.sidenav .entry > span {
   display: flex;
   justify-content: space-between;
 }
+
 .sidenav .badge {
   text-transform: uppercase;
   font-size: smaller;
@@ -40,10 +46,22 @@
 
   margin-right: 0.3em;
 }
-
 .sidenav .badge.send-badge {
-  background-color: #ffd580;
+  color: var(--springwolf-badge-color-send);
+  background-color: var(--springwolf-badge-color-background-send);
 }
+
 .sidenav .badge.receive-badge {
-  background-color: #9bd279;
+  color: var(--springwolf-badge-color-receive);
+  background-color: var(--springwolf-badge-color-background-receive);
+}
+.sidenav .badge.amqp-badge,
+.sidenav .badge.cloudstream-badge,
+.sidenav .badge.kafka-badge,
+.sidenav .badge.jms-badge,
+.sidenav .badge.sqs-badge,
+.sidenav .badge.sns-badge,
+.sidenav .badge.stomp-badge {
+  color: var(--springwolf-badge-color-protocol);
+  background-color: var(--springwolf-badge-color-background-protocol);
 }
