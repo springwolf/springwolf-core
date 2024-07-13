@@ -58,6 +58,7 @@ import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class AsyncAnnotationOperationsScannerTest {
@@ -95,6 +96,7 @@ class AsyncAnnotationOperationsScannerTest {
     private final List<OperationBindingProcessor> operationBindingProcessors =
             List.of(new TestOperationBindingProcessor());
     private final List<MessageBindingProcessor> messageBindingProcessors = emptyList();
+    private final OperationCustomizer operationCustomizer = mock(OperationCustomizer.class);
 
     private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
@@ -105,7 +107,8 @@ class AsyncAnnotationOperationsScannerTest {
                     componentsService,
                     payloadAsyncOperationService,
                     operationBindingProcessors,
-                    messageBindingProcessors);
+                    messageBindingProcessors,
+                    List.of(operationCustomizer));
 
     @BeforeEach
     public void setup() {
@@ -334,6 +337,18 @@ class AsyncAnnotationOperationsScannerTest {
 
         assertThat(actualOperations)
                 .containsExactly(Map.entry("abstract-test-channel_send_methodWithAnnotation", expectedOperation));
+    }
+
+    @Test
+    void operationCustomizerIsCalled() {
+        // given
+        setClassToScan(ClassWithListenerAnnotation.class);
+
+        // when
+        operationsScanner.scan();
+
+        // then
+        verify(operationCustomizer).customize(any(), any());
     }
 
     private static class ClassWithoutListenerAnnotation {

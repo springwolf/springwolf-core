@@ -10,6 +10,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.JmsBindingFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -63,13 +64,14 @@ public class SpringwolfJmsScannerConfiguration {
             JmsBindingFactory jmsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
+            ComponentsService componentsService,
+            List<OperationCustomizer> operationCustomizers) {
         SpringAnnotationMethodLevelOperationsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         JmsListener.class,
                         jmsBindingFactory,
                         new AsyncHeadersNotDocumented(),
-                        List.of(),
+                        operationCustomizers,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);

@@ -133,7 +133,8 @@ public class SpringwolfStompScannerConfiguration {
             AsyncHeadersForStompBuilder asyncHeadersForStompBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
+            ComponentsService componentsService,
+            List<OperationCustomizer> operationCustomizers) {
         SpringAnnotationClassLevelOperationsScanner<MessageMapping, ClassLevelAnnotationScanner.AllMethods> strategy =
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         MessageMapping.class,
@@ -142,7 +143,8 @@ public class SpringwolfStompScannerConfiguration {
                         asyncHeadersForStompBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
-                        componentsService);
+                        componentsService,
+                        operationCustomizers);
 
         return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }

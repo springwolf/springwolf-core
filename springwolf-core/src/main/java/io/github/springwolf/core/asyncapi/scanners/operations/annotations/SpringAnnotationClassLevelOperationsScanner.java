@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -30,6 +31,8 @@ public class SpringAnnotationClassLevelOperationsScanner<
         extends ClassLevelAnnotationScanner<ClassAnnotation, MethodAnnotation>
         implements SpringAnnotationOperationsScannerDelegator {
 
+    private final List<OperationCustomizer> customizers;
+
     public SpringAnnotationClassLevelOperationsScanner(
             Class<ClassAnnotation> classAnnotationClass,
             Class<MethodAnnotation> methodAnnotationClass,
@@ -37,7 +40,8 @@ public class SpringAnnotationClassLevelOperationsScanner<
             AsyncHeadersBuilder asyncHeadersBuilder,
             PayloadMethodService payloadMethodService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
+            ComponentsService componentsService,
+            List<OperationCustomizer> customizers) {
         super(
                 classAnnotationClass,
                 methodAnnotationClass,
@@ -46,6 +50,7 @@ public class SpringAnnotationClassLevelOperationsScanner<
                 payloadMethodService,
                 headerClassExtractor,
                 componentsService);
+        this.customizers = customizers;
     }
 
     @Override
@@ -71,6 +76,7 @@ public class SpringAnnotationClassLevelOperationsScanner<
                 "_", ReferenceUtil.toValidId(channelName), OperationAction.RECEIVE, component.getSimpleName());
 
         Operation operation = buildOperation(classAnnotation, annotatedMethods);
+        annotatedMethods.forEach(method -> customizers.forEach(customizer -> customizer.customize(operation, method)));
 
         return Stream.of(Map.entry(operationId, operation));
     }

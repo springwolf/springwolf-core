@@ -22,7 +22,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,23 +39,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SpringAnnotationClassLevelOperationsScannerTest {
+class SpringAnnotationMethodLevelOperationsScannerTest {
 
-    private final PayloadMethodService payloadMethodService = mock();
+    private final PayloadMethodParameterService payloadMethodParameterService = mock();
     private final HeaderClassExtractor headerClassExtractor = mock(HeaderClassExtractor.class);
-    private final BindingFactory<TestClassListener> bindingFactory = mock(BindingFactory.class);
+    private final BindingFactory<TestMethodListener> bindingFactory = mock(BindingFactory.class);
     private final ComponentsService componentsService = mock(ComponentsService.class);
     private final OperationCustomizer operationCustomizer = mock(OperationCustomizer.class);
-    SpringAnnotationClassLevelOperationsScanner<TestClassListener, TestMethodListener> scanner =
-            new SpringAnnotationClassLevelOperationsScanner<>(
-                    TestClassListener.class,
+    SpringAnnotationMethodLevelOperationsScanner<TestMethodListener> scanner =
+            new SpringAnnotationMethodLevelOperationsScanner<>(
                     TestMethodListener.class,
                     bindingFactory,
                     new AsyncHeadersNotDocumented(),
-                    payloadMethodService,
+                    List.of(operationCustomizer),
+                    payloadMethodParameterService,
                     headerClassExtractor,
-                    componentsService,
-                    List.of(operationCustomizer));
+                    componentsService);
 
     private static final String CHANNEL_ID = "test-channel-id";
     private static final Map<String, OperationBinding> defaultOperationBinding =
@@ -74,7 +73,7 @@ class SpringAnnotationClassLevelOperationsScannerTest {
         doReturn(defaultChannelBinding).when(bindingFactory).buildChannelBinding(any());
         doReturn(defaultMessageBinding).when(bindingFactory).buildMessageBinding(any(), any());
 
-        when(payloadMethodService.extractSchema(any()))
+        when(payloadMethodParameterService.extractSchema(any()))
                 .thenReturn(new NamedSchemaObject(String.class.getName(), new SchemaObject()));
         doAnswer(invocation -> AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())
                 .when(componentsService)
@@ -108,7 +107,7 @@ class SpringAnnotationClassLevelOperationsScannerTest {
                 .messages(List.of(MessageReference.toChannelMessage(CHANNEL_ID, message)))
                 .bindings(Map.of("protocol", AMQPOperationBinding.builder().build()))
                 .build();
-        String operationName = CHANNEL_ID + "_receive_ClassWithTestListenerAnnotation";
+        String operationName = CHANNEL_ID + "_receive_methodWithAnnotation";
         assertThat(operations).containsExactly(Map.entry(operationName, expectedOperation));
     }
 
@@ -121,16 +120,12 @@ class SpringAnnotationClassLevelOperationsScannerTest {
         verify(operationCustomizer).customize(any(), any());
     }
 
-    @TestClassListener
     private static class ClassWithTestListenerAnnotation {
         @TestMethodListener
         private void methodWithAnnotation(String payload) {}
 
         private void methodWithoutAnnotation() {}
     }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface TestClassListener {}
 
     @Retention(RetentionPolicy.RUNTIME)
     @interface TestMethodListener {}

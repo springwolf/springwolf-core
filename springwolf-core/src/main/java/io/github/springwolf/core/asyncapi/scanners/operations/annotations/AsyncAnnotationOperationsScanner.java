@@ -24,6 +24,7 @@ public class AsyncAnnotationOperationsScanner<A extends Annotation> extends Asyn
         implements OperationsScanner {
 
     private final ClassScanner classScanner;
+    private final List<OperationCustomizer> customizers;
 
     public AsyncAnnotationOperationsScanner(
             AsyncAnnotationProvider<A> asyncAnnotationProvider,
@@ -31,7 +32,8 @@ public class AsyncAnnotationOperationsScanner<A extends Annotation> extends Asyn
             ComponentsService componentsService,
             PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
-            List<MessageBindingProcessor> messageBindingProcessors) {
+            List<MessageBindingProcessor> messageBindingProcessors,
+            List<OperationCustomizer> customizers) {
         super(
                 asyncAnnotationProvider,
                 payloadAsyncOperationService,
@@ -39,6 +41,7 @@ public class AsyncAnnotationOperationsScanner<A extends Annotation> extends Asyn
                 operationBindingProcessors,
                 messageBindingProcessors);
         this.classScanner = classScanner;
+        this.customizers = customizers;
     }
 
     @Override
@@ -64,7 +67,7 @@ public class AsyncAnnotationOperationsScanner<A extends Annotation> extends Asyn
 
         Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelId);
         operation.setAction(this.asyncAnnotationProvider.getOperationType());
-
+        customizers.forEach(customizer -> customizer.customize(operation, methodAndAnnotation.method()));
         return Map.entry(operationId, operation);
     }
 }
