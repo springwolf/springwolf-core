@@ -1,20 +1,33 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h2>Schemas</h2>
 @for(schema of schemas; track schema) {
-<article appNavigationTarget [id]="schema.anchorIdentifier">
-  <span class="flex space-between align-items-baseline">
-    <h3>{{ schema.title }}</h3>
+<mat-card appNavigationTarget [id]="schema.anchorIdentifier">
+  <mat-card-header class="flex space-between align-items-baseline">
+    <mat-card-title>
+      {{ schema.title }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="table margin-vertical-1em">
+      <div class="table-row">
+        <span>Title</span>
+        <span>{{ schema.name }}</span>
+      </div>
+      <div class="table-row">
+        <span>Type</span>
+        <span
+          ><div class="type-badge">{{ schema.type }}</div></span
+        >
+      </div>
+      <div class="table-row" *ngIf="schema.description">
+        <span>Description</span>
+        <markdown [data]="schema.description"></markdown>
+      </div>
+    </div>
 
-    <span class="flex-column flex-start items-center">
-      <div class="badge type-badge">{{ schema.type }}</div>
-    </span>
-  </span>
-
-  <markdown [data]="schema.description"></markdown>
-
-  <h4>
-    Title: <span class="schema-name">{{ schema.name }}</span>
-  </h4>
-  <app-schema [schema]="schema"></app-schema>
-</article>
-}
+    <app-schema [schema]="schema"></app-schema>
+  </mat-card-content>
+</mat-card>
+@if (!$last) {
+<br />
+} }

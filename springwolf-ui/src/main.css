@@ -75,10 +75,10 @@ a {
 .table .table-row {
   display: table-row;
 }
-.table-row * {
+.table-row > * {
   display: table-cell;
 }
-.table-row *:first-child {
+.table-row > *:first-child {
   font-weight: bold;
   padding-right: 8px;
 }
