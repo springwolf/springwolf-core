@@ -1,11 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 .badge {
   border-radius: 4px;
-  padding: 8px;
-  font-size: small;
-  font-weight: bold;
-  display: inline-block;
+  padding: 0.3em;
+  font-size: smaller;
   text-transform: uppercase;
+}
+
+.protocol-badge {
+  background-color: #347aeb;
+  color: #fff;
 }
 
 .send-badge {
@@ -14,25 +17,4 @@
 
 .receive-badge {
   background-color: #9bd279;
-}
-
-.protocol-badge {
-  background-color: #347aeb;
-  color: #fff;
-}
-
-.badge .fa {
-  padding-left: 2 px;
-}
-
-mat-divider {
-  height: 20px;
-}
-
-.payload-name {
-  background-color: #e0e0e0;
-  border-radius: 4px;
-  padding: 4px;
-  font-weight: normal;
-  font-size: small;
 }

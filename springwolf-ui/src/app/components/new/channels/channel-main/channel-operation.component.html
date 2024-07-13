@@ -1,8 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <div class="row">
   <div class="width-12/12 width-12/12-s">
-    <mat-divider></mat-divider>
-    <div class="table">
+    <div class="table margin-vertical-1em">
       <div *ngIf="operation().description" class="table-row">
         <span>Operation description</span>
         <markdown [data]="operation().description"></markdown>
@@ -13,7 +12,7 @@
       </div>
       <div *ngIf="operation().message.contentType" class="table-row">
         <span>Content-Type</span>
-        <markdown [data]="operation().message.contentType"></markdown>
+        <span>{{ operation().message.contentType }}</span>
       </div>
       <div class="table-row">
         <span>Servers</span>

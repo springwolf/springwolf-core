@@ -15,6 +15,7 @@ import { Location } from "@angular/common";
 
 interface NavigationEntry {
   name: string;
+  icon?: string;
   href: string | undefined;
   selected?: boolean;
   collapsed?: boolean;
@@ -54,6 +55,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
       newNavigation.push({
         name: "Info",
+        icon: "info",
         href: AsyncApiMapperService.BASE_URL + "info",
       });
 
@@ -67,12 +69,14 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       }));
       newNavigation.push({
         name: "Servers",
+        icon: "dns",
         href: AsyncApiMapperService.BASE_URL + "servers",
         children: servers,
       });
 
       const channels = {
         name: "Channels & Operations",
+        icon: "swap_vert",
         href: AsyncApiMapperService.BASE_URL + "channels",
         children: [] as NavigationEntry[],
       };
@@ -95,6 +99,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
       const schemas = {
         name: "Schemas",
+        icon: "schema",
         href: AsyncApiMapperService.BASE_URL + "schemas",
         children: [] as NavigationEntry[],
       };

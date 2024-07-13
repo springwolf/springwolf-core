@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 .sidenav {
   padding-left: 0.1em;
+  border-right: 0.1em solid gray;
 }
 
 .sidenav ul {
@@ -9,14 +10,16 @@
 }
 
 .sidenav .entry {
-  border-left: 0.3em solid transparent;
-  padding-left: 0.1em;
+  border-right: 0.3em solid transparent;
   transition: max-height 0.5s ease-out;
   max-height: 100%;
   opacity: 1;
 }
 .sidenav .entry.selected {
-  border-left: 0.3em solid black;
+  border-right: 0.3em solid gray;
+}
+.sidenav .entry.selected > a {
+  font-weight: bold;
 }
 .sidenav .entry.collapsed {
   max-height: 0;
@@ -27,13 +30,20 @@
   display: flex;
   justify-content: space-between;
 }
-.entry .entry .entry span {
-  color: var(--mdc-chip-focus-state-layer-color);
+.sidenav .badge {
   text-transform: uppercase;
   font-size: smaller;
-
   word-break: break-all;
 
-  border: 1px solid gray;
   border-radius: 0.3em;
+  padding: 0 0.1em;
+
+  margin-right: 0.3em;
+}
+
+.sidenav .badge.send-badge {
+  background-color: #ffd580;
+}
+.sidenav .badge.receive-badge {
+  background-color: #9bd279;
 }

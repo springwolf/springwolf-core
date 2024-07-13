@@ -6,6 +6,10 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+a {
+  word-break: break-all;
+  max-width: 100%;
+}
 
 .mat-mdc-card {
   background-color: #f5f5f5 !important;
@@ -50,6 +54,33 @@ body {
 }
 .flex-start {
   align-items: end;
+}
+
+/** semantic styling like tailwind **/
+.padding-horizontal-1em {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.margin-vertical-1em {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.text-console {
+  font-family: Consolas, monospace;
+}
+
+.table {
+  display: table;
+}
+.table .table-row {
+  display: table-row;
+}
+.table-row * {
+  display: table-cell;
+}
+.table-row *:first-child {
+  font-weight: bold;
+  padding-right: 8px;
 }
 
 .grid {
@@ -180,8 +211,4 @@ body {
   @media (max-width: 64em) {
     grid-column: span 12;
   }
-}
-
-.text-console {
-  font-family: Consolas, monospace;
 }
