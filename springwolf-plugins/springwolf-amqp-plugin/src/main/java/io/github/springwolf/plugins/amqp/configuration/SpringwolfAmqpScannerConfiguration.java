@@ -10,6 +10,7 @@ import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanne
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.AmqpBindingFactory;
@@ -90,7 +91,8 @@ public class SpringwolfAmqpScannerConfiguration {
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
+            ComponentsService componentsService,
+            List<OperationCustomizer> operationCustomizers) {
         SpringAnnotationClassLevelOperationsScanner<RabbitListener, RabbitHandler> strategy =
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         RabbitListener.class,
@@ -99,7 +101,8 @@ public class SpringwolfAmqpScannerConfiguration {
                         asyncHeadersForAmqpBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
-                        componentsService);
+                        componentsService,
+                        operationCustomizers);
 
         return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
@@ -141,13 +144,14 @@ public class SpringwolfAmqpScannerConfiguration {
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
+            ComponentsService componentsService,
+            List<OperationCustomizer> operationCustomizers) {
         SpringAnnotationMethodLevelOperationsScanner<RabbitListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         RabbitListener.class,
                         amqpBindingFactory,
                         asyncHeadersForAmqpBuilder,
-                        List.of(),
+                        operationCustomizers,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);

@@ -10,6 +10,7 @@ import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanne
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
@@ -87,7 +88,8 @@ public class SpringwolfKafkaScannerConfiguration {
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
+            ComponentsService componentsService,
+            List<OperationCustomizer> operationCustomizers) {
         SpringAnnotationClassLevelOperationsScanner<KafkaListener, KafkaHandler> strategy =
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         KafkaListener.class,
@@ -96,7 +98,8 @@ public class SpringwolfKafkaScannerConfiguration {
                         asyncHeadersForKafkaBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
-                        componentsService);
+                        componentsService,
+                        operationCustomizers);
 
         return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
     }
@@ -138,13 +141,14 @@ public class SpringwolfKafkaScannerConfiguration {
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
+            ComponentsService componentsService,
+            List<OperationCustomizer> operationCustomizers) {
         SpringAnnotationMethodLevelOperationsScanner<KafkaListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         KafkaListener.class,
                         kafkaBindingFactory,
                         asyncHeadersForKafkaBuilder,
-                        List.of(),
+                        operationCustomizers,
                         payloadMethodParameterService,
                         headerClassExtractor,
                         componentsService);

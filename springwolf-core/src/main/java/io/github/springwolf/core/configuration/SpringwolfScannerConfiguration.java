@@ -18,6 +18,7 @@ import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationC
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.AsyncAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -97,14 +98,16 @@ public class SpringwolfScannerConfiguration {
             ComponentsService componentsService,
             PayloadAsyncOperationService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
-            List<MessageBindingProcessor> messageBindingProcessors) {
+            List<MessageBindingProcessor> messageBindingProcessors,
+            List<OperationCustomizer> operationCustomizers) {
         return new AsyncAnnotationOperationsScanner<>(
                 buildAsyncListenerAnnotationProvider(),
                 springwolfClassScanner,
                 componentsService,
                 payloadService,
                 operationBindingProcessors,
-                messageBindingProcessors);
+                messageBindingProcessors,
+                operationCustomizers);
     }
 
     @Bean
@@ -141,14 +144,16 @@ public class SpringwolfScannerConfiguration {
             ComponentsService componentsService,
             PayloadAsyncOperationService payloadService,
             List<OperationBindingProcessor> operationBindingProcessors,
-            List<MessageBindingProcessor> messageBindingProcessors) {
+            List<MessageBindingProcessor> messageBindingProcessors,
+            List<OperationCustomizer> customizers) {
         return new AsyncAnnotationOperationsScanner<>(
                 buildAsyncPublisherAnnotationProvider(),
                 springwolfClassScanner,
                 componentsService,
                 payloadService,
                 operationBindingProcessors,
-                messageBindingProcessors);
+                messageBindingProcessors,
+                customizers);
     }
 
     private static AsyncAnnotationScanner.AsyncAnnotationProvider<AsyncListener>
