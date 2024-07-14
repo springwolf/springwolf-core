@@ -14,6 +14,28 @@
         <span>Content-Type</span>
         <span class="text-console">{{ operation().message.contentType }}</span>
       </div>
+      <div *ngIf="operation().reply" class="table-row">
+        <span>Reply to</span>
+        <span
+          ><mat-chip-set>
+            <a href="{{ operation().reply!.channelAnchorUrl }}">
+              <mat-chip>
+                <mat-icon matChipAvatar fontIcon="swap_vert" />
+                {{ operation().reply!.channelName }}
+              </mat-chip>
+            </a>
+          </mat-chip-set>
+          with
+          <mat-chip-set>
+            <a href="{{ operation().reply!.messageAnchorUrl }}">
+              <mat-chip>
+                <mat-icon matChipAvatar fontIcon="schema" />
+                {{ operation().reply!.messageName }}
+              </mat-chip>
+            </a>
+          </mat-chip-set></span
+        >
+      </div>
       <div class="table-row">
         <span>Servers</span>
         <span>

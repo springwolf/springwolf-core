@@ -19,6 +19,7 @@ import { ServerBinding, ServerBindings } from "./models/bindings.model";
 import {
   ServerOperation,
   ServerOperationMessage,
+  ServerOperationReply,
   ServerOperations,
 } from "./models/operations.model";
 import { ServerServers } from "./models/servers.model";
@@ -27,7 +28,11 @@ import { INotificationService } from "../notification.service";
 import { ServerComponents } from "./models/components.model";
 import { Binding, Bindings } from "../../models/bindings.model";
 import { Message } from "../../models/message.model";
-import { Operation, OperationServer } from "../../models/operation.model";
+import {
+  Operation,
+  OperationReply,
+  OperationServer,
+} from "../../models/operation.model";
 import { catchException } from "../../util/error-boundary";
 
 @Injectable()
@@ -110,7 +115,7 @@ export class AsyncApiMapperService {
       this.parsingErrorBoundary("channel " + channelKey, () => {
         const channel = channels[channelKey];
         mappedChannels[channelKey] = {
-          name: channelKey,
+          name: channel.address,
           anchorIdentifier: "channel-" + channelKey,
           operations: [],
           bindings: channel.bindings || {},
@@ -209,7 +214,8 @@ export class AsyncApiMapperService {
       mappedOperationServers,
       message,
       operation.bindings,
-      operation.description
+      operation.description,
+      operation.reply
     );
 
     return {
@@ -317,8 +323,20 @@ export class AsyncApiMapperService {
     servers: OperationServer[],
     message: Message,
     bindings?: Bindings,
-    description?: string
+    description?: string,
+    reply?: ServerOperationReply
   ): Operation {
+    const mappedReply: OperationReply | undefined = reply && {
+      channelAnchorUrl:
+        AsyncApiMapperService.BASE_URL +
+        CHANNEL_ANCHOR_PREFIX +
+        this.resolveRef(reply.channel.$ref),
+      channelName: this.resolveRef(reply.channel.$ref).replaceAll("_", "/"),
+      messageAnchorUrl:
+        AsyncApiMapperService.BASE_URL +
+        this.resolveRef(reply.messages[0].$ref),
+      messageName: this.resolveRef(reply.messages[0].$ref),
+    };
     return {
       protocol: this.getProtocol(bindings) || "unsupported-protocol",
       bindings: bindings || {},
@@ -326,6 +344,7 @@ export class AsyncApiMapperService {
       operationType: operationType == "send" ? "send" : "receive",
       description,
       message,
+      reply: mappedReply,
     };
   }
 

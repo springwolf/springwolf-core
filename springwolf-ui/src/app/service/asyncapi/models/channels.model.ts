@@ -6,6 +6,7 @@ export interface ServerChannels {
 }
 
 export interface ServerChannel {
+  address: string;
   description?: string;
   messages: {
     [key: string]: {
