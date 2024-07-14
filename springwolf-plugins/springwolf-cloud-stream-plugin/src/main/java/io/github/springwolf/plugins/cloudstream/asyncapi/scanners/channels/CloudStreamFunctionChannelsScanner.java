@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -72,17 +73,16 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     }
 
     private Map.Entry<String, ChannelObject> toChannelEntry(FunctionalChannelBeanData beanData) {
-        String channelId = cloudStreamBindingsProperties
+        String channelName = cloudStreamBindingsProperties
                 .getBindings()
                 .get(beanData.cloudStreamBinding())
                 .getDestination();
+        ChannelObject channelItem = buildChannel(beanData, channelName);
 
-        ChannelObject channelItem = buildChannel(beanData);
-
-        return Map.entry(channelId, channelItem);
+        return Map.entry(channelItem.getChannelId(), channelItem);
     }
 
-    private ChannelObject buildChannel(FunctionalChannelBeanData beanData) {
+    private ChannelObject buildChannel(FunctionalChannelBeanData beanData, String channelName) {
         Class<?> payloadType = beanData.payloadType();
         String modelName = payloadService.buildSchema(payloadType).name();
         String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
@@ -102,7 +102,10 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         this.componentsService.registerMessage(message);
 
         Map<String, ChannelBinding> channelBinding = buildChannelBinding(beanData.annotatedElement());
+
         return ChannelObject.builder()
+                .channelId(ReferenceUtil.toValidId(channelName))
+                .address(channelName)
                 .bindings(channelBinding)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
