@@ -27,7 +27,7 @@
 ext {
     annotationApiVersion = '3.0.0'
 
-    assertjCoreVersion = '3.26.0'
+    assertjCoreVersion = '3.26.3'
 
     asyncapiCoreVersion = '1.0.0-EAP-2'
 
