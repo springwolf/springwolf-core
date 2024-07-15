@@ -5,6 +5,7 @@ import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Provides the building blocks to generate an example
@@ -50,7 +51,7 @@ public interface ExampleValueGenerator<T, R> {
 
     void addPropertyExamples(T object, List<PropertyExample<T>> properties);
 
-    T createArrayExample(String name, T arrayItem);
+    T createArrayExample(Supplier<String> nameSupplier, T arrayItem);
 
     T createRaw(Object exampleValueString);
 

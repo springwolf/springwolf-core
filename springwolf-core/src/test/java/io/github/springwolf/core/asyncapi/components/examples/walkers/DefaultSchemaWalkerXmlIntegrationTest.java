@@ -516,8 +516,26 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             Schema propertySchema = new StringSchema();
             mapSchema.setAdditionalProperties(propertySchema);
 
-            String actual = xmlSchemaWalker.fromSchema(mapSchema, Map.of("Nested", propertySchema));
+            String actual = xmlSchemaWalker.fromSchema(mapSchema, Map.of());
             assertThat(actual).isEqualTo("<object_with_map><key>string</key></object_with_map>");
+        }
+
+        @Test
+        void object_with_map_and_set() {
+            // Example: Map<String, Set<String>>
+            Schema<?> objectSchema = new ObjectSchema();
+            objectSchema.setName("objectName");
+            objectSchema.setProperties(Map.of("field1", new StringSchema()));
+
+            Schema<?> arraySchema = new ArraySchema();
+            arraySchema.setItems(objectSchema);
+
+            MapSchema mapSchema = new MapSchema();
+            mapSchema.setName("object_with_map_and_set");
+            mapSchema.setAdditionalProperties(arraySchema);
+
+            String actual = xmlSchemaWalker.fromSchema(mapSchema, Map.of());
+            assertThat(actual).isNull();
         }
 
         @Test

@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -106,8 +107,8 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createArrayExample(String name, JsonNode arrayItem) {
-        return this.exampleJsonValueGenerator.createArrayExample(name, arrayItem);
+    public JsonNode createArrayExample(Supplier<String> nameSupplier, JsonNode arrayItem) {
+        return this.exampleJsonValueGenerator.createArrayExample(nameSupplier, arrayItem);
     }
 
     @Override

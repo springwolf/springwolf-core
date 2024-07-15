@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -163,15 +164,14 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
                 resolveSchemaFromRef(schema.getItems(), definitions).orElse(schema.getItems());
 
         Optional<String> arrayName = exampleValueGenerator.lookupSchemaName(schema);
+        Supplier<String> arrayNameSupplier = () -> arrayName.orElseThrow(
+                () -> new ExampleGeneratingException("Array schema does not have a name: " + schema));
 
         return exampleValueGenerator
                 .lookupSchemaName(arrayItemSchema)
                 .or(() -> arrayName)
                 .flatMap(arrayItemName -> buildExample(arrayItemName, arrayItemSchema, definitions, visited))
-                .map(arrayItem -> exampleValueGenerator.createArrayExample(
-                        arrayName.orElseThrow(
-                                () -> new ExampleGeneratingException("Array schema does not have a name: " + schema)),
-                        arrayItem));
+                .map(arrayItem -> exampleValueGenerator.createArrayExample(arrayNameSupplier, arrayItem));
     }
 
     private Optional<T> buildFromStringSchema(Schema schema) {
