@@ -65,7 +65,7 @@ ext {
     junitJupiterVersion = '5.10.3'
     jsonUnitAssertJVersion = '3.4.0'
 
-    lombokVersion = '1.18.32'
+    lombokVersion = '1.18.34'
 
     slf4jApiVersion = '2.0.13'
     slf4jSimpleVersion = '2.0.13'
