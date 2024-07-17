@@ -84,6 +84,11 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             return buildExample(name, resolvedSchema.get(), definitions, visited);
         }
 
+        Optional<T> jsonTypeInfoSchema = buildFromJsonTypeInfo(name, schema, definitions, visited);
+        if (jsonTypeInfoSchema.isPresent()) {
+            return jsonTypeInfoSchema;
+        }
+
         String type = schema.getType();
         return switch (type) {
             case "array" -> buildArrayExample(schema, definitions, visited);
@@ -207,6 +212,29 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         return null;
     }
 
+    private Optional<T> buildFromJsonTypeInfo(
+            String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+        if (visited.contains(schema)) {
+            return exampleValueGenerator.createEmptyObjectExample();
+        }
+        visited.add(schema);
+
+        final List<Schema> schemasAllOf = schema.getAllOf();
+        final List<Schema> schemasAnyOf = schema.getAnyOf();
+        final List<Schema> schemasOneOf = schema.getOneOf();
+        if (!CollectionUtils.isEmpty(schemasAllOf)) {
+            return buildFromObjectSchemaWithAllOf(name, schemasAllOf, definitions, visited);
+        } else if (!CollectionUtils.isEmpty(schemasAnyOf)) {
+            return buildExample(name, schemasAnyOf.get(0), definitions, visited);
+        } else if (!CollectionUtils.isEmpty(schemasOneOf)) {
+            return buildExample(name, schemasOneOf.get(0), definitions, visited);
+        }
+
+        visited.remove(schema);
+
+        return Optional.empty();
+    }
+
     private Optional<T> buildFromObjectSchema(
             String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         if (visited.contains(schema)) {
@@ -218,17 +246,8 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
         final Map<String, Schema> properties = schema.getProperties();
         final Object additionalProperties = schema.getAdditionalProperties();
-        final List<Schema> schemasAllOf = schema.getAllOf();
-        final List<Schema> schemasAnyOf = schema.getAnyOf();
-        final List<Schema> schemasOneOf = schema.getOneOf();
         if (properties != null) {
             exampleValue = buildFromObjectSchemaWithProperties(name, properties, definitions, visited);
-        } else if (!CollectionUtils.isEmpty(schemasAllOf)) {
-            exampleValue = buildFromObjectSchemaWithAllOf(name, schemasAllOf, definitions, visited);
-        } else if (!CollectionUtils.isEmpty(schemasAnyOf)) {
-            exampleValue = buildExample(name, schemasAnyOf.get(0), definitions, visited);
-        } else if (!CollectionUtils.isEmpty(schemasOneOf)) {
-            exampleValue = buildExample(name, schemasOneOf.get(0), definitions, visited);
         } else if (schema instanceof MapSchema && additionalProperties instanceof Schema<?>) {
             exampleValue = buildMapExample(name, (Schema) additionalProperties, definitions, visited);
         } else {

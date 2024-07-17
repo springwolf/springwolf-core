@@ -3,6 +3,7 @@ package io.github.springwolf.examples.jms.consumers;
 
 import io.github.springwolf.examples.jms.dtos.AnotherPayloadDto;
 import io.github.springwolf.examples.jms.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.jms.dtos.JsonTypeInfoPayloadDto;
 import io.github.springwolf.examples.jms.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,5 +30,10 @@ public class ExampleConsumer {
     @JmsListener(destination = "another-queue")
     public void receiveAnotherPayload(AnotherPayloadDto payload) {
         log.info("Received new message in another-queue: {}", payload.toString());
+    }
+
+    @JmsListener(destination = "json-type-info-queue")
+    public void receiveJsonTypeInfoPayload(JsonTypeInfoPayloadDto payload) {
+        log.info("Received new message in json-type-info-queue: {}", payload.toString());
     }
 }
