@@ -451,10 +451,30 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             Schema propertySchema = new StringSchema();
             mapSchema.setAdditionalProperties(propertySchema);
 
-            JsonNode actual = jsonSchemaWalker.fromSchema(mapSchema, Map.of("Nested", propertySchema));
+            JsonNode actual = jsonSchemaWalker.fromSchema(mapSchema, Map.of());
             String actualString = jsonMapper.writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("{\"key\":\"string\"}");
+        }
+
+        @Test
+        void object_with_map_and_set(TestInfo testInfo) throws JsonProcessingException {
+            // Example: Map<String, Set<String>>
+            Schema<?> objectSchema = new ObjectSchema();
+            objectSchema.setName("objectName");
+            objectSchema.setProperties(Map.of("field1", new StringSchema()));
+
+            Schema<?> arraySchema = new ArraySchema();
+            arraySchema.setItems(objectSchema);
+
+            MapSchema mapSchema = new MapSchema();
+            mapSchema.setName(testInfo.getDisplayName());
+            mapSchema.setAdditionalProperties(arraySchema);
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(mapSchema, Map.of());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("{\"key\":[{\"field1\":\"string\"}]}");
         }
 
         @Test

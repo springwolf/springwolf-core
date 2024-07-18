@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
+import java.util.function.Supplier;
 
 @Slf4j
 public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, String> {
@@ -154,8 +155,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node createArrayExample(String name, Node arrayItem) {
-        return wrapNode(name, arrayItem);
+    public Node createArrayExample(Supplier<String> nameSupplier, Node arrayItem) {
+        return wrapNode(nameSupplier.get(), arrayItem);
     }
 
     @Override

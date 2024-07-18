@@ -499,9 +499,28 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             Schema propertySchema = new StringSchema();
             mapSchema.setAdditionalProperties(propertySchema);
 
-            String actualString = jsonSchemaWalker.fromSchema(mapSchema, Map.of("Nested", propertySchema));
+            String actualString = jsonSchemaWalker.fromSchema(mapSchema, Map.of());
 
             assertThat(actualString).isEqualTo("key: \"string\"\n");
+        }
+
+        @Test
+        void object_with_map_and_set(TestInfo testInfo) {
+            // Example: Map<String, Set<String>>
+            Schema<?> objectSchema = new ObjectSchema();
+            objectSchema.setName("objectName");
+            objectSchema.setProperties(Map.of("field1", new StringSchema()));
+
+            Schema<?> arraySchema = new ArraySchema();
+            arraySchema.setItems(objectSchema);
+
+            MapSchema mapSchema = new MapSchema();
+            mapSchema.setName(testInfo.getDisplayName());
+            mapSchema.setAdditionalProperties(arraySchema);
+
+            String actualString = jsonSchemaWalker.fromSchema(mapSchema, Map.of());
+
+            assertThat(actualString).isEqualTo("key:\n- field1: \"string\"\n");
         }
 
         @Test
