@@ -173,8 +173,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       link.selected = currentAnchor == link.href || childSelected;
 
       link.children?.forEach((child) => {
-        // child.collapsed = !link.selected;
-        child.collapsed = false;
+        child.collapsed = !link.selected;
       });
 
       link.collapsed = false;

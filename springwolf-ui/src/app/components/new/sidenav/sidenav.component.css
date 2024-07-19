@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 .sidenav {
   padding-left: 0.1em;
-  border-right: 0.1em solid gray;
 }
 .sidenav a,
 .sidenav a:visited {
@@ -15,13 +14,10 @@
 }
 
 .sidenav .entry {
-  border-right: 0.3em solid transparent;
-  /*transition: max-height 0.5s ease-out;*/
   max-height: 100%;
   opacity: 1;
 }
 .sidenav .entry.selected {
-  border-right: 0.3em solid gray;
 }
 .sidenav .entry.selected > span > a {
   font-weight: bold;

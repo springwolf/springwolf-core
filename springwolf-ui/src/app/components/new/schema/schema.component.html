@@ -9,7 +9,7 @@
   </ng-container>
 
   <!--  Objects  -->
-  <b *ngIf="Object.keys(schema().properties || {}).length > 0">Properties:</b>
+  <b *ngIf="Object.keys(schema().properties || {}).length > 0">Properties</b>
   <mat-list *ngIf="Object.keys(schema().properties || {}).length > 0">
     <mat-list-item
       *ngFor="let property of schema().properties || {} | keyvalue"
