@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "baseHref": "./",
             "outputPath": {
               "base": "dist/springwolf-ui",
               "browser": ""
