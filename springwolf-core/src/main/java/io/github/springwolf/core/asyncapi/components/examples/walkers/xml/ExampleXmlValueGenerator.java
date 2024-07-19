@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.components.examples.walkers.xml;
 
 import io.github.springwolf.core.asyncapi.components.examples.walkers.ExampleValueGenerator;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.PropertyExample;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.SchemaWalker;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
-import java.util.function.Supplier;
 
 @Slf4j
 public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, String> {
@@ -155,8 +155,11 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node createArrayExample(Supplier<String> nameSupplier, Node arrayItem) {
-        return wrapNode(nameSupplier.get(), arrayItem);
+    public Node createArrayExample(Optional<String> arrayNameOptional, Node arrayItem) {
+        return arrayNameOptional
+                .map(arrayName -> wrapNode(arrayName, arrayItem))
+                .orElseThrow(() -> new SchemaWalker.ExampleGeneratingException(
+                        "Unable to add array item to array, because the array schema does not have a name"));
     }
 
     @Override
