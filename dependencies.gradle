@@ -35,7 +35,7 @@ ext {
 
     awaitilityVersion = '4.2.1'
 
-    commonsLang3Version = '3.14.0'
+    commonsLang3Version = '3.15.0'
 
     kafkaAvroSerializerVersion = '7.6.2'
 
