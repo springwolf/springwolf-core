@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 
 @Slf4j
 public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode, JsonNode> {
@@ -76,7 +75,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode createArrayExample(Supplier<String> nameSupplier, JsonNode arrayItem) {
+    public JsonNode createArrayExample(Optional<String> name, JsonNode arrayItem) {
         ArrayNode array = objectMapper.createArrayNode();
         array.add(arrayItem);
         return array;
