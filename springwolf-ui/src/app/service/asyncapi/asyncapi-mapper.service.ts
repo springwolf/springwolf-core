@@ -126,7 +126,8 @@ export class AsyncApiMapperService {
     for (let operationsKey in operations) {
       this.parsingErrorBoundary("operation " + operationsKey, () => {
         const operation = operations[operationsKey];
-        const channelName = this.resolveRef(operation.channel.$ref);
+        const channelId = this.resolveRef(operation.channel.$ref);
+        const channelName = channels[channelId].address;
 
         this.verifyBindings(operation.bindings, "operation " + operationsKey);
 
@@ -144,6 +145,7 @@ export class AsyncApiMapperService {
               this.mapChannelOperation(
                 channelName,
                 channels[channelName],
+                channels,
                 operation,
                 message,
                 servers
@@ -191,6 +193,7 @@ export class AsyncApiMapperService {
   private mapChannelOperation(
     channelName: string,
     channel: ServerChannel,
+    channels: ServerChannels,
     operation: ServerOperation,
     message: Message,
     servers: ServerServers
@@ -210,6 +213,8 @@ export class AsyncApiMapperService {
     );
 
     const mappedOperation = this.mapOperation(
+      channelName,
+      channels,
       operation.action,
       mappedOperationServers,
       message,
@@ -287,7 +292,7 @@ export class AsyncApiMapperService {
   }
 
   private mapServerAsyncApiMessageBindings(
-    serverMessageBindings?: ServerBindings
+    serverMessageBindings: ServerBindings | undefined
   ): Map<string, Binding> {
     const messageBindings = new Map<string, Binding>();
     if (serverMessageBindings !== undefined) {
@@ -319,38 +324,57 @@ export class AsyncApiMapperService {
   }
 
   private mapOperation(
+    channelName: string,
+    channels: ServerChannels,
     operationType: ServerOperation["action"],
     servers: OperationServer[],
     message: Message,
-    bindings?: Bindings,
-    description?: string,
-    reply?: ServerOperationReply
+    bindings: Bindings | undefined,
+    description: string | undefined,
+    reply: ServerOperationReply | undefined
   ): Operation {
-    const mappedReply: OperationReply | undefined = reply && {
-      channelAnchorUrl:
-        AsyncApiMapperService.BASE_URL +
-        CHANNEL_ANCHOR_PREFIX +
-        this.resolveRef(reply.channel.$ref),
-      channelName: this.resolveRef(reply.channel.$ref).replaceAll("_", "/"),
-      messageAnchorUrl:
-        AsyncApiMapperService.BASE_URL +
-        this.resolveRef(reply.messages[0].$ref),
-      messageName: this.resolveRef(reply.messages[0].$ref),
-    };
     return {
       protocol: this.getProtocol(bindings) || "unsupported-protocol",
       bindings: bindings || {},
       servers: servers,
       operationType: operationType == "send" ? "send" : "receive",
+      channelName: channelName,
       description,
       message,
-      reply: mappedReply,
+      reply: this.mapOperationReply(reply, channels),
     };
   }
 
-  private getProtocol(bindings?: {
-    [protocol: string]: object;
-  }): string | undefined {
+  private mapOperationReply(
+    reply: ServerOperationReply | undefined,
+    channels: ServerChannels
+  ): OperationReply | undefined {
+    if (!reply) {
+      return undefined;
+    }
+
+    const refChannelId = this.resolveRef(reply.channel.$ref);
+    const refChannelName = channels[refChannelId].address;
+    return {
+      channelAnchorUrl:
+        AsyncApiMapperService.BASE_URL +
+        CHANNEL_ANCHOR_PREFIX +
+        this.resolveRef(reply.channel.$ref),
+      channelName: refChannelName,
+      messageAnchorUrl:
+        AsyncApiMapperService.BASE_URL +
+        this.resolveRef(reply.messages[0].$ref),
+      messageName: this.resolveRef(reply.messages[0].$ref),
+    };
+  }
+
+  private getProtocol(
+    bindings:
+      | {
+          [protocol: string]: object;
+        }
+      | undefined
+  ): string | undefined {
     if (bindings !== undefined) {
       return Object.keys(bindings)[0];
     }

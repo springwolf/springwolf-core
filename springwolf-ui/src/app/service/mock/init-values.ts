@@ -6,6 +6,7 @@ import { Binding, Bindings } from "../../models/bindings.model";
 import { Message } from "../../models/message.model";
 import { Info } from "../../models/info.model";
 
+// TODO: are the init values needed?
 export const initExample = new Example("init");
 export const initBindings: Bindings = {};
 
@@ -27,6 +28,7 @@ export const initMessage: Message = {
   contentType: "",
 };
 export const initOperation: Operation = {
+  channelName: "",
   bindings: initBindings,
   message: initMessage,
   operationType: "send",

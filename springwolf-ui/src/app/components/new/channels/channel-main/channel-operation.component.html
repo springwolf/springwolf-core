@@ -2,6 +2,10 @@
 <div class="row">
   <div class="width-12/12 width-12/12-s">
     <div class="table margin-vertical-1em">
+      <div class="table-row">
+        <span>Channel</span>
+        <span>{{ operation().channelName }}</span>
+      </div>
       <div *ngIf="operation().description" class="table-row">
         <span>Operation description</span>
         <markdown [data]="operation().description"></markdown>
