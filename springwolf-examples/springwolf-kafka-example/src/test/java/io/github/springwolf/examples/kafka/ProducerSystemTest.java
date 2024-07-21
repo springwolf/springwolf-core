@@ -11,6 +11,7 @@ import io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto;
 import io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto;
 import io.github.springwolf.plugins.kafka.configuration.properties.SpringwolfKafkaConfigProperties;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -48,8 +49,11 @@ import static org.mockito.Mockito.verify;
 @Testcontainers
 @TestPropertySource(properties = {"spring.kafka.bootstrap-servers=localhost:9092"})
 @TestMethodOrder(OrderAnnotation.class)
+@Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ProducerSystemTest {
+    private static final String KAFKA_NAME = "kafka";
+
     private static final boolean USE_SCHEMA_REGISTRY = false;
 
     @Autowired
@@ -69,7 +73,8 @@ public class ProducerSystemTest {
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
-            .withServices("kafka", USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "");
+            .withServices(KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
+            .withLogConsumer(KAFKA_NAME, l -> log.debug("kafka: {}", l.getUtf8StringWithoutLineEnding()));
 
     @Test
     @Order(1)

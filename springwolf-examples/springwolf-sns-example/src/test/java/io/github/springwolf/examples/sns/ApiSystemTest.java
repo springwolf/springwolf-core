@@ -45,7 +45,7 @@ public class ApiSystemTest {
     }
 
     @Container
-    public DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withExposedService(APP_NAME, APP_PORT)
             .withEnv(ENV)
             .withLogConsumer(APP_NAME, l -> log.debug("APP: {}", l.getUtf8StringWithoutLineEnding()));
