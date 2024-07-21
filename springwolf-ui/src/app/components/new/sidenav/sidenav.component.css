@@ -1,7 +1,4 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-.sidenav {
-  padding-left: 0.1em;
-}
 .sidenav a,
 .sidenav a:visited {
   color: #373737;
@@ -13,18 +10,11 @@
   padding-inline-start: 0.5em;
 }
 
-.sidenav .entry {
-  max-height: 100%;
-  opacity: 1;
-}
-.sidenav .entry.selected {
-}
 .sidenav .entry.selected > span > a {
   font-weight: bold;
 }
 .sidenav .entry.collapsed {
-  max-height: 0;
-  opacity: 0;
+  display: none;
 }
 
 .sidenav .entry > span {
@@ -39,8 +29,6 @@
 
   border-radius: 0.3em;
   padding: 0 0.1em;
-
-  margin-right: 0.3em;
 }
 .sidenav .badge.send-badge {
   color: var(--springwolf-badge-color-send);

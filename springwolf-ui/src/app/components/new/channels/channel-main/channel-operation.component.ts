@@ -9,7 +9,11 @@ import { Schema } from "../../../../models/schema.model";
 import { AsyncApiService } from "../../../../service/asyncapi/asyncapi.service";
 import { PublisherService } from "../../../../service/publisher.service";
 import { wrapException } from "../../../../util/error-boundary";
-import { initExample, initSchema } from "../../../../service/mock/init-values";
+import {
+  initExample,
+  initSchema,
+  noExample,
+} from "../../../../service/mock/init-values";
 
 @Component({
   selector: "app-channel-operation",
@@ -23,11 +27,11 @@ export class ChannelOperationComponent implements OnInit {
   defaultSchema: Schema = initSchema;
   defaultExample: Example = initExample;
   defaultExampleType: string = "";
-  originalDefaultExample: string | object = this.defaultExample.rawValue;
+  originalDefaultExample: Example = this.defaultExample;
 
   headers: Schema = initSchema;
   headersExample: Example = initExample;
-  originalHeadersExample: string | object = this.headersExample.rawValue;
+  originalHeadersExample: Example = this.headersExample;
 
   operationBindingExampleString?: string;
   messageBindingExampleString?: string;
@@ -49,7 +53,7 @@ export class ChannelOperationComponent implements OnInit {
       );
       const schema = schemas.get(schemaIdentifier)!!;
       this.defaultSchema = schema;
-      this.originalDefaultExample = schema.example!!.rawValue;
+      this.originalDefaultExample = schema.example || noExample;
       this.defaultExampleType = this.operation().message.payload.type;
 
       const headersSchemaIdentifier =
@@ -57,7 +61,7 @@ export class ChannelOperationComponent implements OnInit {
           this.operation().message.headers.name.lastIndexOf("/") + 1
         );
       this.headers = schemas.get(headersSchemaIdentifier)!!;
-      this.originalHeadersExample = this.headers.example!!.rawValue;
+      this.originalHeadersExample = this.headers.example || noExample;
 
       this.operationBindingExampleString = new Example(
         this.operation().bindings[this.operation().protocol]
@@ -106,8 +110,8 @@ export class ChannelOperationComponent implements OnInit {
   }
 
   reset(): void {
-    this.defaultExample = new Example(this.originalDefaultExample);
-    this.headersExample = new Example(this.originalHeadersExample);
+    this.defaultExample = new Example(this.originalDefaultExample.rawValue);
+    this.headersExample = new Example(this.originalHeadersExample.rawValue);
   }
 
   publish(): void {

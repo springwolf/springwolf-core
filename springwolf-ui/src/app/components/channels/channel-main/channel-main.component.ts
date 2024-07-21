@@ -14,6 +14,7 @@ import {
   initExample,
   initOperation,
   initSchema,
+  noExample,
 } from "../../../service/mock/init-values";
 
 @Component({
@@ -52,7 +53,7 @@ export class ChannelMainComponent implements OnInit {
       );
       this.schema = schemas.get(this.schemaIdentifier)!!;
 
-      this.defaultExample = this.schema.example!!;
+      this.defaultExample = this.schema.example || noExample;
       this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 1;
       this.defaultExampleType = this.operation().message.payload.type;
 
@@ -61,7 +62,7 @@ export class ChannelMainComponent implements OnInit {
           this.operation().message.headers.name.lastIndexOf("/") + 1
         );
       this.headers = schemas.get(this.headersSchemaIdentifier)!!;
-      this.headersExample = this.headers.example!!;
+      this.headersExample = this.headers.example || noExample;
       this.headersTextAreaLineCount = this.headersExample?.lineCount || 1;
       this.messageBindingExampleTextAreaLineCount =
         this.messageBindingExample?.lineCount || 1;

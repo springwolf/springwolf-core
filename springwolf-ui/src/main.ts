@@ -12,8 +12,4 @@ platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch((err) => console.error(err));
 
-// TODO: as casting (as string)
-// TODO: verify all !! casting
-// TODO: verify if Example field can be mandatory
-// TODO: verify anchorIdentifier -> deepLink
 // TODO: remove prism in angular.json + dependency after using new theme

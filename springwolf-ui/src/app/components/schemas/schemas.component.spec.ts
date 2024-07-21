@@ -1,31 +1,43 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { SchemasComponent } from "./schemas.component";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { MatAccordion } from "@angular/material/expansion";
+import { render, screen } from "@testing-library/angular";
+import { SchemaComponent } from "./schema/schema.component";
+import { SchemaRangeComponent } from "./range/schema-range.component";
+import { JsonComponent } from "../json/json.component";
+import { Observable } from "rxjs";
+import { AsyncApi } from "../../models/asyncapi.model";
+import { of } from "rxjs/internal/observable/of";
+import { Server } from "../../models/server.model";
+import { Schema } from "../../models/schema.model";
+import { initInfo } from "../../service/mock/init-values";
 
 describe("SchemasComponent", () => {
-  let component: SchemasComponent;
-  let fixture: ComponentFixture<SchemasComponent>;
-
-  let mockedAsyncApiService = {
-    getAsyncApi: jest.fn(),
+  const mockedAsyncApiService: { getAsyncApi: () => Observable<AsyncApi> } = {
+    getAsyncApi: () =>
+      of({
+        info: initInfo,
+        servers: new Map<string, Server>(),
+        channels: [],
+        channelOperations: [],
+        components: {
+          schemas: new Map<string, Schema>(),
+        },
+      }),
   };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await render(SchemasComponent, {
+      declarations: [SchemaComponent, SchemaRangeComponent, JsonComponent],
       imports: [MatAccordion],
-      declarations: [SchemasComponent],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
       ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(SchemasComponent as any);
-    component = fixture.debugElement.componentInstance;
+    });
   });
 
   it("should create the component", () => {
-    expect(component).toBeTruthy();
+    expect(screen).toBeTruthy();
   });
 });

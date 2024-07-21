@@ -23,7 +23,7 @@ describe("SchemaNewComponent", () => {
           title: "String",
           type: "string",
           example: new Example("example value"),
-        } as Schema,
+        },
       },
     });
   });

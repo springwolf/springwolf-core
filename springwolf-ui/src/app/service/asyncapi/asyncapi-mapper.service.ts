@@ -246,7 +246,7 @@ export class AsyncApiMapperService {
     operationMessages: ServerOperationMessage[],
     defaultContentType: string
   ): Message[] {
-    const result = operationMessages
+    return operationMessages
       .map((operationMessage) => {
         return this.parsingErrorBoundary(
           "message of channel " + channelName,
@@ -288,7 +288,6 @@ export class AsyncApiMapperService {
         );
       })
       .filter((el) => el !== undefined);
-    return result as Message[];
   }
 
   private mapServerAsyncApiMessageBindings(
@@ -464,10 +463,8 @@ export class AsyncApiMapperService {
       maximum: schema.exclusiveMaximum
         ? schema.exclusiveMinimum
         : schema.maximum,
-      exclusiveMinimum:
-        schema.minimum == schema.exclusiveMinimum ? true : false,
-      exclusiveMaximum:
-        schema.maximum == schema.exclusiveMaximum ? true : false,
+      exclusiveMinimum: schema.minimum == schema.exclusiveMinimum,
+      exclusiveMaximum: schema.maximum == schema.exclusiveMaximum,
     };
   }
 
@@ -506,7 +503,7 @@ export class AsyncApiMapperService {
   private mapSchemaRef(schemaName: string, schema: { $ref: string }): Schema {
     return {
       name: schemaName,
-      title: schemaName.split(".")?.pop() as string,
+      title: schemaName.split(".").pop()!!,
 
       refName: schema.$ref,
       refTitle: this.resolveRef(schema.$ref),
@@ -516,8 +513,8 @@ export class AsyncApiMapperService {
     };
   }
 
-  private resolveRef(ref: string) {
-    return ref?.split("/")?.pop()!!;
+  private resolveRef(ref: string): string {
+    return ref.split("/").pop()!!;
   }
 
   private verifyBindings(
