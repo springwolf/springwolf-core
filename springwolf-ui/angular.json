@@ -36,6 +36,9 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
+              "prism-code-editor/layout.css",
+              "prism-code-editor/copy-button.css",
+              "prism-code-editor/themes/prism-okaidia.css",
               "src/main.css",
               "src/styles.scss",
               "./node_modules/prismjs/themes/prism-okaidia.css"

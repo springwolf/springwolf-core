@@ -19,9 +19,6 @@ import "prism-code-editor/prism/languages/http";
 import "prism-code-editor/prism/languages/java";
 import "prism-code-editor/prism/languages/kotlin";
 import "prism-code-editor/prism/languages/markdown";
-import "prism-code-editor/layout.css";
-import "prism-code-editor/copy-button.css";
-import "prism-code-editor/themes/prism-okaidia.css";
 
 @Component({
   selector: "app-prism-editor",
