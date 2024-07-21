@@ -35,7 +35,6 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/main.css",
               "src/styles.scss",

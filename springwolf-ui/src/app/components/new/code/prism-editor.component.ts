@@ -9,15 +9,19 @@ import {
   SimpleChanges,
   ViewChild,
 } from "@angular/core";
-import { basicEditor } from "prism-code-editor/setups";
+import { createEditor, PrismEditor } from "prism-code-editor";
+import { matchBrackets } from "prism-code-editor/match-brackets";
+import { highlightBracketPairs } from "prism-code-editor/highlight-brackets";
+import { editHistory } from "prism-code-editor/commands";
 import { copyButton } from "prism-code-editor/copy-button";
 import "prism-code-editor/prism/languages/json";
 import "prism-code-editor/prism/languages/http";
 import "prism-code-editor/prism/languages/java";
 import "prism-code-editor/prism/languages/kotlin";
 import "prism-code-editor/prism/languages/markdown";
+import "prism-code-editor/layout.css";
+import "prism-code-editor/copy-button.css";
 import "prism-code-editor/themes/prism-okaidia.css";
-import { PrismEditor } from "prism-code-editor";
 
 @Component({
   selector: "app-prism-editor",
@@ -53,10 +57,9 @@ export class PrismEditorComponent implements AfterViewInit, OnChanges {
   }
 
   initEditor(): PrismEditor {
-    const editor = basicEditor(this.editorContainer.nativeElement, {
+    const editor = createEditor(this.editorContainer.nativeElement, {
       value: this.code(),
       language: this.language(),
-      theme: "prism-okaidia",
       lineNumbers: false,
       wordWrap: true,
       readOnly: this.readonly(),
@@ -65,7 +68,12 @@ export class PrismEditorComponent implements AfterViewInit, OnChanges {
         this.code.set(code);
       },
     });
-    editor.addExtensions(copyButton());
+    editor.addExtensions(
+      copyButton(),
+      matchBrackets(true),
+      highlightBracketPairs(),
+      editHistory()
+    );
 
     this.code.subscribe(() => {
       this.editor?.update();
