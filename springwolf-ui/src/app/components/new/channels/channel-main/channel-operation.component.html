@@ -145,12 +145,7 @@
           Reset
         </button>
       </div>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="!canPublish"
-        (click)="publish()"
-      >
+      <button mat-raised-button [disabled]="!canPublish" (click)="publish()">
         <mat-icon fontIcon="send" />
         Publish
       </button>

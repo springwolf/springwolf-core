@@ -3,24 +3,22 @@
 @use '@angular/material' as mat;
 
 @include mat.core();
-
-$light-theme: mat.define-theme((
+$theme: mat.define-theme((
   color: (
     theme-type: light,
-    primary: mat.$blue-palette,
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette,
   ),
 ));
-$dark-theme: mat.define-theme((
-  color: (
-    theme-type: dark,
-    primary: mat.$blue-palette,
-  )
-));
+// @include mat.color-variants-backwards-compatibility($theme);
 
-html {
-  // Apply the base theme at the root, so it will be inherited by the whole app.
-  @include mat.all-component-themes($light-theme);
+@mixin theme($theme) {
+    mat-toolbar {
+      background: mat.get-theme-color($theme, primary, 40);
+    }
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root {
+  @include mat.all-component-themes($theme);
+  @include theme($theme);
+}
