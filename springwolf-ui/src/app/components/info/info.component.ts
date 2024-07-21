@@ -28,10 +28,10 @@ export class InfoComponent implements OnInit {
       return false;
     }
 
-    var json = JSON.stringify(this.asyncApiData.info.asyncApiJson, null, 2);
-    var bytes = new TextEncoder().encode(json);
-    var blob = new Blob([bytes], { type: "application/json" });
-    var url = window.URL.createObjectURL(blob);
+    const json = JSON.stringify(this.asyncApiData.info.asyncApiJson, null, 2);
+    const bytes = new TextEncoder().encode(json);
+    const blob = new Blob([bytes], { type: "application/json" });
+    const url = window.URL.createObjectURL(blob);
     window.open(url);
 
     return false;

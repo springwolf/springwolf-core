@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, input, Input } from "@angular/core";
+import { Component, input } from "@angular/core";
 import { Schema } from "../models/schema.model";
 import { Operation } from "../models/operation.model";
 

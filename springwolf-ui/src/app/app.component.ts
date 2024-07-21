@@ -2,11 +2,6 @@
 import { Component, OnInit } from "@angular/core";
 import { UiService } from "./service/ui.service";
 
-export interface Section {
-  name: string;
-  updated: Date;
-}
-
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",

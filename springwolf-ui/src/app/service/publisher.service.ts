@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, map, share } from "rxjs";
+import { map, Observable, share } from "rxjs";
 import { EndpointService } from "./endpoint.service";
 
 @Injectable()

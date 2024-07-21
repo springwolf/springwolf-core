@@ -6,7 +6,6 @@ import { Example } from "../../../models/example.model";
 import { JsonComponent } from "../../json/json.component";
 import { render, screen } from "@testing-library/angular";
 import { SchemaRangeComponent } from "../../schemas/range/schema-range.component";
-import { Schema } from "../../../models/schema.model";
 
 describe("SchemaNewComponent", () => {
   beforeEach(async () => {

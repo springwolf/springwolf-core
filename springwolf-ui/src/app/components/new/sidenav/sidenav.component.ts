@@ -23,13 +23,6 @@ interface NavigationEntry {
   children?: NavigationEntry[];
 }
 
-function transformMap<K, V, U>(
-  source: Map<K, V>,
-  func: (key: K, value: V) => U
-): Map<K, U> {
-  return new Map(Array.from(source, (v) => [v[0], func(v[0], v[1])]));
-}
-
 @Component({
   selector: "app-sidenav",
   templateUrl: "./sidenav.component.html",

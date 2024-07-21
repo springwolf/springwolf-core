@@ -6,7 +6,7 @@ import {
 import { importProvidersFrom, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { InMemoryWebApiModule } from "angular-in-memory-web-api";
-import { environment } from "./../environments/environment";
+import { environment } from "../environments/environment";
 import { AppComponent } from "./app.component";
 import { ChannelMainComponent } from "./components/channels/channel-main/channel-main.component";
 import { ChannelOperationComponent } from "./components/new/channels/channel-main/channel-operation.component";
@@ -38,6 +38,7 @@ import { PrismEditorComponent } from "./components/new/code/prism-editor.compone
 import { SchemaNewComponent } from "./components/new/schema/schema.component";
 import { ServersNewComponent } from "./components/new/servers/servers.component";
 import { SchemasNewComponent } from "./components/new/schemas/schemas.component";
+import { NgOptimizedImage } from "@angular/common";
 
 @NgModule({
   imports: [],
@@ -99,7 +100,7 @@ export const ngModule = {
 
 @NgModule({
   declarations: declarations,
-  imports: imports,
+  imports: [imports, NgOptimizedImage],
   providers: providers,
   bootstrap: [AppComponent],
 })

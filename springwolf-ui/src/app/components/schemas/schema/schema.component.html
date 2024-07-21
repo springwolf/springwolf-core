@@ -62,8 +62,8 @@
     >example: {{ value.example.value }}</span
   >
   <mat-select *ngIf="value.enum" placeholder="Enum">
-    <mat-option *ngFor="let enum of value.enum" [value]="enum"
-      >{{ enum }}
+    <mat-option *ngFor="let enumValue of value.enum" [value]="enumValue"
+      >{{ enumValue }}
     </mat-option>
   </mat-select>
 </ng-template>

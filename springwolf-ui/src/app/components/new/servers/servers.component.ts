@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, OnInit, input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
 import { Server } from "../../../models/server.model";
 

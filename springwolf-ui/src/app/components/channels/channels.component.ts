@@ -2,8 +2,8 @@
 import { Component, OnInit } from "@angular/core";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import {
-  ChannelOperation,
   CHANNEL_ANCHOR_PREFIX,
+  ChannelOperation,
 } from "../../models/channel.model";
 import { Location } from "@angular/common";
 

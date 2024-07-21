@@ -179,6 +179,4 @@ export class ChannelOperationComponent implements OnInit {
       duration: 4000,
     });
   }
-
-  protected readonly JSON = JSON;
 }

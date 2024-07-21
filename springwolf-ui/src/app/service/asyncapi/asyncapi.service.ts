@@ -3,7 +3,7 @@ import { AsyncApi } from "../../models/asyncapi.model";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, shareReplay } from "rxjs";
-import { map, filter } from "rxjs/operators";
+import { filter, map } from "rxjs/operators";
 import { EndpointService } from "../endpoint.service";
 import { AsyncApiMapperService } from "./asyncapi-mapper.service";
 import { ServerAsyncApi } from "./models/asyncapi.model";

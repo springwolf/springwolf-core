@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import {
+  AfterViewInit,
   Component,
   ElementRef,
-  ViewChild,
-  AfterViewInit,
   input,
   model,
   OnChanges,
   SimpleChanges,
+  ViewChild,
 } from "@angular/core";
 import { basicEditor } from "prism-code-editor/setups";
 import { copyButton } from "prism-code-editor/copy-button";
@@ -67,7 +67,7 @@ export class PrismEditorComponent implements AfterViewInit, OnChanges {
     });
     editor.addExtensions(copyButton());
 
-    this.code.subscribe((code) => {
+    this.code.subscribe(() => {
       this.editor?.update();
     });
 

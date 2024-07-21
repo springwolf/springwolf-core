@@ -19,7 +19,7 @@ describe("InfoComponent", function () {
     contact: {
       url: "https://test.com",
       email: {
-        name: "springwolf",
+        name: "Springwolf",
         href: "link",
       },
     },
@@ -61,6 +61,6 @@ describe("InfoComponent", function () {
   it("should render the license information", async () => {
     expect(screen.queryByText("Apache License 2.0")).toBeTruthy();
     expect(screen.queryByText("https://test.com")).toBeTruthy();
-    expect(screen.queryByText("springwolf")).toBeTruthy();
+    expect(screen.queryByText("Springwolf")).toBeTruthy();
   });
 });

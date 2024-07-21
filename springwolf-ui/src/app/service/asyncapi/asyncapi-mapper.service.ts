@@ -421,7 +421,7 @@ export class AsyncApiMapperService {
     const properties = {};
     this.addPropertiesToSchema(schema, properties, schemas);
     if (schema.allOf !== undefined) {
-      schema.allOf.forEach((schema, index) => {
+      schema.allOf.forEach((schema) => {
         this.addPropertiesToSchema(schema, properties, schemas);
       });
     }
