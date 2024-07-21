@@ -111,12 +111,12 @@ export class AsyncApiMapperService {
     defaultContentType: string
   ): Channel[] {
     const mappedChannels: { [key: string]: Channel } = {};
-    for (let channelKey in channels) {
-      this.parsingErrorBoundary("channel " + channelKey, () => {
-        const channel = channels[channelKey];
-        mappedChannels[channelKey] = {
+    for (let channelId in channels) {
+      this.parsingErrorBoundary("channel " + channelId, () => {
+        const channel = channels[channelId];
+        mappedChannels[channelId] = {
           name: channel.address,
-          anchorIdentifier: "channel-" + channelKey,
+          anchorIdentifier: "channel-" + channelId,
           operations: [],
           bindings: channel.bindings || {},
         };
@@ -133,7 +133,7 @@ export class AsyncApiMapperService {
 
         const operationMessages: Message[] = this.mapServerAsyncApiMessages(
           channelName,
-          channels[channelName],
+          channels[channelId],
           messages,
           operation.messages,
           defaultContentType
@@ -144,7 +144,7 @@ export class AsyncApiMapperService {
             () =>
               this.mapChannelOperation(
                 channelName,
-                channels[channelName],
+                channels[channelId],
                 channels,
                 operation,
                 message,
@@ -153,7 +153,7 @@ export class AsyncApiMapperService {
           );
 
           if (channelOperation != undefined) {
-            mappedChannels[channelName].operations.push(channelOperation);
+            mappedChannels[channelId].operations.push(channelOperation);
           }
         });
       });
