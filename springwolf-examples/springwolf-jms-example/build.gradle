@@ -31,6 +31,7 @@ dependencies {
     implementation "org.springframework:spring-jms"
     implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
+
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
     runtimeOnly "org.springframework.boot:spring-boot-starter-artemis"
 
