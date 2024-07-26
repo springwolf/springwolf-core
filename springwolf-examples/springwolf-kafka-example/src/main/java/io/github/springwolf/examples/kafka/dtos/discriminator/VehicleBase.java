@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
     @JsonSubTypes.Type(value = VehicleGasolinePayloadDto.class, name = "VehicleGasolinePayloadDto"),
 })
 @Schema(
-        subTypes = {VehicleElectricPayloadDto.class},
+        subTypes = {VehicleElectricPayloadDto.class, VehicleGasolinePayloadDto.class},
         discriminatorProperty = "vehicleType",
         discriminatorMapping = {
             @DiscriminatorMapping(value = "VehicleElectricPayloadDto", schema = VehicleElectricPayloadDto.class),
