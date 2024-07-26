@@ -16,7 +16,8 @@ test("can click download and get original asyncapi.json in new tab", async ({
 }) => {
   const newPagePromise = page.waitForEvent("popup");
 
-  await page.click("text=AsyncAPI JSON");
+  await page.click("text=Download AsyncAPI file");
+  // await page.click("text=AsyncAPI JSON"); // for new ui
   await page.waitForTimeout(500);
 
   const newPage = await newPagePromise;
