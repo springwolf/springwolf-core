@@ -42,19 +42,6 @@
           "bindingVersion": "0.0.1"
         }
       }
-    },
-    "json-type-info-queue": {
-      "address": "json-type-info-queue",
-      "messages": {
-        "io.github.springwolf.examples.jms.dtos.JsonTypeInfoPayloadDto": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.jms.dtos.JsonTypeInfoPayloadDto"
-        }
-      },
-      "bindings": {
-        "jms": {
-          "bindingVersion": "0.0.1"
-        }
-      }
     }
   },
   "components": {
@@ -141,104 +128,6 @@
           "someEnum",
           "someString"
         ]
-      },
-      "io.github.springwolf.examples.jms.dtos.JsonTypeInfoExampleOne": {
-        "type": "object",
-        "description": "Json Type Info Example One model",
-        "examples": [
-          {
-            "foo": "fooValue",
-            "type": "string"
-          }
-        ],
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/io.github.springwolf.examples.jms.dtos.JsonTypeInfoInterface"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "foo": {
-                "type": "string",
-                "description": "Foo field",
-                "examples": [
-                  "fooValue"
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "io.github.springwolf.examples.jms.dtos.JsonTypeInfoExampleTwo": {
-        "type": "object",
-        "description": "Json Type Info Example Two model",
-        "examples": [
-          {
-            "boo": "booValue",
-            "type": "string"
-          }
-        ],
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/io.github.springwolf.examples.jms.dtos.JsonTypeInfoInterface"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "boo": {
-                "type": "string",
-                "description": "Boo field",
-                "examples": [
-                  "booValue"
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "io.github.springwolf.examples.jms.dtos.JsonTypeInfoInterface": {
-        "discriminator": "type",
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
-          }
-        },
-        "examples": [
-          {
-            "foo": "fooValue",
-            "type": "string"
-          }
-        ],
-        "required": [
-          "type"
-        ],
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/io.github.springwolf.examples.jms.dtos.JsonTypeInfoExampleOne"
-          },
-          {
-            "$ref": "#/components/schemas/io.github.springwolf.examples.jms.dtos.JsonTypeInfoExampleTwo"
-          }
-        ]
-      },
-      "io.github.springwolf.examples.jms.dtos.JsonTypeInfoPayloadDto": {
-        "title": "JsonTypeInfoPayloadDto",
-        "type": "object",
-        "properties": {
-          "jsonTypeInfoInterface": {
-            "$ref": "#/components/schemas/io.github.springwolf.examples.jms.dtos.JsonTypeInfoInterface"
-          }
-        },
-        "description": "Json Type Info Payload Dto model",
-        "examples": [
-          {
-            "jsonTypeInfoInterface": {
-              "foo": "fooValue",
-              "type": "string"
-            }
-          }
-        ]
       }
     },
     "messages": {
@@ -273,24 +162,6 @@
         },
         "name": "io.github.springwolf.examples.jms.dtos.ExamplePayloadDto",
         "title": "ExamplePayloadDto",
-        "bindings": {
-          "jms": {
-            "bindingVersion": "0.0.1"
-          }
-        }
-      },
-      "io.github.springwolf.examples.jms.dtos.JsonTypeInfoPayloadDto": {
-        "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
-        },
-        "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-          "schema": {
-            "$ref": "#/components/schemas/io.github.springwolf.examples.jms.dtos.JsonTypeInfoPayloadDto"
-          }
-        },
-        "name": "io.github.springwolf.examples.jms.dtos.JsonTypeInfoPayloadDto",
-        "title": "JsonTypeInfoPayloadDto",
         "bindings": {
           "jms": {
             "bindingVersion": "0.0.1"
@@ -346,20 +217,6 @@
       "messages": [
         {
           "$ref": "#/channels/example-queue/messages/io.github.springwolf.examples.jms.dtos.ExamplePayloadDto"
-        }
-      ]
-    },
-    "json-type-info-queue_receive_receiveJsonTypeInfoPayload": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/json-type-info-queue"
-      },
-      "bindings": {
-        "jms": { }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/json-type-info-queue/messages/io.github.springwolf.examples.jms.dtos.JsonTypeInfoPayloadDto"
         }
       ]
     }

@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.components;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -352,5 +353,51 @@ class DefaultJsonComponentsServiceTest {
                 this.subCriteriaList = subCriteriaList;
             }
         }
+    }
+
+    @Nested
+    class JsonTypeTest {
+        @Test
+        void getJsonTypeDefinitions() throws IOException {
+            componentsService.registerSchema(JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_JSON);
+
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+            String expected = jsonResource("/schemas/json-type-definitions.json");
+
+            System.out.println("Got: " + actualDefinitions);
+            assertEquals(expected, actualDefinitions);
+        }
+
+        @Schema(description = "Json Type Info Payload Dto model")
+        public record JsonTypeInfoPayloadDto(
+                @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED) JsonTypeInfoInterface jsonTypeInfoInterface) {}
+
+        @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, property = "type")
+        @JsonSubTypes({
+            @JsonSubTypes.Type(value = JsonTypeInfoExampleOne.class, name = "exampleOne"),
+            @JsonSubTypes.Type(value = JsonTypeInfoExampleTwo.class, name = "exampleTwo")
+        })
+        @Schema(oneOf = {JsonTypeInfoExampleOne.class, JsonTypeInfoExampleTwo.class})
+        public interface JsonTypeInfoInterface {}
+
+        @JsonTypeName("exampleTwo")
+        @Schema(description = "Json Type Info Example Two model")
+        public record JsonTypeInfoExampleTwo(
+                @Schema(
+                                description = "Boo field",
+                                example = "booValue",
+                                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+                        String boo)
+                implements JsonTypeInfoInterface {}
+
+        @JsonTypeName("exampleOne")
+        @Schema(description = "Json Type Info Example One model")
+        public record JsonTypeInfoExampleOne(
+                @Schema(
+                                description = "Foo field",
+                                example = "fooValue",
+                                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+                        String foo)
+                implements JsonTypeInfoInterface {}
     }
 }

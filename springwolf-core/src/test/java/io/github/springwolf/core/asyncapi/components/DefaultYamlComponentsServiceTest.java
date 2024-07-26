@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -318,5 +321,62 @@ class DefaultYamlComponentsServiceTest {
             @Schema(description = "The payload in the envelop", maxLength = 10)
             String payload;
         }
+    }
+
+    @Nested
+    class JsonTypeTest {
+        @Test
+        void getJsonTypeDefinitions() throws IOException {
+            componentsService.registerSchema(
+                    DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoPayloadDto.class,
+                    CONTENT_TYPE_APPLICATION_YAML);
+
+            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+            String expected = jsonResource("/schemas/yaml/json-type-definitions-yaml.json");
+
+            System.out.println("Got: " + actualDefinitions);
+            assertEquals(expected, actualDefinitions);
+        }
+
+        @Schema(description = "Json Type Info Payload Dto model")
+        public record JsonTypeInfoPayloadDto(
+                @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+                        DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoInterface jsonTypeInfoInterface) {}
+
+        @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, property = "type")
+        @JsonSubTypes({
+            @JsonSubTypes.Type(
+                    value = DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoExampleOne.class,
+                    name = "exampleOne"),
+            @JsonSubTypes.Type(
+                    value = DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoExampleTwo.class,
+                    name = "exampleTwo")
+        })
+        @Schema(
+                oneOf = {
+                    DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoExampleOne.class,
+                    DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoExampleTwo.class
+                })
+        public interface JsonTypeInfoInterface {}
+
+        @JsonTypeName("exampleTwo")
+        @Schema(description = "Json Type Info Example Two model")
+        public record JsonTypeInfoExampleTwo(
+                @Schema(
+                                description = "Boo field",
+                                example = "booValue",
+                                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+                        String boo)
+                implements DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoInterface {}
+
+        @JsonTypeName("exampleOne")
+        @Schema(description = "Json Type Info Example One model")
+        public record JsonTypeInfoExampleOne(
+                @Schema(
+                                description = "Foo field",
+                                example = "fooValue",
+                                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+                        String foo)
+                implements DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoInterface {}
     }
 }
