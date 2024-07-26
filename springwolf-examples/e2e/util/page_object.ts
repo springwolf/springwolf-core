@@ -20,7 +20,7 @@ export function locateChannel(
 ) {
   return locator.getByTestId(
     // return locator.locator( // for new ui
-    "#channel-" + protocol + "-" + channelName + "-" + action + "-" + payload
+    "channel-" + protocol + "-" + channelName + "-" + action + "-" + payload
   );
 }
 
