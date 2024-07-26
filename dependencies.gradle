@@ -73,6 +73,4 @@ ext {
     swaggerVersion = '2.2.22'
 
     testcontainersVersion = '1.20.0'
-
-    springdoc = '2.6.0'
 }

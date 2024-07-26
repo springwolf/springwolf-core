@@ -79,26 +79,13 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             return exampleValue;
         }
 
-        Optional<Schema<?>> resolvedSchema = resolveSchemaFromRef(schema, definitions);
-        if (resolvedSchema.isPresent()) {
-            return buildExample(name, resolvedSchema.get(), definitions, visited);
+        if (visited.contains(schema)) {
+            return exampleValueGenerator.createEmptyObjectExample();
         }
-
-        Optional<T> jsonTypeInfoSchema = buildFromJsonTypeInfo(name, schema, definitions, visited);
-        if (jsonTypeInfoSchema.isPresent()) {
-            return jsonTypeInfoSchema;
-        }
-
-        String type = schema.getType();
-        return switch (type) {
-            case "array" -> buildArrayExample(schema, definitions, visited);
-            case "boolean" -> exampleValueGenerator.createBooleanExample(DEFAULT_BOOLEAN_EXAMPLE, schema);
-            case "integer" -> exampleValueGenerator.createIntegerExample(DEFAULT_INTEGER_EXAMPLE, schema);
-            case "number" -> exampleValueGenerator.createDoubleExample(DEFAULT_NUMBER_EXAMPLE, schema);
-            case "object" -> buildFromObjectSchema(name, schema, definitions, visited);
-            case "string" -> buildFromStringSchema(schema);
-            default -> exampleValueGenerator.createUnknownSchemaStringTypeExample(type);
-        };
+        visited.add(schema);
+        Optional<T> example = buildExampleFromUnvisitedSchema(name, schema, definitions, visited);
+        visited.remove(schema);
+        return example;
     }
 
     private Optional<T> getExampleValueFromSchemaAnnotation(Schema schema) {
@@ -165,6 +152,34 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         return exampleValueGenerator.createEmptyObjectExample();
     }
 
+    /**
+     * The caller must ensure that the schema has not been visited before to avoid infinite recursion
+     */
+    private Optional<T> buildExampleFromUnvisitedSchema(
+            String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+        Optional<Schema<?>> resolvedSchema = resolveSchemaFromRef(schema, definitions);
+        if (resolvedSchema.isPresent()) {
+            return buildExample(name, resolvedSchema.get(), definitions, visited);
+        }
+
+        // future improvement: combine with switch from getType to i.e. instanceOf ComposedSchema, instanceof DateSchema
+        Optional<T> composedSchemaExample = buildFromComposedSchema(name, schema, definitions, visited);
+        if (composedSchemaExample.isPresent()) {
+            return composedSchemaExample;
+        }
+
+        String type = schema.getType();
+        return switch (type) {
+            case "array" -> buildArrayExample(schema, definitions, visited);
+            case "boolean" -> exampleValueGenerator.createBooleanExample(DEFAULT_BOOLEAN_EXAMPLE, schema);
+            case "integer" -> exampleValueGenerator.createIntegerExample(DEFAULT_INTEGER_EXAMPLE, schema);
+            case "number" -> exampleValueGenerator.createDoubleExample(DEFAULT_NUMBER_EXAMPLE, schema);
+            case "object" -> buildFromObjectSchema(name, schema, definitions, visited);
+            case "string" -> buildFromStringSchema(schema);
+            default -> exampleValueGenerator.createUnknownSchemaStringTypeExample(type);
+        };
+    }
+
     private Optional<T> buildArrayExample(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         Schema arrayItemSchema =
                 resolveSchemaFromRef(schema.getItems(), definitions).orElse(schema.getItems());
@@ -212,13 +227,8 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         return null;
     }
 
-    private Optional<T> buildFromJsonTypeInfo(
+    private Optional<T> buildFromComposedSchema(
             String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        if (visited.contains(schema)) {
-            return exampleValueGenerator.createEmptyObjectExample();
-        }
-        visited.add(schema);
-
         final List<Schema> schemasAllOf = schema.getAllOf();
         final List<Schema> schemasAnyOf = schema.getAnyOf();
         final List<Schema> schemasOneOf = schema.getOneOf();
@@ -230,18 +240,11 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             return buildExample(name, schemasOneOf.get(0), definitions, visited);
         }
 
-        visited.remove(schema);
-
         return Optional.empty();
     }
 
     private Optional<T> buildFromObjectSchema(
             String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        if (visited.contains(schema)) {
-            return exampleValueGenerator.createEmptyObjectExample();
-        }
-        visited.add(schema);
-
         final Optional<T> exampleValue;
 
         final Map<String, Schema> properties = schema.getProperties();
@@ -253,8 +256,6 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         } else {
             exampleValue = exampleValueGenerator.createEmptyObjectExample();
         }
-
-        visited.remove(schema);
 
         return exampleValue;
     }
