@@ -141,6 +141,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
+                .channelId(topicName)
+                .address(topicName)
                 .bindings(channelBinding)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
@@ -194,6 +196,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
+                .channelId(topicName)
+                .address(topicName)
                 .bindings(channelBinding)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
@@ -246,6 +250,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         ChannelObject subscribeChannel = ChannelObject.builder()
+                .channelId(outputTopicName)
+                .address(outputTopicName)
                 .bindings(channelBinding)
                 .messages(
                         Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
@@ -272,6 +278,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
+                .channelId(inputTopicName)
+                .address(inputTopicName)
                 .bindings(channelBinding)
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
@@ -326,6 +334,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         ChannelObject subscribeChannel = ChannelObject.builder()
+                .channelId(outputTopicName)
+                .address(outputTopicName)
                 .bindings(channelBinding)
                 .messages(
                         Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
@@ -352,6 +362,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
+                .channelId(inputTopicName)
+                .address(inputTopicName)
                 .bindings(channelBinding)
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
@@ -428,6 +440,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         ChannelObject mergedChannel = ChannelObject.builder()
+                .channelId(topicName)
+                .address(topicName)
                 .bindings(channelBinding)
                 .messages(Map.of(
                         publishMessage.getMessageId(),

@@ -5,6 +5,7 @@ export interface Message {
   name: string;
   title: string;
   description?: string;
+  contentType: string;
   payload: {
     name: string;
     type: string;
@@ -16,6 +17,6 @@ export interface Message {
     title: string;
     anchorUrl: string;
   };
-  bindings?: Map<string, Binding>;
-  rawBindings?: { [protocol: string]: object };
+  bindings: Map<string, Binding>;
+  rawBindings: { [protocol: string]: object };
 }

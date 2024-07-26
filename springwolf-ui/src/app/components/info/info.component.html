@@ -1,33 +1,40 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<h1>{{ info?.title }}</h1>
-<h5>
-  API version {{ info?.version || "not specified" }}
-  -
-  <a *ngIf="info?.asyncApiJson" href="javascript:void(0);" (click)="download()"
-    >Download AsyncAPI file</a
-  >
-</h5>
+<h1>
+  {{ info.title }}
+  {{ info.version ? "v" + info.version : "" }}
+</h1>
 
 <p class="info-chips">
+  <mat-chip>
+    <mat-icon matChipAvatar fontIcon="download" />
+    <a
+      *ngIf="info?.asyncApiJson"
+      href="javascript:void(0);"
+      (click)="download()"
+    >
+      AsyncAPI JSON
+    </a>
+  </mat-chip>
   <mat-chip *ngIf="info?.license?.name">
+    <mat-icon matChipAvatar fontIcon="attribution" />
     <a
       *ngIf="info?.license?.url; else licenseElseBlock"
       [href]="info.license.url"
       target="_blank"
     >
-      License: {{ info.license.name }}
+      {{ info.license.name }}
     </a>
-    <ng-template #licenseElseBlock
-      >License: {{ info.license.name }}</ng-template
-    >
+    <ng-template #licenseElseBlock>{{ info.license.name }}</ng-template>
   </mat-chip>
 
   <mat-chip *ngIf="info?.contact?.url">
+    <mat-icon matChipAvatar fontIcon="link" />
     <a [href]="info.contact.url" target="_blank">
       {{ info.contact.url }}
     </a>
   </mat-chip>
-  <mat-chip *ngIf="info?.contact?.email">
+  <mat-chip *ngIf="info.contact.email">
+    <mat-icon matChipAvatar fontIcon="email" />
     <a [href]="info.contact.email.href" target="_blank">
       {{ info.contact.email.name }}
     </a>

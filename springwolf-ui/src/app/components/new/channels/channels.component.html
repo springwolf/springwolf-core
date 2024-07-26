@@ -1,0 +1,49 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<h2>Channels</h2>
+@for (channel of channels; track channel) {
+<article appNavigationTarget [id]="channel.anchorIdentifier">
+  <h3>{{ channel.name }}</h3>
+  @for (channelOperation of channel.operations; track channelOperation) {
+  <mat-card
+    appearance="outlined"
+    appNavigationTarget
+    [id]="channelOperation.anchorIdentifier"
+  >
+    <mat-card-header>
+      <mat-card-title [attr.data-testid]="channel.anchorIdentifier">
+        {{ channelOperation.operation.message.title }}
+      </mat-card-title>
+      <span class="flex gap-16 padding-horizontal-1em">
+        <span
+          class="badge protocol-badge"
+          *ngIf="channelOperation.operation.protocol"
+        >
+          {{ channelOperation.operation.protocol }}
+        </span>
+        <span
+          class="badge"
+          [ngClass]="{
+            'send-badge': channelOperation.operation.operationType === 'send',
+            'receive-badge':
+              channelOperation.operation.operationType === 'receive'
+          }"
+        >
+          {{ channelOperation.operation.operationType }}
+        </span>
+      </span>
+    </mat-card-header>
+    <mat-card-content>
+      <app-channel-operation
+        [channelName]="channel.name"
+        [operation]="channelOperation.operation"
+      ></app-channel-operation>
+    </mat-card-content>
+  </mat-card>
+
+  @if (!$last) {
+  <br />
+  } } @if (!$last) {
+  <br />
+  }
+</article>
+}

@@ -9,7 +9,7 @@ const asyncApiMapperService = new AsyncApiMapperService({
 });
 export const mockedExampleSchemaMapped = asyncApiMapperService.toAsyncApi(
   exampleSchemas[0].value
-);
+)!!;
 export const mockedAsyncApiService: { getAsyncApi: jest.Mock } = {
   getAsyncApi: jest.fn().mockReturnValue(of(mockedExampleSchemaMapped)),
 };

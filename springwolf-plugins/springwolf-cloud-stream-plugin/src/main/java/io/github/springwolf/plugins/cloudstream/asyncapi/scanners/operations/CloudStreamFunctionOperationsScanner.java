@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.bindings.EmptyMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyOperationBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -67,10 +68,11 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     }
 
     private Map.Entry<String, Operation> toOperationEntry(FunctionalChannelBeanData beanData) {
-        String channelId = cloudStreamBindingsProperties
+        String channelName = cloudStreamBindingsProperties
                 .getBindings()
                 .get(beanData.cloudStreamBinding())
                 .getDestination();
+        String channelId = ReferenceUtil.toValidId(channelName);
 
         String operationId = buildOperationId(beanData, channelId);
         Operation operation = buildOperation(beanData, channelId);

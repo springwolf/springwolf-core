@@ -1,0 +1,50 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+a {
+  color: #373737;
+  text-decoration: none;
+}
+
+.sidenav ul {
+  list-style-type: none;
+  padding-inline-start: 0.5em;
+}
+
+.sidenav .entry.selected > span > a {
+  font-weight: bold;
+}
+.sidenav .entry.collapsed {
+  display: none;
+}
+
+.sidenav .entry > span {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidenav .badge {
+  text-transform: uppercase;
+  font-size: smaller;
+  word-break: break-all;
+
+  border-radius: 0.3em;
+  padding: 0 0.1em;
+}
+.sidenav .badge.send-badge {
+  color: var(--springwolf-badge-color-send);
+  background-color: var(--springwolf-badge-color-background-send);
+}
+
+.sidenav .badge.receive-badge {
+  color: var(--springwolf-badge-color-receive);
+  background-color: var(--springwolf-badge-color-background-receive);
+}
+.sidenav .badge.amqp-badge,
+.sidenav .badge.cloudstream-badge,
+.sidenav .badge.kafka-badge,
+.sidenav .badge.jms-badge,
+.sidenav .badge.sqs-badge,
+.sidenav .badge.sns-badge,
+.sidenav .badge.stomp-badge {
+  color: var(--springwolf-badge-color-protocol);
+  background-color: var(--springwolf-badge-color-background-protocol);
+}

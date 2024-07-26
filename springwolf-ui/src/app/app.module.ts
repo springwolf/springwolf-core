@@ -1,13 +1,17 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
+import { importProvidersFrom, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
-import { environment } from "./../environments/environment";
+import { InMemoryWebApiModule } from "angular-in-memory-web-api";
+import { environment } from "../environments/environment";
 import { AppComponent } from "./app.component";
 import { ChannelMainComponent } from "./components/channels/channel-main/channel-main.component";
+import { ChannelOperationComponent } from "./components/new/channels/channel-main/channel-operation.component";
 import { ChannelsComponent } from "./components/channels/channels.component";
+import { ChannelsNewComponent } from "./components/new/channels/channels.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { InfoComponent } from "./components/info/info.component";
 import { MaterialModule } from "./material.module";
@@ -26,6 +30,21 @@ import { FormsModule } from "@angular/forms";
 import { JsonComponent } from "./components/json/json.component";
 import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
 import { MarkdownModule, provideMarkdown } from "ngx-markdown";
+import { UiService } from "./service/ui.service";
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+import { SidenavComponent } from "./components/new/sidenav/sidenav.component";
+import { NavigationTargetDirective } from "./components/new/sidenav/navigation.directive";
+import { PrismEditorComponent } from "./components/new/code/prism-editor.component";
+import { SchemaNewComponent } from "./components/new/schema/schema.component";
+import { ServersNewComponent } from "./components/new/servers/servers.component";
+import { SchemasNewComponent } from "./components/new/schemas/schemas.component";
+
+@NgModule({
+  imports: [],
+  declarations: [NavigationTargetDirective],
+  exports: [NavigationTargetDirective],
+})
+export class DirectivesModule {}
 
 export const declarations = [
   AppComponent,
@@ -38,25 +57,38 @@ export const declarations = [
   SchemaComponent,
   SchemaRangeComponent,
   JsonComponent,
+  PrismEditorComponent,
+  SidenavComponent,
+  ServersNewComponent,
+  ChannelsNewComponent,
+  ChannelOperationComponent,
+  SchemasNewComponent,
+  SchemaNewComponent,
 ];
 export const imports = [
+  DirectivesModule,
   BrowserModule,
-  BrowserAnimationsModule,
   MaterialModule,
-
-  HttpClientModule,
   FormsModule,
   MarkdownModule.forRoot(),
-  environment.production
-    ? []
-    : HttpClientInMemoryWebApiModule.forRoot(MockServer, { delay: 100 }),
 ];
 export const providers = [
+  // provideExperimentalZonelessChangeDetection(),
+  provideAnimationsAsync(),
+  provideAnimationsAsync(),
+  provideHttpClient(withInterceptorsFromDi()),
+  environment.production
+    ? []
+    : importProvidersFrom(
+        InMemoryWebApiModule.forRoot(MockServer, { delay: 100 })
+      ),
+  provideMarkdown(),
+
   AsyncApiService,
   AsyncApiMapperService,
   { provide: INotificationService, useClass: NotificationService },
   PublisherService,
-  provideMarkdown(),
+  UiService,
 ];
 
 export const ngModule = {
@@ -67,7 +99,7 @@ export const ngModule = {
 
 @NgModule({
   declarations: declarations,
-  imports: imports,
+  imports: [imports],
   providers: providers,
   bootstrap: [AppComponent],
 })

@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { AsyncApi } from "../../models/asyncapi.model";
-import { Server } from "../../models/server.model";
+import { Server, SERVER_ANCHOR_PREFIX } from "../../models/server.model";
 import {
+  Channel,
   CHANNEL_ANCHOR_PREFIX,
   ChannelOperation,
 } from "../../models/channel.model";
@@ -18,6 +19,7 @@ import { ServerBinding, ServerBindings } from "./models/bindings.model";
 import {
   ServerOperation,
   ServerOperationMessage,
+  ServerOperationReply,
   ServerOperations,
 } from "./models/operations.model";
 import { ServerServers } from "./models/servers.model";
@@ -26,7 +28,11 @@ import { INotificationService } from "../notification.service";
 import { ServerComponents } from "./models/components.model";
 import { Binding, Bindings } from "../../models/bindings.model";
 import { Message } from "../../models/message.model";
-import { Operation } from "../../models/operation.model";
+import {
+  Operation,
+  OperationReply,
+  OperationServer,
+} from "../../models/operation.model";
 import { catchException } from "../../util/error-boundary";
 
 @Injectable()
@@ -35,23 +41,27 @@ export class AsyncApiMapperService {
 
   constructor(private notificationService: INotificationService) {}
 
-  public toAsyncApi(item: ServerAsyncApi): AsyncApi {
+  public toAsyncApi(item: ServerAsyncApi): AsyncApi | undefined {
     try {
+      const channels = this.mapChannels(
+        item.channels,
+        item.operations,
+        item.components.messages,
+        item.servers,
+        item.defaultContentType
+      );
       return {
         info: this.mapInfo(item),
         servers: this.mapServers(item.servers),
-        channelOperations: this.mapChannelOperations(
-          item.channels,
-          item.operations,
-          item.components.messages
-        ),
+        channels: channels,
+        channelOperations: channels.flatMap((c) => c.operations),
         components: {
           schemas: this.mapSchemas(item.components.schemas),
         },
       };
-    } catch (e) {
+    } catch (e: any) {
       this.notificationService.showError(
-        "Error parsing AsyncAPI: " + e.message
+        "Error parsing AsyncAPI: " + e?.message
       );
       return undefined;
     }
@@ -64,10 +74,12 @@ export class AsyncApiMapperService {
       description: item.info.description,
       contact: {
         url: item.info.contact?.url,
-        email: item.info.contact?.email && {
-          name: item.info.contact?.email,
-          href: "mailto:" + item.info.contact?.email,
-        },
+        email:
+          (item.info.contact?.email && {
+            name: item.info.contact.email,
+            href: "mailto:" + item.info.contact.email,
+          }) ||
+          undefined,
       },
       license: {
         name: item.info.license?.name,
@@ -79,28 +91,52 @@ export class AsyncApiMapperService {
 
   private mapServers(servers: ServerServers): Map<string, Server> {
     const s = new Map<string, Server>();
-    Object.entries(servers).forEach(([k, v]) => s.set(k, v));
+    Object.entries(servers).forEach(([k, v]) => {
+      const server: Server = {
+        host: v.host,
+        protocol: v.protocol,
+        anchorIdentifier: SERVER_ANCHOR_PREFIX + k,
+        anchorUrl: AsyncApiMapperService.BASE_URL + SERVER_ANCHOR_PREFIX + k,
+      };
+      s.set(k, server);
+    });
     return s;
   }
 
-  private mapChannelOperations(
+  private mapChannels(
     channels: ServerChannels,
     operations: ServerOperations,
-    messages: ServerComponents["messages"]
-  ): ChannelOperation[] {
-    const s = new Array<ChannelOperation>();
+    messages: ServerComponents["messages"],
+    servers: ServerServers,
+    defaultContentType: string
+  ): Channel[] {
+    const mappedChannels: { [key: string]: Channel } = {};
+    for (let channelId in channels) {
+      this.parsingErrorBoundary("channel " + channelId, () => {
+        const channel = channels[channelId];
+        mappedChannels[channelId] = {
+          name: channel.address,
+          anchorIdentifier: "channel-" + channelId,
+          operations: [],
+          bindings: channel.bindings || {},
+        };
+      });
+    }
+
     for (let operationsKey in operations) {
       this.parsingErrorBoundary("operation " + operationsKey, () => {
         const operation = operations[operationsKey];
-        const channelName = this.resolveRef(operation.channel.$ref);
+        const channelId = this.resolveRef(operation.channel.$ref);
+        const channelName = channels[channelId].address;
 
         this.verifyBindings(operation.bindings, "operation " + operationsKey);
 
         const operationMessages: Message[] = this.mapServerAsyncApiMessages(
           channelName,
-          channels[channelName],
+          channels[channelId],
           messages,
-          operation.messages
+          operation.messages,
+          defaultContentType
         );
         operationMessages.forEach((message) => {
           const channelOperation = this.parsingErrorBoundary(
@@ -108,36 +144,83 @@ export class AsyncApiMapperService {
             () =>
               this.mapChannelOperation(
                 channelName,
-                channels[channelName],
+                channels[channelId],
+                channels,
+                operation,
                 message,
-                operation.action,
-                operation.bindings,
-                operation.description
+                servers
               )
           );
 
           if (channelOperation != undefined) {
-            s.push(channelOperation);
+            mappedChannels[channelId].operations.push(channelOperation);
           }
         });
       });
     }
-    return s;
-  }
 
+    Object.values(mappedChannels).forEach((channel) => {
+      channel.operations = channel.operations.sort((a, b) => {
+        if (a.operation.protocol === b.operation.protocol) {
+          if (a.operation.operationType === b.operation.operationType) {
+            if (a.name === b.name) {
+              return a.operation.message.name.localeCompare(
+                b.operation.message.name
+              );
+            } else {
+              return a.name.localeCompare(b.name);
+            }
+          } else {
+            return a.operation.operationType.localeCompare(
+              b.operation.operationType
+            );
+          }
+        } else if (
+          a.operation.protocol != null &&
+          b.operation.protocol != null
+        ) {
+          return a.operation.protocol.localeCompare(b.operation.protocol);
+        } else {
+          return 0;
+        }
+      });
+    });
+
+    return Object.values(mappedChannels).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+  }
   private mapChannelOperation(
     channelName: string,
     channel: ServerChannel,
+    channels: ServerChannels,
+    operation: ServerOperation,
     message: Message,
-    operationType: ServerOperation["action"],
-    operationBinding: ServerBindings,
-    description?: string
+    servers: ServerServers
   ): ChannelOperation {
-    const operation = this.mapOperation(
-      operationType,
+    const mappedServers =
+      channel?.servers?.map((server) => this.resolveRef(server.$ref)) ||
+      Object.keys(servers);
+    const mappedOperationServers: OperationServer[] = mappedServers.map(
+      (serverKey) => {
+        return {
+          name: serverKey,
+          anchorIdentifier: SERVER_ANCHOR_PREFIX + serverKey,
+          anchorUrl:
+            AsyncApiMapperService.BASE_URL + SERVER_ANCHOR_PREFIX + serverKey,
+        };
+      }
+    );
+
+    const mappedOperation = this.mapOperation(
+      channelName,
+      channels,
+      operation.action,
+      mappedOperationServers,
       message,
-      operationBinding,
-      description
+      operation.bindings,
+      operation.description,
+      operation.reply
     );
 
     return {
@@ -145,14 +228,14 @@ export class AsyncApiMapperService {
       anchorIdentifier:
         CHANNEL_ANCHOR_PREFIX +
         [
-          operation.protocol,
+          mappedOperation.protocol,
           channelName,
-          operation.operationType,
-          operation.message.title,
+          mappedOperation.operationType,
+          mappedOperation.message.title,
         ].join("-"),
       description: channel.description,
-      operation,
-      bindings: channel.bindings,
+      operation: mappedOperation,
+      bindings: channel.bindings || {},
     };
   }
 
@@ -160,7 +243,8 @@ export class AsyncApiMapperService {
     channelName: string,
     channel: ServerChannel,
     messages: ServerComponents["messages"],
-    operationMessages: ServerOperationMessage[]
+    operationMessages: ServerOperationMessage[],
+    defaultContentType: string
   ): Message[] {
     return operationMessages
       .map((operationMessage) => {
@@ -174,10 +258,11 @@ export class AsyncApiMapperService {
 
             this.verifyBindings(message.bindings, "message " + message.name);
 
-            return {
+            const mappedMessage: Message = {
               name: message.name,
               title: message.title,
               description: message.description,
+              contentType: message.contentType || defaultContentType,
               payload: {
                 name: message.payload.schema.$ref,
                 title: this.resolveRef(message.payload.schema.$ref),
@@ -188,22 +273,25 @@ export class AsyncApiMapperService {
               },
               headers: {
                 name: message.headers.$ref,
-                title: message.headers.$ref?.split("/")?.pop(),
+                title:
+                  message.headers.$ref?.split("/")?.pop() ||
+                  "undefined-header-title",
                 anchorUrl:
                   AsyncApiMapperService.BASE_URL +
                   this.resolveRef(message.headers.$ref),
               },
               bindings: this.mapServerAsyncApiMessageBindings(message.bindings),
-              rawBindings: message.bindings,
+              rawBindings: message.bindings || {},
             };
+            return mappedMessage;
           }
         );
       })
-      .filter((el) => el != undefined);
+      .filter((el) => el !== undefined);
   }
 
   private mapServerAsyncApiMessageBindings(
-    serverMessageBindings?: ServerBindings
+    serverMessageBindings: ServerBindings | undefined
   ): Map<string, Binding> {
     const messageBindings = new Map<string, Binding>();
     if (serverMessageBindings !== undefined) {
@@ -235,23 +323,57 @@ export class AsyncApiMapperService {
   }
 
   private mapOperation(
+    channelName: string,
+    channels: ServerChannels,
     operationType: ServerOperation["action"],
+    servers: OperationServer[],
     message: Message,
-    bindings?: Bindings,
-    description?: string
+    bindings: Bindings | undefined,
+    description: string | undefined,
+    reply: ServerOperationReply | undefined
   ): Operation {
     return {
-      protocol: this.getProtocol(bindings),
+      protocol: this.getProtocol(bindings) || "unsupported-protocol",
+      bindings: bindings || {},
+      servers: servers,
       operationType: operationType == "send" ? "send" : "receive",
+      channelName: channelName,
       description,
       message,
-      bindings,
+      reply: this.mapOperationReply(reply, channels),
     };
   }
 
-  private getProtocol(bindings?: {
-    [protocol: string]: object;
-  }): string | undefined {
+  private mapOperationReply(
+    reply: ServerOperationReply | undefined,
+    channels: ServerChannels
+  ): OperationReply | undefined {
+    if (!reply) {
+      return undefined;
+    }
+
+    const refChannelId = this.resolveRef(reply.channel.$ref);
+    const refChannelName = channels[refChannelId].address;
+    return {
+      channelAnchorUrl:
+        AsyncApiMapperService.BASE_URL +
+        CHANNEL_ANCHOR_PREFIX +
+        this.resolveRef(reply.channel.$ref),
+      channelName: refChannelName,
+      messageAnchorUrl:
+        AsyncApiMapperService.BASE_URL +
+        this.resolveRef(reply.messages[0].$ref),
+      messageName: this.resolveRef(reply.messages[0].$ref),
+    };
+  }
+
+  private getProtocol(
+    bindings:
+      | {
+          [protocol: string]: object;
+        }
+      | undefined
+  ): string | undefined {
     if (bindings !== undefined) {
       return Object.keys(bindings)[0];
     }
@@ -272,7 +394,11 @@ export class AsyncApiMapperService {
         mappedSchemas.set(schemaName, mappedSchema);
       }
     });
-    return mappedSchemas;
+    return new Map(
+      [...mappedSchemas.entries()].sort((a, b) =>
+        a[1].title.localeCompare(b[1].title)
+      )
+    );
   }
 
   private mapSchema(
@@ -295,11 +421,11 @@ export class AsyncApiMapperService {
     const properties = {};
     this.addPropertiesToSchema(schema, properties, schemas);
     if (schema.allOf !== undefined) {
-      schema.allOf.forEach((schema, index) => {
+      schema.allOf.forEach((schema) => {
         this.addPropertiesToSchema(schema, properties, schemas);
       });
     }
-    if (schema.anyOf !== undefined && schema.oneOf.length > 0) {
+    if (schema.anyOf !== undefined && schema.anyOf.length > 0) {
       this.addPropertiesToSchema(schema.anyOf[0], properties, schemas);
     }
     if (schema.oneOf !== undefined && schema.oneOf.length > 0) {
@@ -317,9 +443,9 @@ export class AsyncApiMapperService {
 
     return {
       name: schemaName,
-      title: schemaName.split(".")?.pop(),
+      title: schemaName.split(".")?.pop() || "undefined-title",
       description: schema.description,
-      anchorIdentifier: "#" + schemaName,
+      anchorIdentifier: schemaName,
 
       type: schema.type,
       required: schema.required,
@@ -337,22 +463,20 @@ export class AsyncApiMapperService {
       maximum: schema.exclusiveMaximum
         ? schema.exclusiveMinimum
         : schema.maximum,
-      exclusiveMinimum:
-        schema.minimum == schema.exclusiveMinimum ? true : false,
-      exclusiveMaximum:
-        schema.maximum == schema.exclusiveMaximum ? true : false,
+      exclusiveMinimum: schema.minimum == schema.exclusiveMinimum,
+      exclusiveMaximum: schema.maximum == schema.exclusiveMaximum,
     };
   }
 
   private addPropertiesToSchema(
     schema: ServerAsyncApiSchemaOrRef,
-    properties: {},
+    properties: { [key: string]: any },
     schemas: ServerComponents["schemas"]
   ) {
     let actualSchema = this.resolveSchema(schema, schemas);
 
-    if ("properties" in actualSchema) {
-      Object.entries(actualSchema.properties).forEach(([key, value], index) => {
+    if ("properties" in actualSchema && actualSchema.properties !== undefined) {
+      Object.entries(actualSchema.properties).forEach(([key, value]) => {
         properties[key] = this.mapSchema(key, value, schemas);
       });
     }
@@ -370,7 +494,7 @@ export class AsyncApiMapperService {
       if (refSchema !== undefined) {
         actualSchema = refSchema;
       } else {
-        return undefined;
+        throw new Error("Schema " + refName + " not found");
       }
     }
     return actualSchema;
@@ -379,18 +503,18 @@ export class AsyncApiMapperService {
   private mapSchemaRef(schemaName: string, schema: { $ref: string }): Schema {
     return {
       name: schemaName,
-      title: schemaName.split(".")?.pop(),
+      title: schemaName.split(".").pop()!!,
 
       refName: schema.$ref,
       refTitle: this.resolveRef(schema.$ref),
 
-      anchorIdentifier: "#" + schemaName,
+      anchorIdentifier: schemaName,
       anchorUrl: AsyncApiMapperService.BASE_URL + this.resolveRef(schema.$ref),
     };
   }
 
-  private resolveRef(ref: string) {
-    return ref?.split("/")?.pop();
+  private resolveRef(ref: string): string {
+    return ref.split("/").pop()!!;
   }
 
   private verifyBindings(

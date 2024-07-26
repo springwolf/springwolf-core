@@ -1,8 +1,27 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <app-header></app-header>
-<main class="flex-column">
+<main class="flex-column" *ngIf="!isNewUi">
   <app-info></app-info>
   <app-servers></app-servers>
   <app-channels></app-channels>
   <app-schemas></app-schemas>
+</main>
+<main *ngIf="isNewUi" class="new-ui mat-typography">
+  <app-sidenav>
+    <section appNavigationTarget id="info">
+      <app-info></app-info>
+    </section>
+
+    <section appNavigationTarget id="servers">
+      <app-servers-new></app-servers-new>
+    </section>
+
+    <section appNavigationTarget id="channels">
+      <app-channels-new> </app-channels-new>
+    </section>
+
+    <section appNavigationTarget id="schemas">
+      <app-schemas-new></app-schemas-new>
+    </section>
+  </app-sidenav>
 </main>

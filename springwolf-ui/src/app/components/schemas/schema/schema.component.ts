@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, Input } from "@angular/core";
+import { Component, input } from "@angular/core";
 import { Schema } from "../../../models/schema.model";
 
 @Component({
@@ -8,5 +8,5 @@ import { Schema } from "../../../models/schema.model";
   styleUrls: ["./schema.component.css"],
 })
 export class SchemaComponent {
-  @Input() schema: Schema;
+  schema = input.required<Schema>();
 }

@@ -3,8 +3,8 @@ import { Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 
 export abstract class INotificationService {
-  abstract showError(message: string);
-  abstract showWarning(message: string);
+  abstract showError(message: string): void;
+  abstract showWarning(message: string): void;
 }
 
 @Injectable()

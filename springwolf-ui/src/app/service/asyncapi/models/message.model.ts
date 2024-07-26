@@ -5,6 +5,7 @@ export interface ServerAsyncApiMessage {
   name: string;
   title: string;
   description?: string;
+  contentType?: string;
   payload: {
     schemaFormat: string;
     schema: {

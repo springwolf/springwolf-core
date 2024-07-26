@@ -1,0 +1,13 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+.required {
+  color: red;
+}
+
+.description {
+  overflow: auto;
+}
+
+.example {
+  display: block;
+  word-break: break-all;
+}

@@ -6,11 +6,15 @@ export interface ServerChannels {
 }
 
 export interface ServerChannel {
+  address: string;
   description?: string;
   messages: {
     [key: string]: {
       $ref: string;
     };
   };
+  servers?: {
+    $ref: string;
+  }[];
   bindings?: ServerBindings;
 }

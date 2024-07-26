@@ -1,129 +1,110 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { SchemaRangeComponent } from "./schema-range.component";
+import { render, screen } from "@testing-library/angular";
+import { Schema } from "../../../models/schema.model";
 
 describe("SchemaRangeComponent", function () {
-  let component: SchemaRangeComponent;
-  let fixture: ComponentFixture<SchemaRangeComponent>;
+  const renderComponent = async (schema: Schema) => {
+    await render(SchemaRangeComponent, {
+      componentInputs: {
+        schema: schema,
+      },
+    });
+  };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SchemaRangeComponent],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(SchemaRangeComponent as any);
-    component = fixture.debugElement.componentInstance;
-  });
-
-  it("should create the component", () => {
-    expect(component).toBeTruthy();
-  });
-
-  it("should have `( 0.1 .. 10 )` as value", async () => {
-    component.schema = {
+  it("should create the component", async () => {
+    await renderComponent({
       title: "test",
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: true,
       exclusiveMaximum: true,
-    };
+    });
 
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector("span").textContent).toContain(
-      "( 0.1 .. 10 )"
-    );
+    expect(screen).toBeTruthy();
+  });
+
+  it("should have `( 0.1 .. 10 )` as value", async () => {
+    await renderComponent({
+      title: "test",
+      minimum: 0.1,
+      maximum: 10,
+      exclusiveMinimum: true,
+      exclusiveMaximum: true,
+    });
+
+    expect(screen.getByText("( 0.1 .. 10 )")).toBeTruthy();
   });
 
   it("should have `[ 0.1 .. 10 )` as value", async () => {
-    component.schema = {
+    await renderComponent({
       title: "test",
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: false,
       exclusiveMaximum: true,
-    };
+    });
 
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector("span").textContent).toContain(
-      "[ 0.1 .. 10 )"
-    );
+    expect(screen.getByText("[ 0.1 .. 10 )")).toBeTruthy();
   });
 
   it("should have `( 0.1 .. 10 ]` as value", async () => {
-    component.schema = {
+    await renderComponent({
       title: "test",
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: true,
       exclusiveMaximum: false,
-    };
+    });
 
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector("span").textContent).toContain(
-      "( 0.1 .. 10 ]"
-    );
+    expect(screen.getByText("( 0.1 .. 10 ]")).toBeTruthy();
   });
 
   it("should have `[ 0.1 .. 10 ]` as value", async () => {
-    component.schema = {
+    await renderComponent({
       title: "test",
       minimum: 0.1,
       maximum: 10,
-    };
+    });
 
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector("span").textContent).toContain(
-      "[ 0.1 .. 10 ]"
-    );
+    expect(screen.getByText("[ 0.1 .. 10 ]")).toBeTruthy();
   });
 
   it("should have `> 0.1` as value", async () => {
-    component.schema = {
+    await renderComponent({
       title: "test",
       minimum: 0.1,
       exclusiveMinimum: true,
-    };
+    });
 
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector("span").textContent).toContain("> 0.1");
+    expect(screen.getByText("> 0.1")).toBeTruthy();
   });
 
   it("should have `< 10` as value", async () => {
-    component.schema = {
+    await renderComponent({
       title: "test",
       maximum: 10,
       exclusiveMaximum: true,
-    };
+    });
 
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector("span").textContent).toContain("< 10");
+    expect(screen.getByText("< 10")).toBeTruthy();
   });
 
   it("should have `>= 0.1` as value", async () => {
-    component.schema = {
+    await renderComponent({
       title: "test",
       minimum: 0.1,
-    };
+    });
 
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector("span").textContent).toContain(">= 0.1");
+    expect(screen.getByText(">= 0.1")).toBeTruthy();
   });
 
   it("should have `<= 10` as value", async () => {
-    component.schema = {
+    await renderComponent({
       title: "test",
       maximum: 10,
-    };
+    });
 
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector("span").textContent).toContain("<= 10");
+    expect(screen.getByText("<= 10")).toBeTruthy();
   });
 });

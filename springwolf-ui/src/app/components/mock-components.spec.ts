@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, Input } from "@angular/core";
+import { Component, input } from "@angular/core";
 import { Schema } from "../models/schema.model";
 import { Operation } from "../models/operation.model";
 
@@ -14,16 +14,32 @@ describe("MockTest", () => {
 
 @Component({ selector: "app-json", template: "" })
 export class MockAppJson {
-  @Input() data: any;
+  data = input.required<any>();
 }
 
 @Component({ selector: "app-schema", template: "" })
 export class MockAppSchema {
-  @Input() schema: Schema;
+  schema = input.required<Schema>();
 }
 
 @Component({ selector: "app-channel-main", template: "" })
 export class MockChannelMainComponent {
-  @Input() channelName: string;
-  @Input() operation: Operation;
+  channelName = input.required<string>();
+  operation = input.required<Operation>();
+}
+
+@Component({ selector: "app-channel-operation", template: "" })
+export class MockChannelOperationComponent {
+  channelName = input.required<string>();
+  operation = input.required<Operation>();
+}
+
+@Component({ selector: "app-prism-editor", template: "" })
+export class MockPrismEditorComponent {
+  code = input<string>("");
+}
+
+@Component({ selector: "app-schema-new", template: "" })
+export class MockAppSchemaNewComponent {
+  schema = input.required<Schema>();
 }

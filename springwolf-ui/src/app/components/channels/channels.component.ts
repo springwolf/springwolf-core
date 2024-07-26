@@ -2,8 +2,8 @@
 import { Component, OnInit } from "@angular/core";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import {
-  ChannelOperation,
   CHANNEL_ANCHOR_PREFIX,
+  ChannelOperation,
 } from "../../models/channel.model";
 import { Location } from "@angular/common";
 
@@ -13,8 +13,8 @@ import { Location } from "@angular/common";
   styleUrls: ["./channels.component.css"],
 })
 export class ChannelsComponent implements OnInit {
-  channels: ChannelOperation[];
-  selectedChannel: string;
+  channels: ChannelOperation[] = [];
+  selectedChannel: string = "";
 
   constructor(
     private asyncApiService: AsyncApiService,

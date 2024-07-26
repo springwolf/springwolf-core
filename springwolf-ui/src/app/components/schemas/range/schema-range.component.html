@@ -2,20 +2,20 @@
 <div>
   <span
     class="range"
-    *ngIf="schema.minimum !== undefined && schema.maximum === undefined"
+    *ngIf="schema().minimum != undefined && schema().maximum == undefined"
   >
-    {{ schema.exclusiveMinimum ? ">" : ">=" }} {{ schema.minimum }}
+    {{ schema().exclusiveMinimum ? ">" : ">=" }} {{ schema().minimum }}
   </span>
   <span
     class="range"
-    *ngIf="schema.minimum === undefined && schema.maximum !== undefined"
+    *ngIf="schema().minimum == undefined && schema().maximum != undefined"
   >
-    {{ schema.exclusiveMaximum ? "<" : "<=" }} {{ schema.maximum }}
+    {{ schema().exclusiveMaximum ? "<" : "<=" }} {{ schema().maximum }}
   </span>
   <span
     class="range"
-    *ngIf="schema.minimum !== undefined && schema.maximum !== undefined"
-    >{{ schema.exclusiveMinimum ? "(" : "[" }} {{ schema.minimum }} ..
-    {{ schema.maximum }} {{ schema.exclusiveMaximum ? ")" : "]" }}</span
+    *ngIf="schema().minimum != undefined && schema().maximum != undefined"
+    >{{ schema().exclusiveMinimum ? "(" : "[" }} {{ schema().minimum }} ..
+    {{ schema().maximum }} {{ schema().exclusiveMaximum ? ")" : "]" }}</span
   >
 </div>

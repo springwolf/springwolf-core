@@ -13,7 +13,6 @@ export class MockServer implements InMemoryDbService {
 
   get(reqInfo: RequestInfo) {
     if (reqInfo.req.url.endsWith("/docs")) {
-      console.log("Returning mock data");
       const body = this.selectMockData();
       return reqInfo.utils.createResponse$(() => {
         return {
@@ -53,6 +52,6 @@ export class MockServer implements InMemoryDbService {
     }
 
     // Kafka is default
-    return exampleSchemas.find((el) => el.plugin === "kafka").value;
+    return exampleSchemas.find((el) => el.plugin === "kafka")!!.value;
   }
 }

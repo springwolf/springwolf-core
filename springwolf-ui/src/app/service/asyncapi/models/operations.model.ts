@@ -14,9 +14,18 @@ export interface ServerOperation {
   messages: {
     $ref: string;
   }[];
+  reply?: ServerOperationReply;
   bindings?: ServerBindings;
 }
 
 export interface ServerOperationMessage {
   $ref: string;
+}
+export interface ServerOperationReply {
+  channel: {
+    $ref: string;
+  };
+  messages: {
+    $ref: string;
+  }[];
 }

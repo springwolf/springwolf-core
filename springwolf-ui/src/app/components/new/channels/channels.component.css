@@ -1,0 +1,22 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+.badge {
+  border-radius: 4px;
+  padding: 0.3em;
+  font-size: smaller;
+  text-transform: uppercase;
+}
+
+.protocol-badge {
+  color: var(--springwolf-badge-color-protocol);
+  background-color: var(--springwolf-badge-color-background-protocol);
+}
+
+.send-badge {
+  color: var(--springwolf-badge-color-send);
+  background-color: var(--springwolf-badge-color-background-send);
+}
+
+.receive-badge {
+  color: var(--springwolf-badge-color-receive);
+  background-color: var(--springwolf-badge-color-background-receive);
+}

@@ -1,0 +1,69 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened class="sidenav width-s-hide">
+    @for (link of navigation; track link) {
+    <ul
+      class="entry"
+      [ngClass]="{ selected: link.selected, collapsed: link.collapsed }"
+    >
+      <li>
+        <span>
+          <mat-icon *ngIf="link.icon" fontIcon="{{ link.icon }}" />
+          <b>
+            <a [href]="link.href">
+              {{ link.name }}
+            </a>
+          </b>
+        </span>
+
+        <ul>
+          @for (child of link.children; track child) {
+          <li
+            class="entry"
+            [ngClass]="{ selected: child.selected, collapsed: child.collapsed }"
+          >
+            <span>
+              <a [href]="child.href">
+                {{ child.name }}
+              </a>
+              @for (childTag of child.tags; track childTag) {
+              <span class="badge {{ childTag }}-badge">{{ childTag }}</span>
+              }
+            </span>
+
+            <ul>
+              @for (subchild of child.children; track subchild) {
+              <li
+                class="entry"
+                [ngClass]="{
+                  selected: subchild.selected,
+                  collapsed: subchild.collapsed
+                }"
+              >
+                <span>
+                  <a [href]="subchild.href"> {{ subchild.name }}</a>
+
+                  @for (subChildTag of subchild.tags; track subChildTag) {
+                  <span class="badge {{ subChildTag }}-badge">{{
+                    subChildTag
+                  }}</span>
+
+                  }
+                </span>
+              </li>
+              }
+            </ul>
+          </li>
+          }
+        </ul>
+      </li>
+    </ul>
+    }
+  </mat-sidenav>
+
+  <mat-sidenav-content class="width-s-margin-reset">
+    <div #scrollableElement style="overflow-y: auto; height: 100%">
+      <ng-content></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
