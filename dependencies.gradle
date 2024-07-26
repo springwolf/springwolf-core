@@ -37,7 +37,7 @@ ext {
 
     commonsLang3Version = '3.15.0'
 
-    kafkaAvroSerializerVersion = '7.6.2'
+    kafkaAvroSerializerVersion = '7.7.0'
 
     kafkaClientsVersion = '3.7.1'
     kafkaStreamsVersion = '3.7.1'
