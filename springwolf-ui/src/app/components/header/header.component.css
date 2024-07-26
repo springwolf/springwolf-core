@@ -5,6 +5,8 @@
   display: block;
 }
 
+h1,
+:host ::ng-deep label,
 a {
   text-decoration: none;
   color: white;
