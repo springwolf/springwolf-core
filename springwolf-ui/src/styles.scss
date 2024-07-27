@@ -10,11 +10,12 @@ $theme: mat.define-theme((
     tertiary: mat.$blue-palette,
   ),
 ));
-// @include mat.color-variants-backwards-compatibility($theme);
 
 @mixin theme($theme) {
+    --mat-toolbar-container-text-color: #EEE;
     mat-toolbar {
       background: mat.get-theme-color($theme, primary, 40);
+      color: var(--mat-toolbar-container-text-color);
     }
 }
 
