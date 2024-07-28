@@ -1,5 +1,5 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ComplexFoo" : {
     "type" : "string",
     "properties" : {
       "b" : {
@@ -22,7 +22,7 @@
         "format" : "int32"
       },
       "n" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo$Nested"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ComplexFoo$Nested"
       },
       "s" : {
         "type" : "string"
@@ -30,7 +30,7 @@
     },
     "examples" : [ "<ComplexFoo><b>true</b><d>1.1</d><dt>2015-07-20T15:49:04-07:00</dt><f>1.1</f><i>0</i><n><nba>YmFzZTY0LWV4YW1wbGU=</nba><nc><cyclic/></nc><nli>0</nli><nmfm><key><s>string</s></key></nmfm><ns>string</ns><nsm><MyClass><s>string</s></MyClass></nsm><nu>3fa85f64-5717-4562-b3fc-2c963f66afa6</nu></n><s>string</s></ComplexFoo>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo$Nested" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ComplexFoo$Nested" : {
     "type" : "string",
     "properties" : {
       "nba" : {
@@ -38,7 +38,7 @@
         "format" : "byte"
       },
       "nc" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ComplexFoo$Nested$Cyclic"
       },
       "nli" : {
         "type" : "array",
@@ -50,7 +50,7 @@
       "nmfm" : {
         "type" : "object",
         "additionalProperties" : {
-          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$MyClass"
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ComplexFoo$Nested$MyClass"
         }
       },
       "ns" : {
@@ -59,7 +59,7 @@
       "nsm" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$MyClass"
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ComplexFoo$Nested$MyClass"
         },
         "uniqueItems" : true
       },
@@ -70,16 +70,16 @@
     },
     "examples" : [ "<Nested><nba>YmFzZTY0LWV4YW1wbGU=</nba><nc><cyclic/></nc><nli>0</nli><nmfm><key><s>string</s></key></nmfm><ns>string</ns><nsm><MyClass><s>string</s></MyClass></nsm><nu>3fa85f64-5717-4562-b3fc-2c963f66afa6</nu></Nested>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$Cyclic" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ComplexFoo$Nested$Cyclic" : {
     "type" : "string",
     "properties" : {
       "cyclic" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ComplexFoo$Nested$Cyclic"
       }
     },
     "examples" : [ "<Cyclic><cyclic/></Cyclic>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$ComplexFoo$Nested$MyClass" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ComplexFoo$Nested$MyClass" : {
     "type" : "string",
     "properties" : {
       "s" : {

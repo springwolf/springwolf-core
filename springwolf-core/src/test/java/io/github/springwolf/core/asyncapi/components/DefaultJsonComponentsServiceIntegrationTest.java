@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
@@ -43,7 +43,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class DefaultJsonComponentsServiceTest {
+class DefaultJsonComponentsServiceIntegrationTest {
 
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
@@ -271,62 +271,16 @@ class DefaultJsonComponentsServiceTest {
     }
 
     @Nested
-    class AsyncApiPayloadTest {
+    class JsonSubTypesRecursionTest {
         @Test
-        void stringEnvelopTest() throws IOException {
-            componentsService.registerSchema(StringEnvelop.class, CONTENT_TYPE_APPLICATION_JSON);
-
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/api-payload.json");
-
-            System.out.println("Got: " + actualDefinitions);
-            assertEquals(expected, actualDefinitions);
-
-            assertThat(actualDefinitions).doesNotContain("otherField");
-        }
-
-        @Test
-        void illegalEnvelopTest() throws IOException {
-            componentsService.registerSchema(
-                    EnvelopWithMultipleAsyncApiPayloadAnnotations.class, CONTENT_TYPE_APPLICATION_JSON);
-
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-
-            // fallback to EnvelopWithMultipleAsyncApiPayloadAnnotations, which contains the field
-            assertThat(actualDefinitions).contains("otherField");
-        }
-
-        @Data
-        @NoArgsConstructor
-        public class StringEnvelop {
-            Integer otherField;
-
-            @AsyncApiPayload
-            @Schema(description = "The payload in the envelop", maxLength = 10)
-            String payload;
-        }
-
-        @Data
-        @NoArgsConstructor
-        public class EnvelopWithMultipleAsyncApiPayloadAnnotations {
-            @AsyncApiPayload
-            Integer otherField;
-
-            @AsyncApiPayload
-            @Schema(description = "The payload in the envelop", maxLength = 10)
-            String payload;
-        }
-    }
-
-    @Nested
-    class RecursionTest {
-        @Test
-        void registerSchemaWithoutStackOverflowException() throws IOException {
+        void registerSchemaWithoutStackOverflowException() {
             componentsService.registerSchema(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-
-            assertThat(actualDefinitions).contains("subCriteriaList");
+            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            assertThat(schemas)
+                    .containsOnlyKeys(
+                            this.getClass().getName() + "$CriteriaMessage",
+                            this.getClass().getName() + "$LegacyCriteriaMessage");
         }
 
         @Getter
@@ -346,12 +300,6 @@ class DefaultJsonComponentsServiceTest {
         @NoArgsConstructor
         public class LegacyCriteriaMessage extends CriteriaMessage {
             private List<LegacyCriteriaMessage> subCriteriaList;
-
-            public LegacyCriteriaMessage(
-                    String criteriaId, String note, String expectedValue, List<LegacyCriteriaMessage> subCriteriaList) {
-                super(criteriaId, note, expectedValue);
-                this.subCriteriaList = subCriteriaList;
-            }
         }
     }
 

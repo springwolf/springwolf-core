@@ -1,23 +1,23 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AllOf" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$AllOf" : {
     "type" : "string",
     "examples" : [ "firstOne: \"string\"\nfirstTwo: 0\nsecondOne: \"string\"\nsecondTwo: true\n" ],
     "allOf" : [ {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AnyOf" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$AnyOf" : {
     "type" : "string",
     "examples" : [ "firstOne: \"string\"\nsecondOne: \"string\"\n" ],
     "anyOf" : [ {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$ImplementationOne" : {
     "type" : "string",
     "properties" : {
       "firstOne" : {
@@ -29,7 +29,7 @@
     },
     "examples" : [ "firstOne: \"string\"\nsecondOne: \"string\"\n" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$ImplementationTwo" : {
     "type" : "string",
     "properties" : {
       "firstTwo" : {
@@ -42,29 +42,29 @@
     },
     "examples" : [ "firstTwo: 0\nsecondTwo: true\n" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$OneOf" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$OneOf" : {
     "type" : "string",
     "examples" : [ "\"firstOne: \\\"string\\\"\\nsecondOne: \\\"string\\\"\\n\"\n" ],
     "oneOf" : [ {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationOne"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$ImplementationOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$ImplementationTwo"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$ImplementationTwo"
     } ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
     "type" : "string",
     "properties" : {
       "allOf" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AllOf"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$AllOf"
       },
       "anyOf" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$AnyOf"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$AnyOf"
       },
       "field" : {
         "type" : "string"
       },
       "oneOf" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$SchemaWithOneOf$OneOf"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$OneOf"
       }
     },
     "examples" : [ "allOf: \"firstOne: \\\"string\\\"\\nfirstTwo: 0\\nsecondOne: \\\"string\\\"\\nsecondTwo: true\\n\"\nanyOf: \"firstOne: \\\"string\\\"\\nsecondOne: \\\"string\\\"\\n\"\nfield: \"string\"\noneOf: \"\\\"firstOne: \\\\\\\"string\\\\\\\"\\\\nsecondOne: \\\\\\\"string\\\\\\\"\\\\n\\\"\\n\"\n" ]

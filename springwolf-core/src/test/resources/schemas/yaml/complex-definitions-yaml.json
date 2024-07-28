@@ -1,5 +1,5 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo" : {
     "type" : "string",
     "properties" : {
       "b" : {
@@ -22,7 +22,7 @@
         "format" : "int32"
       },
       "n" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested"
       },
       "s" : {
         "type" : "string"
@@ -30,7 +30,7 @@
     },
     "examples" : [ "b: true\nd: 1.1\ndt: \"2015-07-20T15:49:04-07:00\"\nf: 1.1\ni: 0\n\"n\":\n  nba: \"YmFzZTY0LWV4YW1wbGU=\"\n  nc:\n    cyclic: {}\n  nli:\n  - 0\n  nmfm:\n    key:\n      s: \"string\"\n  ns: \"string\"\n  nsm:\n  - s: \"string\"\n  nu: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\ns: \"string\"\n" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested" : {
     "type" : "string",
     "properties" : {
       "nba" : {
@@ -38,7 +38,7 @@
         "format" : "byte"
       },
       "nc" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested$Cyclic"
       },
       "nli" : {
         "type" : "array",
@@ -50,7 +50,7 @@
       "nmfm" : {
         "type" : "object",
         "additionalProperties" : {
-          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$MyClass"
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested$MyClass"
         }
       },
       "ns" : {
@@ -59,7 +59,7 @@
       "nsm" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$MyClass"
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested$MyClass"
         },
         "uniqueItems" : true
       },
@@ -70,16 +70,16 @@
     },
     "examples" : [ "nba: \"YmFzZTY0LWV4YW1wbGU=\"\nnc:\n  cyclic: {}\nnli:\n- 0\nnmfm:\n  key:\n    s: \"string\"\nns: \"string\"\nnsm:\n- s: \"string\"\nnu: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$Cyclic" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested$Cyclic" : {
     "type" : "string",
     "properties" : {
       "cyclic" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$Cyclic"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested$Cyclic"
       }
     },
     "examples" : [ "cyclic: {}\n" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceTest$ComplexFoo$Nested$MyClass" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested$MyClass" : {
     "type" : "string",
     "properties" : {
       "s" : {
