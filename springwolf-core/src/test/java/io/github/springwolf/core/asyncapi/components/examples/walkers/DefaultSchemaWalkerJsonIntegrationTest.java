@@ -102,6 +102,18 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
+        void type_boolean_default_set(TestInfo testInfo) throws JsonProcessingException {
+            BooleanSchema schema = new BooleanSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setDefault(Boolean.FALSE);
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("false");
+        }
+
+        @Test
         void type_boolean_example_set(TestInfo testInfo) throws JsonProcessingException {
             BooleanSchema schema = new BooleanSchema();
             schema.setName(testInfo.getDisplayName());
@@ -122,6 +134,18 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             String actualString = jsonMapper.writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("0");
+        }
+
+        @Test
+        void type_integer_default_set(TestInfo testInfo) throws JsonProcessingException {
+            IntegerSchema schema = new IntegerSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setDefault(Integer.parseInt("123"));
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("123");
         }
 
         @Test
@@ -173,6 +197,18 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
+        void type_number_default_set(TestInfo testInfo) throws JsonProcessingException {
+            Schema<BigDecimal> schema = new NumberSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setDefault(new BigDecimal("123.45"));
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("123.45");
+        }
+
+        @Test
         void type_number_example_set(TestInfo testInfo) throws JsonProcessingException {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setName(testInfo.getDisplayName());
@@ -193,6 +229,18 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             String actualString = jsonMapper.writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"string\"");
+        }
+
+        @Test
+        void type_string_default_set(TestInfo testInfo) throws JsonProcessingException {
+            StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setDefault("custom-example-value");
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("\"custom-example-value\"");
         }
 
         @Test

@@ -108,6 +108,17 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         }
 
         @Test
+        void type_boolean_default_set() {
+            BooleanSchema schema = new BooleanSchema();
+            schema.setDefault(Boolean.FALSE);
+            schema.setName("type_boolean_default_set");
+
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
+
+            assertThat(actual).isEqualTo("<type_boolean_default_set>false</type_boolean_default_set>");
+        }
+
+        @Test
         void type_boolean_example_set() {
             BooleanSchema schema = new BooleanSchema();
             schema.setExample(Boolean.FALSE);
@@ -126,6 +137,17 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_integer>0</type_integer>");
+        }
+
+        @Test
+        void type_integer_default_set() {
+            IntegerSchema schema = new IntegerSchema();
+            schema.setDefault(Integer.parseInt("123"));
+            schema.setName("type_integer_default_set");
+
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
+
+            assertThat(actual).isEqualTo("<type_integer_default_set>123</type_integer_default_set>");
         }
 
         @Test
@@ -173,6 +195,17 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         }
 
         @Test
+        void type_number_default_set() {
+            Schema<BigDecimal> schema = new NumberSchema();
+            schema.setDefault(new BigDecimal("123.45"));
+            schema.setName("type_number_default_set");
+
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
+
+            assertThat(actual).isEqualTo("<type_number_default_set>123.45</type_number_default_set>");
+        }
+
+        @Test
         void type_number_example_set() {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setExample(new BigDecimal("123.45"));
@@ -191,6 +224,17 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
 
             assertThat(actual).isEqualTo("<type_string>string</type_string>");
+        }
+
+        @Test
+        void type_string_default_set() {
+            StringSchema schema = new StringSchema();
+            schema.setDefault("custom-example-value");
+            schema.setName("type_string_default_set");
+
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
+
+            assertThat(actual).isEqualTo("<type_string_default_set>custom-example-value</type_string_default_set>");
         }
 
         @Test
