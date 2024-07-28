@@ -9,7 +9,7 @@ import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
   styleUrls: ["./header.component.css"],
 })
 export class HeaderComponent implements OnInit {
-  isNewUi: boolean = false;
+  isNewUi: boolean = true;
   title: string = "";
 
   constructor(

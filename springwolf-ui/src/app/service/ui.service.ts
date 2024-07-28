@@ -6,7 +6,7 @@ import { BehaviorSubject } from "rxjs";
   providedIn: "root",
 })
 export class UiService {
-  private _isNewUi = new BehaviorSubject<boolean>(false);
+  private _isNewUi = new BehaviorSubject<boolean>(true);
   isNewUi$ = this._isNewUi.asObservable();
 
   toggleIsNewUi(value: boolean) {
