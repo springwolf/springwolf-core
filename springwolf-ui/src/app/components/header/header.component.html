@@ -17,7 +17,7 @@
     </a>
   </span>
   <h1 class="width-s-hide">{{ title }}</h1>
-  <div>
+  <div class="flex flex-column items-center">
     <mat-slide-toggle
       [(ngModel)]="isNewUi"
       (change)="toggleIsNewUi($event.checked)"
@@ -25,7 +25,7 @@
     >
     &nbsp;
     <a href="https://github.com/springwolf/springwolf-core" target="_blank">
-      GitHub
+      <mat-icon [svgIcon]="'github'" />
     </a>
   </div>
 </mat-toolbar>

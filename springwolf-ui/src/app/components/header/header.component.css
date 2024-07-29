@@ -16,3 +16,10 @@ a {
 a:hover {
   color: lightgray;
 }
+
+:host ::ng-deep mat-icon {
+  height: 3em;
+  width: 3em;
+  transform: scale(0.75);
+  filter: invert(100%);
+}
