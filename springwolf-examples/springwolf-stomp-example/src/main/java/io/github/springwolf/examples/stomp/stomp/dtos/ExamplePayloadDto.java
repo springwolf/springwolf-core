@@ -16,7 +16,7 @@ public class ExamplePayloadDto {
     @Schema(description = "Some string field", example = "some string value", requiredMode = REQUIRED)
     private String someString;
 
-    @Schema(description = "Some long field", example = "5")
+    @Schema(description = "Some long field", example = "5", minimum = "0")
     private long someLong;
 
     @Schema(description = "Some enum field", example = "FOO2", requiredMode = REQUIRED)

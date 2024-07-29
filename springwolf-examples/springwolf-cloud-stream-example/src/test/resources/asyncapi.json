@@ -86,6 +86,7 @@
           "foo": {
             "type": "string",
             "description": "Foo field",
+            "maxLength": 100,
             "examples": [
               "bar"
             ]
@@ -126,6 +127,7 @@
             "type": "integer",
             "description": "Some long field",
             "format": "int64",
+            "minimum": 0,
             "examples": [
               5
             ]
@@ -159,6 +161,7 @@
             "type": "integer",
             "description": "Some long field",
             "format": "int64",
+            "minimum": 0,
             "examples": [
               5
             ]

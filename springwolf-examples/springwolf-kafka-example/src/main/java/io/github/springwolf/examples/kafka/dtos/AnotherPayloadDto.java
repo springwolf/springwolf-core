@@ -15,7 +15,7 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 @NoArgsConstructor
 public class AnotherPayloadDto {
 
-    @Schema(description = "Foo field", example = "bar", requiredMode = NOT_REQUIRED)
+    @Schema(description = "Foo field", example = "bar", maxLength = 100, requiredMode = NOT_REQUIRED)
     private String foo;
 
     @Schema(description = "Example field", requiredMode = REQUIRED)
