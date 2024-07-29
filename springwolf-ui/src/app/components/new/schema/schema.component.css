@@ -3,19 +3,22 @@
   color: red;
 }
 
+.deprecated {
+  color: red;
+}
+
 .description {
   overflow: auto;
 }
 
 .example {
-  display: block;
   word-break: break-all;
 }
 
 .attribute {
   background-color: rgb(128, 90, 213);
   color: rgb(255, 255, 255);
-  margin: 0 8px 0 8px;
-  padding: 2px 4px 2px 4px;
+  margin: 0 0.2em 0.2em 0;
+  padding: 0.1em 0.2em 0.1em 0.2em;
   border-radius: 4px;
 }

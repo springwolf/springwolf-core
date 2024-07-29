@@ -91,66 +91,63 @@
     </mat-select>
   </span>
 
-  <!-- array properties -->
-  <span *ngIf="value.uniqueItems != null" class="example">
-    <i>Unique items:</i>
-    &nbsp;
-    {{ value.uniqueItems ? "yes" : "no" }}
-  </span>
-  <span
-    *ngIf="value.minItems != null || value.maxItems != null"
-    class="example"
-  >
-    <i>Items:</i>
-    &nbsp;
-    <app-schema-range-new
-      [lowerBound]="value.minItems"
-      [upperBound]="value.maxItems"
-      lowerBoundInclusive="true"
-      upperBoundInclusive="true"
-    />
-  </span>
+  <!-- attributes -->
+  <span class="flex flex-wrap">
+    <!-- array attributes -->
+    <span
+      *ngIf="value.minItems != null || value.maxItems != null"
+      class="attribute"
+    >
+      <app-schema-range-new
+        [lowerBound]="value.minItems"
+        [upperBound]="value.maxItems"
+        lowerBoundInclusive="true"
+        upperBoundInclusive="true"
+      />
+      items
+    </span>
+    <span *ngIf="value.uniqueItems != null" class="attribute">
+      Unique items:
+      {{ value.uniqueItems ? "yes" : "no" }}
+    </span>
 
-  <!-- primitive properties -->
-  <span *ngIf="value.pattern" class="example">
-    <i>Pattern:</i>
-    &nbsp;
-    <span class="text-console">
-      {{ value.pattern }}
+    <!-- primitive attributes -->
+    <span *ngIf="value.pattern" class="attribute">
+      pattern:
+      <span class="text-console">
+        {{ value.pattern }}
+      </span>
+    </span>
+    <span
+      *ngIf="value.minLength != null || value.maxLength != null"
+      class="attribute"
+    >
+      <app-schema-range-new
+        [lowerBound]="value.minLength"
+        [upperBound]="value.maxLength"
+        lowerBoundInclusive="true"
+        upperBoundInclusive="true"
+      />
+      length
+    </span>
+
+    <span
+      *ngIf="value.minimum != undefined || value.maximum != undefined"
+      class="attribute"
+    >
+      <app-schema-range-new
+        [lowerBound]="value.minimum"
+        [upperBound]="value.maximum"
+        [lowerBoundInclusive]="!value.exclusiveMinimum"
+        [upperBoundInclusive]="!value.exclusiveMaximum"
+      />
+      value range
+    </span>
+    <span *ngIf="value.multipleOf != undefined" class="attribute">
+      Multiple of
+      {{ value.multipleOf }}
     </span>
   </span>
-  <span
-    *ngIf="value.minLength != null || value.maxLength != null"
-    class="example"
-  >
-    <i>Length:</i>
-    &nbsp;
-    <app-schema-range-new
-      [lowerBound]="value.minLength"
-      [upperBound]="value.maxLength"
-      lowerBoundInclusive="true"
-      upperBoundInclusive="true"
-    />
-  </span>
 
-  <span
-    *ngIf="value.minimum != undefined || value.maximum != undefined"
-    class="example"
-  >
-    <i>Range:</i>
-    &nbsp;
-    <app-schema-range-new
-      [lowerBound]="value.minimum"
-      [upperBound]="value.maximum"
-      [lowerBoundInclusive]="!value.exclusiveMinimum"
-      [upperBoundInclusive]="!value.exclusiveMaximum"
-    />
-  </span>
-  <span *ngIf="value.multipleOf != undefined" class="example">
-    <i>Multiple of:</i>
-    &nbsp;
-    {{ value.multipleOf }}
-  </span>
-
-  <hr />
+  <mat-divider />
 </ng-template>
