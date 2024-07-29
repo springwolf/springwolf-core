@@ -15,10 +15,13 @@
       *ngFor="let property of schema().properties || {} | keyvalue"
       lines="99"
     >
-      <span class="key text-console" matListItemTitle>
-        <b>{{ property.key }}</b>
+      <span class="key" matListItemTitle>
+        <b class="text-console">{{ property.key }}</b>
         <span class="required" *ngIf="schema().required?.includes(property.key)"
           >*</span
+        >
+        <span class="deprecated" *ngIf="property.value.deprecated"
+          >&nbsp;(deprecated)</span
         >
         &nbsp;
       </span>
@@ -87,7 +90,67 @@
       </mat-option>
     </mat-select>
   </span>
-  <app-schema-range [schema]="value"> </app-schema-range>
+
+  <!-- array properties -->
+  <span *ngIf="value.uniqueItems != null" class="example">
+    <i>Unique items:</i>
+    &nbsp;
+    {{ value.uniqueItems ? "yes" : "no" }}
+  </span>
+  <span
+    *ngIf="value.minItems != null || value.maxItems != null"
+    class="example"
+  >
+    <i>Items:</i>
+    &nbsp;
+    <app-schema-range-new
+      [lowerBound]="value.minItems"
+      [upperBound]="value.maxItems"
+      lowerBoundInclusive="true"
+      upperBoundInclusive="true"
+    />
+  </span>
+
+  <!-- primitive properties -->
+  <span *ngIf="value.pattern" class="example">
+    <i>Pattern:</i>
+    &nbsp;
+    <span class="text-console">
+      {{ value.pattern }}
+    </span>
+  </span>
+  <span
+    *ngIf="value.minLength != null || value.maxLength != null"
+    class="example"
+  >
+    <i>Length:</i>
+    &nbsp;
+    <app-schema-range-new
+      [lowerBound]="value.minLength"
+      [upperBound]="value.maxLength"
+      lowerBoundInclusive="true"
+      upperBoundInclusive="true"
+    />
+  </span>
+
+  <span
+    *ngIf="value.minimum != undefined || value.maximum != undefined"
+    class="example"
+  >
+    <i>Range:</i>
+    &nbsp;
+    <app-schema-range-new
+      [lowerBound]="value.minimum"
+      [upperBound]="value.maximum"
+      [lowerBoundInclusive]="!value.exclusiveMinimum"
+      [upperBoundInclusive]="!value.exclusiveMaximum"
+    />
+  </span>
+  <span *ngIf="value.multipleOf != undefined" class="example">
+    <i>Multiple of:</i>
+    &nbsp;
+    {{ value.multipleOf }}
+  </span>
 
   <hr />
 </ng-template>

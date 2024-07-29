@@ -15,6 +15,8 @@ describe("SchemaRangeComponent", function () {
   it("should create the component", async () => {
     await renderComponent({
       title: "test",
+      name: "test",
+      anchorIdentifier: "test",
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: true,
@@ -27,6 +29,8 @@ describe("SchemaRangeComponent", function () {
   it("should have `( 0.1 .. 10 )` as value", async () => {
     await renderComponent({
       title: "test",
+      name: "test",
+      anchorIdentifier: "test",
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: true,
@@ -39,6 +43,8 @@ describe("SchemaRangeComponent", function () {
   it("should have `[ 0.1 .. 10 )` as value", async () => {
     await renderComponent({
       title: "test",
+      name: "test",
+      anchorIdentifier: "test",
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: false,
@@ -51,6 +57,8 @@ describe("SchemaRangeComponent", function () {
   it("should have `( 0.1 .. 10 ]` as value", async () => {
     await renderComponent({
       title: "test",
+      name: "test",
+      anchorIdentifier: "test",
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: true,
@@ -63,6 +71,8 @@ describe("SchemaRangeComponent", function () {
   it("should have `[ 0.1 .. 10 ]` as value", async () => {
     await renderComponent({
       title: "test",
+      name: "test",
+      anchorIdentifier: "test",
       minimum: 0.1,
       maximum: 10,
     });
@@ -73,6 +83,8 @@ describe("SchemaRangeComponent", function () {
   it("should have `> 0.1` as value", async () => {
     await renderComponent({
       title: "test",
+      name: "test",
+      anchorIdentifier: "test",
       minimum: 0.1,
       exclusiveMinimum: true,
     });
@@ -83,6 +95,8 @@ describe("SchemaRangeComponent", function () {
   it("should have `< 10` as value", async () => {
     await renderComponent({
       title: "test",
+      name: "test",
+      anchorIdentifier: "test",
       maximum: 10,
       exclusiveMaximum: true,
     });
@@ -93,6 +107,8 @@ describe("SchemaRangeComponent", function () {
   it("should have `>= 0.1` as value", async () => {
     await renderComponent({
       title: "test",
+      name: "test",
+      anchorIdentifier: "test",
       minimum: 0.1,
     });
 
@@ -102,6 +118,8 @@ describe("SchemaRangeComponent", function () {
   it("should have `<= 10` as value", async () => {
     await renderComponent({
       title: "test",
+      name: "test",
+      anchorIdentifier: "test",
       maximum: 10,
     });
 

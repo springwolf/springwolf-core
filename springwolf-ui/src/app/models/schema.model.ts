@@ -2,27 +2,43 @@
 import { Example } from "./example.model";
 
 export interface Schema {
-  name?: string;
+  /**
+   * Fully qualified schema name
+   */
+  name: string;
+  /**
+   * Short schema name
+   */
   title: string;
+  anchorIdentifier: string;
   description?: string;
+  deprecated?: boolean;
 
-  refName?: string;
-  refTitle?: string;
-  anchorIdentifier?: string;
-  anchorUrl?: string;
-
-  type?: string;
-  // type == object
-  properties?: { [key: string]: Schema };
-  // type == array
-  items?: Schema;
-
-  format?: string;
-  required?: string[];
   enum?: string[];
   example?: Example;
+
+  type?: string;
+  format?: string;
+  // type == ref
+  anchorUrl?: string;
+  refName?: string;
+  refTitle?: string;
+  // type == object
+  properties?: { [key: string]: Schema };
+  required?: string[];
+  // type == array
+  items?: Schema;
+  minItems?: number;
+  maxItems?: number;
+  uniqueItems?: boolean;
+  // type == string
+  minLength?: number;
+  maxLength?: number;
+  pattern?: string;
+  // type == number
   minimum?: number;
   maximum?: number;
   exclusiveMinimum?: boolean;
   exclusiveMaximum?: boolean;
+  multipleOf?: number;
 }
