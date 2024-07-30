@@ -172,6 +172,17 @@ class SwaggerSchemaServiceTest {
             // then
             assertThat(schemas).hasSize(1).containsKey("java.lang.Boolean");
         }
+
+        @Test
+        void Object() {
+            // when
+            Map<String, SchemaObject> schemas = schemaService
+                    .extractSchema(Object.class, "content-type-not-relevant")
+                    .schemas();
+
+            // then
+            assertThat(schemas).hasSize(1).containsKey("java.lang.Object");
+        }
     }
 
     @Data

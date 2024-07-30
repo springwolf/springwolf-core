@@ -50,7 +50,10 @@ public class SpringAnnotationClassLevelChannelsScanner<
         log.debug(
                 "Scanning class \"{}\" for @\"{}\" annotated methods", clazz.getName(), classAnnotationClass.getName());
 
-        return Stream.of(clazz).filter(this::isClassAnnotated).flatMap(this::mapClassToChannel);
+        return Stream.of(clazz)
+                .filter(AnnotationScannerUtil::notHidden)
+                .filter(this::isClassAnnotated)
+                .flatMap(this::mapClassToChannel);
     }
 
     private Stream<Map.Entry<String, ChannelObject>> mapClassToChannel(Class<?> component) {

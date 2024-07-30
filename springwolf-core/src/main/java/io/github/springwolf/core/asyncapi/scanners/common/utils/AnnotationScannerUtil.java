@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.utils;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.annotation.Nullable;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotationCollectors;
@@ -11,6 +12,7 @@ import org.springframework.core.annotation.RepeatableContainers;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.Set;
 
 public class AnnotationScannerUtil {
@@ -38,6 +40,10 @@ public class AnnotationScannerUtil {
         Set<T> annotations = findAnnotations(annotationClass, element);
 
         return annotations.stream().findFirst().orElse(null);
+    }
+
+    public static boolean notHidden(AnnotatedElement element) {
+        return Objects.isNull(findAnnotation(Hidden.class, element));
     }
 
     public static <T extends Annotation> Set<T> findAnnotations(Class<T> annotationClass, AnnotatedElement element) {

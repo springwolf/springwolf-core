@@ -22,6 +22,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,6 +87,25 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
                 "anotherMethodWithAnnotation", SimpleFoo.class);
         when(payloadMethodService.extractSchema(simpleFooMethod))
                 .thenReturn(new NamedSchemaObject(SimpleFoo.class.getName(), new SchemaObject()));
+    }
+
+    @Test
+    void scan_componentHasHiddenAnnotation() {
+        // when
+        List<Map.Entry<String, ChannelObject>> channels =
+                scanner.scan(ClassWithHiddenAnnotation.class).collect(Collectors.toList());
+
+        // then
+        assertThat(channels).isEmpty();
+    }
+
+    private static class ClassWithHiddenAnnotation {
+
+        @TestListener
+        @Hidden
+        private void methodWithAnnotation(String payload) {}
+
+        private void methodWithoutAnnotation() {}
     }
 
     @Test

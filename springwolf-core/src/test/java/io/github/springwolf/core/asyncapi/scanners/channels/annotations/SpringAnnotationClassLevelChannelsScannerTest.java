@@ -22,6 +22,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,6 +81,15 @@ class SpringAnnotationClassLevelChannelsScannerTest {
     }
 
     @Test
+    void scan_componentHasHiddenAnnotation() {
+        // when
+        List<Map.Entry<String, ChannelObject>> channels =
+                scanner.scan(ClassWithHiddenAnnotation.class).toList();
+        // then
+        assertThat(channels).isEmpty();
+    }
+
+    @Test
     void scan_componentHasTestListenerMethods() {
         // when
         List<Map.Entry<String, ChannelObject>> channels =
@@ -108,6 +118,15 @@ class SpringAnnotationClassLevelChannelsScannerTest {
                 .build();
 
         assertThat(channels).containsExactly(Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannelItem));
+    }
+
+    @TestClassListener
+    @Hidden
+    private static class ClassWithHiddenAnnotation {
+        @TestMethodListener
+        private void methodWithAnnotation(String payload) {}
+
+        private void methodWithoutAnnotation() {}
     }
 
     @TestClassListener
