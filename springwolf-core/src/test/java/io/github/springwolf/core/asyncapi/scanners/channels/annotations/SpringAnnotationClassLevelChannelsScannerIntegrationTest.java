@@ -30,6 +30,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeT
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -132,6 +133,29 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
         private static class ClassWithoutMethodListener {
 
             private void methodWithAnnotation(SimpleFoo payload) {}
+        }
+    }
+
+    @Nested
+    class HiddenClassAnnotation {
+        @Test
+        void scan_componentWithHiddenAnnotationOnClassLevel() {
+            // when
+            List<Map.Entry<String, ChannelObject>> actualChannels =
+                    scanner.scan(ClassWithHiddenAnnotation.class).toList();
+
+            // then
+            assertThat(actualChannels).isEmpty();
+        }
+
+        @TestClassListener
+        @Hidden
+        private static class ClassWithHiddenAnnotation {
+
+            @TestMethodListener
+            private void methodWithAnnotation(SimpleFoo payload) {}
+
+            private void methodWithoutAnnotation() {}
         }
     }
 

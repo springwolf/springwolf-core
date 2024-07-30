@@ -107,6 +107,9 @@ public class SwaggerSchemaService {
             if (Number.class.isAssignableFrom(type)) {
                 return registerPrimitive(Number.class, new NumberSchema(), schemas);
             }
+            if (Object.class.isAssignableFrom(type)) {
+                return registerPrimitive(Object.class, new ObjectSchema(), schemas);
+            }
         }
 
         if (schemas.size() == 1) {
