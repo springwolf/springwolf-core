@@ -162,6 +162,9 @@ allprojects {
                 project
                         .file('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.actual.json')
                         .renameTo('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.json')
+                project
+                        .file('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.actual.yaml')
+                        .renameTo('springwolf-examples/' + it + '-example/src/test/resources/asyncapi.yaml')
             }
         }
     }
