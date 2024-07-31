@@ -3,6 +3,7 @@ package io.github.springwolf.examples.amqp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -24,11 +25,18 @@ class ApiIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Value("${spring.rabbitmq.host}")
+    public String amqpHost;
+
+    @Value("${spring.rabbitmq.port}")
+    public String amqpPort;
+
     @Test
     void asyncApiResourceJsonArtifactTest() throws IOException {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actual);
+        String actualPatched = actual.replace(amqpHost + ":" + amqpPort, "amqp:5672");
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actualPatched);
 
         String expected;
         try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
@@ -36,7 +44,7 @@ class ApiIntegrationTest {
             expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
         }
 
-        assertEquals(expected, actual);
+        assertEquals(expected, actualPatched);
     }
 
     @Test
@@ -46,6 +54,7 @@ class ApiIntegrationTest {
                 .getForObject(url, String.class)
                 .replaceAll("\r", "")
                 .trim();
+        String actualPatched = actual.replace(amqpHost + ":" + amqpPort, "amqp:5672");
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.yaml"), actual);
 
         String expected;
@@ -56,6 +65,6 @@ class ApiIntegrationTest {
                     .trim();
         }
 
-        assertEquals(expected, actual);
+        assertEquals(expected, actualPatched);
     }
 }

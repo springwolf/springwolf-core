@@ -1,6 +1,8 @@
 services:
   app:
     image: stavshamir/springwolf-amqp-example:${SPRINGWOLF_VERSION}
+    environment:
+      AMQP_HOST: amqp
     links:
       - amqp
     ports:
