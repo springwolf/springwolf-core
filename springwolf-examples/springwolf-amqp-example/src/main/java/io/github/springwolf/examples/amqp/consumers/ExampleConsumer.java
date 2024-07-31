@@ -129,7 +129,7 @@ public class ExampleConsumer {
                                             name = AmqpConstants.EXCHANGE_CRUD_TOPIC_EXCHANGE_2,
                                             type = ExchangeTypes.TOPIC),
                             key = AmqpConstants.ROUTING_KEY_ALL_MESSAGES,
-                            value = @Queue(name = AmqpConstants.QUEUE_READ, durable = "true", autoDelete = "false")))
+                            value = @Queue(name = AmqpConstants.QUEUE_READ, durable = "false", autoDelete = "false")))
     public void bindingsRead(Message message, @Payload ExamplePayloadDto payload) {
         log.info(
                 "Received new message {} in {} (ExamplePayloadDto): {}",
