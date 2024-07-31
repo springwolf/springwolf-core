@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 public class AmqpBindingFactory implements BindingFactory<RabbitListener>, EmbeddedValueResolverAware {
-    private final RabbitListenerUtil.RabbitListenerUtilContext context;
+    private final RabbitListenerUtilContext context;
     private StringValueResolver stringValueResolver;
 
     public AmqpBindingFactory(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
-        this.context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
+        this.context = RabbitListenerUtilContext.create(queues, exchanges, bindings);
     }
 
     @Override
