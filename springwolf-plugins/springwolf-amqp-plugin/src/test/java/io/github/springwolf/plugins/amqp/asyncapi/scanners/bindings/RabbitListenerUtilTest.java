@@ -12,6 +12,7 @@ import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import org.assertj.core.util.Sets;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,8 +28,9 @@ import java.util.Map;
 
 import static java.util.Collections.emptyMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class RabbitListenerUtilTest {
 
@@ -44,6 +46,23 @@ class RabbitListenerUtilTest {
     private final RabbitListenerUtilContext exchangeContext =
             RabbitListenerUtilContext.create(List.of(queue), List.of(exchange), List.of());
 
+    StringValueResolver resolver = mock(StringValueResolver.class);
+
+    @BeforeEach
+    void setUp() {
+        doAnswer(invocation -> {
+                    String arg = (String) invocation.getArguments()[0];
+                    return switch (arg) {
+                        case "${queue-1}" -> "queue-1";
+                        case "${routing-key}" -> "routing-key";
+                        case "${exchange-name}" -> "exchange-name";
+                        default -> arg;
+                    };
+                })
+                .when(resolver)
+                .resolveStringValue(any());
+    }
+
     @Nested
     class QueuesConfiguration {
 
@@ -51,8 +70,6 @@ class RabbitListenerUtilTest {
         void getChannelName() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
@@ -65,8 +82,6 @@ class RabbitListenerUtilTest {
         void buildChannelBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
@@ -94,8 +109,6 @@ class RabbitListenerUtilTest {
         void buildChannelBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
@@ -122,8 +135,6 @@ class RabbitListenerUtilTest {
         void buildOperationBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, OperationBinding> operationBinding =
@@ -140,8 +151,6 @@ class RabbitListenerUtilTest {
         void buildOperationBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, OperationBinding> operationBinding =
@@ -178,8 +187,6 @@ class RabbitListenerUtilTest {
         void getChannelName() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
@@ -193,8 +200,6 @@ class RabbitListenerUtilTest {
         void buildChannelBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
@@ -221,8 +226,6 @@ class RabbitListenerUtilTest {
         void buildChannelBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
@@ -250,8 +253,6 @@ class RabbitListenerUtilTest {
         void buildOperationBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, OperationBinding> operationBinding =
@@ -267,8 +268,6 @@ class RabbitListenerUtilTest {
         void buildOperationBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, OperationBinding> operationBinding =
@@ -305,24 +304,18 @@ class RabbitListenerUtilTest {
         void getChannelName() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
 
             // then
-            assertEquals("queue-1", channelName);
-            // TODO: this should take into account the context
-            // "queue-1_#_exchange-name"
+            assertEquals("queue-1_#_exchange-name", channelName);
         }
 
         @Test
         void buildChannelBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
@@ -348,8 +341,6 @@ class RabbitListenerUtilTest {
         void buildChannelBindingWithExchangeContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
@@ -376,8 +367,6 @@ class RabbitListenerUtilTest {
         void buildChannelBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
@@ -403,8 +392,6 @@ class RabbitListenerUtilTest {
         void buildOperationBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
@@ -420,8 +407,6 @@ class RabbitListenerUtilTest {
         void buildOperationBindingWithExchangeContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
@@ -438,8 +423,6 @@ class RabbitListenerUtilTest {
         void buildOperationBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
@@ -465,7 +448,9 @@ class RabbitListenerUtilTest {
         private static class ClassWithBindingConfiguration {
             @RabbitListener(
                     bindings = {
-                        @QueueBinding(exchange = @Exchange(name = "exchange-name"), value = @Queue(name = "${queue-1}"))
+                        @QueueBinding(
+                                exchange = @Exchange(name = "${exchange-name}"),
+                                value = @Queue(name = "${queue-1}"))
                     })
             private void methodWithAnnotation(String payload) {}
         }
@@ -478,24 +463,18 @@ class RabbitListenerUtilTest {
         void getChannelName() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
 
             // when
             String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
 
             // then
-            assertEquals("routing-key", channelName);
-            // TODO: this should take into account the context
-            // "queue-1_routing-key_exchange-name"
+            assertEquals("queue-1_routing-key_exchange-name", channelName);
         }
 
         @Test
         void buildChannelBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
@@ -522,8 +501,6 @@ class RabbitListenerUtilTest {
         void buildChannelBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
@@ -549,8 +526,6 @@ class RabbitListenerUtilTest {
         void buildOperationBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
@@ -568,8 +543,6 @@ class RabbitListenerUtilTest {
         void buildOperationBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
@@ -598,7 +571,7 @@ class RabbitListenerUtilTest {
             @RabbitListener(
                     bindings = {
                         @QueueBinding(
-                                exchange = @Exchange(name = "exchange-name"),
+                                exchange = @Exchange(name = "${exchange-name}"),
                                 key = "${routing-key}",
                                 value = @Queue(name = "${queue-1}"))
                     })

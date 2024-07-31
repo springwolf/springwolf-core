@@ -33,13 +33,20 @@ import java.util.stream.Stream;
 
 /**
  * Note: bindings, queues, and queuesToDeclare are mutually exclusive
- * @see <a href="https://docs.spring.io/spring-amqp/api/org/springframework/amqp/rabbit/annotation/RabbitListener.html">RabbitListener</a>
- * <p>
+ * <ul>
+ * <li> queues (string) point to queue beans (default exchange + routing key)
+ * <li> queuesToDeclare (object) will create queues on broker & matching beans (default exchange + routing key)
+ * <li> queueBinding (object) will create queue and exchange on broker & matching beans (exchange must match if present)
+ * </ul>
+ * <br/>
  * How does rabbitmq work?
- * 1. Producer sends a message to an exchange (default exchange if not specified)
- * 2. Exchange routes the message to a queue based on the routing key (routing key = queue name if not specified)
- * 3. Consumer consumes the message from the queue
+ * <ol>
+ * <li> Producer sends a message to an exchange (default exchange if not specified)
+ * <li> Exchange routes the message to a queue based on the routing key (routing key = queue name if not specified)
+ * <li> Consumer consumes the message from the queue
+ * </ol>
  */
+// TODO: should this do validation and throw errors when an invalid rabbit configuration is found?
 @Slf4j
 public class RabbitListenerUtil {
     public static final String BINDING_NAME = "amqp";
@@ -47,35 +54,11 @@ public class RabbitListenerUtil {
     private static final Boolean DEFAULT_DURABLE = true;
     private static final Boolean DEFAULT_EXCLUSIVE = false;
     private static final String DEFAULT_EXCHANGE_TYPE = ExchangeTypes.DIRECT;
-
-    // RabbitListener -> multiple for one annotation (only use first, like kafka)
-    // either bindings OR queues OR queuesToDeclare
-    // -- queueBinding (annotation) <- specific exchange
-    //    -- queue (like queuesToDeclare)
-    //    -- exchange (annotatoin)
-    //    -- key (array)
-    // -- queues (string) (can point to queue beans)
-    // -- queuesToDeclare (object) (annotation instead of queue bean, default exchange, routing key = queue name)
-
-    // binding == exchange
-    // - direct exchange
-    //   - binding_key of the queue = routing key
-    // - default exchange
-    //   - queue = routing key
-    // - topic exchange
-    //   - binding_pattern of the queue = routing key
-    // - fanout exchange
-    //   - no routing key, copy to all bindings
-
-    // can be combined with ReplyTo and SendTo annoation (like stomp)
+    private static final String DEFAULT_EXCHANGE_ROUTING_KEY = "#";
 
     public static String getChannelName(RabbitListener annotation, StringValueResolver resolver) {
-        // queueName_routingKey_exchange (second, third only when present)
-
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
-                .flatMap(binding -> Stream.concat(
-                        Stream.of(binding.key()), // if routing key is configured, prefer it
-                        Stream.of(binding.value().name())));
+                .flatMap(binding -> channelNameFromAnnotationBindings(binding, resolver));
 
         return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
                 .map(resolver::resolveStringValue)
@@ -87,7 +70,7 @@ public class RabbitListenerUtil {
                                 "No channel name was found in @RabbitListener annotation (neither in queues nor bindings property)"));
     }
 
-    public static String getQueueName(RabbitListener annotation, StringValueResolver resolver) {
+    private static String getQueueName(RabbitListener annotation, StringValueResolver resolver) {
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> Stream.of(binding.value().name()));
 
@@ -99,6 +82,21 @@ public class RabbitListenerUtil {
                 .orElseThrow(
                         () -> new IllegalArgumentException(
                                 "No queue name was found in @RabbitListener annotation (neither in queues nor bindings property)"));
+    }
+
+    private static Stream<String> channelNameFromAnnotationBindings(
+            QueueBinding binding, StringValueResolver resolver) {
+        String queueName = resolver.resolveStringValue(binding.value().name());
+        String exchangeName = resolver.resolveStringValue(binding.exchange().name());
+
+        String[] routingKeys = binding.key();
+        if (routingKeys.length == 0) {
+            routingKeys = List.of(DEFAULT_EXCHANGE_ROUTING_KEY).toArray(new String[0]);
+        }
+
+        return Arrays.stream(routingKeys)
+                .map(resolver::resolveStringValue)
+                .map(routingKey -> String.join("_", queueName, routingKey, exchangeName));
     }
 
     /**
@@ -225,6 +223,7 @@ public class RabbitListenerUtil {
             RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
         String exchangeName = Stream.of(annotation.bindings())
                 .map(binding -> binding.exchange().name())
+                .map(resolver::resolveStringValue)
                 .filter(StringUtils::hasText)
                 .findFirst()
                 .orElse(null);
@@ -247,6 +246,7 @@ public class RabbitListenerUtil {
         return Map.of(
                 BINDING_NAME,
                 AMQPOperationBinding.builder()
+                        // TODO: cc for publishing does not match listener -> remove?
                         .cc(getRoutingKeys(annotation, resolver, context))
                         .build());
     }
