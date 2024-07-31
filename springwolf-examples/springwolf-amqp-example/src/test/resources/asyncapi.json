@@ -119,6 +119,14 @@
           "bindingVersion": "0.3.0"
         }
       }
+    },
+    "mychannel": {
+      "address": "mychannel",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.MyRootObject": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.MyRootObject"
+        }
+      }
     }
   },
   "components": {
@@ -212,6 +220,27 @@
           "someEnum",
           "someString"
         ]
+      },
+      "io.github.springwolf.examples.amqp.dtos.MyEnumObject": {
+        "type": "string",
+        "enum": [
+          "VALUE1",
+          "VALUE2"
+        ]
+      },
+      "io.github.springwolf.examples.amqp.dtos.MyRootObject": {
+        "title": "MyRootObject",
+        "type": "object",
+        "properties": {
+          "myEnumObject": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.MyEnumObject"
+          }
+        },
+        "examples": [
+          {
+            "myEnumObject": "VALUE1"
+          }
+        ]
       }
     },
     "messages": {
@@ -251,6 +280,20 @@
             "bindingVersion": "0.3.0"
           }
         }
+      },
+      "io.github.springwolf.examples.amqp.dtos.MyRootObject": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.MyRootObject"
+          }
+        },
+        "name": "io.github.springwolf.examples.amqp.dtos.MyRootObject",
+        "title": "MyRootObject",
+        "bindings": { }
       }
     }
   },
@@ -360,6 +403,20 @@
         },
         {
           "$ref": "#/channels/multi-payload-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "mychannel_send_produce": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/mychannel"
+      },
+      "title": "mychannel_send",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/mychannel/messages/io.github.springwolf.examples.amqp.dtos.MyRootObject"
         }
       ]
     }
