@@ -39,4 +39,6 @@ export const initOperation: Operation = {
 
 export const initSchema: Schema = {
   title: "",
+  name: "",
+  anchorIdentifier: "",
 };

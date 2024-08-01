@@ -32,6 +32,9 @@ a {
   display: flex;
   flex-direction: column;
 }
+.flex-wrap {
+  flex-wrap: wrap;
+}
 .gap-8 {
   gap: 8px;
 }

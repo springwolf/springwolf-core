@@ -444,19 +444,28 @@ export class AsyncApiMapperService {
     return {
       name: schemaName,
       title: schemaName.split(".")?.pop() || "undefined-title",
-      description: schema.description,
       anchorIdentifier: schemaName,
+      description: schema.description,
+      deprecated: schema.deprecated,
 
-      type: schema.type,
-      required: schema.required,
-      format: schema.format,
-
-      properties,
-      items,
       enum: schema.enum,
-
       example,
 
+      type: schema.type,
+      format: schema.format,
+      // type == object
+      properties,
+      required: schema.required,
+      // type == array
+      items,
+      minItems: schema.minItems,
+      maxItems: schema.maxItems,
+      uniqueItems: schema.uniqueItems,
+      // type == string
+      minLength: schema.minLength,
+      maxLength: schema.maxLength,
+      pattern: schema.pattern,
+      // type == number
       minimum: schema.exclusiveMinimum
         ? schema.exclusiveMinimum
         : schema.minimum,
@@ -465,6 +474,7 @@ export class AsyncApiMapperService {
         : schema.maximum,
       exclusiveMinimum: schema.minimum == schema.exclusiveMinimum,
       exclusiveMaximum: schema.maximum == schema.exclusiveMaximum,
+      multipleOf: schema.multipleOf,
     };
   }
 
@@ -504,12 +514,12 @@ export class AsyncApiMapperService {
     return {
       name: schemaName,
       title: schemaName.split(".").pop()!!,
+      anchorIdentifier: schemaName,
 
+      // type == ref
+      anchorUrl: AsyncApiMapperService.BASE_URL + this.resolveRef(schema.$ref),
       refName: schema.$ref,
       refTitle: this.resolveRef(schema.$ref),
-
-      anchorIdentifier: schemaName,
-      anchorUrl: AsyncApiMapperService.BASE_URL + this.resolveRef(schema.$ref),
     };
   }
 

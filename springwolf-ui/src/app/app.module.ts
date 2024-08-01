@@ -38,6 +38,7 @@ import { PrismEditorComponent } from "./components/new/code/prism-editor.compone
 import { SchemaNewComponent } from "./components/new/schema/schema.component";
 import { ServersNewComponent } from "./components/new/servers/servers.component";
 import { SchemasNewComponent } from "./components/new/schemas/schemas.component";
+import { RangeNewComponent } from "./components/new/schema/range/range.component";
 
 @NgModule({
   imports: [],
@@ -64,6 +65,7 @@ export const declarations = [
   ChannelOperationComponent,
   SchemasNewComponent,
   SchemaNewComponent,
+  RangeNewComponent,
 ];
 export const imports = [
   DirectivesModule,
