@@ -160,8 +160,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             SchemaContainer schemaContainer, Map<String, Schema> definitions, Set<Schema> visited) {
         Optional<Schema<?>> resolvedSchema = resolveSchemaFromRef(schemaContainer.schema(), definitions);
         if (resolvedSchema.isPresent()) {
-            return buildExample(
-                    new SchemaContainer(schemaContainer.name(), resolvedSchema.get()), definitions, visited);
+            return buildExample(schemaContainer.withResolvedSchema(resolvedSchema.get()), definitions, visited);
         }
 
         // future improvement: combine with switch from getType to i.e. instanceOf ComposedSchema, instanceof DateSchema
@@ -240,9 +239,9 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         if (!CollectionUtils.isEmpty(schemasAllOf)) {
             return buildFromObjectSchemaWithAllOf(schemaContainer, schemasAllOf, definitions, visited);
         } else if (!CollectionUtils.isEmpty(schemasAnyOf)) {
-            return buildExample(new SchemaContainer(schemaContainer.name(), schemasAnyOf.get(0)), definitions, visited);
+            return buildExample(schemaContainer.withResolvedSchema(schemasAnyOf.get(0)), definitions, visited);
         } else if (!CollectionUtils.isEmpty(schemasOneOf)) {
-            return buildExample(new SchemaContainer(schemaContainer.name(), schemasOneOf.get(0)), definitions, visited);
+            return buildExample(schemaContainer.withResolvedSchema(schemasOneOf.get(0)), definitions, visited);
         }
 
         return Optional.empty();
@@ -258,7 +257,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             exampleValue = buildFromObjectSchemaWithProperties(schemaContainer, properties, definitions, visited);
         } else if (schemaContainer.schema() instanceof MapSchema && additionalProperties instanceof Schema<?>) {
             exampleValue = buildMapExample(
-                    new SchemaContainer(schemaContainer.name(), (Schema) additionalProperties), definitions, visited);
+                    schemaContainer.withResolvedSchema((Schema) additionalProperties), definitions, visited);
         } else {
             exampleValue = exampleValueGenerator.createEmptyObjectExample();
         }

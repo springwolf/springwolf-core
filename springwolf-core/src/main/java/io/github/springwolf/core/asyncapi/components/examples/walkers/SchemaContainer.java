@@ -16,4 +16,8 @@ public record SchemaContainer(Optional<String> name, Schema schema) {
     public Schema schema() {
         return schema;
     }
+
+    public SchemaContainer withResolvedSchema(Schema schema) {
+        return new SchemaContainer(name, schema);
+    }
 }
