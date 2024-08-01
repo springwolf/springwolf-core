@@ -106,6 +106,19 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
+        void type_boolean_default_set(TestInfo testInfo) {
+            BooleanSchema schema = new BooleanSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setDefault(Boolean.FALSE);
+
+            String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
+
+            assertThat(actualString).isEqualTo("""
+                    false
+                    """);
+        }
+
+        @Test
         void type_boolean_example_set(TestInfo testInfo) {
             BooleanSchema schema = new BooleanSchema();
             schema.setName(testInfo.getDisplayName());
@@ -127,6 +140,19 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             assertThat(actualString).isEqualTo("""
                     0
+                    """);
+        }
+
+        @Test
+        void type_integer_default_set(TestInfo testInfo) {
+            IntegerSchema schema = new IntegerSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setDefault(Integer.parseInt("123"));
+
+            String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
+
+            assertThat(actualString).isEqualTo("""
+                    123
                     """);
         }
 
@@ -183,6 +209,19 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
+        void type_number_default_set(TestInfo testInfo) {
+            Schema<BigDecimal> schema = new NumberSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setDefault(new BigDecimal("123.45"));
+
+            String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
+
+            assertThat(actualString).isEqualTo("""
+                    123.45
+                    """);
+        }
+
+        @Test
         void type_number_example_set(TestInfo testInfo) {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setName(testInfo.getDisplayName());
@@ -204,6 +243,19 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             assertThat(actualString).isEqualTo("""
                     "string"
+                    """);
+        }
+
+        @Test
+        void type_string_default_set(TestInfo testInfo) {
+            StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setDefault("custom-example-value");
+
+            String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
+
+            assertThat(actualString).isEqualTo("""
+                    "custom-example-value"
                     """);
         }
 
