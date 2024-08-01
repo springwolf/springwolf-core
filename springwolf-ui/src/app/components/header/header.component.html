@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<mat-toolbar class="flex-column space-between items-center">
+<mat-toolbar class="row space-between">
   <span>
     <a
       href="https://www.springwolf.dev"
@@ -16,8 +16,8 @@
       Springwolf
     </a>
   </span>
-  <h1>{{ title }}</h1>
-  <div>
+  <h1 class="width-s-hide">{{ title }}</h1>
+  <div class="flex flex-column items-center">
     <mat-slide-toggle
       [(ngModel)]="isNewUi"
       (change)="toggleIsNewUi($event.checked)"
@@ -25,7 +25,7 @@
     >
     &nbsp;
     <a href="https://github.com/springwolf/springwolf-core" target="_blank">
-      GitHub
+      <mat-icon [svgIcon]="'github'" />
     </a>
   </div>
 </mat-toolbar>

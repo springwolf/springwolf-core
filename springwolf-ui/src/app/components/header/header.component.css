@@ -5,13 +5,21 @@
   display: block;
 }
 
-h1,
 :host ::ng-deep label,
 a {
-  text-decoration: none;
-  color: white;
+  color: var(--mat-toolbar-container-text-color);
 }
 
+a {
+  text-decoration: none;
+}
 a:hover {
   color: lightgray;
+}
+
+:host ::ng-deep mat-icon {
+  height: 3em;
+  width: 3em;
+  transform: scale(0.75);
+  filter: invert(100%);
 }

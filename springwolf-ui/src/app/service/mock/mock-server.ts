@@ -26,7 +26,7 @@ export class MockServer implements InMemoryDbService {
       });
     }
 
-    return undefined;
+    return reqInfo.utils.getPassThruBackend().handle(reqInfo.req);
   }
 
   post(reqInfo: RequestInfo) {
@@ -38,7 +38,7 @@ export class MockServer implements InMemoryDbService {
       });
     }
 
-    return undefined;
+    return reqInfo.utils.getPassThruBackend().handle(reqInfo.req);
   }
 
   private selectMockData() {

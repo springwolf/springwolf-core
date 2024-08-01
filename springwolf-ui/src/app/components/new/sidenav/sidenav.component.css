@@ -11,6 +11,7 @@ a {
 
 .sidenav .entry.selected > span > a {
   font-weight: bold;
+  color: var(--mat-app-text-color);
 }
 .sidenav .entry.collapsed {
   display: none;
@@ -24,10 +25,10 @@ a {
 .sidenav .badge {
   text-transform: uppercase;
   font-size: smaller;
-  word-break: break-all;
 
   border-radius: 0.3em;
   padding: 0 0.1em;
+  margin: 0 0 auto 0;
 }
 .sidenav .badge.send-badge {
   color: var(--springwolf-badge-color-send);
