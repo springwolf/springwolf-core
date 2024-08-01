@@ -261,6 +261,18 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         }
 
         @Test
+        void type_string_from_enum_as_ref() {
+            StringSchema schema = new StringSchema();
+            schema.addEnumItem("EnumItem1");
+            schema.addEnumItem("EnumItem2");
+            schema.setName(null);
+
+            String actual = xmlSchemaWalker.fromSchema(schema, emptyMap());
+
+            assertThat(actual).isNull();
+        }
+
+        @Test
         void type_string_format_byte() {
             StringSchema schema = new StringSchema();
             schema.setFormat("byte");

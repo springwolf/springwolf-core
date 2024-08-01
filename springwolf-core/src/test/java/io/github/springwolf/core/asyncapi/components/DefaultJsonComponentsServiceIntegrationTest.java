@@ -180,7 +180,15 @@ class DefaultJsonComponentsServiceIntegrationTest {
         private String s;
         private Bar b;
 
+        private BarRef bRef;
+
         private enum Bar {
+            BAR1,
+            BAR2
+        }
+
+        @Schema(enumAsRef = true)
+        private enum BarRef {
             BAR1,
             BAR2
         }

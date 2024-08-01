@@ -269,6 +269,19 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
+        void type_string_from_enum_as_ref() throws JsonProcessingException {
+            StringSchema schema = new StringSchema();
+            schema.setName(null);
+            schema.addEnumItem("EnumItem1");
+            schema.addEnumItem("EnumItem2");
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("\"EnumItem1\"");
+        }
+
+        @Test
         void type_string_format_byte(TestInfo testInfo) throws JsonProcessingException {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());

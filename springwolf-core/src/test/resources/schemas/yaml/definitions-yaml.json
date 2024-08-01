@@ -18,11 +18,19 @@
         "type" : "string",
         "enum" : [ "BAR1", "BAR2" ]
       },
+      "bref" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$FooWithEnum$BarRef"
+      },
       "s" : {
         "type" : "string"
       }
     },
-    "examples" : [ "b: \"BAR1\"\ns: \"string\"\n" ]
+    "examples" : [ "b: \"BAR1\"\nbref: \"BAR1\"\ns: \"string\"\n" ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$FooWithEnum$BarRef" : {
+    "type" : "string",
+    "enum" : [ "BAR1", "BAR2" ],
+    "examples" : [ "\"BAR1\"\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SimpleFoo" : {
     "type" : "string",

@@ -24,14 +24,23 @@
         "type" : "string",
         "enum" : [ "BAR1", "BAR2" ]
       },
+      "bref" : {
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$FooWithEnum$BarRef"
+      },
       "s" : {
         "type" : "string"
       }
     },
     "examples" : [ {
       "b" : "BAR1",
+      "bref" : "BAR1",
       "s" : "string"
     } ]
+  },
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$FooWithEnum$BarRef" : {
+    "type" : "string",
+    "enum" : [ "BAR1", "BAR2" ],
+    "examples" : [ "\"BAR1\"" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$SimpleFoo" : {
     "type" : "object",

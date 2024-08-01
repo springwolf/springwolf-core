@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.components.examples.walkers.xml;
 
 import io.github.springwolf.core.asyncapi.components.examples.walkers.ExampleValueGenerator;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.PropertyExample;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.SchemaContainer;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.SchemaWalker;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -87,12 +88,13 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Element startObject(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Object name must not be empty");
+    public Element startObject(SchemaContainer schemaContainer) {
+        if (schemaContainer.name().isEmpty()) {
+            throw new SchemaWalker.ExampleGeneratingException(
+                    "Schema name must not be empty for schema {}".formatted(schemaContainer.schema()));
         }
 
-        return nodeStack.push(document.createElement(name));
+        return nodeStack.push(document.createElement(schemaContainer.name().get()));
     }
 
     @Override

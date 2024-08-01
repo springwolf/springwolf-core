@@ -287,6 +287,20 @@ class DefaultSchemaWalkerYamlIntegrationTest {
         }
 
         @Test
+        void type_string_from_enum_as_ref() {
+            StringSchema schema = new StringSchema();
+            schema.setName(null);
+            schema.addEnumItem("EnumItem1");
+            schema.addEnumItem("EnumItem2");
+
+            String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
+
+            assertThat(actualString).isEqualTo("""
+                    "EnumItem1"
+                    """);
+        }
+
+        @Test
         void type_string_format_byte(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());

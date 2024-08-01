@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.ExampleValueGenerator;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.PropertyExample;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.SchemaContainer;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.oas.models.media.Schema;
@@ -71,8 +72,8 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode startObject(String name) {
-        return this.exampleJsonValueGenerator.startObject(name);
+    public JsonNode startObject(SchemaContainer schemaContainer) {
+        return this.exampleJsonValueGenerator.startObject(schemaContainer);
     }
 
     @Override
