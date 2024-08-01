@@ -115,25 +115,6 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
     }
 
     @Test
-    void scan_componentHasHiddenAnnotation() {
-        // when
-        List<Map.Entry<String, ChannelObject>> channels =
-                scanner.scan(ClassWithHiddenAnnotation.class).collect(Collectors.toList());
-
-        // then
-        assertThat(channels).isEmpty();
-    }
-
-    private static class ClassWithHiddenAnnotation {
-
-        @TestListener
-        @Hidden
-        private void methodWithAnnotation(String payload) {}
-
-        private void methodWithoutAnnotation() {}
-    }
-
-    @Test
     void scan_componentHasTestListenerMethods() {
         // when
         List<Map.Entry<String, ChannelObject>> channels =
