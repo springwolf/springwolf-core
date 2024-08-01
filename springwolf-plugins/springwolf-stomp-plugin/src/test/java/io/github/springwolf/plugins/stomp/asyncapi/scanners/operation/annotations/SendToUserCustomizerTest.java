@@ -32,7 +32,7 @@ class SendToUserCustomizerTest {
         // given
         Operation operation = new Operation();
         when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL_ID);
-        when(payloadService.extractSchema(any())).thenReturn(new PayloadSchemaObject(MESSAGE_ID, null));
+        when(payloadService.extractSchema(any())).thenReturn(new PayloadSchemaObject(MESSAGE_ID, null, null));
 
         // when
         sendToCustomizer.customize(operation, this.getClass().getDeclaredMethod("testMethod"));

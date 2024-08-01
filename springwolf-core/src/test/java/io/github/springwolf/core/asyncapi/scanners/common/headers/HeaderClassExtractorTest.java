@@ -23,7 +23,7 @@ class HeaderClassExtractorTest {
     private final HeaderClassExtractor headerClassExtractor = new HeaderClassExtractor(schemaService);
 
     private final PayloadSchemaObject payloadSchemaName =
-            new PayloadSchemaObject("payloadSchemaName", new SchemaObject());
+            new PayloadSchemaObject("payloadSchemaName", new SchemaObject(), null);
     private final SchemaObject stringSchema =
             SchemaObject.builder().type(SchemaType.STRING).build();
     private final SchemaObject stringSwaggerSchema =

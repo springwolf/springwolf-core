@@ -1209,7 +1209,9 @@ components:
       payload:
         schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
         schema:
-          $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+          oneOf:
+            - $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleElectricPayloadDto"
+            - $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleGasolinePayloadDto"
       name: io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
       title: VehicleBase
       bindings:
