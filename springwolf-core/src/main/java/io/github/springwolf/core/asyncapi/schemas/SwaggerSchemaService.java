@@ -153,7 +153,10 @@ public class SwaggerSchemaService {
         if (schemaForType != null) {
             var schemaAnnotation = type.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
             if (schemaAnnotation != null) {
-                schemaForType.setDescription(schemaAnnotation.description());
+                String description = schemaAnnotation.description();
+                if (StringUtils.isNotBlank(description)) {
+                    schemaForType.setDescription(description);
+                }
             }
         }
     }

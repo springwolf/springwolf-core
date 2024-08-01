@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
@@ -22,8 +22,11 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +45,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class DefaultYamlComponentsServiceTest {
+class DefaultYamlComponentsServiceIntegrationTest {
 
     private static final String CONTENT_TYPE_APPLICATION_YAML = "application/yaml";
 
@@ -276,50 +279,35 @@ class DefaultYamlComponentsServiceTest {
     }
 
     @Nested
-    class AsyncApiPayloadTest {
+    class JsonSubTypesRecursionTest {
         @Test
-        void stringEnvelopTest() throws IOException {
-            componentsService.registerSchema(StringEnvelop.class, CONTENT_TYPE_APPLICATION_YAML);
+        void registerSchemaWithoutStackOverflowException() {
+            componentsService.registerSchema(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_YAML);
 
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/yaml/api-payload-yaml.json");
-
-            System.out.println("Got: " + actualDefinitions);
-            assertEquals(expected, actualDefinitions);
-
-            assertThat(actualDefinitions).doesNotContain("otherField");
+            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            assertThat(schemas)
+                    .containsOnlyKeys(
+                            this.getClass().getName() + "$CriteriaMessage",
+                            this.getClass().getName() + "$LegacyCriteriaMessage");
         }
 
-        @Test
-        void illegalEnvelopTest() throws IOException {
-            componentsService.registerSchema(
-                    EnvelopWithMultipleAsyncApiPayloadAnnotations.class, CONTENT_TYPE_APPLICATION_YAML);
-
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-
-            // fallback to EnvelopWithMultipleAsyncApiPayloadAnnotations, which contains the field
-            assertThat(actualDefinitions).contains("otherField");
-        }
-
-        @Data
+        @Getter
+        @Setter
+        @AllArgsConstructor
         @NoArgsConstructor
-        public class StringEnvelop {
-            Integer otherField;
-
-            @AsyncApiPayload
-            @Schema(description = "The payload in the envelop", maxLength = 10)
-            String payload;
+        @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, defaultImpl = CriteriaMessage.class)
+        @JsonSubTypes({@JsonSubTypes.Type(value = LegacyCriteriaMessage.class)})
+        public class CriteriaMessage {
+            private String criteriaId;
+            private String note;
+            private String expectedValue;
         }
 
-        @Data
+        @Getter
+        @Setter
         @NoArgsConstructor
-        public class EnvelopWithMultipleAsyncApiPayloadAnnotations {
-            @AsyncApiPayload
-            Integer otherField;
-
-            @AsyncApiPayload
-            @Schema(description = "The payload in the envelop", maxLength = 10)
-            String payload;
+        public class LegacyCriteriaMessage extends CriteriaMessage {
+            private List<LegacyCriteriaMessage> subCriteriaList;
         }
     }
 
@@ -327,9 +315,7 @@ class DefaultYamlComponentsServiceTest {
     class JsonTypeTest {
         @Test
         void getJsonTypeDefinitions() throws IOException {
-            componentsService.registerSchema(
-                    DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoPayloadDto.class,
-                    CONTENT_TYPE_APPLICATION_YAML);
+            componentsService.registerSchema(JsonTypeTest.JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_YAML);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
             String expected = jsonResource("/schemas/yaml/json-type-definitions-yaml.json");
@@ -341,22 +327,14 @@ class DefaultYamlComponentsServiceTest {
         @Schema(description = "Json Type Info Payload Dto model")
         public record JsonTypeInfoPayloadDto(
                 @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-                        DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoInterface jsonTypeInfoInterface) {}
+                        JsonTypeTest.JsonTypeInfoInterface jsonTypeInfoInterface) {}
 
         @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, property = "type")
         @JsonSubTypes({
-            @JsonSubTypes.Type(
-                    value = DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoExampleOne.class,
-                    name = "exampleOne"),
-            @JsonSubTypes.Type(
-                    value = DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoExampleTwo.class,
-                    name = "exampleTwo")
+            @JsonSubTypes.Type(value = JsonTypeInfoExampleOne.class, name = "exampleOne"),
+            @JsonSubTypes.Type(value = JsonTypeInfoExampleTwo.class, name = "exampleTwo")
         })
-        @Schema(
-                oneOf = {
-                    DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoExampleOne.class,
-                    DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoExampleTwo.class
-                })
+        @Schema(oneOf = {JsonTypeInfoExampleOne.class, JsonTypeInfoExampleTwo.class})
         public interface JsonTypeInfoInterface {}
 
         @JsonTypeName("exampleTwo")
@@ -367,7 +345,7 @@ class DefaultYamlComponentsServiceTest {
                                 example = "booValue",
                                 requiredMode = Schema.RequiredMode.NOT_REQUIRED)
                         String boo)
-                implements DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoInterface {}
+                implements JsonTypeInfoInterface {}
 
         @JsonTypeName("exampleOne")
         @Schema(description = "Json Type Info Example One model")
@@ -377,6 +355,6 @@ class DefaultYamlComponentsServiceTest {
                                 example = "fooValue",
                                 requiredMode = Schema.RequiredMode.NOT_REQUIRED)
                         String foo)
-                implements DefaultJsonComponentsServiceTest.JsonTypeTest.JsonTypeInfoInterface {}
+                implements JsonTypeInfoInterface {}
     }
 }

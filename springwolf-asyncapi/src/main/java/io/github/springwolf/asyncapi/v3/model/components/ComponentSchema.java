@@ -6,9 +6,13 @@ import io.github.springwolf.asyncapi.v3.jackson.model.channel.message.ComponentS
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@EqualsAndHashCode
+@ToString
 @JsonSerialize(using = ComponentSchemaSerializer.class)
 public class ComponentSchema {
     private MultiFormatSchema multiFormatSchema;

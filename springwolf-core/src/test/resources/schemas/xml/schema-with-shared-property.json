@@ -1,26 +1,26 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$ClassA" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$ClassA" : {
     "type" : "string",
     "properties" : {
       "classB" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$ClassB"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$ClassB"
       },
       "reference" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$Reference"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$Reference"
       }
     },
     "examples" : [ "<ClassA><ClassB><Reference/></ClassB><Reference/></ClassA>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$ClassB" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$ClassB" : {
     "type" : "string",
     "properties" : {
       "reference" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$Reference"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$Reference"
       }
     },
     "examples" : [ "<ClassB><Reference/></ClassB>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceTest$XmlSchemaName$Reference" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$Reference" : {
     "type" : "string",
     "examples" : [ "<Reference/>" ]
   }

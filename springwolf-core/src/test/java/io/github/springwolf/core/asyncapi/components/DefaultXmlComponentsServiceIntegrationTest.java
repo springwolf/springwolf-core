@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.DefaultExampleXmlValueSerializer;
@@ -38,10 +37,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class DefaultXmlComponentsServiceTest {
+class DefaultXmlComponentsServiceIntegrationTest {
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
             List.of(),
             List.of(new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(
@@ -378,54 +376,6 @@ class DefaultXmlComponentsServiceTest {
 
             @XmlAttribute
             private final String value = "test";
-        }
-    }
-
-    @Nested
-    class AsyncApiPayloadTest {
-        @Test
-        void stringEnvelopTest() throws IOException {
-            componentsService.registerSchema(StringEnvelop.class, "text/xml");
-
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/xml/api-payload-xml.json");
-
-            System.out.println("Got: " + actualDefinitions);
-            assertEquals(expected, actualDefinitions);
-
-            assertThat(actualDefinitions).doesNotContain("otherField");
-        }
-
-        @Test
-        void illegalEnvelopTest() throws IOException {
-            componentsService.registerSchema(EnvelopWithMultipleAsyncApiPayloadAnnotations.class, "text/xml");
-
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-
-            // fallback to EnvelopWithMultipleAsyncApiPayloadAnnotations, which contains the field
-            assertThat(actualDefinitions).contains("otherField");
-        }
-
-        @Data
-        @NoArgsConstructor
-        public class StringEnvelop {
-            Integer otherField;
-
-            @AsyncApiPayload
-            @Schema(description = "The payload in the envelop", maxLength = 10)
-            String payload;
-        }
-
-        @Data
-        @NoArgsConstructor
-        @XmlRootElement(name = "EnvelopWithMultipleAsyncApiPayloadAnnotations")
-        public class EnvelopWithMultipleAsyncApiPayloadAnnotations {
-            @AsyncApiPayload
-            Integer otherField;
-
-            @AsyncApiPayload
-            @Schema(description = "The payload in the envelop", maxLength = 10)
-            String payload;
         }
     }
 }

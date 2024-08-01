@@ -1,5 +1,5 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$JsonTypeTest$JsonTypeInfoExampleOne" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoExampleOne" : {
     "type" : "object",
     "description" : "Json Type Info Example One model",
     "examples" : [ {
@@ -7,7 +7,7 @@
       "type" : "string"
     } ],
     "allOf" : [ {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$JsonTypeTest$JsonTypeInfoInterface"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoInterface"
     }, {
       "type" : "object",
       "properties" : {
@@ -19,7 +19,7 @@
       }
     } ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$JsonTypeTest$JsonTypeInfoExampleTwo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoExampleTwo" : {
     "type" : "object",
     "description" : "Json Type Info Example Two model",
     "examples" : [ {
@@ -27,7 +27,7 @@
       "type" : "string"
     } ],
     "allOf" : [ {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$JsonTypeTest$JsonTypeInfoInterface"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoInterface"
     }, {
       "type" : "object",
       "properties" : {
@@ -39,7 +39,7 @@
       }
     } ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$JsonTypeTest$JsonTypeInfoInterface" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoInterface" : {
     "discriminator" : "type",
     "type" : "object",
     "properties" : {
@@ -53,16 +53,16 @@
     } ],
     "required" : [ "type" ],
     "oneOf" : [ {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$JsonTypeTest$JsonTypeInfoExampleOne"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoExampleOne"
     }, {
-      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$JsonTypeTest$JsonTypeInfoExampleTwo"
+      "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoExampleTwo"
     } ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$JsonTypeTest$JsonTypeInfoPayloadDto" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoPayloadDto" : {
     "type" : "object",
     "properties" : {
       "jsonTypeInfoInterface" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceTest$JsonTypeTest$JsonTypeInfoInterface"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoInterface"
       }
     },
     "description" : "Json Type Info Payload Dto model",
