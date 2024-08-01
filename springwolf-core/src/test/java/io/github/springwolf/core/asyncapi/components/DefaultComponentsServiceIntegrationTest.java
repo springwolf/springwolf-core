@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultComponentsServiceIntegrationTest {
-    private final String CONTENT_TYPE_APPLICATION_JSON = "does-not-matter";
+    private final String CONTENT_TYPE = "does-not-matter";
 
     private final SwaggerSchemaService schemaService =
             new SwaggerSchemaService(List.of(), List.of(), new SwaggerSchemaUtil(), new SpringwolfConfigProperties());
@@ -33,7 +33,7 @@ class DefaultComponentsServiceIntegrationTest {
     class AllSchemaFields {
         @Test
         void getStringSchemas() {
-            componentsService.registerSchema(StringFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.registerSchema(StringFoo.class, CONTENT_TYPE);
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
@@ -60,7 +60,7 @@ class DefaultComponentsServiceIntegrationTest {
 
         @Test
         void getArraySchemas() {
-            componentsService.registerSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.registerSchema(ArrayFoo.class, CONTENT_TYPE);
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
@@ -88,7 +88,7 @@ class DefaultComponentsServiceIntegrationTest {
 
         @Test
         void getRefSchemas() {
-            componentsService.registerSchema(RefFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.registerSchema(RefFoo.class, CONTENT_TYPE);
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
@@ -120,7 +120,7 @@ class DefaultComponentsServiceIntegrationTest {
 
         @Test
         void getNumberSchemas() {
-            componentsService.registerSchema(NumberFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.registerSchema(NumberFoo.class, CONTENT_TYPE);
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
@@ -145,7 +145,7 @@ class DefaultComponentsServiceIntegrationTest {
 
         @Test
         void getNotSupportedSchemas() {
-            componentsService.registerSchema(NotSupportedFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.registerSchema(NotSupportedFoo.class, CONTENT_TYPE);
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
@@ -237,7 +237,7 @@ class DefaultComponentsServiceIntegrationTest {
     class AsyncApiPayloadTest {
         @Test
         void stringEnvelopTest() {
-            componentsService.registerSchema(StringEnvelop.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.registerSchema(StringEnvelop.class, CONTENT_TYPE);
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
@@ -253,8 +253,7 @@ class DefaultComponentsServiceIntegrationTest {
 
         @Test
         void illegalEnvelopTest() {
-            componentsService.registerSchema(
-                    EnvelopWithMultipleAsyncApiPayloadAnnotations.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.registerSchema(EnvelopWithMultipleAsyncApiPayloadAnnotations.class, CONTENT_TYPE);
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);

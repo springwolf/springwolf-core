@@ -129,6 +129,7 @@ public class SwaggerSchemaService {
         processCommonModelConverters(schemas);
         processAsyncApiPayloadAnnotation(schemas, schemaName, type);
         processSchemaAnnotation(schemas, schemaName, type);
+        processSchemaWithoutName(schemas);
     }
 
     private void processCommonModelConverters(Map<String, Schema> schemas) {
@@ -182,6 +183,14 @@ public class SwaggerSchemaService {
                             + "Falling back and ignoring annotation."),
                     type.getName());
         }
+    }
+
+    private void processSchemaWithoutName(Map<String, Schema> schemas) {
+        schemas.forEach((schemaName, schema) -> {
+            if (schema.getName() == null) {
+                schema.setName(schemaName);
+            }
+        });
     }
 
     private String registerPrimitive(Class<?> type, Schema schema, Map<String, Schema> schemas) {
