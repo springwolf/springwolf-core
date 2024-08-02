@@ -1,13 +1,4 @@
 services:
-  app:
-    image: stavshamir/springwolf-amqp-example:${SPRINGWOLF_VERSION}
-    links:
-      - amqp
-    ports:
-      - "8080:8080"
-    depends_on:
-      - amqp
-
   amqp:
     image: rabbitmq:3.8-management-alpine
     ports:

@@ -32,6 +32,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework:spring-context"
 
+    developmentOnly "org.springframework.boot:spring-boot-docker-compose"
+
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
