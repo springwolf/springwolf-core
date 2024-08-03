@@ -17,5 +17,6 @@ It uses the
 Note: You need to execute the gradle `bootRun` task since the IntelliJ spring application will not include springwolf-ui correctly.
 
 1. Clone this repository: `$ git clone https://github.com/springwolf/springwolf-core.git`.
-2. Start the application: `$ cd springwolf-core && ./gradlew build -p springwolf-examples/springwolf-stomp-example bootRun`.
-3. Visit `localhost:8080/springwolf/asyncapi-ui.html` or try the API: `$ curl localhost:8080/springwolf/docs`.
+2. Switch to folder: `$ cd springwolf-core/springwolf-examples/springwolf-stomp-example`.
+3. Start the application: `$ ../../gradlew bootRun`.
+4. Visit `http://localhost:8080/springwolf/asyncapi-ui.html` or try the API: `$ curl http://localhost:8080/springwolf/docs`.

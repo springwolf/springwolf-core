@@ -8,10 +8,8 @@
 ### Run with gradle
 Note: You need to execute the gradle `bootRun` task since the IntelliJ spring application will not include springwolf-ui correctly.
 
-1. Verify zookeeper and kafka are running.
-2. Define an environment variable with the bootstrap server details: `$ export BOOTSTRAP_SERVER=localhost:9092`.
-3. Clone this repository: `$ git clone https://github.com/springwolf/springwolf-core.git`.
-4. Start the application: `$ cd springwolf-core && ./gradlew build -p springwolf-examples/springwolf-cloud-stream-example bootRun`.
-5. Visit `localhost:8080/springwolf/asyncapi-ui.html` or try the API: `$ curl localhost:8080/springwolf/docs`.
-
-_Tested with Kafka version 2.12_0.10.2.2._
+1. Clone this repository: `$ git clone https://github.com/springwolf/springwolf-core.git`.
+2. Switch to folder: `$ cd springwolf-core/springwolf-examples/springwolf-cloud-stream-example`.
+3. Start the infrastructure: `$ docker compose up kafka -d` (to run integration tests, stop the infrastructure).
+4. Start the application: `$ ../../gradlew bootRun`.
+5. Visit `http://localhost:8080/springwolf/asyncapi-ui.html` or try the API: `$ curl http://localhost:8080/springwolf/docs`.
