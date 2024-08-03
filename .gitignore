@@ -25,6 +25,7 @@ node_modules/
 
 asyncapi.actual.json
 asyncapi.actual.yaml
+*.actual.json
 
 # Eclipse IDE
 .classpath

@@ -19,6 +19,7 @@ import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGener
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.fixtures.ClasspathUtil;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
@@ -31,9 +32,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
         componentsService.registerSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/yaml/definitions-yaml.json");
+        String expected = loadDefinitions("/schemas/yaml/definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -85,7 +84,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
         componentsService.registerSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/yaml/documented-definitions-yaml.json");
+        String expected = loadDefinitions("/schemas/yaml/documented-definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -96,7 +95,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
         componentsService.registerSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/yaml/array-definitions-yaml.json");
+        String expected = loadDefinitions("/schemas/yaml/array-definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -107,7 +106,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
         componentsService.registerSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/yaml/complex-definitions-yaml.json");
+        String expected = loadDefinitions("/schemas/yaml/complex-definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -118,16 +117,15 @@ class DefaultYamlComponentsServiceIntegrationTest {
         componentsService.registerSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/yaml/generics-wrapper-definitions-yaml.json");
+        String expected = loadDefinitions("/schemas/yaml/generics-wrapper-definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
     }
 
-    private String jsonResource(String path) throws IOException {
-        try (InputStream s = this.getClass().getResourceAsStream(path)) {
-            return new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        }
+    private String loadDefinitions(String path, String content) throws IOException {
+        ClasspathUtil.writeAsActual(path, content);
+        return ClasspathUtil.readAsString(path);
     }
 
     @Data
@@ -239,7 +237,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
             componentsService.registerSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/yaml/annotation-definitions-yaml.json");
+            String expected = loadDefinitions("/schemas/yaml/annotation-definitions-yaml.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
             assertEquals(expected, actualDefinitions);
@@ -318,7 +316,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
             componentsService.registerSchema(JsonTypeTest.JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_YAML);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/yaml/json-type-definitions-yaml.json");
+            String expected = loadDefinitions("/schemas/yaml/json-type-definitions-yaml.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
             assertEquals(expected, actualDefinitions);

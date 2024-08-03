@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGener
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.fixtures.ClasspathUtil;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
@@ -29,9 +30,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -66,7 +65,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
         componentsService.registerSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/definitions.json");
+        String expected = loadDefinition("/schemas/json/definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -77,7 +76,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
         componentsService.registerSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/documented-definitions.json");
+        String expected = loadDefinition("/schemas/json/documented-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -88,7 +87,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
         componentsService.registerSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/array-definitions.json");
+        String expected = loadDefinition("/schemas/json/array-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -99,7 +98,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
         componentsService.registerSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/complex-definitions.json");
+        String expected = loadDefinition("/schemas/json/complex-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -110,16 +109,15 @@ class DefaultJsonComponentsServiceIntegrationTest {
         componentsService.registerSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/generics-wrapper-definitions.json");
+        String expected = loadDefinition("/schemas/json/generics-wrapper-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
     }
 
-    private String jsonResource(String path) throws IOException {
-        try (InputStream s = this.getClass().getResourceAsStream(path)) {
-            return new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        }
+    private String loadDefinition(String path, String content) throws IOException {
+        ClasspathUtil.writeAsActual(path, content);
+        return ClasspathUtil.readAsString(path);
     }
 
     @Data
@@ -231,7 +229,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
             componentsService.registerSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/annotation-definitions.json");
+            String expected = loadDefinition("/schemas/json/annotation-definitions.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
             assertEquals(expected, actualDefinitions);
@@ -310,7 +308,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
             componentsService.registerSchema(JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_JSON);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/json-type-definitions.json");
+            String expected = loadDefinition("/schemas/json/json-type-definitions.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
             assertEquals(expected, actualDefinitions);
