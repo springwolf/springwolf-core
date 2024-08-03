@@ -44,6 +44,17 @@
         "kafka": { }
       }
     },
+    "consumer-topic": {
+      "address": "consumer-topic",
+      "messages": {
+        "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
+        }
+      },
+      "bindings": {
+        "kafka": { }
+      }
+    },
     "example-topic": {
       "address": "example-topic",
       "messages": {
@@ -248,21 +259,6 @@
     }
   },
   "operations": {
-    "another-topic_publish_consumerMethod": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/another-topic"
-      },
-      "description": "Auto-generated description",
-      "bindings": {
-        "kafka": { }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
-        }
-      ]
-    },
     "another-topic_subscribe_process": {
       "action": "send",
       "channel": {
@@ -290,6 +286,21 @@
       "messages": [
         {
           "$ref": "#/channels/consumer-class-topic/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "consumer-topic_publish_consumerMethod": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/consumer-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/consumer-topic/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
         }
       ]
     },
