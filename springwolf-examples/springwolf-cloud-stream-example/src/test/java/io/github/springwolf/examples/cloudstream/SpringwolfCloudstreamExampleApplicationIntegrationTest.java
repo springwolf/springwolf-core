@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(
         partitions = 1,
-        brokerProperties = {"listeners=PLAINTEXT://localhost:29092", "port=29092"})
+        brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 @DirtiesContext
 class SpringwolfCloudstreamExampleApplicationIntegrationTest {
 

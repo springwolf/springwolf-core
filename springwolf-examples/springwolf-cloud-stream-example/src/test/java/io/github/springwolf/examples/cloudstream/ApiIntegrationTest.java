@@ -20,7 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(
         classes = {SpringwolfCloudstreamExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EmbeddedKafka(partitions = 1)
+@EmbeddedKafka(
+        partitions = 1,
+        brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 @DirtiesContext
 public class ApiIntegrationTest {
 
