@@ -13,6 +13,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestAbstra
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestMessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import org.assertj.core.util.Maps;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,6 +25,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,13 +44,13 @@ class AsyncAnnotationUtilTest {
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
 
         StringValueResolver resolver = mock(StringValueResolver.class);
-
-        // when
         when(resolver.resolveStringValue(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
-        // then
+        // when
         SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, resolver);
+
+        // then
         assertEquals("TestSchema", headers.getTitle());
         assertEquals("header-descriptionResolved", headers.getDescription());
         assertTrue(
@@ -67,6 +70,39 @@ class AsyncAnnotationUtilTest {
         assertTrue(headerWithoutValueResolved.getExamples().isEmpty());
         assertTrue(headerWithoutValueResolved.getEnumValues().isEmpty());
         assertEquals("descriptionResolved", headerWithoutValueResolved.getDescription());
+    }
+
+    @Test
+    void getAsyncHeadersWithEmptyHeaders() throws NoSuchMethodException {
+        // given
+        Method m = ClassWithHeaders.class.getDeclaredMethod("emptyHeaders", String.class);
+        AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
+
+        StringValueResolver resolver = mock(StringValueResolver.class);
+        when(resolver.resolveStringValue(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
+
+        // when
+        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, resolver);
+
+        // then
+        assertThat(headers).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+    }
+
+    @Test
+    void getAsyncHeadersWithoutSchemaName() throws NoSuchMethodException {
+        // given
+        Method m = ClassWithHeaders.class.getDeclaredMethod("withoutSchemaName", String.class);
+        AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
+
+        StringValueResolver resolver = mock(StringValueResolver.class);
+        when(resolver.resolveStringValue(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
+
+        // when + then
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> AsyncAnnotationUtil.getAsyncHeaders(operation, resolver))
+                .withMessageContaining("The schemaName in @AsyncOperation.Headers must be set for values");
     }
 
     @Test
@@ -305,6 +341,27 @@ class AsyncAnnotationUtilTest {
                                                 title = "Message Title")))
         @TestAbstractOperationBindingProcessor.TestOperationBinding()
         private void methodWithAsyncMessageAnnotation(String payload) {}
+    }
+
+    private static class ClassWithHeaders {
+        @AsyncListener(operation = @AsyncOperation(channelName = "${test.property.test-channel}"))
+        @TestOperationBindingProcessor.TestOperationBinding()
+        private void emptyHeaders(String payload) {}
+
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                headers =
+                                        @AsyncOperation.Headers(
+                                                values = {
+                                                    @AsyncOperation.Headers.Header(
+                                                            name = "header",
+                                                            value = "value",
+                                                            description = "description")
+                                                })))
+        @TestOperationBindingProcessor.TestOperationBinding()
+        private void withoutSchemaName(String payload) {}
     }
 
     private static class ClassWithMultipleOperationBindingProcessors {

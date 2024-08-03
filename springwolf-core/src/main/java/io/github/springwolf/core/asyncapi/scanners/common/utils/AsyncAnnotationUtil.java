@@ -35,33 +35,37 @@ public class AsyncAnnotationUtil {
     private AsyncAnnotationUtil() {}
 
     public static SchemaObject getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
-        if (op.headers().values().length == 0) {
-            if (op.headers().notUsed()) {
+        AsyncOperation.Headers headers = op.headers();
+        if (headers.values().length == 0) {
+            if (headers.notUsed()) {
                 return AsyncHeadersNotUsed.NOT_USED;
             }
             return AsyncHeadersNotDocumented.NOT_DOCUMENTED;
         }
+        if (!StringUtils.hasText(headers.schemaName())) {
+            throw new IllegalArgumentException("The schemaName in @AsyncOperation.Headers must be set for values: "
+                    + Arrays.toString(headers.values()));
+        }
 
-        String headerDescription = StringUtils.hasText(op.headers().description())
-                ? resolver.resolveStringValue(op.headers().description())
-                : null;
+        String headerDescription =
+                StringUtils.hasText(headers.description()) ? resolver.resolveStringValue(headers.description()) : null;
 
         SchemaObject headerSchema = new SchemaObject();
         headerSchema.setType("object");
-        headerSchema.setTitle(op.headers().schemaName());
+        headerSchema.setTitle(headers.schemaName());
         headerSchema.setDescription(headerDescription);
         headerSchema.setProperties(new HashMap<>());
 
-        Arrays.stream(op.headers().values())
+        Arrays.stream(headers.values())
                 .collect(groupingBy(AsyncOperation.Headers.Header::name))
-                .forEach((headerName, headers) -> {
+                .forEach((headerName, headersValues) -> {
                     String propertyName = resolver.resolveStringValue(headerName);
 
                     SchemaObject property = new SchemaObject();
                     property.setType("string");
                     property.setTitle(propertyName);
-                    property.setDescription(getDescription(headers, resolver));
-                    List<String> values = getHeaderValues(headers, resolver);
+                    property.setDescription(getDescription(headersValues, resolver));
+                    List<String> values = getHeaderValues(headersValues, resolver);
                     property.setExamples(new ArrayList<>(values));
                     property.setEnumValues(values);
                     headerSchema.getProperties().put(propertyName, property);
