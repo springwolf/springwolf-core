@@ -28,6 +28,7 @@ dependencies {
     runtimeOnly project(":springwolf-ui")
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
     runtimeOnly "org.springframework.boot:spring-boot-starter-actuator"
+    runtimeOnly "org.springframework.cloud:spring-cloud-starter-stream-kafka"
 
     implementation "org.apache.kafka:kafka-streams:${kafkaStreamsVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
