@@ -14,6 +14,7 @@ import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGener
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.fixtures.ClasspathUtil;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
@@ -26,9 +27,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
         componentsService.registerSchema(FooWithEnum.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/xml/definitions-xml.json");
+        String expected = loadDefinition("/schemas/xml/definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -71,7 +70,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
         componentsService.registerSchema(DocumentedSimpleFoo.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/xml/documented-definitions-xml.json");
+        String expected = loadDefinition("/schemas/xml/documented-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -82,7 +81,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
         componentsService.registerSchema(ArrayFoo.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/xml/array-definitions-xml.json");
+        String expected = loadDefinition("/schemas/xml/array-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -93,7 +92,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
         componentsService.registerSchema(ComplexFoo.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/xml/complex-definitions-xml.json");
+        String expected = loadDefinition("/schemas/xml/complex-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -104,7 +103,8 @@ class DefaultXmlComponentsServiceIntegrationTest {
         componentsService.registerSchema(ComplexAttributesFoo.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/xml/complex-definitions-with-attributes-xml.json");
+        String expected =
+                loadDefinition("/schemas/xml/complex-definitions-with-attributes-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
@@ -115,16 +115,15 @@ class DefaultXmlComponentsServiceIntegrationTest {
         componentsService.registerSchema(ListWrapper.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-        String expected = jsonResource("/schemas/xml/generics-wrapper-definitions-xml.json");
+        String expected = loadDefinition("/schemas/xml/generics-wrapper-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
         assertEquals(expected, actualDefinitions);
     }
 
-    private String jsonResource(String path) throws IOException {
-        try (InputStream s = this.getClass().getResourceAsStream(path)) {
-            return new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        }
+    private String loadDefinition(String path, String content) throws IOException {
+        ClasspathUtil.writeAsActual(path, content);
+        return ClasspathUtil.readAsString(path);
     }
 
     @Data
@@ -246,7 +245,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
             componentsService.registerSchema(SchemaAnnotationFoo.class, "text/xml");
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/xml/annotation-definitions-xml.json");
+            String expected = loadDefinition("/schemas/xml/annotation-definitions-xml.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
             assertEquals(expected, actualDefinitions);
@@ -346,7 +345,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
             componentsService.registerSchema(XmlSchemaName.ClassA.class, "text/xml");
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
-            String expected = jsonResource("/schemas/xml/schema-with-shared-property.json");
+            String expected = loadDefinition("/schemas/xml/schema-with-shared-property.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
             assertEquals(expected, actualDefinitions);
