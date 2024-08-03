@@ -54,7 +54,12 @@ export function verifyNoErrorLogs(dockerLogs: MonitorDockerLogsResponse) {
 
   const errorMessages = dockerLogs.messages
     .filter((message) => message.includes("i.g.s")) // io.github.springwolf
-    .filter((message) => message.includes("ERROR") || message.includes("WARN"));
+    .filter(
+      (message) =>
+        message.includes("ERROR") ||
+        message.includes("WARN") ||
+        message.includes("Failed")
+    );
 
   expect(errorMessages, {
     message: "expect: No Springwolf ERROR or WARN log messages found",
