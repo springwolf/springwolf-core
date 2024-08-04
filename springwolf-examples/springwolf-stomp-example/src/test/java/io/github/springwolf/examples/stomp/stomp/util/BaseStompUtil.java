@@ -83,6 +83,7 @@ public class BaseStompUtil<R> {
     }
 
     public void send(String destination, Object payload) {
+        log.info("Sending message to {} with payload {}", destination, payload);
         session.send(destination, payload);
     }
 }

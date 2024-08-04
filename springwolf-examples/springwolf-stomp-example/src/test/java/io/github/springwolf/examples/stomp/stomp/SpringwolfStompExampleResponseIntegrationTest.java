@@ -93,6 +93,6 @@ public class SpringwolfStompExampleResponseIntegrationTest {
 
         // then
         ExamplePayloadDto response = stompTestUtil.getMessage();
-        assertEquals(response, payload);
+        assertEquals(payload, response);
     }
 }
