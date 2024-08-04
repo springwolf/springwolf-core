@@ -13,15 +13,14 @@ services:
   kafka:
     image: confluentinc/cp-kafka:latest
     ports:
-      - "9092:9092" # plaintext - no authentication
-      - "9093:9093" # sasl
+      - "9095:9095" # plaintext - no authentication (port 9095 avoids conflict with kafka plugin)
     volumes:
       - ./broker_jaas.conf:/etc/kafka/secrets/broker_jaas.conf
     environment:
       KAFKA_NODE_ID: 1
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk=='
-      KAFKA_LISTENERS:            PLAINTEXT://0.0.0.0:9092,  INTERNAL://kafka:29092, SASL_PLAINTEXT://0.0.0.0:9093,  SASL_INTERNAL://kafka:29093, CONTROLLER://kafka:29099
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,INTERNAL://kafka:29092, SASL_PLAINTEXT://localhost:9093,SASL_INTERNAL://kafka:29093
+      KAFKA_LISTENERS:            PLAINTEXT://0.0.0.0:9095,  INTERNAL://kafka:29092, SASL_PLAINTEXT://0.0.0.0:9093,  SASL_INTERNAL://kafka:29093, CONTROLLER://kafka:29099
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9095,INTERNAL://kafka:29092, SASL_PLAINTEXT://localhost:9093,SASL_INTERNAL://kafka:29093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,  SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_INTERNAL:SASL_PLAINTEXT,  CONTROLLER:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_PROCESS_ROLES: 'controller,broker'

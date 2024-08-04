@@ -19,7 +19,7 @@ public class SpringContextIntegrationTest {
     @SpringBootTest(classes = SpringwolfCloudstreamExampleApplication.class)
     @EmbeddedKafka(
             partitions = 1,
-            brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
+            brokerProperties = {"listeners=PLAINTEXT://localhost:9095", "port=9095"})
     @Nested
     @DirtiesContext
     @TestPropertySource(
