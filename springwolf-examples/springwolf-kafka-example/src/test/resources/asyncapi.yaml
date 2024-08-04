@@ -879,9 +879,9 @@ components:
           type: string
       examples:
         - |
-          someEnum: "FOO1"
+          someEnum: FOO1
           someLong: 0
-          someString: "string"
+          someString: string
       x-json-schema:
         $schema: https://json-schema.org/draft-04/schema#
         properties:

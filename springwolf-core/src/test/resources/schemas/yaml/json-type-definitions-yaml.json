@@ -2,7 +2,7 @@
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoExampleOne" : {
     "type" : "string",
     "description" : "Json Type Info Example One model",
-    "examples" : [ "foo: \"fooValue\"\ntype: \"string\"\n" ],
+    "examples" : [ "foo: fooValue\ntype: string\n" ],
     "allOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoInterface"
     }, {
@@ -19,7 +19,7 @@
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoExampleTwo" : {
     "type" : "string",
     "description" : "Json Type Info Example Two model",
-    "examples" : [ "boo: \"booValue\"\ntype: \"string\"\n" ],
+    "examples" : [ "boo: booValue\ntype: string\n" ],
     "allOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoInterface"
     }, {
@@ -41,7 +41,7 @@
         "type" : "string"
       }
     },
-    "examples" : [ "\"foo: \\\"fooValue\\\"\\ntype: \\\"string\\\"\\n\"\n" ],
+    "examples" : [ "|\n  foo: fooValue\n  type: string\n" ],
     "required" : [ "type" ],
     "oneOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoExampleOne"
@@ -57,6 +57,6 @@
       }
     },
     "description" : "Json Type Info Payload Dto model",
-    "examples" : [ "jsonTypeInfoInterface: \"\\\"foo: \\\\\\\"fooValue\\\\\\\"\\\\ntype: \\\\\\\"string\\\\\\\"\\\\n\\\"\\n\"\n" ]
+    "examples" : [ "jsonTypeInfoInterface: |\n  |\n    foo: fooValue\n    type: string\n" ]
   }
 }
