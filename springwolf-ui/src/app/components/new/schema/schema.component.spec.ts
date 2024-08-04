@@ -6,6 +6,7 @@ import { Example } from "../../../models/example.model";
 import { JsonComponent } from "../../json/json.component";
 import { render, screen } from "@testing-library/angular";
 import { SchemaRangeComponent } from "../../schemas/range/schema-range.component";
+import { MatDividerModule } from "@angular/material/divider";
 
 describe("SchemaNewComponent", () => {
   beforeEach(async () => {
@@ -13,7 +14,7 @@ describe("SchemaNewComponent", () => {
 
     await render(SchemaNewComponent, {
       declarations: [SchemaNewComponent, SchemaRangeComponent, JsonComponent],
-      imports: [MatChipsModule, MarkdownModule.forRoot()],
+      imports: [MatChipsModule, MatDividerModule, MarkdownModule.forRoot()],
       providers: [
         { provide: SchemaRangeComponent, useValue: mockedSchemaRangeComponent },
       ],
