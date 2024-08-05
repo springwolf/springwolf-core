@@ -31,7 +31,7 @@ ext {
 
     asyncapiCoreVersion = '1.0.0-EAP-2'
 
-    avroVersion = '1.11.3'
+    avroVersion = '1.12.0'
 
     awaitilityVersion = '4.2.1'
 
