@@ -227,6 +227,14 @@ a {
   }
 }
 
+.mat-drawer-inner-container {
+  overflow: visible !important;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}
+
 html {
   --springwolf-badge-color-send: black;
   --springwolf-badge-color-background-send: #ffd580;
