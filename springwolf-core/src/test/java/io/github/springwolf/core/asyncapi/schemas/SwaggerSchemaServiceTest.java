@@ -110,8 +110,6 @@ class SwaggerSchemaServiceTest {
         verifyNoInteractions(schemasPostProcessor2);
     }
 
-    // TODO implement tests for newly added code
-
     @Data
     @NoArgsConstructor
     @Schema(name = "DifferentName")
