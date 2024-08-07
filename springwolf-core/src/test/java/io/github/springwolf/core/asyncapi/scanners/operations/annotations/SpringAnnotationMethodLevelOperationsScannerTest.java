@@ -12,6 +12,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
@@ -74,7 +75,8 @@ class SpringAnnotationMethodLevelOperationsScannerTest {
         doReturn(defaultMessageBinding).when(bindingFactory).buildMessageBinding(any(), any());
 
         when(payloadMethodParameterService.extractSchema(any()))
-                .thenReturn(new PayloadSchemaObject(String.class.getName(), new SchemaObject(), null));
+                .thenReturn(new PayloadSchemaObject(
+                        String.class.getName(), String.class.getSimpleName(), ComponentSchema.of(new SchemaObject())));
         doAnswer(invocation -> AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())
                 .when(componentsService)
                 .registerSchema(any(SchemaObject.class));

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.messaging.handler.annotation.Payload;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +30,7 @@ class PayloadClassExtractorTest {
     void getPayloadType() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithString", String.class);
 
-        Optional<Class<?>> result = extractor.extractFrom(m);
+        Optional<Type> result = extractor.extractFrom(m);
 
         assertThat(result).hasValue(String.class);
     }
@@ -38,7 +39,7 @@ class PayloadClassExtractorTest {
     void getPayloadTypeWithPayloadAnnotation() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithPayloadAnnotation", String.class, Integer.class);
 
-        Optional<Class<?>> result = extractor.extractFrom(m);
+        Optional<Type> result = extractor.extractFrom(m);
 
         assertThat(result).hasValue(String.class);
     }
@@ -60,7 +61,7 @@ class PayloadClassExtractorTest {
     void getNoPayload() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutPayload");
 
-        Optional<Class<?>> result = extractor.extractFrom(m);
+        Optional<Type> result = extractor.extractFrom(m);
 
         assertThat(result).isEmpty();
     }

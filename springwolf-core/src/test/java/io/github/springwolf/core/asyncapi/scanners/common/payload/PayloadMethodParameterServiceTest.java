@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.payload;
 
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,8 +46,8 @@ class PayloadMethodParameterServiceTest {
         String schemaName = "my-schema-name";
         when(componentsService.resolvePayloadSchema(any(), any())).thenReturn(schemaName);
 
-        SchemaObject schemaObject = SchemaObject.builder().build();
-        when(componentsService.resolveSchema(schemaName)).thenReturn(schemaObject);
+        ComponentSchema schemaObject = ComponentSchema.of(SchemaObject.builder().build());
+        when(componentsService.resolvePayloadSchema(eq(String.class), any())).thenReturn(schemaObject);
 
         // when
         var result = payloadMethodParameterService.extractSchema(method);

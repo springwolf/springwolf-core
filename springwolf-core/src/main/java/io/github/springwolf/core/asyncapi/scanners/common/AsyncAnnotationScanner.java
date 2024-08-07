@@ -102,8 +102,8 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
         String description = operationData.message().description();
-        if (StringUtils.isBlank(description) && payloadSchema.schema() != null) {
-            description = payloadSchema.schema().getDescription();
+        if (StringUtils.isBlank(description) && payloadSchema.payload() instanceof SchemaObject) {
+            description = ((SchemaObject) payloadSchema.payload()).getDescription();
         }
         if (StringUtils.isNotBlank(description)) {
             description = this.resolver.resolveStringValue(description);

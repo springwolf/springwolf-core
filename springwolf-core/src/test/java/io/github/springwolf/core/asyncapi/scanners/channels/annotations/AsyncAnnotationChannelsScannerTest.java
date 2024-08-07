@@ -206,7 +206,7 @@ class AsyncAnnotationChannelsScannerTest {
         MessageObject message = MessageObject.builder()
                 .messageId(String.class.getName())
                 .name(String.class.getName())
-                .title(String.class.getSimpleName())
+                .title(String.class.getName())
                 .description(null)
                 .payload(payload)
                 .headers(MessageHeaders.of(MessageReference.toSchema("TestSchema")))

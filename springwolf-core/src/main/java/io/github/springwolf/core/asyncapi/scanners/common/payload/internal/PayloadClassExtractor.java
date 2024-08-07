@@ -7,21 +7,23 @@ import org.springframework.messaging.handler.annotation.Payload;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
 public class PayloadClassExtractor {
+    // TODO op kuisen
+
     private final TypeToClassConverter typeToClassConverter;
 
-    public Optional<Class<?>> extractFrom(Method method) {
+    public Optional<Type> extractFrom(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
         log.debug("Finding payload type for {}", methodName);
 
         return getPayloadParameterIndex(method.getParameterTypes(), method.getParameterAnnotations(), methodName)
-                .map((parameterPayloadIndex) ->
-                        typeToClassConverter.extractClass(method.getGenericParameterTypes()[parameterPayloadIndex]));
+                .map((parameterPayloadIndex) -> method.getGenericParameterTypes()[parameterPayloadIndex]);
     }
 
     private Optional<Integer> getPayloadParameterIndex(

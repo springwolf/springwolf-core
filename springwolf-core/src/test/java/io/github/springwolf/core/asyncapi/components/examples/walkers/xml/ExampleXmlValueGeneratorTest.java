@@ -16,6 +16,7 @@ class ExampleXmlValueGeneratorTest {
     @Test
     void cacheShouldResolveBySchemaName() {
         // given
+        DefaultExampleXmlValueSerializer serializer = new DefaultExampleXmlValueSerializer();
         ExampleXmlValueGenerator generator = new ExampleXmlValueGenerator(serializer);
 
         StringSchema schema1 = new StringSchema();
