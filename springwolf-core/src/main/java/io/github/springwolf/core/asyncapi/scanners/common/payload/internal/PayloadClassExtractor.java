@@ -14,9 +14,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class PayloadClassExtractor {
-    // TODO op kuisen
-
-    private final TypeToClassConverter typeToClassConverter;
 
     public Optional<Type> extractFrom(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
