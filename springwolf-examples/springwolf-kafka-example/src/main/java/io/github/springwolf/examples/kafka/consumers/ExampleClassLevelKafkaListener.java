@@ -36,7 +36,7 @@ public class ExampleClassLevelKafkaListener {
 
     @KafkaHandler
     public void receiveAnotherPayload(ConsumerRecord<Void, AnotherPayloadDto> payload) {
-        log.info("Received new message in {}: {}", TOPIC, payload.toString());
+        log.info("Received new message in {}: {}", TOPIC, payload.value().toString());
     }
 
     @KafkaHandler
