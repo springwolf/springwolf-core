@@ -99,6 +99,7 @@ class ExampleXmlValueGeneratorTest {
     @Test
     void shouldCreateRawFromXmlString() {
         // given
+        DefaultExampleXmlValueSerializer serializer = new DefaultExampleXmlValueSerializer();
         ExampleXmlValueGenerator generator = new ExampleXmlValueGenerator(serializer);
         generator.initialize();
 
