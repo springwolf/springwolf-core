@@ -271,8 +271,8 @@ export class AsyncApiMapperService {
               description: message.description,
               contentType: message.contentType || defaultContentType,
               payload: {
-                name: payloadName,
-                title: this.resolveTitleFromName(payloadName),
+                name: payloadName || message.payload.schema.type, // TODO:
+                title: this.resolveTitleFromName(payloadName) || message.payload.schema.title: "TODO" ,
                 anchorUrl: AsyncApiMapperService.BASE_URL + payloadName,
               },
               headers: {

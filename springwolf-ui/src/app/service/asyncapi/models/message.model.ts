@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { ServerBindings } from "./bindings.model";
+import {ServerAsyncApiSchema} from "./schema.model";
 
 export interface ServerAsyncApiMessage {
   name: string;
@@ -10,7 +11,7 @@ export interface ServerAsyncApiMessage {
     schemaFormat: string;
     schema: {
       $ref: string;
-    };
+    } | ServerAsyncApiSchema;
   };
   headers: { $ref: string };
   bindings?: ServerBindings;
