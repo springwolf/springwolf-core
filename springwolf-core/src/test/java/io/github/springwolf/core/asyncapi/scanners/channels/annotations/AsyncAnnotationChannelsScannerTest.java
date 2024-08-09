@@ -198,13 +198,13 @@ class AsyncAnnotationChannelsScannerTest {
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                .schema(SchemaReference.fromSchema(List.class.getSimpleName()))
                 .build());
 
         MessageObject message = MessageObject.builder()
-                .messageId(String.class.getName())
-                .name(String.class.getName())
-                .title(String.class.getName())
+                .messageId(List.class.getName())
+                .name(List.class.getName())
+                .title(List.class.getSimpleName())
                 .description(null)
                 .payload(payload)
                 .headers(MessageHeaders.of(MessageReference.toSchema("TestSchema")))
@@ -331,7 +331,7 @@ class AsyncAnnotationChannelsScannerTest {
                         @AsyncOperation(
                                 channelName = "${test.property.test-channel}",
                                 description = "${test.property.description}",
-                                payloadType = String.class,
+                                payloadType = List.class,
                                 servers = {"${test.property.server1}", "${test.property.server2}"},
                                 headers =
                                         @AsyncOperation.Headers(

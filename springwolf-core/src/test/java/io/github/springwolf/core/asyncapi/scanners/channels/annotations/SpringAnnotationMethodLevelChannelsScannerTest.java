@@ -97,7 +97,7 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
         when(payloadMethodService.extractSchema(simpleFooMethod))
                 .thenReturn(new PayloadSchemaObject(
                         SimpleFoo.class.getName(),
-                        String.class.getSimpleName(),
+                        SimpleFoo.class.getSimpleName(),
                         ComponentSchema.of(new SchemaObject())));
     }
 

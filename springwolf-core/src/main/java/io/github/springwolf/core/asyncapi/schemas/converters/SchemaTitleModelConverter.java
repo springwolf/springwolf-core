@@ -21,7 +21,8 @@ public class SchemaTitleModelConverter implements ModelConverter {
         JavaType javaType = Json.mapper().constructType(type.getType());
         if (chain.hasNext()) {
             Schema<?> schema = chain.next().resolve(type, context, chain);
-            if (schema != null && PrimitiveType.createProperty(type.getType()) == null) {
+            boolean isPrimitiveType = PrimitiveType.createProperty(type.getType()) != null;
+            if (schema != null && !isPrimitiveType) {
                 if (schema.get$ref() != null) {
                     Schema<?> defModel = context.resolve(type);
                     if (defModel != null && defModel.getTitle() == null) {
