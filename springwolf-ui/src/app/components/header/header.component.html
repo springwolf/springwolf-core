@@ -18,6 +18,19 @@
   </span>
   <h1 class="width-s-hide">{{ title }}</h1>
   <div class="flex flex-column items-center">
+    <button mat-button [matMenuTriggerFor]="settings">
+      <mat-icon style="color: black">settings</mat-icon>
+      Settings
+    </button>
+    <mat-menu #settings="matMenu">
+      <button mat-menu-item (click)="toggleIsShowBindings()">
+        <mat-icon>{{
+          isShowBindings ? "check_box" : "check_box_outline_blank"
+        }}</mat-icon>
+        Show bindings
+      </button>
+    </mat-menu>
+
     <mat-slide-toggle
       [(ngModel)]="isNewUi"
       (change)="toggleIsNewUi($event.checked)"
