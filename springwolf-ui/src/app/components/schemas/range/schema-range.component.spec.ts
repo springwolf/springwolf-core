@@ -17,6 +17,7 @@ describe("SchemaRangeComponent", function () {
       title: "test",
       name: "test",
       anchorIdentifier: "test",
+      usedBy: [],
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: true,
@@ -31,6 +32,7 @@ describe("SchemaRangeComponent", function () {
       title: "test",
       name: "test",
       anchorIdentifier: "test",
+      usedBy: [],
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: true,
@@ -45,6 +47,7 @@ describe("SchemaRangeComponent", function () {
       title: "test",
       name: "test",
       anchorIdentifier: "test",
+      usedBy: [],
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: false,
@@ -59,6 +62,7 @@ describe("SchemaRangeComponent", function () {
       title: "test",
       name: "test",
       anchorIdentifier: "test",
+      usedBy: [],
       minimum: 0.1,
       maximum: 10,
       exclusiveMinimum: true,
@@ -73,6 +77,7 @@ describe("SchemaRangeComponent", function () {
       title: "test",
       name: "test",
       anchorIdentifier: "test",
+      usedBy: [],
       minimum: 0.1,
       maximum: 10,
     });
@@ -85,6 +90,7 @@ describe("SchemaRangeComponent", function () {
       title: "test",
       name: "test",
       anchorIdentifier: "test",
+      usedBy: [],
       minimum: 0.1,
       exclusiveMinimum: true,
     });
@@ -97,6 +103,7 @@ describe("SchemaRangeComponent", function () {
       title: "test",
       name: "test",
       anchorIdentifier: "test",
+      usedBy: [],
       maximum: 10,
       exclusiveMaximum: true,
     });
@@ -109,6 +116,7 @@ describe("SchemaRangeComponent", function () {
       title: "test",
       name: "test",
       anchorIdentifier: "test",
+      usedBy: [],
       minimum: 0.1,
     });
 
@@ -120,6 +128,7 @@ describe("SchemaRangeComponent", function () {
       title: "test",
       name: "test",
       anchorIdentifier: "test",
+      usedBy: [],
       maximum: 10,
     });
 

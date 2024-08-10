@@ -12,7 +12,7 @@
       <div class="table margin-vertical-1em">
         <div class="table-row">
           <span>Name</span>
-          <span>{{ schema.name }}</span>
+          <span class="text-console">{{ schema.name }}</span>
         </div>
         <div class="table-row">
           <span>Type</span>
@@ -24,9 +24,30 @@
           <span>Description</span>
           <markdown [data]="schema.description"></markdown>
         </div>
+        <div class="table-row" *ngIf="schema.usedBy.length > 0">
+          <span>Used by</span>
+          <mat-chip-set>
+            @for (usageEl of schema.usedBy; track usageEl) {
+            <a [href]="usageEl.anchorUrl">
+              <mat-chip>
+                <mat-icon matChipAvatar>{{
+                  usageEl.type == "schema" ? "schema" : "swap_vert"
+                }}</mat-icon>
+                {{ usageEl.name }}
+              </mat-chip></a
+            >
+            }
+          </mat-chip-set>
+        </div>
       </div>
 
-      <app-schema [schema]="schema"></app-schema>
+      <h6>Example</h6>
+      <div>
+        <app-json [data]="schema.example?.rawValue"></app-json>
+      </div>
+
+      <h6>Properties</h6>
+      <app-schema-new [schema]="schema"></app-schema-new>
     </mat-card-content>
   </mat-card>
   @if (!$last) {

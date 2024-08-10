@@ -11,6 +11,7 @@ export interface Schema {
    */
   title: string;
   anchorIdentifier: string;
+  usedBy: { name: string; anchorUrl: string; type: "channel" | "schema" }[];
   description?: string;
   deprecated?: boolean;
 

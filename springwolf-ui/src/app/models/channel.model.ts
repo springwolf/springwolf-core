@@ -6,6 +6,7 @@ export const CHANNEL_ANCHOR_PREFIX = "channel-";
 export interface ChannelOperation {
   name: string;
   anchorIdentifier: string;
+  anchorUrl: string;
   description?: string;
   operation: Operation;
   bindings: Bindings;

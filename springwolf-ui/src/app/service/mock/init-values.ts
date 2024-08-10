@@ -41,4 +41,5 @@ export const initSchema: Schema = {
   title: "",
   name: "",
   anchorIdentifier: "",
+  usedBy: [],
 };
