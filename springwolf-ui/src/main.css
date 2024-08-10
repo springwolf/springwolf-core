@@ -8,7 +8,7 @@ body {
 }
 
 a {
-  word-break: break-all;
+  overflow-wrap: break-word;
   max-width: 100%;
 }
 
@@ -225,6 +225,10 @@ a {
   @media (max-width: 64em) {
     display: none !important;
   }
+}
+
+.mat-icon {
+  vertical-align: middle;
 }
 
 html {
