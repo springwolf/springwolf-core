@@ -24,9 +24,9 @@ public class SchemaTitleModelConverter implements ModelConverter {
             boolean isPrimitiveType = PrimitiveType.createProperty(type.getType()) != null;
             if (schema != null && !isPrimitiveType) {
                 if (schema.get$ref() != null) {
-                    Schema<?> defModel = context.resolve(type);
-                    if (defModel != null && defModel.getTitle() == null) {
-                        defModel.setTitle(javaType.getRawClass().getSimpleName());
+                    Schema<?> definedModel = context.resolve(type);
+                    if (definedModel != null && definedModel.getTitle() == null) {
+                        definedModel.setTitle(javaType.getRawClass().getSimpleName());
                     }
                 }
             }
