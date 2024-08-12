@@ -21,7 +21,7 @@
     "@angular/platform-browser": "^18.1.2",
     "@angular/platform-browser-dynamic": "^18.1.2",
     "@angular/router": "^18.1.2",
-    "marked": "^12.0.2",
+    "marked": "^14.0.0",
     "ngx-markdown": "^18.0.0",
     "prism-code-editor": "^3.3.3",
     "prismjs": "^1.29.0",
