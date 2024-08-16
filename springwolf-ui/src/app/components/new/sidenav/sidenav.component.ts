@@ -14,7 +14,7 @@ import { AsyncApiMapperService } from "../../../service/asyncapi/asyncapi-mapper
 import { Location } from "@angular/common";
 
 interface NavigationEntry {
-  name: string;
+  name: string[];
   icon?: string;
   href: string | undefined;
   selected?: boolean;
@@ -47,7 +47,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       const newNavigation: NavigationEntry[] = [];
 
       newNavigation.push({
-        name: "Info",
+        name: ["Info"],
         icon: "info",
         href: AsyncApiMapperService.BASE_URL + "info",
       });
@@ -55,21 +55,21 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       const servers: NavigationEntry[] = Array.from(
         asyncapi.servers.keys()
       ).map((key) => ({
-        name: key,
+        name: this.splitForWordBreaking(key),
         href:
           AsyncApiMapperService.BASE_URL +
           asyncapi.servers.get(key)!.anchorIdentifier,
         tags: [asyncapi.servers.get(key)!.protocol],
       }));
       newNavigation.push({
-        name: "Servers",
+        name: ["Servers"],
         icon: "dns",
         href: AsyncApiMapperService.BASE_URL + "servers",
         children: servers,
       });
 
       const channels = {
-        name: "Channels & Operations",
+        name: ["Channels & Operations"],
         icon: "swap_vert",
         href: AsyncApiMapperService.BASE_URL + "channels",
         children: [] as NavigationEntry[],
@@ -77,7 +77,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       asyncapi.channels.forEach((value) => {
         let children = value.operations.map((operation) => {
           return {
-            name: operation.operation.message.title,
+            name: this.splitForWordBreaking(operation.operation.message.title),
             href: AsyncApiMapperService.BASE_URL + operation.anchorIdentifier,
             tags: [operation.operation.operationType],
           };
@@ -87,7 +87,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
           .flatMap((tags) => tags);
 
         const channel = {
-          name: value.name,
+          name: this.splitForWordBreaking(value.name),
           href: AsyncApiMapperService.BASE_URL + value.anchorIdentifier,
           tags: Array.from(new Set(tags)).sort(),
           children: children,
@@ -98,14 +98,14 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       newNavigation.push(channels);
 
       const schemas = {
-        name: "Schemas",
+        name: ["Schemas"],
         icon: "schema",
         href: AsyncApiMapperService.BASE_URL + "schemas",
         children: [] as NavigationEntry[],
       };
       asyncapi.components.schemas.forEach((value) => {
         schemas.children.push({
-          name: value.title,
+          name: this.splitForWordBreaking(value.title),
           href: AsyncApiMapperService.BASE_URL + "" + value.anchorIdentifier,
         });
       });
@@ -116,6 +116,11 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       this.scrollToUrlLocation();
     });
   }
+
+  private splitForWordBreaking = (text: string) => {
+    // Split by set of characters, but keep separators
+    return text.split(/(?<=[.,-_/])/);
+  };
 
   ngAfterViewInit() {
     this.scrollableElement.nativeElement.addEventListener(

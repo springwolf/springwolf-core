@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 .schema {
   font-weight: 500;
+  width: 100%;
 }
 
 .key {
@@ -23,6 +24,7 @@
 .example {
   color: #6b6b6b;
   font-style: italic;
+  word-break: break-word;
 }
 
 .description {

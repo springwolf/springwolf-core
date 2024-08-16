@@ -1,4 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+.table-row > *:first-child {
+  vertical-align: middle;
+}
+.table-row > *:last-child {
+  word-break: break-word;
+}
+
 .type-badge {
   display: inline;
   background-color: #e0e0e0;

@@ -3,16 +3,15 @@
   <app-json [data]="schema().example?.rawValue"></app-json>
 </div>
 <p>Properties</p>
+<!--  Primitive types  -->
+<ng-container
+  *ngIf="schema().type !== 'object'"
+  [ngTemplateOutlet]="valueContent"
+  [ngTemplateOutletContext]="{ value: schema() }"
+>
+</ng-container>
 <table class="schema">
   <tbody>
-    <!--  Primitive types  -->
-    <tr *ngIf="schema().type !== 'object'">
-      <ng-container
-        [ngTemplateOutlet]="valueContent"
-        [ngTemplateOutletContext]="{ value: schema() }"
-      >
-      </ng-container>
-    </tr>
     <!--  Objects  -->
     <tr *ngFor="let property of schema().properties || {} | keyvalue">
       <td class="key">

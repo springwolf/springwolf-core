@@ -11,7 +11,7 @@
           <mat-icon *ngIf="link.icon" fontIcon="{{ link.icon }}" />
           <b>
             <a [href]="link.href">
-              {{ link.name }}
+              @for (linkEl of link.name; track linkEl) {{{linkEl}}&#x200B;}
             </a>
           </b>
         </span>
@@ -24,7 +24,8 @@
           >
             <span>
               <a [href]="child.href">
-                {{ child.name }}
+                @for (linkEl of child.name; track linkEl)
+                {{{linkEl}}&#x200B;}
               </a>
               @for (childTag of child.tags; track childTag) {
               <span class="badge {{ childTag }}-badge">{{ childTag }}</span>
@@ -41,7 +42,10 @@
                 }"
               >
                 <span>
-                  <a [href]="subchild.href"> {{ subchild.name }}</a>
+                  <a [href]="subchild.href">
+                    @for (linkEl of subchild.name; track linkEl)
+                    {{{linkEl}}&#x200B;}
+                  </a>
 
                   @for (subChildTag of subchild.tags; track subChildTag) {
                   <span class="badge {{ subChildTag }}-badge">{{
