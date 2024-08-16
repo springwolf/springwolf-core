@@ -611,6 +611,7 @@ components:
         foo:
           type: string
           description: Foo field
+          maxLength: 100
           examples:
             - bar
       description: Another payload model
@@ -641,6 +642,7 @@ components:
               someLong:
                 description: Some long field
                 format: int64
+                minimum: 0
                 type: integer
               someString:
                 description: |
@@ -664,6 +666,7 @@ components:
             type: object
           foo:
             description: Foo field
+            maxLength: 100
             type: string
         required:
           - example
@@ -686,6 +689,7 @@ components:
           type: integer
           description: Some long field
           format: int64
+          minimum: 0
           examples:
             - 5
         someString:
@@ -731,6 +735,7 @@ components:
           someLong:
             description: Some long field
             format: int64
+            minimum: 0
             type: integer
           someString:
             description: |
@@ -796,6 +801,7 @@ components:
                 someLong:
                   description: Some long field
                   format: int64
+                  minimum: 0
                   type: integer
                 someString:
                   description: |

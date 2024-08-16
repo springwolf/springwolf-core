@@ -910,6 +910,7 @@
           "foo": {
             "type": "string",
             "description": "Foo field",
+            "maxLength": 100,
             "examples": [
               "bar"
             ]
@@ -948,6 +949,7 @@
                 "someLong": {
                   "description": "Some long field",
                   "format": "int64",
+                  "minimum": 0,
                   "type": "integer"
                 },
                 "someString": {
@@ -964,6 +966,7 @@
             },
             "foo": {
               "description": "Foo field",
+              "maxLength": 100,
               "type": "string"
             }
           },
@@ -994,6 +997,7 @@
             "type": "integer",
             "description": "Some long field",
             "format": "int64",
+            "minimum": 0,
             "examples": [
               5
             ]
@@ -1034,6 +1038,7 @@
             "someLong": {
               "description": "Some long field",
               "format": "int64",
+              "minimum": 0,
               "type": "integer"
             },
             "someString": {
@@ -1106,6 +1111,7 @@
                   "someLong": {
                     "description": "Some long field",
                     "format": "int64",
+                    "minimum": 0,
                     "type": "integer"
                   },
                   "someString": {
