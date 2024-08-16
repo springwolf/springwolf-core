@@ -18,6 +18,7 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.Examp
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.fixtures.ClasspathUtil;
 import io.swagger.v3.core.util.Json;
@@ -53,7 +54,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
             new ExampleJsonValueGenerator(), new DefaultExampleYamlValueSerializer(), springwolfConfigProperties);
 
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
-            List.of(),
+            List.of(new SchemaTitleModelConverter()),
             List.of(new ExampleGeneratorPostProcessor(
                     new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(exampleYamlValueGenerator))))),
             new SwaggerSchemaUtil(),

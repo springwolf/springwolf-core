@@ -13,6 +13,7 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.Exampl
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.fixtures.ClasspathUtil;
 import io.swagger.v3.core.util.Json;
@@ -40,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultXmlComponentsServiceIntegrationTest {
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
-            List.of(),
+            List.of(new SchemaTitleModelConverter()),
             List.of(new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(
                     new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer())))))),
             new SwaggerSchemaUtil(),
