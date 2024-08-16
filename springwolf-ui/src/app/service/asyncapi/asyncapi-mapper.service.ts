@@ -119,6 +119,7 @@ export class AsyncApiMapperService {
         mappedChannels[channelId] = {
           name: channel.address,
           anchorIdentifier: "channel-" + channelId,
+          anchorUrl: AsyncApiMapperService.BASE_URL + "channel-" + channelId,
           operations: [],
           bindings: channel.bindings || {},
         };
@@ -128,7 +129,7 @@ export class AsyncApiMapperService {
     for (let operationsKey in operations) {
       this.parsingErrorBoundary("operation " + operationsKey, () => {
         const operation = operations[operationsKey];
-        const channelId = this.resolveRef(operation.channel.$ref);
+        const channelId = this.resolveRefId(operation.channel.$ref);
         const channelName = channels[channelId].address;
 
         this.verifyBindings(operation.bindings, "operation " + operationsKey);
@@ -200,16 +201,16 @@ export class AsyncApiMapperService {
     message: Message,
     servers: ServerServers
   ): ChannelOperation {
-    const mappedServers =
-      channel?.servers?.map((server) => this.resolveRef(server.$ref)) ||
+    const serverIds =
+      channel?.servers?.map((server) => this.resolveRefId(server.$ref)) ||
       Object.keys(servers);
-    const mappedOperationServers: OperationServer[] = mappedServers.map(
-      (serverKey) => {
+    const mappedOperationServers: OperationServer[] = serverIds.map(
+      (serverId) => {
         return {
-          name: serverKey,
-          anchorIdentifier: SERVER_ANCHOR_PREFIX + serverKey,
+          name: serverId,
+          anchorIdentifier: SERVER_ANCHOR_PREFIX + serverId,
           anchorUrl:
-            AsyncApiMapperService.BASE_URL + SERVER_ANCHOR_PREFIX + serverKey,
+            AsyncApiMapperService.BASE_URL + SERVER_ANCHOR_PREFIX + serverId,
         };
       }
     );
@@ -255,34 +256,32 @@ export class AsyncApiMapperService {
         return this.parsingErrorBoundary(
           "message of channel " + channelName,
           () => {
-            const messageKey = this.resolveRef(operationMessage.$ref);
-            const channelMessage = channel.messages[messageKey];
-            const channelMessageRef = this.resolveRef(channelMessage.$ref);
-            const message = messages[channelMessageRef];
+            const messageId = this.resolveRefId(operationMessage.$ref);
+            const channelMessage = channel.messages[messageId];
+            const channelMessageId = this.resolveRefId(channelMessage.$ref);
+            const message = messages[channelMessageId];
 
             this.verifyBindings(message.bindings, "message " + message.name);
 
+            let payloadName = this.resolveRefId(message.payload.schema.$ref);
             const mappedMessage: Message = {
               name: message.name,
               title: message.title,
               description: message.description,
               contentType: message.contentType || defaultContentType,
               payload: {
-                name: message.payload.schema.$ref,
-                title: this.resolveRef(message.payload.schema.$ref),
-                type: this.resolveRef(message.payload.schema.$ref),
-                anchorUrl:
-                  AsyncApiMapperService.BASE_URL +
-                  this.resolveRef(message.payload.schema.$ref),
+                name: payloadName,
+                title: this.resolveTitleFromName(payloadName),
+                anchorUrl: AsyncApiMapperService.BASE_URL + payloadName,
               },
               headers: {
                 name: message.headers.$ref,
                 title:
-                  message.headers.$ref?.split("/")?.pop() ||
+                  this.resolveRefId(message.headers.$ref) ||
                   "undefined-header-title",
                 anchorUrl:
                   AsyncApiMapperService.BASE_URL +
-                  this.resolveRef(message.headers.$ref),
+                  this.resolveRefId(message.headers.$ref),
               },
               bindings: this.mapServerAsyncApiMessageBindings(message.bindings),
               rawBindings: message.bindings || {},
@@ -356,18 +355,15 @@ export class AsyncApiMapperService {
       return undefined;
     }
 
-    const refChannelId = this.resolveRef(reply.channel.$ref);
+    const refChannelId = this.resolveRefId(reply.channel.$ref);
     const refChannelName = channels[refChannelId].address;
+    const refMessageId = this.resolveRefId(reply.messages[0].$ref);
     return {
       channelAnchorUrl:
-        AsyncApiMapperService.BASE_URL +
-        CHANNEL_ANCHOR_PREFIX +
-        this.resolveRef(reply.channel.$ref),
+        AsyncApiMapperService.BASE_URL + CHANNEL_ANCHOR_PREFIX + refChannelId,
       channelName: refChannelName,
-      messageAnchorUrl:
-        AsyncApiMapperService.BASE_URL +
-        this.resolveRef(reply.messages[0].$ref),
-      messageName: this.resolveRef(reply.messages[0].$ref),
+      messageAnchorUrl: AsyncApiMapperService.BASE_URL + refMessageId,
+      messageName: refMessageId,
     };
   }
 
@@ -447,9 +443,10 @@ export class AsyncApiMapperService {
 
     return {
       name: schemaName,
-      title: schemaName.split(".")?.pop() || "undefined-title",
+      title: this.resolveTitleFromName(schemaName) || "undefined-title",
       usedBy: [],
       anchorIdentifier: schemaName,
+      anchorUrl: AsyncApiMapperService.BASE_URL + schemaName,
       description: schema.description,
       deprecated: schema.deprecated,
 
@@ -504,33 +501,37 @@ export class AsyncApiMapperService {
     let actualSchema = schema;
 
     while ("$ref" in actualSchema) {
-      const refName = this.resolveRef(actualSchema.$ref);
-      const refSchema = schemas[refName];
+      const refId = this.resolveRefId(actualSchema.$ref);
+      const refSchema = schemas[refId];
       if (refSchema !== undefined) {
         actualSchema = refSchema;
       } else {
-        throw new Error("Schema " + refName + " not found");
+        throw new Error("Schema " + refId + " not found");
       }
     }
     return actualSchema;
   }
 
   private mapSchemaRef(schemaName: string, schema: { $ref: string }): Schema {
+    let schemaRefId = this.resolveRefId(schema.$ref);
     return {
       name: schemaName,
-      title: schemaName.split(".").pop()!!,
+      title: this.resolveTitleFromName(schemaName),
       usedBy: [],
       anchorIdentifier: schemaName,
+      anchorUrl: AsyncApiMapperService.BASE_URL + schemaName,
 
       // type == ref
-      anchorUrl: AsyncApiMapperService.BASE_URL + this.resolveRef(schema.$ref),
-      refName: schema.$ref,
-      refTitle: this.resolveRef(schema.$ref),
+      refAnchorUrl: AsyncApiMapperService.BASE_URL + schemaRefId,
+      refName: schemaRefId,
     };
   }
 
-  private resolveRef(ref: string): string {
+  private resolveRefId(ref: string): string {
     return ref.split("/").pop()!!;
+  }
+  private resolveTitleFromName(name: string): string {
+    return name.split(".").pop()!!;
   }
 
   private verifyBindings(
@@ -548,9 +549,7 @@ export class AsyncApiMapperService {
     asyncApi.components.schemas.forEach((schema) => {
       asyncApi.channels.forEach((channel) => {
         channel.operations.forEach((channelOperation) => {
-          if (
-            channelOperation.operation.message.payload.title === schema.name
-          ) {
+          if (channelOperation.operation.message.payload.name === schema.name) {
             schema.usedBy.push({
               name: channelOperation.name,
               anchorUrl: channelOperation.anchorUrl!!,
@@ -562,18 +561,18 @@ export class AsyncApiMapperService {
 
       asyncApi.components.schemas.forEach((otherSchema) => {
         Object.values(otherSchema?.properties || {}).forEach((property) => {
-          if (property.refTitle === schema.name) {
+          if (property.refName === schema.name) {
             schema.usedBy.push({
               name: otherSchema.title,
-              anchorUrl: otherSchema.anchorUrl!!,
+              anchorUrl: otherSchema.refAnchorUrl!!,
               type: "schema",
             });
           }
         });
-        if (otherSchema.items?.refTitle === schema.name) {
+        if (otherSchema.items?.refName === schema.name) {
           schema.usedBy.push({
             name: otherSchema.title,
-            anchorUrl: otherSchema.anchorUrl!!,
+            anchorUrl: otherSchema.refAnchorUrl!!,
             type: "schema",
           });
         }

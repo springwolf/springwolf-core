@@ -15,6 +15,7 @@ export interface ChannelOperation {
 export interface Channel {
   name: string;
   anchorIdentifier: string;
+  anchorUrl: string;
   description?: string;
   operations: ChannelOperation[];
   bindings: Bindings;

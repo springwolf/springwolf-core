@@ -23,7 +23,7 @@ export const initMessage: Message = {
   bindings: new Map<string, Binding>(),
   headers: { anchorUrl: "", name: "", title: "" },
   name: "",
-  payload: { anchorUrl: "", name: "", title: "", type: "" },
+  payload: { anchorUrl: "", name: "", title: "" },
   rawBindings: {},
   title: "",
   contentType: "",
@@ -40,6 +40,7 @@ export const initOperation: Operation = {
 export const initSchema: Schema = {
   title: "",
   name: "",
+  anchorUrl: "",
   anchorIdentifier: "",
   usedBy: [],
 };

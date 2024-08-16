@@ -11,6 +11,7 @@ export interface Schema {
    */
   title: string;
   anchorIdentifier: string;
+  anchorUrl: string;
   usedBy: { name: string; anchorUrl: string; type: "channel" | "schema" }[];
   description?: string;
   deprecated?: boolean;
@@ -21,9 +22,8 @@ export interface Schema {
   type?: string;
   format?: string;
   // type == ref
-  anchorUrl?: string;
+  refAnchorUrl?: string;
   refName?: string;
-  refTitle?: string;
   // type == object
   properties?: { [key: string]: Schema };
   required?: string[];

@@ -8,7 +8,6 @@ export interface Message {
   contentType: string;
   payload: {
     name: string;
-    type: string;
     title: string;
     anchorUrl: string;
   };
