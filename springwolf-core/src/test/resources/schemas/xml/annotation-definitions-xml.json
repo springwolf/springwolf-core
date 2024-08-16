@@ -44,7 +44,7 @@
   },
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SchemaWithOneOf$OneOf" : {
     "type" : "string",
-    "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ],
+    "examples" : [ "<OneOf><firstOne>string</firstOne><secondOne>string</secondOne></OneOf>" ],
     "oneOf" : [ {
       "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SchemaWithOneOf$ImplementationOne"
     }, {
@@ -67,6 +67,6 @@
         "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SchemaWithOneOf$OneOf"
       }
     },
-    "examples" : [ "<SchemaAnnotationFoo><AllOf><firstOne>string</firstOne><firstTwo>0</firstTwo><secondOne>string</secondOne><secondTwo>true</secondTwo></AllOf><AnyOf><firstOne>string</firstOne><secondOne>string</secondOne></AnyOf><field>string</field><ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne></SchemaAnnotationFoo>" ]
+    "examples" : [ "<SchemaAnnotationFoo><allOf><firstOne>string</firstOne><firstTwo>0</firstTwo><secondOne>string</secondOne><secondTwo>true</secondTwo></allOf><anyOf><firstOne>string</firstOne><secondOne>string</secondOne></anyOf><field>string</field><oneOf><firstOne>string</firstOne><secondOne>string</secondOne></oneOf></SchemaAnnotationFoo>" ]
   }
 }

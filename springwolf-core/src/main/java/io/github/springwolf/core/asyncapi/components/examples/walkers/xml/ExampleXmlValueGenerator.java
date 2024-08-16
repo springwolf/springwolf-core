@@ -198,7 +198,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node getExampleOrNull(Schema schema, Object example) {
+    public Node getExampleOrNull(String fieldName, Schema schema, Object example) {
         String name = getCacheKey(schema);
 
         if (example instanceof Node) {
@@ -206,10 +206,21 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         }
 
         if (exampleCache.containsKey(name)) {
-            return this.document.importNode(exampleCache.get(name), true);
+            Node oldElement = exampleCache.get(name);
+            Node newElement = modifyElementFromCacheIfNeeded(oldElement, fieldName);
+            return this.document.importNode(newElement, true);
         }
 
         return null;
+    }
+
+    private Node modifyElementFromCacheIfNeeded(Node oldElement, String fieldName) {
+        if (oldElement instanceof Element) {
+            // check if the wrapping xml-tag needs to be different than the example from the cache
+            Document doc = oldElement.getOwnerDocument();
+            return doc.renameNode(oldElement, null, fieldName);
+        }
+        return oldElement;
     }
 
     @Override

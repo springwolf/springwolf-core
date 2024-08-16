@@ -74,7 +74,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     private Optional<T> buildExample(String name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
         log.debug("Building example for schema {}", schema);
 
-        Optional<T> exampleValue = getExampleFromSchemaAnnotation(schema);
+        Optional<T> exampleValue = getExampleFromSchemaAnnotation(name, schema);
         if (exampleValue.isPresent()) {
             return exampleValue;
         }
@@ -88,19 +88,19 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         return example;
     }
 
-    private Optional<T> getExampleFromSchemaAnnotation(Schema schema) {
-        return getExampleValueFromSchemaAnnotation(schema, schema.getExample())
-                .or(() -> getExampleValueFromSchemaAnnotation(schema, schema.getDefault()));
+    private Optional<T> getExampleFromSchemaAnnotation(String fieldName, Schema schema) {
+        return getExampleValueFromSchemaAnnotation(fieldName, schema, schema.getExample())
+                .or(() -> getExampleValueFromSchemaAnnotation(fieldName, schema, schema.getDefault()));
     }
 
-    private Optional<T> getExampleValueFromSchemaAnnotation(Schema schema, Object exampleValue) {
+    private Optional<T> getExampleValueFromSchemaAnnotation(String fieldName, Schema schema, Object exampleValue) {
         // schema is a map of properties from a nested object, whose example cannot be inferred
         if (exampleValue == null) {
             return Optional.empty();
         }
 
         // Return directly, when we have processed this before
-        T processedExample = exampleValueGenerator.getExampleOrNull(schema, exampleValue);
+        T processedExample = exampleValueGenerator.getExampleOrNull(fieldName, schema, exampleValue);
         if (processedExample != null) {
             return Optional.of(processedExample);
         }
