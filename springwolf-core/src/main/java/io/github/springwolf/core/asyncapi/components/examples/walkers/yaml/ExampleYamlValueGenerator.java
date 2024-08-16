@@ -116,7 +116,7 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode getExampleOrNull(Schema schema, Object example) {
-        return this.exampleJsonValueGenerator.getExampleOrNull(schema, example);
+    public JsonNode getExampleOrNull(String fieldName, Schema schema, Object example) {
+        return this.exampleJsonValueGenerator.getExampleOrNull(fieldName, schema, example);
     }
 }
