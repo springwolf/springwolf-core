@@ -27,7 +27,6 @@ export class ChannelOperationComponent implements OnInit {
 
   defaultSchema: Schema = initSchema;
   defaultExample: Example = initExample;
-  defaultExampleType: string = "";
   originalDefaultExample: Example = this.defaultExample;
 
   headers: Schema = initSchema;
@@ -57,7 +56,6 @@ export class ChannelOperationComponent implements OnInit {
       const schema = schemas.get(schemaIdentifier)!!;
       this.defaultSchema = schema;
       this.originalDefaultExample = schema.example || noExample;
-      this.defaultExampleType = this.operation().message.payload.type;
 
       const headersSchemaIdentifier =
         this.operation().message.headers.name.slice(
@@ -123,7 +121,7 @@ export class ChannelOperationComponent implements OnInit {
 
   publish(): void {
     const example = this.defaultExample.value;
-    const payloadType = this.defaultExampleType;
+    const payloadType = this.operation().message.payload.name;
     const headers = this.headersExample.value;
     const bindings = this.messageBindingExampleString;
     try {

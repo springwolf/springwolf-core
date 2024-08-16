@@ -24,12 +24,14 @@
         <ng-container *ngIf="property.value.items">
           <span
             class="type"
-            *ngIf="property.value.items.type && !property.value.items.anchorUrl"
+            *ngIf="
+              property.value.items.type && !property.value.items.refAnchorUrl
+            "
             >{{ property.value.items.type }}[]</span
           >
-          <span class="type" *ngIf="property.value.items.anchorUrl">
-            <a [href]="property.value.items.anchorUrl"
-              >{{ property.value.items.refTitle }}[]</a
+          <span class="type" *ngIf="property.value.items.refAnchorUrl">
+            <a [href]="property.value.items.refAnchorUrl"
+              >{{ property.value.items.refName }}[]</a
             >
           </span>
         </ng-container>

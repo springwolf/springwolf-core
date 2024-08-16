@@ -20,7 +20,7 @@
             ><div class="type-badge">{{ schema.type }}</div></span
           >
         </div>
-        <div class="table-row" *ngIf="schema.description">
+        <div class="table-row description" *ngIf="schema.description">
           <span>Description</span>
           <markdown [data]="schema.description"></markdown>
         </div>
