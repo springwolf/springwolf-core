@@ -12,16 +12,7 @@ import { MatIconRegistry } from "@angular/material/icon";
 export class AppComponent implements OnInit {
   isNewUi: boolean = true;
 
-  constructor(
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
-    private uiService: UiService
-  ) {
-    this.iconRegistry.addSvgIcon(
-      "github",
-      this.sanitizer.bypassSecurityTrustResourceUrl("assets/github.svg")
-    );
-  }
+  constructor(private uiService: UiService) {}
 
   ngOnInit() {
     this.uiService.isNewUi$.subscribe((value) => (this.isNewUi = value));

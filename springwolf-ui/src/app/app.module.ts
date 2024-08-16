@@ -39,6 +39,7 @@ import { SchemaNewComponent } from "./components/new/schema/schema.component";
 import { ServersNewComponent } from "./components/new/servers/servers.component";
 import { SchemasNewComponent } from "./components/new/schemas/schemas.component";
 import { RangeNewComponent } from "./components/new/schema/range/range.component";
+import { AssetService, IAssetService } from "./service/asset.service";
 
 @NgModule({
   imports: [],
@@ -86,6 +87,7 @@ export const providers = [
       ),
   provideMarkdown(),
 
+  { provide: IAssetService, useClass: AssetService },
   AsyncApiService,
   AsyncApiMapperService,
   { provide: INotificationService, useClass: NotificationService },

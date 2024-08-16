@@ -2,6 +2,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UiService } from "../../service/ui.service";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import { IAssetService } from "../../service/asset.service";
 
 @Component({
   selector: "app-header",
@@ -15,10 +16,13 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private uiService: UiService,
-    private asyncApiService: AsyncApiService
+    private asyncApiService: AsyncApiService,
+    private assetService: IAssetService
   ) {}
 
   ngOnInit() {
+    this.assetService.load();
+
     this.uiService.isNewUi$.subscribe((value) => (this.isNewUi = value));
     this.uiService.isShowBindings$.subscribe(
       (value) => (this.isShowBindings = value)
