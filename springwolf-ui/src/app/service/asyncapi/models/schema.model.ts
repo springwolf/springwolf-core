@@ -2,6 +2,7 @@
 export type ServerAsyncApiSchemaOrRef = ServerAsyncApiSchema | { $ref: string };
 
 export interface ServerAsyncApiSchema {
+  title?: string;
   description?: string;
   deprecated?: boolean;
 

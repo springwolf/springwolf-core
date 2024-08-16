@@ -124,6 +124,7 @@
   "components": {
     "schemas": {
       "HeadersNotDocumented": {
+        "title": "HeadersNotDocumented",
         "type": "object",
         "properties": { },
         "description": "There can be headers, but they are not explicitly documented.",
@@ -132,6 +133,7 @@
         ]
       },
       "SpringRabbitListenerDefaultHeaders": {
+        "title": "SpringRabbitListenerDefaultHeaders",
         "type": "object",
         "properties": { },
         "examples": [

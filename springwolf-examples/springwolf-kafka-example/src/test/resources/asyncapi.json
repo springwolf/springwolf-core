@@ -166,6 +166,7 @@
   "components": {
     "schemas": {
       "HeadersNotDocumented": {
+        "title": "HeadersNotDocumented",
         "type": "object",
         "properties": { },
         "description": "There can be headers, but they are not explicitly documented.",
@@ -175,10 +176,12 @@
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "There can be headers, but they are not explicitly documented.",
+          "title": "HeadersNotDocumented",
           "type": "object"
         }
       },
       "HeadersNotUsed": {
+        "title": "HeadersNotUsed",
         "type": "object",
         "properties": { },
         "description": "No headers are present.",
@@ -188,10 +191,12 @@
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "No headers are present.",
+          "title": "HeadersNotUsed",
           "type": "object"
         }
       },
       "PayloadNotUsed": {
+        "title": "PayloadNotUsed",
         "type": "object",
         "properties": { },
         "description": "No payload specified",
@@ -201,10 +206,12 @@
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "No payload specified",
+          "title": "PayloadNotUsed",
           "type": "object"
         }
       },
       "SpringDefaultHeaderAndCloudEvent": {
+        "title": "SpringDefaultHeaderAndCloudEvent",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -362,10 +369,12 @@
               "type": "string"
             }
           },
+          "title": "SpringDefaultHeaderAndCloudEvent",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-AnotherPayloadAvroDto": {
+        "title": "SpringKafkaDefaultHeaders-AnotherPayloadAvroDto",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -395,10 +404,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-AnotherPayloadAvroDto",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-AnotherPayloadDto": {
+        "title": "SpringKafkaDefaultHeaders-AnotherPayloadDto",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -428,10 +439,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-AnotherPayloadDto",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-ExamplePayloadDto": {
+        "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -481,10 +494,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-Integer": {
+        "title": "SpringKafkaDefaultHeaders-Integer",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -514,10 +529,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-Integer",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-Message": {
+        "title": "SpringKafkaDefaultHeaders-Message",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -547,10 +564,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-Message",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-MonetaryAmount": {
+        "title": "SpringKafkaDefaultHeaders-MonetaryAmount",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -580,10 +599,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-MonetaryAmount",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-PayloadNotUsed": {
+        "title": "SpringKafkaDefaultHeaders-PayloadNotUsed",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -613,10 +634,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-PayloadNotUsed",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-String": {
+        "title": "SpringKafkaDefaultHeaders-String",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -646,10 +669,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-String",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-VehicleBase": {
+        "title": "SpringKafkaDefaultHeaders-VehicleBase",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -679,10 +704,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-VehicleBase",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-XmlPayloadDto": {
+        "title": "SpringKafkaDefaultHeaders-XmlPayloadDto",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -712,10 +739,12 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-XmlPayloadDto",
           "type": "object"
         }
       },
       "SpringKafkaDefaultHeaders-YamlPayloadDto": {
+        "title": "SpringKafkaDefaultHeaders-YamlPayloadDto",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -745,6 +774,7 @@
               "type": "string"
             }
           },
+          "title": "SpringKafkaDefaultHeaders-YamlPayloadDto",
           "type": "object"
         }
       },

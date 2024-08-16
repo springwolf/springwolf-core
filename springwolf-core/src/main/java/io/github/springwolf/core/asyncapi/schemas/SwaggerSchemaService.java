@@ -58,6 +58,7 @@ public class SwaggerSchemaService {
 
         ObjectSchema headerSchema = new ObjectSchema();
         headerSchema.setName(schemaName);
+        headerSchema.setTitle(headers.getTitle());
         headerSchema.setDescription(headers.getDescription());
         Map<String, Schema> properties = headers.getProperties().entrySet().stream()
                 .map((property) -> Map.entry(property.getKey(), (Schema<?>)
