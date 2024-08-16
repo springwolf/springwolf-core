@@ -11,7 +11,7 @@ public class PayloadMethodReturnService implements PayloadMethodService {
     private final PayloadService payloadService;
 
     @Override
-    public NamedSchemaObject extractSchema(Method method) {
+    public PayloadSchemaObject extractSchema(Method method) {
         return payloadService.buildSchema(method.getReturnType());
     }
 }

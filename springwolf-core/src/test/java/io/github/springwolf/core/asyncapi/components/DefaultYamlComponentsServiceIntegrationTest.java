@@ -67,8 +67,8 @@ class DefaultYamlComponentsServiceIntegrationTest {
 
     @Test
     void getSchemas() throws IOException {
-        componentsService.registerSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_YAML);
-        componentsService.registerSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_YAML);
+        componentsService.resolvePayloadSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_YAML);
+        componentsService.resolvePayloadSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/definitions-yaml.json", actualDefinitions);
@@ -79,7 +79,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
 
     @Test
     void getDocumentedDefinitions() throws IOException {
-        componentsService.registerSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_YAML);
+        componentsService.resolvePayloadSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/documented-definitions-yaml.json", actualDefinitions);
@@ -90,7 +90,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
 
     @Test
     void getArrayDefinitions() throws IOException {
-        componentsService.registerSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_YAML);
+        componentsService.resolvePayloadSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/array-definitions-yaml.json", actualDefinitions);
@@ -101,7 +101,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
 
     @Test
     void getComplexDefinitions() throws IOException {
-        componentsService.registerSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_YAML);
+        componentsService.resolvePayloadSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/complex-definitions-yaml.json", actualDefinitions);
@@ -112,7 +112,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
 
     @Test
     void getListWrapperDefinitions() throws IOException {
-        componentsService.registerSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_YAML);
+        componentsService.resolvePayloadSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/generics-wrapper-definitions-yaml.json", actualDefinitions);
@@ -232,7 +232,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
     class SchemaWithOneOf {
         @Test
         void testSchemaWithOneOf() throws IOException {
-            componentsService.registerSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_YAML);
+            componentsService.resolvePayloadSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinitions("/schemas/yaml/annotation-definitions-yaml.json", actualDefinitions);
@@ -278,7 +278,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
     class JsonSubTypesRecursionTest {
         @Test
         void registerSchemaWithoutStackOverflowException() {
-            componentsService.registerSchema(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_YAML);
+            componentsService.resolvePayloadSchema(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_YAML);
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas)
@@ -311,7 +311,8 @@ class DefaultYamlComponentsServiceIntegrationTest {
     class JsonTypeTest {
         @Test
         void getJsonTypeDefinitions() throws IOException {
-            componentsService.registerSchema(JsonTypeTest.JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_YAML);
+            componentsService.resolvePayloadSchema(
+                    JsonTypeTest.JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_YAML);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinitions("/schemas/yaml/json-type-definitions-yaml.json", actualDefinitions);

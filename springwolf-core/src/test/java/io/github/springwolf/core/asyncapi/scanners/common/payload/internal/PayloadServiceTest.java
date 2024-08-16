@@ -24,7 +24,7 @@ class PayloadServiceTest {
         when(docket.getDefaultContentType()).thenReturn("application/json");
 
         String schemaName = "my-schema-name";
-        when(componentsService.registerSchema(any(), any())).thenReturn(schemaName);
+        when(componentsService.resolvePayloadSchema(any(), any())).thenReturn(schemaName);
 
         // when
         var result = payloadService.buildSchema(Integer.class);

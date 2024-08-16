@@ -4,5 +4,5 @@ package io.github.springwolf.core.asyncapi.scanners.common.payload;
 import java.lang.reflect.Method;
 
 public interface PayloadMethodService {
-    NamedSchemaObject extractSchema(Method method);
+    PayloadSchemaObject extractSchema(Method method);
 }

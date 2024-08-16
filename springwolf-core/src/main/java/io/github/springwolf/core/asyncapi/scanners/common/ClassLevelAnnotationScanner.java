@@ -13,8 +13,8 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.schemas.SchemaObjectMerger;
@@ -81,7 +81,7 @@ public abstract class ClassLevelAnnotationScanner<
             SpringAnnotationClassLevelOperationsScanner.MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
                 .map((Method method) -> {
-                    NamedSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
+                    PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
                     SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
                     return buildMessage(classAnnotation, payloadSchema, headerSchema);
                 })
@@ -95,7 +95,7 @@ public abstract class ClassLevelAnnotationScanner<
     }
 
     protected MessageObject buildMessage(
-            ClassAnnotation classAnnotation, NamedSchemaObject payloadSchema, SchemaObject headers) {
+            ClassAnnotation classAnnotation, PayloadSchemaObject payloadSchema, SchemaObject headers) {
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
         SchemaObject mergedHeaderSchema = SchemaObjectMerger.merge(headerSchema, headers);
         String headerSchemaName = componentsService.registerSchema(mergedHeaderSchema);

@@ -61,8 +61,8 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     @Test
     void getSchemas() throws IOException {
-        componentsService.registerSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_JSON);
-        componentsService.registerSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_JSON);
+        componentsService.resolvePayloadSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+        componentsService.resolvePayloadSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/definitions.json", actualDefinitions);
@@ -73,7 +73,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     @Test
     void getDocumentedDefinitions() throws IOException {
-        componentsService.registerSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+        componentsService.resolvePayloadSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/documented-definitions.json", actualDefinitions);
@@ -84,7 +84,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     @Test
     void getArrayDefinitions() throws IOException {
-        componentsService.registerSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+        componentsService.resolvePayloadSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/array-definitions.json", actualDefinitions);
@@ -95,7 +95,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     @Test
     void getComplexDefinitions() throws IOException {
-        componentsService.registerSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+        componentsService.resolvePayloadSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/complex-definitions.json", actualDefinitions);
@@ -106,7 +106,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     @Test
     void getListWrapperDefinitions() throws IOException {
-        componentsService.registerSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_JSON);
+        componentsService.resolvePayloadSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/generics-wrapper-definitions.json", actualDefinitions);
@@ -226,7 +226,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
     class SchemaWithOneOf {
         @Test
         void testSchemaWithOneOf() throws IOException {
-            componentsService.registerSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.resolvePayloadSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/json/annotation-definitions.json", actualDefinitions);
@@ -272,7 +272,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
     class JsonSubTypesRecursionTest {
         @Test
         void registerSchemaWithoutStackOverflowException() {
-            componentsService.registerSchema(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.resolvePayloadSchema(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_JSON);
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas)
@@ -305,7 +305,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
     class JsonTypeTest {
         @Test
         void getJsonTypeDefinitions() throws IOException {
-            componentsService.registerSchema(JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_JSON);
+            componentsService.resolvePayloadSchema(JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_JSON);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/json/json-type-definitions.json", actualDefinitions);

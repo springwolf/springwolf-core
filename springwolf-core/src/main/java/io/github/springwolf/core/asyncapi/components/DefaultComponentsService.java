@@ -45,7 +45,7 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     @Override
-    public String registerSchema(Class<?> type, String contentType) {
+    public String resolvePayloadSchema(Class<?> type, String contentType) {
         log.debug("Registering schema for {}", type.getSimpleName());
 
         SwaggerSchemaService.ExtractedSchemas schemas = schemaService.extractSchema(type, contentType);

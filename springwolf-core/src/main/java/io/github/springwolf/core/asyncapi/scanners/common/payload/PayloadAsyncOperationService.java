@@ -14,7 +14,7 @@ public class PayloadAsyncOperationService {
     private final PayloadClassExtractor payloadClassExtractor;
     private final PayloadService payloadService;
 
-    public NamedSchemaObject extractSchema(AsyncOperation operationData, Method method) {
+    public PayloadSchemaObject extractSchema(AsyncOperation operationData, Method method) {
         Optional<Class<?>> payloadType = operationData.payloadType() != Object.class
                 ? Optional.of(operationData.payloadType())
                 : payloadClassExtractor.extractFrom(method);

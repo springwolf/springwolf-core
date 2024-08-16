@@ -40,7 +40,7 @@ class PayloadMethodReturnServiceTest {
         doReturn(String.class).when(method).getReturnType();
 
         String schemaName = "my-schema-name";
-        when(componentsService.registerSchema(any(), any())).thenReturn(schemaName);
+        when(componentsService.resolvePayloadSchema(any(), any())).thenReturn(schemaName);
 
         SchemaObject schemaObject = SchemaObject.builder().build();
         when(componentsService.resolveSchema(schemaName)).thenReturn(schemaObject);
