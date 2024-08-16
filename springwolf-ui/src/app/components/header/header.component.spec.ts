@@ -6,11 +6,17 @@ import { render } from "@testing-library/angular";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { mockedAsyncApiService } from "../../service/mock/mock-asyncapi.service";
 import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
 
 describe("HeaderComponent", () => {
   beforeEach(async () => {
     await render(HeaderComponent, {
-      imports: [MatToolbarModule, MatSlideToggleModule, MatIconModule],
+      imports: [
+        MatToolbarModule,
+        MatSlideToggleModule,
+        MatIconModule,
+        MatMenuModule,
+      ],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
       ],

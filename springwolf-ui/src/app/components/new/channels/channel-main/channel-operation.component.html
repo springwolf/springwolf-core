@@ -59,8 +59,8 @@
   </div>
 </div>
 
-<mat-divider></mat-divider>
-<div class="row">
+<mat-divider *ngIf="isShowBindings"></mat-divider>
+<div class="row" *ngIf="isShowBindings">
   <div class="width-6/12 width-12/12-s">
     <h6>Operation Binding</h6>
   </div>
@@ -76,8 +76,8 @@
   </div>
 </div>
 
-<mat-divider></mat-divider>
-<div class="row">
+<mat-divider *ngIf="isShowBindings"></mat-divider>
+<div class="row" *ngIf="isShowBindings">
   <div class="width-6/12 width-12/12-s">
     <h6>Message Binding</h6>
   </div>

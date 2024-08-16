@@ -14,6 +14,7 @@ import {
   initSchema,
   noExample,
 } from "../../../../service/mock/init-values";
+import { UiService } from "../../../../service/ui.service";
 
 @Component({
   selector: "app-channel-operation",
@@ -36,11 +37,13 @@ export class ChannelOperationComponent implements OnInit {
   operationBindingExampleString?: string;
   messageBindingExampleString?: string;
 
+  isShowBindings: boolean = UiService.DEFAULT_SHOW_BINDINGS;
   canPublish: boolean = false;
 
   constructor(
     private asyncApiService: AsyncApiService,
     private publisherService: PublisherService,
+    private uiService: UiService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -78,6 +81,10 @@ export class ChannelOperationComponent implements OnInit {
           this.canPublish = response;
         });
     });
+
+    this.uiService.isShowBindings$.subscribe(
+      (value) => (this.isShowBindings = value)
+    );
   }
 
   createBindingExample(binding?: Binding): Example | undefined {
