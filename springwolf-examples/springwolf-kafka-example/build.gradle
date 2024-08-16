@@ -61,12 +61,13 @@ dependencies {
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
+    implementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
+
     implementation "javax.money:money-api:${moneyApiVersion}"
     implementation "org.javamoney:moneta:${monetaVersion}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
 
-    testImplementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"

@@ -106,6 +106,7 @@ channels:
 components:
   schemas:
     HeadersNotDocumented:
+      title: HeadersNotDocumented
       type: object
       properties: {}
       description: "There can be headers, but they are not explicitly documented."
@@ -114,8 +115,10 @@ components:
       x-json-schema:
         $schema: https://json-schema.org/draft-04/schema#
         description: "There can be headers, but they are not explicitly documented."
+        title: HeadersNotDocumented
         type: object
     HeadersNotUsed:
+      title: HeadersNotUsed
       type: object
       properties: {}
       description: No headers are present.
@@ -124,8 +127,10 @@ components:
       x-json-schema:
         $schema: https://json-schema.org/draft-04/schema#
         description: No headers are present.
+        title: HeadersNotUsed
         type: object
     PayloadNotUsed:
+      title: PayloadNotUsed
       type: object
       properties: {}
       description: No payload specified
@@ -134,8 +139,10 @@ components:
       x-json-schema:
         $schema: https://json-schema.org/draft-04/schema#
         description: No payload specified
+        title: PayloadNotUsed
         type: object
     SpringDefaultHeaderAndCloudEvent:
+      title: SpringDefaultHeaderAndCloudEvent
       type: object
       properties:
         __TypeId__:
@@ -248,8 +255,10 @@ components:
             enum:
               - application/json
             type: string
+        title: SpringDefaultHeaderAndCloudEvent
         type: object
     SpringKafkaDefaultHeaders-AnotherPayloadAvroDto:
+      title: SpringKafkaDefaultHeaders-AnotherPayloadAvroDto
       type: object
       properties:
         __TypeId__:
@@ -269,8 +278,10 @@ components:
             enum:
               - io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
             type: string
+        title: SpringKafkaDefaultHeaders-AnotherPayloadAvroDto
         type: object
     SpringKafkaDefaultHeaders-AnotherPayloadDto:
+      title: SpringKafkaDefaultHeaders-AnotherPayloadDto
       type: object
       properties:
         __TypeId__:
@@ -290,8 +301,10 @@ components:
             enum:
               - io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
             type: string
+        title: SpringKafkaDefaultHeaders-AnotherPayloadDto
         type: object
     SpringKafkaDefaultHeaders-ExamplePayloadDto:
+      title: SpringKafkaDefaultHeaders-ExamplePayloadDto
       type: object
       properties:
         __TypeId__:
@@ -325,8 +338,10 @@ components:
             type: number
           kafka_receivedMessageKey:
             type: string
+        title: SpringKafkaDefaultHeaders-ExamplePayloadDto
         type: object
     SpringKafkaDefaultHeaders-Integer:
+      title: SpringKafkaDefaultHeaders-Integer
       type: object
       properties:
         __TypeId__:
@@ -346,8 +361,10 @@ components:
             enum:
               - java.lang.Number
             type: string
+        title: SpringKafkaDefaultHeaders-Integer
         type: object
     SpringKafkaDefaultHeaders-Message:
+      title: SpringKafkaDefaultHeaders-Message
       type: object
       properties:
         __TypeId__:
@@ -367,8 +384,10 @@ components:
             enum:
               - io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message
             type: string
+        title: SpringKafkaDefaultHeaders-Message
         type: object
     SpringKafkaDefaultHeaders-MonetaryAmount:
+      title: SpringKafkaDefaultHeaders-MonetaryAmount
       type: object
       properties:
         __TypeId__:
@@ -388,8 +407,10 @@ components:
             enum:
               - javax.money.MonetaryAmount
             type: string
+        title: SpringKafkaDefaultHeaders-MonetaryAmount
         type: object
     SpringKafkaDefaultHeaders-PayloadNotUsed:
+      title: SpringKafkaDefaultHeaders-PayloadNotUsed
       type: object
       properties:
         __TypeId__:
@@ -409,8 +430,10 @@ components:
             enum:
               - PayloadNotUsed
             type: string
+        title: SpringKafkaDefaultHeaders-PayloadNotUsed
         type: object
     SpringKafkaDefaultHeaders-String:
+      title: SpringKafkaDefaultHeaders-String
       type: object
       properties:
         __TypeId__:
@@ -430,8 +453,10 @@ components:
             enum:
               - java.lang.String
             type: string
+        title: SpringKafkaDefaultHeaders-String
         type: object
     SpringKafkaDefaultHeaders-VehicleBase:
+      title: SpringKafkaDefaultHeaders-VehicleBase
       type: object
       properties:
         __TypeId__:
@@ -451,8 +476,10 @@ components:
             enum:
               - io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
             type: string
+        title: SpringKafkaDefaultHeaders-VehicleBase
         type: object
     SpringKafkaDefaultHeaders-XmlPayloadDto:
+      title: SpringKafkaDefaultHeaders-XmlPayloadDto
       type: object
       properties:
         __TypeId__:
@@ -472,8 +499,10 @@ components:
             enum:
               - io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
             type: string
+        title: SpringKafkaDefaultHeaders-XmlPayloadDto
         type: object
     SpringKafkaDefaultHeaders-YamlPayloadDto:
+      title: SpringKafkaDefaultHeaders-YamlPayloadDto
       type: object
       properties:
         __TypeId__:
@@ -493,6 +522,7 @@ components:
             enum:
               - io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
             type: string
+        title: SpringKafkaDefaultHeaders-YamlPayloadDto
         type: object
     io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope:
       title: StringEnvelope
