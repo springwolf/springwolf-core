@@ -35,9 +35,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
     private final SpringwolfConfigProperties springwolfConfigProperties = new SpringwolfConfigProperties();
     private final ExampleYamlValueGenerator exampleYamlValueGenerator = new ExampleYamlValueGenerator(
-            new ExampleJsonValueGenerator(),
-            new DefaultExampleYamlValueSerializer(springwolfConfigProperties),
-            springwolfConfigProperties);
+            new ExampleJsonValueGenerator(), new DefaultExampleYamlValueSerializer(), springwolfConfigProperties);
     private final DefaultSchemaWalker<JsonNode, String> jsonSchemaWalker =
             new DefaultSchemaWalker<>(exampleYamlValueGenerator);
 
@@ -73,7 +71,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    "string"
+                    string
                     """);
         }
 
@@ -242,7 +240,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    "string"
+                    string
                     """);
         }
 
@@ -255,7 +253,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    "custom-example-value"
+                    custom-example-value
                     """);
         }
 
@@ -268,7 +266,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    "custom-example-value"
+                    custom-example-value
                     """);
         }
 
@@ -282,7 +280,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    "EnumItem1"
+                    EnumItem1
                     """);
         }
 
@@ -295,7 +293,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    "YmFzZTY0LWV4YW1wbGU="
+                    YmFzZTY0LWV4YW1wbGU=
                     """);
         }
 
@@ -321,7 +319,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    "2015-07-20"
+                    2015-07-20
                     """);
         }
 
@@ -334,7 +332,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             assertThat(actualString)
                     .isEqualTo("""
-                    "2015-07-20T15:49:04-07:00"
+                    2015-07-20T15:49:04-07:00
                     """);
         }
 
@@ -346,7 +344,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    "example@example.com"
+                    example@example.com
                     """);
         }
 
@@ -358,7 +356,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    "string-password"
+                    string-password
                     """);
         }
 
@@ -371,7 +369,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             assertThat(actualString)
                     .isEqualTo("""
-                    "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                    3fa85f64-5717-4562-b3fc-2c963f66afa6
                     """);
         }
 
@@ -417,7 +415,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
             assertThat(actualString).isEqualTo("""
-                    - "string"
+                    - string
                     """);
         }
     }
@@ -440,7 +438,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
                     .isEqualTo(
                             """
                     - b: true
-                      s: "string"
+                      s: string
                     """);
         }
 
@@ -456,7 +454,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             assertThat(actualString)
                     .isEqualTo("""
                     b: true
-                    s: "string"
+                    s: string
                     """);
         }
 
@@ -480,8 +478,8 @@ class DefaultSchemaWalkerYamlIntegrationTest {
                             """
                     f:
                       b: true
-                      s: "string"
-                    s: "string"
+                      s: string
+                    s: string
                     """);
         }
 
@@ -497,7 +495,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
 
             assertThat(actualString).isEqualTo("""
-                    anyOfField: "string"
+                    anyOfField: string
                     """);
         }
 
@@ -513,7 +511,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             String actualString = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
 
             assertThat(actualString).isEqualTo("""
-                    oneOfField: "string"
+                    oneOfField: string
                     """);
         }
 
@@ -538,7 +536,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
                     .isEqualTo(
                             """
                     allOfField:
-                      field1: "string"
+                      field1: string
                       field2: 1.1
                     """);
         }
@@ -553,7 +551,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(mapSchema, Map.of());
 
-            assertThat(actualString).isEqualTo("key: \"string\"\n");
+            assertThat(actualString).isEqualTo("key: string\n");
         }
 
         @Test
@@ -572,7 +570,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(mapSchema, Map.of());
 
-            assertThat(actualString).isEqualTo("key:\n- field1: \"string\"\n");
+            assertThat(actualString).isEqualTo("key:\n- field1: string\n");
         }
 
         @Test
@@ -586,7 +584,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             assertThat(actualString)
                     .isEqualTo(
                             """
-                            "Text with special character /\\\\\\\\'\\\\b\\\\f\\\\t\\\\r\\\\n."
+                            Text with special character /\\\\'\\b\\f\\t\\r\\n.
                             """);
         }
 

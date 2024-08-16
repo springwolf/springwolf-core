@@ -9,7 +9,7 @@
         "type" : "string"
       }
     },
-    "examples" : [ "f:\n  b: true\n  s: \"string\"\ns: \"string\"\n" ]
+    "examples" : [ "f:\n  b: true\n  s: string\ns: string\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$FooWithEnum" : {
     "type" : "string",
@@ -22,7 +22,7 @@
         "type" : "string"
       }
     },
-    "examples" : [ "b: \"BAR1\"\ns: \"string\"\n" ]
+    "examples" : [ "b: BAR1\ns: string\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SimpleFoo" : {
     "type" : "string",
@@ -34,6 +34,6 @@
         "type" : "string"
       }
     },
-    "examples" : [ "b: true\ns: \"string\"\n" ]
+    "examples" : [ "b: true\ns: string\n" ]
   }
 }

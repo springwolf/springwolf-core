@@ -1212,7 +1212,7 @@
           }
         },
         "examples": [
-          "someEnum: \"FOO1\"\nsomeLong: 0\nsomeString: \"string\"\n"
+          "someEnum: FOO1\nsomeLong: 0\nsomeString: string\n"
         ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",

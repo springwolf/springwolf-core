@@ -28,7 +28,7 @@
         "type" : "string"
       }
     },
-    "examples" : [ "b: true\nd: 1.1\ndt: \"2015-07-20T15:49:04-07:00\"\nf: 1.1\ni: 0\n\"n\":\n  nba: \"YmFzZTY0LWV4YW1wbGU=\"\n  nc:\n    cyclic: {}\n  nli:\n  - 0\n  nmfm:\n    key:\n      s: \"string\"\n  ns: \"string\"\n  nsm:\n  - s: \"string\"\n  nu: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\ns: \"string\"\n" ]
+    "examples" : [ "b: true\nd: 1.1\ndt: 2015-07-20T15:49:04-07:00\nf: 1.1\ni: 0\n\"n\":\n  nba: YmFzZTY0LWV4YW1wbGU=\n  nc:\n    cyclic: {}\n  nli:\n  - 0\n  nmfm:\n    key:\n      s: string\n  ns: string\n  nsm:\n  - s: string\n  nu: 3fa85f64-5717-4562-b3fc-2c963f66afa6\ns: string\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested" : {
     "type" : "string",
@@ -68,7 +68,7 @@
         "format" : "uuid"
       }
     },
-    "examples" : [ "nba: \"YmFzZTY0LWV4YW1wbGU=\"\nnc:\n  cyclic: {}\nnli:\n- 0\nnmfm:\n  key:\n    s: \"string\"\nns: \"string\"\nnsm:\n- s: \"string\"\nnu: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n" ]
+    "examples" : [ "nba: YmFzZTY0LWV4YW1wbGU=\nnc:\n  cyclic: {}\nnli:\n- 0\nnmfm:\n  key:\n    s: string\nns: string\nnsm:\n- s: string\nnu: 3fa85f64-5717-4562-b3fc-2c963f66afa6\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ComplexFoo$Nested$Cyclic" : {
     "type" : "string",
@@ -86,6 +86,6 @@
         "type" : "string"
       }
     },
-    "examples" : [ "s: \"string\"\n" ]
+    "examples" : [ "s: string\n" ]
   }
 }

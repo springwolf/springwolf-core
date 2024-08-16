@@ -50,9 +50,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
 
     private final SpringwolfConfigProperties springwolfConfigProperties = new SpringwolfConfigProperties();
     private final ExampleYamlValueGenerator exampleYamlValueGenerator = new ExampleYamlValueGenerator(
-            new ExampleJsonValueGenerator(),
-            new DefaultExampleYamlValueSerializer(springwolfConfigProperties),
-            springwolfConfigProperties);
+            new ExampleJsonValueGenerator(), new DefaultExampleYamlValueSerializer(), springwolfConfigProperties);
 
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
             List.of(),
