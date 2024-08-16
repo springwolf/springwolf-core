@@ -50,7 +50,7 @@ export class AsyncApiMapperService {
         item.servers,
         item.defaultContentType
       );
-      return {
+      const asyncApi = {
         info: this.mapInfo(item),
         servers: this.mapServers(item.servers),
         channels: channels,
@@ -59,6 +59,8 @@ export class AsyncApiMapperService {
           schemas: this.mapSchemas(item.components.schemas),
         },
       };
+      this.postProcess(asyncApi);
+      return asyncApi;
     } catch (e: any) {
       this.notificationService.showError(
         "Error parsing AsyncAPI: " + e?.message
@@ -223,16 +225,18 @@ export class AsyncApiMapperService {
       operation.reply
     );
 
+    const anchorIdentifier =
+      CHANNEL_ANCHOR_PREFIX +
+      [
+        mappedOperation.protocol,
+        channelName,
+        mappedOperation.operationType,
+        mappedOperation.message.title,
+      ].join("-");
     return {
       name: channelName,
-      anchorIdentifier:
-        CHANNEL_ANCHOR_PREFIX +
-        [
-          mappedOperation.protocol,
-          channelName,
-          mappedOperation.operationType,
-          mappedOperation.message.title,
-        ].join("-"),
+      anchorIdentifier: anchorIdentifier,
+      anchorUrl: AsyncApiMapperService.BASE_URL + anchorIdentifier,
       description: channel.description,
       operation: mappedOperation,
       bindings: channel.bindings || {},
@@ -444,6 +448,7 @@ export class AsyncApiMapperService {
     return {
       name: schemaName,
       title: schemaName.split(".")?.pop() || "undefined-title",
+      usedBy: [],
       anchorIdentifier: schemaName,
       description: schema.description,
       deprecated: schema.deprecated,
@@ -514,6 +519,7 @@ export class AsyncApiMapperService {
     return {
       name: schemaName,
       title: schemaName.split(".").pop()!!,
+      usedBy: [],
       anchorIdentifier: schemaName,
 
       // type == ref
@@ -536,6 +542,43 @@ export class AsyncApiMapperService {
         "No binding defined for " + identifier
       );
     }
+  }
+
+  private postProcess(asyncApi: AsyncApi) {
+    asyncApi.components.schemas.forEach((schema) => {
+      asyncApi.channels.forEach((channel) => {
+        channel.operations.forEach((channelOperation) => {
+          if (
+            channelOperation.operation.message.payload.title === schema.name
+          ) {
+            schema.usedBy.push({
+              name: channelOperation.name,
+              anchorUrl: channelOperation.anchorUrl!!,
+              type: "channel",
+            });
+          }
+        });
+      });
+
+      asyncApi.components.schemas.forEach((otherSchema) => {
+        Object.values(otherSchema?.properties || {}).forEach((property) => {
+          if (property.refTitle === schema.name) {
+            schema.usedBy.push({
+              name: otherSchema.title,
+              anchorUrl: otherSchema.anchorUrl!!,
+              type: "schema",
+            });
+          }
+        });
+        if (otherSchema.items?.refTitle === schema.name) {
+          schema.usedBy.push({
+            name: otherSchema.title,
+            anchorUrl: otherSchema.anchorUrl!!,
+            type: "schema",
+          });
+        }
+      });
+    });
   }
 
   private parsingErrorBoundary<T>(path: string, f: () => T): T | undefined {
