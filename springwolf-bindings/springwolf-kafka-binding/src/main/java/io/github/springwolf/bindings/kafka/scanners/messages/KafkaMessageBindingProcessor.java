@@ -4,6 +4,7 @@ package io.github.springwolf.bindings.kafka.scanners.messages;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.Schema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
@@ -59,7 +60,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
                 break;
             case STRING_KEY:
                 schemaDefinition = SchemaObject.builder()
-                        .type("string")
+                        .type(SchemaType.STRING)
                         .examples(List.of(messageBinding.key().example()))
                         .description(resolveOrNull(messageBinding.key().description()))
                         .build();

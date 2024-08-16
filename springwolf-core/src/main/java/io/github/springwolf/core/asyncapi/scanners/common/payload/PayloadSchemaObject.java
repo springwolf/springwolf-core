@@ -9,7 +9,7 @@ import jakarta.annotation.Nullable;
  * @param name The fully qualified name or the simple name of the schema.
  * @param schema The SchemaObject.
  */
-public record NamedSchemaObject(String name, @Nullable SchemaObject schema) {
+public record PayloadSchemaObject(String name, @Nullable SchemaObject schema) {
     public String title() {
         return schema != null ? schema.getTitle() : name();
     }

@@ -17,8 +17,8 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
@@ -91,7 +91,7 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
     }
 
     protected MessageObject buildMessage(AsyncOperation operationData, Method method) {
-        NamedSchemaObject payloadSchema = payloadAsyncOperationService.extractSchema(operationData, method);
+        PayloadSchemaObject payloadSchema = payloadAsyncOperationService.extractSchema(operationData, method);
 
         SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, resolver);
         String headerSchemaName = this.componentsService.registerSchema(headerSchema);

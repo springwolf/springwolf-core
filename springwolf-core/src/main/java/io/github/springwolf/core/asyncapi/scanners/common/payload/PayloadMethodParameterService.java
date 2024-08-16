@@ -13,7 +13,7 @@ public class PayloadMethodParameterService implements PayloadMethodService {
     private final PayloadClassExtractor payloadClassExtractor;
     private final PayloadService payloadService;
 
-    public NamedSchemaObject extractSchema(Method method) {
+    public PayloadSchemaObject extractSchema(Method method) {
         Optional<Class<?>> payloadType = payloadClassExtractor.extractFrom(method);
 
         return payloadType.map(payloadService::buildSchema).orElseGet(payloadService::useUnusedPayload);

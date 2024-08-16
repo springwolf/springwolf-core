@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +44,7 @@ class JsonSchemaCustomizerTest {
         // given
         AsyncAPI asyncAPI = createAsyncApi();
         SchemaObject schemaObject = new SchemaObject();
-        schemaObject.setType("object");
+        schemaObject.setType(SchemaType.OBJECT);
         asyncAPI.getComponents().setSchemas(Map.of("schema", schemaObject));
 
         when(jsonSchemaGenerator.fromSchema(any(), any())).thenReturn("mock-string");

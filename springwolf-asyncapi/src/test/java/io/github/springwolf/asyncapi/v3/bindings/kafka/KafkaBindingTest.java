@@ -9,6 +9,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
@@ -52,11 +53,11 @@ class KafkaBindingTest {
                                         "kafka",
                                         KafkaOperationBinding.builder()
                                                 .groupId(SchemaObject.builder()
-                                                        .type("string")
+                                                        .type(SchemaType.STRING)
                                                         .enumValues(List.of("myGroupId"))
                                                         .build())
                                                 .clientId(SchemaObject.builder()
-                                                        .type("string")
+                                                        .type(SchemaType.STRING)
                                                         .enumValues(List.of("myClientId"))
                                                         .build())
                                                 .build()))
@@ -140,7 +141,7 @@ class KafkaBindingTest {
                                                         KafkaMessageBinding.builder()
                                                                 .key(
                                                                         SchemaObject.builder()
-                                                                                .type("string")
+                                                                                .type(SchemaType.STRING)
                                                                                 .enumValues(List.of("myKey"))
                                                                                 .build())
                                                                 .schemaIdLocation("payload")

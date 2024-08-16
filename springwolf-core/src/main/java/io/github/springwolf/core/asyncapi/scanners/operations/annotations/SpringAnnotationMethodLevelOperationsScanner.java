@@ -14,8 +14,8 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -74,7 +74,7 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         String operationId = StringUtils.joinWith(
                 "_", ReferenceUtil.toValidId(channelName), OperationAction.RECEIVE, method.getName());
 
-        NamedSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method);
+        PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method);
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
 
         Operation operation = buildOperation(annotation, payloadSchema, headerSchema);
@@ -83,7 +83,7 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
     }
 
     private Operation buildOperation(
-            MethodAnnotation annotation, NamedSchemaObject payloadType, SchemaObject headerSchema) {
+            MethodAnnotation annotation, PayloadSchemaObject payloadType, SchemaObject headerSchema) {
         MessageObject message = buildMessage(annotation, payloadType, headerSchema);
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(annotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;

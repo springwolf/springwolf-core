@@ -71,7 +71,9 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                         "kafka",
                         KafkaMessageBinding.builder()
                                 // FIXME: We should have a SchemaString (Schema<String>)
-                                .key(SchemaObject.builder().type("string").build())
+                                .key(SchemaObject.builder()
+                                        .type(SchemaType.STRING)
+                                        .build())
                                 .build()))
                 .build();
         Map<String, Message> messages = Map.of(message.getMessageId(), message);
@@ -100,9 +102,9 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .build();
 
         SchemaObject examplePayloadSchema = new SchemaObject();
-        examplePayloadSchema.setType("object");
+        examplePayloadSchema.setType(SchemaType.OBJECT);
         SchemaObject stringSchema = new SchemaObject();
-        stringSchema.setType("string");
+        stringSchema.setType(SchemaType.STRING);
         examplePayloadSchema.setProperties(Map.of("s", stringSchema));
         Map<String, SchemaObject> schemas = Map.of("ExamplePayload", examplePayloadSchema);
 

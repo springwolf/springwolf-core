@@ -2,6 +2,7 @@
 package io.github.springwolf.plugins.kafka.asyncapi.components.header;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import org.springframework.kafka.support.mapping.AbstractJavaTypeMapper;
 
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class AsyncHeadersForSpringKafkaBuilder {
 
     public AsyncHeadersForSpringKafkaBuilder(String schemaName) {
         this.headers = SchemaObject.builder()
-                .type("object")
+                .type(SchemaType.OBJECT)
                 .title(schemaName)
                 .properties(new HashMap<>())
                 .build();
@@ -34,7 +35,7 @@ public class AsyncHeadersForSpringKafkaBuilder {
     private AsyncHeadersForSpringKafkaBuilder withHeader(
             String headerName, List<String> types, String exampleType, String description) {
         SchemaObject header = new SchemaObject();
-        header.setType("string");
+        header.setType(SchemaType.STRING);
         header.setTitle(headerName);
         header.setDescription(description);
         header.setExamples(List.of(exampleType));

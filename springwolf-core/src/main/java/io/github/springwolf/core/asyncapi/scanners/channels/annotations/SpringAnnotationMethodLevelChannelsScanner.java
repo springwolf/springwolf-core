@@ -12,8 +12,8 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -64,7 +64,7 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
 
         MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
-        NamedSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
+        PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
 
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
         ChannelObject channelItem = buildChannelItem(annotation, payloadSchema, headerSchema);
@@ -72,7 +72,7 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
     }
 
     private ChannelObject buildChannelItem(
-            MethodAnnotation annotation, NamedSchemaObject payloadSchema, SchemaObject headerSchema) {
+            MethodAnnotation annotation, PayloadSchemaObject payloadSchema, SchemaObject headerSchema) {
         MessageObject message = buildMessage(annotation, payloadSchema, headerSchema);
         return buildChannelItem(annotation, message);
     }

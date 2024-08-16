@@ -4,8 +4,8 @@ package io.github.springwolf.plugins.stomp.asyncapi.scanners.operation.annotatio
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.NamedSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodReturnService;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.bindings.StompBindingSendToUserFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.simp.annotation.SendToUser;
@@ -32,7 +32,7 @@ class SendToUserCustomizerTest {
         // given
         Operation operation = new Operation();
         when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL_ID);
-        when(payloadService.extractSchema(any())).thenReturn(new NamedSchemaObject(MESSAGE_ID, null));
+        when(payloadService.extractSchema(any())).thenReturn(new PayloadSchemaObject(MESSAGE_ID, null));
 
         // when
         sendToCustomizer.customize(operation, this.getClass().getDeclaredMethod("testMethod"));

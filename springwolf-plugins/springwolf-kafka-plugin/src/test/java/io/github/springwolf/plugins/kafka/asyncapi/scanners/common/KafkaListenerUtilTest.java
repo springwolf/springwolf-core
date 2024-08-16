@@ -8,6 +8,7 @@ import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import org.assertj.core.util.Arrays;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Nested;
@@ -111,7 +112,8 @@ class KafkaListenerUtilTest {
         void includeKafkaKeyHeader() {
             // given
             SchemaObject headerSchema = new SchemaObject();
-            SchemaObject keySchema = SchemaObject.builder().type("string").build();
+            SchemaObject keySchema =
+                    SchemaObject.builder().type(SchemaType.STRING).build();
             headerSchema.setProperties(Map.of(KafkaHeaders.RECEIVED_KEY, keySchema));
 
             // when
