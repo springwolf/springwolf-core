@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
@@ -58,12 +59,12 @@ class MQTTBindingTest {
                                         "mqtt",
                                         MQTTServerBinding.builder()
                                                 .sessionExpiryInterval(SchemaObject.builder()
-                                                        .type("integer")
+                                                        .type(SchemaType.INTEGER)
                                                         .minimum(new BigDecimal("30"))
                                                         .maximum(new BigDecimal("1200"))
                                                         .build())
                                                 .maximumPacketSize(SchemaObject.builder()
-                                                        .type("integer")
+                                                        .type(SchemaType.INTEGER)
                                                         .minimum(new BigDecimal("256"))
                                                         .build())
                                                 .build()))

@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.components;
 
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
@@ -42,11 +43,11 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(objectFoo)
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
-                            .type("object")
+                            .type(SchemaType.OBJECT)
                             .properties(Map.of(
                                     "s",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type("string")
+                                            .type(SchemaType.STRING)
                                             .minLength(1)
                                             .maxLength(10)
                                             .examples(List.of("\"example\""))
@@ -69,13 +70,13 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(objectFoo)
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
-                            .type("object")
+                            .type(SchemaType.OBJECT)
                             .properties(Map.of(
                                     "array",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type("array")
+                                            .type(SchemaType.ARRAY)
                                             .items(ComponentSchema.of(SchemaObject.builder()
-                                                    .type("string")
+                                                    .type(SchemaType.STRING)
                                                     .description("items description")
                                                     .build()))
                                             .maxItems(10)
@@ -97,22 +98,22 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(objectFoo)
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
-                            .type("object")
+                            .type(SchemaType.OBJECT)
                             .properties(Map.of(
                                     "ref",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type("object")
+                                            .type(SchemaType.OBJECT)
                                             .not(ComponentSchema.of(SchemaObject.builder()
-                                                    .type("object")
+                                                    .type(SchemaType.OBJECT)
                                                     .build()))
                                             .oneOf(List.of(ComponentSchema.of(SchemaObject.builder()
-                                                    .type("string")
+                                                    .type(SchemaType.STRING)
                                                     .build())))
                                             .anyOf(List.of(ComponentSchema.of(SchemaObject.builder()
-                                                    .type("string")
+                                                    .type(SchemaType.STRING)
                                                     .build())))
                                             .allOf(List.of(ComponentSchema.of(SchemaObject.builder()
-                                                    .type("string")
+                                                    .type(SchemaType.STRING)
                                                     .build())))
                                             .build())))
                             .build());
@@ -129,11 +130,11 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(objectFoo)
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
-                            .type("object")
+                            .type(SchemaType.OBJECT)
                             .properties(Map.of(
                                     "number",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type("number")
+                                            .type(SchemaType.NUMBER)
                                             .format("double")
                                             .multipleOf(BigDecimal.ONE)
                                             .exclusiveMaximum(BigDecimal.valueOf(5))
@@ -152,8 +153,10 @@ class DefaultComponentsServiceIntegrationTest {
             SchemaObject objectFoo = schemas.get(this.getClass().getName() + "$NotSupportedFoo");
 
             assertThat(objectFoo)
-                    .isEqualTo(
-                            SchemaObject.builder().title("title").type("object").build());
+                    .isEqualTo(SchemaObject.builder()
+                            .title("title")
+                            .type(SchemaType.OBJECT)
+                            .build());
         }
 
         @Data
@@ -245,7 +248,7 @@ class DefaultComponentsServiceIntegrationTest {
             SchemaObject schema = schemas.get(this.getClass().getName() + "$StringEnvelop");
             assertThat(schema)
                     .isEqualTo(SchemaObject.builder()
-                            .type("string")
+                            .type(SchemaType.STRING)
                             .description("The payload in the envelop")
                             .maxLength(10)
                             .build());
@@ -264,16 +267,16 @@ class DefaultComponentsServiceIntegrationTest {
                     schemas.get(this.getClass().getName() + "$EnvelopWithMultipleAsyncApiPayloadAnnotations");
             assertThat(schema)
                     .isEqualTo(SchemaObject.builder()
-                            .type("object")
+                            .type(SchemaType.OBJECT)
                             .properties(Map.of(
                                     "otherField",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type("integer")
+                                            .type(SchemaType.INTEGER)
                                             .format("int32")
                                             .build()),
                                     "payload",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type("string")
+                                            .type(SchemaType.STRING)
                                             .description("The payload in the envelop")
                                             .maxLength(10)
                                             .build())))

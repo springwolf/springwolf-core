@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.common.payload.internal;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -20,7 +21,7 @@ public class PayloadService {
     public static final PayloadSchemaObject PAYLOAD_NOT_USED = new PayloadSchemaObject(
             PAYLOAD_NOT_USED_KEY,
             SchemaObject.builder()
-                    .type("object")
+                    .type(SchemaType.OBJECT)
                     .title(PAYLOAD_NOT_USED_KEY)
                     .description("No payload specified")
                     .properties(Map.of())

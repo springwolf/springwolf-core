@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 
 import java.util.Map;
@@ -11,7 +12,7 @@ public class AsyncHeadersNotUsed implements AsyncHeadersBuilder {
      * Explicitly document that no headers are used.
      */
     public static final SchemaObject NOT_USED = SchemaObject.builder()
-            .type("object")
+            .type(SchemaType.OBJECT)
             .title("HeadersNotUsed")
             .description("No headers are present.")
             .properties(Map.of())

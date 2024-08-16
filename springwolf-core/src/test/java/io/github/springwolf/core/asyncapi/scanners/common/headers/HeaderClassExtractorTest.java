@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import lombok.val;
@@ -24,9 +25,9 @@ class HeaderClassExtractorTest {
     private final PayloadSchemaObject payloadSchemaName =
             new PayloadSchemaObject("payloadSchemaName", new SchemaObject());
     private final SchemaObject stringSchema =
-            SchemaObject.builder().type("string").build();
+            SchemaObject.builder().type(SchemaType.STRING).build();
     private final SchemaObject stringSwaggerSchema =
-            SchemaObject.builder().type("string").build();
+            SchemaObject.builder().type(SchemaType.STRING).build();
 
     @Test
     void getNoDocumentedHeaders() throws NoSuchMethodException {
@@ -54,7 +55,7 @@ class HeaderClassExtractorTest {
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
-                .type("object")
+                .type(SchemaType.OBJECT)
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();
@@ -75,7 +76,7 @@ class HeaderClassExtractorTest {
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
-                .type("object")
+                .type(SchemaType.OBJECT)
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();

@@ -4,6 +4,7 @@ package io.github.springwolf.core.asyncapi.components;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.media.Discriminator;
@@ -40,7 +41,7 @@ class SwaggerSchemaUtilTest {
         void mapSchema() {
             // given
             ObjectSchema schema = new ObjectSchema();
-            schema.setType("string");
+            schema.setType(SchemaType.STRING);
 
             // when
             ComponentSchema componentSchema = swaggerSchemaUtil.mapSchemaOrRef(schema);
@@ -99,7 +100,7 @@ class SwaggerSchemaUtilTest {
         void mapType() {
             // given
             ObjectSchema schema = new ObjectSchema();
-            schema.setType("string");
+            schema.setType(SchemaType.STRING);
 
             // when
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
@@ -113,7 +114,7 @@ class SwaggerSchemaUtilTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema property = new ObjectSchema();
-            property.setType("string");
+            property.setType(SchemaType.STRING);
             schema.addProperty("property", property);
 
             // when
@@ -321,7 +322,7 @@ class SwaggerSchemaUtilTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema additionalProperties = new ObjectSchema();
-            additionalProperties.setType("string");
+            additionalProperties.setType(SchemaType.STRING);
             schema.setAdditionalProperties(additionalProperties);
 
             // when
@@ -365,7 +366,7 @@ class SwaggerSchemaUtilTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema allOf = new ObjectSchema();
-            allOf.setType("string");
+            allOf.setType(SchemaType.STRING);
             schema.addAllOfItem(allOf);
 
             // when
@@ -381,7 +382,7 @@ class SwaggerSchemaUtilTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema oneOf = new ObjectSchema();
-            oneOf.setType("string");
+            oneOf.setType(SchemaType.STRING);
             schema.addOneOfItem(oneOf);
 
             // when
@@ -397,7 +398,7 @@ class SwaggerSchemaUtilTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema anyOf = new ObjectSchema();
-            anyOf.setType("string");
+            anyOf.setType(SchemaType.STRING);
             schema.addAnyOfItem(anyOf);
 
             // when
@@ -426,7 +427,7 @@ class SwaggerSchemaUtilTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema not = new ObjectSchema();
-            not.setType("string");
+            not.setType(SchemaType.STRING);
             schema.setNot(not);
 
             // when
@@ -440,9 +441,9 @@ class SwaggerSchemaUtilTest {
         void mapItems() {
             // given
             ObjectSchema schema = new ObjectSchema();
-            schema.type("array");
+            schema.type(SchemaType.ARRAY);
             ObjectSchema item = new ObjectSchema();
-            item.setType("string");
+            item.setType(SchemaType.STRING);
             schema.setItems(item);
 
             // when
@@ -537,7 +538,7 @@ class SwaggerSchemaUtilTest {
         void mapType() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setType("string");
+            schema.setType(SchemaType.STRING);
 
             // when
             Schema componentSchema = swaggerSchemaUtil.mapToSwagger(schema);

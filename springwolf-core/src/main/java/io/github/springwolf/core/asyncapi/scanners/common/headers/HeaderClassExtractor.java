@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class HeaderClassExtractor {
         log.debug("Extract header for {}", methodName);
 
         SchemaObject headers = SchemaObject.builder()
-                .type("object")
+                .type(SchemaType.OBJECT)
                 .title(payload.name() + "Headers")
                 .properties(new HashMap<>())
                 .build();

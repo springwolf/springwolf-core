@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
@@ -51,7 +52,7 @@ public class AsyncAnnotationUtil {
                 StringUtils.hasText(headers.description()) ? resolver.resolveStringValue(headers.description()) : null;
 
         SchemaObject headerSchema = new SchemaObject();
-        headerSchema.setType("object");
+        headerSchema.setType(SchemaType.OBJECT);
         headerSchema.setTitle(headers.schemaName());
         headerSchema.setDescription(headerDescription);
         headerSchema.setProperties(new HashMap<>());
@@ -62,7 +63,7 @@ public class AsyncAnnotationUtil {
                     String propertyName = resolver.resolveStringValue(headerName);
 
                     SchemaObject property = new SchemaObject();
-                    property.setType("string");
+                    property.setType(SchemaType.STRING);
                     property.setTitle(propertyName);
                     property.setDescription(getDescription(headersValues, resolver));
                     List<String> values = getHeaderValues(headersValues, resolver);

@@ -11,6 +11,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageTrait;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -35,22 +36,22 @@ class MessageTest {
                         Tag.builder().name("signup").build(),
                         Tag.builder().name("register").build()))
                 .headers(MessageHeaders.of(SchemaObject.builder()
-                        .type("object")
+                        .type(SchemaType.OBJECT)
                         .properties(Map.of(
                                 "correlationId",
                                         SchemaObject.builder()
                                                 .description("Correlation ID set by application")
-                                                .type("string")
+                                                .type(SchemaType.STRING)
                                                 .build(),
                                 "applicationInstanceId",
                                         SchemaObject.builder()
                                                 .description(
                                                         "Unique identifier for a given instance of the publishing application")
-                                                .type("string")
+                                                .type(SchemaType.STRING)
                                                 .build()))
                         .build()))
                 .payload(MessagePayload.of(SchemaObject.builder()
-                        .type("object")
+                        .type(SchemaType.OBJECT)
                         .properties(Map.of(
                                 "user", SchemaReference.fromSchema("userCreate"),
                                 "signup", SchemaReference.fromSchema("signup")))
