@@ -33,7 +33,7 @@ ext {
 
     avroVersion = '1.12.0'
 
-    awaitilityVersion = '4.2.1'
+    awaitilityVersion = '4.2.2'
 
     commonsLang3Version = '3.15.0'
 
