@@ -7,6 +7,7 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto;
 import io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -34,7 +35,7 @@ public class ExampleClassLevelKafkaListener {
     }
 
     @KafkaHandler
-    public void receiveAnotherPayload(AnotherPayloadDto payload) {
+    public void receiveAnotherPayload(ConsumerRecord<Void, AnotherPayloadDto> payload) {
         log.info("Received new message in {}: {}", TOPIC, payload.toString());
     }
 
