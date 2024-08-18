@@ -15,10 +15,12 @@ import { highlightBracketPairs } from "prism-code-editor/highlight-brackets";
 import { editHistory } from "prism-code-editor/commands";
 import { copyButton } from "prism-code-editor/copy-button";
 import "prism-code-editor/prism/languages/json";
+import "prism-code-editor/prism/languages/yaml";
 import "prism-code-editor/prism/languages/http";
 import "prism-code-editor/prism/languages/java";
 import "prism-code-editor/prism/languages/kotlin";
 import "prism-code-editor/prism/languages/markdown";
+import "prism-code-editor/prism/languages/xml";
 
 @Component({
   selector: "app-prism-editor",

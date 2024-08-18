@@ -28,6 +28,8 @@ export class ChannelOperationComponent implements OnInit {
   defaultSchema: Schema = initSchema;
   defaultExample: Example = initExample;
   originalDefaultExample: Example = this.defaultExample;
+  exampleContentType: string = "json";
+  bindingContentType: string = "json";
 
   headers: Schema = initSchema;
   headersExample: Example = initExample;
@@ -56,6 +58,10 @@ export class ChannelOperationComponent implements OnInit {
       const schema = schemas.get(schemaIdentifier)!!;
       this.defaultSchema = schema;
       this.originalDefaultExample = schema.example || noExample;
+      this.exampleContentType =
+        this.operation().message.contentType.split("/").pop() || "json";
+      this.bindingContentType =
+        asyncapi.defaultContentType.split("/").pop() || "json";
 
       const headersSchemaIdentifier =
         this.operation().message.headers.name.slice(
