@@ -37,6 +37,7 @@ export class MockChannelOperationComponent {
 @Component({ selector: "app-prism-editor", template: "" })
 export class MockPrismEditorComponent {
   code = input<string>("");
+  language = input<string>("");
 }
 
 @Component({ selector: "app-schema-new", template: "" })

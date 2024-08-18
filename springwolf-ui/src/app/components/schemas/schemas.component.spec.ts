@@ -24,6 +24,7 @@ describe("SchemasComponent", () => {
         components: {
           schemas: new Map<string, Schema>(),
         },
+        defaultContentType: "application/json",
       }),
   };
 
