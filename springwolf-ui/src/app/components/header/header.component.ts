@@ -12,6 +12,7 @@ import { IAssetService } from "../../service/asset.service";
 export class HeaderComponent implements OnInit {
   isNewUi: boolean = UiService.DEFAULT_NEW_UI;
   isShowBindings: boolean = UiService.DEFAULT_SHOW_BINDINGS;
+  isShowHeaders: boolean = UiService.DEFAULT_SHOW_HEADERS;
   title: string = "";
 
   constructor(
@@ -27,6 +28,9 @@ export class HeaderComponent implements OnInit {
     this.uiService.isShowBindings$.subscribe(
       (value) => (this.isShowBindings = value)
     );
+    this.uiService.isShowHeaders$.subscribe(
+      (value) => (this.isShowHeaders = value)
+    );
 
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       this.title = asyncapi.info.title;
@@ -39,5 +43,9 @@ export class HeaderComponent implements OnInit {
 
   toggleIsShowBindings() {
     this.uiService.toggleIsShowBindings(!this.isShowBindings);
+  }
+
+  toggleIsShowHeaders() {
+    this.uiService.toggleIsShowHeaders(!this.isShowHeaders);
   }
 }
