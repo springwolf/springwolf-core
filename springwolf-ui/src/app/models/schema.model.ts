@@ -24,6 +24,7 @@ export interface Schema {
   // type == ref
   refAnchorUrl?: string;
   refName?: string;
+  refTitle?: string;
   // type == object
   properties?: { [key: string]: Schema };
   required?: string[];

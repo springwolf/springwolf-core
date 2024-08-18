@@ -524,6 +524,7 @@ export class AsyncApiMapperService {
       // type == ref
       refAnchorUrl: AsyncApiMapperService.BASE_URL + schemaRefId,
       refName: schemaRefId,
+      refTitle: this.resolveTitleFromName(schemaRefId),
     };
   }
 
