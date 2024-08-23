@@ -37,6 +37,7 @@ export class ChannelOperationComponent implements OnInit {
   messageBindingExampleString?: string;
 
   isShowBindings: boolean = UiService.DEFAULT_SHOW_BINDINGS;
+  isShowHeaders: boolean = UiService.DEFAULT_SHOW_HEADERS;
   canPublish: boolean = false;
 
   constructor(
@@ -82,6 +83,9 @@ export class ChannelOperationComponent implements OnInit {
 
     this.uiService.isShowBindings$.subscribe(
       (value) => (this.isShowBindings = value)
+    );
+    this.uiService.isShowHeaders$.subscribe(
+      (value) => (this.isShowHeaders = value)
     );
   }
 

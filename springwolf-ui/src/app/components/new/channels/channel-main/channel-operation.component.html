@@ -59,7 +59,6 @@
   </div>
 </div>
 
-<mat-divider *ngIf="isShowBindings"></mat-divider>
 <div class="row" *ngIf="isShowBindings">
   <div class="width-6/12 width-12/12-s">
     <h6>Operation Binding</h6>
@@ -76,7 +75,6 @@
   </div>
 </div>
 
-<mat-divider *ngIf="isShowBindings"></mat-divider>
 <div class="row" *ngIf="isShowBindings">
   <div class="width-6/12 width-12/12-s">
     <h6>Message Binding</h6>
@@ -94,8 +92,7 @@
   </div>
 </div>
 
-<mat-divider></mat-divider>
-<div class="row">
+<div class="row" *ngIf="isShowHeaders">
   <div class="width-6/12 width-12/12-s">
     <h6>Headers</h6>
     <mat-chip-set>
@@ -112,7 +109,6 @@
   </div>
 </div>
 
-<mat-divider></mat-divider>
 <div class="row">
   <div class="width-6/12 width-12/12-s">
     <h6>Payload</h6>

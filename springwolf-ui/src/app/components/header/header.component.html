@@ -29,6 +29,12 @@
         }}</mat-icon>
         Show bindings
       </button>
+      <button mat-menu-item (click)="toggleIsShowHeaders()">
+        <mat-icon>{{
+          isShowHeaders ? "check_box" : "check_box_outline_blank"
+        }}</mat-icon>
+        Show headers
+      </button>
     </mat-menu>
 
     <mat-slide-toggle
