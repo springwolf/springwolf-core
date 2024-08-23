@@ -43,17 +43,15 @@ public class AsyncAnnotationUtil {
             }
             return AsyncHeadersNotDocumented.NOT_DOCUMENTED;
         }
-        if (!StringUtils.hasText(headers.schemaName())) {
-            throw new IllegalArgumentException("The schemaName in @AsyncOperation.Headers must be set for values: "
-                    + Arrays.toString(headers.values()));
-        }
 
+        String headerSchemaTitle =
+                StringUtils.hasText(headers.schemaName()) ? headers.schemaName() : generateHeadersSchemaName(headers);
         String headerDescription =
                 StringUtils.hasText(headers.description()) ? resolver.resolveStringValue(headers.description()) : null;
 
         SchemaObject headerSchema = new SchemaObject();
         headerSchema.setType(SchemaType.OBJECT);
-        headerSchema.setTitle(headers.schemaName());
+        headerSchema.setTitle(headerSchemaTitle);
         headerSchema.setDescription(headerDescription);
         headerSchema.setProperties(new HashMap<>());
 
@@ -93,6 +91,10 @@ public class AsyncAnnotationUtil {
                 .sorted()
                 .findFirst()
                 .orElse(null);
+    }
+
+    private static String generateHeadersSchemaName(AsyncOperation.Headers headers) {
+        return "Headers-" + Math.abs(headers.hashCode());
     }
 
     public static Map<String, OperationBinding> processOperationBindingFromAnnotation(
