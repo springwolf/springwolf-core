@@ -443,8 +443,8 @@
           "type": "object"
         }
       },
-      "SpringKafkaDefaultHeaders-ExamplePayloadDto": {
-        "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto",
+      "SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997": {
+        "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -494,7 +494,7 @@
               "type": "string"
             }
           },
-          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto",
+          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997",
           "type": "object"
         }
       },
@@ -1580,7 +1580,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto"
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -1592,12 +1592,6 @@
         "title": "ExamplePayloadDto",
         "bindings": {
           "kafka": {
-            "key": {
-              "type": "string",
-              "examples": [
-                "\"string\""
-              ]
-            },
             "bindingVersion": "0.5.0"
           }
         }

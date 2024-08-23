@@ -16,6 +16,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
@@ -26,7 +27,10 @@ import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -36,9 +40,11 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class SpringAnnotationMethodLevelChannelsScannerTest {
@@ -207,6 +213,48 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
 
         @TestListener
         private void anotherMethodWithAnnotation(SimpleFoo payload) {}
+    }
+
+    @Nested
+    class HeaderAnnotation {
+
+        @Test
+        void scan_componentHasHeaderAnnotation() {
+            // given
+            when(headerClassExtractor.extractHeader(any(), any()))
+                    .thenReturn(SchemaObject.builder()
+                            .type(SchemaType.OBJECT)
+                            .properties(Map.of(
+                                    "header_name",
+                                    SchemaObject.builder()
+                                            .type(SchemaType.STRING)
+                                            .examples(List.of("foobar"))
+                                            .build()))
+                            .build());
+
+            // when
+            scanner.scan(ClassWithMethodWithHeaderAnnotation.class).toList();
+
+            // then
+            verify(componentsService)
+                    .registerSchema(eq(SchemaObject.builder()
+                            .title("HeadersNotDocumented-934983093")
+                            .type(SchemaType.OBJECT)
+                            .description("There can be headers, but they are not explicitly documented.")
+                            .properties(Map.of(
+                                    "header_name",
+                                    SchemaObject.builder()
+                                            .type(SchemaType.STRING)
+                                            .examples(List.of("foobar"))
+                                            .build()))
+                            .build()));
+        }
+
+        private static class ClassWithMethodWithHeaderAnnotation {
+            @TestListener
+            private void methodWithAnnotationAndHeader(
+                    @Payload String payload, @Header("header_name") String headerValue) {}
+        }
     }
 
     @Data

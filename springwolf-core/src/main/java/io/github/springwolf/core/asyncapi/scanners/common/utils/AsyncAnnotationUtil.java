@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger.generateHeaderSchemaName;
 import static java.util.stream.Collectors.groupingBy;
 
 public class AsyncAnnotationUtil {
@@ -44,8 +45,9 @@ public class AsyncAnnotationUtil {
             return AsyncHeadersNotDocumented.NOT_DOCUMENTED;
         }
 
-        String headerSchemaTitle =
-                StringUtils.hasText(headers.schemaName()) ? headers.schemaName() : generateHeadersSchemaName(headers);
+        String headerSchemaTitle;
+        headerSchemaTitle =
+                StringUtils.hasText(headers.schemaName()) ? headers.schemaName() : generateHeaderSchemaName(headers);
         String headerDescription =
                 StringUtils.hasText(headers.description()) ? resolver.resolveStringValue(headers.description()) : null;
 
@@ -91,10 +93,6 @@ public class AsyncAnnotationUtil {
                 .sorted()
                 .findFirst()
                 .orElse(null);
-    }
-
-    private static String generateHeadersSchemaName(AsyncOperation.Headers headers) {
-        return "Headers-" + Math.abs(headers.hashCode());
     }
 
     public static Map<String, OperationBinding> processOperationBindingFromAnnotation(

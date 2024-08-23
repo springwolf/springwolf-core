@@ -303,8 +303,8 @@ components:
             type: string
         title: SpringKafkaDefaultHeaders-AnotherPayloadDto
         type: object
-    SpringKafkaDefaultHeaders-ExamplePayloadDto:
-      title: SpringKafkaDefaultHeaders-ExamplePayloadDto
+    SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997:
+      title: SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997
       type: object
       properties:
         __TypeId__:
@@ -338,7 +338,7 @@ components:
             type: number
           kafka_receivedMessageKey:
             type: string
-        title: SpringKafkaDefaultHeaders-ExamplePayloadDto
+        title: SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997
         type: object
     SpringKafkaDefaultHeaders-Integer:
       title: SpringKafkaDefaultHeaders-Integer
@@ -1147,7 +1147,7 @@ components:
           bindingVersion: 0.5.0
     io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto:
       headers:
-        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto"
+        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997"
       payload:
         schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
         schema:
@@ -1156,10 +1156,6 @@ components:
       title: ExamplePayloadDto
       bindings:
         kafka:
-          key:
-            type: string
-            examples:
-              - '"string"'
           bindingVersion: 0.5.0
     io.github.springwolf.examples.kafka.dtos.NestedPayloadDto:
       headers:
