@@ -21,6 +21,10 @@ a {
   background-color: #f5f5f5;
 }
 
+.mat-typography markdown > p {
+  margin: 0;
+}
+
 /* Migration away from @angular/flex-layout (https://github.com/angular/flex-layout/issues/1426) */
 .flex {
   display: flex;
