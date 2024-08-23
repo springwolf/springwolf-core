@@ -128,7 +128,10 @@
   </div>
 
   <div class="width-6/12 width-12/12-s">
-    <app-prism-editor [(code)]="defaultExample.value" language="json" />
+    <app-prism-editor
+      [(code)]="defaultExample.value"
+      [language]="exampleContentType"
+    />
 
     <div class="flex space-between">
       <div class="flex gap-8">

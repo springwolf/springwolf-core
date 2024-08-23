@@ -13,4 +13,5 @@ export interface AsyncApi {
    */
   channelOperations: ChannelOperation[];
   components: { schemas: Map<string, Schema> };
+  defaultContentType: string;
 }

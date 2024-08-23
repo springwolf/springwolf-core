@@ -38,6 +38,7 @@ describe("InfoComponent", function () {
         components: {
           schemas: new Map<string, Schema>(),
         },
+        defaultContentType: "application/json",
       }),
   };
 

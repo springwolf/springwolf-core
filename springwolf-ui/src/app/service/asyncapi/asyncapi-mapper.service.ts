@@ -58,6 +58,7 @@ export class AsyncApiMapperService {
         components: {
           schemas: this.mapSchemas(item.components.schemas),
         },
+        defaultContentType: item.defaultContentType,
       };
       this.postProcess(asyncApi);
       return asyncApi;
