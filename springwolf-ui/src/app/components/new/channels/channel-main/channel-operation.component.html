@@ -69,7 +69,7 @@
       <app-prism-editor
         *ngIf="operationBindingExampleString"
         [(code)]="operationBindingExampleString"
-        [language]="bindingContentType"
+        language="json"
         readonly="true"
       />
     </div>
@@ -86,7 +86,7 @@
       <app-prism-editor
         *ngIf="messageBindingExampleString"
         [(code)]="messageBindingExampleString"
-        [language]="bindingContentType"
+        language="json"
         readonly="true"
       />
       <span *ngIf="!messageBindingExampleString"><i>none</i></span>
@@ -108,10 +108,7 @@
     </mat-chip-set>
   </div>
   <div class="width-6/12 width-12/12-s">
-    <app-prism-editor
-      [(code)]="headersExample.value"
-      [language]="bindingContentType"
-    />
+    <app-prism-editor [(code)]="headersExample.value" language="json" />
   </div>
 </div>
 
