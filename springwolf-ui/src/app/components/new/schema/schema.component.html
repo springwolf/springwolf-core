@@ -56,11 +56,12 @@
     class="type text-console"
     *ngIf="value?.type == 'array' && value?.items?.refTitle"
   >
+    array
     <mat-chip-set>
       <a [href]="value.items.refAnchorUrl">
         <mat-chip>
           <mat-icon matChipAvatar fontIcon="schema" />
-          {{ value.items.refTitle }}[]
+          {{ value.items.refTitle }}
         </mat-chip></a
       >
     </mat-chip-set>
