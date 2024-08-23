@@ -12,8 +12,8 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
-import io.github.springwolf.core.asyncapi.schemas.SchemaObjectMerger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,8 +31,7 @@ public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Anno
     protected MessageObject buildMessage(
             MethodAnnotation annotation, PayloadSchemaObject payloadSchema, SchemaObject headers) {
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
-        SchemaObject mergedHeaderSchema =
-                SchemaObjectMerger.merge(headerSchema, headers); // TODO: this should create a new schema -> Header
+        SchemaObject mergedHeaderSchema = HeaderSchemaObjectMerger.merge(headerSchema, headers);
         String headerModelName = componentsService.registerSchema(mergedHeaderSchema);
 
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation, mergedHeaderSchema);

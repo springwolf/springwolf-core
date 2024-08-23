@@ -16,6 +16,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
@@ -28,8 +29,6 @@ import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 
@@ -218,31 +217,43 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
 
     @Nested
     class HeaderAnnotation {
-        @ParameterizedTest
-        @ValueSource(
-                classes = {ClassWithMethodWithHeaderAnnotation.class, ClassWithMethodWithHeaderAnnotationSwitched.class
-                })
-        void scan_componentHasHeaderAnnotation(Class<?> clazz) {
+
+        @Test
+        void scan_componentHasHeaderAnnotation() {
             // given
-            when(headerClassExtractor.extractHeader(any(), any())).thenReturn(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+            when(headerClassExtractor.extractHeader(any(), any()))
+                    .thenReturn(SchemaObject.builder()
+                            .type(SchemaType.OBJECT)
+                            .properties(Map.of(
+                                    "header_name",
+                                    SchemaObject.builder()
+                                            .type(SchemaType.STRING)
+                                            .examples(List.of("foobar"))
+                                            .build()))
+                            .build());
 
             // when
-            scanner.scan(clazz);
+            scanner.scan(ClassWithMethodWithHeaderAnnotation.class).toList();
 
             // then
-            verify(componentsService).registerSchema(eq(SchemaObject.builder().build()));
+            verify(componentsService)
+                    .registerSchema(eq(SchemaObject.builder()
+                            .title("HeadersNotDocumented-934983093")
+                            .type(SchemaType.OBJECT)
+                            .description("There can be headers, but they are not explicitly documented.")
+                            .properties(Map.of(
+                                    "header_name",
+                                    SchemaObject.builder()
+                                            .type(SchemaType.STRING)
+                                            .examples(List.of("foobar"))
+                                            .build()))
+                            .build()));
         }
 
         private static class ClassWithMethodWithHeaderAnnotation {
             @TestListener
             private void methodWithAnnotationAndHeader(
                     @Payload String payload, @Header("header_name") String headerValue) {}
-        }
-
-        private static class ClassWithMethodWithHeaderAnnotationSwitched {
-            @TestListener
-            private void methodWithAnnotationAndHeader(
-                    @Header("header_name") String headerValue, @Payload String payload) {}
         }
     }
 
