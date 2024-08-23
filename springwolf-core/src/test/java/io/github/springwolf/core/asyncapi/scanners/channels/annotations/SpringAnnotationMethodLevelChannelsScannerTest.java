@@ -26,7 +26,12 @@ import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -36,9 +41,11 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class SpringAnnotationMethodLevelChannelsScannerTest {
@@ -207,6 +214,36 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
 
         @TestListener
         private void anotherMethodWithAnnotation(SimpleFoo payload) {}
+    }
+
+    @Nested
+    class HeaderAnnotation {
+        @ParameterizedTest
+        @ValueSource(
+                classes = {ClassWithMethodWithHeaderAnnotation.class, ClassWithMethodWithHeaderAnnotationSwitched.class
+                })
+        void scan_componentHasHeaderAnnotation(Class<?> clazz) {
+            // given
+            when(headerClassExtractor.extractHeader(any(), any())).thenReturn(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+
+            // when
+            scanner.scan(clazz);
+
+            // then
+            verify(componentsService).registerSchema(eq(SchemaObject.builder().build()));
+        }
+
+        private static class ClassWithMethodWithHeaderAnnotation {
+            @TestListener
+            private void methodWithAnnotationAndHeader(
+                    @Payload String payload, @Header("header_name") String headerValue) {}
+        }
+
+        private static class ClassWithMethodWithHeaderAnnotationSwitched {
+            @TestListener
+            private void methodWithAnnotationAndHeader(
+                    @Header("header_name") String headerValue, @Payload String payload) {}
+        }
     }
 
     @Data

@@ -31,7 +31,8 @@ public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Anno
     protected MessageObject buildMessage(
             MethodAnnotation annotation, PayloadSchemaObject payloadSchema, SchemaObject headers) {
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
-        SchemaObject mergedHeaderSchema = SchemaObjectMerger.merge(headerSchema, headers);
+        SchemaObject mergedHeaderSchema =
+                SchemaObjectMerger.merge(headerSchema, headers); // TODO: this should create a new schema -> Header
         String headerModelName = componentsService.registerSchema(mergedHeaderSchema);
 
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation, mergedHeaderSchema);
