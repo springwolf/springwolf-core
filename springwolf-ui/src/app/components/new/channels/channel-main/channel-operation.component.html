@@ -103,6 +103,8 @@
         </mat-chip></a
       >
     </mat-chip-set>
+
+    <app-schema-new *ngIf="headers" [schema]="headers"></app-schema-new>
   </div>
   <div class="width-6/12 width-12/12-s">
     <app-prism-editor [(code)]="headersExample.value" language="json" />
