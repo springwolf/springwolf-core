@@ -17,6 +17,11 @@ $theme: mat.define-theme((
       background: mat.get-theme-color($theme, primary, 40);
       color: var(--mat-toolbar-container-text-color);
     }
+
+    mat-list {
+      --mat-list-list-item-leading-icon-start-space: 0;
+      --mat-list-list-item-leading-icon-end-space: 0;
+    }
 }
 
 :root {

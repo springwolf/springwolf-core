@@ -14,6 +14,8 @@
       *ngFor="let property of schema().properties || {} | keyvalue"
       lines="99"
     >
+      <mat-icon matListItemIcon>arrow_right</mat-icon>
+
       <span class="key" matListItemTitle>
         <b class="text-console">{{ property.key }}</b>
         <span class="required" *ngIf="schema().required?.includes(property.key)"
