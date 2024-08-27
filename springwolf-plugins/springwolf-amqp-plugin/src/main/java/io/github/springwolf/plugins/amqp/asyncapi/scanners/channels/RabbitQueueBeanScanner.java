@@ -21,9 +21,7 @@ public class RabbitQueueBeanScanner implements ChannelsScanner {
         return queues.stream()
                 .map(RabbitListenerUtil::buildChannelObject)
                 .collect(Collectors.toMap(
-                        o -> ((AMQPChannelBinding) o.getBindings().get(RabbitListenerUtil.BINDING_NAME))
-                                .getQueue()
-                                .getName(),
+                        ChannelObject::getChannelId,
                         c -> c,
                         (a, b) -> a));
     }

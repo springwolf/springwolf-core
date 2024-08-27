@@ -71,9 +71,9 @@ public class SpringAnnotationClassLevelOperationsScanner<
             return Stream.empty();
         }
 
-        String channelName = bindingFactory.getChannelName(classAnnotation);
+        String channelId = bindingFactory.getChannelId(classAnnotation);
         String operationId = StringUtils.joinWith(
-                "_", ReferenceUtil.toValidId(channelName), OperationAction.RECEIVE, component.getSimpleName());
+                "_", channelId, OperationAction.RECEIVE, component.getSimpleName());
 
         Operation operation = buildOperation(classAnnotation, annotatedMethods);
         annotatedMethods.forEach(method -> customizers.forEach(customizer -> customizer.customize(operation, method)));
@@ -89,11 +89,11 @@ public class SpringAnnotationClassLevelOperationsScanner<
     private Operation buildOperation(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(classAnnotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        String channelName = bindingFactory.getChannelName(classAnnotation);
+        String channelId = bindingFactory.getChannelId(classAnnotation);
 
         return Operation.builder()
                 .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(ReferenceUtil.toValidId(channelName)))
+                .channel(ChannelReference.fromChannel(channelId))
                 .messages(messages.values().stream().toList())
                 .bindings(opBinding)
                 .build();

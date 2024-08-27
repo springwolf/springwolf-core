@@ -70,6 +70,20 @@ public class RabbitListenerUtil {
                                 "No channel name was found in @RabbitListener annotation (neither in queues nor bindings property)"));
     }
 
+    public static String getChannelId(RabbitListener annotation, StringValueResolver resolver) {
+        Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
+                .flatMap(binding -> channelIdFromAnnotationBindings(binding, resolver));
+
+        return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
+                .map(resolver::resolveStringValue)
+                .filter(Objects::nonNull)
+                .peek(queue -> log.debug("Resolved channel id: {}", queue))
+                .findFirst()
+                .orElseThrow(
+                        () -> new IllegalArgumentException(
+                                "No channel id was found in @RabbitListener annotation (neither in queues nor bindings property)"));
+    }
+
     private static String getQueueName(RabbitListener annotation, StringValueResolver resolver) {
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> Stream.of(binding.value().name()));
@@ -96,7 +110,22 @@ public class RabbitListenerUtil {
 
         return Arrays.stream(routingKeys)
                 .map(resolver::resolveStringValue)
-                .map(routingKey -> String.join("_", queueName, routingKey, exchangeName));
+                .map(routingKey ->  exchangeName);
+    }
+
+    private static Stream<String> channelIdFromAnnotationBindings(
+            QueueBinding binding, StringValueResolver resolver) {
+        String queueName = resolver.resolveStringValue(binding.value().name());
+        String exchangeName = resolver.resolveStringValue(binding.exchange().name());
+
+        String[] routingKeys = binding.key();
+        if (routingKeys.length == 0) {
+            routingKeys = List.of(DEFAULT_EXCHANGE_ROUTING_KEY).toArray(new String[0]);
+        }
+
+        return Arrays.stream(routingKeys)
+                .map(resolver::resolveStringValue)
+                .map(routingKey -> String.join("_", queueName+"-id", routingKey, exchangeName+"-id"));
     }
 
     /**

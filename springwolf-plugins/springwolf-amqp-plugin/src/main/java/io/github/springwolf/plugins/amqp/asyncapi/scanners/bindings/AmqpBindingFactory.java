@@ -30,6 +30,11 @@ public class AmqpBindingFactory implements BindingFactory<RabbitListener>, Embed
     }
 
     @Override
+    public String getChannelId(RabbitListener annotation) {
+        return RabbitListenerUtil.getChannelId(annotation, stringValueResolver);
+    }
+
+    @Override
     public Map<String, ChannelBinding> buildChannelBinding(RabbitListener annotation) {
         return RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, context);
     }

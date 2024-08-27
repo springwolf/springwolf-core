@@ -80,7 +80,7 @@ public class SpringAnnotationClassLevelChannelsScanner<
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         String channelName = bindingFactory.getChannelName(classAnnotation);
         return ChannelObject.builder()
-                .channelId(ReferenceUtil.toValidId(channelName))
+                .channelId(bindingFactory.getChannelId(classAnnotation))
                 .address(channelName)
                 .bindings(chBinding)
                 .messages(new HashMap<>(messages))

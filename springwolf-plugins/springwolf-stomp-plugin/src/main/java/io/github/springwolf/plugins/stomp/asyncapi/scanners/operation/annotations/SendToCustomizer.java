@@ -25,7 +25,7 @@ public class SendToCustomizer implements OperationCustomizer {
     public void customize(Operation operation, Method method) {
         SendTo annotation = AnnotationScannerUtil.findAnnotation(SendTo.class, method);
         if (annotation != null) {
-            String channelId = ReferenceUtil.toValidId(bindingFactory.getChannelName(annotation));
+            String channelId = bindingFactory.getChannelId(annotation);
             String payloadName = payloadService.extractSchema(method).name();
 
             operation.setReply(OperationReply.builder()

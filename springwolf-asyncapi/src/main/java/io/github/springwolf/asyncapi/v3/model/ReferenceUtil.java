@@ -5,6 +5,6 @@ public class ReferenceUtil {
     private static final String FORBIDDEN_ID_CHARACTER = "/";
 
     public static String toValidId(String name) {
-        return name.replaceAll(FORBIDDEN_ID_CHARACTER, "_");
+        return name.replaceAll(FORBIDDEN_ID_CHARACTER, "_"); // TODO: easier to verify correct usage +"_id";
     }
 }

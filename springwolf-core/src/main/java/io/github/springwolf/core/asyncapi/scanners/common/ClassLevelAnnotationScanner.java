@@ -88,8 +88,8 @@ public abstract class ClassLevelAnnotationScanner<
                 .collect(toSet());
 
         if (messageType == MessageType.OPERATION) {
-            String channelName = bindingFactory.getChannelName(classAnnotation);
-            return toOperationsMessagesMap(channelName, messages);
+            String channelId = bindingFactory.getChannelId(classAnnotation);
+            return toOperationsMessagesMap(channelId, messages);
         }
         return toMessagesMap(messages);
     }

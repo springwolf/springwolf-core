@@ -70,9 +70,9 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
 
         MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
-        String channelName = bindingFactory.getChannelName(annotation);
+        String channelId = bindingFactory.getChannelId(annotation);
         String operationId = StringUtils.joinWith(
-                "_", ReferenceUtil.toValidId(channelName), OperationAction.RECEIVE, method.getName());
+                "_", channelId, OperationAction.RECEIVE, method.getName());
 
         PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method);
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
@@ -87,7 +87,7 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         MessageObject message = buildMessage(annotation, payloadType, headerSchema);
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(annotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        String channelId = ReferenceUtil.toValidId(bindingFactory.getChannelName(annotation));
+        String channelId = bindingFactory.getChannelId(annotation);
 
         return Operation.builder()
                 .action(OperationAction.RECEIVE)

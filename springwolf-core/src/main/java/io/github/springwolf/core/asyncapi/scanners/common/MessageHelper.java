@@ -32,9 +32,9 @@ public class MessageHelper {
     }
 
     public static Map<String, MessageReference> toOperationsMessagesMap(
-            String channelName, Set<MessageObject> messages) {
-        if (channelName == null || channelName.isBlank()) {
-            throw new IllegalArgumentException("channelName must not be empty");
+            String channelId, Set<MessageObject> messages) {
+        if (channelId == null || channelId.isBlank()) {
+            throw new IllegalArgumentException("channelId must not be empty");
         }
 
         if (messages.isEmpty()) {
@@ -46,6 +46,6 @@ public class MessageHelper {
                         .collect(Collectors.toMap(
                                 MessageObject::getMessageId,
                                 e -> MessageReference.toChannelMessage(
-                                        ReferenceUtil.toValidId(channelName), e.getMessageId())));
+                                        channelId, e.getMessageId())));
     }
 }
