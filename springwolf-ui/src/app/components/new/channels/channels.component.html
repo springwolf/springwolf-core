@@ -3,6 +3,22 @@
 @for (channel of channels; track channel) {
 <article appNavigationTarget [id]="channel.anchorIdentifier">
   <h3>{{ channel.name }}</h3>
+
+  <div class="row" *ngIf="isShowBindings">
+    <div class="width-6/12 width-12/12-s">
+      <h6>Channel Binding</h6>
+    </div>
+    <div class="width-6/12 width-12/12-s">
+      <div *ngIf="channel.bindings">
+        <app-prism-editor
+          code="{{ JSON.stringify(channel.bindings, null, 2) }}"
+          language="json"
+          readonly="true"
+        />
+      </div>
+    </div>
+  </div>
+
   @for (channelOperation of channel.operations; track channelOperation) {
   <mat-card
     appearance="outlined"
