@@ -50,19 +50,14 @@ class ApiIntegrationTest {
     @Test
     void asyncApiResourceYamlArtifactTest() throws IOException {
         String url = "/springwolf/docs.yaml";
-        String actual = restTemplate
-                .getForObject(url, String.class)
-                .replaceAll("\r", "")
-                .trim();
+        String actual = restTemplate.getForObject(url, String.class);
         String actualPatched = actual.replace(amqpHost + ":" + amqpPort, "amqp:5672");
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.yaml"), actual);
 
         String expected;
         try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.yaml")) {
             assert s != null;
-            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8)
-                    .replaceAll("\r", "")
-                    .trim();
+            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim() + "\n";
         }
 
         assertEquals(expected, actualPatched);

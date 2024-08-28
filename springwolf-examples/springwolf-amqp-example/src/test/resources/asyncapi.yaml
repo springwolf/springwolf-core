@@ -16,7 +16,7 @@ info:
 defaultContentType: application/json
 servers:
   amqp-server:
-    host: localhost:5672
+    host: amqp:5672
     protocol: amqp
 channels:
   '#':
@@ -49,6 +49,18 @@ channels:
           durable: false
           exclusive: false
           autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  example-bindings-queue:
+    address: example-bindings-queue
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: example-bindings-queue
+          durable: false
+          exclusive: true
+          autoDelete: true
           vhost: /
         bindingVersion: 0.3.0
   example-queue:
@@ -128,6 +140,30 @@ channels:
         is: queue
         queue:
           name: queue-delete
+          durable: true
+          exclusive: false
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  queue-read:
+    address: queue-read
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: queue-read
+          durable: false
+          exclusive: false
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  queue-update:
+    address: queue-update
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: queue-update
           durable: true
           exclusive: false
           autoDelete: false
