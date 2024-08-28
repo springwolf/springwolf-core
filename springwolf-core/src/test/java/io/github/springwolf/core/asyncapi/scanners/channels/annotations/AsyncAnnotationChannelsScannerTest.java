@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static io.github.springwolf.asyncapi.v3.model.ReferenceUtil.ID_POSTFIX;
 import static java.util.Collections.EMPTY_MAP;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
@@ -187,7 +188,7 @@ class AsyncAnnotationChannelsScannerTest {
         assertThatThrownBy(channelScanner::scan)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(
-                        "Operation 'test_channel_send' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
+                        "Operation 'test_channel_id_send' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
     }
 
     @Test
@@ -249,14 +250,14 @@ class AsyncAnnotationChannelsScannerTest {
                 .build();
 
         ChannelObject expectedChannel1 = ChannelObject.builder()
-                .channelId("test-channel-1")
+                .channelId("test-channel-1" + ID_POSTFIX)
                 .address("test-channel-1")
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(null)
                 .build();
 
         ChannelObject expectedChannel2 = ChannelObject.builder()
-                .channelId("test-channel-2")
+                .channelId("test-channel-2" + ID_POSTFIX)
                 .address("test-channel-2")
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(null)
@@ -264,8 +265,8 @@ class AsyncAnnotationChannelsScannerTest {
 
         assertThat(actualChannels)
                 .containsExactlyInAnyOrderEntriesOf(Map.of(
-                        "test-channel-1", expectedChannel1,
-                        "test-channel-2", expectedChannel2));
+                        "test-channel-1_id", expectedChannel1,
+                        "test-channel-2_id", expectedChannel2));
     }
 
     @Test

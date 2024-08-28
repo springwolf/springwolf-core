@@ -38,8 +38,8 @@ public class AsyncApiDocumentIntegrationTest {
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
             assertThat(asyncAPI).isNotNull();
 
-            assertThat(asyncAPI.getChannels()).containsOnlyKeys("listener-channel");
-            assertThat(asyncAPI.getOperations()).containsOnlyKeys("listener-channel_receive_listen");
+            assertThat(asyncAPI.getChannels()).containsOnlyKeys("listener-channel_id");
+            assertThat(asyncAPI.getOperations()).containsOnlyKeys("listener-channel_id_receive_listen");
             assertThat(asyncAPI.getComponents().getMessages()).containsOnlyKeys("java.lang.String");
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys("HeadersNotDocumented", "java.lang.String");
@@ -62,8 +62,8 @@ public class AsyncApiDocumentIntegrationTest {
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
             assertThat(asyncAPI).isNotNull();
 
-            assertThat(asyncAPI.getChannels()).containsOnlyKeys("publisher-channel");
-            assertThat(asyncAPI.getOperations()).containsOnlyKeys("publisher-channel_send_publish");
+            assertThat(asyncAPI.getChannels()).containsOnlyKeys("publisher-channel_id");
+            assertThat(asyncAPI.getOperations()).containsOnlyKeys("publisher-channel_id_send_publish");
             assertThat(asyncAPI.getComponents().getMessages()).containsOnlyKeys("java.lang.String");
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys("HeadersNotDocumented", "java.lang.String");

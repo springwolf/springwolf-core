@@ -31,8 +31,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static io.github.springwolf.asyncapi.v3.model.ReferenceUtil.ID_POSTFIX;
-
 /**
  * Note: bindings, queues, and queuesToDeclare are mutually exclusive
  * <ul>
@@ -76,7 +74,7 @@ public class RabbitListenerUtil {
         Stream<String> annotationBindingChannelIds = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> channelIdFromAnnotationBindings(binding, resolver));
 
-        return Stream.concat(streamQueueNames(annotation).map(name -> name + ID_POSTFIX), annotationBindingChannelIds)
+        return Stream.concat(streamQueueNames(annotation).map(ReferenceUtil::toValidId), annotationBindingChannelIds)
                 .map(resolver::resolveStringValue)
                 .filter(Objects::nonNull)
                 .peek(queue -> log.debug("Resolved channel id: {}", queue))
@@ -236,7 +234,7 @@ public class RabbitListenerUtil {
 
     public static ChannelObject buildChannelObject(org.springframework.amqp.core.Queue queue) {
         return ChannelObject.builder()
-                .channelId(ReferenceUtil.toValidId(queue.getName()) + ID_POSTFIX)
+                .channelId(ReferenceUtil.toValidId(queue.getName()))
                 .address(queue.getName())
                 .bindings(Map.of(
                         BINDING_NAME,

@@ -107,7 +107,7 @@
         }
       }
     },
-    "example-topic-exchange": {
+    "example-topic-exchange_id": {
       "address": "example-topic-exchange",
       "messages": {
         "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
@@ -490,12 +490,12 @@
         }
       ]
     },
-    "example-topic-exchange_send_sendMessage": {
+    "example-topic-exchange_id_send_sendMessage": {
       "action": "send",
       "channel": {
-        "$ref": "#/channels/example-topic-exchange"
+        "$ref": "#/channels/example-topic-exchange_id"
       },
-      "title": "example-topic-exchange_send",
+      "title": "example-topic-exchange_id_send",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "amqp": {
@@ -511,7 +511,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-topic-exchange/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/example-topic-exchange_id/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       ]
     },

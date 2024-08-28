@@ -22,7 +22,7 @@
     }
   },
   "channels": {
-    "another-topic": {
+    "another-topic_id": {
       "address": "another-topic",
       "messages": {
         "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
@@ -33,7 +33,7 @@
         "kafka": { }
       }
     },
-    "consumer-class-topic": {
+    "consumer-class-topic_id": {
       "address": "consumer-class-topic",
       "messages": {
         "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto": {
@@ -44,7 +44,7 @@
         "kafka": { }
       }
     },
-    "consumer-topic": {
+    "consumer-topic_id": {
       "address": "consumer-topic",
       "messages": {
         "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
@@ -55,7 +55,7 @@
         "kafka": { }
       }
     },
-    "example-topic": {
+    "example-topic_id": {
       "address": "example-topic",
       "messages": {
         "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto": {
@@ -66,7 +66,7 @@
         "kafka": { }
       }
     },
-    "google-pubsub-topic": {
+    "google-pubsub-topic_id": {
       "address": "google-pubsub-topic",
       "messages": {
         "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto": {
@@ -263,10 +263,10 @@
     }
   },
   "operations": {
-    "another-topic_subscribe_process": {
+    "another-topic_id_subscribe_process": {
       "action": "send",
       "channel": {
-        "$ref": "#/channels/another-topic"
+        "$ref": "#/channels/another-topic_id"
       },
       "description": "Auto-generated description",
       "bindings": {
@@ -274,14 +274,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-topic_id/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "consumer-class-topic_publish_ConsumerClass": {
+    "consumer-class-topic_id_publish_ConsumerClass": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/consumer-class-topic"
+        "$ref": "#/channels/consumer-class-topic_id"
       },
       "description": "Auto-generated description",
       "bindings": {
@@ -289,14 +289,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/consumer-class-topic/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/consumer-class-topic_id/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
         }
       ]
     },
-    "consumer-topic_publish_consumerMethod": {
+    "consumer-topic_id_publish_consumerMethod": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/consumer-topic"
+        "$ref": "#/channels/consumer-topic_id"
       },
       "description": "Auto-generated description",
       "bindings": {
@@ -304,14 +304,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/consumer-topic/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/consumer-topic_id/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "example-topic_publish_process": {
+    "example-topic_id_publish_process": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/example-topic"
+        "$ref": "#/channels/example-topic_id"
       },
       "description": "Auto-generated description",
       "bindings": {
@@ -319,14 +319,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-topic/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-topic_id/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
         }
       ]
     },
-    "google-pubsub-topic_publish_googlePubSubConsumerMethod": {
+    "google-pubsub-topic_id_publish_googlePubSubConsumerMethod": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/google-pubsub-topic"
+        "$ref": "#/channels/google-pubsub-topic_id"
       },
       "description": "Auto-generated description",
       "bindings": {
@@ -334,7 +334,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/google-pubsub-topic/messages/io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto"
+          "$ref": "#/channels/google-pubsub-topic_id/messages/io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto"
         }
       ]
     }

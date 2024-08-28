@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static io.github.springwolf.asyncapi.v3.model.ReferenceUtil.ID_POSTFIX;
 import static java.util.Collections.EMPTY_MAP;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
@@ -169,16 +170,16 @@ class AsyncAnnotationOperationsScannerTest {
                 .build();
 
         Operation expectedOperation = Operation.builder()
-                .title("test-channel_send")
+                .title("test-channel_id_send")
                 .action(OperationAction.SEND)
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel("test-channel"))
-                .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
+                .channel(ChannelReference.fromChannel("test-channel" + ID_POSTFIX))
+                .messages(List.of(MessageReference.toChannelMessage("test-channel" + ID_POSTFIX, message)))
                 .bindings(EMPTY_MAP)
                 .build();
 
         assertThat(actualOperations)
-                .containsExactly(Map.entry("test-channel_send_methodWithAnnotation", expectedOperation));
+                .containsExactly(Map.entry("test-channel_id_send_methodWithAnnotation", expectedOperation));
     }
 
     @Test
@@ -206,15 +207,15 @@ class AsyncAnnotationOperationsScannerTest {
 
         Operation expectedOperation = Operation.builder()
                 .action(OperationAction.SEND)
-                .title("test-channel_send")
-                .channel(ChannelReference.fromChannel("test-channel"))
+                .title("test-channel_id_send")
+                .channel(ChannelReference.fromChannel("test-channel" + ID_POSTFIX))
                 .description("description")
                 .bindings(Map.of(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING))
-                .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
+                .messages(List.of(MessageReference.toChannelMessage("test-channel" + ID_POSTFIX, message)))
                 .build();
 
         assertThat(actualOperations)
-                .containsExactly(Map.entry("test-channel_send_methodWithAnnotation", expectedOperation));
+                .containsExactly(Map.entry("test-channel_id_send_methodWithAnnotation", expectedOperation));
     }
 
     @Test
@@ -243,26 +244,26 @@ class AsyncAnnotationOperationsScannerTest {
 
         Operation expectedOperation1 = Operation.builder()
                 .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel("test-channel-1"))
+                .channel(ChannelReference.fromChannel("test-channel-1" + ID_POSTFIX))
                 .description("test-channel-1-description")
-                .title("test-channel-1_send")
+                .title("test-channel-1_id_send")
                 .bindings(EMPTY_MAP)
-                .messages(List.of(MessageReference.toChannelMessage("test-channel-1", message)))
+                .messages(List.of(MessageReference.toChannelMessage("test-channel-1" + ID_POSTFIX, message)))
                 .build();
 
         Operation expectedOperation2 = Operation.builder()
                 .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel("test-channel-2"))
+                .channel(ChannelReference.fromChannel("test-channel-2" + ID_POSTFIX))
                 .description("test-channel-2-description")
-                .title("test-channel-2_send")
+                .title("test-channel-2_id_send")
                 .bindings(EMPTY_MAP)
-                .messages(List.of(MessageReference.toChannelMessage("test-channel-2", message)))
+                .messages(List.of(MessageReference.toChannelMessage("test-channel-2" + ID_POSTFIX, message)))
                 .build();
 
         assertThat(actualOperations)
                 .containsExactlyInAnyOrderEntriesOf(Map.of(
-                        "test-channel-1_send_methodWithMultipleAnnotation", expectedOperation1,
-                        "test-channel-2_send_methodWithMultipleAnnotation", expectedOperation2));
+                        "test-channel-1_id_send_methodWithMultipleAnnotation", expectedOperation1,
+                        "test-channel-2_id_send_methodWithMultipleAnnotation", expectedOperation2));
     }
 
     @Test
@@ -291,15 +292,15 @@ class AsyncAnnotationOperationsScannerTest {
 
         Operation expectedOperation = Operation.builder()
                 .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel("test-channel"))
+                .channel(ChannelReference.fromChannel("test-channel" + ID_POSTFIX))
                 .description("test channel operation description")
-                .title("test-channel_send")
+                .title("test-channel_id_send")
                 .bindings(EMPTY_MAP)
-                .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
+                .messages(List.of(MessageReference.toChannelMessage("test-channel" + ID_POSTFIX, message)))
                 .build();
 
         assertThat(actualOperations)
-                .containsExactly(Map.entry("test-channel_send_methodWithAnnotation", expectedOperation));
+                .containsExactly(Map.entry("test-channel_id_send_methodWithAnnotation", expectedOperation));
     }
 
     @Test
@@ -328,15 +329,15 @@ class AsyncAnnotationOperationsScannerTest {
 
         Operation expectedOperation = Operation.builder()
                 .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel("abstract-test-channel"))
+                .channel(ChannelReference.fromChannel("abstract-test-channel" + ID_POSTFIX))
                 .description("test abstract channel operation description")
-                .title("abstract-test-channel_send")
+                .title("abstract-test-channel_id_send")
                 .bindings(EMPTY_MAP)
-                .messages(List.of(MessageReference.toChannelMessage("abstract-test-channel", message)))
+                .messages(List.of(MessageReference.toChannelMessage("abstract-test-channel" + ID_POSTFIX, message)))
                 .build();
 
         assertThat(actualOperations)
-                .containsExactly(Map.entry("abstract-test-channel_send_methodWithAnnotation", expectedOperation));
+                .containsExactly(Map.entry("abstract-test-channel_id_send_methodWithAnnotation", expectedOperation));
     }
 
     @Test
@@ -471,11 +472,11 @@ class AsyncAnnotationOperationsScannerTest {
 
             Operation expectedOperation = Operation.builder()
                     .action(OperationAction.SEND)
-                    .channel(ChannelReference.fromChannel("test-channel"))
+                    .channel(ChannelReference.fromChannel("test-channel" + ID_POSTFIX))
                     .description("test channel operation description")
-                    .title("test-channel_send")
+                    .title("test-channel_id_send")
                     .bindings(EMPTY_MAP)
-                    .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
+                    .messages(List.of(MessageReference.toChannelMessage("test-channel" + ID_POSTFIX, message)))
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
@@ -484,7 +485,7 @@ class AsyncAnnotationOperationsScannerTest {
                     .build();
 
             assertThat(actualOperations)
-                    .containsExactly(Map.entry("test-channel_send_methodFromInterface", expectedOperation));
+                    .containsExactly(Map.entry("test-channel_id_send_methodFromInterface", expectedOperation));
         }
 
         private static class ClassImplementingInterface implements ClassInterface<String> {
@@ -546,11 +547,11 @@ class AsyncAnnotationOperationsScannerTest {
 
             Operation expectedOperation = Operation.builder()
                     .action(OperationAction.SEND)
-                    .channel(ChannelReference.fromChannel("test-channel"))
+                    .channel(ChannelReference.fromChannel("test-channel" + ID_POSTFIX))
                     .description("test channel operation description")
-                    .title("test-channel_send")
+                    .title("test-channel_id_send")
                     .bindings(EMPTY_MAP)
-                    .messages(List.of(MessageReference.toChannelMessage("test-channel", message)))
+                    .messages(List.of(MessageReference.toChannelMessage("test-channel" + ID_POSTFIX, message)))
                     .build();
 
             ChannelObject expectedChannel = ChannelObject.builder()
@@ -559,7 +560,7 @@ class AsyncAnnotationOperationsScannerTest {
                     .build();
 
             assertThat(actualOperations)
-                    .containsExactly(Map.entry("test-channel_send_methodFromInterface", expectedOperation));
+                    .containsExactly(Map.entry("test-channel_id_send_methodFromInterface", expectedOperation));
         }
 
         public static class ClassWithMetaAnnotation {

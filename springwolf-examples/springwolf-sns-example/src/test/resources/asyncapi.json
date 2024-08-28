@@ -22,7 +22,7 @@
     }
   },
   "channels": {
-    "another-topic": {
+    "another-topic_id": {
       "address": "another-topic",
       "messages": {
         "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto": {
@@ -30,7 +30,7 @@
         }
       }
     },
-    "example-topic": {
+    "example-topic_id": {
       "address": "example-topic",
       "messages": {
         "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto": {
@@ -249,12 +249,12 @@
     }
   },
   "operations": {
-    "another-topic_receive_receiveAnotherPayload": {
+    "another-topic_id_receive_receiveAnotherPayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/another-topic"
+        "$ref": "#/channels/another-topic_id"
       },
-      "title": "another-topic_receive",
+      "title": "another-topic_id_receive",
       "description": "Auto-generated description",
       "bindings": {
         "sns": {
@@ -271,16 +271,16 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-topic_id/messages/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "another-topic_send_sendMessage": {
+    "another-topic_id_send_sendMessage": {
       "action": "send",
       "channel": {
-        "$ref": "#/channels/another-topic"
+        "$ref": "#/channels/another-topic_id"
       },
-      "title": "another-topic_send",
+      "title": "another-topic_id_send",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "sns": {
@@ -297,16 +297,16 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-topic_id/messages/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "example-topic_receive_receiveExamplePayload": {
+    "example-topic_id_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/example-topic"
+        "$ref": "#/channels/example-topic_id"
       },
-      "title": "example-topic_receive",
+      "title": "example-topic_id_receive",
       "description": "Auto-generated description",
       "bindings": {
         "sns": {
@@ -323,7 +323,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-topic/messages/io.github.springwolf.examples.sns.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-topic_id/messages/io.github.springwolf.examples.sns.dtos.ExamplePayloadDto"
         }
       ]
     }

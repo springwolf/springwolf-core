@@ -56,6 +56,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static io.github.springwolf.asyncapi.v3.model.ReferenceUtil.ID_POSTFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -141,7 +142,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
-                .channelId(topicName)
+                .channelId(topicName + ID_POSTFIX)
                 .address(topicName)
                 .bindings(channelBinding)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
@@ -151,13 +152,13 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(topicName))
-                .messages(List.of(MessageReference.toChannelMessage(topicName, message)))
+                .channel(ChannelReference.fromChannel(topicName + ID_POSTFIX))
+                .messages(List.of(MessageReference.toChannelMessage(topicName + ID_POSTFIX, message)))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(topicName + ID_POSTFIX, expectedChannel));
         assertThat(actualOperations)
-                .containsExactly(Map.entry("test-consumer-input-topic_publish_testConsumer", expectedOperation));
+                .containsExactly(Map.entry("test-consumer-input-topic_id_publish_testConsumer", expectedOperation));
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -191,20 +192,20 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(topicName))
-                .messages(List.of(MessageReference.toChannelMessage(topicName, message)))
+                .channel(ChannelReference.fromChannel(topicName + ID_POSTFIX))
+                .messages(List.of(MessageReference.toChannelMessage(topicName + ID_POSTFIX, message)))
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
-                .channelId(topicName)
+                .channelId(topicName + ID_POSTFIX)
                 .address(topicName)
                 .bindings(channelBinding)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
+        assertThat(actualChannels).containsExactly(Map.entry(topicName + ID_POSTFIX, expectedChannel));
         assertThat(actualOperations)
-                .containsExactly(Map.entry("test-supplier-output-topic_subscribe_testSupplier", expectedOperation));
+                .containsExactly(Map.entry("test-supplier-output-topic_id_subscribe_testSupplier", expectedOperation));
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -245,12 +246,12 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(outputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, subscribeMessage)))
+                .channel(ChannelReference.fromChannel(outputTopicName + ID_POSTFIX))
+                .messages(List.of(MessageReference.toChannelMessage(outputTopicName + ID_POSTFIX, subscribeMessage)))
                 .build();
 
         ChannelObject subscribeChannel = ChannelObject.builder()
-                .channelId(outputTopicName)
+                .channelId(outputTopicName + ID_POSTFIX)
                 .address(outputTopicName)
                 .bindings(channelBinding)
                 .messages(
@@ -273,23 +274,25 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(inputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, publishMessage)))
+                .channel(ChannelReference.fromChannel(inputTopicName + ID_POSTFIX))
+                .messages(List.of(MessageReference.toChannelMessage(inputTopicName + ID_POSTFIX, publishMessage)))
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
-                .channelId(inputTopicName)
+                .channelId(inputTopicName + ID_POSTFIX)
                 .address(inputTopicName)
                 .bindings(channelBinding)
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
         assertThat(actualChannels)
-                .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
+                .contains(
+                        Map.entry(inputTopicName + ID_POSTFIX, publishChannel),
+                        Map.entry(outputTopicName + ID_POSTFIX, subscribeChannel));
         assertThat(actualOperations)
                 .contains(
-                        Map.entry("test-in-topic_publish_testFunction", publishOperation),
-                        Map.entry("test-out-topic_subscribe_testFunction", subscribeOperation));
+                        Map.entry("test-in-topic_id_publish_testFunction", publishOperation),
+                        Map.entry("test-out-topic_id_subscribe_testFunction", subscribeOperation));
     }
 
     @Test
@@ -329,12 +332,12 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(outputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, subscribeMessage)))
+                .channel(ChannelReference.fromChannel(outputTopicName + ID_POSTFIX))
+                .messages(List.of(MessageReference.toChannelMessage(outputTopicName + ID_POSTFIX, subscribeMessage)))
                 .build();
 
         ChannelObject subscribeChannel = ChannelObject.builder()
-                .channelId(outputTopicName)
+                .channelId(outputTopicName + ID_POSTFIX)
                 .address(outputTopicName)
                 .bindings(channelBinding)
                 .messages(
@@ -357,23 +360,25 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(inputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, publishMessage)))
+                .channel(ChannelReference.fromChannel(inputTopicName + ID_POSTFIX))
+                .messages(List.of(MessageReference.toChannelMessage(inputTopicName + ID_POSTFIX, publishMessage)))
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
-                .channelId(inputTopicName)
+                .channelId(inputTopicName + ID_POSTFIX)
                 .address(inputTopicName)
                 .bindings(channelBinding)
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
         assertThat(actualChannels)
-                .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
+                .contains(
+                        Map.entry(inputTopicName + ID_POSTFIX, publishChannel),
+                        Map.entry(outputTopicName + ID_POSTFIX, subscribeChannel));
         assertThat(actualOperations)
                 .contains(
-                        Map.entry("test-in-topic_publish_kStreamTestFunction", publishOperation),
-                        Map.entry("test-out-topic_subscribe_kStreamTestFunction", subscribeOperation));
+                        Map.entry("test-in-topic_id_publish_kStreamTestFunction", publishOperation),
+                        Map.entry("test-out-topic_id_subscribe_kStreamTestFunction", subscribeOperation));
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
         assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
     }
@@ -414,8 +419,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(topicName))
-                .messages(List.of(MessageReference.toChannelMessage(topicName, subscribeMessage)))
+                .channel(ChannelReference.fromChannel(topicName + ID_POSTFIX))
+                .messages(List.of(MessageReference.toChannelMessage(topicName + ID_POSTFIX, subscribeMessage)))
                 .build();
 
         MessageObject publishMessage = MessageObject.builder()
@@ -435,12 +440,12 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(topicName))
-                .messages(List.of(MessageReference.toChannelMessage(topicName, publishMessage)))
+                .channel(ChannelReference.fromChannel(topicName + ID_POSTFIX))
+                .messages(List.of(MessageReference.toChannelMessage(topicName + ID_POSTFIX, publishMessage)))
                 .build();
 
         ChannelObject mergedChannel = ChannelObject.builder()
-                .channelId(topicName)
+                .channelId(topicName + ID_POSTFIX)
                 .address(topicName)
                 .bindings(channelBinding)
                 .messages(Map.of(
@@ -450,11 +455,11 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         MessageReference.toComponentMessage(subscribeMessage)))
                 .build();
 
-        assertThat(actualChannels).contains(Map.entry(topicName, mergedChannel));
+        assertThat(actualChannels).contains(Map.entry(topicName + ID_POSTFIX, mergedChannel));
         assertThat(actualOperations)
                 .contains(
-                        Map.entry("test-topic_publish_testFunction", publishOperation),
-                        Map.entry("test-topic_subscribe_testFunction", subscribeOperation));
+                        Map.entry("test-topic_id_publish_testFunction", publishOperation),
+                        Map.entry("test-topic_id_subscribe_testFunction", subscribeOperation));
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
         assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
     }

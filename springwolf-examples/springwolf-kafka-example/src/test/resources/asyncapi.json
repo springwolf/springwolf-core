@@ -22,7 +22,7 @@
     }
   },
   "channels": {
-    "another-topic": {
+    "another-topic_id": {
       "address": "another-topic",
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto": {
@@ -35,7 +35,7 @@
         }
       }
     },
-    "avro-topic": {
+    "avro-topic_id": {
       "address": "avro-topic",
       "messages": {
         "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto": {
@@ -43,7 +43,7 @@
         }
       }
     },
-    "example-topic": {
+    "example-topic_id": {
       "address": "example-topic",
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
@@ -56,7 +56,7 @@
         }
       }
     },
-    "integer-topic": {
+    "integer-topic_id": {
       "address": "integer-topic",
       "messages": {
         "java.lang.Number": {
@@ -69,7 +69,7 @@
         }
       }
     },
-    "multi-payload-topic": {
+    "multi-payload-topic_id": {
       "address": "multi-payload-topic",
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto": {
@@ -83,7 +83,7 @@
         }
       }
     },
-    "no-payload-used-topic": {
+    "no-payload-used-topic_id": {
       "address": "no-payload-used-topic",
       "messages": {
         "PayloadNotUsed": {
@@ -96,7 +96,7 @@
         }
       }
     },
-    "protobuf-topic": {
+    "protobuf-topic_id": {
       "address": "protobuf-topic",
       "messages": {
         "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
@@ -109,7 +109,7 @@
         }
       }
     },
-    "string-topic": {
+    "string-topic_id": {
       "address": "string-topic",
       "messages": {
         "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
@@ -120,7 +120,7 @@
         }
       }
     },
-    "topic-defined-via-asyncPublisher-annotation": {
+    "topic-defined-via-asyncPublisher-annotation_id": {
       "address": "topic-defined-via-asyncPublisher-annotation",
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.NestedPayloadDto": {
@@ -133,7 +133,7 @@
         }
       ]
     },
-    "vehicle-topic": {
+    "vehicle-topic_id": {
       "address": "vehicle-topic",
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase": {
@@ -146,7 +146,7 @@
         }
       }
     },
-    "xml-topic": {
+    "xml-topic_id": {
       "address": "xml-topic",
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto": {
@@ -154,7 +154,7 @@
         }
       }
     },
-    "yaml-topic": {
+    "yaml-topic_id": {
       "address": "yaml-topic",
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto": {
@@ -1744,10 +1744,10 @@
     }
   },
   "operations": {
-    "another-topic_receive_receiveAnotherPayloadBatched": {
+    "another-topic_id_receive_receiveAnotherPayloadBatched": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/another-topic"
+        "$ref": "#/channels/another-topic_id"
       },
       "bindings": {
         "kafka": {
@@ -1762,16 +1762,16 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-topic_id/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "avro-topic_receive_receiveExampleAvroPayload": {
+    "avro-topic_id_receive_receiveExampleAvroPayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/avro-topic"
+        "$ref": "#/channels/avro-topic_id"
       },
-      "title": "avro-topic_receive",
+      "title": "avro-topic_id_receive",
       "description": "Requires a running kafka-schema-registry. See docker-compose.yml to start it",
       "bindings": {
         "kafka": {
@@ -1780,14 +1780,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/avro-topic/messages/io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
+          "$ref": "#/channels/avro-topic_id/messages/io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
         }
       ]
     },
-    "example-topic_receive_receiveExamplePayload": {
+    "example-topic_id_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/example-topic"
+        "$ref": "#/channels/example-topic_id"
       },
       "bindings": {
         "kafka": {
@@ -1796,14 +1796,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-topic/messages/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-topic_id/messages/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
         }
       ]
     },
-    "integer-topic_receive_receiveIntegerPayload": {
+    "integer-topic_id_receive_receiveIntegerPayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/integer-topic"
+        "$ref": "#/channels/integer-topic_id"
       },
       "bindings": {
         "kafka": {
@@ -1812,14 +1812,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/integer-topic/messages/java.lang.Number"
+          "$ref": "#/channels/integer-topic_id/messages/java.lang.Number"
         }
       ]
     },
-    "multi-payload-topic_receive_ExampleClassLevelKafkaListener": {
+    "multi-payload-topic_id_receive_ExampleClassLevelKafkaListener": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/multi-payload-topic"
+        "$ref": "#/channels/multi-payload-topic_id"
       },
       "bindings": {
         "kafka": {
@@ -1828,22 +1828,22 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/multi-payload-topic/messages/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/multi-payload-topic_id/messages/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
         },
         {
-          "$ref": "#/channels/multi-payload-topic/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/multi-payload-topic_id/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
         },
         {
-          "$ref": "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
+          "$ref": "#/channels/multi-payload-topic_id/messages/javax.money.MonetaryAmount"
         }
       ]
     },
-    "multi-payload-topic_receive_receiveMonetaryAmount": {
+    "multi-payload-topic_id_receive_receiveMonetaryAmount": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/multi-payload-topic"
+        "$ref": "#/channels/multi-payload-topic_id"
       },
-      "title": "multi-payload-topic_receive",
+      "title": "multi-payload-topic_id_receive",
       "description": "Override description in the AsyncListener annotation with servers at kafka:29092",
       "bindings": {
         "kafka": {
@@ -1864,14 +1864,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
+          "$ref": "#/channels/multi-payload-topic_id/messages/javax.money.MonetaryAmount"
         }
       ]
     },
-    "no-payload-used-topic_receive_receiveExamplePayload": {
+    "no-payload-used-topic_id_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/no-payload-used-topic"
+        "$ref": "#/channels/no-payload-used-topic_id"
       },
       "bindings": {
         "kafka": {
@@ -1880,14 +1880,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/no-payload-used-topic/messages/PayloadNotUsed"
+          "$ref": "#/channels/no-payload-used-topic_id/messages/PayloadNotUsed"
         }
       ]
     },
-    "protobuf-topic_receive_receiveExampleProtobufPayload": {
+    "protobuf-topic_id_receive_receiveExampleProtobufPayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/protobuf-topic"
+        "$ref": "#/channels/protobuf-topic_id"
       },
       "bindings": {
         "kafka": {
@@ -1896,16 +1896,16 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/protobuf-topic/messages/io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+          "$ref": "#/channels/protobuf-topic_id/messages/io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
         }
       ]
     },
-    "string-topic_receive_receiveStringPayload": {
+    "string-topic_id_receive_receiveStringPayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/string-topic"
+        "$ref": "#/channels/string-topic_id"
       },
-      "title": "string-topic_receive",
+      "title": "string-topic_id_receive",
       "description": "Final classes (like String) can be documented using an envelope class and the @AsyncApiPayload annotation.",
       "bindings": {
         "kafka": {
@@ -1914,19 +1914,19 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/string-topic/messages/io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope"
+          "$ref": "#/channels/string-topic_id/messages/io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope"
         },
         {
-          "$ref": "#/channels/string-topic/messages/java.lang.String"
+          "$ref": "#/channels/string-topic_id/messages/java.lang.String"
         }
       ]
     },
-    "topic-defined-via-asyncPublisher-annotation_send_sendMessage": {
+    "topic-defined-via-asyncPublisher-annotation_id_send_sendMessage": {
       "action": "send",
       "channel": {
-        "$ref": "#/channels/topic-defined-via-asyncPublisher-annotation"
+        "$ref": "#/channels/topic-defined-via-asyncPublisher-annotation_id"
       },
-      "title": "topic-defined-via-asyncPublisher-annotation_send",
+      "title": "topic-defined-via-asyncPublisher-annotation_id_send",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "kafka": {
@@ -1941,14 +1941,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/topic-defined-via-asyncPublisher-annotation/messages/io.github.springwolf.examples.kafka.dtos.NestedPayloadDto"
+          "$ref": "#/channels/topic-defined-via-asyncPublisher-annotation_id/messages/io.github.springwolf.examples.kafka.dtos.NestedPayloadDto"
         }
       ]
     },
-    "vehicle-topic_receive_receiveExamplePayload": {
+    "vehicle-topic_id_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/vehicle-topic"
+        "$ref": "#/channels/vehicle-topic_id"
       },
       "bindings": {
         "kafka": {
@@ -1957,16 +1957,16 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/vehicle-topic/messages/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+          "$ref": "#/channels/vehicle-topic_id/messages/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
         }
       ]
     },
-    "xml-topic_receive_receiveExamplePayload": {
+    "xml-topic_id_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/xml-topic"
+        "$ref": "#/channels/xml-topic_id"
       },
-      "title": "xml-topic_receive",
+      "title": "xml-topic_id_receive",
       "description": "Auto-generated description",
       "bindings": {
         "kafka": {
@@ -1975,16 +1975,16 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/xml-topic/messages/io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
+          "$ref": "#/channels/xml-topic_id/messages/io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
         }
       ]
     },
-    "yaml-topic_receive_receiveExamplePayload": {
+    "yaml-topic_id_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/yaml-topic"
+        "$ref": "#/channels/yaml-topic_id"
       },
-      "title": "yaml-topic_receive",
+      "title": "yaml-topic_id_receive",
       "description": "Auto-generated description",
       "bindings": {
         "kafka": {
@@ -1993,7 +1993,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/yaml-topic/messages/io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
+          "$ref": "#/channels/yaml-topic_id/messages/io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
         }
       ]
     }

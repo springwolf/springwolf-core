@@ -22,7 +22,7 @@
     }
   },
   "channels": {
-    "_app_queue_another-queue": {
+    "_app_queue_another-queue_id": {
       "address": "/app/queue/another-queue",
       "messages": {
         "io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto": {
@@ -30,7 +30,7 @@
         }
       }
     },
-    "_app_queue_example-queue": {
+    "_app_queue_example-queue_id": {
       "address": "/app/queue/example-queue",
       "messages": {
         "io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto": {
@@ -41,7 +41,7 @@
         "stomp": { }
       }
     },
-    "_app_queue_sendto-queue": {
+    "_app_queue_sendto-queue_id": {
       "address": "/app/queue/sendto-queue",
       "messages": {
         "io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto": {
@@ -52,7 +52,7 @@
         "stomp": { }
       }
     },
-    "_app_queue_sendtouser-queue": {
+    "_app_queue_sendtouser-queue_id": {
       "address": "/app/queue/sendtouser-queue",
       "messages": {
         "io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto": {
@@ -63,7 +63,7 @@
         "stomp": { }
       }
     },
-    "_app_topic_sendto-response-queue": {
+    "_app_topic_sendto-response-queue_id": {
       "address": "/app/topic/sendto-response-queue",
       "messages": {
         "io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto": {
@@ -74,7 +74,7 @@
         "stomp": { }
       }
     },
-    "_user_queue_sendtouser-response-queue": {
+    "_user_queue_sendtouser-response-queue_id": {
       "address": "/user/queue/sendtouser-response-queue",
       "messages": {
         "io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto": {
@@ -220,80 +220,80 @@
     }
   },
   "operations": {
-    "_app_queue_another-queue_send_sendMessage": {
+    "_app_queue_another-queue_id_send_sendMessage": {
       "action": "send",
       "channel": {
-        "$ref": "#/channels/_app_queue_another-queue"
+        "$ref": "#/channels/_app_queue_another-queue_id"
       },
-      "title": "_app_queue_another-queue_send",
+      "title": "_app_queue_another-queue_id_send",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "stomp": { }
       },
       "messages": [
         {
-          "$ref": "#/channels/_app_queue_another-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/_app_queue_another-queue_id/messages/io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "_app_queue_example-queue_receive_receiveExamplePayload": {
+    "_app_queue_example-queue_id_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/_app_queue_example-queue"
+        "$ref": "#/channels/_app_queue_example-queue_id"
       },
       "bindings": {
         "stomp": { }
       },
       "messages": [
         {
-          "$ref": "#/channels/_app_queue_example-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/_app_queue_example-queue_id/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
         }
       ]
     },
-    "_app_queue_sendto-queue_receive_receiveExamplePayloadSendTo": {
+    "_app_queue_sendto-queue_id_receive_receiveExamplePayloadSendTo": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/_app_queue_sendto-queue"
+        "$ref": "#/channels/_app_queue_sendto-queue_id"
       },
       "bindings": {
         "stomp": { }
       },
       "messages": [
         {
-          "$ref": "#/channels/_app_queue_sendto-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/_app_queue_sendto-queue_id/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
         }
       ],
       "reply": {
         "channel": {
-          "$ref": "#/channels/_app_topic_sendto-response-queue"
+          "$ref": "#/channels/_app_topic_sendto-response-queue_id"
         },
         "messages": [
           {
-            "$ref": "#/channels/_app_topic_sendto-response-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
+            "$ref": "#/channels/_app_topic_sendto-response-queue_id/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
           }
         ]
       }
     },
-    "_app_queue_sendtouser-queue_receive_receiveExamplePayloadSendToUser": {
+    "_app_queue_sendtouser-queue_id_receive_receiveExamplePayloadSendToUser": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/_app_queue_sendtouser-queue"
+        "$ref": "#/channels/_app_queue_sendtouser-queue_id"
       },
       "bindings": {
         "stomp": { }
       },
       "messages": [
         {
-          "$ref": "#/channels/_app_queue_sendtouser-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/_app_queue_sendtouser-queue_id/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
         }
       ],
       "reply": {
         "channel": {
-          "$ref": "#/channels/_user_queue_sendtouser-response-queue"
+          "$ref": "#/channels/_user_queue_sendtouser-response-queue_id"
         },
         "messages": [
           {
-            "$ref": "#/channels/_user_queue_sendtouser-response-queue/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
+            "$ref": "#/channels/_user_queue_sendtouser-response-queue_id/messages/io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto"
           }
         ]
       }

@@ -22,7 +22,7 @@
     }
   },
   "channels": {
-    "another-queue": {
+    "another-queue_id": {
       "address": "another-queue",
       "messages": {
         "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto": {
@@ -30,7 +30,7 @@
         }
       }
     },
-    "example-queue": {
+    "example-queue_id": {
       "address": "example-queue",
       "messages": {
         "io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto": {
@@ -178,10 +178,10 @@
     }
   },
   "operations": {
-    "another-queue_receive_receiveAnotherPayload": {
+    "another-queue_id_receive_receiveAnotherPayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/another-queue"
+        "$ref": "#/channels/another-queue_id"
       },
       "bindings": {
         "sqs": {
@@ -200,16 +200,16 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-queue_id/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "another-queue_send_sendMessage": {
+    "another-queue_id_send_sendMessage": {
       "action": "send",
       "channel": {
-        "$ref": "#/channels/another-queue"
+        "$ref": "#/channels/another-queue_id"
       },
-      "title": "another-queue_send",
+      "title": "another-queue_id_send",
       "description": "Custom, optional description defined in the AsyncPublisher annotation",
       "bindings": {
         "sqs": {
@@ -228,14 +228,14 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-queue_id/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
         }
       ]
     },
-    "example-queue_receive_receiveExamplePayload": {
+    "example-queue_id_receive_receiveExamplePayload": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/example-queue"
+        "$ref": "#/channels/example-queue_id"
       },
       "bindings": {
         "sqs": {
@@ -254,7 +254,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-queue/messages/io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-queue_id/messages/io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto"
         }
       ]
     }
