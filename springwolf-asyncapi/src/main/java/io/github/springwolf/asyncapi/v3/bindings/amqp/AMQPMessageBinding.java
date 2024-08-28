@@ -35,5 +35,5 @@ public class AMQPMessageBinding extends MessageBinding {
      */
     @Builder.Default
     @JsonProperty(value = "bindingVersion")
-    private final String bindingVersion = "0.3.0";
+    private final String bindingVersion = "0.4.0";
 }

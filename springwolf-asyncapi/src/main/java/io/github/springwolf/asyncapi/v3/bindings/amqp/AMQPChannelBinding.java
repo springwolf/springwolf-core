@@ -3,6 +3,7 @@ package io.github.springwolf.asyncapi.v3.bindings.amqp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,17 @@ public class AMQPChannelBinding extends ChannelBinding {
     @JsonProperty(value = "is", required = true, defaultValue = "routingKey")
     private AMQPChannelType is = AMQPChannelType.ROUTING_KEY;
 
+    /**
+     * When is=routingKey, this defines the actual routing pattern to route the message from the exchange to the queue.
+     */
+    @JsonProperty("name")
+    private String name;
+
+    /**
+     * When is=routingKey, this defines the target queue after routing the message (essentially the binding).
+     */
+    private ChannelReference channel;
+
     @JsonProperty("exchange")
     private AMQPChannelExchangeProperties exchange;
 
@@ -37,5 +49,5 @@ public class AMQPChannelBinding extends ChannelBinding {
 
     @Builder.Default
     @JsonProperty(value = "bindingVersion")
-    private final String bindingVersion = "0.3.0";
+    private final String bindingVersion = "0.4.0";
 }

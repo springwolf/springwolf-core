@@ -73,6 +73,7 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
     @BeforeEach
     void setUp() throws NoSuchMethodException {
         // when
+        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_ID);
         when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL);
 
         doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any());

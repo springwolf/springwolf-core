@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.amqp.asyncapi.scanners.channels;
 
-import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.RabbitListenerUtil;
@@ -20,9 +19,6 @@ public class RabbitQueueBeanScanner implements ChannelsScanner {
     public Map<String, ChannelObject> scan() {
         return queues.stream()
                 .map(RabbitListenerUtil::buildChannelObject)
-                .collect(Collectors.toMap(
-                        ChannelObject::getChannelId,
-                        c -> c,
-                        (a, b) -> a));
+                .collect(Collectors.toMap(ChannelObject::getChannelId, c -> c, (a, b) -> a));
     }
 }

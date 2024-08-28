@@ -2,7 +2,6 @@
 package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
@@ -71,8 +70,7 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         String channelId = bindingFactory.getChannelId(annotation);
-        String operationId = StringUtils.joinWith(
-                "_", channelId, OperationAction.RECEIVE, method.getName());
+        String operationId = StringUtils.joinWith("_", channelId, OperationAction.RECEIVE, method.getName());
 
         PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method);
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);

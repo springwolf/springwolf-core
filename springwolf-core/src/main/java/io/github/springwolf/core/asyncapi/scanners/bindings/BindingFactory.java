@@ -13,7 +13,8 @@ public interface BindingFactory<T> {
     default String getChannelId(T annotation) {
         return ReferenceUtil.toValidId(getChannelName(annotation));
     }
-     String getChannelName(T annotation);
+
+    String getChannelName(T annotation);
 
     Map<String, ChannelBinding> buildChannelBinding(T annotation);
 

@@ -27,9 +27,9 @@ class RabbitQueueBeanScannerTest {
         // then
         assertThat(result)
                 .isEqualTo(Map.of(
-                        "name",
+                        "name_id",
                         ChannelObject.builder()
-                                .channelId("name")
+                                .channelId("name_id")
                                 .address("name")
                                 .bindings(Map.of(
                                         "amqp",

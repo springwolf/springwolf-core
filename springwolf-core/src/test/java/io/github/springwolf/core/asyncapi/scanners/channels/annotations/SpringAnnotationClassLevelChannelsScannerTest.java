@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -67,6 +68,7 @@ class SpringAnnotationClassLevelChannelsScannerTest {
     @BeforeEach
     void setUp() {
         // when
+        when(bindingFactory.getChannelId(any())).thenReturn(ReferenceUtil.toValidId(CHANNEL));
         when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL);
 
         doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any());
