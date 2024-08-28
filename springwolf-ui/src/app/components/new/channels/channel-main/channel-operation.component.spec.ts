@@ -16,7 +16,7 @@ import {
 } from "../../../mock-components.spec";
 
 describe("ChannelOperationComponent", () => {
-  const mockData = mockedExampleSchemaMapped.channelOperations[0];
+  const mockData = mockedExampleSchemaMapped.channelOperations.slice(-1).pop()!!;
 
   beforeEach(async () => {
     mockedAsyncApiService.getAsyncApi.mockClear();
