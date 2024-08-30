@@ -276,7 +276,7 @@ export class AsyncApiMapperService {
                 anchorUrl: AsyncApiMapperService.BASE_URL + payloadName,
               },
               headers: {
-                name: message.headers.$ref,
+                name: this.resolveRefId(message.headers.$ref),
                 title:
                   this.resolveRefId(message.headers.$ref) ||
                   "undefined-header-title",
@@ -552,6 +552,13 @@ export class AsyncApiMapperService {
       asyncApi.channels.forEach((channel) => {
         channel.operations.forEach((channelOperation) => {
           if (channelOperation.operation.message.payload.name === schema.name) {
+            schema.usedBy.push({
+              name: channelOperation.name,
+              anchorUrl: channelOperation.anchorUrl!!,
+              type: "channel",
+            });
+          }
+          if (channelOperation.operation.message.headers.name === schema.name) {
             schema.usedBy.push({
               name: channelOperation.name,
               anchorUrl: channelOperation.anchorUrl!!,

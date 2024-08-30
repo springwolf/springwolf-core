@@ -55,10 +55,7 @@ export class ChannelMainComponent implements OnInit {
       this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 1;
       this.defaultExampleType = this.operation().message.payload.name;
 
-      this.headersSchemaIdentifier =
-        this.operation().message.headers.name.slice(
-          this.operation().message.headers.name.lastIndexOf("/") + 1
-        );
+      this.headersSchemaIdentifier = this.operation().message.headers.name;
       this.headers = schemas.get(this.headersSchemaIdentifier)!!;
       this.headersExample = this.headers.example || noExample;
       this.headersTextAreaLineCount = this.headersExample?.lineCount || 1;

@@ -61,10 +61,7 @@ export class ChannelOperationComponent implements OnInit {
       this.exampleContentType =
         this.operation().message.contentType.split("/").pop() || "json";
 
-      const headersSchemaIdentifier =
-        this.operation().message.headers.name.slice(
-          this.operation().message.headers.name.lastIndexOf("/") + 1
-        );
+      const headersSchemaIdentifier = this.operation().message.headers.name;
       this.headers = schemas.get(headersSchemaIdentifier)!!;
       this.originalHeadersExample = this.headers.example || noExample;
 
