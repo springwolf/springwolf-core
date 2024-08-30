@@ -39,6 +39,7 @@ import static org.mockito.Mockito.verify;
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ProducerSystemTest {
+    private static final String LOCALSTACK_NAME = "localstack";
 
     @Autowired
     SpringwolfSqsProducer springwolfSqsProducer;
@@ -60,10 +61,10 @@ public class ProducerSystemTest {
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
-            .withOptions()
             .withEnv(ENV)
-            .withLogConsumer("localstack", l -> log.debug("localstack: {}", l.getUtf8StringWithoutLineEnding()))
-            .waitingFor("localstack", Wait.forLogMessage(".*Ready.*", 1));
+            .withServices(LOCALSTACK_NAME)
+            .withLogConsumer(LOCALSTACK_NAME, l -> log.debug("localstack: {}", l.getUtf8StringWithoutLineEnding()))
+            .waitingFor(LOCALSTACK_NAME, Wait.forLogMessage(".*Ready.*", 1));
 
     @Test
     void producerCanUseSpringwolfConfigurationToSendMessage() {

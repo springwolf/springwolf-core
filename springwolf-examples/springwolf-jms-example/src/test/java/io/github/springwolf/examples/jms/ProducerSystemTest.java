@@ -4,6 +4,7 @@ package io.github.springwolf.examples.jms;
 import io.github.springwolf.examples.jms.consumers.ExampleConsumer;
 import io.github.springwolf.examples.jms.dtos.ExamplePayloadDto;
 import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,8 +35,10 @@ import static org.mockito.Mockito.verify;
 @Testcontainers
 @DirtiesContext
 @TestMethodOrder(OrderAnnotation.class)
+@Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ProducerSystemTest {
+    private static final String APP_JMS = "activemq";
 
     @Autowired
     SpringwolfJmsProducer springwolfJmsProducer;
@@ -45,8 +48,9 @@ public class ProducerSystemTest {
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
-            .withServices("activemq")
-            .waitingFor("activemq", Wait.forLogMessage(".*Artemis Console available.*", 1));
+            .withServices(APP_JMS)
+            .withLogConsumer(APP_JMS, l -> log.debug("jms: {}", l.getUtf8StringWithoutLineEnding()))
+            .waitingFor(APP_JMS, Wait.forLogMessage(".*Artemis Console available.*", 1));
 
     @Test
     @Order(2)

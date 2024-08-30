@@ -4,6 +4,7 @@ package io.github.springwolf.examples.amqp;
 import io.github.springwolf.examples.amqp.consumers.ExampleConsumer;
 import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
 import io.github.springwolf.plugins.amqp.producer.SpringwolfAmqpProducer;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -42,8 +43,10 @@ import static org.mockito.Mockito.verify;
 @DirtiesContext
 @TestMethodOrder(OrderAnnotation.class)
 @TestPropertySource(properties = {"spring.rabbitmq.host=localhost"})
+@Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ProducerSystemTest {
+    private static final String AMQP_NAME = "amqp";
 
     @Autowired
     SpringwolfAmqpProducer springwolfAmqpProducer;
@@ -52,8 +55,9 @@ public class ProducerSystemTest {
     ExampleConsumer exampleConsumer;
 
     @Container
-    public static DockerComposeContainer<?> environment =
-            new DockerComposeContainer<>(new File("docker-compose.yml")).withServices("amqp");
+    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+            .withServices(AMQP_NAME)
+            .withLogConsumer(AMQP_NAME, l -> log.debug("amqp: {}", l.getUtf8StringWithoutLineEnding()));
 
     @Test
     @Order(1)
