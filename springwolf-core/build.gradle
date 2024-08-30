@@ -52,6 +52,7 @@ dependencies {
     testImplementation "org.springframework:spring-test"
     permitTestUnusedDeclared "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
 
+    testImplementation project(":springwolf-add-ons:springwolf-common-model-converters")
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 }
