@@ -208,6 +208,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/aerfus"><img src="https://avatars.githubusercontent.com/u/8309418?v=4?s=100" width="100px;" alt="Nikita Marunko"/><br /><sub><b>Nikita Marunko</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=aerfus" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/victor-levitskiy-561956114/"><img src="https://avatars.githubusercontent.com/u/18309707?v=4?s=100" width="100px;" alt="Victor Levitskiy"/><br /><sub><b>Victor Levitskiy</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=victorlev01" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ccudennec-otto"><img src="https://avatars.githubusercontent.com/u/158453078?v=4?s=100" width="100px;" alt="Christopher Cudennec"/><br /><sub><b>Christopher Cudennec</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=ccudennec-otto" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/dabeck81"><img src="https://avatars.githubusercontent.com/u/79102969?v=4?s=100" width="100px;" alt="dabeck81"/><br /><sub><b>dabeck81</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=dabeck81" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
