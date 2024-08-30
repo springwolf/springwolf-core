@@ -9,6 +9,7 @@ import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfigura
 import io.github.springwolf.core.integrationtests.application.listener.ListenerApplication;
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.publisher.PublisherApplication;
+import io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +134,41 @@ public class AsyncApiDocumentIntegrationTest {
                             .getSchema()
                             .getProperties())
                     .containsOnlyKeys("dogSpecificField");
+        }
+    }
+
+    @Nested
+    @SpringBootTest(classes = SchemaEnumAsRefApplication.class)
+    @MinimalIntegrationTestContextConfiguration
+    @TestPropertySource(
+            properties = {
+                "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.schema",
+            })
+    class SchemaAsRefTest {
+        @Autowired
+        private AsyncApiService asyncApiService;
+
+        @Test
+        void enumAsRefIsHandled() {
+            // given
+            String myEnumRootSchemaName =
+                    "io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication$Schemas$MyEnumRoot";
+            String myEnumObjectSchemaName =
+                    "io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication$Schemas$MyEnumObject";
+
+            // when
+            AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
+
+            // then
+            Map<String, Message> messages = asyncAPI.getComponents().getMessages();
+            assertThat(messages).containsOnlyKeys(myEnumRootSchemaName);
+            Map<String, SchemaObject> schemas = asyncAPI.getComponents().getSchemas();
+            assertThat(schemas).containsOnlyKeys("HeadersNotDocumented", myEnumRootSchemaName, myEnumObjectSchemaName);
+
+            assertThat(schemas.get(myEnumRootSchemaName).getExamples().get(0).toString())
+                    .isEqualTo("{\"myEnumObjectField\":\"\\\"DOG\\\"\"}");
+            assertThat(schemas.get(myEnumObjectSchemaName).getExamples().get(0).toString())
+                    .isEqualTo("\"DOG\"");
         }
     }
 }
