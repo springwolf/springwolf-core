@@ -70,7 +70,7 @@ ext {
     slf4jApiVersion = '2.0.16'
     slf4jSimpleVersion = '2.0.16'
 
-    swaggerVersion = '2.2.22'
+    swaggerVersion = '2.2.23'
 
     testcontainersVersion = '1.20.1'
 }
