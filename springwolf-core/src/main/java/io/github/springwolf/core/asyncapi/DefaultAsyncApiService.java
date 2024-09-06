@@ -27,6 +27,8 @@ public class DefaultAsyncApiService implements AsyncApiService {
      * @param exception
      */
     private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {}
+    // -> master (internal)
+    // -> per group
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final ChannelsService channelsService;
@@ -84,6 +86,8 @@ public class DefaultAsyncApiService implements AsyncApiService {
                     .operations(operations)
                     .components(components)
                     .build();
+
+            //            master = asyncAPI;
 
             for (AsyncApiCustomizer customizer : customizers) {
                 log.debug("Starting customizer {}", customizer.getClass().getName());
