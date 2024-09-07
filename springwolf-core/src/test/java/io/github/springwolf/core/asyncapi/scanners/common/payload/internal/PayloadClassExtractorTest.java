@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.payload.internal;
 
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.handler.annotation.Payload;
 
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class PayloadClassExtractorTest {
 
-    private final PayloadClassExtractor extractor = new PayloadClassExtractor();
+    private final PayloadClassExtractor extractor = new PayloadClassExtractor(new SpringwolfConfigProperties());
 
     @Test
     void getPayloadType() throws NoSuchMethodException {

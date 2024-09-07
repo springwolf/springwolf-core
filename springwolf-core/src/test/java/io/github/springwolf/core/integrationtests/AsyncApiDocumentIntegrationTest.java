@@ -43,9 +43,7 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getChannels()).containsOnlyKeys("listener-channel");
             assertThat(asyncAPI.getChannels().get("listener-channel").getMessages())
                     .containsOnlyKeys(
-                            "java.util.ListJava.lang.String",
                             "java.lang.String",
-                            "java.util.ListIo.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
             assertThat(asyncAPI.getOperations())
                     .containsOnlyKeys(
@@ -55,9 +53,7 @@ public class AsyncApiDocumentIntegrationTest {
                             "listener-channel_receive_listen4");
             assertThat(asyncAPI.getComponents().getMessages())
                     .containsOnlyKeys(
-                            "java.util.ListJava.lang.String",
                             "java.lang.String",
-                            "java.util.ListIo.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys(
@@ -73,15 +69,6 @@ public class AsyncApiDocumentIntegrationTest {
                     stringMessage.getPayload().getMultiFormatSchema().getSchema();
             assertThat(inlineStringSchema.getType()).isEqualTo("string");
 
-            MessageObject stringListMessage =
-                    (MessageObject) asyncAPI.getComponents().getMessages().get("java.util.ListJava.lang.String");
-            assertThat(stringListMessage.getPayload().getMultiFormatSchema().getSchema())
-                    .isInstanceOf(SchemaObject.class);
-            SchemaObject inlineStringListSchema = (SchemaObject)
-                    stringListMessage.getPayload().getMultiFormatSchema().getSchema();
-            assertThat(inlineStringListSchema.getType()).isEqualTo("array");
-            assertThat(inlineStringListSchema.getItems().getSchema().getType()).isEqualTo("string");
-
             MessageObject fooMessage = (MessageObject) asyncAPI.getComponents()
                     .getMessages()
                     .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
@@ -90,20 +77,6 @@ public class AsyncApiDocumentIntegrationTest {
             MessageReference fooRefMessage = (MessageReference)
                     fooMessage.getPayload().getMultiFormatSchema().getSchema();
             assertThat(fooRefMessage.getRef())
-                    .isEqualTo(
-                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
-
-            MessageObject fooListMessage = (MessageObject)
-                    asyncAPI.getComponents()
-                            .getMessages()
-                            .get(
-                                    "java.util.ListIo.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
-            assertThat(fooListMessage.getPayload().getMultiFormatSchema().getSchema())
-                    .isInstanceOf(SchemaObject.class);
-            SchemaObject fooListRefMessage = (SchemaObject)
-                    fooListMessage.getPayload().getMultiFormatSchema().getSchema();
-            assertThat(fooListRefMessage.getType()).isEqualTo("array");
-            assertThat(fooListRefMessage.getItems().getReference().getRef())
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
         }
@@ -128,9 +101,7 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getChannels()).containsOnlyKeys("publisher-channel");
             assertThat(asyncAPI.getChannels().get("publisher-channel").getMessages())
                     .containsOnlyKeys(
-                            "java.util.ListJava.lang.String",
                             "java.lang.String",
-                            "java.util.ListIo.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
             assertThat(asyncAPI.getOperations())
                     .containsOnlyKeys(
@@ -140,9 +111,7 @@ public class AsyncApiDocumentIntegrationTest {
                             "publisher-channel_send_publish4");
             assertThat(asyncAPI.getComponents().getMessages())
                     .containsOnlyKeys(
-                            "java.util.ListJava.lang.String",
                             "java.lang.String",
-                            "java.util.ListIo.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys(
@@ -158,15 +127,6 @@ public class AsyncApiDocumentIntegrationTest {
                     stringMessage.getPayload().getMultiFormatSchema().getSchema();
             assertThat(inlineStringSchema.getType()).isEqualTo("string");
 
-            MessageObject stringListMessage =
-                    (MessageObject) asyncAPI.getComponents().getMessages().get("java.util.ListJava.lang.String");
-            assertThat(stringListMessage.getPayload().getMultiFormatSchema().getSchema())
-                    .isInstanceOf(SchemaObject.class);
-            SchemaObject inlineStringListSchema = (SchemaObject)
-                    stringListMessage.getPayload().getMultiFormatSchema().getSchema();
-            assertThat(inlineStringListSchema.getType()).isEqualTo("array");
-            assertThat(inlineStringListSchema.getItems().getSchema().getType()).isEqualTo("string");
-
             MessageObject fooMessage = (MessageObject) asyncAPI.getComponents()
                     .getMessages()
                     .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
@@ -175,20 +135,6 @@ public class AsyncApiDocumentIntegrationTest {
             MessageReference fooRefMessage = (MessageReference)
                     fooMessage.getPayload().getMultiFormatSchema().getSchema();
             assertThat(fooRefMessage.getRef())
-                    .isEqualTo(
-                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
-
-            MessageObject fooListMessage = (MessageObject)
-                    asyncAPI.getComponents()
-                            .getMessages()
-                            .get(
-                                    "java.util.ListIo.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
-            assertThat(fooListMessage.getPayload().getMultiFormatSchema().getSchema())
-                    .isInstanceOf(SchemaObject.class);
-            SchemaObject fooListRefMessage = (SchemaObject)
-                    fooListMessage.getPayload().getMultiFormatSchema().getSchema();
-            assertThat(fooListRefMessage.getType()).isEqualTo("array");
-            assertThat(fooListRefMessage.getItems().getReference().getRef())
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
         }

@@ -189,8 +189,8 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public PayloadClassExtractor payloadClassExtractor() {
-        return new PayloadClassExtractor();
+    public PayloadClassExtractor payloadClassExtractor(SpringwolfConfigProperties springwolfConfigProperties) {
+        return new PayloadClassExtractor(springwolfConfigProperties);
     }
 
     @Bean
