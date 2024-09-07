@@ -51,7 +51,7 @@ public class ExampleConsumer {
                                 @Queue(
                                         name = AmqpConstants.QUEUE_EXAMPLE_BINDINGS_QUEUE,
                                         durable = "false",
-                                        exclusive = "true",
+                                        exclusive = "false",
                                         autoDelete = "true"),
                         key = AmqpConstants.ROUTING_KEY_EXAMPLE_TOPIC_ROUTING_KEY)
             })
