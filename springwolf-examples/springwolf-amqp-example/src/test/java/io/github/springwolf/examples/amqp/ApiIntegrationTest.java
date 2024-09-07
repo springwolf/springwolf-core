@@ -52,7 +52,7 @@ class ApiIntegrationTest {
         String url = "/springwolf/docs.yaml";
         String actual = restTemplate.getForObject(url, String.class);
         String actualPatched = actual.replace(amqpHost + ":" + amqpPort, "amqp:5672");
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.yaml"), actual);
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.yaml"), actualPatched);
 
         String expected;
         try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.yaml")) {

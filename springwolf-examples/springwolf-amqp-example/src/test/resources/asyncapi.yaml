@@ -16,7 +16,7 @@ info:
 defaultContentType: application/json
 servers:
   amqp-server:
-    host: localhost:5672
+    host: amqp:5672
     protocol: amqp
 channels:
   '#':
