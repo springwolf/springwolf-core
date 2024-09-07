@@ -20,8 +20,6 @@ public interface ComponentsService {
 
     String registerSchema(SchemaObject headers);
 
-    String resolvePayloadSchema(Class<?> type, String contentType);
-
     Map<String, Message> getMessages();
 
     MessageReference registerMessage(MessageObject message);

@@ -264,16 +264,18 @@ export class AsyncApiMapperService {
 
             this.verifyBindings(message.bindings, "message " + message.name);
 
-            let payloadName = this.resolveRefId(message.payload.schema.$ref);
+            // let payloadName = this.resolveRefId(message.payload.schema.$ref);
             const mappedMessage: Message = {
               name: message.name,
               title: message.title,
               description: message.description,
               contentType: message.contentType || defaultContentType,
               payload: {
-                name: payloadName || message.payload.schema.type, // TODO:
-                title: this.resolveTitleFromName(payloadName) || message.payload.schema.title: "TODO" ,
-                anchorUrl: AsyncApiMapperService.BASE_URL + payloadName,
+                name: "fixlater", // payloadName || message.payload.schema.type, // TODO:
+                title: "fixlater", //
+                // this.resolveTitleFromName(payloadName) ||
+                // message.payload.schema.title, // TODO:
+                anchorUrl: "fixlater", // AsyncApiMapperService.BASE_URL + payloadName,
               },
               headers: {
                 name: this.resolveRefId(message.headers.$ref),

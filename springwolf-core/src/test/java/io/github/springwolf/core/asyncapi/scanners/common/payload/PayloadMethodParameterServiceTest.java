@@ -44,7 +44,7 @@ class PayloadMethodParameterServiceTest {
         when(payloadClassExtractor.extractFrom(method)).thenReturn(Optional.of(String.class));
 
         String schemaName = "my-schema-name";
-        when(componentsService.resolvePayloadSchema(any(), any())).thenReturn(schemaName);
+        when(componentsService.getSchemaName(String.class)).thenReturn(schemaName);
 
         ComponentSchema schemaObject = ComponentSchema.of(SchemaObject.builder().build());
         when(componentsService.resolvePayloadSchema(eq(String.class), any())).thenReturn(schemaObject);

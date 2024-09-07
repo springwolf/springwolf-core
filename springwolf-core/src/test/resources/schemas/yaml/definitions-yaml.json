@@ -1,5 +1,6 @@
 {
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$CompositeFoo" : {
+    "title" : "CompositeFoo",
     "type" : "string",
     "properties" : {
       "f" : {
@@ -12,6 +13,7 @@
     "examples" : [ "f:\n  b: true\n  s: string\ns: string\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$FooWithEnum" : {
+    "title" : "FooWithEnum",
     "type" : "string",
     "properties" : {
       "b" : {
@@ -25,6 +27,7 @@
     "examples" : [ "b: BAR1\ns: string\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SimpleFoo" : {
+    "title" : "SimpleFoo",
     "type" : "string",
     "properties" : {
       "b" : {

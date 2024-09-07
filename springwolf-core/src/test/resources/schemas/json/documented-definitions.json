@@ -1,5 +1,6 @@
 {
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$DocumentedSimpleFoo" : {
+    "title" : "DocumentedSimpleFoo",
     "type" : "object",
     "properties" : {
       "bi" : {
@@ -73,6 +74,7 @@
     "required" : [ "dt", "f", "s" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$SimpleFoo" : {
+    "title" : "SimpleFoo",
     "type" : "object",
     "properties" : {
       "b" : {

@@ -1,5 +1,6 @@
 {
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$AllOf" : {
+    "title" : "AllOf",
     "type" : "string",
     "examples" : [ "firstOne: string\nfirstTwo: 0\nsecondOne: string\nsecondTwo: true\n" ],
     "allOf" : [ {
@@ -9,6 +10,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$AnyOf" : {
+    "title" : "AnyOf",
     "type" : "string",
     "examples" : [ "firstOne: string\nsecondOne: string\n" ],
     "anyOf" : [ {
@@ -43,6 +45,7 @@
     "examples" : [ "firstTwo: 0\nsecondTwo: true\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$OneOf" : {
+    "title" : "OneOf",
     "type" : "string",
     "examples" : [ "|\n  firstOne: string\n  secondOne: string\n" ],
     "oneOf" : [ {
@@ -52,6 +55,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
+    "title" : "SchemaAnnotationFoo",
     "type" : "string",
     "properties" : {
       "allOf" : {

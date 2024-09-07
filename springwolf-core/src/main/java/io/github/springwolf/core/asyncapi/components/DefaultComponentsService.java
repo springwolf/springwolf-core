@@ -46,16 +46,6 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     @Override
-    public String resolvePayloadSchema(Class<?> type, String contentType) {
-        log.debug("Registering schema for {}", type.getSimpleName());
-
-        SwaggerSchemaService.ExtractedSchemas schemas = schemaService.extractSchema(type, contentType);
-        schemas.schemas().forEach(this.schemas::putIfAbsent);
-
-        return schemas.rootSchemaName();
-    }
-
-    @Override
     public Map<String, Message> getMessages() {
         return this.messages;
     }
