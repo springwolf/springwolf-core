@@ -80,9 +80,7 @@ public class ExampleConsumer {
                 payload.toString());
     }
 
-    @RabbitListener(
-            autoStartup = "false",
-            queuesToDeclare = @Queue(name = AmqpConstants.QUEUE_CREATE, autoDelete = "false", durable = "true"))
+    @RabbitListener(queuesToDeclare = @Queue(name = AmqpConstants.QUEUE_CREATE, autoDelete = "false", durable = "true"))
     public void queuesToDeclareCreate(Message message, @Payload GenericPayloadDto<String> payload) {
         log.info(
                 "Received new message {} in {} (GenericPayloadDto<String>): {}",
@@ -91,9 +89,7 @@ public class ExampleConsumer {
                 payload.toString());
     }
 
-    @RabbitListener(
-            autoStartup = "false",
-            queuesToDeclare = @Queue(name = AmqpConstants.QUEUE_DELETE, autoDelete = "false", durable = "true"))
+    @RabbitListener(queuesToDeclare = @Queue(name = AmqpConstants.QUEUE_DELETE, autoDelete = "false", durable = "true"))
     public void queuesToDeclareDelete(Message message, @Payload GenericPayloadDto<Long> payload) {
         log.info(
                 "Received new message {} in {} (GenericPayloadDto<Long>): {}",

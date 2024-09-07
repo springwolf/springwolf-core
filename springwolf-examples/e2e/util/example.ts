@@ -17,7 +17,7 @@ type ExampleProject =
   | "stomp";
 
 export function getExampleProject(): ExampleProject {
-  return process.env.SPRINGWOLF_EXAMPLE || "kafka";
+  return process.env.SPRINGWOLF_EXAMPLE || "amqp";
 }
 
 export function getExampleAsyncApi() {
