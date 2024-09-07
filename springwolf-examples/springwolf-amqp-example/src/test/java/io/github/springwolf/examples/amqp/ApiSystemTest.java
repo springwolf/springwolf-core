@@ -40,7 +40,6 @@ public class ApiSystemTest {
             var properties = new Properties();
             properties.load(input);
             properties.forEach((key, value) -> ENV.put(String.valueOf(key), String.valueOf(value)));
-            //            properties.put("SPRING_PROFILES_ACTIVE", "test");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
