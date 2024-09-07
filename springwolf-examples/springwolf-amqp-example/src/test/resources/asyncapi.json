@@ -78,7 +78,7 @@
           "queue": {
             "name": "example-bindings-queue",
             "durable": false,
-            "exclusive": true,
+            "exclusive": false,
             "autoDelete": true,
             "vhost": "/"
           },
