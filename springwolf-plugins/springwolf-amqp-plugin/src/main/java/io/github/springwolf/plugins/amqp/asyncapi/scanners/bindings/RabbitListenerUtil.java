@@ -46,7 +46,6 @@ import java.util.stream.Stream;
  * <li> Consumer consumes the message from the queue
  * </ol>
  */
-// TODO: should this do validation and throw errors when an invalid rabbit configuration is found?
 @Slf4j
 public class RabbitListenerUtil {
     public static final String BINDING_NAME = "amqp";
@@ -60,47 +59,29 @@ public class RabbitListenerUtil {
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> channelNameFromAnnotationBindings(binding, resolver));
 
-        return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
-                .map(resolver::resolveStringValue)
-                .filter(Objects::nonNull)
-                .peek(queue -> log.debug("Resolved channel name: {}", queue))
-                .findFirst()
-                .orElseThrow(
-                        () -> new IllegalArgumentException(
-                                "No channel name was found in @RabbitListener annotation (neither in queues nor bindings property)"));
+        Stream<String> stream = Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames);
+        return resolveFirstValue(stream, resolver, "channel name");
     }
 
     public static String getChannelId(RabbitListener annotation, StringValueResolver resolver) {
         Stream<String> annotationBindingChannelIds = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> channelIdFromAnnotationBindings(binding, resolver));
 
-        return Stream.concat(streamQueueNames(annotation).map(ReferenceUtil::toValidId), annotationBindingChannelIds)
-                .map(resolver::resolveStringValue)
-                .filter(Objects::nonNull)
-                .peek(queue -> log.debug("Resolved channel id: {}", queue))
-                .findFirst()
-                .orElseThrow(
-                        () -> new IllegalArgumentException(
-                                "No channel id was found in @RabbitListener annotation (neither in queues nor bindings property)"));
+        Stream<String> stream =
+                Stream.concat(streamQueueNames(annotation).map(ReferenceUtil::toValidId), annotationBindingChannelIds);
+        return resolveFirstValue(stream, resolver, "channel id");
     }
 
     private static String getQueueName(RabbitListener annotation, StringValueResolver resolver) {
-        Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
+        Stream<String> annotationBindingQueueNames = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> Stream.of(binding.value().name()));
 
-        return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
-                .map(resolver::resolveStringValue)
-                .filter(Objects::nonNull)
-                .peek(queue -> log.debug("Resolved queue name: {}", queue))
-                .findFirst()
-                .orElseThrow(
-                        () -> new IllegalArgumentException(
-                                "No queue name was found in @RabbitListener annotation (neither in queues nor bindings property)"));
+        Stream<String> stream = Stream.concat(streamQueueNames(annotation), annotationBindingQueueNames);
+        return resolveFirstValue(stream, resolver, "queue name");
     }
 
     private static Stream<String> channelNameFromAnnotationBindings(
             QueueBinding binding, StringValueResolver resolver) {
-        String queueName = resolver.resolveStringValue(binding.value().name());
         String exchangeName = resolver.resolveStringValue(binding.exchange().name());
 
         String[] routingKeys = binding.key();
@@ -109,15 +90,6 @@ public class RabbitListenerUtil {
         }
 
         return Arrays.stream(routingKeys).map(resolver::resolveStringValue).map(routingKey -> exchangeName);
-    }
-
-    private static String exchangeTargetChannelIdFromAnnotationBindings(
-            RabbitListener annotation, StringValueResolver resolver) {
-        return Arrays.stream(annotation.bindings())
-                .map(binding -> binding.value().name() + "-id")
-                .map(resolver::resolveStringValue)
-                .findFirst()
-                .orElse(null);
     }
 
     private static Stream<String> channelIdFromAnnotationBindings(QueueBinding binding, StringValueResolver resolver) {
@@ -168,6 +140,14 @@ public class RabbitListenerUtil {
         }
 
         return Map.of(BINDING_NAME, channelBinding.build());
+    }
+
+    private static String exchangeTargetChannelIdFromAnnotationBindings(
+            RabbitListener annotation, StringValueResolver resolver) {
+        Stream<String> stream = Arrays.stream(annotation.bindings())
+                .map(binding -> binding.value().name() + "-id");
+
+        return resolveFirstValue(stream, resolver, "exchange target channel id");
     }
 
     private static AMQPChannelExchangeProperties buildExchangeProperties(
@@ -313,5 +293,14 @@ public class RabbitListenerUtil {
     public static Map<String, MessageBinding> buildMessageBinding() {
         // currently the feature to define amqp message binding is not implemented.
         return Map.of(BINDING_NAME, new AMQPMessageBinding());
+    }
+
+    private static String resolveFirstValue(Stream<String> values, StringValueResolver resolver, String valueType) {
+        return values.map(resolver::resolveStringValue)
+                .filter(Objects::nonNull)
+                .peek(value -> log.debug("Resolved {}: {}", valueType, value))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No " + valueType
+                        + " was found in @RabbitListener annotation (neither in queues nor bindings property)"));
     }
 }

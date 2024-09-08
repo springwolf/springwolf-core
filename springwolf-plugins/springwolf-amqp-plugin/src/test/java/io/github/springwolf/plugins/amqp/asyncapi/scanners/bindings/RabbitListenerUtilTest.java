@@ -14,7 +14,6 @@ import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.TopicExchange;
@@ -106,8 +105,10 @@ class RabbitListenerUtilTest {
                     channelBinding.get("amqp"));
         }
 
+        /**
+         * Technically an invalid configuration as queue will be part of the spring context
+         */
         @Test
-        @Disabled("TODO: what to do with invalid configuration")
         void buildChannelBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
@@ -148,8 +149,10 @@ class RabbitListenerUtilTest {
             assertEquals(AMQPOperationBinding.builder().build(), operationBinding.get("amqp"));
         }
 
+        /**
+         * Technically an invalid configuration as queue will be part of the spring context
+         */
         @Test
-        @Disabled("TODO: what to do with invalid configuration")
         void buildOperationBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
@@ -161,7 +164,7 @@ class RabbitListenerUtilTest {
             // then
             assertEquals(1, operationBinding.size());
             assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
-            assertEquals(AMQPOperationBinding.builder().cc(List.of("queue-1")).build(), operationBinding.get("amqp"));
+            assertEquals(AMQPOperationBinding.builder().build(), operationBinding.get("amqp"));
         }
 
         @Test
@@ -197,8 +200,10 @@ class RabbitListenerUtilTest {
             assertEquals("queue-1", channelName);
         }
 
+        /**
+         * Technically an invalid configuration as context should be empty
+         */
         @Test
-        @Disabled("TODO: what to do with invalid configuration")
         void buildChannelBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
@@ -215,9 +220,9 @@ class RabbitListenerUtilTest {
                             .is(AMQPChannelType.QUEUE)
                             .queue(AMQPChannelQueueProperties.builder()
                                     .name("queue-1")
-                                    .durable(true)
-                                    .autoDelete(false)
-                                    .exclusive(false)
+                                    .durable(false)
+                                    .autoDelete(true)
+                                    .exclusive(true)
                                     .vhost("/")
                                     .build())
                             .build(),
@@ -250,8 +255,10 @@ class RabbitListenerUtilTest {
                     channelBinding.get("amqp"));
         }
 
+        /**
+         * Technically an invalid configuration as context should be empty
+         */
         @Test
-        @Disabled("TODO: what to do with invalid configuration")
         void buildOperationBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
@@ -263,7 +270,7 @@ class RabbitListenerUtilTest {
             // then
             assertEquals(1, operationBinding.size());
             assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
-            assertEquals(AMQPOperationBinding.builder().cc(List.of("queue-1")).build(), operationBinding.get("amqp"));
+            assertEquals(AMQPOperationBinding.builder().build(), operationBinding.get("amqp"));
         }
 
         @Test
@@ -380,8 +387,10 @@ class RabbitListenerUtilTest {
                     channelBinding.get("amqp"));
         }
 
+        /**
+         * Technically an invalid configuration as queue and exchange will be part of the spring context
+         */
         @Test
-        @Disabled("TODO: what to do with invalid configuration")
         void buildChannelBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
@@ -396,9 +405,11 @@ class RabbitListenerUtilTest {
             assertEquals(
                     AMQPChannelBinding.builder()
                             .is(AMQPChannelType.ROUTING_KEY)
+                            .name("#")
+                            .channel(ChannelReference.fromChannel("queue-1-id"))
                             .exchange(AMQPChannelExchangeProperties.builder()
                                     .name("exchange-name")
-                                    .type(AMQPChannelExchangeType.TOPIC)
+                                    .type(AMQPChannelExchangeType.DIRECT)
                                     .durable(true)
                                     .autoDelete(false)
                                     .build())
@@ -436,8 +447,10 @@ class RabbitListenerUtilTest {
             assertEquals(AMQPOperationBinding.builder().build(), operationBinding.get("amqp"));
         }
 
+        /**
+         * Technically an invalid configuration as queue and exchange will be part of the spring context
+         */
         @Test
-        @Disabled("TODO: what to do with invalid configuration")
         void buildOperationBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
@@ -449,7 +462,7 @@ class RabbitListenerUtilTest {
             // then
             assertEquals(1, operationBinding.size());
             assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
-            assertEquals(AMQPOperationBinding.builder().cc(List.of("")).build(), operationBinding.get("amqp"));
+            assertEquals(AMQPOperationBinding.builder().build(), operationBinding.get("amqp"));
         }
 
         @Test
@@ -528,7 +541,7 @@ class RabbitListenerUtilTest {
         }
 
         @Test
-        @Disabled("TODO: what to do with invalid configuration")
+        //        @Disabled("TODO: what to do with invalid configuration")
         void buildChannelBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
@@ -543,6 +556,8 @@ class RabbitListenerUtilTest {
             assertEquals(
                     AMQPChannelBinding.builder()
                             .is(AMQPChannelType.ROUTING_KEY)
+                            .name("routing-key")
+                            .channel(ChannelReference.fromChannel("queue-1-id"))
                             .exchange(AMQPChannelExchangeProperties.builder()
                                     .name("exchange-name")
                                     .type(AMQPChannelExchangeType.DIRECT)
@@ -569,7 +584,7 @@ class RabbitListenerUtilTest {
         }
 
         @Test
-        @Disabled("TODO: what to do with invalid configuration")
+        //        @Disabled("TODO: what to do with invalid configuration")
         void buildOperationBindingWithEmptyContext() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
@@ -581,8 +596,7 @@ class RabbitListenerUtilTest {
             // then
             assertEquals(1, operationBinding.size());
             assertEquals(Sets.newTreeSet("amqp"), operationBinding.keySet());
-            assertEquals(
-                    AMQPOperationBinding.builder().cc(List.of("routing-key")).build(), operationBinding.get("amqp"));
+            assertEquals(AMQPOperationBinding.builder().build(), operationBinding.get("amqp"));
         }
 
         @Test
