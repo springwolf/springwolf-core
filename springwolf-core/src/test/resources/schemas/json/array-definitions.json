@@ -1,5 +1,6 @@
 {
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$ArrayFoo" : {
+    "title" : "ArrayFoo",
     "type" : "object",
     "properties" : {
       "flist" : {
@@ -17,6 +18,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$SimpleFoo" : {
+    "title" : "SimpleFoo",
     "type" : "object",
     "properties" : {
       "b" : {

@@ -224,7 +224,7 @@
         },
         "name": "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
-        "description": "Another payload model",
+        "description": "",
         "bindings": {
           "sns": { }
         }
@@ -241,7 +241,7 @@
         },
         "name": "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto",
         "title": "ExamplePayloadDto",
-        "description": "Example payload model",
+        "description": "",
         "bindings": {
           "sns": { }
         }

@@ -13,6 +13,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
@@ -80,7 +81,8 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
         doReturn(defaultMessageBinding).when(bindingFactory).buildMessageBinding(any(), any());
 
         when(payloadMethodService.extractSchema(any()))
-                .thenReturn(new PayloadSchemaObject(String.class.getName(), new SchemaObject()));
+                .thenReturn(new PayloadSchemaObject(
+                        String.class.getName(), String.class.getSimpleName(), ComponentSchema.of(new SchemaObject())));
         doAnswer(invocation -> AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())
                 .when(componentsService)
                 .registerSchema(any(SchemaObject.class));
@@ -88,11 +90,15 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
         var stringMethod =
                 ClassWithMultipleTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
         when(payloadMethodService.extractSchema(stringMethod))
-                .thenReturn(new PayloadSchemaObject(String.class.getName(), new SchemaObject()));
+                .thenReturn(new PayloadSchemaObject(
+                        String.class.getName(), String.class.getSimpleName(), ComponentSchema.of(new SchemaObject())));
         var simpleFooMethod = ClassWithMultipleTestListenerAnnotation.class.getDeclaredMethod(
                 "anotherMethodWithAnnotation", SimpleFoo.class);
         when(payloadMethodService.extractSchema(simpleFooMethod))
-                .thenReturn(new PayloadSchemaObject(SimpleFoo.class.getName(), new SchemaObject()));
+                .thenReturn(new PayloadSchemaObject(
+                        SimpleFoo.class.getName(),
+                        SimpleFoo.class.getSimpleName(),
+                        ComponentSchema.of(new SchemaObject())));
     }
 
     @Test

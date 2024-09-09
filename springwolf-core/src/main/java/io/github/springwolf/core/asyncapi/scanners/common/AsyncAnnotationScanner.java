@@ -12,7 +12,6 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
@@ -99,13 +98,12 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
         Map<String, MessageBinding> messageBinding =
                 AsyncAnnotationUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
 
-        var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(payloadSchema.name()))
-                .build());
+        var messagePayload = MessagePayload.of(
+                MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
         String description = operationData.message().description();
-        if (StringUtils.isBlank(description) && payloadSchema.schema() != null) {
-            description = payloadSchema.schema().getDescription();
+        if (StringUtils.isBlank(description) && payloadSchema.payload() instanceof SchemaObject) {
+            description = ((SchemaObject) payloadSchema.payload()).getDescription();
         }
         if (StringUtils.isNotBlank(description)) {
             description = this.resolver.resolveStringValue(description);

@@ -35,6 +35,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.Paylo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
@@ -140,6 +141,12 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public SchemaTitleModelConverter schemaTitleModelConverter() {
+        return new SchemaTitleModelConverter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public SchemaWalkerProvider schemaWalkerProvider(List<SchemaWalker> schemaWalkers) {
         return new SchemaWalkerProvider(schemaWalkers);
     }
@@ -182,8 +189,8 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public PayloadClassExtractor payloadClassExtractor(TypeToClassConverter typeToClassConverter) {
-        return new PayloadClassExtractor(typeToClassConverter);
+    public PayloadClassExtractor payloadClassExtractor(SpringwolfConfigProperties springwolfConfigProperties) {
+        return new PayloadClassExtractor(springwolfConfigProperties);
     }
 
     @Bean

@@ -8,7 +8,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
@@ -36,9 +35,8 @@ public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Anno
 
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation, mergedHeaderSchema);
 
-        MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(payloadSchema.name()))
-                .build());
+        MessagePayload payload = MessagePayload.of(
+                MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
         MessageObject message = MessageObject.builder()
                 .messageId(payloadSchema.name())

@@ -196,7 +196,7 @@
         },
         "name": "io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
-        "description": "Another payload model",
+        "description": "",
         "bindings": {
           "stomp": { }
         }

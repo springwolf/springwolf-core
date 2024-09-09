@@ -1,5 +1,6 @@
 {
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$ComplexFoo" : {
+    "title" : "ComplexFoo",
     "type" : "object",
     "properties" : {
       "b" : {
@@ -55,6 +56,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$ComplexFoo$Nested" : {
+    "title" : "Nested",
     "type" : "object",
     "properties" : {
       "nba" : {
@@ -111,6 +113,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$ComplexFoo$Nested$Cyclic" : {
+    "title" : "Cyclic",
     "type" : "object",
     "properties" : {
       "cyclic" : {
@@ -122,6 +125,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$ComplexFoo$Nested$MyClass" : {
+    "title" : "MyClass",
     "type" : "object",
     "properties" : {
       "s" : {

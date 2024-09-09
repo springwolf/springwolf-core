@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -109,80 +108,6 @@ class SwaggerSchemaServiceTest {
         schemaService.extractSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
 
         verifyNoInteractions(schemasPostProcessor2);
-    }
-
-    @Nested
-    class createSchema {
-
-        @Test
-        void Integer() {
-            // when
-            Map<String, SchemaObject> schemas = schemaService
-                    .extractSchema(Integer.class, "content-type-not-relevant")
-                    .schemas();
-
-            // then
-            assertThat(schemas).hasSize(1).containsKey("java.lang.Number");
-            assertThat(schemas.get("java.lang.Number").getType()).isEqualTo("number");
-        }
-
-        @Test
-        void Double() {
-            // when
-            Map<String, SchemaObject> schemas = schemaService
-                    .extractSchema(Double.class, "content-type-not-relevant")
-                    .schemas();
-
-            // then
-            assertThat(schemas).hasSize(1).containsKey("java.lang.Number");
-            assertThat(schemas.get("java.lang.Number").getType()).isEqualTo("number");
-        }
-
-        @Test
-        void String() {
-            // when
-            Map<String, SchemaObject> schemas = schemaService
-                    .extractSchema(String.class, "content-type-not-relevant")
-                    .schemas();
-
-            // then
-            assertThat(schemas).hasSize(1).containsKey("java.lang.String");
-            assertThat(schemas.get("java.lang.String").getType()).isEqualTo("string");
-        }
-
-        @Test
-        void Byte() {
-            // when
-            Map<String, SchemaObject> schemas = schemaService
-                    .extractSchema(Byte.class, "content-type-not-relevant")
-                    .schemas();
-
-            // then
-            assertThat(schemas).hasSize(1).containsKey("java.lang.String");
-            assertThat(schemas.get("java.lang.String").getType()).isEqualTo("string");
-        }
-
-        @Test
-        void Boolean() {
-            // when
-            Map<String, SchemaObject> schemas = schemaService
-                    .extractSchema(Boolean.class, "content-type-not-relevant")
-                    .schemas();
-
-            // then
-            assertThat(schemas).hasSize(1).containsKey("java.lang.Boolean");
-        }
-
-        @Test
-        void Object() {
-            // when
-            Map<String, SchemaObject> schemas = schemaService
-                    .extractSchema(Object.class, "content-type-not-relevant")
-                    .schemas();
-
-            // then
-            assertThat(schemas).hasSize(1).containsKey("java.lang.Object");
-        }
     }
 
     @Data

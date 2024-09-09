@@ -4,11 +4,13 @@ package io.github.springwolf.core.asyncapi.components;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,11 +29,10 @@ public class DefaultComponentsService implements ComponentsService {
     }
 
     @Override
-    public SchemaObject resolveSchema(String schemaName) {
-        if (schemas.containsKey(schemaName)) {
-            return schemas.get(schemaName);
-        }
-        return null;
+    public ComponentSchema resolvePayloadSchema(Type type, String contentType) {
+        SwaggerSchemaService.Payload payload = schemaService.resolvePayloadSchema(type, contentType);
+        payload.referencedSchemas().forEach(this.schemas::putIfAbsent);
+        return payload.payloadSchema();
     }
 
     @Override
@@ -42,16 +43,6 @@ public class DefaultComponentsService implements ComponentsService {
         this.schemas.putIfAbsent(headers.getTitle(), headerSchema);
 
         return headers.getTitle();
-    }
-
-    @Override
-    public String resolvePayloadSchema(Class<?> type, String contentType) {
-        log.debug("Registering schema for {}", type.getSimpleName());
-
-        SwaggerSchemaService.ExtractedSchemas schemas = schemaService.extractSchema(type, contentType);
-        schemas.schemas().forEach(this.schemas::putIfAbsent);
-
-        return schemas.rootSchemaName();
     }
 
     @Override
@@ -66,5 +57,15 @@ public class DefaultComponentsService implements ComponentsService {
         messages.putIfAbsent(message.getMessageId(), message);
 
         return MessageReference.toComponentMessage(message);
+    }
+
+    @Override
+    public String getSchemaName(Type type) {
+        return schemaService.getNameFromType(type);
+    }
+
+    @Override
+    public String getSimpleSchemaName(Type type) {
+        return schemaService.getSimpleNameFromType(type);
     }
 }

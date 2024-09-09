@@ -268,6 +268,7 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(schema)
                     .isEqualTo(SchemaObject.builder()
                             .type(SchemaType.OBJECT)
+                            .title("EnvelopWithMultipleAsyncApiPayloadAnnotations")
                             .properties(Map.of(
                                     "otherField",
                                     ComponentSchema.of(SchemaObject.builder()
