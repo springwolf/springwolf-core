@@ -24,12 +24,10 @@ import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,16 +44,10 @@ public abstract class AsyncAnnotationMethodLevelScanner<A extends Annotation> {
     protected final List<MessageBindingProcessor> messageBindingProcessors;
     protected final StringValueResolver resolver;
 
-    protected Stream<MethodAndAnnotation<A>> getAnnotatedMethods(Class<?> type) {
+    protected Stream<AnnotationScannerUtil.MethodAndAnnotation<A>> getAnnotatedMethods(Class<?> type) {
         Class<A> annotationClass = this.asyncAnnotationProvider.getAnnotation();
-        log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", type.getName(), annotationClass.getName());
 
-        return Arrays.stream(ReflectionUtils.getAllDeclaredMethods(type))
-                .filter(AnnotationScannerUtil::isMethodInSourceCode)
-                .filter(method -> AnnotationScannerUtil.findAnnotation(annotationClass, method) != null)
-                .peek(method -> log.debug("Mapping method \"{}\" to channels", method.getName()))
-                .flatMap(method -> AnnotationScannerUtil.findAnnotations(annotationClass, method).stream()
-                        .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
+        return AnnotationScannerUtil.getRelevantMethods(type, annotationClass);
     }
 
     protected Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelId) {
@@ -134,6 +126,4 @@ public abstract class AsyncAnnotationMethodLevelScanner<A extends Annotation> {
 
         OperationAction getOperationType();
     }
-
-    protected record MethodAndAnnotation<A>(Method method, A annotation) {}
 }

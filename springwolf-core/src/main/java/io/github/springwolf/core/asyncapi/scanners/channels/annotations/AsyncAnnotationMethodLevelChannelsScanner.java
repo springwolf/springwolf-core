@@ -15,6 +15,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.operations.Operation
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationMethodLevelScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -54,7 +55,8 @@ public class AsyncAnnotationMethodLevelChannelsScanner<A extends Annotation>
         return this.getAnnotatedMethods(clazz).map(this::buildChannel);
     }
 
-    private Map.Entry<String, ChannelObject> buildChannel(MethodAndAnnotation<A> methodAndAnnotation) {
+    private Map.Entry<String, ChannelObject> buildChannel(
+            AnnotationScannerUtil.MethodAndAnnotation<A> methodAndAnnotation) {
         ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
 
         AsyncOperation operationAnnotation =

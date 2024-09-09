@@ -16,11 +16,11 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -48,22 +48,15 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
 
     @Override
     public Stream<Map.Entry<String, ChannelObject>> scan(Class<?> clazz) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods",
-                clazz.getName(),
-                methodAnnotationClass.getName());
-
-        return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(AnnotationScannerUtil::notHidden)
-                .filter(AnnotationScannerUtil::isMethodInSourceCode)
-                .filter(method -> AnnotationScannerUtil.findAnnotation(methodAnnotationClass, method) != null)
+        return AnnotationScannerUtil.getRelevantMethods(clazz, methodAnnotationClass)
+                .map(AnnotationScannerUtil.MethodAndAnnotation::method)
                 .map(this::mapMethodToChannel);
     }
 
     private Map.Entry<String, ChannelObject> mapMethodToChannel(Method method) {
         log.debug("Mapping method \"{}\" to channels", method.getName());
 
-        MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
+        MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
 

@@ -16,13 +16,13 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaOb
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,7 +54,7 @@ public abstract class SpringAnnotationClassLevelAnnotationScanner<
     public @interface AllMethods {}
 
     protected boolean isClassAnnotated(Class<?> component) {
-        return AnnotationScannerUtil.findAnnotation(classAnnotationClass, component) != null;
+        return AnnotationUtil.findAnnotation(classAnnotationClass, component) != null;
     }
 
     protected Set<Method> getAnnotatedMethods(Class<?> clazz) {
@@ -63,15 +63,9 @@ public abstract class SpringAnnotationClassLevelAnnotationScanner<
                 clazz.getName(),
                 methodAnnotationClass.getName());
 
-        return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(this::isRelevantMethod)
+        return AnnotationScannerUtil.getRelevantMethods(clazz, methodAnnotationClass)
+                .map(AnnotationScannerUtil.MethodAndAnnotation::method)
                 .collect(toSet());
-    }
-
-    private boolean isRelevantMethod(Method method) {
-        return AnnotationScannerUtil.isMethodInSourceCode(method)
-                && (methodAnnotationClass == AllMethods.class
-                        || AnnotationScannerUtil.findAnnotation(methodAnnotationClass, method) != null);
     }
 
     protected Map<String, MessageReference> buildMessages(

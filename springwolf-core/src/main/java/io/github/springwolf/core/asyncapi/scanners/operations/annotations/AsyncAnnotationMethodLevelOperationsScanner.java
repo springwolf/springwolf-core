@@ -9,6 +9,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBind
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationMethodLevelScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,8 @@ public class AsyncAnnotationMethodLevelOperationsScanner<A extends Annotation>
         return this.getAnnotatedMethods(clazz).map(this::buildOperation);
     }
 
-    private Map.Entry<String, Operation> buildOperation(MethodAndAnnotation<A> methodAndAnnotation) {
+    private Map.Entry<String, Operation> buildOperation(
+            AnnotationScannerUtil.MethodAndAnnotation<A> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
         String channelName = resolver.resolveStringValue(operationAnnotation.channelName());

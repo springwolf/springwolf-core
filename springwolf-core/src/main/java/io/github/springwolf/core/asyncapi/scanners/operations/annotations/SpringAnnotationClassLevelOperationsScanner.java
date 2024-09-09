@@ -14,6 +14,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBu
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -59,13 +60,17 @@ public class SpringAnnotationClassLevelOperationsScanner<
         log.debug(
                 "Scanning class \"{}\" for @\"{}\" annotated methods", clazz.getName(), classAnnotationClass.getName());
 
-        return Stream.of(clazz).filter(this::isClassAnnotated).flatMap(this::mapClassToOperation);
+        if (!AnnotationScannerUtil.isClassRelevant(clazz, classAnnotationClass)) {
+            return Stream.empty();
+        }
+
+        return mapClassToOperation(clazz);
     }
 
     private Stream<Map.Entry<String, Operation>> mapClassToOperation(Class<?> component) {
         log.debug("Mapping class \"{}\" to operations", component.getName());
 
-        ClassAnnotation classAnnotation = AnnotationScannerUtil.findAnnotationOrThrow(classAnnotationClass, component);
+        ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
 
         Set<Method> annotatedMethods = getAnnotatedMethods(component);
         if (annotatedMethods.isEmpty()) {

@@ -17,13 +17,13 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,21 +55,15 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
 
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods",
-                clazz.getName(),
-                methodAnnotationClass.getName());
-
-        return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(AnnotationScannerUtil::isMethodInSourceCode)
-                .filter(method -> AnnotationScannerUtil.findAnnotation(methodAnnotationClass, method) != null)
+        return AnnotationScannerUtil.getRelevantMethods(clazz, methodAnnotationClass)
+                .map(AnnotationScannerUtil.MethodAndAnnotation::method)
                 .map(this::mapMethodToOperation);
     }
 
     private Map.Entry<String, Operation> mapMethodToOperation(Method method) {
         log.debug("Mapping method \"{}\" to operations", method.getName());
 
-        MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
+        MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         String channelName = bindingFactory.getChannelName(annotation);
         String operationId = StringUtils.joinWith(

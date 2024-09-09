@@ -16,7 +16,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class AnnotationScannerUtilTest {
+class AnnotationUtilTest {
 
     @Nested
     class FindAnnotationOrThrow {
@@ -26,7 +26,7 @@ class AnnotationScannerUtilTest {
 
             // when
             try {
-                AnnotationScannerUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
+                AnnotationUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
                 fail();
             } catch (IllegalArgumentException e) {
                 // then
@@ -40,7 +40,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("value");
@@ -52,7 +52,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("value");
@@ -64,7 +64,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("metaField");
@@ -79,7 +79,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).isNull();
@@ -91,7 +91,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("value");
@@ -103,7 +103,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isIn("value", "value2");
@@ -115,7 +115,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("metaField");
@@ -130,7 +130,7 @@ class AnnotationScannerUtilTest {
 
             // when
             Set<AnnotationUtilTestAnnotation> annotation =
-                    AnnotationScannerUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).isEmpty();
@@ -142,7 +142,7 @@ class AnnotationScannerUtilTest {
 
             // when
             Set<AnnotationUtilTestAnnotation> annotation =
-                    AnnotationScannerUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).hasSize(1);
@@ -155,7 +155,7 @@ class AnnotationScannerUtilTest {
 
             // when
             Set<AnnotationUtilTestAnnotation> annotation =
-                    AnnotationScannerUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).hasSize(2);
@@ -169,7 +169,7 @@ class AnnotationScannerUtilTest {
 
             // when
             Set<AnnotationUtilTestAnnotation> annotation =
-                    AnnotationScannerUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).hasSize(1);
