@@ -32,7 +32,7 @@ import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class ClassLevelAnnotationScanner<
+public abstract class SpringAnnotationClassLevelAnnotationScanner<
         ClassAnnotation extends Annotation, MethodAnnotation extends Annotation> {
 
     protected final Class<ClassAnnotation> classAnnotationClass;

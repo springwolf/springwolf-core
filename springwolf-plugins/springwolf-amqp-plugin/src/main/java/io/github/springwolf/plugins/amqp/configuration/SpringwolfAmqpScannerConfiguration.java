@@ -2,14 +2,16 @@
 package io.github.springwolf.plugins.amqp.configuration;
 
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
-import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationClassLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
-import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
@@ -60,7 +62,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationChannelsScanner simpleRabbitClassLevelListenerAnnotationChannelsScanner(
+    public ChannelsScanner simpleRabbitClassLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             AmqpBindingFactory amqpBindingFactory,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
@@ -77,7 +79,7 @@ public class SpringwolfAmqpScannerConfiguration {
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
+        return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -86,7 +88,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationOperationsScanner simpleRabbitClassLevelListenerAnnotationOperationsScanner(
+    public OperationsScanner simpleRabbitClassLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             AmqpBindingFactory amqpBindingFactory,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
@@ -105,7 +107,7 @@ public class SpringwolfAmqpScannerConfiguration {
                         componentsService,
                         operationCustomizers);
 
-        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
+        return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -114,7 +116,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationChannelsScanner simpleRabbitMethodLevelListenerAnnotationChannelsScanner(
+    public ChannelsScanner simpleRabbitMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             AmqpBindingFactory amqpBindingFactory,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
@@ -130,7 +132,7 @@ public class SpringwolfAmqpScannerConfiguration {
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
+        return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -139,7 +141,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationOperationsScanner simpleRabbitMethodLevelListenerAnnotationOperationsScanner(
+    public OperationsScanner simpleRabbitMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             AmqpBindingFactory amqpBindingFactory,
             AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder,
@@ -157,7 +159,7 @@ public class SpringwolfAmqpScannerConfiguration {
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
+        return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
     @Bean

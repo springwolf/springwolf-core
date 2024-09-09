@@ -3,7 +3,6 @@ package io.github.springwolf.core.asyncapi.scanners.channels;
 
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
-import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationChannelsScannerDelegator;
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import lombok.RequiredArgsConstructor;
 
@@ -12,11 +11,11 @@ import java.util.Map;
 import java.util.Set;
 
 @RequiredArgsConstructor
-public class SpringAnnotationChannelsScanner implements ChannelsScanner {
+public class ChannelsInClassScannerAdapter implements ChannelsScanner {
 
     private final ClassScanner classScanner;
 
-    private final SpringAnnotationChannelsScannerDelegator springAnnotationChannelsScannerDelegator;
+    private final ChannelsInClassScanner channelsInClassScanner;
 
     @Override
     public Map<String, ChannelObject> scan() {
@@ -28,8 +27,6 @@ public class SpringAnnotationChannelsScanner implements ChannelsScanner {
     }
 
     private List<Map.Entry<String, ChannelObject>> mapToChannels(Set<Class<?>> components) {
-        return components.stream()
-                .flatMap(springAnnotationChannelsScannerDelegator::scan)
-                .toList();
+        return components.stream().flatMap(channelsInClassScanner::scan).toList();
     }
 }

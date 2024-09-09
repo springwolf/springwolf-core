@@ -24,7 +24,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringValueResolver;
 
@@ -38,19 +37,14 @@ import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AsyncAnnotationScanner<A extends Annotation> implements EmbeddedValueResolverAware {
+public abstract class AsyncAnnotationMethodLevelScanner<A extends Annotation> {
 
     protected final AsyncAnnotationProvider<A> asyncAnnotationProvider;
     protected final PayloadAsyncOperationService payloadAsyncOperationService;
     protected final ComponentsService componentsService;
     protected final List<OperationBindingProcessor> operationBindingProcessors;
     protected final List<MessageBindingProcessor> messageBindingProcessors;
-    protected StringValueResolver resolver;
-
-    @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.resolver = resolver;
-    }
+    protected final StringValueResolver resolver;
 
     protected Stream<MethodAndAnnotation<A>> getAnnotatedMethods(Class<?> type) {
         Class<A> annotationClass = this.asyncAnnotationProvider.getAnnotation();

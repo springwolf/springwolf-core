@@ -21,12 +21,12 @@ import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationMethodLevelScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
@@ -40,7 +40,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -49,21 +48,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_MAP;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class AsyncAnnotationOperationsScannerTest {
+class AsyncAnnotationMethodLevelOperationsScannerTest {
 
-    private final AsyncAnnotationScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
-            new AsyncAnnotationScanner.AsyncAnnotationProvider<>() {
+    private final AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
+            new AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<>() {
                 @Override
                 public Class<AsyncListener> getAnnotation() {
                     return AsyncListener.class;
@@ -81,7 +79,6 @@ class AsyncAnnotationOperationsScannerTest {
             };
     private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
-    private final ClassScanner classScanner = mock(ClassScanner.class);
     private final SwaggerSchemaService schemaService =
             new SwaggerSchemaService(emptyList(), emptyList(), swaggerSchemaUtil, properties);
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
@@ -96,17 +93,17 @@ class AsyncAnnotationOperationsScannerTest {
     private final List<MessageBindingProcessor> messageBindingProcessors = emptyList();
     private final OperationCustomizer operationCustomizer = mock(OperationCustomizer.class);
 
-    private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+    private final StringValueResolverProxy stringValueResolver = mock(StringValueResolverProxy.class);
 
-    private final AsyncAnnotationOperationsScanner<AsyncListener> operationsScanner =
-            new AsyncAnnotationOperationsScanner<>(
+    private final AsyncAnnotationMethodLevelOperationsScanner<AsyncListener> operationsScanner =
+            new AsyncAnnotationMethodLevelOperationsScanner<>(
                     asyncAnnotationProvider,
-                    classScanner,
                     componentsService,
                     payloadAsyncOperationService,
                     operationBindingProcessors,
                     messageBindingProcessors,
-                    List.of(operationCustomizer));
+                    List.of(operationCustomizer),
+                    stringValueResolver);
 
     @BeforeEach
     public void setup() {
@@ -117,7 +114,6 @@ class AsyncAnnotationOperationsScannerTest {
                         .server("server2", new Server())
                         .build());
 
-        operationsScanner.setEmbeddedValueResolver(stringValueResolver);
         when(stringValueResolver.resolveStringValue(any()))
                 .thenAnswer(invocation -> switch ((String) invocation.getArgument(0)) {
                     case "${test.property.test-channel}" -> "test-channel";
@@ -128,16 +124,11 @@ class AsyncAnnotationOperationsScannerTest {
                 });
     }
 
-    private void setClassToScan(Class<?> classToScan) {
-        Set<Class<?>> classesToScan = singleton(classToScan);
-        when(classScanner.scan()).thenReturn(classesToScan);
-    }
-
     @Test
     void scan_componentHasNoListenerMethods() {
-        setClassToScan(ClassWithoutListenerAnnotation.class);
-
-        Map<String, Operation> channels = operationsScanner.scan();
+        Map<String, Operation> channels = operationsScanner
+                .scan(ClassWithoutListenerAnnotation.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         assertThat(channels).isEmpty();
     }
@@ -145,10 +136,10 @@ class AsyncAnnotationOperationsScannerTest {
     @Test
     void scan_componentOperationHasListenerMethod() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
-        setClassToScan(ClassWithListenerAnnotation.class);
-
         // When scan is called
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner
+                .scan(ClassWithListenerAnnotation.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -182,10 +173,10 @@ class AsyncAnnotationOperationsScannerTest {
     @Test
     void scan_componentHasListenerMethodWithAllAttributes() {
         // Given a class with method annotated with AsyncListener, where all attributes are set
-        setClassToScan(ClassWithListenerAnnotationWithAllAttributes.class);
-
         // When scan is called
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner
+                .scan(ClassWithListenerAnnotationWithAllAttributes.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -218,10 +209,10 @@ class AsyncAnnotationOperationsScannerTest {
     @Test
     void scan_componentHasMultipleListenerAnnotations() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
-        setClassToScan(ClassWithMultipleListenerAnnotations.class);
-
         // When scan is called
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner
+                .scan(ClassWithMultipleListenerAnnotations.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -266,10 +257,10 @@ class AsyncAnnotationOperationsScannerTest {
     @Test
     void scan_componentHasAsyncMethodAnnotation() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
-        setClassToScan(ClassWithMessageAnnotation.class);
-
         // When scan is called
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner
+                .scan(ClassWithMessageAnnotation.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -303,10 +294,10 @@ class AsyncAnnotationOperationsScannerTest {
     @Test
     void scan_componentHasAsyncMethodAnnotationInAbstractClass() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
-        setClassToScan(ClassExtendsFromAbstractWithListenerAnnotation.class);
-
         // When scan is called
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner
+                .scan(ClassExtendsFromAbstractWithListenerAnnotation.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -339,11 +330,10 @@ class AsyncAnnotationOperationsScannerTest {
 
     @Test
     void operationCustomizerIsCalled() {
-        // given
-        setClassToScan(ClassWithListenerAnnotation.class);
-
         // when
-        operationsScanner.scan();
+        operationsScanner
+                .scan(ClassWithListenerAnnotation.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // then
         verify(operationCustomizer).customize(any(), any());
@@ -447,10 +437,9 @@ class AsyncAnnotationOperationsScannerTest {
         @ValueSource(classes = {ClassImplementingInterface.class, ClassImplementingInterfaceWithAnnotation.class})
         void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) {
             // Given a class with a method, which is declared in a generic interface
-            setClassToScan(clazz);
-
             // When scan is called
-            Map<String, Operation> actualOperations = operationsScanner.scan();
+            Map<String, Operation> actualOperations =
+                    operationsScanner.scan(clazz).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             // Then the returned collection contains the channel with the actual method, excluding type erased methods
             var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
@@ -521,10 +510,10 @@ class AsyncAnnotationOperationsScannerTest {
         @Test
         void scan_componentHasListenerMethodWithMetaAnnotation() {
             // Given a class with methods annotated with a AsyncListener meta annotation
-            setClassToScan(ClassWithMetaAnnotation.class);
-
             // When scan is called
-            Map<String, Operation> actualOperations = operationsScanner.scan();
+            Map<String, Operation> actualOperations = operationsScanner
+                    .scan(ClassWithMetaAnnotation.class)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             // Then the returned collection contains the channel
             var messagePayload = MessagePayload.of(MultiFormatSchema.builder()

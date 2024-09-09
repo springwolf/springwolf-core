@@ -21,13 +21,12 @@ import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.channels.AsyncAnnotationChannelsScanner;
-import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationMethodLevelScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
@@ -41,7 +40,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -50,23 +48,22 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_MAP;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AsyncAnnotationChannelsScannerTest {
+class AsyncAnnotationMethodLevelChannelsScannerTest {
     private static final String CHANNEL = "test/channel";
     private static final String CHANNEL_ID = ReferenceUtil.toValidId(CHANNEL);
 
-    private final AsyncAnnotationScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
-            new AsyncAnnotationScanner.AsyncAnnotationProvider<>() {
+    private final AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
+            new AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<>() {
                 @Override
                 public Class<AsyncListener> getAnnotation() {
                     return AsyncListener.class;
@@ -84,7 +81,6 @@ class AsyncAnnotationChannelsScannerTest {
             };
     private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
-    private final ClassScanner classScanner = mock(ClassScanner.class);
     private final SwaggerSchemaService schemaService =
             new SwaggerSchemaService(emptyList(), emptyList(), swaggerSchemaUtil, properties);
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
@@ -98,16 +94,17 @@ class AsyncAnnotationChannelsScannerTest {
             List.of(new TestOperationBindingProcessor());
     private final List<MessageBindingProcessor> messageBindingProcessors = emptyList();
 
-    private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+    private final StringValueResolverProxy stringValueResolver = mock(StringValueResolverProxy.class);
 
-    private final AsyncAnnotationChannelsScanner<AsyncListener> channelScanner = new AsyncAnnotationChannelsScanner<>(
-            asyncAnnotationProvider,
-            classScanner,
-            componentsService,
-            asyncApiDocketService,
-            payloadAsyncOperationService,
-            operationBindingProcessors,
-            messageBindingProcessors);
+    private final AsyncAnnotationMethodLevelChannelsScanner<AsyncListener> channelScanner =
+            new AsyncAnnotationMethodLevelChannelsScanner<>(
+                    asyncAnnotationProvider,
+                    componentsService,
+                    asyncApiDocketService,
+                    payloadAsyncOperationService,
+                    operationBindingProcessors,
+                    messageBindingProcessors,
+                    stringValueResolver);
 
     @BeforeEach
     public void setup() {
@@ -118,7 +115,6 @@ class AsyncAnnotationChannelsScannerTest {
                         .server("server2", new Server())
                         .build());
 
-        channelScanner.setEmbeddedValueResolver(stringValueResolver);
         when(stringValueResolver.resolveStringValue(any()))
                 .thenAnswer(invocation -> switch ((String) invocation.getArgument(0)) {
                     case "${test.property.test-channel}" -> CHANNEL;
@@ -129,16 +125,11 @@ class AsyncAnnotationChannelsScannerTest {
                 });
     }
 
-    private void setClassToScan(Class<?> classToScan) {
-        Set<Class<?>> classesToScan = singleton(classToScan);
-        when(classScanner.scan()).thenReturn(classesToScan);
-    }
-
     @Test
     void scan_componentHasNoListenerMethods() {
-        setClassToScan(ClassWithoutListenerAnnotation.class);
-
-        Map<String, ChannelObject> channels = channelScanner.scan();
+        Map<String, ChannelObject> channels = channelScanner
+                .scan(ClassWithoutListenerAnnotation.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         assertThat(channels).isEmpty();
     }
@@ -146,10 +137,10 @@ class AsyncAnnotationChannelsScannerTest {
     @Test
     void scan_componentChannelHasListenerMethod() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
-        setClassToScan(ClassWithListenerAnnotation.class);
-
-        // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        // When
+        Map<String, ChannelObject> actualChannels = channelScanner
+                .scan(ClassWithListenerAnnotation.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -180,9 +171,10 @@ class AsyncAnnotationChannelsScannerTest {
     @Test
     void scan_componentHasListenerMethodWithUnknownServer() {
         // Given a class with method annotated with AsyncListener, with an unknown servername
-        setClassToScan(ClassWithListenerAnnotationWithInvalidServer.class);
-
-        assertThatThrownBy(channelScanner::scan)
+        // when
+        assertThatThrownBy(() -> channelScanner
+                        .scan(ClassWithListenerAnnotationWithInvalidServer.class)
+                        .toList())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(
                         "Operation 'test_channel_send' defines unknown server ref 'server3'. This AsyncApi defines these server(s): [server1, server2]");
@@ -191,10 +183,10 @@ class AsyncAnnotationChannelsScannerTest {
     @Test
     void scan_componentHasListenerMethodWithAllAttributes() {
         // Given a class with method annotated with AsyncListener, where all attributes are set
-        setClassToScan(ClassWithListenerAnnotationWithAllAttributes.class);
-
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, ChannelObject> actualChannels = channelScanner
+                .scan(ClassWithListenerAnnotationWithAllAttributes.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -225,10 +217,10 @@ class AsyncAnnotationChannelsScannerTest {
     @Test
     void scan_componentHasMultipleListenerAnnotations() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
-        setClassToScan(ClassWithMultipleListenerAnnotations.class);
-
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, ChannelObject> actualChannels = channelScanner
+                .scan(ClassWithMultipleListenerAnnotations.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -269,10 +261,10 @@ class AsyncAnnotationChannelsScannerTest {
     @Test
     void scan_componentHasAsyncMethodAnnotation() {
         // Given a class with methods annotated with AsyncListener, where only the channel-name is set
-        setClassToScan(ClassWithMessageAnnotation.class);
-
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelScanner.scan();
+        Map<String, ChannelObject> actualChannels = channelScanner
+                .scan(ClassWithMessageAnnotation.class)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -379,10 +371,9 @@ class AsyncAnnotationChannelsScannerTest {
         @ValueSource(classes = {ClassImplementingInterface.class, ClassImplementingInterfaceWithAnnotation.class})
         void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) {
             // Given a class with a method, which is declared in a generic interface
-            setClassToScan(clazz);
-
             // When scan is called
-            Map<String, ChannelObject> actualChannels = channelScanner.scan();
+            Map<String, ChannelObject> actualChannels =
+                    channelScanner.scan(clazz).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             // Then the returned collection contains the channel with the actual method, excluding type erased methods
             var messagePayload = MessagePayload.of(MultiFormatSchema.builder()
@@ -441,10 +432,10 @@ class AsyncAnnotationChannelsScannerTest {
         @Test
         void scan_componentHasListenerMethodWithMetaAnnotation() {
             // Given a class with methods annotated with a AsyncListener meta annotation
-            setClassToScan(ClassWithMetaAnnotation.class);
-
             // When scan is called
-            Map<String, ChannelObject> actualChannels = channelScanner.scan();
+            Map<String, ChannelObject> actualChannels = channelScanner
+                    .scan(ClassWithMetaAnnotation.class)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             // Then the returned collection contains the channel
             var messagePayload = MessagePayload.of(MultiFormatSchema.builder()

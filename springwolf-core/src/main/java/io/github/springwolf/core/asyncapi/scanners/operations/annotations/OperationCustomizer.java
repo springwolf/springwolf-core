@@ -7,6 +7,8 @@ import java.lang.reflect.Method;
 
 /**
  * Allows for customization of the Operation object after it has been finalized by the scanner.
+ *
+ * Maintainer note: This interface should not be part of the annotations package
  */
 public interface OperationCustomizer {
     void customize(Operation operation, Method method);

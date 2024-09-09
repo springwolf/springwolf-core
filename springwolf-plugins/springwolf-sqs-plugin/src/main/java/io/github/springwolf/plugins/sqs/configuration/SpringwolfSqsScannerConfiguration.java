@@ -3,14 +3,16 @@ package io.github.springwolf.plugins.sqs.configuration;
 
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
-import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
-import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.sqs.asyncapi.scanners.bindings.SqsBindingFactory;
@@ -38,7 +40,7 @@ public class SpringwolfSqsScannerConfiguration {
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationChannelsScanner simpleSqsMethodLevelListenerAnnotationChannelsScanner(
+    public ChannelsScanner simpleSqsMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             SqsBindingFactory sqsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
@@ -53,13 +55,13 @@ public class SpringwolfSqsScannerConfiguration {
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
+        return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationOperationsScanner simpleSqsMethodLevelListenerAnnotationOperationsScanner(
+    public OperationsScanner simpleSqsMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             SqsBindingFactory sqsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
@@ -76,6 +78,6 @@ public class SpringwolfSqsScannerConfiguration {
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
+        return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 }

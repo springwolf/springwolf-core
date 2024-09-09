@@ -2,7 +2,6 @@
 package io.github.springwolf.core.asyncapi.scanners.channels;
 
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationChannelsScannerDelegator;
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import org.junit.jupiter.api.Test;
 
@@ -15,19 +14,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class SpringAnnotationChannelsScannerTest {
+class ChannelsInClassScannerAdapterTest {
 
     private final ClassScanner classScanner = mock(ClassScanner.class);
-    private final SpringAnnotationChannelsScannerDelegator springAnnotationChannelsScannerDelegator =
-            mock(SpringAnnotationChannelsScannerDelegator.class);
+    private final ChannelsInClassScanner channelsInClassScanner = mock(ChannelsInClassScanner.class);
 
-    private final SpringAnnotationChannelsScanner springAnnotationChannelsScanner =
-            new SpringAnnotationChannelsScanner(classScanner, springAnnotationChannelsScannerDelegator);
+    private final ChannelsInClassScannerAdapter channelsInClassScannerAdapter =
+            new ChannelsInClassScannerAdapter(classScanner, channelsInClassScanner);
 
     @Test
     void noClassFoundTest() {
         // when
-        Map<String, ChannelObject> channels = springAnnotationChannelsScanner.scan();
+        Map<String, ChannelObject> channels = channelsInClassScannerAdapter.scan();
 
         // then
         assertThat(channels).isEmpty();
@@ -41,10 +39,10 @@ class SpringAnnotationChannelsScannerTest {
                 Map.entry("channel1", ChannelObject.builder().build());
         Map.Entry<String, ChannelObject> channel2 =
                 Map.entry("channel2", ChannelObject.builder().build());
-        when(springAnnotationChannelsScannerDelegator.scan(any())).thenReturn(Stream.of(channel1, channel2));
+        when(channelsInClassScanner.scan(any())).thenReturn(Stream.of(channel1, channel2));
 
         // when
-        Map<String, ChannelObject> channels = springAnnotationChannelsScanner.scan();
+        Map<String, ChannelObject> channels = channelsInClassScannerAdapter.scan();
 
         // then
         assertThat(channels).containsExactly(channel1, channel2);
@@ -58,10 +56,10 @@ class SpringAnnotationChannelsScannerTest {
                 Map.entry("channel1", ChannelObject.builder().build());
         Map.Entry<String, ChannelObject> channel2 =
                 Map.entry("channel1", ChannelObject.builder().build());
-        when(springAnnotationChannelsScannerDelegator.scan(any())).thenReturn(Stream.of(channel1, channel2));
+        when(channelsInClassScanner.scan(any())).thenReturn(Stream.of(channel1, channel2));
 
         // when
-        Map<String, ChannelObject> channels = springAnnotationChannelsScanner.scan();
+        Map<String, ChannelObject> channels = channelsInClassScannerAdapter.scan();
 
         // then
         assertThat(channels)
@@ -72,10 +70,10 @@ class SpringAnnotationChannelsScannerTest {
     void processEmptyClassTest() {
         // given
         when(classScanner.scan()).thenReturn(Set.of(String.class));
-        when(springAnnotationChannelsScannerDelegator.scan(any())).thenReturn(Stream.of());
+        when(channelsInClassScanner.scan(any())).thenReturn(Stream.of());
 
         // when
-        Map<String, ChannelObject> channels = springAnnotationChannelsScanner.scan();
+        Map<String, ChannelObject> channels = channelsInClassScannerAdapter.scan();
 
         // then
         assertThat(channels).isEmpty();

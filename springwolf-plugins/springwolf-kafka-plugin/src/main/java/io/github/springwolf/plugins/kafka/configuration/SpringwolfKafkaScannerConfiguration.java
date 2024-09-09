@@ -2,14 +2,16 @@
 package io.github.springwolf.plugins.kafka.configuration;
 
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
-import io.github.springwolf.core.asyncapi.scanners.channels.SpringAnnotationChannelsScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationClassLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
-import io.github.springwolf.core.asyncapi.scanners.operations.SpringAnnotationOperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
@@ -56,7 +58,7 @@ public class SpringwolfKafkaScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationChannelsScanner simpleKafkaClassLevelListenerAnnotationChannelsScanner(
+    public ChannelsScanner simpleKafkaClassLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             KafkaBindingFactory kafkaBindingFactory,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
@@ -73,7 +75,7 @@ public class SpringwolfKafkaScannerConfiguration {
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
+        return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -82,7 +84,7 @@ public class SpringwolfKafkaScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationOperationsScanner simpleKafkaClassLevelListenerAnnotationOperationScanner(
+    public OperationsScanner simpleKafkaClassLevelListenerAnnotationOperationScanner(
             SpringwolfClassScanner springwolfClassScanner,
             KafkaBindingFactory kafkaBindingFactory,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
@@ -101,7 +103,7 @@ public class SpringwolfKafkaScannerConfiguration {
                         componentsService,
                         operationCustomizers);
 
-        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
+        return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -110,7 +112,7 @@ public class SpringwolfKafkaScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationChannelsScanner simpleKafkaMethodLevelListenerAnnotationChannelsScanner(
+    public ChannelsScanner simpleKafkaMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             KafkaBindingFactory kafkaBindingFactory,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
@@ -126,7 +128,7 @@ public class SpringwolfKafkaScannerConfiguration {
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationChannelsScanner(springwolfClassScanner, strategy);
+        return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
     @Bean
@@ -135,7 +137,7 @@ public class SpringwolfKafkaScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public SpringAnnotationOperationsScanner simpleKafkaMethodLevelListenerAnnotationOperationsScanner(
+    public OperationsScanner simpleKafkaMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             KafkaBindingFactory kafkaBindingFactory,
             AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder,
@@ -153,6 +155,6 @@ public class SpringwolfKafkaScannerConfiguration {
                         headerClassExtractor,
                         componentsService);
 
-        return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
+        return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 }

@@ -11,12 +11,13 @@ import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.SpringAnnotationMethodLevelScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,7 +31,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation extends Annotation>
-        extends MethodLevelAnnotationScanner<MethodAnnotation> implements SpringAnnotationOperationsScannerDelegator {
+        extends SpringAnnotationMethodLevelScanner<MethodAnnotation> implements OperationsInClassScanner {
 
     private final Class<MethodAnnotation> methodAnnotationClass;
     private final List<OperationCustomizer> customizers;

@@ -40,7 +40,7 @@ public class AsyncApiDocumentIntegrationTest {
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
             assertThat(asyncAPI).isNotNull();
 
-            assertThat(asyncAPI.getChannels()).containsOnlyKeys("listener-channel");
+            assertThat(asyncAPI.getChannels().keySet()).containsExactlyInAnyOrder("listener-channel");
             assertThat(asyncAPI.getChannels().get("listener-channel").getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
@@ -99,7 +99,7 @@ public class AsyncApiDocumentIntegrationTest {
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
             assertThat(asyncAPI).isNotNull();
 
-            assertThat(asyncAPI.getChannels()).containsOnlyKeys("publisher-channel");
+            assertThat(asyncAPI.getChannels().keySet()).containsExactlyInAnyOrder("publisher-channel");
             assertThat(asyncAPI.getChannels().get("publisher-channel").getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",

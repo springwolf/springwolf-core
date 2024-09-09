@@ -7,7 +7,8 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import io.github.springwolf.core.asyncapi.scanners.common.ClassLevelAnnotationScanner;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.SpringAnnotationClassLevelAnnotationScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
@@ -24,8 +25,8 @@ import java.util.stream.Stream;
 @Slf4j
 public class SpringAnnotationClassLevelChannelsScanner<
                 ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
-        extends ClassLevelAnnotationScanner<ClassAnnotation, MethodAnnotation>
-        implements SpringAnnotationChannelsScannerDelegator {
+        extends SpringAnnotationClassLevelAnnotationScanner<ClassAnnotation, MethodAnnotation>
+        implements ChannelsInClassScanner {
 
     public SpringAnnotationClassLevelChannelsScanner(
             Class<ClassAnnotation> classAnnotationClass,

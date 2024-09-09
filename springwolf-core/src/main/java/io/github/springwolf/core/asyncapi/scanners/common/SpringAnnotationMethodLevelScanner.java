@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
-public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Annotation> {
+public abstract class SpringAnnotationMethodLevelScanner<MethodAnnotation extends Annotation> {
 
     protected final BindingFactory<MethodAnnotation> bindingFactory;
     protected final AsyncHeadersBuilder asyncHeadersBuilder;

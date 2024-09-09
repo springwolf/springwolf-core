@@ -4,7 +4,6 @@ package io.github.springwolf.core.asyncapi.scanners.operations;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationOperationsScannerDelegator;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -12,11 +11,11 @@ import java.util.Map;
 import java.util.Set;
 
 @RequiredArgsConstructor
-public class SpringAnnotationOperationsScanner implements OperationsScanner {
+public class OperationsInClassScannerAdapter implements OperationsScanner {
 
     private final ClassScanner classScanner;
 
-    private final SpringAnnotationOperationsScannerDelegator classProcessor;
+    private final OperationsInClassScanner classProcessor;
 
     @Override
     public Map<String, Operation> scan() {
