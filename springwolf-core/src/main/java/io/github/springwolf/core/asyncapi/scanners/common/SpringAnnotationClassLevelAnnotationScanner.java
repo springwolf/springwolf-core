@@ -16,7 +16,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaOb
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,22 +46,8 @@ public abstract class SpringAnnotationClassLevelAnnotationScanner<
         CHANNEL,
         OPERATION
     }
-    /**
-     * Internal interface to indicate that all methods of a class should be used in scanners
-     * instead of filtering for a specific annotation.
-     */
-    public @interface AllMethods {}
-
-    protected boolean isClassAnnotated(Class<?> component) {
-        return AnnotationUtil.findAnnotation(classAnnotationClass, component) != null;
-    }
 
     protected Set<Method> getAnnotatedMethods(Class<?> clazz) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods",
-                clazz.getName(),
-                methodAnnotationClass.getName());
-
         return AnnotationScannerUtil.getRelevantMethods(clazz, methodAnnotationClass)
                 .map(AnnotationScannerUtil.MethodAndAnnotation::method)
                 .collect(toSet());

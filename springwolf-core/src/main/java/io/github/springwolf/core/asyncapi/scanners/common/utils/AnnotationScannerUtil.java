@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.utils;
 
-import io.github.springwolf.core.asyncapi.scanners.common.SpringAnnotationClassLevelAnnotationScanner;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ReflectionUtils;
@@ -31,7 +30,7 @@ public class AnnotationScannerUtil {
                 .filter(AnnotationScannerUtil::isMethodInSourceCode)
                 .filter(AnnotationScannerUtil::notHidden);
 
-        if (annotationClass == SpringAnnotationClassLevelAnnotationScanner.AllMethods.class) {
+        if (annotationClass == AllMethods.class) {
             return methods.map(method -> new MethodAndAnnotation<>(method, null));
         }
 
@@ -40,6 +39,12 @@ public class AnnotationScannerUtil {
                 .flatMap(method -> AnnotationUtil.findAnnotations(annotationClass, method).stream()
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
     }
+
+    /**
+     * Internal interface to indicate that all methods of a class should be used in scanners
+     * instead of filtering for a specific annotation.
+     */
+    public @interface AllMethods {}
 
     public record MethodAndAnnotation<A>(Method method, A annotation) {}
 

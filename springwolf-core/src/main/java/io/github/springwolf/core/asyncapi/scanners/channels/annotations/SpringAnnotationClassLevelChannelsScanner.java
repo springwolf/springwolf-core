@@ -49,9 +49,6 @@ public class SpringAnnotationClassLevelChannelsScanner<
 
     @Override
     public Stream<Map.Entry<String, ChannelObject>> scan(Class<?> clazz) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods", clazz.getName(), classAnnotationClass.getName());
-
         if (!AnnotationScannerUtil.isClassRelevant(clazz, classAnnotationClass)) {
             return Stream.empty();
         }
