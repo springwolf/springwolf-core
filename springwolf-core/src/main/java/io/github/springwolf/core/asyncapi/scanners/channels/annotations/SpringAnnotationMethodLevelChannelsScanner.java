@@ -54,8 +54,6 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
     }
 
     private Map.Entry<String, ChannelObject> mapMethodToChannel(Method method) {
-        log.debug("Mapping method \"{}\" to channels", method.getName());
-
         MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);

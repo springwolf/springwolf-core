@@ -46,15 +46,18 @@ public class AsyncAnnotationMethodLevelOperationsScanner<A extends Annotation>
 
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
-        return this.getAnnotatedMethods(clazz).map(this::buildOperation);
+        return AnnotationScannerUtil.getRelevantMethods(clazz, this.asyncAnnotationProvider.getAnnotation())
+                .map(this::mapMethodToOperation);
     }
 
-    private Map.Entry<String, Operation> buildOperation(
+    private Map.Entry<String, Operation> mapMethodToOperation(
             AnnotationScannerUtil.MethodAndAnnotation<A> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
+
         String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
         String channelId = ReferenceUtil.toValidId(channelName);
+        // operationId should be part of the buildOperation method and part of Operation object
         String operationId = StringUtils.joinWith(
                 "_",
                 channelId,

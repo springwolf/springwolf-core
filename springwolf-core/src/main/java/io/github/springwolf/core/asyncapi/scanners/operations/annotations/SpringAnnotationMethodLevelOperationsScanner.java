@@ -61,13 +61,11 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
     }
 
     private Map.Entry<String, Operation> mapMethodToOperation(Method method) {
-        log.debug("Mapping method \"{}\" to operations", method.getName());
-
         MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method);
 
         String channelName = bindingFactory.getChannelName(annotation);
-        String operationId = StringUtils.joinWith(
-                "_", ReferenceUtil.toValidId(channelName), OperationAction.RECEIVE, method.getName());
+        String channelId = ReferenceUtil.toValidId(channelName);
+        String operationId = StringUtils.joinWith("_", channelId, OperationAction.RECEIVE, method.getName());
 
         PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method);
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);

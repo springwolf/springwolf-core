@@ -18,7 +18,6 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBind
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -43,12 +41,6 @@ public abstract class AsyncAnnotationMethodLevelScanner<A extends Annotation> {
     protected final List<OperationBindingProcessor> operationBindingProcessors;
     protected final List<MessageBindingProcessor> messageBindingProcessors;
     protected final StringValueResolver resolver;
-
-    protected Stream<AnnotationScannerUtil.MethodAndAnnotation<A>> getAnnotatedMethods(Class<?> type) {
-        Class<A> annotationClass = this.asyncAnnotationProvider.getAnnotation();
-
-        return AnnotationScannerUtil.getRelevantMethods(type, annotationClass);
-    }
 
     protected Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelId) {
         String description = this.resolver.resolveStringValue(asyncOperation.description());

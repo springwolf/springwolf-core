@@ -52,10 +52,11 @@ public class AsyncAnnotationMethodLevelChannelsScanner<A extends Annotation>
 
     @Override
     public Stream<Map.Entry<String, ChannelObject>> scan(Class<?> clazz) {
-        return this.getAnnotatedMethods(clazz).map(this::buildChannel);
+        return AnnotationScannerUtil.getRelevantMethods(clazz, this.asyncAnnotationProvider.getAnnotation())
+                .map(this::mapMethodToChannel);
     }
 
-    private Map.Entry<String, ChannelObject> buildChannel(
+    private Map.Entry<String, ChannelObject> mapMethodToChannel(
             AnnotationScannerUtil.MethodAndAnnotation<A> methodAndAnnotation) {
         ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
 
