@@ -10,6 +10,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -19,7 +20,8 @@ public class AnnotationScannerUtil {
 
     public static <A extends Annotation> boolean isClassRelevant(Class<?> clazz, Class<A> annotationClass) {
         log.debug("Scanning class \"{}\" for @\"{}\" annotation", clazz.getName(), annotationClass.getName());
-        return AnnotationScannerUtil.notHidden(clazz) && AnnotationUtil.findAnnotation(annotationClass, clazz) != null;
+        return AnnotationScannerUtil.isNotHidden(clazz)
+                && AnnotationUtil.findAnnotation(annotationClass, clazz) != null;
     }
 
     public static <A extends Annotation> Stream<MethodAndAnnotation<A>> getRelevantMethods(
@@ -28,14 +30,15 @@ public class AnnotationScannerUtil {
 
         Stream<Method> methods = Arrays.stream(ReflectionUtils.getAllDeclaredMethods(clazz))
                 .filter(AnnotationScannerUtil::isMethodInSourceCode)
-                .filter(AnnotationScannerUtil::notHidden);
+                .filter(AnnotationScannerUtil::isNotTypicalJavaMethod)
+                .filter(AnnotationScannerUtil::isNotHidden);
 
         if (annotationClass == AllMethods.class) {
             return methods.map(method -> new MethodAndAnnotation<>(method, null));
         }
 
         return methods.filter(method -> AnnotationUtil.findAnnotation(annotationClass, method) != null)
-                .peek(method -> log.debug("Found method \"{}\"", method.getName()))
+                .peek(method -> log.debug("Mapping method \"{}\"", method.getName()))
                 .flatMap(method -> AnnotationUtil.findAnnotations(annotationClass, method).stream()
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
     }
@@ -55,7 +58,14 @@ public class AnnotationScannerUtil {
         return !method.isSynthetic();
     }
 
-    private static boolean notHidden(AnnotatedElement element) {
+    private static boolean isNotHidden(AnnotatedElement element) {
         return Objects.isNull(AnnotationUtil.findAnnotation(Hidden.class, element));
+    }
+
+    private static final Set<String> typicalJavaMethods =
+            Set.of("clone", "equals", "finalize", "getClass", "hashCode", "notify", "notifyAll", "toString", "wait");
+
+    private static boolean isNotTypicalJavaMethod(Method method) {
+        return !typicalJavaMethods.contains(method.getName());
     }
 }
