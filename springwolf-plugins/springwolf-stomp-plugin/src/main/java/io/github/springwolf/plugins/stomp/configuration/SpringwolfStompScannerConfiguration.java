@@ -9,10 +9,10 @@ import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScann
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationClassLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AllMethods;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodReturnService;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
@@ -110,10 +110,10 @@ public class SpringwolfStompScannerConfiguration {
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
-        SpringAnnotationClassLevelChannelsScanner<MessageMapping, AnnotationScannerUtil.AllMethods> strategy =
+        SpringAnnotationClassLevelChannelsScanner<MessageMapping, AllMethods> strategy =
                 new SpringAnnotationClassLevelChannelsScanner<>(
                         MessageMapping.class,
-                        AnnotationScannerUtil.AllMethods.class,
+                        AllMethods.class,
                         stompBindingMessageMappingFactory,
                         asyncHeadersForStompBuilder,
                         payloadMethodParameterService,
@@ -137,10 +137,10 @@ public class SpringwolfStompScannerConfiguration {
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService,
             List<OperationCustomizer> operationCustomizers) {
-        SpringAnnotationClassLevelOperationsScanner<MessageMapping, AnnotationScannerUtil.AllMethods> strategy =
+        SpringAnnotationClassLevelOperationsScanner<MessageMapping, AllMethods> strategy =
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         MessageMapping.class,
-                        AnnotationScannerUtil.AllMethods.class,
+                        AllMethods.class,
                         stompBindingMessageMappingFactory,
                         asyncHeadersForStompBuilder,
                         payloadMethodParameterService,

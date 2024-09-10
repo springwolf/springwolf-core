@@ -10,10 +10,10 @@ import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
     private final StringValueResolver resolver;
     private final AsyncApiDocketService asyncApiDocketService;
 
-    public ChannelObject buildChannel(AnnotationScannerUtil.MethodAndAnnotation<Annotation> methodAndAnnotation) {
+    public ChannelObject buildChannel(MethodAndAnnotation<Annotation> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
         String channelName = resolver.resolveStringValue(operationAnnotation.channelName());

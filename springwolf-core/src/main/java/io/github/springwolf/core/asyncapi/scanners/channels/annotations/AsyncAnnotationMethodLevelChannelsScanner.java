@@ -7,11 +7,12 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBind
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.AsyncAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,7 @@ public class AsyncAnnotationMethodLevelChannelsScanner<MethodAnnotation extends 
     }
 
     private Map.Entry<String, ChannelObject> mapMethodToChannel(
-            AnnotationScannerUtil.MethodAndAnnotation<MethodAnnotation> methodAndAnnotation) {
+            MethodAndAnnotation<MethodAnnotation> methodAndAnnotation) {
         ChannelObject channel = this.asyncAnnotationChannelService.buildChannel(methodAndAnnotation);
         return Map.entry(channel.getChannelId(), channel);
     }

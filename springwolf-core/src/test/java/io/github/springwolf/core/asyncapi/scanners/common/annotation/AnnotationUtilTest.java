@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common.utils;
+package io.github.springwolf.core.asyncapi.scanners.common.annotation;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

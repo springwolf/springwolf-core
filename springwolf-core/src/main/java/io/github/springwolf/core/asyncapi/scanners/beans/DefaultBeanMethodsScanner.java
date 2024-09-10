@@ -2,7 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.beans;
 
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 

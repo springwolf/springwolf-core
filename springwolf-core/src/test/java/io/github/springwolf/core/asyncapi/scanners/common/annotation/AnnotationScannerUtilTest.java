@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common.utils;
+package io.github.springwolf.core.asyncapi.scanners.common.annotation;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import org.junit.jupiter.api.Nested;
@@ -37,7 +37,7 @@ class AnnotationScannerUtilTest {
             List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
                             ClassWithMethodAnnotation.class,
                             ClassAnnotation.class,
-                            AnnotationScannerUtil.AllMethods.class,
+                            AllMethods.class,
                             (c, m) -> m.stream())
                     .toList();
 
@@ -65,7 +65,7 @@ class AnnotationScannerUtilTest {
             List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
                             ClassWithoutClassAnnotation.class,
                             ClassAnnotation.class,
-                            AnnotationScannerUtil.AllMethods.class,
+                            AllMethods.class,
                             (c, m) -> m.stream())
                     .toList();
 
@@ -128,32 +128,29 @@ class AnnotationScannerUtilTest {
 
         @Test
         void getRelevantMethods() throws NoSuchMethodException {
-            List<AnnotationScannerUtil.MethodAndAnnotation<MethodAnnotation>> methods =
-                    AnnotationScannerUtil.findAnnotatedMethods(ClassWithMethodAnnotation.class, MethodAnnotation.class)
-                            .toList();
+            List<MethodAndAnnotation<MethodAnnotation>> methods = AnnotationScannerUtil.findAnnotatedMethods(
+                            ClassWithMethodAnnotation.class, MethodAnnotation.class)
+                    .toList();
 
             Method annotatedMethod = ClassWithMethodAnnotation.class.getDeclaredMethod("annotatedMethod");
 
-            assertThat(methods)
-                    .hasSize(1)
-                    .contains(new AnnotationScannerUtil.MethodAndAnnotation<>(
-                            annotatedMethod, (MethodAnnotation) annotatedMethod.getAnnotations()[0]));
+            assertThat(methods).hasSize(1).contains(new MethodAndAnnotation<>(annotatedMethod, (MethodAnnotation)
+                    annotatedMethod.getAnnotations()[0]));
         }
 
         @Test
         void getAllMethods() throws NoSuchMethodException {
-            List<AnnotationScannerUtil.MethodAndAnnotation<AnnotationScannerUtil.AllMethods>> methods =
-                    AnnotationScannerUtil.findAnnotatedMethods(
-                                    ClassWithMethodAnnotation.class, AnnotationScannerUtil.AllMethods.class)
-                            .toList();
+            List<MethodAndAnnotation<AllMethods>> methods = AnnotationScannerUtil.findAnnotatedMethods(
+                            ClassWithMethodAnnotation.class, AllMethods.class)
+                    .toList();
 
             assertThat(methods)
                     .hasSize(2)
-                    .contains(new AnnotationScannerUtil.MethodAndAnnotation<>(
+                    .contains(new MethodAndAnnotation<>(
                             ClassWithMethodAnnotation.class.getDeclaredMethod("annotatedMethod"), null))
-                    .contains(new AnnotationScannerUtil.MethodAndAnnotation<>(
+                    .contains(new MethodAndAnnotation<>(
                             ClassWithMethodAnnotation.class.getDeclaredMethod("nonAnnotatedMethod"), null))
-                    .doesNotContain(new AnnotationScannerUtil.MethodAndAnnotation<>(
+                    .doesNotContain(new MethodAndAnnotation<>(
                             ClassWithMethodAnnotation.class.getDeclaredMethod("hiddenAnnotatedMethod"), null));
         }
 

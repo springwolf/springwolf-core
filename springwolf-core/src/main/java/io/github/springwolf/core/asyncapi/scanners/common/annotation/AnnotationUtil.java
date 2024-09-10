@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common.utils;
+package io.github.springwolf.core.asyncapi.scanners.common.annotation;
 
 import jakarta.annotation.Nullable;
 import org.springframework.core.annotation.MergedAnnotation;

@@ -21,9 +21,9 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBind
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;

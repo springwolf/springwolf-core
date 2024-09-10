@@ -8,10 +8,11 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,7 @@ public class AsyncAnnotationMethodLevelOperationsScanner<MethodAnnotation extend
     }
 
     private Map.Entry<String, Operation> mapMethodToOperation(
-            AnnotationScannerUtil.MethodAndAnnotation<MethodAnnotation> methodAndAnnotation) {
+            MethodAndAnnotation<MethodAnnotation> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
 

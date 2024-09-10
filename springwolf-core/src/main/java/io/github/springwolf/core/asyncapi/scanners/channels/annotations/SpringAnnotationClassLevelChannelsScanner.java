@@ -6,13 +6,13 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
