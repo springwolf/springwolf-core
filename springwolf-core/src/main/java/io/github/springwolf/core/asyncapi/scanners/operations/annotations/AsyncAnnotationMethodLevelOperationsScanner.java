@@ -7,7 +7,9 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationMethodLevelScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
+import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
+import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
@@ -22,8 +24,11 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class AsyncAnnotationMethodLevelOperationsScanner<MethodAnnotation extends Annotation>
-        extends AsyncAnnotationMethodLevelScanner<MethodAnnotation> implements OperationsInClassScanner {
+        implements OperationsInClassScanner {
 
+    private final StringValueResolverProxy resolver;
+    private final AsyncAnnotationProvider<MethodAnnotation> asyncAnnotationProvider;
+    private final AsyncAnnotationOperationService<MethodAnnotation> asyncAnnotationOperationService;
     private final List<OperationCustomizer> customizers;
 
     public AsyncAnnotationMethodLevelOperationsScanner(
@@ -34,13 +39,14 @@ public class AsyncAnnotationMethodLevelOperationsScanner<MethodAnnotation extend
             List<MessageBindingProcessor> messageBindingProcessors,
             List<OperationCustomizer> customizers,
             StringValueResolverProxy resolver) {
-        super(
+        this.resolver = resolver;
+        this.asyncAnnotationProvider = asyncAnnotationProvider;
+        this.asyncAnnotationOperationService = new AsyncAnnotationOperationService<>(
                 asyncAnnotationProvider,
-                payloadAsyncOperationService,
-                componentsService,
                 operationBindingProcessors,
-                messageBindingProcessors,
-                resolver);
+                resolver,
+                new AsyncAnnotationMessageService(
+                        payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver));
         this.customizers = customizers;
     }
 
@@ -64,8 +70,8 @@ public class AsyncAnnotationMethodLevelOperationsScanner<MethodAnnotation extend
                 this.asyncAnnotationProvider.getOperationType().type,
                 methodAndAnnotation.method().getName());
 
-        Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelId);
-        operation.setAction(this.asyncAnnotationProvider.getOperationType());
+        Operation operation = asyncAnnotationOperationService.buildOperation(
+                operationAnnotation, methodAndAnnotation.method(), channelId);
         customizers.forEach(customizer -> customizer.customize(operation, methodAndAnnotation.method()));
         return Map.entry(operationId, operation);
     }

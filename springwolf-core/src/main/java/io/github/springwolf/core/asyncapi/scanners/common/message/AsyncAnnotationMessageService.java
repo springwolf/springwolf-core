@@ -1,21 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common;
+package io.github.springwolf.core.asyncapi.scanners.common.message;
 
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
-import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
@@ -25,49 +20,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.StringValueResolver;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AsyncAnnotationMethodLevelScanner<MethodAnnotation extends Annotation> {
+public class AsyncAnnotationMessageService {
 
-    protected final AsyncAnnotationProvider<MethodAnnotation> asyncAnnotationProvider;
-    protected final PayloadAsyncOperationService payloadAsyncOperationService;
-    protected final ComponentsService componentsService;
-    protected final List<OperationBindingProcessor> operationBindingProcessors;
-    protected final List<MessageBindingProcessor> messageBindingProcessors;
-    protected final StringValueResolver resolver;
+    private final PayloadAsyncOperationService payloadAsyncOperationService;
+    private final ComponentsService componentsService;
+    private final List<MessageBindingProcessor> messageBindingProcessors;
+    private final StringValueResolver resolver;
 
-    protected Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelId) {
-        String description = this.resolver.resolveStringValue(asyncOperation.description());
-        if (StringUtils.isBlank(description)) {
-            description = "Auto-generated description";
-        } else {
-            description = TextUtils.trimIndent(description);
-        }
-
-        String operationTitle =
-                StringUtils.joinWith("_", channelId, this.asyncAnnotationProvider.getOperationType().type);
-
-        Map<String, OperationBinding> operationBinding =
-                AsyncAnnotationUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
-        Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        MessageObject message = buildMessage(asyncOperation, method);
-
-        return Operation.builder()
-                .channel(ChannelReference.fromChannel(channelId))
-                .description(description)
-                .title(operationTitle)
-                .messages(List.of(MessageReference.toChannelMessage(channelId, message)))
-                .bindings(opBinding)
-                .build();
-    }
-
-    protected MessageObject buildMessage(AsyncOperation operationData, Method method) {
+    public MessageObject buildMessage(AsyncOperation operationData, Method method) {
         PayloadSchemaObject payloadSchema = payloadAsyncOperationService.extractSchema(operationData, method);
 
         SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, resolver);
@@ -111,13 +77,5 @@ public abstract class AsyncAnnotationMethodLevelScanner<MethodAnnotation extends
             description = null;
         }
         return description;
-    }
-
-    public interface AsyncAnnotationProvider<A> {
-        Class<A> getAnnotation();
-
-        AsyncOperation getAsyncOperation(A annotation);
-
-        OperationAction getOperationType();
     }
 }

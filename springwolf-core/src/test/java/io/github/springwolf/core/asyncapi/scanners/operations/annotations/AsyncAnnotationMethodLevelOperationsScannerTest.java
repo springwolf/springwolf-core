@@ -21,7 +21,7 @@ import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestOperationBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationMethodLevelScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
@@ -60,23 +60,22 @@ import static org.mockito.Mockito.when;
 
 class AsyncAnnotationMethodLevelOperationsScannerTest {
 
-    private final AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider =
-            new AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<>() {
-                @Override
-                public Class<AsyncListener> getAnnotation() {
-                    return AsyncListener.class;
-                }
+    private final AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider = new AsyncAnnotationProvider<>() {
+        @Override
+        public Class<AsyncListener> getAnnotation() {
+            return AsyncListener.class;
+        }
 
-                @Override
-                public AsyncOperation getAsyncOperation(AsyncListener annotation) {
-                    return annotation.operation();
-                }
+        @Override
+        public AsyncOperation getAsyncOperation(AsyncListener annotation) {
+            return annotation.operation();
+        }
 
-                @Override
-                public OperationAction getOperationType() {
-                    return OperationAction.SEND;
-                }
-            };
+        @Override
+        public OperationAction getOperationType() {
+            return OperationAction.SEND;
+        }
+    };
     private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
     private final SwaggerSchemaService schemaService =

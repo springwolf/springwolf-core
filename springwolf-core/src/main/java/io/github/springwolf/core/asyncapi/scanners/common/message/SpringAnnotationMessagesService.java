@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common;
+package io.github.springwolf.core.asyncapi.scanners.common.message;
 
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
@@ -15,7 +15,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,26 +29,21 @@ import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class SpringAnnotationClassLevelAnnotationScanner<
-        ClassAnnotation extends Annotation, MethodAnnotation extends Annotation> {
+public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation> {
 
-    protected final Class<ClassAnnotation> classAnnotationClass;
-    protected final Class<MethodAnnotation> methodAnnotationClass;
-    protected final BindingFactory<ClassAnnotation> bindingFactory;
-    protected final AsyncHeadersBuilder asyncHeadersBuilder;
-    protected final PayloadMethodService payloadMethodService;
-    protected final HeaderClassExtractor headerClassExtractor;
-    protected final ComponentsService componentsService;
+    private final BindingFactory<ClassAnnotation> bindingFactory;
+    private final AsyncHeadersBuilder asyncHeadersBuilder;
+    private final PayloadMethodService payloadMethodService;
+    private final HeaderClassExtractor headerClassExtractor;
+    private final ComponentsService componentsService;
 
-    protected enum MessageType {
+    public enum MessageType {
         CHANNEL,
         OPERATION
     }
 
-    protected Map<String, MessageReference> buildMessages(
-            ClassAnnotation classAnnotation,
-            Set<Method> methods,
-            SpringAnnotationClassLevelOperationsScanner.MessageType messageType) {
+    public Map<String, MessageReference> buildMessages(
+            ClassAnnotation classAnnotation, Set<Method> methods, MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
                 .map(method -> buildMessage(classAnnotation, method))
                 .collect(toSet());

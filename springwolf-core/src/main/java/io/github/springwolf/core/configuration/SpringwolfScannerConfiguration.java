@@ -18,7 +18,7 @@ import io.github.springwolf.core.asyncapi.scanners.channels.annotations.AsyncAnn
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationMethodLevelScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
@@ -180,9 +180,8 @@ public class SpringwolfScannerConfiguration {
         return new StringValueResolverProxy();
     }
 
-    private static AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<AsyncListener>
-            buildAsyncListenerAnnotationProvider() {
-        return new AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<>() {
+    private static AsyncAnnotationProvider<AsyncListener> buildAsyncListenerAnnotationProvider() {
+        return new AsyncAnnotationProvider<>() {
             @Override
             public Class<AsyncListener> getAnnotation() {
                 return AsyncListener.class;
@@ -200,9 +199,8 @@ public class SpringwolfScannerConfiguration {
         };
     }
 
-    private static AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<AsyncPublisher>
-            buildAsyncPublisherAnnotationProvider() {
-        return new AsyncAnnotationMethodLevelScanner.AsyncAnnotationProvider<>() {
+    private static AsyncAnnotationProvider<AsyncPublisher> buildAsyncPublisherAnnotationProvider() {
+        return new AsyncAnnotationProvider<>() {
             @Override
             public Class<AsyncPublisher> getAnnotation() {
                 return AsyncPublisher.class;
