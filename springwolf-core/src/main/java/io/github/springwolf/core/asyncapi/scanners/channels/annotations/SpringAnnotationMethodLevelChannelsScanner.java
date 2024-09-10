@@ -20,7 +20,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -48,17 +47,17 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
 
     @Override
     public Stream<Map.Entry<String, ChannelObject>> scan(Class<?> clazz) {
-        return AnnotationScannerUtil.getRelevantMethods(clazz, methodAnnotationClass)
-                .map(AnnotationScannerUtil.MethodAndAnnotation::method)
+        return AnnotationScannerUtil.findAnnotatedMethods(clazz, methodAnnotationClass)
                 .map(this::mapMethodToChannel);
     }
 
-    private Map.Entry<String, ChannelObject> mapMethodToChannel(Method method) {
-        MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method);
+    private Map.Entry<String, ChannelObject> mapMethodToChannel(
+            AnnotationScannerUtil.MethodAndAnnotation<MethodAnnotation> method) {
+        MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method.method());
 
-        PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
+        PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method.method());
 
-        SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
+        SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
         ChannelObject channelItem = buildChannelItem(annotation, payloadSchema, headerSchema);
         return Map.entry(channelItem.getChannelId(), channelItem);
     }

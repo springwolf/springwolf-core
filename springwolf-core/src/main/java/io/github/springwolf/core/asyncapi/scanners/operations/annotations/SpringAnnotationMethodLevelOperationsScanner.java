@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,23 +54,24 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
 
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
-        return AnnotationScannerUtil.getRelevantMethods(clazz, methodAnnotationClass)
-                .map(AnnotationScannerUtil.MethodAndAnnotation::method)
+        return AnnotationScannerUtil.findAnnotatedMethods(clazz, methodAnnotationClass)
                 .map(this::mapMethodToOperation);
     }
 
-    private Map.Entry<String, Operation> mapMethodToOperation(Method method) {
-        MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method);
+    private Map.Entry<String, Operation> mapMethodToOperation(
+            AnnotationScannerUtil.MethodAndAnnotation<MethodAnnotation> method) {
+        MethodAnnotation annotation = AnnotationUtil.findAnnotationOrThrow(methodAnnotationClass, method.method());
 
         String channelName = bindingFactory.getChannelName(annotation);
         String channelId = ReferenceUtil.toValidId(channelName);
-        String operationId = StringUtils.joinWith("_", channelId, OperationAction.RECEIVE, method.getName());
+        String operationId = StringUtils.joinWith(
+                "_", channelId, OperationAction.RECEIVE, method.method().getName());
 
-        PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method);
-        SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
+        PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method.method());
+        SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
 
         Operation operation = buildOperation(annotation, payloadSchema, headerSchema);
-        customizers.forEach(customizer -> customizer.customize(operation, method));
+        customizers.forEach(customizer -> customizer.customize(operation, method.method()));
         return Map.entry(operationId, operation);
     }
 

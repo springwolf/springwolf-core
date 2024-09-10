@@ -15,7 +15,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,22 +46,12 @@ public abstract class SpringAnnotationClassLevelAnnotationScanner<
         OPERATION
     }
 
-    protected Set<Method> getAnnotatedMethods(Class<?> clazz) {
-        return AnnotationScannerUtil.getRelevantMethods(clazz, methodAnnotationClass)
-                .map(AnnotationScannerUtil.MethodAndAnnotation::method)
-                .collect(toSet());
-    }
-
     protected Map<String, MessageReference> buildMessages(
             ClassAnnotation classAnnotation,
             Set<Method> methods,
             SpringAnnotationClassLevelOperationsScanner.MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
-                .map((Method method) -> {
-                    PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
-                    SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
-                    return buildMessage(classAnnotation, payloadSchema, headerSchema);
-                })
+                .map(method -> buildMessage(classAnnotation, method))
                 .collect(toSet());
 
         if (messageType == MessageType.OPERATION) {
@@ -72,9 +61,11 @@ public abstract class SpringAnnotationClassLevelAnnotationScanner<
         return toMessagesMap(messages);
     }
 
-    protected MessageObject buildMessage(
-            ClassAnnotation classAnnotation, PayloadSchemaObject payloadSchema, SchemaObject headers) {
+    protected MessageObject buildMessage(ClassAnnotation classAnnotation, Method method) {
+        PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
+
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
+        SchemaObject headers = headerClassExtractor.extractHeader(method, payloadSchema);
         SchemaObject mergedHeaderSchema = HeaderSchemaObjectMerger.merge(headerSchema, headers);
         String headerSchemaName = componentsService.registerSchema(mergedHeaderSchema);
 

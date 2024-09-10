@@ -57,22 +57,12 @@ public class SpringAnnotationClassLevelOperationsScanner<
 
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
-        if (!AnnotationScannerUtil.isClassRelevant(clazz, classAnnotationClass)) {
-            return Stream.empty();
-        }
-
-        return mapClassToOperation(clazz);
+        return AnnotationScannerUtil.findAnnotatedMethods(
+                clazz, classAnnotationClass, methodAnnotationClass, this::mapClassToOperation);
     }
 
-    private Stream<Map.Entry<String, Operation>> mapClassToOperation(Class<?> component) {
-        log.debug("Mapping class \"{}\" to operations", component.getName());
-
+    private Stream<Map.Entry<String, Operation>> mapClassToOperation(Class<?> component, Set<Method> annotatedMethods) {
         ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
-
-        Set<Method> annotatedMethods = getAnnotatedMethods(component);
-        if (annotatedMethods.isEmpty()) {
-            return Stream.empty();
-        }
 
         String channelName = bindingFactory.getChannelName(classAnnotation);
         String operationId = StringUtils.joinWith(
@@ -80,7 +70,6 @@ public class SpringAnnotationClassLevelOperationsScanner<
 
         Operation operation = buildOperation(classAnnotation, annotatedMethods);
         annotatedMethods.forEach(method -> customizers.forEach(customizer -> customizer.customize(operation, method)));
-
         return Stream.of(Map.entry(operationId, operation));
     }
 
@@ -93,10 +82,11 @@ public class SpringAnnotationClassLevelOperationsScanner<
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(classAnnotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
         String channelName = bindingFactory.getChannelName(classAnnotation);
+        String channelId = ReferenceUtil.toValidId(channelName);
 
         return Operation.builder()
                 .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(ReferenceUtil.toValidId(channelName)))
+                .channel(ChannelReference.fromChannel(channelId))
                 .messages(messages.values().stream().toList())
                 .bindings(opBinding)
                 .build();

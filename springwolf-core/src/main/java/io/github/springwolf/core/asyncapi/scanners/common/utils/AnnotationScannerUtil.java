@@ -11,6 +11,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -18,28 +20,56 @@ public class AnnotationScannerUtil {
 
     private AnnotationScannerUtil() {}
 
-    public static <A extends Annotation> boolean isClassRelevant(Class<?> clazz, Class<A> annotationClass) {
-        log.debug("Scanning class \"{}\" for @\"{}\" annotation", clazz.getName(), annotationClass.getName());
+    /**
+     * Find all annotated methods on an annotated class
+     *
+     * Transform is only called if methods are found
+     */
+    public static <C extends Annotation, M extends Annotation, R> Stream<R> findAnnotatedMethods(
+            Class<?> clazz,
+            Class<C> classAnnotationClass,
+            Class<M> methodAnnotationClass,
+            BiFunction<Class<?>, Set<Method>, Stream<R>> transformer) {
+        log.debug("Scanning class \"{}\" for @\"{}\" annotation", clazz.getName(), classAnnotationClass.getName());
+        Set<Method> methods = Stream.of(clazz)
+                .filter(it -> AnnotationScannerUtil.isClassRelevant(it, classAnnotationClass))
+                .peek(it -> log.debug("Mapping class \"{}\"", it.getName()))
+                .flatMap(it -> AnnotationScannerUtil.findAnnotatedMethods(it, methodAnnotationClass))
+                .map(AnnotationScannerUtil.MethodAndAnnotation::method)
+                .collect(Collectors.toSet());
+
+        if (methods.isEmpty()) {
+            return Stream.empty();
+        }
+
+        return transformer.apply(clazz, methods);
+    }
+
+    static <A extends Annotation> boolean isClassRelevant(Class<?> clazz, Class<A> annotationClass) {
         return AnnotationScannerUtil.isNotHidden(clazz)
                 && AnnotationUtil.findAnnotation(annotationClass, clazz) != null;
     }
 
-    public static <A extends Annotation> Stream<MethodAndAnnotation<A>> getRelevantMethods(
-            Class<?> clazz, Class<A> annotationClass) {
-        log.debug("Scanning class \"{}\" for @\"{}\" annotated methods", clazz.getName(), annotationClass.getName());
+    public static <A extends Annotation> Stream<MethodAndAnnotation<A>> findAnnotatedMethods(
+            Class<?> clazz, Class<A> methodAnnotationClass) {
+        log.debug(
+                "Scanning class \"{}\" for @\"{}\" annotated methods",
+                clazz.getName(),
+                methodAnnotationClass.getName());
 
         Stream<Method> methods = Arrays.stream(ReflectionUtils.getAllDeclaredMethods(clazz))
                 .filter(AnnotationScannerUtil::isMethodInSourceCode)
                 .filter(AnnotationScannerUtil::isNotTypicalJavaMethod)
                 .filter(AnnotationScannerUtil::isNotHidden);
 
-        if (annotationClass == AllMethods.class) {
-            return methods.map(method -> new MethodAndAnnotation<>(method, null));
+        if (methodAnnotationClass == AllMethods.class) {
+            return methods.peek(method -> log.debug("Mapping method \"{}\"", method.getName()))
+                    .map(method -> new MethodAndAnnotation<>(method, null));
         }
 
-        return methods.filter(method -> AnnotationUtil.findAnnotation(annotationClass, method) != null)
+        return methods.filter(method -> AnnotationUtil.findAnnotation(methodAnnotationClass, method) != null)
                 .peek(method -> log.debug("Mapping method \"{}\"", method.getName()))
-                .flatMap(method -> AnnotationUtil.findAnnotations(annotationClass, method).stream()
+                .flatMap(method -> AnnotationUtil.findAnnotations(methodAnnotationClass, method).stream()
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
     }
 

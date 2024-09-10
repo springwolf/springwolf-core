@@ -27,13 +27,13 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Slf4j
-public class AsyncAnnotationMethodLevelChannelsScanner<A extends Annotation>
-        extends AsyncAnnotationMethodLevelScanner<A> implements ChannelsInClassScanner {
+public class AsyncAnnotationMethodLevelChannelsScanner<MethodAnnotation extends Annotation>
+        extends AsyncAnnotationMethodLevelScanner<MethodAnnotation> implements ChannelsInClassScanner {
 
     private final AsyncApiDocketService asyncApiDocketService;
 
     public AsyncAnnotationMethodLevelChannelsScanner(
-            AsyncAnnotationProvider<A> asyncAnnotationProvider,
+            AsyncAnnotationProvider<MethodAnnotation> asyncAnnotationProvider,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
             PayloadAsyncOperationService payloadAsyncOperationService,
@@ -52,12 +52,12 @@ public class AsyncAnnotationMethodLevelChannelsScanner<A extends Annotation>
 
     @Override
     public Stream<Map.Entry<String, ChannelObject>> scan(Class<?> clazz) {
-        return AnnotationScannerUtil.getRelevantMethods(clazz, this.asyncAnnotationProvider.getAnnotation())
+        return AnnotationScannerUtil.findAnnotatedMethods(clazz, this.asyncAnnotationProvider.getAnnotation())
                 .map(this::mapMethodToChannel);
     }
 
     private Map.Entry<String, ChannelObject> mapMethodToChannel(
-            AnnotationScannerUtil.MethodAndAnnotation<A> methodAndAnnotation) {
+            AnnotationScannerUtil.MethodAndAnnotation<MethodAnnotation> methodAndAnnotation) {
         ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
 
         AsyncOperation operationAnnotation =

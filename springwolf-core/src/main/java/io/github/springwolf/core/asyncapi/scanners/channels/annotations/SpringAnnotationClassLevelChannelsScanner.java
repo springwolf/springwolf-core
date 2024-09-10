@@ -49,38 +49,30 @@ public class SpringAnnotationClassLevelChannelsScanner<
 
     @Override
     public Stream<Map.Entry<String, ChannelObject>> scan(Class<?> clazz) {
-        if (!AnnotationScannerUtil.isClassRelevant(clazz, classAnnotationClass)) {
-            return Stream.empty();
-        }
-
-        return mapClassToChannel(clazz);
+        return AnnotationScannerUtil.findAnnotatedMethods(
+                clazz, classAnnotationClass, methodAnnotationClass, this::mapClassToChannel);
     }
 
-    private Stream<Map.Entry<String, ChannelObject>> mapClassToChannel(Class<?> component) {
-        log.debug("Mapping class \"{}\" to channels", component.getName());
-
+    private Stream<Map.Entry<String, ChannelObject>> mapClassToChannel(
+            Class<?> component, Set<Method> annotatedMethods) {
         ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
-
-        Set<Method> annotatedMethods = getAnnotatedMethods(component);
-        if (annotatedMethods.isEmpty()) {
-            return Stream.empty();
-        }
-
-        ChannelObject channelItem = buildChannelItem(classAnnotation, annotatedMethods);
+        ChannelObject channelItem = buildChannel(classAnnotation, annotatedMethods);
         return Stream.of(Map.entry(channelItem.getChannelId(), channelItem));
     }
 
-    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Set<Method> methods) {
+    private ChannelObject buildChannel(ClassAnnotation classAnnotation, Set<Method> methods) {
         var messages = buildMessages(classAnnotation, methods, MessageType.CHANNEL);
-        return buildChannelItem(classAnnotation, messages);
+        return buildChannel(classAnnotation, messages);
     }
 
-    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
+    private ChannelObject buildChannel(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
         Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(classAnnotation);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         String channelName = bindingFactory.getChannelName(classAnnotation);
+        String channelId = ReferenceUtil.toValidId(channelName);
+
         return ChannelObject.builder()
-                .channelId(ReferenceUtil.toValidId(channelName))
+                .channelId(channelId)
                 .address(channelName)
                 .bindings(chBinding)
                 .messages(new HashMap<>(messages))

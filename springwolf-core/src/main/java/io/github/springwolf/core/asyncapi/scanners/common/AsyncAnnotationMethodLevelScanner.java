@@ -33,9 +33,9 @@ import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AsyncAnnotationMethodLevelScanner<A extends Annotation> {
+public abstract class AsyncAnnotationMethodLevelScanner<MethodAnnotation extends Annotation> {
 
-    protected final AsyncAnnotationProvider<A> asyncAnnotationProvider;
+    protected final AsyncAnnotationProvider<MethodAnnotation> asyncAnnotationProvider;
     protected final PayloadAsyncOperationService payloadAsyncOperationService;
     protected final ComponentsService componentsService;
     protected final List<OperationBindingProcessor> operationBindingProcessors;
@@ -79,6 +79,24 @@ public abstract class AsyncAnnotationMethodLevelScanner<A extends Annotation> {
         var messagePayload = MessagePayload.of(
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
+        var builder = MessageObject.builder()
+                .messageId(payloadSchema.name())
+                .name(payloadSchema.name())
+                .title(payloadSchema.title())
+                .description(getDescription(operationData, payloadSchema))
+                .payload(messagePayload)
+                .headers(MessageHeaders.of(MessageReference.toSchema(headerSchemaName)))
+                .bindings(messageBinding);
+        // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher
+        // priority so if we find them, we need to override the default values.
+        AsyncAnnotationUtil.processAsyncMessageAnnotation(builder, operationData.message(), this.resolver);
+        MessageObject message = builder.build();
+
+        this.componentsService.registerMessage(message);
+        return message;
+    }
+
+    private String getDescription(AsyncOperation operationData, PayloadSchemaObject payloadSchema) {
         String description = operationData.message().description();
         if (StringUtils.isBlank(description) && payloadSchema.payload() instanceof SchemaObject) {
             String payloadDescription = ((SchemaObject) payloadSchema.payload()).getDescription();
@@ -92,23 +110,7 @@ public abstract class AsyncAnnotationMethodLevelScanner<A extends Annotation> {
         } else {
             description = null;
         }
-
-        var builder = MessageObject.builder()
-                .messageId(payloadSchema.name())
-                .name(payloadSchema.name())
-                .title(payloadSchema.title())
-                .description(description)
-                .payload(messagePayload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerSchemaName)))
-                .bindings(messageBinding);
-
-        // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher
-        // priority so if we find them, we need to override the default values.
-        AsyncAnnotationUtil.processAsyncMessageAnnotation(builder, operationData.message(), this.resolver);
-
-        MessageObject message = builder.build();
-        this.componentsService.registerMessage(message);
-        return message;
+        return description;
     }
 
     public interface AsyncAnnotationProvider<A> {

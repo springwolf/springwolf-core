@@ -21,13 +21,13 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Slf4j
-public class AsyncAnnotationMethodLevelOperationsScanner<A extends Annotation>
-        extends AsyncAnnotationMethodLevelScanner<A> implements OperationsInClassScanner {
+public class AsyncAnnotationMethodLevelOperationsScanner<MethodAnnotation extends Annotation>
+        extends AsyncAnnotationMethodLevelScanner<MethodAnnotation> implements OperationsInClassScanner {
 
     private final List<OperationCustomizer> customizers;
 
     public AsyncAnnotationMethodLevelOperationsScanner(
-            AsyncAnnotationProvider<A> asyncAnnotationProvider,
+            AsyncAnnotationProvider<MethodAnnotation> asyncAnnotationProvider,
             ComponentsService componentsService,
             PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
@@ -46,12 +46,12 @@ public class AsyncAnnotationMethodLevelOperationsScanner<A extends Annotation>
 
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
-        return AnnotationScannerUtil.getRelevantMethods(clazz, this.asyncAnnotationProvider.getAnnotation())
+        return AnnotationScannerUtil.findAnnotatedMethods(clazz, this.asyncAnnotationProvider.getAnnotation())
                 .map(this::mapMethodToOperation);
     }
 
     private Map.Entry<String, Operation> mapMethodToOperation(
-            AnnotationScannerUtil.MethodAndAnnotation<A> methodAndAnnotation) {
+            AnnotationScannerUtil.MethodAndAnnotation<MethodAnnotation> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
 
