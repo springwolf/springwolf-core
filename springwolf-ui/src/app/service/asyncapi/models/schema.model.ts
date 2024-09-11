@@ -9,7 +9,7 @@ export interface ServerAsyncApiSchema {
   enum?: string[];
   examples?: any[];
 
-  type?: string;
+  type: string;
   format?: string;
   // type == ref
   not?: ServerAsyncApiSchemaOrRef;

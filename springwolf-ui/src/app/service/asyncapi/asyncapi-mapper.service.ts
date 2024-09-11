@@ -264,27 +264,18 @@ export class AsyncApiMapperService {
 
             this.verifyBindings(message.bindings, "message " + message.name);
 
-            // let payloadName = this.resolveRefId(message.payload.schema.$ref);
+            const headerName = this.resolveRefId(message.headers.$ref);
             const mappedMessage: Message = {
               name: message.name,
               title: message.title,
               description: message.description,
               contentType: message.contentType || defaultContentType,
-              payload: {
-                name: "fixlater", // payloadName || message.payload.schema.type, // TODO:
-                title: "fixlater", //
-                // this.resolveTitleFromName(payloadName) ||
-                // message.payload.schema.title, // TODO:
-                anchorUrl: "fixlater", // AsyncApiMapperService.BASE_URL + payloadName,
-              },
+              payload: this.mapPayload(message.payload.schema),
               headers: {
-                name: this.resolveRefId(message.headers.$ref),
-                title:
-                  this.resolveRefId(message.headers.$ref) ||
-                  "undefined-header-title",
-                anchorUrl:
-                  AsyncApiMapperService.BASE_URL +
-                  this.resolveRefId(message.headers.$ref),
+                ts_type: "ref",
+                name: headerName,
+                title: headerName,
+                anchorUrl: AsyncApiMapperService.BASE_URL + headerName,
               },
               bindings: this.mapServerAsyncApiMessageBindings(message.bindings),
               rawBindings: message.bindings || {},
@@ -294,6 +285,23 @@ export class AsyncApiMapperService {
         );
       })
       .filter((el) => el !== undefined);
+  }
+
+  private mapPayload(
+    schema: { $ref: string } | ServerAsyncApiSchema
+  ): Message["payload"] {
+    if ("$ref" in schema) {
+      const payloadName = this.resolveRefId(schema.$ref);
+      return {
+        ts_type: "ref",
+
+        name: payloadName,
+        title: this.resolveTitleFromName(payloadName),
+        anchorUrl: AsyncApiMapperService.BASE_URL + payloadName,
+      };
+    }
+
+    return this.mapSchemaObj(schema.title || schema.type, schema, {});
   }
 
   private mapServerAsyncApiMessageBindings(
@@ -445,6 +453,8 @@ export class AsyncApiMapperService {
         : undefined;
 
     return {
+      ts_type: "object",
+
       name: schemaName,
       title: this.resolveTitleFromName(schemaName) || "undefined-title",
       usedBy: [],
@@ -518,6 +528,8 @@ export class AsyncApiMapperService {
   private mapSchemaRef(schemaName: string, schema: { $ref: string }): Schema {
     let schemaRefId = this.resolveRefId(schema.$ref);
     return {
+      ts_type: "object",
+
       name: schemaName,
       title: this.resolveTitleFromName(schemaName),
       usedBy: [],

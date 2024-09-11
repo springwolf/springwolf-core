@@ -13,6 +13,8 @@ describe("SchemaRangeComponent", function () {
   };
 
   const minimalSchema: Schema = {
+    ts_type: "object",
+
     title: "test",
     name: "test",
     anchorUrl: "test",

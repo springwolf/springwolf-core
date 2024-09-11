@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Example } from "../../models/example.model";
-import { Schema } from "../../models/schema.model";
+import { Schema, SchemaRef } from "../../models/schema.model";
 import { Operation } from "../../models/operation.model";
 import { Binding, Bindings } from "../../models/bindings.model";
 import { Message } from "../../models/message.model";
@@ -19,11 +19,18 @@ export const initInfo: Info = {
   version: "",
 };
 
+export const initSchemaRef: SchemaRef = {
+  ts_type: "ref",
+  anchorUrl: "",
+  name: "",
+  title: "",
+};
+
 export const initMessage: Message = {
   bindings: new Map<string, Binding>(),
-  headers: { anchorUrl: "", name: "", title: "" },
+  headers: initSchemaRef,
   name: "",
-  payload: { anchorUrl: "", name: "", title: "" },
+  payload: initSchemaRef,
   rawBindings: {},
   title: "",
   contentType: "",
@@ -38,6 +45,8 @@ export const initOperation: Operation = {
 };
 
 export const initSchema: Schema = {
+  ts_type: "object",
+
   title: "",
   name: "",
   anchorUrl: "",

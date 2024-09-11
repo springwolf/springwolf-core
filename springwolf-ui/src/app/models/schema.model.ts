@@ -1,7 +1,17 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Example } from "./example.model";
 
+export interface SchemaRef {
+  ts_type: "ref";
+
+  name: string;
+  title: string;
+  anchorUrl: string;
+}
+
 export interface Schema {
+  ts_type: "object";
+
   /**
    * Fully qualified schema name
    */

@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, input, OnInit } from "@angular/core";
+import { Component, input, computed, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { STATUS } from "angular-in-memory-web-api";
 import { Binding } from "../../../../models/bindings.model";
@@ -28,7 +28,9 @@ export class ChannelOperationComponent implements OnInit {
   defaultSchema: Schema = initSchema;
   defaultExample: Example = initExample;
   originalDefaultExample: Example = this.defaultExample;
-  exampleContentType: string = "json";
+  exampleContentType = computed(
+    () => this.operation().message.contentType.split("/").pop() || "json"
+  );
 
   headers: Schema = initSchema;
   headersExample: Example = initExample;
@@ -52,14 +54,18 @@ export class ChannelOperationComponent implements OnInit {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       const schemas: Map<string, Schema> = asyncapi.components.schemas;
 
-      const schemaIdentifier = this.operation().message.payload.name.slice(
-        this.operation().message.payload.name.lastIndexOf("/") + 1
-      );
-      const schema = schemas.get(schemaIdentifier)!!;
-      this.defaultSchema = schema;
-      this.originalDefaultExample = schema.example || noExample;
-      this.exampleContentType =
-        this.operation().message.contentType.split("/").pop() || "json";
+      const payload = this.operation().message.payload;
+      if (payload.ts_type === "ref") {
+        const schemaIdentifier = payload.name.slice(
+          payload.name.lastIndexOf("/") + 1
+        );
+        const schema = schemas.get(schemaIdentifier)!!;
+        this.defaultSchema = schema;
+        this.originalDefaultExample = schema.example || noExample;
+      } else {
+        this.defaultSchema = payload;
+        this.defaultExample = payload.example || noExample;
+      }
 
       const headersSchemaIdentifier = this.operation().message.headers.name;
       this.headers = schemas.get(headersSchemaIdentifier)!!;
