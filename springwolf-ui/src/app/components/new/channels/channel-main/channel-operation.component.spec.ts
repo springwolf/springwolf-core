@@ -40,8 +40,11 @@ describe("ChannelOperationComponent", () => {
   });
 
   it("should render the component and data", () => {
+    expect(screen.getByText(mockData.operation.channelName)).toBeTruthy();
+    expect(screen.getByText(mockData.operation.message.title)).toBeTruthy();
     expect(
-      screen.getByText(mockData.operation.message.description!!)
+      screen.getByText(mockData.operation.message.contentType)
     ).toBeTruthy();
+    expect(screen.getByText(mockData.operation.servers[0].name)).toBeTruthy();
   });
 });
