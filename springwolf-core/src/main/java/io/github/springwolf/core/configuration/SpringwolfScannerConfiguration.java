@@ -14,14 +14,17 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBind
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScannerAdapter;
+import io.github.springwolf.core.asyncapi.scanners.channels.annotations.AsyncAnnotationClassLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.AsyncAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
+import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
+import io.github.springwolf.core.asyncapi.scanners.operations.annotations.AsyncAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.AsyncAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -76,7 +79,7 @@ public class SpringwolfScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-    public ChannelsScanner asyncListenerAnnotationChannelScanner(
+    public ChannelsScanner asyncListenerMethodLevelAnnotationChannelScanner(
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
@@ -102,7 +105,33 @@ public class SpringwolfScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-    public OperationsScanner asyncListenerAnnotationOperationScanner(
+    public ChannelsScanner asyncListenerClassLevelAnnotationChannelScanner(
+            SpringwolfClassScanner springwolfClassScanner,
+            ComponentsService componentsService,
+            AsyncApiDocketService asyncApiDocketService,
+            PayloadAsyncOperationService payloadService,
+            List<OperationBindingProcessor> operationBindingProcessors,
+            List<MessageBindingProcessor> messageBindingProcessors,
+            StringValueResolverProxy resolver) {
+        val strategy = new AsyncAnnotationClassLevelChannelsScanner<>(
+                buildAsyncListenerAnnotationProvider(),
+                componentsService,
+                asyncApiDocketService,
+                payloadService,
+                operationBindingProcessors,
+                messageBindingProcessors,
+                resolver);
+
+        return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.ASYNC_ANNOTATION)
+    public OperationsScanner asyncListenerMethodLevelAnnotationOperationScanner(
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             PayloadAsyncOperationService payloadService,
@@ -124,11 +153,38 @@ public class SpringwolfScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.ASYNC_ANNOTATION)
+    public OperationsScanner asyncListenerClassLevelListenerAnnotationOperationsScanner(
+            SpringwolfClassScanner springwolfClassScanner,
+            ComponentsService componentsService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
+            List<OperationBindingProcessor> operationBindingProcessors,
+            List<MessageBindingProcessor> messageBindingProcessors,
+            StringValueResolverProxy resolver,
+            List<OperationCustomizer> operationCustomizers) {
+        AsyncAnnotationClassLevelOperationsScanner<AsyncListener> strategy =
+                new AsyncAnnotationClassLevelOperationsScanner<>(
+                        AsyncListener.class,
+                        buildAsyncListenerAnnotationProvider(),
+                        operationBindingProcessors,
+                        new AsyncAnnotationMessageService(
+                                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver),
+                        operationCustomizers,
+                        resolver);
+
+        return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
             name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-    public ChannelsScanner asyncPublisherChannelAnnotationScanner(
+    public ChannelsScanner asyncPublisherClassLevelChannelAnnotationScanner(
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
@@ -154,7 +210,33 @@ public class SpringwolfScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
-    public OperationsScanner asyncPublisherOperationAnnotationScanner(
+    public ChannelsScanner asyncPublisherClassLevelAnnotationChannelScanner(
+            SpringwolfClassScanner springwolfClassScanner,
+            ComponentsService componentsService,
+            AsyncApiDocketService asyncApiDocketService,
+            PayloadAsyncOperationService payloadService,
+            List<OperationBindingProcessor> operationBindingProcessors,
+            List<MessageBindingProcessor> messageBindingProcessors,
+            StringValueResolverProxy resolver) {
+        val strategy = new AsyncAnnotationClassLevelChannelsScanner<>(
+                buildAsyncPublisherAnnotationProvider(),
+                componentsService,
+                asyncApiDocketService,
+                payloadService,
+                operationBindingProcessors,
+                messageBindingProcessors,
+                resolver);
+
+        return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.ASYNC_ANNOTATION)
+    public OperationsScanner asyncPublisherClassLevelOperationAnnotationScanner(
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             PayloadAsyncOperationService payloadService,
@@ -170,6 +252,33 @@ public class SpringwolfScannerConfiguration {
                 messageBindingProcessors,
                 customizers,
                 resolver);
+
+        return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.ASYNC_ANNOTATION)
+    public OperationsScanner asyncPublisherClassLevelListenerAnnotationOperationsScanner(
+            SpringwolfClassScanner springwolfClassScanner,
+            ComponentsService componentsService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
+            List<OperationBindingProcessor> operationBindingProcessors,
+            List<MessageBindingProcessor> messageBindingProcessors,
+            StringValueResolverProxy resolver,
+            List<OperationCustomizer> operationCustomizers) {
+        AsyncAnnotationClassLevelOperationsScanner<AsyncPublisher> strategy =
+                new AsyncAnnotationClassLevelOperationsScanner<>(
+                        AsyncPublisher.class,
+                        buildAsyncPublisherAnnotationProvider(),
+                        operationBindingProcessors,
+                        new AsyncAnnotationMessageService(
+                                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver),
+                        operationCustomizers,
+                        resolver);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }

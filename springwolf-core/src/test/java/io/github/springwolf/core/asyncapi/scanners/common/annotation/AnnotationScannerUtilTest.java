@@ -24,7 +24,7 @@ class AnnotationScannerUtilTest {
                             ClassWithMethodAnnotation.class,
                             ClassAnnotation.class,
                             MethodAnnotation.class,
-                            (c, m) -> m.stream())
+                            (c, m) -> m.stream().map(MethodAndAnnotation::method))
                     .toList();
 
             assertThat(methods)
@@ -38,7 +38,7 @@ class AnnotationScannerUtilTest {
                             ClassWithMethodAnnotation.class,
                             ClassAnnotation.class,
                             AllMethods.class,
-                            (c, m) -> m.stream())
+                            (c, m) -> m.stream().map(MethodAndAnnotation::method))
                     .toList();
 
             assertThat(methods)
@@ -49,24 +49,24 @@ class AnnotationScannerUtilTest {
         }
 
         @Test
-        void findNoRelevantMethodsOnClassWithMissingClassAnnotation() throws NoSuchMethodException {
+        void findNoRelevantMethodsOnClassWithMissingClassAnnotation() {
             List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
                             ClassWithoutClassAnnotation.class,
                             ClassAnnotation.class,
                             MethodAnnotation.class,
-                            (c, m) -> m.stream())
+                            (c, m) -> m.stream().map(MethodAndAnnotation::method))
                     .toList();
 
             assertThat(methods).isEmpty();
         }
 
         @Test
-        void findNoAllMethodsOnClassWithMissingClassAnnotation() throws NoSuchMethodException {
+        void findNoAllMethodsOnClassWithMissingClassAnnotation() {
             List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
                             ClassWithoutClassAnnotation.class,
                             ClassAnnotation.class,
                             AllMethods.class,
-                            (c, m) -> m.stream())
+                            (c, m) -> m.stream().map(MethodAndAnnotation::method))
                     .toList();
 
             assertThat(methods).isEmpty();

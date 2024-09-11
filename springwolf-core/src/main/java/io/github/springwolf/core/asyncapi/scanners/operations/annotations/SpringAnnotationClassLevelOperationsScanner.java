@@ -8,6 +8,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
@@ -22,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -64,15 +66,20 @@ public class SpringAnnotationClassLevelOperationsScanner<
                 clazz, classAnnotationClass, methodAnnotationClass, this::mapClassToOperation);
     }
 
-    private Stream<Map.Entry<String, Operation>> mapClassToOperation(Class<?> component, Set<Method> annotatedMethods) {
+    private Stream<Map.Entry<String, Operation>> mapClassToOperation(
+            Class<?> component, Set<MethodAndAnnotation<MethodAnnotation>> annotatedMethods) {
         ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
 
         String channelName = bindingFactory.getChannelName(classAnnotation);
-        String operationId = StringUtils.joinWith(
-                "_", ReferenceUtil.toValidId(channelName), OperationAction.RECEIVE, component.getSimpleName());
+        String channelId = ReferenceUtil.toValidId(channelName);
+        String operationId =
+                StringUtils.joinWith("_", channelId, OperationAction.RECEIVE.type, component.getSimpleName());
 
-        Operation operation = springAnnotationOperationsService.buildOperation(classAnnotation, annotatedMethods);
-        annotatedMethods.forEach(method -> customizers.forEach(customizer -> customizer.customize(operation, method)));
+        Set<Method> methods =
+                annotatedMethods.stream().map(MethodAndAnnotation::method).collect(Collectors.toSet());
+        Operation operation = springAnnotationOperationsService.buildOperation(classAnnotation, methods);
+        annotatedMethods.forEach(
+                method -> customizers.forEach(customizer -> customizer.customize(operation, method.method())));
         return Stream.of(Map.entry(operationId, operation));
     }
 }

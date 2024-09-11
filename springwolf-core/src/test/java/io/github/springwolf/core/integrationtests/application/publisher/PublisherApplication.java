@@ -16,6 +16,11 @@ public class PublisherApplication {
         return new Publisher();
     }
 
+    @Bean
+    public ClassPublisher classPublisher() {
+        return new ClassPublisher();
+    }
+
     static class Publisher {
         @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel"))
         public void publish(String payload) {}
@@ -28,5 +33,10 @@ public class PublisherApplication {
 
         @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel"))
         public void publish4(List<ListenerApplication.Foo> payload) {}
+    }
+
+    @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-class-channel"))
+    static class ClassPublisher {
+        public void publish(Integer payload) {}
     }
 }

@@ -17,22 +17,41 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.StringValueResolver;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AsyncAnnotationOperationService<MethodAnnotation extends Annotation> {
+public class AsyncAnnotationOperationService<Annotation extends java.lang.annotation.Annotation> {
 
-    private final AsyncAnnotationProvider<MethodAnnotation> asyncAnnotationProvider;
+    private final AsyncAnnotationProvider<Annotation> asyncAnnotationProvider;
     private final List<OperationBindingProcessor> operationBindingProcessors;
     private final StringValueResolver resolver;
     private final AsyncAnnotationMessageService asyncAnnotationMessageService;
 
     public Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelId) {
+        MessageObject message = asyncAnnotationMessageService.buildMessage(asyncOperation, method);
+        List<MessageReference> messages = List.of(MessageReference.toChannelMessage(channelId, message));
+
+        return buildOperation(asyncOperation, method, channelId, messages);
+    }
+
+    public Operation buildOperation(AsyncOperation asyncOperation, Set<Method> methods, String channelId) {
+        Method method = methods.stream().findFirst().orElseThrow();
+        List<MessageReference> messages = methods.stream()
+                .map(m -> asyncAnnotationMessageService.buildMessage(asyncOperation, m))
+                .map(m -> MessageReference.toChannelMessage(channelId, m))
+                .collect(Collectors.toList());
+
+        return buildOperation(asyncOperation, method, channelId, messages);
+    }
+
+    private Operation buildOperation(
+            AsyncOperation asyncOperation, Method method, String channelId, List<MessageReference> messages) {
         String description = this.resolver.resolveStringValue(asyncOperation.description());
         if (StringUtils.isBlank(description)) {
             description = "Auto-generated description";
@@ -46,14 +65,13 @@ public class AsyncAnnotationOperationService<MethodAnnotation extends Annotation
         Map<String, OperationBinding> operationBinding =
                 AsyncAnnotationUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        MessageObject message = asyncAnnotationMessageService.buildMessage(asyncOperation, method);
 
         return Operation.builder()
                 .channel(ChannelReference.fromChannel(channelId))
                 .action(this.asyncAnnotationProvider.getOperationType())
                 .description(description)
                 .title(operationTitle)
-                .messages(List.of(MessageReference.toChannelMessage(channelId, message)))
+                .messages(messages)
                 .bindings(opBinding)
                 .build();
     }

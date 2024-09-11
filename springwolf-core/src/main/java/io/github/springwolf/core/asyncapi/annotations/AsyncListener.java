@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  * Maintainer node: move to io.github.springwolf.core.asyncapi.annotation
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+@Target(value = {ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Repeatable(AsyncListeners.class)
 @Inherited
 public @interface AsyncListener {

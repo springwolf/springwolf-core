@@ -15,6 +15,11 @@ public class ListenerApplication {
         return new Listener();
     }
 
+    @Bean
+    public ClassListener classListener() {
+        return new ClassListener();
+    }
+
     static class Listener {
         @AsyncListener(operation = @AsyncOperation(channelName = "listener-channel"))
         public void listen(String payload) {}
@@ -32,4 +37,9 @@ public class ListenerApplication {
     public record Foo(Bar aFieldInFooRecord) {}
 
     public record Bar(String aFieldInBarRecord) {}
+
+    @AsyncListener(operation = @AsyncOperation(channelName = "listener-class-channel"))
+    static class ClassListener {
+        public void listen(Integer payload) {}
+    }
 }

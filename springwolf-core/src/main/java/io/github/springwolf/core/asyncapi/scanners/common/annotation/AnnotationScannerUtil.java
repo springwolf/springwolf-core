@@ -29,13 +29,12 @@ public class AnnotationScannerUtil {
             Class<?> clazz,
             Class<C> classAnnotationClass,
             Class<M> methodAnnotationClass,
-            BiFunction<Class<?>, Set<Method>, Stream<R>> transformer) {
+            BiFunction<Class<?>, Set<MethodAndAnnotation<M>>, Stream<R>> transformer) {
         log.debug("Scanning class \"{}\" for @\"{}\" annotation", clazz.getName(), classAnnotationClass.getName());
-        Set<Method> methods = Stream.of(clazz)
+        Set<MethodAndAnnotation<M>> methods = Stream.of(clazz)
                 .filter(it -> AnnotationScannerUtil.isClassRelevant(it, classAnnotationClass))
                 .peek(it -> log.debug("Mapping class \"{}\"", it.getName()))
                 .flatMap(it -> AnnotationScannerUtil.findAnnotatedMethods(it, methodAnnotationClass))
-                .map(MethodAndAnnotation::method)
                 .collect(Collectors.toSet());
 
         if (methods.isEmpty()) {
