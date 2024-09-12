@@ -1104,7 +1104,6 @@ components:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope"
       name: StringPayload
       title: StringEnvelope
-      description: ""
       bindings:
         kafka:
           bindingVersion: 0.5.0
@@ -1117,7 +1116,6 @@ components:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
       name: io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
       title: AnotherPayloadAvroDto
-      description: ""
       bindings:
         kafka:
           bindingVersion: 0.5.0
@@ -1166,7 +1164,6 @@ components:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.NestedPayloadDto"
       name: io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
       title: NestedPayloadDto
-      description: ""
       bindings:
         kafka:
           key:
@@ -1253,7 +1250,6 @@ components:
           $ref: "#/components/schemas/javax.money.MonetaryAmount"
       name: javax.money.MonetaryAmount
       title: MonetaryAmount
-      description: ""
       bindings:
         kafka:
           key:

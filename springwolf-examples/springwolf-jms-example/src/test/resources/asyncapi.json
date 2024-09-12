@@ -146,7 +146,6 @@
         },
         "name": "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
-        "description": "",
         "bindings": {
           "jms": {
             "bindingVersion": "0.0.1"

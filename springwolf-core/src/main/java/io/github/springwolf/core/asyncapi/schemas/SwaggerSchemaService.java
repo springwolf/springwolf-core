@@ -243,7 +243,7 @@ public class SwaggerSchemaService {
         Class<?> clazz = javaType.getRawClass();
         if (payloadSchema != null) {
             var schemaAnnotation = clazz.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
-            if (schemaAnnotation != null) {
+            if (schemaAnnotation != null && StringUtils.isNotBlank(schemaAnnotation.description())) {
                 payloadSchema.setDescription(schemaAnnotation.description());
             }
         }

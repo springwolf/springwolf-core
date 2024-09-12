@@ -103,11 +103,16 @@ public abstract class AsyncAnnotationScanner<A extends Annotation> implements Em
 
         String description = operationData.message().description();
         if (StringUtils.isBlank(description) && payloadSchema.payload() instanceof SchemaObject) {
-            description = ((SchemaObject) payloadSchema.payload()).getDescription();
+            String payloadDescription = ((SchemaObject) payloadSchema.payload()).getDescription();
+            if (StringUtils.isNotBlank(payloadDescription)) {
+                description = payloadDescription;
+            }
         }
         if (StringUtils.isNotBlank(description)) {
             description = this.resolver.resolveStringValue(description);
             description = TextUtils.trimIndent(description);
+        } else {
+            description = null;
         }
 
         var builder = MessageObject.builder()
