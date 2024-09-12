@@ -270,7 +270,7 @@ export class AsyncApiMapperService {
               title: message.title,
               description: message.description,
               contentType: message.contentType || defaultContentType,
-              payload: this.mapPayload(message.payload.schema),
+              payload: this.mapPayload(message.name, message.payload.schema),
               headers: {
                 ts_type: "ref",
                 name: headerName,
@@ -288,6 +288,7 @@ export class AsyncApiMapperService {
   }
 
   private mapPayload(
+    payloadName: string,
     schema: { $ref: string } | ServerAsyncApiSchema
   ): Message["payload"] {
     if ("$ref" in schema) {
@@ -301,7 +302,7 @@ export class AsyncApiMapperService {
       };
     }
 
-    return this.mapSchemaObj(schema.title || schema.type, schema, {});
+    return this.mapSchemaObj(payloadName, schema, {});
   }
 
   private mapServerAsyncApiMessageBindings(

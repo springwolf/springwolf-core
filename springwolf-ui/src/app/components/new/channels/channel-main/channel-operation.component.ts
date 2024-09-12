@@ -61,10 +61,12 @@ export class ChannelOperationComponent implements OnInit {
         );
         const schema = schemas.get(schemaIdentifier)!!;
         this.defaultSchema = schema;
-        this.originalDefaultExample = schema.example || noExample;
+        this.defaultExample = schema.example || noExample;
+        this.originalDefaultExample = this.defaultExample;
       } else {
         this.defaultSchema = payload;
         this.defaultExample = payload.example || noExample;
+        this.originalDefaultExample = this.defaultExample;
       }
 
       const headersSchemaIdentifier = this.operation().message.headers.name;

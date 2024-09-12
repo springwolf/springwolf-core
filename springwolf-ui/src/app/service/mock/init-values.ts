@@ -8,7 +8,7 @@ import { Info } from "../../models/info.model";
 
 // TODO: are the init values needed?
 export const initExample = new Example("init");
-export const noExample = new Example("no-example-found");
+export const noExample = new Example("");
 export const initBindings: Bindings = {};
 
 export const initInfo: Info = {
