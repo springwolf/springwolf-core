@@ -1423,6 +1423,28 @@
           "type": "object"
         }
       },
+      "java.lang.Integer": {
+        "type": "integer",
+        "format": "int32",
+        "examples": [
+          0
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "java.lang.String": {
+        "type": "string",
+        "examples": [
+          "\"string\""
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "type": "string"
+        }
+      },
       "javax.money.MonetaryAmount": {
         "type": "object",
         "properties": {
@@ -1667,7 +1689,10 @@
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "examples": [
+              0
+            ]
           }
         },
         "name": "java.lang.Integer",
@@ -1685,7 +1710,10 @@
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "\"string\""
+            ]
           }
         },
         "name": "java.lang.String",

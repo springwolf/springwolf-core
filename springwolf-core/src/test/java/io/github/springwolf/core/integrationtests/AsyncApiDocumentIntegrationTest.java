@@ -58,6 +58,7 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
+                            "java.lang.String",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Bar",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
 
@@ -116,6 +117,7 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
+                            "java.lang.String",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Bar",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
 

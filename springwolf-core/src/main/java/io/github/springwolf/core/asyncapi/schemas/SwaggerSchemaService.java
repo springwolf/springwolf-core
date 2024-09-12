@@ -118,6 +118,7 @@ public class SwaggerSchemaService {
         } else {
             Map<String, Schema> preProcessSchemas = new LinkedHashMap<>(resolvedSchema.referencedSchemas);
             Schema payloadSchema = resolvedSchema.schema;
+            preProcessSchemas.putIfAbsent(getNameFromType(type), payloadSchema);
             preProcessSchemas(payloadSchema, preProcessSchemas, type);
             HashMap<String, Schema> postProcessSchemas = new HashMap<>(preProcessSchemas);
             postProcessSchema(preProcessSchemas, postProcessSchemas, actualContentType);
@@ -330,10 +331,12 @@ public class SwaggerSchemaService {
     }
 
     private void postProcessSchema(Schema schema, Map<String, Schema> schemas, String contentType) {
+        boolean schemasHadEntries = !schemas.isEmpty();
         for (SchemasPostProcessor processor : schemaPostProcessors) {
             processor.process(schema, schemas, contentType);
 
-            if (!schemas.containsValue(schema)) {
+            if (schemasHadEntries && !schemas.containsValue(schema)) {
+                // If the post-processor removed the schema, we can stop processing
                 break;
             }
         }
@@ -341,11 +344,13 @@ public class SwaggerSchemaService {
 
     private void postProcessSchema(
             Map<String, Schema> preProcess, Map<String, Schema> postProcess, String contentType) {
+        boolean schemasHadEntries = !postProcess.isEmpty();
         for (Schema schema : preProcess.values()) {
             for (SchemasPostProcessor processor : schemaPostProcessors) {
                 processor.process(schema, postProcess, contentType);
 
-                if (!postProcess.containsValue(schema)) {
+                if (schemasHadEntries && !postProcess.containsValue(schema)) {
+                    // If the post-processor removed the schema, we can stop processing
                     break;
                 }
             }
