@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -45,6 +46,7 @@ public class ApiSystemTest {
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withExposedService(APP_NAME, APP_PORT)
+            .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
             .withEnv(ENV)
             .withLogConsumer(APP_NAME, l -> log.debug("APP: {}", l.getUtf8StringWithoutLineEnding()));
 
