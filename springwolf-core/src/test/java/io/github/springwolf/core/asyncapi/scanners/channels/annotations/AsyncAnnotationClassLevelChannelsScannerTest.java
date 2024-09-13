@@ -10,7 +10,8 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
@@ -24,7 +25,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
@@ -72,8 +72,7 @@ class AsyncAnnotationClassLevelChannelsScannerTest {
             new SwaggerSchemaService(emptyList(), emptyList(), swaggerSchemaUtil, properties);
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
-    private final TypeToClassConverter typeToClassConverter = new TypeToClassConverter(properties);
-    private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(typeToClassConverter);
+    private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(properties);
     private final PayloadService payloadService = new PayloadService(componentsService, properties);
     private final PayloadAsyncOperationService payloadAsyncOperationService =
             new PayloadAsyncOperationService(payloadClassExtractor, payloadService);
@@ -125,16 +124,19 @@ class AsyncAnnotationClassLevelChannelsScannerTest {
 
         // Then the returned collection contains the channel
         MessagePayload stringPayload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(String.class.getName()))
+                .schema(SchemaObject.builder().type(SchemaType.STRING).build())
                 .build());
         MessagePayload integerPayload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(Number.class.getName()))
+                .schema(SchemaObject.builder()
+                        .type(SchemaType.INTEGER)
+                        .format("int32")
+                        .build())
                 .build());
 
         MessageObject stringMessage = MessageObject.builder()
                 .messageId(String.class.getName())
                 .name(String.class.getName())
-                .title(String.class.getSimpleName())
+                .title("string")
                 .description(null)
                 .payload(stringPayload)
                 .headers(MessageHeaders.of(
@@ -142,9 +144,9 @@ class AsyncAnnotationClassLevelChannelsScannerTest {
                 .bindings(EMPTY_MAP)
                 .build();
         MessageObject integerMessage = MessageObject.builder()
-                .messageId(Number.class.getName())
-                .name(Number.class.getName())
-                .title(Integer.class.getSimpleName())
+                .messageId(Integer.class.getName())
+                .name(Integer.class.getName())
+                .title("integer")
                 .description(null)
                 .payload(integerPayload)
                 .headers(MessageHeaders.of(
