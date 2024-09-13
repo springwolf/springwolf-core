@@ -87,12 +87,9 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Element startObject(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Object name must not be empty");
-        }
-
-        return nodeStack.push(document.createElement(name));
+    public Element startObject(Optional<String> name) {
+        return nodeStack.push(document.createElement(name.orElseThrow(
+                () -> new SchemaWalker.ExampleGeneratingException("There is no name set for Schema"))));
     }
 
     @Override
@@ -198,7 +195,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node getExampleOrNull(String fieldName, Schema schema, Object example) {
+    public Node getExampleOrNull(Optional<String> fieldName, Schema schema, Object example) {
         String name = getCacheKey(schema);
 
         if (example instanceof Node) {
@@ -207,7 +204,10 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
         if (exampleCache.containsKey(name)) {
             Node oldElement = exampleCache.get(name);
-            Node newElement = modifyElementFromCacheIfNeeded(oldElement, fieldName);
+            Node newElement = modifyElementFromCacheIfNeeded(
+                    oldElement,
+                    fieldName.orElseThrow(
+                            () -> new SchemaWalker.ExampleGeneratingException("There is no name set for Schema")));
             return this.document.importNode(newElement, true);
         }
 
