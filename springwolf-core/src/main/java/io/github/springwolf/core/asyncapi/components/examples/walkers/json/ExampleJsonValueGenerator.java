@@ -97,7 +97,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode getExampleOrNull(String fieldName, Schema schema, Object example) {
+    public JsonNode getExampleOrNull(Optional<String> fieldName, Schema schema, Object example) {
         if (example instanceof JsonNode) {
             return (JsonNode) example;
         }
@@ -106,7 +106,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode startObject(String name) {
+    public JsonNode startObject(Optional<String> name) {
         return objectMapper.createObjectNode();
     }
 

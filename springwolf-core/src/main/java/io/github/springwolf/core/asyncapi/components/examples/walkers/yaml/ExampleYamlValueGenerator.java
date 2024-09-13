@@ -71,7 +71,7 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode startObject(String name) {
+    public JsonNode startObject(Optional<String> name) {
         return this.exampleJsonValueGenerator.startObject(name);
     }
 
@@ -116,7 +116,7 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode getExampleOrNull(String fieldName, Schema schema, Object example) {
+    public JsonNode getExampleOrNull(Optional<String> fieldName, Schema schema, Object example) {
         return this.exampleJsonValueGenerator.getExampleOrNull(fieldName, schema, example);
     }
 }

@@ -44,7 +44,7 @@ public interface ExampleValueGenerator<T, R> {
 
     Optional<T> createUnknownSchemaStringFormatExample(String schemaFormat);
 
-    T startObject(String name);
+    T startObject(Optional<String> name);
 
     default void endObject() {}
 
@@ -54,5 +54,5 @@ public interface ExampleValueGenerator<T, R> {
 
     T createRaw(Object exampleValueString);
 
-    T getExampleOrNull(String fieldName, Schema schema, Object example);
+    T getExampleOrNull(Optional<String> fieldName, Schema schema, Object example);
 }

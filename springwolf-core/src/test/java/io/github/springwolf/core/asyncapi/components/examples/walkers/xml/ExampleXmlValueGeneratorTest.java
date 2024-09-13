@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -33,11 +35,13 @@ class ExampleXmlValueGeneratorTest {
                 .get();
         generator.prepareForSerialization(schema1, example1);
 
-        Node cachedExample1 = generator.getExampleOrNull("fieldName1", schema1, "does-not-matter-for-test-1");
+        Node cachedExample1 =
+                generator.getExampleOrNull(Optional.of("fieldName1"), schema1, "does-not-matter-for-test-1");
 
         // when
         generator.initialize();
-        Node exampleFromCache = generator.getExampleOrNull("fieldName2", schema2, "does-not-matter-for-test-2");
+        Node exampleFromCache =
+                generator.getExampleOrNull(Optional.of("fieldName2"), schema2, "does-not-matter-for-test-2");
 
         // then
         assertThat(exampleFromCache).isNotEqualTo(cachedExample1);
@@ -62,11 +66,13 @@ class ExampleXmlValueGeneratorTest {
         Node example1 = generator.createRaw("<xml><value>aValue</value></xml>");
         generator.prepareForSerialization(schema1, example1);
 
-        Node cachedExample1 = generator.getExampleOrNull("fieldName1", schema1, "does-not-matter-for-test-1");
+        Node cachedExample1 =
+                generator.getExampleOrNull(Optional.of("fieldName1"), schema1, "does-not-matter-for-test-1");
 
         // when
         generator.initialize();
-        Node exampleFromCache = generator.getExampleOrNull("fieldName2", schema2, "does-not-matter-for-test-2");
+        Node exampleFromCache =
+                generator.getExampleOrNull(Optional.of("fieldName2"), schema2, "does-not-matter-for-test-2");
 
         // then
         assertThat(((Element) cachedExample1).getTagName()).isEqualTo("fieldName1");
@@ -90,7 +96,7 @@ class ExampleXmlValueGeneratorTest {
         generator.prepareForSerialization(schema1, example1);
 
         generator.initialize();
-        Node exampleFromCache = generator.getExampleOrNull("fieldName", schema2, "example-string");
+        Node exampleFromCache = generator.getExampleOrNull(Optional.of("fieldName"), schema2, "example-string");
 
         assertThat(exampleFromCache).isNull();
     }
