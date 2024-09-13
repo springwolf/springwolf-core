@@ -14,6 +14,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Operat
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.AmqpBindingFactory;
+import io.github.springwolf.plugins.amqp.asyncapi.scanners.channels.RabbitQueueBeanScanner;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.common.headers.AsyncHeadersForAmqpBuilder;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
@@ -157,5 +158,15 @@ public class SpringwolfAmqpScannerConfiguration {
                         componentsService);
 
         return new SpringAnnotationOperationsScanner(springwolfClassScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @Order(value = ChannelPriority.AUTO_DISCOVERED)
+    public RabbitQueueBeanScanner rabbitQueueBeanScanner(List<Queue> queues) {
+        return new RabbitQueueBeanScanner(queues);
     }
 }

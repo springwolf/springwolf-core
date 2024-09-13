@@ -258,7 +258,7 @@ export class AsyncApiMapperService {
           "message of channel " + channelName,
           () => {
             const messageId = this.resolveRefId(operationMessage.$ref);
-            const channelMessage = channel.messages[messageId];
+            const channelMessage = channel.messages!![messageId];
             const channelMessageId = this.resolveRefId(channelMessage.$ref);
             const message = messages[channelMessageId];
 

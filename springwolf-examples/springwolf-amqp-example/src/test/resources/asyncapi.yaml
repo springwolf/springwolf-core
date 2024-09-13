@@ -1,0 +1,406 @@
+asyncapi: 3.0.0
+info:
+  title: Springwolf example project - AMQP
+  version: 1.0.0
+  description: Springwolf example project to demonstrate springwolfs abilities
+  contact:
+    name: springwolf
+    url: https://github.com/springwolf/springwolf-core
+    email: example@example.com
+    x-phone: +49 123 456789
+  license:
+    name: Apache License 2.0
+    x-desc: some description
+  x-api-audience: company-internal
+  x-generator: springwolf
+defaultContentType: application/json
+servers:
+  amqp-server:
+    host: amqp:5672
+    protocol: amqp
+channels:
+  '#':
+    address: "#"
+    messages:
+      io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+      io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+    bindings:
+      amqp:
+        is: routingKey
+        exchange:
+          name: CRUD-topic-exchange-1
+          type: topic
+          durable: true
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  another-queue:
+    address: another-queue
+    messages:
+      io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: another-queue
+          durable: false
+          exclusive: false
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  example-bindings-queue:
+    address: example-bindings-queue
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: example-bindings-queue
+          durable: false
+          exclusive: false
+          autoDelete: true
+          vhost: /
+        bindingVersion: 0.3.0
+  example-queue:
+    address: example-queue
+    messages:
+      io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: example-queue
+          durable: false
+          exclusive: false
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  example-topic-exchange:
+    address: example-topic-exchange
+    messages:
+      io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+  example-topic-routing-key:
+    address: example-topic-routing-key
+    messages:
+      io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+    bindings:
+      amqp:
+        is: routingKey
+        exchange:
+          name: example-topic-exchange
+          type: topic
+          durable: true
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  multi-payload-queue:
+    address: multi-payload-queue
+    messages:
+      io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+      io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: multi-payload-queue
+          durable: true
+          exclusive: false
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  queue-create:
+    address: queue-create
+    messages:
+      io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: queue-create
+          durable: true
+          exclusive: false
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  queue-delete:
+    address: queue-delete
+    messages:
+      io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: queue-delete
+          durable: true
+          exclusive: false
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  queue-read:
+    address: queue-read
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: queue-read
+          durable: false
+          exclusive: false
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+  queue-update:
+    address: queue-update
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: queue-update
+          durable: true
+          exclusive: false
+          autoDelete: false
+          vhost: /
+        bindingVersion: 0.3.0
+components:
+  schemas:
+    HeadersNotDocumented:
+      title: HeadersNotDocumented
+      type: object
+      properties: {}
+      description: "There can be headers, but they are not explicitly documented."
+      examples:
+        - {}
+    SpringRabbitListenerDefaultHeaders:
+      title: SpringRabbitListenerDefaultHeaders
+      type: object
+      properties: {}
+      examples:
+        - {}
+    io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto:
+      title: AnotherPayloadDto
+      type: object
+      properties:
+        example:
+          $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        foo:
+          type: string
+          description: Foo field
+          maxLength: 100
+          examples:
+            - bar
+      description: Another payload model
+      examples:
+        - example:
+            someEnum: FOO2
+            someLong: 5
+            someString: some string value
+          foo: bar
+      required:
+        - example
+    io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
+      title: ExamplePayloadDto
+      type: object
+      properties:
+        someEnum:
+          type: string
+          description: Some enum field
+          enum:
+            - FOO1
+            - FOO2
+            - FOO3
+          examples:
+            - FOO2
+        someLong:
+          type: integer
+          description: Some long field
+          format: int64
+          minimum: 0
+          examples:
+            - 5
+        someString:
+          type: string
+          description: Some string field
+          examples:
+            - some string value
+      description: Example payload model
+      examples:
+        - someEnum: FOO2
+          someLong: 5
+          someString: some string value
+      required:
+        - someEnum
+        - someString
+    io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
+      title: GenericPayloadDto
+      type: object
+      properties:
+        genericValue:
+          type: object
+          description: Generic Payload field
+      description: Generic payload model
+      examples:
+        - genericValue: {}
+      required:
+        - genericValue
+  messages:
+    io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto:
+      headers:
+        $ref: "#/components/schemas/HeadersNotDocumented"
+      payload:
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+      name: io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto
+      title: AnotherPayloadDto
+      description: Another payload model
+      bindings:
+        amqp:
+          bindingVersion: 0.3.0
+    io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
+      headers:
+        $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
+      payload:
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+      name: io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto
+      title: ExamplePayloadDto
+      bindings:
+        amqp:
+          bindingVersion: 0.3.0
+    io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
+      headers:
+        $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
+      payload:
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+      name: io.github.springwolf.examples.amqp.dtos.GenericPayloadDto
+      title: GenericPayloadDto
+      bindings:
+        amqp:
+          bindingVersion: 0.3.0
+operations:
+  '#_receive_bindingsRead':
+    action: receive
+    channel:
+      $ref: "#/channels/#"
+    bindings:
+      amqp:
+        expiration: 0
+        cc:
+          - "#"
+        bindingVersion: 0.3.0
+    messages:
+      - $ref: "#/channels/#/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+  '#_receive_bindingsUpdate':
+    action: receive
+    channel:
+      $ref: "#/channels/#"
+    bindings:
+      amqp:
+        expiration: 0
+        cc:
+          - "#"
+        bindingVersion: 0.3.0
+    messages:
+      - $ref: "#/channels/#/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+  another-queue_receive_receiveAnotherPayload:
+    action: receive
+    channel:
+      $ref: "#/channels/another-queue"
+    bindings:
+      amqp:
+        expiration: 0
+        cc:
+          - another-queue
+        bindingVersion: 0.3.0
+    messages:
+      - $ref: "#/channels/another-queue/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+  example-queue_receive_receiveExamplePayload:
+    action: receive
+    channel:
+      $ref: "#/channels/example-queue"
+    bindings:
+      amqp:
+        expiration: 0
+        cc:
+          - example-queue
+        bindingVersion: 0.3.0
+    messages:
+      - $ref: "#/channels/example-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+  example-topic-exchange_send_sendMessage:
+    action: send
+    channel:
+      $ref: "#/channels/example-topic-exchange"
+    title: example-topic-exchange_send
+    description: "Custom, optional description defined in the AsyncPublisher annotation"
+    bindings:
+      amqp:
+        expiration: 0
+        cc: []
+        priority: 0
+        deliveryMode: 1
+        mandatory: false
+        timestamp: false
+        ack: false
+        bindingVersion: 0.3.0
+    messages:
+      - $ref: "#/channels/example-topic-exchange/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+  example-topic-routing-key_receive_bindingsExample:
+    action: receive
+    channel:
+      $ref: "#/channels/example-topic-routing-key"
+    bindings:
+      amqp:
+        expiration: 0
+        cc:
+          - example-topic-routing-key
+        bindingVersion: 0.3.0
+    messages:
+      - $ref: "#/channels/example-topic-routing-key/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+  multi-payload-queue_receive_bindingsBeanExample:
+    action: receive
+    channel:
+      $ref: "#/channels/multi-payload-queue"
+    bindings:
+      amqp:
+        expiration: 0
+        cc:
+          - multi-payload-queue
+        bindingVersion: 0.3.0
+    messages:
+      - $ref: "#/channels/multi-payload-queue/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+      - $ref: "#/channels/multi-payload-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+  queue-create_receive_queuesToDeclareCreate:
+    action: receive
+    channel:
+      $ref: "#/channels/queue-create"
+    bindings:
+      amqp:
+        expiration: 0
+        cc:
+          - queue-create
+        bindingVersion: 0.3.0
+    messages:
+      - $ref: "#/channels/queue-create/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+  queue-delete_receive_queuesToDeclareDelete:
+    action: receive
+    channel:
+      $ref: "#/channels/queue-delete"
+    bindings:
+      amqp:
+        expiration: 0
+        cc:
+          - queue-delete
+        bindingVersion: 0.3.0
+    messages:
+      - $ref: "#/channels/queue-delete/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"

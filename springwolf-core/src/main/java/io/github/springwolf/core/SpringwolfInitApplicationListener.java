@@ -24,10 +24,10 @@ public class SpringwolfInitApplicationListener implements ApplicationListener<Ap
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         if (configProperties.getInitMode() == InitMode.BACKGROUND) {
-            log.debug("triggering background asyncapi creation..");
+            log.debug("Triggering background asyncapi creation");
             new Thread(asyncApiService::getAsyncAPI).start();
         } else {
-            log.debug("triggering asyncapi creation..");
+            log.debug("Triggering asyncapi creation");
             this.asyncApiService.getAsyncAPI();
         }
     }

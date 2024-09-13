@@ -12,7 +12,9 @@ import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
 import { PublisherService } from "../../../service/publisher.service";
 
 describe("ChannelMainComponent", () => {
-  const mockData = mockedExampleSchemaMapped.channelOperations[0];
+  const mockData = mockedExampleSchemaMapped.channelOperations
+    .slice(-1)
+    .pop()!!;
 
   beforeEach(async () => {
     mockedAsyncApiService.getAsyncApi.mockClear();
