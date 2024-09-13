@@ -28,7 +28,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
@@ -90,8 +89,7 @@ class AsyncAnnotationChannelsScannerTest {
             new SwaggerSchemaService(emptyList(), emptyList(), swaggerSchemaUtil, properties);
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
-    private final TypeToClassConverter typeToClassConverter = new TypeToClassConverter(properties);
-    private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(typeToClassConverter);
+    private final PayloadClassExtractor payloadClassExtractor = new PayloadClassExtractor(properties);
     private final PayloadService payloadService = new PayloadService(componentsService, properties);
     private final PayloadAsyncOperationService payloadAsyncOperationService =
             new PayloadAsyncOperationService(payloadClassExtractor, payloadService);
@@ -200,13 +198,13 @@ class AsyncAnnotationChannelsScannerTest {
 
         // Then the returned collection contains the channel
         MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
-                .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                .schema(SchemaReference.fromSchema(List.class.getSimpleName()))
                 .build());
 
         MessageObject message = MessageObject.builder()
-                .messageId(String.class.getName())
-                .name(String.class.getName())
-                .title(String.class.getSimpleName())
+                .messageId(List.class.getName())
+                .name(List.class.getName())
+                .title(List.class.getSimpleName())
                 .description(null)
                 .payload(payload)
                 .headers(MessageHeaders.of(MessageReference.toSchema("TestSchema")))
@@ -333,7 +331,7 @@ class AsyncAnnotationChannelsScannerTest {
                         @AsyncOperation(
                                 channelName = "${test.property.test-channel}",
                                 description = "${test.property.description}",
-                                payloadType = String.class,
+                                payloadType = List.class,
                                 servers = {"${test.property.server1}", "${test.property.server2}"},
                                 headers =
                                         @AsyncOperation.Headers(

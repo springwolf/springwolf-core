@@ -41,6 +41,7 @@
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoInterface" : {
     "discriminator" : "type",
+    "title" : "JsonTypeInfoInterface",
     "type" : "object",
     "properties" : {
       "type" : {
@@ -59,6 +60,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$JsonTypeTest$JsonTypeInfoPayloadDto" : {
+    "title" : "JsonTypeInfoPayloadDto",
     "type" : "object",
     "properties" : {
       "jsonTypeInfoInterface" : {

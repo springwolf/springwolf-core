@@ -59,22 +59,18 @@ function testPublishingEveryChannelItem() {
       const action = operation.action;
       const protocol = Object.keys(operation.bindings)[0];
       const channelName = operation.channel.$ref.split("/").pop();
-      const schemaType = messageReference.$ref.split("/").pop();
-      const payload = asyncApiDoc.components.messages[schemaType]?.title;
-      const payloadType = asyncApiDoc.components.messages[
-        schemaType
-      ]?.payload.schema.$ref
-        .split("/")
-        .pop();
+      const messageName = messageReference.$ref.split("/").pop();
+      const messageTitle = asyncApiDoc.components.messages[messageName]?.title;
+      const payloadName = messageName;
 
       if (
-        payload === "AnotherPayloadAvroDto" || // Avro publishing is not supported
-        payload === "XmlPayloadDto" || // Unable to create correct xml payload
-        payload === "YamlPayloadDto" || // Unable to create correct yaml payload
-        payload === "MonetaryAmount" || // Issue with either MonetaryAmount of ModelConverters
-        payload === "Message" || // Unable to instantiate ExamplePayloadProtobufDto$Message class
-        payload === "VehicleBase" || // Unable to publish abstract class for discriminator demo
-        payload === "GenericPayloadDto" || // Unable to publish generic payload (amqp)
+        messageTitle === "AnotherPayloadAvroDto" || // Avro publishing is not supported
+        messageTitle === "XmlPayloadDto" || // Unable to create correct xml payload
+        messageTitle === "YamlPayloadDto" || // Unable to create correct yaml payload
+        messageTitle === "MonetaryAmount" || // Issue with either MonetaryAmount of ModelConverters
+        messageTitle === "Message" || // Unable to instantiate ExamplePayloadProtobufDto$Message class
+        messageTitle === "VehicleBase" || // Unable to publish abstract class for discriminator demo
+        messageTitle === "GenericPayloadDto" || // Unable to publish generic payload (amqp)
         channelName === "#" || // Publishing through amqp exchange is not supported, see GH-366
         channelName === "example-topic-routing-key" // Publishing through amqp exchange is not supported, see GH-366
       ) {
@@ -82,14 +78,14 @@ function testPublishingEveryChannelItem() {
       }
 
       test(
-        action + " " + channelName + " with " + payload,
+        action + " " + channelName + " with " + messageTitle,
         async ({ page }) => {
           const channel = locateChannel(
             page,
             protocol,
             channelName,
             action,
-            payload
+            messageTitle
           );
           await channel.click();
 
@@ -108,14 +104,14 @@ function testPublishingEveryChannelItem() {
                   const found = dockerLogs.messages
                     .filter((m) => m.includes("Publishing to"))
                     .filter((m) => m.includes(channelName))
-                    .filter((m) => m.includes(payloadType)).length;
+                    .filter((m) => m.includes(payloadName)).length;
                   console.debug(
                     `Polling for publish message and found=${found}`
                   );
                   return found;
                 },
                 {
-                  message: `Expected publishing message in application logs in channel ${channelName} with type ${payloadType}`,
+                  message: `Expected publishing message in application logs in channel ${channelName} with type ${payloadName}`,
                 }
               )
               .toBeGreaterThanOrEqual(1);

@@ -34,8 +34,7 @@ describe("ChannelMainComponent", () => {
   });
 
   it("should render the component and data", () => {
-    expect(
-      screen.getByText(mockData.operation.message.description!!)
-    ).toBeTruthy();
+    expect(screen.getByText("Example")).toBeTruthy();
+    expect(screen.getByText("Message Binding")).toBeTruthy();
   });
 });

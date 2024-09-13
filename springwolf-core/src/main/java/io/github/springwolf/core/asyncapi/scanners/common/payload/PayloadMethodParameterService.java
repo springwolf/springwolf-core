@@ -6,6 +6,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.Paylo
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -14,7 +15,7 @@ public class PayloadMethodParameterService implements PayloadMethodService {
     private final PayloadService payloadService;
 
     public PayloadSchemaObject extractSchema(Method method) {
-        Optional<Class<?>> payloadType = payloadClassExtractor.extractFrom(method);
+        Optional<Type> payloadType = payloadClassExtractor.extractFrom(method);
 
         return payloadType.map(payloadService::buildSchema).orElseGet(payloadService::useUnusedPayload);
     }

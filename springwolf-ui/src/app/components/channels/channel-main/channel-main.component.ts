@@ -46,12 +46,19 @@ export class ChannelMainComponent implements OnInit {
   ngOnInit(): void {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       const schemas: Map<string, Schema> = asyncapi.components.schemas;
-      this.schemaIdentifier = this.operation().message.payload.name.slice(
-        this.operation().message.payload.name.lastIndexOf("/") + 1
-      );
-      this.schema = schemas.get(this.schemaIdentifier)!!;
 
-      this.defaultExample = this.schema.example || noExample;
+      const payload = this.operation().message.payload;
+      if (payload.ts_type === "ref") {
+        const schemaIdentifier = payload.name.slice(
+          payload.name.lastIndexOf("/") + 1
+        );
+        const schema = schemas.get(schemaIdentifier)!!;
+        this.schema = schema;
+        this.defaultExample = schema.example || noExample;
+      } else {
+        this.schema = payload;
+        this.defaultExample = payload.example || noExample;
+      }
       this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 1;
       this.defaultExampleType = this.operation().message.payload.name;
 

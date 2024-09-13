@@ -6,6 +6,8 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @SpringBootApplication
 public class ListenerApplication {
     @Bean
@@ -16,5 +18,18 @@ public class ListenerApplication {
     static class Listener {
         @AsyncListener(operation = @AsyncOperation(channelName = "listener-channel"))
         public void listen(String payload) {}
+
+        @AsyncListener(operation = @AsyncOperation(channelName = "listener-channel"))
+        public void listen2(List<String> payload) {}
+
+        @AsyncListener(operation = @AsyncOperation(channelName = "listener-channel"))
+        public void listen3(Foo payload) {}
+
+        @AsyncListener(operation = @AsyncOperation(channelName = "listener-channel"))
+        public void listen4(List<Foo> payload) {}
     }
+
+    public record Foo(Bar aFieldInFooRecord) {}
+
+    public record Bar(String aFieldInBarRecord) {}
 }

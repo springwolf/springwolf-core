@@ -6,7 +6,6 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +23,7 @@ class PayloadServiceTest {
         when(docket.getDefaultContentType()).thenReturn("application/json");
 
         String schemaName = "my-schema-name";
-        when(componentsService.resolvePayloadSchema(any(), any())).thenReturn(schemaName);
+        when(componentsService.getSchemaName(Integer.class)).thenReturn(schemaName);
 
         // when
         var result = payloadService.buildSchema(Integer.class);

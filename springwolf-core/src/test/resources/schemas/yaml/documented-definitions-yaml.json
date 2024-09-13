@@ -1,5 +1,6 @@
 {
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$DocumentedSimpleFoo" : {
+    "title" : "DocumentedSimpleFoo",
     "type" : "string",
     "properties" : {
       "bi" : {
@@ -57,6 +58,7 @@
     "required" : [ "dt", "f", "s" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SimpleFoo" : {
+    "title" : "SimpleFoo",
     "type" : "string",
     "properties" : {
       "b" : {
