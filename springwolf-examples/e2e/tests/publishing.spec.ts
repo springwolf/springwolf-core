@@ -60,7 +60,8 @@ function testPublishingEveryChannelItem() {
       const protocol = Object.keys(operation.bindings)[0];
       const channelName = operation.channel.$ref.split("/").pop();
       const messageName = messageReference.$ref.split("/").pop();
-      const messageTitle = asyncApiDoc.components.messages[messageName]?.title;
+      const messageTitle: string =
+        asyncApiDoc.components.messages[messageName]?.title;
       const payloadName = messageName;
 
       if (
@@ -70,7 +71,7 @@ function testPublishingEveryChannelItem() {
         messageTitle === "MonetaryAmount" || // Issue with either MonetaryAmount of ModelConverters
         messageTitle === "Message" || // Unable to instantiate ExamplePayloadProtobufDto$Message class
         messageTitle === "VehicleBase" || // Unable to publish abstract class for discriminator demo
-        messageTitle === "GenericPayloadDto" || // Unable to publish generic payload (amqp)
+        messageTitle.startsWith("GenericPayload") || // Unable to publish generic payload (amqp)
         channelName === "#" || // Publishing through amqp exchange is not supported, see GH-366
         channelName === "example-topic-routing-key" // Publishing through amqp exchange is not supported, see GH-366
       ) {
