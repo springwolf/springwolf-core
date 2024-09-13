@@ -24,8 +24,8 @@ channels:
     messages:
       io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
         $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
-      io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
-        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+      io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
     bindings:
       amqp:
         is: routingKey
@@ -118,8 +118,8 @@ channels:
   queue-create:
     address: queue-create
     messages:
-      io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
-        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+      io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String"
     bindings:
       amqp:
         is: queue
@@ -133,8 +133,8 @@ channels:
   queue-delete:
     address: queue-delete
     messages:
-      io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
-        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+      io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long:
+        $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long"
     bindings:
       amqp:
         is: queue
@@ -238,16 +238,43 @@ components:
       required:
         - someEnum
         - someString
-    io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
+    io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
       title: GenericPayloadDto
       type: object
       properties:
         genericValue:
-          type: object
+          $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+      description: Generic payload model
+      examples:
+        - genericValue:
+            someEnum: FOO2
+            someLong: 5
+            someString: some string value
+      required:
+        - genericValue
+    io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long:
+      title: GenericPayloadDto
+      type: object
+      properties:
+        genericValue:
+          type: integer
+          description: Generic Payload field
+          format: int64
+      description: Generic payload model
+      examples:
+        - genericValue: 0
+      required:
+        - genericValue
+    io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String:
+      title: GenericPayloadDto
+      type: object
+      properties:
+        genericValue:
+          type: string
           description: Generic Payload field
       description: Generic payload model
       examples:
-        - genericValue: {}
+        - genericValue: string
       required:
         - genericValue
   messages:
@@ -260,7 +287,6 @@ components:
           $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
       name: io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto
       title: AnotherPayloadDto
-      description: Another payload model
       bindings:
         amqp:
           bindingVersion: 0.3.0
@@ -276,15 +302,39 @@ components:
       bindings:
         amqp:
           bindingVersion: 0.3.0
-    io.github.springwolf.examples.amqp.dtos.GenericPayloadDto:
+    io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
       headers:
         $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
       payload:
         schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
         schema:
-          $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
-      name: io.github.springwolf.examples.amqp.dtos.GenericPayloadDto
-      title: GenericPayloadDto
+          $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+      name: io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto
+      title: GenericPayloadDtoExamplePayloadDto
+      bindings:
+        amqp:
+          bindingVersion: 0.3.0
+    io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long:
+      headers:
+        $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
+      payload:
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long"
+      name: io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long
+      title: GenericPayloadDtoLong
+      bindings:
+        amqp:
+          bindingVersion: 0.3.0
+    io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String:
+      headers:
+        $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
+      payload:
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String"
+      name: io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String
+      title: GenericPayloadDtoString
       bindings:
         amqp:
           bindingVersion: 0.3.0
@@ -312,7 +362,7 @@ operations:
           - "#"
         bindingVersion: 0.3.0
     messages:
-      - $ref: "#/channels/#/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+      - $ref: "#/channels/#/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
   another-queue_receive_receiveAnotherPayload:
     action: receive
     channel:
@@ -391,7 +441,7 @@ operations:
           - queue-create
         bindingVersion: 0.3.0
     messages:
-      - $ref: "#/channels/queue-create/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+      - $ref: "#/channels/queue-create/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String"
   queue-delete_receive_queuesToDeclareDelete:
     action: receive
     channel:
@@ -403,4 +453,4 @@ operations:
           - queue-delete
         bindingVersion: 0.3.0
     messages:
-      - $ref: "#/channels/queue-delete/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDto"
+      - $ref: "#/channels/queue-delete/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long"
