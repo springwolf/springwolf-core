@@ -4,6 +4,10 @@ const esModules = ['@angular', 'jsonpath-plus', '@stoplight', 'nimma', 'prism-co
 
 const config = {
   preset: 'jest-preset-angular',
+  reporters: [
+    "default",
+    "jest-junit"
+  ],
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   "modulePathIgnorePatterns": [
     "<rootDir>/build/"
