@@ -30,8 +30,8 @@ public class AsyncAnnotationOperationService<Annotation extends java.lang.annota
 
     private final AsyncAnnotationProvider<Annotation> asyncAnnotationProvider;
     private final List<OperationBindingProcessor> operationBindingProcessors;
-    private final StringValueResolver resolver;
     private final AsyncAnnotationMessageService asyncAnnotationMessageService;
+    private final StringValueResolver resolver;
 
     public Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelId) {
         MessageObject message = asyncAnnotationMessageService.buildMessage(asyncOperation, method);

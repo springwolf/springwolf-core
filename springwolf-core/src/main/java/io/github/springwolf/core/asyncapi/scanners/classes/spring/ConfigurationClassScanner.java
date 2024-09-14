@@ -18,7 +18,7 @@ public class ConfigurationClassScanner implements ClassScanner {
     public Set<Class<?>> scan() {
         return scanner.scan().stream()
                 // All Configurations are also Components
-                .filter((cls) -> AnnotationUtil.findAnnotation(Configuration.class, cls) != null)
+                .filter((cls) -> AnnotationUtil.findFirstAnnotation(Configuration.class, cls) != null)
                 .collect(Collectors.toSet());
     }
 }

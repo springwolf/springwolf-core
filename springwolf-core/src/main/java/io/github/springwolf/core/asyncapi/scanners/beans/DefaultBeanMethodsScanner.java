@@ -24,7 +24,7 @@ public class DefaultBeanMethodsScanner implements BeanMethodsScanner {
                 .map(Class::getDeclaredMethods)
                 .map(Arrays::asList)
                 .flatMap(List::stream)
-                .filter(method -> AnnotationUtil.findAnnotation(Bean.class, method) != null)
+                .filter(method -> AnnotationUtil.findFirstAnnotation(Bean.class, method) != null)
                 .collect(toSet());
     }
 }

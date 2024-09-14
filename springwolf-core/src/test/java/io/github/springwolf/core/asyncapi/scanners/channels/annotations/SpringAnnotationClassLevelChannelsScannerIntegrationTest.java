@@ -19,8 +19,10 @@ import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvid
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
@@ -91,11 +93,13 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
         scanner = new SpringAnnotationClassLevelChannelsScanner<>(
                 TestClassListener.class,
                 TestMethodListener.class,
-                this.bindingFactory,
-                new AsyncHeadersNotDocumented(),
-                payloadMethodService,
-                headerClassExtractor,
-                componentsService);
+                new SpringAnnotationMessagesService<>(
+                        this.bindingFactory,
+                        new AsyncHeadersNotDocumented(),
+                        payloadMethodService,
+                        headerClassExtractor,
+                        componentsService),
+                new SpringAnnotationChannelService<>(this.bindingFactory));
     }
 
     @Nested
@@ -103,8 +107,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentHasNoClassLevelRabbitListenerAnnotation() {
             // when
-            List<Map.Entry<String, ChannelObject>> channels =
-                    scanner.scan(ClassWithoutClassListener.class).toList();
+            List<ChannelObject> channels = scanner.scan(ClassWithoutClassListener.class);
 
             // then
             assertThat(channels).isEmpty();
@@ -122,8 +125,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentHasNoClassLevelRabbitListenerAnnotation() {
             // when
-            List<Map.Entry<String, ChannelObject>> channels =
-                    scanner.scan(ClassWithoutMethodListener.class).toList();
+            List<ChannelObject> channels = scanner.scan(ClassWithoutMethodListener.class);
 
             // then
             assertThat(channels).isEmpty();
@@ -141,11 +143,10 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentWithHiddenAnnotationOnClassLevel() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels =
-                    scanner.scan(ClassWithHiddenAnnotation.class).toList();
+            List<ChannelObject> channels = scanner.scan(ClassWithHiddenAnnotation.class);
 
             // then
-            assertThat(actualChannels).isEmpty();
+            assertThat(channels).isEmpty();
         }
 
         @TestClassListener
@@ -164,8 +165,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentWithOneMethodLevelAnnotation() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels =
-                    scanner.scan(ClassWithOneMethodLevelHandler.class).toList();
+            List<ChannelObject> channels = scanner.scan(ClassWithOneMethodLevelHandler.class);
 
             // then
             MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -189,7 +189,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannel));
+            assertThat(channels).containsExactly(expectedChannel);
         }
 
         @TestClassListener
@@ -208,8 +208,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentWithMultipleRabbitHandlerMethods() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels =
-                    scanner.scan(ClassWithMultipleMethodLevelHandlers.class).toList();
+            List<ChannelObject> channels = scanner.scan(ClassWithMultipleMethodLevelHandlers.class);
 
             // Then the returned collection contains the channel with message set to oneOf
             MessagePayload simpleFooPayload = MessagePayload.of(MultiFormatSchema.builder()
@@ -249,7 +248,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                             MessageReference.toComponentMessage(barMessage)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannel));
+            assertThat(channels).containsExactly(expectedChannel);
         }
 
         @TestClassListener

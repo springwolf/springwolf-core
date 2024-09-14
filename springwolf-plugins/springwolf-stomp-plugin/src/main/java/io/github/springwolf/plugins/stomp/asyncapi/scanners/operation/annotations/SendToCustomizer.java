@@ -23,7 +23,7 @@ public class SendToCustomizer implements OperationCustomizer {
 
     @Override
     public void customize(Operation operation, Method method) {
-        SendTo annotation = AnnotationUtil.findAnnotation(SendTo.class, method);
+        SendTo annotation = AnnotationUtil.findFirstAnnotation(SendTo.class, method);
         if (annotation != null) {
             String channelId = ReferenceUtil.toValidId(bindingFactory.getChannelName(annotation));
             String payloadName = payloadService.extractSchema(method).name();

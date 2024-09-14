@@ -20,7 +20,9 @@ import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanne
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.AsyncAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
+import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
@@ -83,18 +85,24 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
-            PayloadAsyncOperationService payloadService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors,
             StringValueResolverProxy resolver) {
-        val strategy = new AsyncAnnotationMethodLevelChannelsScanner<>(
-                buildAsyncListenerAnnotationProvider(),
-                componentsService,
-                asyncApiDocketService,
-                payloadService,
-                operationBindingProcessors,
-                messageBindingProcessors,
-                resolver);
+        val asyncAnnotationProvider = buildAsyncListenerAnnotationProvider();
+        AsyncAnnotationMessageService asyncAnnotationMessageService = new AsyncAnnotationMessageService(
+                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver);
+        AsyncAnnotationOperationService<AsyncListener> asyncAnnotationOperationService =
+                new AsyncAnnotationOperationService<>(
+                        asyncAnnotationProvider, operationBindingProcessors, asyncAnnotationMessageService, resolver);
+        val asyncAnnotationChannelService = new AsyncAnnotationChannelService<>(
+                asyncAnnotationProvider,
+                asyncAnnotationOperationService,
+                asyncAnnotationMessageService,
+                resolver,
+                asyncApiDocketService);
+        val strategy =
+                new AsyncAnnotationMethodLevelChannelsScanner<>(asyncAnnotationProvider, asyncAnnotationChannelService);
 
         return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -109,18 +117,24 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
-            PayloadAsyncOperationService payloadService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors,
             StringValueResolverProxy resolver) {
-        val strategy = new AsyncAnnotationClassLevelChannelsScanner<>(
-                buildAsyncListenerAnnotationProvider(),
-                componentsService,
-                asyncApiDocketService,
-                payloadService,
-                operationBindingProcessors,
-                messageBindingProcessors,
-                resolver);
+        AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider = buildAsyncListenerAnnotationProvider();
+        AsyncAnnotationMessageService asyncAnnotationMessageService = new AsyncAnnotationMessageService(
+                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver);
+        AsyncAnnotationOperationService<AsyncListener> asyncAnnotationOperationService =
+                new AsyncAnnotationOperationService<>(
+                        asyncAnnotationProvider, operationBindingProcessors, asyncAnnotationMessageService, resolver);
+        val asyncAnnotationChannelService = new AsyncAnnotationChannelService<>(
+                asyncAnnotationProvider,
+                asyncAnnotationOperationService,
+                asyncAnnotationMessageService,
+                resolver,
+                asyncApiDocketService);
+        val strategy =
+                new AsyncAnnotationClassLevelChannelsScanner<>(asyncAnnotationProvider, asyncAnnotationChannelService);
 
         return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -134,19 +148,20 @@ public class SpringwolfScannerConfiguration {
     public OperationsScanner asyncListenerMethodLevelAnnotationOperationScanner(
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
-            PayloadAsyncOperationService payloadService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors,
             List<OperationCustomizer> operationCustomizers,
             StringValueResolverProxy resolver) {
-        val strategy = new AsyncAnnotationMethodLevelOperationsScanner<>(
-                buildAsyncListenerAnnotationProvider(),
-                componentsService,
-                payloadService,
+        AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider = buildAsyncListenerAnnotationProvider();
+        val asyncAnnotationOperationService = new AsyncAnnotationOperationService<>(
+                asyncAnnotationProvider,
                 operationBindingProcessors,
-                messageBindingProcessors,
-                operationCustomizers,
+                new AsyncAnnotationMessageService(
+                        payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver),
                 resolver);
+        val strategy = new AsyncAnnotationMethodLevelOperationsScanner<>(
+                asyncAnnotationProvider, asyncAnnotationOperationService, operationCustomizers, resolver);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -165,15 +180,17 @@ public class SpringwolfScannerConfiguration {
             List<MessageBindingProcessor> messageBindingProcessors,
             StringValueResolverProxy resolver,
             List<OperationCustomizer> operationCustomizers) {
+        AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider = buildAsyncListenerAnnotationProvider();
+        AsyncAnnotationMessageService asyncAnnotationMessageService = new AsyncAnnotationMessageService(
+                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver);
+        val asyncAnnotationOperationService = new AsyncAnnotationOperationService<>(
+                asyncAnnotationProvider, operationBindingProcessors, asyncAnnotationMessageService, resolver);
         AsyncAnnotationClassLevelOperationsScanner<AsyncListener> strategy =
                 new AsyncAnnotationClassLevelOperationsScanner<>(
                         AsyncListener.class,
-                        buildAsyncListenerAnnotationProvider(),
-                        operationBindingProcessors,
-                        new AsyncAnnotationMessageService(
-                                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver),
-                        operationCustomizers,
-                        resolver);
+                        asyncAnnotationProvider,
+                        asyncAnnotationOperationService,
+                        operationCustomizers);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -188,18 +205,24 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
-            PayloadAsyncOperationService payloadService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors,
             StringValueResolverProxy resolver) {
-        val strategy = new AsyncAnnotationMethodLevelChannelsScanner<>(
-                buildAsyncPublisherAnnotationProvider(),
-                componentsService,
-                asyncApiDocketService,
-                payloadService,
-                operationBindingProcessors,
-                messageBindingProcessors,
-                resolver);
+        val asyncAnnotationProvider = buildAsyncPublisherAnnotationProvider();
+        AsyncAnnotationMessageService asyncAnnotationMessageService = new AsyncAnnotationMessageService(
+                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver);
+        AsyncAnnotationOperationService<AsyncPublisher> asyncAnnotationOperationService =
+                new AsyncAnnotationOperationService<>(
+                        asyncAnnotationProvider, operationBindingProcessors, asyncAnnotationMessageService, resolver);
+        val asyncAnnotationChannelService = new AsyncAnnotationChannelService<>(
+                asyncAnnotationProvider,
+                asyncAnnotationOperationService,
+                asyncAnnotationMessageService,
+                resolver,
+                asyncApiDocketService);
+        val strategy =
+                new AsyncAnnotationMethodLevelChannelsScanner<>(asyncAnnotationProvider, asyncAnnotationChannelService);
 
         return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -214,18 +237,24 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
             AsyncApiDocketService asyncApiDocketService,
-            PayloadAsyncOperationService payloadService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors,
             StringValueResolverProxy resolver) {
+        AsyncAnnotationProvider<AsyncPublisher> asyncAnnotationProvider = buildAsyncPublisherAnnotationProvider();
+        AsyncAnnotationMessageService asyncAnnotationMessageService = new AsyncAnnotationMessageService(
+                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver);
+        AsyncAnnotationOperationService<AsyncPublisher> asyncAnnotationOperationService =
+                new AsyncAnnotationOperationService<>(
+                        asyncAnnotationProvider, operationBindingProcessors, asyncAnnotationMessageService, resolver);
+        val asyncAnnotationChannelService = new AsyncAnnotationChannelService<>(
+                asyncAnnotationProvider,
+                asyncAnnotationOperationService,
+                asyncAnnotationMessageService,
+                resolver,
+                asyncApiDocketService);
         val strategy = new AsyncAnnotationClassLevelChannelsScanner<>(
-                buildAsyncPublisherAnnotationProvider(),
-                componentsService,
-                asyncApiDocketService,
-                payloadService,
-                operationBindingProcessors,
-                messageBindingProcessors,
-                resolver);
+                buildAsyncPublisherAnnotationProvider(), asyncAnnotationChannelService);
 
         return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -239,19 +268,21 @@ public class SpringwolfScannerConfiguration {
     public OperationsScanner asyncPublisherClassLevelOperationAnnotationScanner(
             SpringwolfClassScanner springwolfClassScanner,
             ComponentsService componentsService,
-            PayloadAsyncOperationService payloadService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
             List<OperationBindingProcessor> operationBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors,
             List<OperationCustomizer> customizers,
             StringValueResolverProxy resolver) {
-        val strategy = new AsyncAnnotationMethodLevelOperationsScanner<>(
-                buildAsyncPublisherAnnotationProvider(),
-                componentsService,
-                payloadService,
+
+        AsyncAnnotationProvider<AsyncPublisher> asyncAnnotationProvider = buildAsyncPublisherAnnotationProvider();
+        val asyncAnnotationOperationService = new AsyncAnnotationOperationService<>(
+                asyncAnnotationProvider,
                 operationBindingProcessors,
-                messageBindingProcessors,
-                customizers,
+                new AsyncAnnotationMessageService(
+                        payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver),
                 resolver);
+        val strategy = new AsyncAnnotationMethodLevelOperationsScanner<>(
+                buildAsyncPublisherAnnotationProvider(), asyncAnnotationOperationService, customizers, resolver);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -270,15 +301,17 @@ public class SpringwolfScannerConfiguration {
             List<MessageBindingProcessor> messageBindingProcessors,
             StringValueResolverProxy resolver,
             List<OperationCustomizer> operationCustomizers) {
+        AsyncAnnotationProvider<AsyncPublisher> asyncAnnotationProvider = buildAsyncPublisherAnnotationProvider();
+        AsyncAnnotationMessageService asyncAnnotationMessageService = new AsyncAnnotationMessageService(
+                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver);
+        val asyncAnnotationOperationService = new AsyncAnnotationOperationService<>(
+                asyncAnnotationProvider, operationBindingProcessors, asyncAnnotationMessageService, resolver);
         AsyncAnnotationClassLevelOperationsScanner<AsyncPublisher> strategy =
                 new AsyncAnnotationClassLevelOperationsScanner<>(
                         AsyncPublisher.class,
                         buildAsyncPublisherAnnotationProvider(),
-                        operationBindingProcessors,
-                        new AsyncAnnotationMessageService(
-                                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver),
-                        operationCustomizers,
-                        resolver);
+                        asyncAnnotationOperationService,
+                        operationCustomizers);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }

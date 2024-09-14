@@ -46,7 +46,7 @@ public class AnnotationScannerUtil {
 
     static <A extends Annotation> boolean isClassRelevant(Class<?> clazz, Class<A> annotationClass) {
         return AnnotationScannerUtil.isNotHidden(clazz)
-                && AnnotationUtil.findAnnotation(annotationClass, clazz) != null;
+                && AnnotationUtil.findFirstAnnotation(annotationClass, clazz) != null;
     }
 
     public static <A extends Annotation> Stream<MethodAndAnnotation<A>> findAnnotatedMethods(
@@ -66,7 +66,7 @@ public class AnnotationScannerUtil {
                     .map(method -> new MethodAndAnnotation<>(method, null));
         }
 
-        return methods.filter(method -> AnnotationUtil.findAnnotation(methodAnnotationClass, method) != null)
+        return methods.filter(method -> AnnotationUtil.findFirstAnnotation(methodAnnotationClass, method) != null)
                 .peek(method -> log.debug("Mapping method \"{}\"", method.getName()))
                 .flatMap(method -> AnnotationUtil.findAnnotations(methodAnnotationClass, method).stream()
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
@@ -80,7 +80,7 @@ public class AnnotationScannerUtil {
     }
 
     private static boolean isNotHidden(AnnotatedElement element) {
-        return Objects.isNull(AnnotationUtil.findAnnotation(Hidden.class, element));
+        return Objects.isNull(AnnotationUtil.findFirstAnnotation(Hidden.class, element));
     }
 
     private static final Set<String> typicalJavaMethods =

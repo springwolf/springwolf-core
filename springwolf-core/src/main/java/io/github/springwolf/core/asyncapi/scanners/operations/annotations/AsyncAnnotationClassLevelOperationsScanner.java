@@ -4,18 +4,16 @@ package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AllMethods;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
-import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -26,6 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
+@RequiredArgsConstructor
 public class AsyncAnnotationClassLevelOperationsScanner<ClassAnnotation extends Annotation>
         implements OperationsInClassScanner {
 
@@ -34,26 +33,12 @@ public class AsyncAnnotationClassLevelOperationsScanner<ClassAnnotation extends 
     private final AsyncAnnotationOperationService<ClassAnnotation> asyncAnnotationOperationsService;
     private final List<OperationCustomizer> customizers;
 
-    public AsyncAnnotationClassLevelOperationsScanner(
-            Class<ClassAnnotation> classAnnotationClass,
-            AsyncAnnotationProvider<ClassAnnotation> asyncAnnotationProvider,
-            List<OperationBindingProcessor> operationBindingProcessors,
-            AsyncAnnotationMessageService asyncAnnotationMessageService,
-            List<OperationCustomizer> customizers,
-            StringValueResolver resolver) {
-        this.classAnnotationClass = classAnnotationClass;
-        this.asyncAnnotationProvider = asyncAnnotationProvider;
-        this.asyncAnnotationOperationsService = new AsyncAnnotationOperationService<>(
-                asyncAnnotationProvider, operationBindingProcessors, resolver, asyncAnnotationMessageService);
-        this.customizers = customizers;
-    }
-
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
         Set<MethodAndAnnotation<ClassAnnotation>> methodAndAnnotation = AnnotationScannerUtil.findAnnotatedMethods(
                         clazz, classAnnotationClass, AllMethods.class, (cl, m) -> {
                             ClassAnnotation classAnnotation =
-                                    AnnotationUtil.findAnnotation(classAnnotationClass, clazz);
+                                    AnnotationUtil.findFirstAnnotation(classAnnotationClass, clazz);
                             return m.stream()
                                     .map(method -> new MethodAndAnnotation<>(method.method(), classAnnotation));
                         })
@@ -67,7 +52,7 @@ public class AsyncAnnotationClassLevelOperationsScanner<ClassAnnotation extends 
 
     private Stream<Map.Entry<String, Operation>> mapClassToOperation(
             Class<?> component, Set<MethodAndAnnotation<ClassAnnotation>> annotatedMethods) {
-        ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
+        ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotationOrThrow(classAnnotationClass, component);
         AsyncOperation asyncOperation = asyncAnnotationProvider.getAsyncOperation(classAnnotation);
 
         String channelName =

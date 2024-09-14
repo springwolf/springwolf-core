@@ -10,7 +10,12 @@ import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAn
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AllMethods;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
+import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
+import io.github.springwolf.core.asyncapi.scanners.common.operation.SpringAnnotationOperationService;
+import io.github.springwolf.core.asyncapi.scanners.common.operation.SpringAnnotationOperationsService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodReturnService;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
@@ -24,6 +29,7 @@ import io.github.springwolf.plugins.stomp.asyncapi.scanners.common.header.AsyncH
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.operation.annotations.SendToCustomizer;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.operation.annotations.SendToUserCustomizer;
 import io.github.springwolf.plugins.stomp.configuration.properties.SpringwolfStompConfigProperties;
+import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -110,15 +116,19 @@ public class SpringwolfStompScannerConfiguration {
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
+        val springAnnotationMessagesService = new SpringAnnotationMessagesService<>(
+                stompBindingMessageMappingFactory,
+                asyncHeadersForStompBuilder,
+                payloadMethodParameterService,
+                headerClassExtractor,
+                componentsService);
+        val springAnnotationChannelService = new SpringAnnotationChannelService<>(stompBindingMessageMappingFactory);
         SpringAnnotationClassLevelChannelsScanner<MessageMapping, AllMethods> strategy =
                 new SpringAnnotationClassLevelChannelsScanner<>(
                         MessageMapping.class,
                         AllMethods.class,
-                        stompBindingMessageMappingFactory,
-                        asyncHeadersForStompBuilder,
-                        payloadMethodParameterService,
-                        headerClassExtractor,
-                        componentsService);
+                        springAnnotationMessagesService,
+                        springAnnotationChannelService);
 
         return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -137,15 +147,20 @@ public class SpringwolfStompScannerConfiguration {
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService,
             List<OperationCustomizer> operationCustomizers) {
+        val springAnnotationOperationsService = new SpringAnnotationOperationsService<>(
+                stompBindingMessageMappingFactory,
+                new SpringAnnotationMessagesService<>(
+                        stompBindingMessageMappingFactory,
+                        asyncHeadersForStompBuilder,
+                        payloadMethodParameterService,
+                        headerClassExtractor,
+                        componentsService));
         SpringAnnotationClassLevelOperationsScanner<MessageMapping, AllMethods> strategy =
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         MessageMapping.class,
                         AllMethods.class,
                         stompBindingMessageMappingFactory,
-                        asyncHeadersForStompBuilder,
-                        payloadMethodParameterService,
-                        headerClassExtractor,
-                        componentsService,
+                        springAnnotationOperationsService,
                         operationCustomizers);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
@@ -164,15 +179,16 @@ public class SpringwolfStompScannerConfiguration {
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
+        val springAnnotationChannelService = new SpringAnnotationChannelService<>(stompBindingMessageMappingFactory);
+        val springAnnotationMessageService = new SpringAnnotationMessageService<>(
+                stompBindingMessageMappingFactory, asyncHeadersForStompBuilder, componentsService);
         SpringAnnotationMethodLevelChannelsScanner<MessageMapping> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         MessageMapping.class,
-                        stompBindingMessageMappingFactory,
-                        asyncHeadersForStompBuilder,
                         payloadMethodParameterService,
                         headerClassExtractor,
-                        componentsService);
-
+                        springAnnotationChannelService,
+                        springAnnotationMessageService);
         return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
@@ -190,15 +206,18 @@ public class SpringwolfStompScannerConfiguration {
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService,
             List<OperationCustomizer> operationCustomizers) {
+        val springAnnotationOperationService = new SpringAnnotationOperationService<>(
+                stompBindingMessageMappingFactory,
+                new SpringAnnotationMessageService<>(
+                        stompBindingMessageMappingFactory, asyncHeadersForStompBuilder, componentsService));
         SpringAnnotationMethodLevelOperationsScanner<MessageMapping> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         MessageMapping.class,
                         stompBindingMessageMappingFactory,
-                        asyncHeadersForStompBuilder,
-                        operationCustomizers,
-                        payloadMethodParameterService,
                         headerClassExtractor,
-                        componentsService);
+                        payloadMethodParameterService,
+                        springAnnotationOperationService,
+                        operationCustomizers);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -213,14 +232,15 @@ public class SpringwolfStompScannerConfiguration {
             PayloadMethodReturnService payloadMethodReturnService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
+        val springAnnotationChannelService = new SpringAnnotationChannelService<>(stompBindingMessageMappingFactory);
+        val springAnnotationMessageService = new SpringAnnotationMessageService<>(
+                stompBindingMessageMappingFactory, asyncHeadersForStompBuilder, componentsService);
         SpringAnnotationMethodLevelChannelsScanner<SendTo> strategy = new SpringAnnotationMethodLevelChannelsScanner<>(
                 SendTo.class,
-                stompBindingMessageMappingFactory,
-                asyncHeadersForStompBuilder,
                 payloadMethodReturnService,
                 headerClassExtractor,
-                componentsService);
-
+                springAnnotationChannelService,
+                springAnnotationMessageService);
         return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 
@@ -237,15 +257,16 @@ public class SpringwolfStompScannerConfiguration {
             PayloadMethodReturnService payloadMethodReturnService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
+        val springAnnotationChannelService = new SpringAnnotationChannelService<>(stompBindingMessageMappingFactory);
+        val springAnnotationMessageService = new SpringAnnotationMessageService<>(
+                stompBindingMessageMappingFactory, asyncHeadersForStompBuilder, componentsService);
         SpringAnnotationMethodLevelChannelsScanner<SendToUser> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         SendToUser.class,
-                        stompBindingMessageMappingFactory,
-                        asyncHeadersForStompBuilder,
                         payloadMethodReturnService,
                         headerClassExtractor,
-                        componentsService);
-
+                        springAnnotationChannelService,
+                        springAnnotationMessageService);
         return new ChannelsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
 }

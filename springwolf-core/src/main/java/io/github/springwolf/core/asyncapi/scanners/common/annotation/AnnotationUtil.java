@@ -15,8 +15,9 @@ import java.util.Set;
 public class AnnotationUtil {
     private AnnotationUtil() {}
 
-    public static <T extends Annotation> T findAnnotationOrThrow(Class<T> annotationClass, AnnotatedElement element) {
-        T annotation = findAnnotation(annotationClass, element);
+    public static <T extends Annotation> T findFirstAnnotationOrThrow(
+            Class<T> annotationClass, AnnotatedElement element) {
+        T annotation = findFirstAnnotation(annotationClass, element);
         if (annotation == null) {
             throw new IllegalArgumentException(
                     "Method must be annotated with " + element.getClass().getName());
@@ -25,7 +26,7 @@ public class AnnotationUtil {
     }
 
     @Nullable
-    public static <T extends Annotation> T findAnnotation(Class<T> annotationClass, AnnotatedElement element) {
+    public static <T extends Annotation> T findFirstAnnotation(Class<T> annotationClass, AnnotatedElement element) {
         Set<T> annotations = findAnnotations(annotationClass, element);
 
         return annotations.stream().findFirst().orElse(null);

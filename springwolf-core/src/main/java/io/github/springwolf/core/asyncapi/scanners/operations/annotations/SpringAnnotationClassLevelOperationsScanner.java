@@ -4,17 +4,13 @@ package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
-import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
-import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.SpringAnnotationOperationsService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,6 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
+@RequiredArgsConstructor
 public class SpringAnnotationClassLevelOperationsScanner<
                 ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
         implements OperationsInClassScanner {
@@ -37,29 +34,6 @@ public class SpringAnnotationClassLevelOperationsScanner<
     private final SpringAnnotationOperationsService<ClassAnnotation> springAnnotationOperationsService;
     private final List<OperationCustomizer> customizers;
 
-    public SpringAnnotationClassLevelOperationsScanner(
-            Class<ClassAnnotation> classAnnotationClass,
-            Class<MethodAnnotation> methodAnnotationClass,
-            BindingFactory<ClassAnnotation> bindingFactory,
-            AsyncHeadersBuilder asyncHeadersBuilder,
-            PayloadMethodService payloadMethodService,
-            HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService,
-            List<OperationCustomizer> customizers) {
-        this.classAnnotationClass = classAnnotationClass;
-        this.methodAnnotationClass = methodAnnotationClass;
-        this.bindingFactory = bindingFactory;
-        this.springAnnotationOperationsService = new SpringAnnotationOperationsService<>(
-                bindingFactory,
-                new SpringAnnotationMessagesService<>(
-                        bindingFactory,
-                        asyncHeadersBuilder,
-                        payloadMethodService,
-                        headerClassExtractor,
-                        componentsService));
-        this.customizers = customizers;
-    }
-
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
         return AnnotationScannerUtil.findAnnotatedMethods(
@@ -68,7 +42,7 @@ public class SpringAnnotationClassLevelOperationsScanner<
 
     private Stream<Map.Entry<String, Operation>> mapClassToOperation(
             Class<?> component, Set<MethodAndAnnotation<MethodAnnotation>> annotatedMethods) {
-        ClassAnnotation classAnnotation = AnnotationUtil.findAnnotationOrThrow(classAnnotationClass, component);
+        ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotationOrThrow(classAnnotationClass, component);
 
         String channelName = bindingFactory.getChannelName(classAnnotation);
         String channelId = ReferenceUtil.toValidId(channelName);

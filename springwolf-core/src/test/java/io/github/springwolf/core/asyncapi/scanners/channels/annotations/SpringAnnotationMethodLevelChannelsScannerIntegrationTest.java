@@ -19,8 +19,10 @@ import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvid
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
@@ -91,11 +93,11 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
     void setUp() {
         scanner = new SpringAnnotationMethodLevelChannelsScanner<>(
                 TestChannelListener.class,
-                this.bindingFactory,
-                new AsyncHeadersNotDocumented(),
                 payloadMethodService,
                 headerClassExtractor,
-                componentsService);
+                new SpringAnnotationChannelService<>(bindingFactory),
+                new SpringAnnotationMessageService<>(
+                        bindingFactory, new AsyncHeadersNotDocumented(), componentsService));
     }
 
     @Nested
@@ -103,8 +105,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentHasNoListenerMethods() {
             // when
-            List<Map.Entry<String, ChannelObject>> channels =
-                    scanner.scan(ClassWithoutListenerAnnotation.class).toList();
+            List<ChannelObject> channels = scanner.scan(ClassWithoutListenerAnnotation.class);
 
             // then
             assertThat(channels).isEmpty();
@@ -120,11 +121,10 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentWithHiddenAnnotationOnMethodLevel() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels =
-                    scanner.scan(MethodWithHiddenAnnotation.class).toList();
+            List<ChannelObject> channels = scanner.scan(MethodWithHiddenAnnotation.class);
 
             // then
-            assertThat(actualChannels).isEmpty();
+            assertThat(channels).isEmpty();
         }
 
         private static class MethodWithHiddenAnnotation {
@@ -142,8 +142,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentHasListenerMethod() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels =
-                    scanner.scan(ClassWithListenerAnnotation.class).toList();
+            List<ChannelObject> channels = scanner.scan(ClassWithListenerAnnotation.class);
 
             // then
             MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -167,7 +166,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannel));
+            assertThat(channels).containsExactly(expectedChannel);
         }
 
         private static class ClassWithListenerAnnotation {
@@ -184,9 +183,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentHasTestListenerMethods_multiplePayloads() {
             // when
-            List<Map.Entry<String, ChannelObject>> channels = scanner.scan(
-                            ClassWithTestListenerAnnotationMultiplePayloads.class)
-                    .toList();
+            List<ChannelObject> channels = scanner.scan(ClassWithTestListenerAnnotationMultiplePayloads.class);
 
             // then
             MessagePayload simpleFooPayload = MessagePayload.of(MultiFormatSchema.builder()
@@ -230,10 +227,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .messages(Map.of(messageString.getMessageId(), MessageReference.toComponentMessage(messageString)))
                     .build();
 
-            assertThat(channels)
-                    .containsExactlyInAnyOrder(
-                            Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannelItem),
-                            Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannelItem2));
+            assertThat(channels).containsExactlyInAnyOrder(expectedChannelItem, expectedChannelItem2);
         }
 
         private static class ClassWithTestListenerAnnotationMultiplePayloads {
@@ -251,8 +245,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
         @Test
         void scan_componentHasListenerMetaMethod() {
             // when
-            List<Map.Entry<String, ChannelObject>> actualChannels =
-                    scanner.scan(ClassWithListenerMetaAnnotation.class).toList();
+            List<ChannelObject> channels = scanner.scan(ClassWithListenerMetaAnnotation.class);
 
             // then
             MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
@@ -276,7 +269,7 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                     .build();
 
-            assertThat(actualChannels).containsExactly(Map.entry(TestBindingFactory.CHANNEL_ID, expectedChannel));
+            assertThat(channels).containsExactly(expectedChannel);
         }
 
         private static class ClassWithListenerMetaAnnotation {

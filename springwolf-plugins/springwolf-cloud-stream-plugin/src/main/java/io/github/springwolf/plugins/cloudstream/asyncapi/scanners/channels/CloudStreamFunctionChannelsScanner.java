@@ -58,7 +58,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         elements.addAll(componentClassScanner.scan());
         elements.addAll(beanMethodsScanner.getBeanMethods());
 
-        List<Map.Entry<String, ChannelObject>> channels = elements.stream()
+        List<ChannelObject> channels = elements.stream()
                 .map(functionalChannelBeanBuilder::build)
                 .flatMap(Set::stream)
                 .filter(this::isChannelBean)
@@ -72,14 +72,12 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         return cloudStreamBindingsProperties.getBindings().containsKey(beanData.cloudStreamBinding());
     }
 
-    private Map.Entry<String, ChannelObject> toChannelEntry(FunctionalChannelBeanData beanData) {
+    private ChannelObject toChannelEntry(FunctionalChannelBeanData beanData) {
         String channelName = cloudStreamBindingsProperties
                 .getBindings()
                 .get(beanData.cloudStreamBinding())
                 .getDestination();
-        ChannelObject channelItem = buildChannel(beanData, channelName);
-
-        return Map.entry(channelItem.getChannelId(), channelItem);
+        return buildChannel(beanData, channelName);
     }
 
     private ChannelObject buildChannel(FunctionalChannelBeanData beanData, String channelName) {

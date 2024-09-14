@@ -4,17 +4,13 @@ package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
-import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,32 +20,14 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Slf4j
+@RequiredArgsConstructor
 public class AsyncAnnotationMethodLevelOperationsScanner<MethodAnnotation extends Annotation>
         implements OperationsInClassScanner {
 
-    private final StringValueResolverProxy resolver;
     private final AsyncAnnotationProvider<MethodAnnotation> asyncAnnotationProvider;
     private final AsyncAnnotationOperationService<MethodAnnotation> asyncAnnotationOperationService;
     private final List<OperationCustomizer> customizers;
-
-    public AsyncAnnotationMethodLevelOperationsScanner(
-            AsyncAnnotationProvider<MethodAnnotation> asyncAnnotationProvider,
-            ComponentsService componentsService,
-            PayloadAsyncOperationService payloadAsyncOperationService,
-            List<OperationBindingProcessor> operationBindingProcessors,
-            List<MessageBindingProcessor> messageBindingProcessors,
-            List<OperationCustomizer> customizers,
-            StringValueResolverProxy resolver) {
-        this.resolver = resolver;
-        this.asyncAnnotationProvider = asyncAnnotationProvider;
-        this.asyncAnnotationOperationService = new AsyncAnnotationOperationService<>(
-                asyncAnnotationProvider,
-                operationBindingProcessors,
-                resolver,
-                new AsyncAnnotationMessageService(
-                        payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver));
-        this.customizers = customizers;
-    }
+    private final StringValueResolverProxy resolver;
 
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {

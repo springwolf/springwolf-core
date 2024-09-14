@@ -55,7 +55,7 @@ public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation>
         return toMessagesMap(messages);
     }
 
-    protected MessageObject buildMessage(ClassAnnotation classAnnotation, Method method) {
+    private MessageObject buildMessage(ClassAnnotation classAnnotation, Method method) {
         PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
 
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
