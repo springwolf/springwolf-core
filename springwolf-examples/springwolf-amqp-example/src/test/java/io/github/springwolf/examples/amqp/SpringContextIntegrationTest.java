@@ -44,7 +44,19 @@ public class SpringContextIntegrationTest {
 
         @Test
         void testAllChannelsAreFound() {
-            assertThat(asyncApiService.getAsyncAPI().getChannels()).hasSize(11);
+            assertThat(asyncApiService.getAsyncAPI().getChannels().keySet())
+                    .containsExactlyInAnyOrder(
+                            "#",
+                            "another-queue",
+                            "example-bindings-queue",
+                            "example-queue",
+                            "example-topic-exchange",
+                            "example-topic-routing-key",
+                            "multi-payload-queue",
+                            "queue-create",
+                            "queue-delete",
+                            "queue-read",
+                            "queue-update");
         }
     }
 

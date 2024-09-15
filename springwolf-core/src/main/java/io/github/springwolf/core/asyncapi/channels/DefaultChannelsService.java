@@ -27,12 +27,12 @@ public class DefaultChannelsService implements ChannelsService {
      */
     @Override
     public Map<String, ChannelObject> findChannels() {
-        List<Map.Entry<String, ChannelObject>> foundChannelItems = new ArrayList<>();
+        List<ChannelObject> foundChannelItems = new ArrayList<>();
 
         for (ChannelsScanner scanner : channelsScanners) {
             try {
                 Map<String, ChannelObject> channels = scanner.scan();
-                foundChannelItems.addAll(channels.entrySet());
+                foundChannelItems.addAll(channels.values());
             } catch (Exception e) {
                 log.error("An error was encountered during channel scanning with {}: {}", scanner, e.getMessage(), e);
             }

@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common.utils;
+package io.github.springwolf.core.asyncapi.scanners.common.annotation;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.ElementType;
@@ -16,7 +18,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class AnnotationScannerUtilTest {
+class AnnotationUtilTest {
 
     @Nested
     class FindAnnotationOrThrow {
@@ -26,7 +28,7 @@ class AnnotationScannerUtilTest {
 
             // when
             try {
-                AnnotationScannerUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
+                AnnotationUtil.findFirstAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
                 fail();
             } catch (IllegalArgumentException e) {
                 // then
@@ -40,7 +42,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findFirstAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("value");
@@ -52,7 +54,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findFirstAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("value");
@@ -64,7 +66,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findFirstAnnotationOrThrow(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("metaField");
@@ -79,7 +81,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findFirstAnnotation(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).isNull();
@@ -91,7 +93,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findFirstAnnotation(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("value");
@@ -103,7 +105,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findFirstAnnotation(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isIn("value", "value2");
@@ -115,7 +117,7 @@ class AnnotationScannerUtilTest {
 
             // when
             AnnotationUtilTestAnnotation annotation =
-                    AnnotationScannerUtil.findAnnotation(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findFirstAnnotation(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation.field()).isEqualTo("metaField");
@@ -130,7 +132,7 @@ class AnnotationScannerUtilTest {
 
             // when
             Set<AnnotationUtilTestAnnotation> annotation =
-                    AnnotationScannerUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).isEmpty();
@@ -142,7 +144,7 @@ class AnnotationScannerUtilTest {
 
             // when
             Set<AnnotationUtilTestAnnotation> annotation =
-                    AnnotationScannerUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).hasSize(1);
@@ -155,7 +157,7 @@ class AnnotationScannerUtilTest {
 
             // when
             Set<AnnotationUtilTestAnnotation> annotation =
-                    AnnotationScannerUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).hasSize(2);
@@ -169,11 +171,74 @@ class AnnotationScannerUtilTest {
 
             // when
             Set<AnnotationUtilTestAnnotation> annotation =
-                    AnnotationScannerUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+                    AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
 
             // then
             assertThat(annotation).hasSize(1);
             assertThat(annotation.stream().findAny().get().field()).isEqualTo("metaField");
+        }
+
+        @Nested
+        class ImplementingInterface {
+            @ParameterizedTest
+            @ValueSource(classes = {ClassImplementingInterface.class, ClassImplementingInterfaceWithAnnotation.class})
+            void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) throws NoSuchMethodException {
+                Method method = clazz.getMethod("methodFromInterface", String.class);
+
+                // when
+                Set<AnnotationUtilTestAnnotation> annotation =
+                        AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+
+                // then
+                assertThat(annotation).hasSize(1);
+            }
+
+            private static class ClassImplementingInterface implements ClassInterface<String> {
+
+                @AnnotationUtilTestAnnotation
+                @Override
+                public void methodFromInterface(String payload) {}
+            }
+
+            interface ClassInterface<T> {
+                void methodFromInterface(T payload);
+            }
+
+            private static class ClassImplementingInterfaceWithAnnotation
+                    implements ClassInterfaceWithAnnotation<String> {
+
+                @Override
+                public void methodFromInterface(String payload) {}
+            }
+
+            interface ClassInterfaceWithAnnotation<T> {
+                @AnnotationUtilTestAnnotation
+                void methodFromInterface(T payload);
+            }
+        }
+
+        @Nested
+        class AbstractClass {
+            @Test
+            void scan() throws NoSuchMethodException {
+                Method method = ClassExtendsFromAbstractWithListenerAnnotation.class.getMethod(
+                        "methodWithAnnotation", String.class);
+
+                // when
+                Set<AnnotationUtilTestAnnotation> annotation =
+                        AnnotationUtil.findAnnotations(AnnotationUtilTestAnnotation.class, method);
+
+                // then
+                assertThat(annotation).hasSize(1);
+            }
+
+            private static class ClassExtendsFromAbstractWithListenerAnnotation
+                    extends AbstractClassWithListenerAnnotation {}
+
+            private abstract static class AbstractClassWithListenerAnnotation {
+                @AnnotationUtilTestAnnotation
+                public void methodWithAnnotation(String payload) {}
+            }
         }
     }
 

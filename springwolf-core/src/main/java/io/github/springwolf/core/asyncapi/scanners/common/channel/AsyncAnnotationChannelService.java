@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.channels;
+package io.github.springwolf.core.asyncapi.scanners.common.channel;
 
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
@@ -9,80 +9,55 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
-import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AsyncAnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
+import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
+import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringValueResolver;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Slf4j
-public class AsyncAnnotationChannelsScanner<A extends Annotation> extends AsyncAnnotationScanner<A>
-        implements ChannelsScanner {
+public class AsyncAnnotationChannelService<Annotation extends java.lang.annotation.Annotation> {
 
-    private final ClassScanner classScanner;
+    private final AsyncAnnotationProvider<Annotation> asyncAnnotationProvider;
+    private final AsyncAnnotationOperationService<Annotation> asyncAnnotationOperationService;
+    private final AsyncAnnotationMessageService asyncAnnotationMessageService;
+    private final StringValueResolver resolver;
     private final AsyncApiDocketService asyncApiDocketService;
 
-    public AsyncAnnotationChannelsScanner(
-            AsyncAnnotationProvider<A> asyncAnnotationProvider,
-            ClassScanner classScanner,
-            ComponentsService componentsService,
-            AsyncApiDocketService asyncApiDocketService,
-            PayloadAsyncOperationService payloadAsyncOperationService,
-            List<OperationBindingProcessor> operationBindingProcessors,
-            List<MessageBindingProcessor> messageBindingProcessors) {
-        super(
-                asyncAnnotationProvider,
-                payloadAsyncOperationService,
-                componentsService,
-                operationBindingProcessors,
-                messageBindingProcessors);
-        this.classScanner = classScanner;
-        this.asyncApiDocketService = asyncApiDocketService;
-    }
-
-    @Override
-    public Map<String, ChannelObject> scan() {
-        List<Map.Entry<String, ChannelObject>> channels = classScanner.scan().stream()
-                .flatMap(this::getAnnotatedMethods)
-                .map(this::buildChannel)
-                .toList();
-
-        return ChannelMerger.mergeChannels(channels);
-    }
-
-    private Map.Entry<String, ChannelObject> buildChannel(MethodAndAnnotation<A> methodAndAnnotation) {
-        ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
-
+    public ChannelObject buildChannel(MethodAndAnnotation<Annotation> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
         String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
         String channelId = ReferenceUtil.toValidId(channelName);
 
-        Operation operation = buildOperation(operationAnnotation, methodAndAnnotation.method(), channelId);
-
+        ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
         List<String> servers = AsyncAnnotationUtil.getServers(operationAnnotation, resolver);
         if (servers != null && !servers.isEmpty()) {
+            Operation operation = asyncAnnotationOperationService.buildOperation(
+                    operationAnnotation, methodAndAnnotation.method(), channelId);
             validateServers(servers, operation.getTitle());
+
             channelBuilder.servers(
                     servers.stream().map(ServerReference::fromServer).toList());
         }
-        MessageObject message = buildMessage(operationAnnotation, methodAndAnnotation.method());
 
-        ChannelObject channelItem = channelBuilder
+        MessageObject message =
+                asyncAnnotationMessageService.buildMessage(operationAnnotation, methodAndAnnotation.method());
+
+        ChannelObject channel = channelBuilder
                 .channelId(channelId)
                 .address(channelName)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
-        return Map.entry(channelItem.getChannelId(), channelItem);
+        return channel;
     }
 
     /**

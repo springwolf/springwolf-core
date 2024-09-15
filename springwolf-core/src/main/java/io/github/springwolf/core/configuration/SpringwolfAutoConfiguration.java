@@ -26,13 +26,16 @@ import io.github.springwolf.core.asyncapi.operations.DefaultOperationsService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodReturnService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
@@ -224,5 +227,22 @@ public class SpringwolfAutoConfiguration {
     @ConditionalOnMissingBean
     public PayloadMethodReturnService payloadMethodReturnService(PayloadService payloadService) {
         return new PayloadMethodReturnService(payloadService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StringValueResolverProxy stringValueResolverProxy() {
+        return new StringValueResolverProxy();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AsyncAnnotationMessageService asyncAnnotationMessageService(
+            ComponentsService componentsService,
+            PayloadAsyncOperationService payloadAsyncOperationService,
+            List<MessageBindingProcessor> messageBindingProcessors,
+            StringValueResolverProxy resolver) {
+        return new AsyncAnnotationMessageService(
+                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver);
     }
 }

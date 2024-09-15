@@ -20,12 +20,14 @@ class ChannelMergerTest {
         // given
         String channelId1 = "channel1";
         String channelId2 = "channel2";
-        ChannelObject publisherChannel = ChannelObject.builder().build();
-        ChannelObject subscriberChannel = ChannelObject.builder().build();
+        ChannelObject publisherChannel =
+                ChannelObject.builder().channelId(channelId1).build();
+        ChannelObject subscriberChannel =
+                ChannelObject.builder().channelId(channelId2).build();
 
         // when
-        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelId1, publisherChannel), Map.entry(channelId2, subscriberChannel)));
+        Map<String, ChannelObject> mergedChannels =
+                ChannelMerger.mergeChannels(Arrays.asList(publisherChannel, subscriberChannel));
 
         // then
         assertThat(mergedChannels).hasSize(2);
@@ -35,12 +37,14 @@ class ChannelMergerTest {
     void shouldMergeEqualchannelIdsIntoOneChannel() {
         // given
         String channelId = "channel";
-        ChannelObject publisherChannel = ChannelObject.builder().build();
-        ChannelObject subscriberChannel = ChannelObject.builder().build();
+        ChannelObject publisherChannel =
+                ChannelObject.builder().channelId(channelId).build();
+        ChannelObject subscriberChannel =
+                ChannelObject.builder().channelId(channelId).build();
 
         // when
-        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelId, publisherChannel), Map.entry(channelId, subscriberChannel)));
+        Map<String, ChannelObject> mergedChannels =
+                ChannelMerger.mergeChannels(Arrays.asList(publisherChannel, subscriberChannel));
 
         // then
         assertThat(mergedChannels).hasSize(1);
@@ -51,13 +55,13 @@ class ChannelMergerTest {
         // given
         String channelId = "channel";
         ChannelObject publisherChannel1 =
-                ChannelObject.builder().title("channel1").build();
+                ChannelObject.builder().channelId(channelId).title("channel1").build();
         ChannelObject publisherChannel2 =
-                ChannelObject.builder().title("channel2").build();
+                ChannelObject.builder().channelId(channelId).title("channel2").build();
 
         // when
-        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelId, publisherChannel1), Map.entry(channelId, publisherChannel2)));
+        Map<String, ChannelObject> mergedChannels =
+                ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2));
 
         // then
         assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> {
@@ -82,20 +86,21 @@ class ChannelMergerTest {
                 .description("This is also an integer, but in essence the same payload type")
                 .build();
         ChannelObject publisherChannel1 = ChannelObject.builder()
+                .channelId(channelId)
                 .messages(Map.of(message1.getMessageId(), MessageReference.toComponentMessage(message1)))
                 .build();
         ChannelObject publisherChannel2 = ChannelObject.builder()
+                .channelId(channelId)
                 .messages(Map.of(message2.getMessageId(), MessageReference.toComponentMessage(message2)))
                 .build();
         ChannelObject publisherChannel3 = ChannelObject.builder()
+                .channelId(channelId)
                 .messages(Map.of(message3.getMessageId(), MessageReference.toComponentMessage(message3)))
                 .build();
 
         // when
-        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(Arrays.asList(
-                Map.entry(channelId, publisherChannel1),
-                Map.entry(channelId, publisherChannel2),
-                Map.entry(channelId, publisherChannel3)));
+        Map<String, ChannelObject> mergedChannels =
+                ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2, publisherChannel3));
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
@@ -113,14 +118,16 @@ class ChannelMergerTest {
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
-        ChannelObject publisherChannel1 = ChannelObject.builder().build();
+        ChannelObject publisherChannel1 =
+                ChannelObject.builder().channelId(channelId).build();
         ChannelObject publisherChannel2 = ChannelObject.builder()
+                .channelId(channelId)
                 .messages(Map.of(message2.getName(), message2))
                 .build();
 
         // when
-        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelId, publisherChannel1), Map.entry(channelId, publisherChannel2)));
+        Map<String, ChannelObject> mergedChannels =
+                ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2));
 
         // then expectedMessage message2
         var expectedMessages = Map.of(message2.getName(), message2);

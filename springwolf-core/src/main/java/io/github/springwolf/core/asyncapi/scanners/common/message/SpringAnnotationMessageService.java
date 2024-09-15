@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common;
+package io.github.springwolf.core.asyncapi.scanners.common.message;
 
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
@@ -21,13 +21,13 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
-public abstract class MethodLevelAnnotationScanner<MethodAnnotation extends Annotation> {
+public class SpringAnnotationMessageService<MethodAnnotation extends Annotation> {
 
-    protected final BindingFactory<MethodAnnotation> bindingFactory;
-    protected final AsyncHeadersBuilder asyncHeadersBuilder;
-    protected final ComponentsService componentsService;
+    private final BindingFactory<MethodAnnotation> bindingFactory;
+    private final AsyncHeadersBuilder asyncHeadersBuilder;
+    private final ComponentsService componentsService;
 
-    protected MessageObject buildMessage(
+    public MessageObject buildMessage(
             MethodAnnotation annotation, PayloadSchemaObject payloadSchema, SchemaObject headers) {
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
         SchemaObject mergedHeaderSchema = HeaderSchemaObjectMerger.merge(headerSchema, headers);

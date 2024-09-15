@@ -1,99 +1,59 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
-import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
-import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import io.github.springwolf.core.asyncapi.scanners.common.MethodLevelAnnotationScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.operation.SpringAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 @Slf4j
+@RequiredArgsConstructor
 public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation extends Annotation>
-        extends MethodLevelAnnotationScanner<MethodAnnotation> implements SpringAnnotationOperationsScannerDelegator {
+        implements OperationsInClassScanner {
 
     private final Class<MethodAnnotation> methodAnnotationClass;
-    private final List<OperationCustomizer> customizers;
-    private final PayloadMethodParameterService payloadMethodParameterService;
+    private final BindingFactory<MethodAnnotation> bindingFactory;
     private final HeaderClassExtractor headerClassExtractor;
-
-    public SpringAnnotationMethodLevelOperationsScanner(
-            Class<MethodAnnotation> methodAnnotationClass,
-            BindingFactory<MethodAnnotation> bindingFactory,
-            AsyncHeadersBuilder asyncHeadersBuilder,
-            List<OperationCustomizer> customizers,
-            PayloadMethodParameterService payloadMethodParameterService,
-            HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
-        super(bindingFactory, asyncHeadersBuilder, componentsService);
-        this.customizers = customizers;
-        this.methodAnnotationClass = methodAnnotationClass;
-        this.payloadMethodParameterService = payloadMethodParameterService;
-        this.headerClassExtractor = headerClassExtractor;
-    }
+    private final PayloadMethodParameterService payloadMethodParameterService;
+    private final SpringAnnotationOperationService<MethodAnnotation> springAnnotationOperationService;
+    private final List<OperationCustomizer> customizers;
 
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods",
-                clazz.getName(),
-                methodAnnotationClass.getName());
-
-        return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(AnnotationScannerUtil::isMethodInSourceCode)
-                .filter(method -> AnnotationScannerUtil.findAnnotation(methodAnnotationClass, method) != null)
+        return AnnotationScannerUtil.findAnnotatedMethods(clazz, methodAnnotationClass)
                 .map(this::mapMethodToOperation);
     }
 
-    private Map.Entry<String, Operation> mapMethodToOperation(Method method) {
-        log.debug("Mapping method \"{}\" to operations", method.getName());
-
-        MethodAnnotation annotation = AnnotationScannerUtil.findAnnotationOrThrow(methodAnnotationClass, method);
+    private Map.Entry<String, Operation> mapMethodToOperation(MethodAndAnnotation<MethodAnnotation> method) {
+        MethodAnnotation annotation = AnnotationUtil.findFirstAnnotationOrThrow(methodAnnotationClass, method.method());
 
         String channelName = bindingFactory.getChannelName(annotation);
+        String channelId = ReferenceUtil.toValidId(channelName);
         String operationId = StringUtils.joinWith(
-                "_", ReferenceUtil.toValidId(channelName), OperationAction.RECEIVE, method.getName());
+                "_", channelId, OperationAction.RECEIVE.type, method.method().getName());
 
-        PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method);
-        SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
+        PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method.method());
+        SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
 
-        Operation operation = buildOperation(annotation, payloadSchema, headerSchema);
-        customizers.forEach(customizer -> customizer.customize(operation, method));
+        Operation operation = springAnnotationOperationService.buildOperation(annotation, payloadSchema, headerSchema);
+        customizers.forEach(customizer -> customizer.customize(operation, method.method()));
         return Map.entry(operationId, operation);
-    }
-
-    private Operation buildOperation(
-            MethodAnnotation annotation, PayloadSchemaObject payloadType, SchemaObject headerSchema) {
-        MessageObject message = buildMessage(annotation, payloadType, headerSchema);
-        Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(annotation);
-        Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        String channelId = ReferenceUtil.toValidId(bindingFactory.getChannelName(annotation));
-
-        return Operation.builder()
-                .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(channelId))
-                .messages(List.of(MessageReference.toChannelMessage(channelId, message)))
-                .bindings(opBinding)
-                .build();
     }
 }

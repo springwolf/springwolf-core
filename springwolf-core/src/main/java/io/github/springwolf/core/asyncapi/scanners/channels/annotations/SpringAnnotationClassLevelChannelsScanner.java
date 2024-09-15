@@ -1,89 +1,56 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.channels.annotations;
 
-import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
-import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import io.github.springwolf.core.asyncapi.scanners.common.ClassLevelAnnotationScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
-import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
+import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
+import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
+@RequiredArgsConstructor
 public class SpringAnnotationClassLevelChannelsScanner<
                 ClassAnnotation extends Annotation, MethodAnnotation extends Annotation>
-        extends ClassLevelAnnotationScanner<ClassAnnotation, MethodAnnotation>
-        implements SpringAnnotationChannelsScannerDelegator {
+        implements ChannelsInClassScanner {
 
-    public SpringAnnotationClassLevelChannelsScanner(
-            Class<ClassAnnotation> classAnnotationClass,
-            Class<MethodAnnotation> methodAnnotationClass,
-            BindingFactory<ClassAnnotation> bindingFactory,
-            AsyncHeadersBuilder asyncHeadersBuilder,
-            PayloadMethodService payloadMethodService,
-            HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
-        super(
-                classAnnotationClass,
-                methodAnnotationClass,
-                bindingFactory,
-                asyncHeadersBuilder,
-                payloadMethodService,
-                headerClassExtractor,
-                componentsService);
-    }
+    private final Class<ClassAnnotation> classAnnotationClass;
+    private final Class<MethodAnnotation> methodAnnotationClass;
+    private final SpringAnnotationMessagesService<ClassAnnotation> springAnnotationMessagesService;
+    private final SpringAnnotationChannelService<ClassAnnotation> springAnnotationChannelService;
 
     @Override
-    public Stream<Map.Entry<String, ChannelObject>> scan(Class<?> clazz) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods", clazz.getName(), classAnnotationClass.getName());
-
-        return Stream.of(clazz)
-                .filter(AnnotationScannerUtil::notHidden)
-                .filter(this::isClassAnnotated)
-                .flatMap(this::mapClassToChannel);
+    public List<ChannelObject> scan(Class<?> clazz) {
+        return AnnotationScannerUtil.findAnnotatedMethods(
+                        clazz, classAnnotationClass, methodAnnotationClass, this::mapClassToChannel)
+                .toList();
     }
 
-    private Stream<Map.Entry<String, ChannelObject>> mapClassToChannel(Class<?> component) {
-        log.debug("Mapping class \"{}\" to channels", component.getName());
+    private Stream<ChannelObject> mapClassToChannel(
+            Class<?> component, Set<MethodAndAnnotation<MethodAnnotation>> annotatedMethods) {
+        ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotationOrThrow(classAnnotationClass, component);
+        Set<Method> methods =
+                annotatedMethods.stream().map(MethodAndAnnotation::method).collect(Collectors.toSet());
+        Map<String, Message> messages = new HashMap<>(springAnnotationMessagesService.buildMessages(
+                classAnnotation, methods, SpringAnnotationMessagesService.MessageType.CHANNEL));
 
-        ClassAnnotation classAnnotation = AnnotationScannerUtil.findAnnotationOrThrow(classAnnotationClass, component);
-
-        Set<Method> annotatedMethods = getAnnotatedMethods(component);
-        if (annotatedMethods.isEmpty()) {
-            return Stream.empty();
-        }
-
-        ChannelObject channelItem = buildChannelItem(classAnnotation, annotatedMethods);
-        return Stream.of(Map.entry(channelItem.getChannelId(), channelItem));
+        return mapClassToChannel(classAnnotation, messages);
     }
 
-    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Set<Method> methods) {
-        var messages = buildMessages(classAnnotation, methods, MessageType.CHANNEL);
-        return buildChannelItem(classAnnotation, messages);
-    }
-
-    private ChannelObject buildChannelItem(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
-        Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(classAnnotation);
-        Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-        String channelName = bindingFactory.getChannelName(classAnnotation);
-        return ChannelObject.builder()
-                .channelId(ReferenceUtil.toValidId(channelName))
-                .address(channelName)
-                .bindings(chBinding)
-                .messages(new HashMap<>(messages))
-                .build();
+    private Stream<ChannelObject> mapClassToChannel(ClassAnnotation classAnnotation, Map<String, Message> messages) {
+        return Stream.of(springAnnotationChannelService.buildChannel(classAnnotation, messages));
     }
 }

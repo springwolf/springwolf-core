@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common;
+package io.github.springwolf.core.asyncapi.scanners.common.message;
 
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
@@ -15,14 +15,11 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
-import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,58 +29,23 @@ import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class ClassLevelAnnotationScanner<
-        ClassAnnotation extends Annotation, MethodAnnotation extends Annotation> {
+public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation> {
 
-    protected final Class<ClassAnnotation> classAnnotationClass;
-    protected final Class<MethodAnnotation> methodAnnotationClass;
-    protected final BindingFactory<ClassAnnotation> bindingFactory;
-    protected final AsyncHeadersBuilder asyncHeadersBuilder;
-    protected final PayloadMethodService payloadMethodService;
-    protected final HeaderClassExtractor headerClassExtractor;
-    protected final ComponentsService componentsService;
+    private final BindingFactory<ClassAnnotation> bindingFactory;
+    private final AsyncHeadersBuilder asyncHeadersBuilder;
+    private final PayloadMethodService payloadMethodService;
+    private final HeaderClassExtractor headerClassExtractor;
+    private final ComponentsService componentsService;
 
-    protected enum MessageType {
+    public enum MessageType {
         CHANNEL,
         OPERATION
     }
-    /**
-     * Internal interface to indicate that all methods of a class should be used in scanners
-     * instead of filtering for a specific annotation.
-     */
-    public @interface AllMethods {}
 
-    protected boolean isClassAnnotated(Class<?> component) {
-        return AnnotationScannerUtil.findAnnotation(classAnnotationClass, component) != null;
-    }
-
-    protected Set<Method> getAnnotatedMethods(Class<?> clazz) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods",
-                clazz.getName(),
-                methodAnnotationClass.getName());
-
-        return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(this::isRelevantMethod)
-                .collect(toSet());
-    }
-
-    private boolean isRelevantMethod(Method method) {
-        return AnnotationScannerUtil.isMethodInSourceCode(method)
-                && (methodAnnotationClass == AllMethods.class
-                        || AnnotationScannerUtil.findAnnotation(methodAnnotationClass, method) != null);
-    }
-
-    protected Map<String, MessageReference> buildMessages(
-            ClassAnnotation classAnnotation,
-            Set<Method> methods,
-            SpringAnnotationClassLevelOperationsScanner.MessageType messageType) {
+    public Map<String, MessageReference> buildMessages(
+            ClassAnnotation classAnnotation, Set<Method> methods, MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
-                .map((Method method) -> {
-                    PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
-                    SchemaObject headerSchema = headerClassExtractor.extractHeader(method, payloadSchema);
-                    return buildMessage(classAnnotation, payloadSchema, headerSchema);
-                })
+                .map(method -> buildMessage(classAnnotation, method))
                 .collect(toSet());
 
         if (messageType == MessageType.OPERATION) {
@@ -93,9 +55,11 @@ public abstract class ClassLevelAnnotationScanner<
         return toMessagesMap(messages);
     }
 
-    protected MessageObject buildMessage(
-            ClassAnnotation classAnnotation, PayloadSchemaObject payloadSchema, SchemaObject headers) {
+    private MessageObject buildMessage(ClassAnnotation classAnnotation, Method method) {
+        PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method);
+
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
+        SchemaObject headers = headerClassExtractor.extractHeader(method, payloadSchema);
         SchemaObject mergedHeaderSchema = HeaderSchemaObjectMerger.merge(headerSchema, headers);
         String headerSchemaName = componentsService.registerSchema(mergedHeaderSchema);
 

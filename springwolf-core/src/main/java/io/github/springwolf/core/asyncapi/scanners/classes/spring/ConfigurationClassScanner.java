@@ -2,7 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.classes.spring;
 
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.AnnotationScannerUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +18,7 @@ public class ConfigurationClassScanner implements ClassScanner {
     public Set<Class<?>> scan() {
         return scanner.scan().stream()
                 // All Configurations are also Components
-                .filter((cls) -> AnnotationScannerUtil.findAnnotation(Configuration.class, cls) != null)
+                .filter((cls) -> AnnotationUtil.findFirstAnnotation(Configuration.class, cls) != null)
                 .collect(Collectors.toSet());
     }
 }

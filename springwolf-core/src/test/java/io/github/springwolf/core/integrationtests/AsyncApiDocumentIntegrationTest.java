@@ -40,25 +40,31 @@ public class AsyncApiDocumentIntegrationTest {
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
             assertThat(asyncAPI).isNotNull();
 
-            assertThat(asyncAPI.getChannels()).containsOnlyKeys("listener-channel");
+            assertThat(asyncAPI.getChannels().keySet())
+                    .containsExactlyInAnyOrder("listener-channel", "listener-class-channel");
             assertThat(asyncAPI.getChannels().get("listener-channel").getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+            assertThat(asyncAPI.getChannels().get("listener-class-channel").getMessages())
+                    .containsOnlyKeys("java.lang.Integer");
             assertThat(asyncAPI.getOperations())
                     .containsOnlyKeys(
                             "listener-channel_receive_listen",
                             "listener-channel_receive_listen2",
                             "listener-channel_receive_listen3",
-                            "listener-channel_receive_listen4");
+                            "listener-channel_receive_listen4",
+                            "listener-class-channel_receive_ClassListener");
             assertThat(asyncAPI.getComponents().getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
+                            "java.lang.Integer",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
                             "java.lang.String",
+                            "java.lang.Integer",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Bar",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
 
@@ -99,25 +105,31 @@ public class AsyncApiDocumentIntegrationTest {
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
             assertThat(asyncAPI).isNotNull();
 
-            assertThat(asyncAPI.getChannels()).containsOnlyKeys("publisher-channel");
+            assertThat(asyncAPI.getChannels().keySet())
+                    .containsExactlyInAnyOrder("publisher-channel", "publisher-class-channel");
             assertThat(asyncAPI.getChannels().get("publisher-channel").getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+            assertThat(asyncAPI.getChannels().get("publisher-class-channel").getMessages())
+                    .containsOnlyKeys("java.lang.Integer");
             assertThat(asyncAPI.getOperations())
                     .containsOnlyKeys(
                             "publisher-channel_send_publish",
                             "publisher-channel_send_publish2",
                             "publisher-channel_send_publish3",
-                            "publisher-channel_send_publish4");
+                            "publisher-channel_send_publish4",
+                            "publisher-class-channel_send_ClassPublisher");
             assertThat(asyncAPI.getComponents().getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
+                            "java.lang.Integer",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
                             "java.lang.String",
+                            "java.lang.Integer",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Bar",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
 
