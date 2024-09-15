@@ -33,6 +33,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 
@@ -49,8 +50,12 @@ public class SpringwolfAmqpScannerConfiguration {
             name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    public AmqpBindingFactory amqpBindingFactory(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
-        return new AmqpBindingFactory(queues, exchanges, bindings);
+    public AmqpBindingFactory amqpBindingFactory(
+            List<Queue> queues,
+            List<Exchange> exchanges,
+            List<Binding> bindings,
+            StringValueResolver stringValueResolver) {
+        return new AmqpBindingFactory(queues, exchanges, bindings, stringValueResolver);
     }
 
     @Bean

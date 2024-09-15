@@ -7,16 +7,15 @@ import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.KafkaListenerUtil;
-import lombok.NoArgsConstructor;
-import org.springframework.context.EmbeddedValueResolverAware;
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
 
-@NoArgsConstructor
-public class KafkaBindingFactory implements BindingFactory<KafkaListener>, EmbeddedValueResolverAware {
-    private StringValueResolver stringValueResolver;
+@RequiredArgsConstructor
+public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
+    private final StringValueResolver stringValueResolver;
 
     @Override
     public String getChannelName(KafkaListener annotation) {
@@ -36,10 +35,5 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener>, Embed
     @Override
     public Map<String, MessageBinding> buildMessageBinding(KafkaListener annotation, SchemaObject headerSchema) {
         return KafkaListenerUtil.buildMessageBinding(headerSchema);
-    }
-
-    @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.stringValueResolver = resolver;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringValueResolver;
 
 /**
  * Autoconfiguration for the springwolf SQS Binding.
@@ -28,7 +29,7 @@ public class SpringwolfSqsBindingAutoConfiguration {
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     @ConditionalOnMissingBean
-    public SqsOperationBindingProcessor sqsOperationBindingProcessor() {
-        return new SqsOperationBindingProcessor();
+    public SqsOperationBindingProcessor sqsOperationBindingProcessor(StringValueResolver stringValueResolver) {
+        return new SqsOperationBindingProcessor(stringValueResolver);
     }
 }

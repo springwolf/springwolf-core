@@ -7,16 +7,20 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.util.StringValueResolver;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 class AsyncGenericOperationBindingProcessorTest {
 
-    private final AsyncGenericOperationBindingProcessor processor = new AsyncGenericOperationBindingProcessor();
+    private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+    private final AsyncGenericOperationBindingProcessor processor =
+            new AsyncGenericOperationBindingProcessor(stringValueResolver);
 
     @Test
     void testClassWithoutAnnotation() {

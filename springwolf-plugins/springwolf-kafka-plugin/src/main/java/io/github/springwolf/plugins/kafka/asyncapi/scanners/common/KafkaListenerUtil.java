@@ -26,12 +26,12 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class KafkaListenerUtil {
 
-    public static String getChannelName(KafkaListener annotation, StringValueResolver resolver) {
+    public static String getChannelName(KafkaListener annotation, StringValueResolver stringValueResolver) {
         Stream<String> topicName = Stream.concat(
                 // the parameters topics and topicPattern are mutually exclusive
                 Arrays.stream(annotation.topics()), Stream.of(annotation.topicPattern()));
         List<String> resolvedTopics =
-                topicName.map(resolver::resolveStringValue).collect(toList());
+                topicName.map(stringValueResolver::resolveStringValue).collect(toList());
 
         log.debug("Found topics: {}", String.join(", ", resolvedTopics));
         return resolvedTopics.get(0);
@@ -42,8 +42,8 @@ public class KafkaListenerUtil {
     }
 
     public static Map<String, OperationBinding> buildOperationBinding(
-            KafkaListener annotation, StringValueResolver resolver) {
-        String groupId = resolver.resolveStringValue(annotation.groupId());
+            KafkaListener annotation, StringValueResolver stringValueResolver) {
+        String groupId = stringValueResolver.resolveStringValue(annotation.groupId());
         Schema groupIdSchema = buildKafkaGroupIdSchema(groupId);
 
         KafkaOperationBinding binding = new KafkaOperationBinding();

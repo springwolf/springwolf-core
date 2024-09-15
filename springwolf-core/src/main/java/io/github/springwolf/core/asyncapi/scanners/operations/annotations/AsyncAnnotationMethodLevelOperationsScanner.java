@@ -8,11 +8,11 @@ import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvide
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
-import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -27,7 +27,7 @@ public class AsyncAnnotationMethodLevelOperationsScanner<MethodAnnotation extend
     private final AsyncAnnotationProvider<MethodAnnotation> asyncAnnotationProvider;
     private final AsyncAnnotationOperationService<MethodAnnotation> asyncAnnotationOperationService;
     private final List<OperationCustomizer> customizers;
-    private final StringValueResolverProxy resolver;
+    private final StringValueResolver stringValueResolver;
 
     @Override
     public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
@@ -40,7 +40,7 @@ public class AsyncAnnotationMethodLevelOperationsScanner<MethodAnnotation extend
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
 
-        String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
+        String channelName = stringValueResolver.resolveStringValue(operationAnnotation.channelName());
         String channelId = ReferenceUtil.toValidId(channelName);
         // operationId should be part of the buildOperation method and part of Operation object
         String operationId = StringUtils.joinWith(

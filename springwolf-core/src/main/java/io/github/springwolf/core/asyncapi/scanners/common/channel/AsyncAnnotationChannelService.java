@@ -29,17 +29,17 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
     private final AsyncAnnotationProvider<Annotation> asyncAnnotationProvider;
     private final AsyncAnnotationOperationService<Annotation> asyncAnnotationOperationService;
     private final AsyncAnnotationMessageService asyncAnnotationMessageService;
-    private final StringValueResolver resolver;
+    private final StringValueResolver stringValueResolver;
     private final AsyncApiDocketService asyncApiDocketService;
 
     public ChannelObject buildChannel(MethodAndAnnotation<Annotation> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
-        String channelName = resolver.resolveStringValue(operationAnnotation.channelName());
+        String channelName = stringValueResolver.resolveStringValue(operationAnnotation.channelName());
         String channelId = ReferenceUtil.toValidId(channelName);
 
         ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
-        List<String> servers = AsyncAnnotationUtil.getServers(operationAnnotation, resolver);
+        List<String> servers = AsyncAnnotationUtil.getServers(operationAnnotation, stringValueResolver);
         if (servers != null && !servers.isEmpty()) {
             Operation operation = asyncAnnotationOperationService.buildOperation(
                     operationAnnotation, methodAndAnnotation.method(), channelId);

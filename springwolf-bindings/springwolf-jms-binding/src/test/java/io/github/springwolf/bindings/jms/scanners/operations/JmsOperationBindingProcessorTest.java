@@ -5,11 +5,14 @@ import io.github.springwolf.asyncapi.v3.bindings.jms.JMSOperationBinding;
 import io.github.springwolf.bindings.jms.annotations.JmsAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.StringValueResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 class JmsOperationBindingProcessorTest {
-    private final JmsOperationBindingProcessor processor = new JmsOperationBindingProcessor();
+    private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+    private final JmsOperationBindingProcessor processor = new JmsOperationBindingProcessor(stringValueResolver);
 
     @Test
     void mapToOperationBindingTest() throws NoSuchMethodException {

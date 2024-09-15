@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringValueResolver;
 
 /**
  * Autoconfiguration for the springwolf STOMP Binding.
@@ -28,7 +29,7 @@ public class SpringwolfStompBindingAutoConfiguration {
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     @ConditionalOnMissingBean
-    public StompOperationBindingProcessor stompOperationBindingProcessor() {
-        return new StompOperationBindingProcessor();
+    public StompOperationBindingProcessor stompOperationBindingProcessor(StringValueResolver stringValueResolver) {
+        return new StompOperationBindingProcessor(stringValueResolver);
     }
 }

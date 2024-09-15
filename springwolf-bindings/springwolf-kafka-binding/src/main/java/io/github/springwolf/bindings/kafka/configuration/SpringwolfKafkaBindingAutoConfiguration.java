@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringValueResolver;
 
 /**
  * Autoconfiguration for the springwolf Kafka Binding.
@@ -21,14 +22,14 @@ public class SpringwolfKafkaBindingAutoConfiguration {
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     @ConditionalOnMissingBean
-    public KafkaOperationBindingProcessor kafkaOperationBindingProcessor() {
-        return new KafkaOperationBindingProcessor();
+    public KafkaOperationBindingProcessor kafkaOperationBindingProcessor(StringValueResolver stringValueResolver) {
+        return new KafkaOperationBindingProcessor(stringValueResolver);
     }
 
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     @ConditionalOnMissingBean
-    public KafkaMessageBindingProcessor kafkaMessageBindingProcessor() {
-        return new KafkaMessageBindingProcessor();
+    public KafkaMessageBindingProcessor kafkaMessageBindingProcessor(StringValueResolver stringValueResolver) {
+        return new KafkaMessageBindingProcessor(stringValueResolver);
     }
 }

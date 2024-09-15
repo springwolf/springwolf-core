@@ -30,11 +30,11 @@ class SqsListenerUtilTest {
         void getChannelName() {
             // given
             SqsListener annotation = getAnnotation(ClassWithFullSqsListenerConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
-            String channelName = SqsListenerUtil.getChannelName(annotation, resolver);
+            String channelName = SqsListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("queue-1", channelName);
@@ -44,10 +44,11 @@ class SqsListenerUtilTest {
         void buildChannelBinding() {
             // given
             SqsListener annotation = getAnnotation(ClassWithFullSqsListenerConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
             // when
-            Map<String, ChannelBinding> channelBinding = SqsListenerUtil.buildChannelBinding(annotation, resolver);
+            Map<String, ChannelBinding> channelBinding =
+                    SqsListenerUtil.buildChannelBinding(annotation, stringValueResolver);
 
             // then
             var expectedChannel = SQSChannelBinding.builder()
@@ -66,11 +67,11 @@ class SqsListenerUtilTest {
         void buildOperationBinding() {
             // given
             SqsListener annotation = getAnnotation(ClassWithFullSqsListenerConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
             // when
             Map<String, OperationBinding> operationBinding =
-                    SqsListenerUtil.buildOperationBinding(annotation, resolver);
+                    SqsListenerUtil.buildOperationBinding(annotation, stringValueResolver);
 
             // then
             var expectedOperation = SQSOperationBinding.builder()

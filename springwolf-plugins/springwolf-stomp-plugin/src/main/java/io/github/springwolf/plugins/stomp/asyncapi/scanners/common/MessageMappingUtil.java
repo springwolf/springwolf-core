@@ -21,10 +21,10 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class MessageMappingUtil {
 
-    public static String getChannelName(MessageMapping annotation, StringValueResolver resolver) {
+    public static String getChannelName(MessageMapping annotation, StringValueResolver stringValueResolver) {
         Stream<String> destinations = Arrays.stream(annotation.value());
         List<String> resolvedDestinations =
-                destinations.map(resolver::resolveStringValue).collect(toList());
+                destinations.map(stringValueResolver::resolveStringValue).collect(toList());
 
         log.debug("Found destinations: {}", String.join(", ", resolvedDestinations));
         return resolvedDestinations.get(0);
@@ -35,7 +35,7 @@ public class MessageMappingUtil {
     }
 
     public static Map<String, OperationBinding> buildOperationBinding(
-            MessageMapping annotation, StringValueResolver resolver) {
+            MessageMapping annotation, StringValueResolver stringValueResolver) {
         StompOperationBinding binding = new StompOperationBinding();
         return Map.of("stomp", binding);
     }

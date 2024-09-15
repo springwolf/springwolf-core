@@ -58,19 +58,21 @@ class AsyncAnnotationChannelServiceTest {
             mock(AsyncAnnotationMessageService.class);
     private final AsyncAnnotationOperationService<TestListener> asyncAnnotationOperationService =
             mock(AsyncAnnotationOperationService.class);
-    private final StringValueResolver resolver = mock(StringValueResolver.class);
+    private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
 
     AsyncAnnotationChannelService<TestListener> asyncAnnotationChannelService = new AsyncAnnotationChannelService<>(
             asyncAnnotationProvider,
             asyncAnnotationOperationService,
             asyncAnnotationMessageService,
-            resolver,
+            stringValueResolver,
             asyncApiDocketService);
 
     @BeforeEach
     void setUp() {
-        doAnswer(invocation -> invocation.getArgument(0)).when(resolver).resolveStringValue(any());
+        doAnswer(invocation -> invocation.getArgument(0))
+                .when(stringValueResolver)
+                .resolveStringValue(any());
     }
 
     @Test

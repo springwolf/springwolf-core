@@ -42,6 +42,7 @@ jobs:
         if: success() || failure()
         with:
           check_name: test-core
+          require_tests: true
           report_paths: '**/build/test-results/test/TEST-*.xml'
 
       - name: Publish package

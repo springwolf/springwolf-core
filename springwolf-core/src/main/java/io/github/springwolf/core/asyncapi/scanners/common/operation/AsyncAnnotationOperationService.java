@@ -31,7 +31,7 @@ public class AsyncAnnotationOperationService<Annotation extends java.lang.annota
     private final AsyncAnnotationProvider<Annotation> asyncAnnotationProvider;
     private final List<OperationBindingProcessor> operationBindingProcessors;
     private final AsyncAnnotationMessageService asyncAnnotationMessageService;
-    private final StringValueResolver resolver;
+    private final StringValueResolver stringValueResolver;
 
     public Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelId) {
         MessageObject message = asyncAnnotationMessageService.buildMessage(asyncOperation, method);
@@ -52,7 +52,7 @@ public class AsyncAnnotationOperationService<Annotation extends java.lang.annota
 
     private Operation buildOperation(
             AsyncOperation asyncOperation, Method method, String channelId, List<MessageReference> messages) {
-        String description = this.resolver.resolveStringValue(asyncOperation.description());
+        String description = this.stringValueResolver.resolveStringValue(asyncOperation.description());
         if (StringUtils.isBlank(description)) {
             description = "Auto-generated description";
         } else {

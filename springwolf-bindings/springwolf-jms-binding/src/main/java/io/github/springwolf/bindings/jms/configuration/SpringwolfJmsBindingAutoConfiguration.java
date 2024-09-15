@@ -4,6 +4,7 @@ package io.github.springwolf.bindings.jms.configuration;
 import io.github.springwolf.bindings.jms.scanners.messages.JmsMessageBindingProcessor;
 import io.github.springwolf.bindings.jms.scanners.operations.JmsOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,8 +22,8 @@ public class SpringwolfJmsBindingAutoConfiguration {
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
     @ConditionalOnMissingBean
-    public JmsOperationBindingProcessor jmsOperationBindingProcessor() {
-        return new JmsOperationBindingProcessor();
+    public JmsOperationBindingProcessor jmsOperationBindingProcessor(StringValueResolverProxy stringValueResolver) {
+        return new JmsOperationBindingProcessor(stringValueResolver);
     }
 
     @Bean

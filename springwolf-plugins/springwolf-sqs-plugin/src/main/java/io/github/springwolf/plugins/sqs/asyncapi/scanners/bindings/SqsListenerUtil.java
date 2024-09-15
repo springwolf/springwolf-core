@@ -21,15 +21,15 @@ import java.util.stream.Stream;
 @Slf4j
 public class SqsListenerUtil {
 
-    public static String getChannelName(SqsListener annotation, StringValueResolver resolver) {
+    public static String getChannelName(SqsListener annotation, StringValueResolver stringValueResolver) {
         return Stream.concat(Arrays.stream(annotation.value()), Arrays.stream(annotation.queueNames()))
                 .findFirst()
-                .map(resolver::resolveStringValue)
+                .map(stringValueResolver::resolveStringValue)
                 .orElseThrow(() -> new IllegalArgumentException("No queue name was found in @SqsListener annotation"));
     }
 
     public static Map<String, ChannelBinding> buildChannelBinding(
-            SqsListener annotation, StringValueResolver resolver) {
+            SqsListener annotation, StringValueResolver stringValueResolver) {
         var queueName = readAnnotationQueueNames(annotation)[0];
 
         var queue =
@@ -39,7 +39,7 @@ public class SqsListenerUtil {
     }
 
     public static Map<String, OperationBinding> buildOperationBinding(
-            SqsListener annotation, StringValueResolver resolver) {
+            SqsListener annotation, StringValueResolver stringValueResolver) {
         List<SQSChannelBindingQueue> queues = new ArrayList<>();
 
         for (String queueName : readAnnotationQueueNames(annotation)) {

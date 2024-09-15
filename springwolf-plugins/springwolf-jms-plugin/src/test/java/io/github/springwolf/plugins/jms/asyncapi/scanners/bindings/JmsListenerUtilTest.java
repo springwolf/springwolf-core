@@ -28,11 +28,11 @@ class JmsListenerUtilTest {
         void getChannelName() {
             // given
             JmsListener annotation = getAnnotation(ClassWithFullJmsListenerConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
-            String channelName = JmsListenerUtil.getChannelName(annotation, resolver);
+            String channelName = JmsListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("queue-1", channelName);
@@ -42,10 +42,11 @@ class JmsListenerUtilTest {
         void buildChannelBinding() {
             // given
             JmsListener annotation = getAnnotation(ClassWithFullJmsListenerConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
             // when
-            Map<String, ChannelBinding> channelBinding = JmsListenerUtil.buildChannelBinding(annotation, resolver);
+            Map<String, ChannelBinding> channelBinding =
+                    JmsListenerUtil.buildChannelBinding(annotation, stringValueResolver);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -57,11 +58,11 @@ class JmsListenerUtilTest {
         void buildOperationBinding() {
             // given
             JmsListener annotation = getAnnotation(ClassWithFullJmsListenerConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
             // when
             Map<String, OperationBinding> operationBinding =
-                    JmsListenerUtil.buildOperationBinding(annotation, resolver);
+                    JmsListenerUtil.buildOperationBinding(annotation, stringValueResolver);
 
             // then
             assertEquals(1, operationBinding.size());

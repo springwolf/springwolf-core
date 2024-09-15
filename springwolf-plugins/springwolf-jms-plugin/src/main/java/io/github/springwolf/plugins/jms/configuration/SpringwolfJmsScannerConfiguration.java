@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 
@@ -37,8 +38,8 @@ public class SpringwolfJmsScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
-    public JmsBindingFactory jmsBindingFactory() {
-        return new JmsBindingFactory();
+    public JmsBindingFactory jmsBindingFactory(StringValueResolver stringValueResolver) {
+        return new JmsBindingFactory(stringValueResolver);
     }
 
     @Bean

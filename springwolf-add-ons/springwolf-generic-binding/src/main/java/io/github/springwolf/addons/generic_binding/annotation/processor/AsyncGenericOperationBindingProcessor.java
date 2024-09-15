@@ -5,12 +5,17 @@ import io.github.springwolf.addons.generic_binding.annotation.AsyncGenericOperat
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
+import org.springframework.util.StringValueResolver;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AsyncGenericOperationBindingProcessor
         extends AbstractOperationBindingProcessor<AsyncGenericOperationBinding> {
+
+    public AsyncGenericOperationBindingProcessor(StringValueResolver stringValueResolver) {
+        super(stringValueResolver);
+    }
 
     @Override
     protected ProcessedOperationBinding mapToOperationBinding(AsyncGenericOperationBinding bindingAnnotation) {

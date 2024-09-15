@@ -18,6 +18,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.StringValueResolver;
 
 import java.util.Optional;
 
@@ -48,7 +49,8 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadMethodParameterService.class),
                 @MockBean(HeaderClassExtractor.class),
-                @MockBean(JmsTemplate.class)
+                @MockBean(JmsTemplate.class),
+                @MockBean(StringValueResolver.class),
             })
     @Nested
     class JmsProducerWillBeCreatedIfEnabledTest {
@@ -88,7 +90,8 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadMethodParameterService.class),
                 @MockBean(HeaderClassExtractor.class),
-                @MockBean(JmsTemplate.class)
+                @MockBean(JmsTemplate.class),
+                @MockBean(StringValueResolver.class),
             })
     @Nested
     class JmsProducerWillNotBeCreatedIfDisabledTest {

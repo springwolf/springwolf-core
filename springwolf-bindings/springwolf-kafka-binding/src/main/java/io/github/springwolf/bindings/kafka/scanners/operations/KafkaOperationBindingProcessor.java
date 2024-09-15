@@ -9,10 +9,16 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractO
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import jakarta.annotation.Nullable;
 import org.springframework.util.StringUtils;
+import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 
 public class KafkaOperationBindingProcessor extends AbstractOperationBindingProcessor<KafkaAsyncOperationBinding> {
+
+    public KafkaOperationBindingProcessor(StringValueResolver stringValueResolver) {
+        super(stringValueResolver);
+    }
+
     @Override
     protected ProcessedOperationBinding mapToOperationBinding(KafkaAsyncOperationBinding bindingAnnotation) {
         String clientId = resolveOrNull(bindingAnnotation.clientId());

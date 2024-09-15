@@ -30,12 +30,12 @@ class MessageMappingUtilTest {
             MessageMapping annotation = mock(MessageMapping.class);
             when(annotation.value()).thenReturn(Arrays.array("${topic-1}", "${topic-2}"));
 
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${topic-1}")).thenReturn("topic-1");
-            when(resolver.resolveStringValue("${topic-2}")).thenReturn("topic-2");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${topic-1}")).thenReturn("topic-1");
+            when(stringValueResolver.resolveStringValue("${topic-2}")).thenReturn("topic-2");
 
             // when
-            String channelName = MessageMappingUtil.getChannelName(annotation, resolver);
+            String channelName = MessageMappingUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("topic-1", channelName);
@@ -56,10 +56,11 @@ class MessageMappingUtilTest {
     void buildOperationBinding() {
         // given
         MessageMapping annotation = mock(MessageMapping.class);
-        StringValueResolver resolver = mock(StringValueResolver.class);
+        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
         // when
-        Map<String, OperationBinding> operationBinding = MessageMappingUtil.buildOperationBinding(annotation, resolver);
+        Map<String, OperationBinding> operationBinding =
+                MessageMappingUtil.buildOperationBinding(annotation, stringValueResolver);
 
         // then
         assertEquals(1, operationBinding.size());

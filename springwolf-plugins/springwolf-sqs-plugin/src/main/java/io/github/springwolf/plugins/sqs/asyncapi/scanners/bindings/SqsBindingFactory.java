@@ -7,15 +7,14 @@ import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
-import lombok.NoArgsConstructor;
-import org.springframework.context.EmbeddedValueResolverAware;
+import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
 
-@NoArgsConstructor
-public class SqsBindingFactory implements BindingFactory<SqsListener>, EmbeddedValueResolverAware {
-    private StringValueResolver stringValueResolver;
+@RequiredArgsConstructor
+public class SqsBindingFactory implements BindingFactory<SqsListener> {
+    private final StringValueResolver stringValueResolver;
 
     @Override
     public String getChannelName(SqsListener annotation) {
@@ -35,10 +34,5 @@ public class SqsBindingFactory implements BindingFactory<SqsListener>, EmbeddedV
     @Override
     public Map<String, MessageBinding> buildMessageBinding(SqsListener annotation, SchemaObject headerSchema) {
         return SqsListenerUtil.buildMessageBinding();
-    }
-
-    @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.stringValueResolver = resolver;
     }
 }

@@ -8,21 +8,12 @@ import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncC
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class GooglePubSubChannelBindingProcessor implements ChannelBindingProcessor, EmbeddedValueResolverAware {
-    private StringValueResolver resolver;
-
-    @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.resolver = resolver;
-    }
-
+public class GooglePubSubChannelBindingProcessor implements ChannelBindingProcessor {
     @Override
     public Optional<ProcessedChannelBinding> process(AnnotatedElement annotatedElement) {
         return Arrays.stream(annotatedElement.getAnnotations())
