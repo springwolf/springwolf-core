@@ -4,7 +4,7 @@ plugins {
 }
 
 node {
-  version = '18.20.3'
+  version = '18.20.4'
   npmVersion = '10.7.0'
   download = true
   npmInstallCommand = "ci"
