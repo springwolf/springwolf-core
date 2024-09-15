@@ -62,7 +62,7 @@ jobs:
         uses: mikepenz/action-junit-report@v4
         if: success() || failure()
         with:
-          check_name: test-${{ matrix.plugin }}-junit
+          check_name: test-plugin-${{ matrix.plugin }}-junit
           require_tests: true
           report_paths: '**/build/test-results/test/TEST-*.xml'
 
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-${{ matrix.plugin }}-playwright
+          name: test-plugin-${{ matrix.plugin }}-playwright
           path: springwolf-examples/e2e/playwright-report/
           retention-days: 14
 

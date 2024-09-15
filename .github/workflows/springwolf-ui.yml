@@ -44,6 +44,7 @@ jobs:
         if: success() || failure()
         with:
           check_name: test-ui-jest
+          require_tests: true
           report_paths: '**/build/test-results/test/*.xml'
 
       - name: Build
