@@ -8,7 +8,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
-import org.springframework.context.EmbeddedValueResolverAware;
+import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
@@ -17,13 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class KafkaMessageBindingProcessor implements MessageBindingProcessor, EmbeddedValueResolverAware {
-    private StringValueResolver resolver;
-
-    @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.resolver = resolver;
-    }
+@RequiredArgsConstructor
+public class KafkaMessageBindingProcessor implements MessageBindingProcessor {
+    private final StringValueResolver stringValueResolver;
 
     @Override
     public Optional<ProcessedMessageBinding> process(AnnotatedElement annotatedElement) {
@@ -50,7 +46,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor, Em
     }
 
     private String resolveOrNull(String stringValue) {
-        return StringUtils.hasText(stringValue) ? resolver.resolveStringValue(stringValue) : null;
+        return StringUtils.hasText(stringValue) ? stringValueResolver.resolveStringValue(stringValue) : null;
     }
 
     private Schema resolveSchemaOrNull(KafkaAsyncOperationBinding.KafkaAsyncMessageBinding messageBinding) {

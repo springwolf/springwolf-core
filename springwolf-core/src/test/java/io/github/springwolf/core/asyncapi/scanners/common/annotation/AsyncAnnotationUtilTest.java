@@ -35,6 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AsyncAnnotationUtilTest {
+    StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
     @ParameterizedTest
     @ValueSource(classes = {ClassWithOperationBindingProcessor.class, ClassWithAbstractOperationBindingProcessor.class})
@@ -43,12 +44,11 @@ class AsyncAnnotationUtilTest {
         Method m = classWithOperationBindingProcessor.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
 
-        StringValueResolver resolver = mock(StringValueResolver.class);
-        when(resolver.resolveStringValue(any()))
+        when(stringValueResolver.resolveStringValue(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
-        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, resolver);
+        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
 
         // then
         assertEquals("TestSchema", headers.getTitle());
@@ -78,12 +78,12 @@ class AsyncAnnotationUtilTest {
         Method m = ClassWithHeaders.class.getDeclaredMethod("emptyHeaders", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
 
-        StringValueResolver resolver = mock(StringValueResolver.class);
-        when(resolver.resolveStringValue(any()))
+        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+        when(stringValueResolver.resolveStringValue(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
-        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, resolver);
+        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
 
         // then
         assertThat(headers).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
@@ -95,12 +95,12 @@ class AsyncAnnotationUtilTest {
         Method m = ClassWithHeaders.class.getDeclaredMethod("withoutSchemaName", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
 
-        StringValueResolver resolver = mock(StringValueResolver.class);
-        when(resolver.resolveStringValue(any()))
+        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+        when(stringValueResolver.resolveStringValue(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
-        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, resolver);
+        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
 
         // then
         assertThat(headers)
@@ -128,13 +128,13 @@ class AsyncAnnotationUtilTest {
         Method m2 = ClassWithHeaders.class.getDeclaredMethod("differentHeadersWithoutSchemaName", String.class);
         AsyncOperation operation2 = m2.getAnnotation(AsyncListener.class).operation();
 
-        StringValueResolver resolver = mock(StringValueResolver.class);
-        when(resolver.resolveStringValue(any()))
+        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+        when(stringValueResolver.resolveStringValue(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
-        SchemaObject headers1 = AsyncAnnotationUtil.getAsyncHeaders(operation1, resolver);
-        SchemaObject headers2 = AsyncAnnotationUtil.getAsyncHeaders(operation2, resolver);
+        SchemaObject headers1 = AsyncAnnotationUtil.getAsyncHeaders(operation1, stringValueResolver);
+        SchemaObject headers2 = AsyncAnnotationUtil.getAsyncHeaders(operation2, stringValueResolver);
 
         // then
         assertThat(headers1.getTitle()).isNotEqualTo(headers2.getTitle());
@@ -162,7 +162,10 @@ class AsyncAnnotationUtilTest {
 
         // when
         Map<String, OperationBinding> bindings = AsyncAnnotationUtil.processOperationBindingFromAnnotation(
-                m, List.of(new TestOperationBindingProcessor(), new TestAbstractOperationBindingProcessor()));
+                m,
+                List.of(
+                        new TestOperationBindingProcessor(),
+                        new TestAbstractOperationBindingProcessor(stringValueResolver)));
 
         // then
         assertEquals(
@@ -256,12 +259,12 @@ class AsyncAnnotationUtilTest {
         Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
 
-        StringValueResolver resolver = mock(StringValueResolver.class);
+        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
         // when
-        when(resolver.resolveStringValue("${test.property.server1}")).thenReturn("server1");
+        when(stringValueResolver.resolveStringValue("${test.property.server1}")).thenReturn("server1");
 
-        List<String> servers = AsyncAnnotationUtil.getServers(operation, resolver);
+        List<String> servers = AsyncAnnotationUtil.getServers(operation, stringValueResolver);
         assertEquals(List.of("server1"), servers);
     }
 

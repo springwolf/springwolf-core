@@ -17,13 +17,14 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
 class AmqpOperationBindingProcessorTest {
-    private final AmqpOperationBindingProcessor processor = new AmqpOperationBindingProcessor();
-    private final StringValueResolver resolver = mock(StringValueResolver.class);
+    private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+    private final AmqpOperationBindingProcessor processor = new AmqpOperationBindingProcessor(stringValueResolver);
 
     @BeforeEach
     void setUp() {
-        doAnswer(invocation -> invocation.getArgument(0)).when(resolver).resolveStringValue(anyString());
-        processor.setEmbeddedValueResolver(resolver);
+        doAnswer(invocation -> invocation.getArgument(0))
+                .when(stringValueResolver)
+                .resolveStringValue(anyString());
     }
 
     @Nested

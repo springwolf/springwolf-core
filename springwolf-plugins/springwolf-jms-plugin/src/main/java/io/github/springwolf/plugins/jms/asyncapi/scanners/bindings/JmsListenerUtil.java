@@ -16,17 +16,17 @@ import java.util.Map;
 @Slf4j
 public class JmsListenerUtil {
 
-    public static String getChannelName(JmsListener annotation, StringValueResolver resolver) {
-        return resolver.resolveStringValue(annotation.destination());
+    public static String getChannelName(JmsListener annotation, StringValueResolver stringValueResolver) {
+        return stringValueResolver.resolveStringValue(annotation.destination());
     }
 
     public static Map<String, ChannelBinding> buildChannelBinding(
-            JmsListener annotation, StringValueResolver resolver) {
+            JmsListener annotation, StringValueResolver stringValueResolver) {
         return Map.of("jms", new JMSChannelBinding());
     }
 
     public static Map<String, OperationBinding> buildOperationBinding(
-            JmsListener annotation, StringValueResolver resolver) {
+            JmsListener annotation, StringValueResolver stringValueResolver) {
         return Map.of("jms", new JMSOperationBinding());
     }
 

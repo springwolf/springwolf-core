@@ -31,12 +31,12 @@ public class AsyncAnnotationMessageService {
     private final PayloadAsyncOperationService payloadAsyncOperationService;
     private final ComponentsService componentsService;
     private final List<MessageBindingProcessor> messageBindingProcessors;
-    private final StringValueResolver resolver;
+    private final StringValueResolver stringValueResolver;
 
     public MessageObject buildMessage(AsyncOperation operationData, Method method) {
         PayloadSchemaObject payloadSchema = payloadAsyncOperationService.extractSchema(operationData, method);
 
-        SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, resolver);
+        SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, stringValueResolver);
         String headerSchemaName = this.componentsService.registerSchema(headerSchema);
 
         Map<String, MessageBinding> messageBinding =
@@ -55,7 +55,7 @@ public class AsyncAnnotationMessageService {
                 .bindings(messageBinding);
         // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher
         // priority so if we find them, we need to override the default values.
-        AsyncAnnotationUtil.processAsyncMessageAnnotation(builder, operationData.message(), this.resolver);
+        AsyncAnnotationUtil.processAsyncMessageAnnotation(builder, operationData.message(), this.stringValueResolver);
         MessageObject message = builder.build();
 
         this.componentsService.registerMessage(message);
@@ -71,7 +71,7 @@ public class AsyncAnnotationMessageService {
             }
         }
         if (StringUtils.isNotBlank(description)) {
-            description = this.resolver.resolveStringValue(description);
+            description = this.stringValueResolver.resolveStringValue(description);
             description = TextUtils.trimIndent(description);
         } else {
             description = null;

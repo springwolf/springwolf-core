@@ -5,11 +5,14 @@ import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaOperationBinding;
 import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.StringValueResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 class KafkaOperationBindingProcessorTest {
-    private final KafkaOperationBindingProcessor processor = new KafkaOperationBindingProcessor();
+    private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+    private final KafkaOperationBindingProcessor processor = new KafkaOperationBindingProcessor(stringValueResolver);
 
     @Test
     void mapToOperationBindingTest() throws NoSuchMethodException {

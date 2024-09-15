@@ -33,12 +33,12 @@ class KafkaListenerUtilTest {
             KafkaListener annotation = mock(KafkaListener.class);
             when(annotation.topics()).thenReturn(Arrays.array("${topic-1}", "${topic-2}"));
 
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${topic-1}")).thenReturn("topic-1");
-            when(resolver.resolveStringValue("${topic-2}")).thenReturn("topic-2");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${topic-1}")).thenReturn("topic-1");
+            when(stringValueResolver.resolveStringValue("${topic-2}")).thenReturn("topic-2");
 
             // when
-            String channelName = KafkaListenerUtil.getChannelName(annotation, resolver);
+            String channelName = KafkaListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("topic-1", channelName);
@@ -51,11 +51,11 @@ class KafkaListenerUtilTest {
             when(annotation.topics()).thenReturn(Arrays.array());
             when(annotation.topicPattern()).thenReturn("${topic-1}");
 
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${topic-1}")).thenReturn("topic-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${topic-1}")).thenReturn("topic-1");
 
             // when
-            String channelName = KafkaListenerUtil.getChannelName(annotation, resolver);
+            String channelName = KafkaListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("topic-1", channelName);
@@ -79,11 +79,12 @@ class KafkaListenerUtilTest {
         KafkaListener annotation = mock(KafkaListener.class);
         when(annotation.groupId()).thenReturn("${group-id}");
 
-        StringValueResolver resolver = mock(StringValueResolver.class);
-        when(resolver.resolveStringValue("${group-id}")).thenReturn("group-id");
+        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+        when(stringValueResolver.resolveStringValue("${group-id}")).thenReturn("group-id");
 
         // when
-        Map<String, OperationBinding> operationBinding = KafkaListenerUtil.buildOperationBinding(annotation, resolver);
+        Map<String, OperationBinding> operationBinding =
+                KafkaListenerUtil.buildOperationBinding(annotation, stringValueResolver);
 
         // then
         assertEquals(1, operationBinding.size());

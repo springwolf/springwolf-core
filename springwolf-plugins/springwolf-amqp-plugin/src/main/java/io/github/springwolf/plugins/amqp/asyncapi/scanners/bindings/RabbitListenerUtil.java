@@ -41,14 +41,14 @@ public class RabbitListenerUtil {
     private static final Boolean DEFAULT_EXCLUSIVE = false;
     private static final String DEFAULT_EXCHANGE_TYPE = ExchangeTypes.DIRECT;
 
-    public static String getChannelName(RabbitListener annotation, StringValueResolver resolver) {
+    public static String getChannelName(RabbitListener annotation, StringValueResolver stringValueResolver) {
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> Stream.concat(
                         Stream.of(binding.key()), // if routing key is configured, prefer it
                         Stream.of(binding.value().name())));
 
         return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
-                .map(resolver::resolveStringValue)
+                .map(stringValueResolver::resolveStringValue)
                 .filter(Objects::nonNull)
                 .peek(queue -> log.debug("Resolved channel name: {}", queue))
                 .findFirst()
@@ -57,12 +57,12 @@ public class RabbitListenerUtil {
                                 "No channel name was found in @RabbitListener annotation (neither in queues nor bindings property)"));
     }
 
-    public static String getQueueName(RabbitListener annotation, StringValueResolver resolver) {
+    public static String getQueueName(RabbitListener annotation, StringValueResolver stringValueResolver) {
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> Stream.of(binding.value().name()));
 
         return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
-                .map(resolver::resolveStringValue)
+                .map(stringValueResolver::resolveStringValue)
                 .filter(Objects::nonNull)
                 .peek(queue -> log.debug("Resolved queue name: {}", queue))
                 .findFirst()
@@ -89,13 +89,13 @@ public class RabbitListenerUtil {
     }
 
     public static Map<String, ChannelBinding> buildChannelBinding(
-            RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
+            RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
         AMQPChannelBinding.AMQPChannelBindingBuilder channelBinding = AMQPChannelBinding.builder();
 
-        String exchangeName = getExchangeName(annotation, resolver, context);
+        String exchangeName = getExchangeName(annotation, stringValueResolver, context);
         if (exchangeName.isEmpty()) {
             channelBinding.is(AMQPChannelType.QUEUE);
-            channelBinding.queue(buildQueueProperties(annotation, resolver, context));
+            channelBinding.queue(buildQueueProperties(annotation, stringValueResolver, context));
         } else {
             channelBinding.is(AMQPChannelType.ROUTING_KEY);
             channelBinding.exchange(buildExchangeProperties(annotation, exchangeName, context));
@@ -139,8 +139,8 @@ public class RabbitListenerUtil {
     }
 
     private static AMQPChannelQueueProperties buildQueueProperties(
-            RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
-        String queueName = getQueueName(annotation, resolver);
+            RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
+        String queueName = getQueueName(annotation, stringValueResolver);
         org.springframework.amqp.core.Queue queue = context.queueMap.get(queueName);
         boolean autoDelete = queue != null ? queue.isAutoDelete() : DEFAULT_AUTO_DELETE;
         boolean durable = queue != null ? queue.isDurable() : DEFAULT_DURABLE;
@@ -151,7 +151,7 @@ public class RabbitListenerUtil {
         if (queueOpt.isPresent()) {
             Queue queueAnnotation = queueOpt.get();
             return AMQPChannelQueueProperties.builder()
-                    .name(resolver.resolveStringValue(queueAnnotation.name()))
+                    .name(stringValueResolver.resolveStringValue(queueAnnotation.name()))
                     .autoDelete(parse(queueAnnotation.autoDelete(), autoDelete))
                     .durable(parse(queueAnnotation.durable(), durable))
                     .exclusive(parse(queueAnnotation.exclusive(), exclusive))
@@ -192,14 +192,14 @@ public class RabbitListenerUtil {
     }
 
     private static String getExchangeName(
-            RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
+            RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
         String exchangeName = Stream.of(annotation.bindings())
                 .map(binding -> binding.exchange().name())
                 .filter(StringUtils::hasText)
                 .findFirst()
                 .orElse(null);
 
-        Binding binding = context.bindingMap.get(getChannelName(annotation, resolver));
+        Binding binding = context.bindingMap.get(getChannelName(annotation, stringValueResolver));
         if (exchangeName == null && binding != null) {
             exchangeName = binding.getExchange();
         }
@@ -213,16 +213,16 @@ public class RabbitListenerUtil {
     }
 
     public static Map<String, OperationBinding> buildOperationBinding(
-            RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
+            RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
         return Map.of(
                 BINDING_NAME,
                 AMQPOperationBinding.builder()
-                        .cc(getRoutingKeys(annotation, resolver, context))
+                        .cc(getRoutingKeys(annotation, stringValueResolver, context))
                         .build());
     }
 
     private static List<String> getRoutingKeys(
-            RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
+            RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
         List<String> routingKeys = Stream.of(annotation.bindings())
                 .map(binding -> {
                     if (binding.key().length == 0) {
@@ -232,22 +232,22 @@ public class RabbitListenerUtil {
                     }
 
                     return Arrays.stream(binding.key())
-                            .map(resolver::resolveStringValue)
+                            .map(stringValueResolver::resolveStringValue)
                             .toList();
                 })
                 .findFirst()
                 .orElse(null);
 
-        Binding binding = context.bindingMap.get(getChannelName(annotation, resolver));
+        Binding binding = context.bindingMap.get(getChannelName(annotation, stringValueResolver));
         if (routingKeys == null && binding != null) {
             routingKeys = Collections.singletonList(binding.getRoutingKey());
         }
 
         // when there is no binding for the queue present at all, it uses the fact that
         // RabbitMQ automatically binds default exchange to a queue with queue's name as a routing key.
-        String exchangeName = getExchangeName(annotation, resolver, context);
+        String exchangeName = getExchangeName(annotation, stringValueResolver, context);
         if (routingKeys == null && exchangeName.isEmpty()) {
-            routingKeys = Collections.singletonList(getQueueName(annotation, resolver));
+            routingKeys = Collections.singletonList(getQueueName(annotation, stringValueResolver));
         }
 
         return routingKeys;

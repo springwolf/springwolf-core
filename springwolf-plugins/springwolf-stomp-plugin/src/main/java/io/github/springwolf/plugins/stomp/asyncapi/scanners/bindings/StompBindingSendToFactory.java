@@ -9,16 +9,15 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.common.SendToUtil;
 import io.github.springwolf.plugins.stomp.configuration.properties.SpringwolfStompConfigProperties;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class StompBindingSendToFactory implements BindingFactory<SendTo>, EmbeddedValueResolverAware {
-    private StringValueResolver stringValueResolver;
+public class StompBindingSendToFactory implements BindingFactory<SendTo> {
     private final SpringwolfStompConfigProperties properties;
+    private final StringValueResolver stringValueResolver;
 
     @Override
     public String getChannelName(SendTo annotation) {
@@ -38,10 +37,5 @@ public class StompBindingSendToFactory implements BindingFactory<SendTo>, Embedd
     @Override
     public Map<String, MessageBinding> buildMessageBinding(SendTo annotation, SchemaObject headerSchema) {
         return SendToUtil.buildMessageBinding();
-    }
-
-    @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.stringValueResolver = resolver;
     }
 }

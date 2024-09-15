@@ -7,6 +7,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPrio
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -20,6 +21,10 @@ public class TestAbstractOperationBindingProcessor
         extends AbstractOperationBindingProcessor<TestAbstractOperationBindingProcessor.TestOperationBinding> {
     public static final String TYPE = "testType";
     public static final OperationBinding BINDING = new AbstractOperationBindingBinding();
+
+    public TestAbstractOperationBindingProcessor(StringValueResolver stringValueResolver) {
+        super(stringValueResolver);
+    }
 
     @Override
     protected ProcessedOperationBinding mapToOperationBinding(TestOperationBinding bindingAnnotation) {

@@ -241,8 +241,8 @@ public class SpringwolfAutoConfiguration {
             ComponentsService componentsService,
             PayloadAsyncOperationService payloadAsyncOperationService,
             List<MessageBindingProcessor> messageBindingProcessors,
-            StringValueResolverProxy resolver) {
+            StringValueResolverProxy stringValueResolver) {
         return new AsyncAnnotationMessageService(
-                payloadAsyncOperationService, componentsService, messageBindingProcessors, resolver);
+                payloadAsyncOperationService, componentsService, messageBindingProcessors, stringValueResolver);
     }
 }

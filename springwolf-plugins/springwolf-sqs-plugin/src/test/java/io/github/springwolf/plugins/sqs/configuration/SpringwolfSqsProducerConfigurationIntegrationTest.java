@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.StringValueResolver;
 
 import java.util.Optional;
 
@@ -49,7 +50,8 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadMethodParameterService.class),
                 @MockBean(HeaderClassExtractor.class),
-                @MockBean(SqsTemplate.class)
+                @MockBean(SqsTemplate.class),
+                @MockBean(StringValueResolver.class),
             })
     @Nested
     class SqsProducerWillBeCreatedIfEnabledTest {
@@ -89,7 +91,8 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 @MockBean(ComponentsService.class),
                 @MockBean(PayloadMethodParameterService.class),
                 @MockBean(HeaderClassExtractor.class),
-                @MockBean(SqsTemplate.class)
+                @MockBean(SqsTemplate.class),
+                @MockBean(StringValueResolver.class),
             })
     @Nested
     class SqsProducerWillNotBeCreatedIfDisabledTest {

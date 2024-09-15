@@ -10,18 +10,22 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 import java.util.Map;
 
-public class AmqpBindingFactory implements BindingFactory<RabbitListener>, EmbeddedValueResolverAware {
+public class AmqpBindingFactory implements BindingFactory<RabbitListener> {
     private final RabbitListenerUtil.RabbitListenerUtilContext context;
-    private StringValueResolver stringValueResolver;
+    private final StringValueResolver stringValueResolver;
 
-    public AmqpBindingFactory(List<Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
+    public AmqpBindingFactory(
+            List<Queue> queues,
+            List<Exchange> exchanges,
+            List<Binding> bindings,
+            StringValueResolver stringValueResolver) {
         this.context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
+        this.stringValueResolver = stringValueResolver;
     }
 
     @Override
@@ -42,10 +46,5 @@ public class AmqpBindingFactory implements BindingFactory<RabbitListener>, Embed
     @Override
     public Map<String, MessageBinding> buildMessageBinding(RabbitListener annotation, SchemaObject headerSchema) {
         return RabbitListenerUtil.buildMessageBinding();
-    }
-
-    @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.stringValueResolver = resolver;
     }
 }

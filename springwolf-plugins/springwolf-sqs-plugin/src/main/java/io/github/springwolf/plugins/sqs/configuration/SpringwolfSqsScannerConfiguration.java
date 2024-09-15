@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 
@@ -37,8 +38,8 @@ public class SpringwolfSqsScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
-    public SqsBindingFactory sqsBindingFactory() {
-        return new SqsBindingFactory();
+    public SqsBindingFactory sqsBindingFactory(StringValueResolver stringValueResolver) {
+        return new SqsBindingFactory(stringValueResolver);
     }
 
     @Bean

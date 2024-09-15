@@ -36,15 +36,17 @@ class AsyncAnnotationMessageServiceTest {
     private final PayloadAsyncOperationService payloadAsyncOperationService = mock(PayloadAsyncOperationService.class);
     private final ComponentsService componentsService = mock(ComponentsService.class);
     private final MessageBindingProcessor messageBindingProcessor = mock(MessageBindingProcessor.class);
-    private final StringValueResolver resolver = mock(StringValueResolver.class);
+    private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
     AsyncAnnotationMessageService asyncAnnotationMessageService = new AsyncAnnotationMessageService(
-            payloadAsyncOperationService, componentsService, List.of(messageBindingProcessor), resolver);
+            payloadAsyncOperationService, componentsService, List.of(messageBindingProcessor), stringValueResolver);
 
     private final PayloadSchemaObject payloadSchema = new PayloadSchemaObject("full.name", "name", null);
 
     @BeforeEach
     void setUp() {
-        doAnswer(invocation -> invocation.getArgument(0)).when(resolver).resolveStringValue(any());
+        doAnswer(invocation -> invocation.getArgument(0))
+                .when(stringValueResolver)
+                .resolveStringValue(any());
 
         when(componentsService.registerSchema(any())).thenReturn("headerSchemaName");
         when(messageBindingProcessor.process(any())).thenReturn(Optional.empty());

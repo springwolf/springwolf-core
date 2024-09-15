@@ -8,10 +8,15 @@ import io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBinding;
 import io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBindingIdentifier;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
+import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 
 public class SnsOperationBindingProcessor extends AbstractOperationBindingProcessor<SnsAsyncOperationBinding> {
+
+    public SnsOperationBindingProcessor(StringValueResolver stringValueResolver) {
+        super(stringValueResolver);
+    }
 
     @Override
     protected ProcessedOperationBinding mapToOperationBinding(SnsAsyncOperationBinding bindingAnnotation) {

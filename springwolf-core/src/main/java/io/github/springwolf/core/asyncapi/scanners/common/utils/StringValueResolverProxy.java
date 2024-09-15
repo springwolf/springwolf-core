@@ -11,8 +11,8 @@ public class StringValueResolverProxy implements StringValueResolver, EmbeddedVa
     private StringValueResolver delegate;
 
     @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.delegate = resolver;
+    public void setEmbeddedValueResolver(StringValueResolver stringValueResolver) {
+        this.delegate = stringValueResolver;
     }
 
     @Override

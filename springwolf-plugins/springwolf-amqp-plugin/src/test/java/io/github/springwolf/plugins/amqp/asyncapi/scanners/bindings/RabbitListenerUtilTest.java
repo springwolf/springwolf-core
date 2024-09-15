@@ -47,11 +47,11 @@ class RabbitListenerUtilTest {
         void getChannelName(Class<?> clazz) {
             // given
             RabbitListener annotation = getAnnotation(clazz);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
-            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("queue-1", channelName);
@@ -62,12 +62,12 @@ class RabbitListenerUtilTest {
         void buildChannelBinding(Class<?> clazz) {
             // given
             RabbitListener annotation = getAnnotation(clazz);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -91,12 +91,12 @@ class RabbitListenerUtilTest {
         void buildOperationBinding(Class<?> clazz) {
             // given
             RabbitListener annotation = getAnnotation(clazz);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -137,11 +137,11 @@ class RabbitListenerUtilTest {
         void getChannelName() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
-            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("queue-1", channelName);
@@ -151,12 +151,12 @@ class RabbitListenerUtilTest {
         void buildChannelBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -178,12 +178,12 @@ class RabbitListenerUtilTest {
         void buildOperationBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -220,11 +220,11 @@ class RabbitListenerUtilTest {
         void getChannelName() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
 
             // when
-            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("routing-key", channelName);
@@ -234,12 +234,12 @@ class RabbitListenerUtilTest {
         void buildChannelBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -261,12 +261,12 @@ class RabbitListenerUtilTest {
         void buildOperationBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -318,12 +318,12 @@ class RabbitListenerUtilTest {
         void getChannelName() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
-            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            when(stringValueResolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
 
             // when
-            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("routing-key", channelName);
@@ -333,13 +333,13 @@ class RabbitListenerUtilTest {
         void buildChannelBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
-            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            when(stringValueResolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, context);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, context);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -361,13 +361,13 @@ class RabbitListenerUtilTest {
         void buildOperationBinding() {
             // given
             RabbitListener annotation = getAnnotation(ClassWithBindingsConfiguration.class);
-            StringValueResolver resolver = mock(StringValueResolver.class);
-            when(resolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
-            when(resolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${queue-1}")).thenReturn("queue-1");
+            when(stringValueResolver.resolveStringValue("${routing-key}")).thenReturn("routing-key");
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, context);
+                    RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, context);
 
             // then
             assertEquals(1, operationBinding.size());

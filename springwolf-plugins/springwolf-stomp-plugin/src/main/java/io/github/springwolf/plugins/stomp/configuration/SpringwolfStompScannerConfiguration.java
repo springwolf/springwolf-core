@@ -37,6 +37,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 
@@ -56,14 +57,15 @@ public class SpringwolfStompScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     public StompBindingMessageMappingFactory stompBindingMessageMappingFactory(
-            SpringwolfStompConfigProperties properties) {
-        return new StompBindingMessageMappingFactory(properties);
+            SpringwolfStompConfigProperties properties, StringValueResolver stringValueResolver) {
+        return new StompBindingMessageMappingFactory(properties, stringValueResolver);
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED, havingValue = "true", matchIfMissing = true)
-    public StompBindingSendToFactory stompBindingSendToFactory(SpringwolfStompConfigProperties properties) {
-        return new StompBindingSendToFactory(properties);
+    public StompBindingSendToFactory stompBindingSendToFactory(
+            SpringwolfStompConfigProperties properties, StringValueResolver stringValueResolver) {
+        return new StompBindingSendToFactory(properties, stringValueResolver);
     }
 
     @Bean
@@ -71,8 +73,9 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_USER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    public StompBindingSendToUserFactory stompBindingSendToUserFactory(SpringwolfStompConfigProperties properties) {
-        return new StompBindingSendToUserFactory(properties);
+    public StompBindingSendToUserFactory stompBindingSendToUserFactory(
+            SpringwolfStompConfigProperties properties, StringValueResolver stringValueResolver) {
+        return new StompBindingSendToUserFactory(properties, stringValueResolver);
     }
 
     @Bean

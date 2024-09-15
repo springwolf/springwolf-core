@@ -37,7 +37,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class AsyncAnnotationUtil {
     private AsyncAnnotationUtil() {}
 
-    public static SchemaObject getAsyncHeaders(AsyncOperation op, StringValueResolver resolver) {
+    public static SchemaObject getAsyncHeaders(AsyncOperation op, StringValueResolver stringValueResolver) {
         AsyncOperation.Headers headers = op.headers();
         if (headers.values().length == 0) {
             if (headers.notUsed()) {
@@ -49,8 +49,9 @@ public class AsyncAnnotationUtil {
         String headerSchemaTitle;
         headerSchemaTitle =
                 StringUtils.hasText(headers.schemaName()) ? headers.schemaName() : generateHeaderSchemaName(headers);
-        String headerDescription =
-                StringUtils.hasText(headers.description()) ? resolver.resolveStringValue(headers.description()) : null;
+        String headerDescription = StringUtils.hasText(headers.description())
+                ? stringValueResolver.resolveStringValue(headers.description())
+                : null;
 
         SchemaObject headerSchema = new SchemaObject();
         headerSchema.setType(SchemaType.OBJECT);
@@ -61,13 +62,13 @@ public class AsyncAnnotationUtil {
         Arrays.stream(headers.values())
                 .collect(groupingBy(AsyncOperation.Headers.Header::name))
                 .forEach((headerName, headersValues) -> {
-                    String propertyName = resolver.resolveStringValue(headerName);
+                    String propertyName = stringValueResolver.resolveStringValue(headerName);
 
                     SchemaObject property = new SchemaObject();
                     property.setType(SchemaType.STRING);
                     property.setTitle(propertyName);
-                    property.setDescription(getDescription(headersValues, resolver));
-                    List<String> values = getHeaderValues(headersValues, resolver);
+                    property.setDescription(getDescription(headersValues, stringValueResolver));
+                    List<String> values = getHeaderValues(headersValues, stringValueResolver);
                     property.setExamples(new ArrayList<>(values));
                     property.setEnumValues(values);
                     headerSchema.getProperties().put(propertyName, property);
@@ -77,19 +78,20 @@ public class AsyncAnnotationUtil {
     }
 
     private static List<String> getHeaderValues(
-            List<AsyncOperation.Headers.Header> value, StringValueResolver resolver) {
+            List<AsyncOperation.Headers.Header> value, StringValueResolver stringValueResolver) {
         return value.stream()
                 .map(AsyncOperation.Headers.Header::value)
                 .filter(StringUtils::hasText)
-                .map(resolver::resolveStringValue)
+                .map(stringValueResolver::resolveStringValue)
                 .sorted()
                 .toList();
     }
 
-    private static String getDescription(List<AsyncOperation.Headers.Header> value, StringValueResolver resolver) {
+    private static String getDescription(
+            List<AsyncOperation.Headers.Header> value, StringValueResolver stringValueResolver) {
         return value.stream()
                 .map(AsyncOperation.Headers.Header::description)
-                .map(resolver::resolveStringValue)
+                .map(stringValueResolver::resolveStringValue)
                 .filter(StringUtils::hasText)
                 .sorted()
                 .findFirst()
@@ -119,24 +121,24 @@ public class AsyncAnnotationUtil {
     public static void processAsyncMessageAnnotation(
             MessageObject.MessageObjectBuilder messageBuilder,
             AsyncMessage asyncMessage,
-            StringValueResolver resolver) {
-        String annotationMessageDescription = resolver.resolveStringValue(asyncMessage.description());
+            StringValueResolver stringValueResolver) {
+        String annotationMessageDescription = stringValueResolver.resolveStringValue(asyncMessage.description());
         if (StringUtils.hasText(annotationMessageDescription)) {
             annotationMessageDescription = TextUtils.trimIndent(annotationMessageDescription);
             messageBuilder.description(annotationMessageDescription);
         }
 
-        String annotationMessageId = resolver.resolveStringValue(asyncMessage.messageId());
+        String annotationMessageId = stringValueResolver.resolveStringValue(asyncMessage.messageId());
         if (StringUtils.hasText(annotationMessageId)) {
             messageBuilder.messageId(annotationMessageId);
         }
 
-        String annotationName = resolver.resolveStringValue(asyncMessage.name());
+        String annotationName = stringValueResolver.resolveStringValue(asyncMessage.name());
         if (StringUtils.hasText(annotationName)) {
             messageBuilder.name(annotationName);
         }
 
-        String annotationTitle = resolver.resolveStringValue(asyncMessage.title());
+        String annotationTitle = stringValueResolver.resolveStringValue(asyncMessage.title());
         if (StringUtils.hasText(annotationTitle)) {
             messageBuilder.title(annotationTitle);
         }
@@ -151,11 +153,13 @@ public class AsyncAnnotationUtil {
      * return a List of server names.
      *
      * @param op       the given AsyncOperation
-     * @param resolver the StringValueResolver to resolve placeholders
+     * @param stringValueResolver the StringValueResolver to resolve placeholders
      * @return List of server names
      */
-    public static List<String> getServers(AsyncOperation op, StringValueResolver resolver) {
-        return Arrays.stream(op.servers()).map(resolver::resolveStringValue).toList();
+    public static List<String> getServers(AsyncOperation op, StringValueResolver stringValueResolver) {
+        return Arrays.stream(op.servers())
+                .map(stringValueResolver::resolveStringValue)
+                .toList();
     }
 
     public static Map<String, ChannelBinding> processChannelBindingFromAnnotation(
