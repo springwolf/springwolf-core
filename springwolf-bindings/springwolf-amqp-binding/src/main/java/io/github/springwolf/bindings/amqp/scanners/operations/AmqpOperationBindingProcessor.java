@@ -13,12 +13,16 @@ public class AmqpOperationBindingProcessor extends AbstractOperationBindingProce
     protected ProcessedOperationBinding mapToOperationBinding(AmqpAsyncOperationBinding bindingAnnotation) {
         AMQPOperationBinding amqpOperationBinding = AMQPOperationBinding.builder()
                 .expiration(bindingAnnotation.expiration())
+                .userId(resolveOrNull(bindingAnnotation.userId()))
                 .cc(Arrays.stream(bindingAnnotation.cc())
                         .map(this::resolveOrNull)
                         .toList())
                 .priority(bindingAnnotation.priority())
                 .deliveryMode(bindingAnnotation.deliveryMode())
                 .mandatory(bindingAnnotation.mandatory())
+                .bcc(Arrays.stream(bindingAnnotation.bcc())
+                        .map(this::resolveOrNull)
+                        .toList())
                 .timestamp(bindingAnnotation.timestamp())
                 .ack(bindingAnnotation.ack())
                 .build();

@@ -581,6 +581,7 @@
           "priority": 0,
           "deliveryMode": 1,
           "mandatory": false,
+          "bcc": [ ],
           "timestamp": false,
           "ack": false,
           "bindingVersion": "0.3.0"
