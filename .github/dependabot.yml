@@ -11,12 +11,6 @@ updates:
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "docker"
-    directory: "/"
-    rebase-strategy: "disabled"
-    schedule:
-      interval: "weekly"
-
   - package-ecosystem: "gradle"
     directory: "/"
     rebase-strategy: "disabled"
