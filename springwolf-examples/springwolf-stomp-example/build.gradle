@@ -8,6 +8,8 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application'
 }
 
+ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-stomp")
@@ -33,9 +35,6 @@ dependencies {
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-beans"
     testImplementation "org.springframework:spring-core"
@@ -50,6 +49,9 @@ dependencies {
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
 }
 
 docker {

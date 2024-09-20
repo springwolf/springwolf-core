@@ -16,6 +16,8 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}"
 }
 
+ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+
 dependencies {
     api project(":springwolf-core")
 
@@ -30,9 +32,11 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:${kotlinxSerializationVersion}"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
+
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testImplementation "net.javacrumbs.json-unit:json-unit-assertj:${jsonUnitAssertJVersion}"
 
 }
