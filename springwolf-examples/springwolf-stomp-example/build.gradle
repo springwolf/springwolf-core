@@ -38,9 +38,10 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-beans"
     testImplementation "org.springframework:spring-core"
-    testImplementation "org.springframework:spring-test"
-    permitTestUnusedDeclared "org.springframework:spring-test"
     testImplementation "org.springframework:spring-web"
+
+    permitTestUnusedDeclared "org.mockito:mockito-core:${mockitoCoreVersion}"
+    permitTestUnusedDeclared "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
 
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
