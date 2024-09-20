@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.stomp.stomp.config;
+package io.github.springwolf.examples.stomp.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
