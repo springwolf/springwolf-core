@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.stomp.stomp.consumers;
+package io.github.springwolf.examples.stomp.consumers;
 
-import io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto;
-import io.github.springwolf.examples.stomp.stomp.dtos.ExamplePayloadDto;
-import io.github.springwolf.examples.stomp.stomp.producers.AnotherProducer;
+import io.github.springwolf.examples.stomp.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.stomp.dtos.ExamplePayloadDto;
+import io.github.springwolf.examples.stomp.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -11,11 +11,11 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.EXAMPLE_QUEUE;
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTOUSER_QUEUE;
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTOUSER_RESPONSE_QUEUE;
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTO_QUEUE;
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.SENDTO_RESPONSE_QUEUE;
+import static io.github.springwolf.examples.stomp.config.Constants.EXAMPLE_QUEUE;
+import static io.github.springwolf.examples.stomp.config.Constants.SENDTOUSER_QUEUE;
+import static io.github.springwolf.examples.stomp.config.Constants.SENDTOUSER_RESPONSE_QUEUE;
+import static io.github.springwolf.examples.stomp.config.Constants.SENDTO_QUEUE;
+import static io.github.springwolf.examples.stomp.config.Constants.SENDTO_RESPONSE_QUEUE;
 
 @Controller
 @RequiredArgsConstructor

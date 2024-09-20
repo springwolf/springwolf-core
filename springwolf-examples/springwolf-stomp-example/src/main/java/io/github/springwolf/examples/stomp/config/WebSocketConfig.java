@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.stomp.stomp.config;
+package io.github.springwolf.examples.stomp.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -7,11 +7,11 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.WEBSOCKET_BROKER_QUEUE;
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.WEBSOCKET_BROKER_TOPIC;
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.WEBSOCKET_ENDPOINT;
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.WEBSOCKET_PREFIX_APP;
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.WEBSOCKET_PREFIX_USER;
+import static io.github.springwolf.examples.stomp.config.Constants.WEBSOCKET_BROKER_QUEUE;
+import static io.github.springwolf.examples.stomp.config.Constants.WEBSOCKET_BROKER_TOPIC;
+import static io.github.springwolf.examples.stomp.config.Constants.WEBSOCKET_ENDPOINT;
+import static io.github.springwolf.examples.stomp.config.Constants.WEBSOCKET_PREFIX_APP;
+import static io.github.springwolf.examples.stomp.config.Constants.WEBSOCKET_PREFIX_USER;
 
 @Configuration
 @EnableWebSocketMessageBroker

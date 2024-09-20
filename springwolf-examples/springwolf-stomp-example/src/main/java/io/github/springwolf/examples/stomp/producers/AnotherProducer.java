@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.stomp.stomp.producers;
+package io.github.springwolf.examples.stomp.producers;
 
 import io.github.springwolf.bindings.stomp.annotations.StompAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
-import io.github.springwolf.examples.stomp.stomp.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.stomp.dtos.AnotherPayloadDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 
-import static io.github.springwolf.examples.stomp.stomp.config.Constants.ANOTHER_QUEUE;
+import static io.github.springwolf.examples.stomp.config.Constants.ANOTHER_QUEUE;
 
 @Component
 @RequiredArgsConstructor

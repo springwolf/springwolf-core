@@ -16,6 +16,8 @@ dependencyManagement {
     }
 }
 
+ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+
 dependencies {
     api project(":springwolf-asyncapi")
     api project(":springwolf-core")
@@ -31,11 +33,8 @@ dependencies {
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.apache.kafka:kafka-streams:${kafkaStreamsVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
 
     testImplementation "org.springframework.boot:spring-boot"
@@ -43,6 +42,9 @@ dependencies {
     testImplementation "org.springframework:spring-beans"
     testImplementation "org.springframework:spring-test"
     testImplementation "org.springframework:spring-messaging"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
 }
 
 jar {
