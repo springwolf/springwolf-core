@@ -60,7 +60,7 @@ ext {
     monetaVersion = '1.4.4'
     moneyApiVersion = '1.1'
 
-    protobufJavaVersion = '4.28.1'
+    protobufJavaVersion = '4.28.2'
 
     junitJupiterVersion = '5.11.0'
     jsonUnitAssertJVersion = '3.4.1'
