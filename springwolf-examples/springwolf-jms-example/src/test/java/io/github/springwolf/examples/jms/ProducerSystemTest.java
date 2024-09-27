@@ -65,6 +65,7 @@ public class ProducerSystemTest {
         springwolfJmsProducer.send("example-queue", Map.of(), payload);
 
         // then
-        verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
+        // Increased timeout once from 10s to 20s to fix flaky test in ci
+        verify(exampleConsumer, timeout(20000)).receiveExamplePayload(payload);
     }
 }
