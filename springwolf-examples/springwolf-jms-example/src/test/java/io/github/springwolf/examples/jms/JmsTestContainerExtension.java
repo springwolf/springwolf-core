@@ -16,8 +16,9 @@ public class JmsTestContainerExtension implements BeforeAllCallback, ExtensionCo
 
     private static volatile boolean started = false;
 
-    static GenericContainer<?> activeMq =
-            new GenericContainer<>(DockerImageName.parse("apache/activemq-artemis:2.31.2")).withExposedPorts(61616);
+    static GenericContainer<?> activeMq = new GenericContainer<>(
+                    DockerImageName.parse("apache/activemq-artemis:2.37.0-alpine"))
+            .withExposedPorts(61616);
 
     @Override
     public void beforeAll(ExtensionContext extensionContext) {
