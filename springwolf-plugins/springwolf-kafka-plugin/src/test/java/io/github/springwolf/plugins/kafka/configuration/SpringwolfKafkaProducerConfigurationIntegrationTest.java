@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.StringValueResolver;
 
 import java.util.Optional;
 
@@ -50,6 +51,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 @MockBean(PayloadAsyncOperationService.class),
                 @MockBean(HeaderClassExtractor.class),
                 @MockBean(PayloadMethodParameterService.class),
+                @MockBean(StringValueResolver.class),
             })
     class KafkaProducerWillBeCreatedIfEnabledTest {
         @Autowired
@@ -90,6 +92,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 @MockBean(PayloadAsyncOperationService.class),
                 @MockBean(PayloadMethodParameterService.class),
                 @MockBean(HeaderClassExtractor.class),
+                @MockBean(StringValueResolver.class),
             })
     class KafkaProducerWillNotBeCreatedIfDisabledTest {
         @Autowired

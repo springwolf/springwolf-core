@@ -46,7 +46,7 @@ class RabbitListenerUtilTest {
     private final RabbitListenerUtilContext exchangeContext =
             RabbitListenerUtilContext.create(List.of(queue), List.of(exchange), List.of());
 
-    StringValueResolver resolver = mock(StringValueResolver.class);
+    StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
     @BeforeEach
     void setUp() {
@@ -60,7 +60,7 @@ class RabbitListenerUtilTest {
                         default -> arg;
                     };
                 })
-                .when(resolver)
+                .when(stringValueResolver)
                 .resolveStringValue(any());
     }
 
@@ -73,7 +73,7 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
 
             // when
-            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("queue-1", channelName);
@@ -85,8 +85,8 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
 
             // when
-            Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, queueContext);
+            Map<String, ? extends ChannelBinding> channelBinding = RabbitListenerUtil.buildChannelBinding(
+                    annotation, RabbitListenerUtilTest.this.stringValueResolver, queueContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -115,7 +115,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -140,8 +140,8 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithQueuesConfiguration.class);
 
             // when
-            Map<String, OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, queueContext);
+            Map<String, OperationBinding> operationBinding = RabbitListenerUtil.buildOperationBinding(
+                    annotation, RabbitListenerUtilTest.this.stringValueResolver, queueContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -159,7 +159,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -194,7 +194,7 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
 
             // when
-            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("queue-1", channelName);
@@ -209,8 +209,8 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
 
             // when
-            Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, queueContext);
+            Map<String, ? extends ChannelBinding> channelBinding = RabbitListenerUtil.buildChannelBinding(
+                    annotation, RabbitListenerUtilTest.this.stringValueResolver, queueContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -236,7 +236,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -264,8 +264,8 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithQueuesToDeclare.class);
 
             // when
-            Map<String, OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, queueContext);
+            Map<String, OperationBinding> operationBinding = RabbitListenerUtil.buildOperationBinding(
+                    annotation, RabbitListenerUtilTest.this.stringValueResolver, queueContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -280,7 +280,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -315,7 +315,7 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
 
             // when
-            String channelName = RabbitListenerUtil.getChannelId(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelId(annotation, stringValueResolver);
 
             // then
             assertEquals("queue-1-id_#_exchange-name-id", channelName);
@@ -327,7 +327,7 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
 
             // when
-            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("exchange-name", channelName);
@@ -339,8 +339,8 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
 
             // when
-            Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, queueContext);
+            Map<String, ? extends ChannelBinding> channelBinding = RabbitListenerUtil.buildChannelBinding(
+                    annotation, RabbitListenerUtilTest.this.stringValueResolver, queueContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -367,7 +367,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, exchangeContext);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, exchangeContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -397,7 +397,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -423,8 +423,8 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
 
             // when
-            Map<String, ? extends OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, queueContext);
+            Map<String, ? extends OperationBinding> operationBinding = RabbitListenerUtil.buildOperationBinding(
+                    annotation, RabbitListenerUtilTest.this.stringValueResolver, queueContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -438,8 +438,8 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithBindingConfiguration.class);
 
             // when
-            Map<String, ? extends OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, exchangeContext);
+            Map<String, ? extends OperationBinding> operationBinding = RabbitListenerUtil.buildOperationBinding(
+                    annotation, RabbitListenerUtilTest.this.stringValueResolver, exchangeContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -457,7 +457,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -495,7 +495,7 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
 
             // when
-            String channelName = RabbitListenerUtil.getChannelId(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelId(annotation, stringValueResolver);
 
             // then
             assertEquals("queue-1-id_routing-key_exchange-name-id", channelName);
@@ -507,7 +507,7 @@ class RabbitListenerUtilTest {
             RabbitListener annotation = getAnnotation(ClassWithBindingsAndRoutingKeyConfiguration.class);
 
             // when
-            String channelName = RabbitListenerUtil.getChannelName(annotation, resolver);
+            String channelName = RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
             assertEquals("exchange-name", channelName);
@@ -520,7 +520,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, queueContext);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, queueContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -548,7 +548,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, ? extends ChannelBinding> channelBinding =
-                    RabbitListenerUtil.buildChannelBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, channelBinding.size());
@@ -575,7 +575,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, queueContext);
+                    RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, queueContext);
 
             // then
             assertEquals(1, operationBinding.size());
@@ -591,7 +591,7 @@ class RabbitListenerUtilTest {
 
             // when
             Map<String, ? extends OperationBinding> operationBinding =
-                    RabbitListenerUtil.buildOperationBinding(annotation, resolver, emptyContext);
+                    RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, emptyContext);
 
             // then
             assertEquals(1, operationBinding.size());

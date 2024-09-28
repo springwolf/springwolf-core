@@ -1,0 +1,78 @@
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.core.asyncapi.scanners.common.operation;
+
+import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
+import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringValueResolver;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Slf4j
+@RequiredArgsConstructor
+public class AsyncAnnotationOperationService<Annotation extends java.lang.annotation.Annotation> {
+
+    private final AsyncAnnotationProvider<Annotation> asyncAnnotationProvider;
+    private final List<OperationBindingProcessor> operationBindingProcessors;
+    private final AsyncAnnotationMessageService asyncAnnotationMessageService;
+    private final StringValueResolver stringValueResolver;
+
+    public Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelId) {
+        MessageObject message = asyncAnnotationMessageService.buildMessage(asyncOperation, method);
+        List<MessageReference> messages = List.of(MessageReference.toChannelMessage(channelId, message));
+
+        return buildOperation(asyncOperation, method, channelId, messages);
+    }
+
+    public Operation buildOperation(AsyncOperation asyncOperation, Set<Method> methods, String channelId) {
+        Method method = methods.stream().findFirst().orElseThrow();
+        List<MessageReference> messages = methods.stream()
+                .map(m -> asyncAnnotationMessageService.buildMessage(asyncOperation, m))
+                .map(m -> MessageReference.toChannelMessage(channelId, m))
+                .collect(Collectors.toList());
+
+        return buildOperation(asyncOperation, method, channelId, messages);
+    }
+
+    private Operation buildOperation(
+            AsyncOperation asyncOperation, Method method, String channelId, List<MessageReference> messages) {
+        String description = this.stringValueResolver.resolveStringValue(asyncOperation.description());
+        if (StringUtils.isBlank(description)) {
+            description = "Auto-generated description";
+        } else {
+            description = TextUtils.trimIndent(description);
+        }
+
+        String operationTitle =
+                StringUtils.joinWith("_", channelId, this.asyncAnnotationProvider.getOperationType().type);
+
+        Map<String, OperationBinding> operationBinding =
+                AsyncAnnotationUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);
+        Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
+
+        return Operation.builder()
+                .channel(ChannelReference.fromChannel(channelId))
+                .action(this.asyncAnnotationProvider.getOperationType())
+                .description(description)
+                .title(operationTitle)
+                .messages(messages)
+                .bindings(opBinding)
+                .build();
+    }
+}

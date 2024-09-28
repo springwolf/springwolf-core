@@ -8,6 +8,8 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application'
 }
 
+ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-add-ons:springwolf-generic-binding")
@@ -35,10 +37,6 @@ dependencies {
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
     runtimeOnly "org.springframework.boot:spring-boot-starter-artemis"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-test"
@@ -51,6 +49,9 @@ dependencies {
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
 }
 
 docker {

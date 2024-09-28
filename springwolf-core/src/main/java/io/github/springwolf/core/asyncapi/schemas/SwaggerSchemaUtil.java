@@ -15,6 +15,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SwaggerSchemaUtil {
 
+    public Map<String, SchemaObject> mapSchemasMap(Map<String, Schema> schemaMap) {
+        return schemaMap.entrySet().stream()
+                .map(entry -> Map.entry(entry.getKey(), mapSchema(entry.getValue())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
     public ComponentSchema mapSchemaOrRef(Schema schema) {
         if (schema.get$ref() != null) {
             return ComponentSchema.of(new MessageReference(schema.get$ref()));

@@ -17,23 +17,23 @@ public class ChannelMerger {
     private ChannelMerger() {}
 
     /**
-     * Merges multiple channels by channel name
+     * Merges multiple channels
      * <p>
-     * Given two channels for the same channel name, the first seen Channel is used
+     * Given two channels for the same channel id, the first seen Channel is used
      * Messages within channels are merged
      *
-     * @param channelEntries Ordered pairs of channel name to Channel
      * @return A map of channelId to a single Channel
      */
-    public static Map<String, ChannelObject> mergeChannels(List<Map.Entry<String, ChannelObject>> channelEntries) {
+    public static Map<String, ChannelObject> mergeChannels(List<ChannelObject> channels) {
         Map<String, ChannelObject> mergedChannels = new HashMap<>();
 
-        for (Map.Entry<String, ChannelObject> entry : channelEntries) {
-            if (!mergedChannels.containsKey(entry.getKey())) {
-                mergedChannels.put(entry.getKey(), entry.getValue());
+        for (ChannelObject channel : channels) {
+            if (!mergedChannels.containsKey(channel.getChannelId())) {
+                mergedChannels.put(channel.getChannelId(), channel);
             } else {
-                ChannelObject channel = mergeChannel(mergedChannels.get(entry.getKey()), entry.getValue());
-                mergedChannels.put(entry.getKey(), channel);
+                ChannelObject existingChannel = mergedChannels.get(channel.getChannelId());
+                ChannelObject mergedChannel = mergeChannel(existingChannel, channel);
+                mergedChannels.put(mergedChannel.getChannelId(), mergedChannel);
             }
         }
 

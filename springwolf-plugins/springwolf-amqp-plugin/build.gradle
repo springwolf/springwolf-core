@@ -6,6 +6,8 @@ plugins {
     id 'ca.cutterslade.analyze'
 }
 
+ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+
 dependencies {
     api project(":springwolf-core")
     api project(":springwolf-asyncapi")
@@ -32,8 +34,7 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testImplementation("org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}")
+
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
     testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
@@ -41,8 +42,11 @@ dependencies {
     testImplementation "org.springframework:spring-beans"
     testImplementation "org.springframework:spring-test"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
 }
 
 jar {

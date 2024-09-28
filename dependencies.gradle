@@ -37,12 +37,12 @@ ext {
 
     commonsLang3Version = '3.17.0'
 
-    kafkaAvroSerializerVersion = '7.7.0'
+    kafkaAvroSerializerVersion = '7.7.1'
 
     kafkaClientsVersion = '3.7.1'
     kafkaStreamsVersion = '3.8.0'
 
-    kafkaProtobufSerializerVersion = '7.7.0'
+    kafkaProtobufSerializerVersion = '7.7.1'
 
     jacksonVersion = '2.17.2'
     jacksonDatatypeProtobufVersion = '0.9.15'
@@ -52,7 +52,7 @@ ext {
 
     jakartaXmlBindApiVersion = '4.0.2'
 
-    jsonSchemaValidator = '1.5.1'
+    jsonSchemaValidator = '1.5.2'
 
     mockitoCoreVersion = '5.13.0'
     mockitoJunitJupiterVersion = '5.13.0'
@@ -60,9 +60,9 @@ ext {
     monetaVersion = '1.4.4'
     moneyApiVersion = '1.1'
 
-    protobufJavaVersion = '4.28.0'
+    protobufJavaVersion = '4.28.2'
 
-    junitJupiterVersion = '5.10.3'
+    junitJupiterVersion = '5.11.0'
     jsonUnitAssertJVersion = '3.4.1'
 
     lombokVersion = '1.18.34'
@@ -70,7 +70,7 @@ ext {
     slf4jApiVersion = '2.0.16'
     slf4jSimpleVersion = '2.0.16'
 
-    swaggerVersion = '2.2.23'
+    swaggerVersion = '2.2.24'
 
     testcontainersVersion = '1.20.1'
 }

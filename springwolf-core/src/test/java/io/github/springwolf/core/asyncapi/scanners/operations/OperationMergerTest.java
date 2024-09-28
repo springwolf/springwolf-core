@@ -132,14 +132,16 @@ class OperationMergerTest {
                 .name(String.class.getCanonicalName())
                 .description("This is a string")
                 .build();
-        ChannelObject publisherChannel1 = ChannelObject.builder().build();
+        ChannelObject publisherChannel1 =
+                ChannelObject.builder().channelId(channelId).build();
         ChannelObject publisherChannel2 = ChannelObject.builder()
+                .channelId(channelId)
                 .messages(Map.of(message2.getMessageId(), message2))
                 .build();
 
         // when
-        Map<String, ChannelObject> mergedChannels = ChannelMerger.mergeChannels(
-                Arrays.asList(Map.entry(channelId, publisherChannel1), Map.entry(channelId, publisherChannel2)));
+        Map<String, ChannelObject> mergedChannels =
+                ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2));
 
         // then expectedMessage message2
         var expectedMessages = Map.of(message2.getMessageId(), message2);

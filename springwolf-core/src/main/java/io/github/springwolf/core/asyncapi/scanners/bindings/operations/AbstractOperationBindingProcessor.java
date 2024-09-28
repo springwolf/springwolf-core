@@ -2,8 +2,8 @@
 package io.github.springwolf.core.asyncapi.scanners.bindings.operations;
 
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperationBinding;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
@@ -15,17 +15,13 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Slf4j
-public abstract class AbstractOperationBindingProcessor<A>
-        implements OperationBindingProcessor, EmbeddedValueResolverAware {
+@RequiredArgsConstructor
+public abstract class AbstractOperationBindingProcessor<A> implements OperationBindingProcessor {
+
+    private final StringValueResolver stringValueResolver;
 
     private final Class<A> specificAnnotationClazz =
             (Class<A>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-    private StringValueResolver resolver;
-
-    @Override
-    public void setEmbeddedValueResolver(StringValueResolver resolver) {
-        this.resolver = resolver;
-    }
 
     @Override
     public Optional<ProcessedOperationBinding> process(Method method) {
@@ -56,6 +52,6 @@ public abstract class AbstractOperationBindingProcessor<A>
     protected abstract ProcessedOperationBinding mapToOperationBinding(A bindingAnnotation);
 
     protected String resolveOrNull(String stringValue) {
-        return StringUtils.hasText(stringValue) ? resolver.resolveStringValue(stringValue) : null;
+        return StringUtils.hasText(stringValue) ? stringValueResolver.resolveStringValue(stringValue) : null;
     }
 }

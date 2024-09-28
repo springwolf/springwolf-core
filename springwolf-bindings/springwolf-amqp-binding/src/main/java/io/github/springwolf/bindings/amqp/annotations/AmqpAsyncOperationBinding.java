@@ -23,6 +23,8 @@ public @interface AmqpAsyncOperationBinding {
 
     int expiration() default 0;
 
+    String userId() default "";
+
     String[] cc() default {};
 
     int priority() default 0;
@@ -30,6 +32,8 @@ public @interface AmqpAsyncOperationBinding {
     int deliveryMode() default 1;
 
     boolean mandatory() default false;
+
+    String[] bcc() default {};
 
     boolean timestamp() default false;
 

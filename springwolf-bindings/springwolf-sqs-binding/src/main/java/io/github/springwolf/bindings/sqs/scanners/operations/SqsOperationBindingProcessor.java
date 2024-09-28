@@ -7,11 +7,16 @@ import io.github.springwolf.bindings.sqs.annotations.SqsAsyncOperationBinding;
 import io.github.springwolf.bindings.sqs.annotations.SqsAsyncQueueBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
+import org.springframework.util.StringValueResolver;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SqsOperationBindingProcessor extends AbstractOperationBindingProcessor<SqsAsyncOperationBinding> {
+
+    public SqsOperationBindingProcessor(StringValueResolver stringValueResolver) {
+        super(stringValueResolver);
+    }
 
     @Override
     protected ProcessedOperationBinding mapToOperationBinding(SqsAsyncOperationBinding bindingAnnotation) {

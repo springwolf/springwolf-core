@@ -1,5 +1,6 @@
 {
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SchemaWithOneOf$AllOf" : {
+    "title" : "AllOf",
     "type" : "string",
     "examples" : [ "<AllOf><firstOne>string</firstOne><firstTwo>0</firstTwo><secondOne>string</secondOne><secondTwo>true</secondTwo></AllOf>" ],
     "allOf" : [ {
@@ -9,6 +10,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SchemaWithOneOf$AnyOf" : {
+    "title" : "AnyOf",
     "type" : "string",
     "examples" : [ "<AnyOf><firstOne>string</firstOne><secondOne>string</secondOne></AnyOf>" ],
     "anyOf" : [ {
@@ -43,6 +45,7 @@
     "examples" : [ "<ImplementationTwo><firstTwo>0</firstTwo><secondTwo>true</secondTwo></ImplementationTwo>" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SchemaWithOneOf$OneOf" : {
+    "title" : "OneOf",
     "type" : "string",
     "examples" : [ "<OneOf><firstOne>string</firstOne><secondOne>string</secondOne></OneOf>" ],
     "oneOf" : [ {
@@ -52,6 +55,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SchemaWithOneOf$SchemaAnnotationFoo" : {
+    "title" : "SchemaAnnotationFoo",
     "type" : "string",
     "properties" : {
       "allOf" : {

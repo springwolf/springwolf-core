@@ -8,13 +8,16 @@ import io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBinding;
 import io.github.springwolf.bindings.sns.annotations.SnsAsyncOperationBindingIdentifier;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 class SnsOperationBindingProcessorTest {
-    private final SnsOperationBindingProcessor processor = new SnsOperationBindingProcessor();
+    private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+    private final SnsOperationBindingProcessor processor = new SnsOperationBindingProcessor(stringValueResolver);
 
     @Test
     void mapToOperationBindingTest() throws NoSuchMethodException {

@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -22,12 +23,8 @@ public class MessageHelper {
     private MessageHelper() {}
 
     public static Map<String, MessageReference> toMessagesMap(Set<MessageObject> messages) {
-        if (messages.isEmpty()) {
-            throw new IllegalArgumentException("messages must not be empty");
-        }
-
-        return new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier)))
-                .stream().collect(Collectors.toMap(MessageObject::getMessageId, MessageReference::toComponentMessage));
+        Function<MessageObject, MessageReference> aggregator = MessageReference::toComponentMessage;
+        return toMessageReferences(messages, aggregator);
     }
 
     public static Map<String, MessageReference> toOperationsMessagesMap(String channelId, Set<MessageObject> messages) {
@@ -35,14 +32,18 @@ public class MessageHelper {
             throw new IllegalArgumentException("channelId must not be empty");
         }
 
+        Function<MessageObject, MessageReference> aggregator =
+                (message) -> MessageReference.toChannelMessage(channelId, message.getMessageId());
+        return toMessageReferences(messages, aggregator);
+    }
+
+    private static Map<String, MessageReference> toMessageReferences(
+            Set<MessageObject> messages, Function<MessageObject, MessageReference> messageReferenceFunction) {
         if (messages.isEmpty()) {
             throw new IllegalArgumentException("messages must not be empty");
         }
 
         return new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier)))
-                .stream()
-                        .collect(Collectors.toMap(
-                                MessageObject::getMessageId,
-                                e -> MessageReference.toChannelMessage(channelId, e.getMessageId())));
+                .stream().collect(Collectors.toMap(MessageObject::getMessageId, messageReferenceFunction));
     }
 }

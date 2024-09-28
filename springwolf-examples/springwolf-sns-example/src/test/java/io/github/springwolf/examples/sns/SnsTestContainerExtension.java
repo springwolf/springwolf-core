@@ -21,7 +21,7 @@ public class SnsTestContainerExtension implements BeforeAllCallback, ExtensionCo
     private static volatile boolean started = false;
 
     static LocalStackContainer localStack =
-            new LocalStackContainer(DockerImageName.parse("localstack/localstack:2.2.0")).withServices(SNS);
+            new LocalStackContainer(DockerImageName.parse("localstack/localstack:3.7.2")).withServices(SNS);
 
     @Override
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
