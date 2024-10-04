@@ -72,5 +72,5 @@ ext {
 
     swaggerVersion = '2.2.24'
 
-    testcontainersVersion = '1.20.1'
+    testcontainersVersion = '1.20.2'
 }
