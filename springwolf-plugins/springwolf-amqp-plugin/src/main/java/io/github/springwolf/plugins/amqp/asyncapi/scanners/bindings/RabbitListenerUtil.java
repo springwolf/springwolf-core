@@ -13,6 +13,7 @@ import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
@@ -24,15 +25,27 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Note: bindings, queues, and queuesToDeclare are mutually exclusive
+ * <ul>
+ * <li> queues (string) point to queue beans (default exchange + routing key)
+ * <li> queuesToDeclare (object) will create queues on broker & matching beans (default exchange + routing key)
+ * <li> queueBinding (object) will create queue and exchange on broker & matching beans (exchange must match if present)
+ * </ul>
+ * <br/>
+ * How does rabbitmq work?
+ * <ol>
+ * <li> Producer sends a message to an exchange (default exchange if not specified)
+ * <li> Exchange routes the message to a queue based on the routing key (routing key = queue name if not specified)
+ * <li> Consumer consumes the message from the queue
+ * </ol>
+ */
 @Slf4j
 public class RabbitListenerUtil {
     public static final String BINDING_NAME = "amqp";
@@ -40,35 +53,60 @@ public class RabbitListenerUtil {
     private static final Boolean DEFAULT_DURABLE = true;
     private static final Boolean DEFAULT_EXCLUSIVE = false;
     private static final String DEFAULT_EXCHANGE_TYPE = ExchangeTypes.DIRECT;
+    private static final String DEFAULT_EXCHANGE_ROUTING_KEY = "#";
 
     public static String getChannelName(RabbitListener annotation, StringValueResolver stringValueResolver) {
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
-                .flatMap(binding -> Stream.concat(
-                        Stream.of(binding.key()), // if routing key is configured, prefer it
-                        Stream.of(binding.value().name())));
+                .flatMap(binding -> channelNameFromAnnotationBindings(binding, stringValueResolver));
 
-        return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
-                .map(stringValueResolver::resolveStringValue)
-                .filter(Objects::nonNull)
-                .peek(queue -> log.debug("Resolved channel name: {}", queue))
-                .findFirst()
-                .orElseThrow(
-                        () -> new IllegalArgumentException(
-                                "No channel name was found in @RabbitListener annotation (neither in queues nor bindings property)"));
+        Stream<String> stream = Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames);
+        return resolveFirstValue(stream, stringValueResolver, "channel name");
     }
 
-    public static String getQueueName(RabbitListener annotation, StringValueResolver stringValueResolver) {
-        Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
+    public static String getChannelId(RabbitListener annotation, StringValueResolver resolver) {
+        Stream<String> annotationBindingChannelIds = Arrays.stream(annotation.bindings())
+                .flatMap(binding -> channelIdFromAnnotationBindings(binding, resolver));
+
+        Stream<String> stream =
+                Stream.concat(streamQueueNames(annotation).map(ReferenceUtil::toValidId), annotationBindingChannelIds);
+        return resolveFirstValue(stream, resolver, "channel id");
+    }
+
+    private static String getQueueName(RabbitListener annotation, StringValueResolver resolver) {
+        Stream<String> annotationBindingQueueNames = Arrays.stream(annotation.bindings())
                 .flatMap(binding -> Stream.of(binding.value().name()));
 
-        return Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames)
+        Stream<String> stream = Stream.concat(streamQueueNames(annotation), annotationBindingQueueNames);
+        return resolveFirstValue(stream, resolver, "queue name");
+    }
+
+    private static Stream<String> channelNameFromAnnotationBindings(
+            QueueBinding binding, StringValueResolver stringValueResolver) {
+        String exchangeName =
+                stringValueResolver.resolveStringValue(binding.exchange().name());
+
+        String[] routingKeys = binding.key();
+        if (routingKeys.length == 0) {
+            routingKeys = List.of(DEFAULT_EXCHANGE_ROUTING_KEY).toArray(new String[0]);
+        }
+
+        return Arrays.stream(routingKeys)
                 .map(stringValueResolver::resolveStringValue)
-                .filter(Objects::nonNull)
-                .peek(queue -> log.debug("Resolved queue name: {}", queue))
-                .findFirst()
-                .orElseThrow(
-                        () -> new IllegalArgumentException(
-                                "No queue name was found in @RabbitListener annotation (neither in queues nor bindings property)"));
+                .map(routingKey -> exchangeName);
+    }
+
+    private static Stream<String> channelIdFromAnnotationBindings(QueueBinding binding, StringValueResolver resolver) {
+        String queueName = resolver.resolveStringValue(binding.value().name());
+        String exchangeName = resolver.resolveStringValue(binding.exchange().name());
+
+        String[] routingKeys = binding.key();
+        if (routingKeys.length == 0) {
+            routingKeys = List.of(DEFAULT_EXCHANGE_ROUTING_KEY).toArray(new String[0]);
+        }
+
+        return Arrays.stream(routingKeys)
+                .map(resolver::resolveStringValue)
+                .map(routingKey -> String.join("_", queueName + "-id", routingKey, exchangeName + "-id"));
     }
 
     /**
@@ -98,10 +136,21 @@ public class RabbitListenerUtil {
             channelBinding.queue(buildQueueProperties(annotation, stringValueResolver, context));
         } else {
             channelBinding.is(AMQPChannelType.ROUTING_KEY);
+            channelBinding.name(getRoutingPattern(annotation, stringValueResolver, context));
+            channelBinding.channel(ChannelReference.fromChannel(
+                    exchangeTargetChannelIdFromAnnotationBindings(annotation, stringValueResolver)));
             channelBinding.exchange(buildExchangeProperties(annotation, exchangeName, context));
         }
 
         return Map.of(BINDING_NAME, channelBinding.build());
+    }
+
+    private static String exchangeTargetChannelIdFromAnnotationBindings(
+            RabbitListener annotation, StringValueResolver resolver) {
+        Stream<String> stream = Arrays.stream(annotation.bindings())
+                .map(binding -> binding.value().name() + "-id");
+
+        return resolveFirstValue(stream, resolver, "exchange target channel id");
     }
 
     private static AMQPChannelExchangeProperties buildExchangeProperties(
@@ -109,7 +158,7 @@ public class RabbitListenerUtil {
 
         // When a bean is found, its values are preferred regardless of the annotations values.
         // When using the annotation, it is not possible to differentiate between user set and default parameters
-        Exchange exchange = context.exchangeMap.get(exchangeName);
+        Exchange exchange = context.exchangeMap().get(exchangeName);
         if (exchange != null) {
             return AMQPChannelExchangeProperties.builder()
                     .name(exchangeName)
@@ -141,7 +190,7 @@ public class RabbitListenerUtil {
     private static AMQPChannelQueueProperties buildQueueProperties(
             RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
         String queueName = getQueueName(annotation, stringValueResolver);
-        org.springframework.amqp.core.Queue queue = context.queueMap.get(queueName);
+        org.springframework.amqp.core.Queue queue = context.queueMap().get(queueName);
         boolean autoDelete = queue != null ? queue.isAutoDelete() : DEFAULT_AUTO_DELETE;
         boolean durable = queue != null ? queue.isDurable() : DEFAULT_DURABLE;
         boolean exclusive = queue != null ? queue.isExclusive() : DEFAULT_EXCLUSIVE;
@@ -195,11 +244,12 @@ public class RabbitListenerUtil {
             RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
         String exchangeName = Stream.of(annotation.bindings())
                 .map(binding -> binding.exchange().name())
+                .map(stringValueResolver::resolveStringValue)
                 .filter(StringUtils::hasText)
                 .findFirst()
                 .orElse(null);
 
-        Binding binding = context.bindingMap.get(getChannelName(annotation, stringValueResolver));
+        Binding binding = context.bindingMap().get(getChannelName(annotation, stringValueResolver));
         if (exchangeName == null && binding != null) {
             exchangeName = binding.getExchange();
         }
@@ -213,44 +263,34 @@ public class RabbitListenerUtil {
     }
 
     public static Map<String, OperationBinding> buildOperationBinding(
-            RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
-        return Map.of(
-                BINDING_NAME,
-                AMQPOperationBinding.builder()
-                        .cc(getRoutingKeys(annotation, stringValueResolver, context))
-                        .build());
+            RabbitListener annotation, StringValueResolver resolver, RabbitListenerUtilContext context) {
+        return Map.of(BINDING_NAME, AMQPOperationBinding.builder().build());
     }
 
-    private static List<String> getRoutingKeys(
+    private static String getRoutingPattern(
             RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
-        List<String> routingKeys = Stream.of(annotation.bindings())
-                .map(binding -> {
-                    if (binding.key().length == 0) {
-                        // The routing key is taken from the binding. As the key field in the @QueueBinding can be an
-                        // empty array, it is set as an empty String in that case.
-                        return Collections.singletonList("");
-                    }
-
-                    return Arrays.stream(binding.key())
-                            .map(stringValueResolver::resolveStringValue)
-                            .toList();
-                })
+        String routingKey = Stream.of(annotation.bindings())
+                .flatMap(binding -> Arrays.stream(binding.key()).map(stringValueResolver::resolveStringValue))
                 .findFirst()
                 .orElse(null);
 
-        Binding binding = context.bindingMap.get(getChannelName(annotation, stringValueResolver));
-        if (routingKeys == null && binding != null) {
-            routingKeys = Collections.singletonList(binding.getRoutingKey());
+        Binding binding = context.bindingMap().get(getChannelName(annotation, stringValueResolver));
+        if (routingKey == null && binding != null) {
+            routingKey = binding.getRoutingKey();
         }
 
         // when there is no binding for the queue present at all, it uses the fact that
         // RabbitMQ automatically binds default exchange to a queue with queue's name as a routing key.
         String exchangeName = getExchangeName(annotation, stringValueResolver, context);
-        if (routingKeys == null && exchangeName.isEmpty()) {
-            routingKeys = Collections.singletonList(getQueueName(annotation, stringValueResolver));
+        if (routingKey == null && exchangeName.isEmpty()) {
+            routingKey = getQueueName(annotation, stringValueResolver);
         }
 
-        return routingKeys;
+        if (routingKey == null) {
+            routingKey = DEFAULT_EXCHANGE_ROUTING_KEY;
+        }
+
+        return routingKey;
     }
 
     public static Map<String, MessageBinding> buildMessageBinding() {
@@ -258,22 +298,12 @@ public class RabbitListenerUtil {
         return Map.of(BINDING_NAME, new AMQPMessageBinding());
     }
 
-    public record RabbitListenerUtilContext(
-            Map<String, org.springframework.amqp.core.Queue> queueMap,
-            Map<String, Exchange> exchangeMap,
-            Map<String, Binding> bindingMap) {
-
-        public static RabbitListenerUtilContext create(
-                List<org.springframework.amqp.core.Queue> queues, List<Exchange> exchanges, List<Binding> bindings) {
-            Map<String, org.springframework.amqp.core.Queue> queueMap = queues.stream()
-                    .collect(Collectors.toMap(
-                            org.springframework.amqp.core.Queue::getName, Function.identity(), (e1, e2) -> e1));
-            Map<String, Exchange> exchangeMap = exchanges.stream()
-                    .collect(Collectors.toMap(Exchange::getName, Function.identity(), (e1, e2) -> e1));
-            Map<String, Binding> bindingMap = bindings.stream()
-                    .filter(Binding::isDestinationQueue)
-                    .collect(Collectors.toMap(Binding::getDestination, Function.identity(), (e1, e2) -> e1));
-            return new RabbitListenerUtil.RabbitListenerUtilContext(queueMap, exchangeMap, bindingMap);
-        }
+    private static String resolveFirstValue(Stream<String> values, StringValueResolver resolver, String valueType) {
+        return values.map(resolver::resolveStringValue)
+                .filter(Objects::nonNull)
+                .peek(value -> log.debug("Resolved {}: {}", valueType, value))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No " + valueType
+                        + " was found in @RabbitListener annotation (neither in queues nor bindings property)"));
     }
 }

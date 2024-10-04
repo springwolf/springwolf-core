@@ -50,18 +50,18 @@ public class SpringContextIntegrationTest {
         void testAllChannelsAreFound() {
             assertThat(asyncApiService.getAsyncAPI().getChannels().keySet())
                     .containsExactlyInAnyOrder(
-                            "another-topic",
-                            "avro-topic",
-                            "example-topic",
-                            "integer-topic",
-                            "multi-payload-topic",
-                            "no-payload-used-topic",
-                            "protobuf-topic",
-                            "string-topic",
-                            "topic-defined-via-asyncPublisher-annotation",
-                            "vehicle-topic",
-                            "xml-topic",
-                            "yaml-topic");
+                            "another-topic_id",
+                            "avro-topic_id",
+                            "example-topic_id",
+                            "integer-topic_id",
+                            "multi-payload-topic_id",
+                            "no-payload-used-topic_id",
+                            "protobuf-topic_id",
+                            "string-topic_id",
+                            "topic-defined-via-asyncPublisher-annotation_id",
+                            "vehicle-topic_id",
+                            "xml-topic_id",
+                            "yaml-topic_id");
         }
     }
 

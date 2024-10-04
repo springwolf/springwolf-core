@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AmqpBindingFactory implements BindingFactory<RabbitListener> {
-    private final RabbitListenerUtil.RabbitListenerUtilContext context;
+    private final RabbitListenerUtilContext context;
     private final StringValueResolver stringValueResolver;
 
     public AmqpBindingFactory(
@@ -24,13 +24,18 @@ public class AmqpBindingFactory implements BindingFactory<RabbitListener> {
             List<Exchange> exchanges,
             List<Binding> bindings,
             StringValueResolver stringValueResolver) {
-        this.context = RabbitListenerUtil.RabbitListenerUtilContext.create(queues, exchanges, bindings);
+        this.context = RabbitListenerUtilContext.create(queues, exchanges, bindings);
         this.stringValueResolver = stringValueResolver;
     }
 
     @Override
     public String getChannelName(RabbitListener annotation) {
         return RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
+    }
+
+    @Override
+    public String getChannelId(RabbitListener annotation) {
+        return RabbitListenerUtil.getChannelId(annotation, stringValueResolver);
     }
 
     @Override

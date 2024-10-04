@@ -74,7 +74,7 @@ class AsyncAnnotationMethodLevelOperationsScannerTest {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // then
-        assertThat(actualOperations).containsExactly(Map.entry("test-channel_send_methodWithAnnotation", operation));
+        assertThat(actualOperations).containsExactly(Map.entry("test-channel_id_send_methodWithAnnotation", operation));
     }
 
     @Test
