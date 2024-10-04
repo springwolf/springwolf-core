@@ -5,12 +5,11 @@ import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import lombok.AllArgsConstructor;
 import lombok.val;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,18 +20,19 @@ public class AsyncApiGroupingService {
     //    private final String group = "admin";
 
     // if empty, keep all
-    private final List<OperationAction> operationActionsToKeep;
-    private final List<String> channelNamesToKeep; // TODO: currently Ids, change to name
 
-    // TODO: Context class
+
+    // TODO: Context class/object
     //    private final Map<String, Boolean> markedChannelIds;
     private final Set<String> markedOperationIds = new HashSet<>();
     private final Set<String> markedChannelIds = new HashSet<>();
     //    private final Map<String, Boolean> markedComponentIds;
 
-    public AsyncAPI groupAPI(AsyncAPI fullAsyncApi) {
-        markOperations(fullAsyncApi);
-        markChannels(fullAsyncApi);
+    public AsyncAPI groupAPI(AsyncAPI fullAsyncApi, AsyncApiGroup asyncApiGroup) {
+        Boolean markEverything = asyncApiGroup.getOperationActionsToKeep().isEmpty() && asyncApiGroup.getChannelNamesToKeep().isEmpty();
+
+        markOperations(fullAsyncApi, asyncApiGroup, markEverything);
+        markChannels(fullAsyncApi, asyncApiGroup);
 
         AsyncAPI asyncAPI = AsyncAPI.builder()
                 .info(fullAsyncApi.getInfo())
@@ -57,13 +57,13 @@ public class AsyncApiGroupingService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private void markChannels(AsyncAPI fullAsyncApi) {
+    private void markChannels(AsyncAPI fullAsyncApi, AsyncApiGroup asyncApiGroup) {
         if (fullAsyncApi.getChannels() == null) {
             return;
         }
 
         fullAsyncApi.getChannels().entrySet().stream()
-                .filter(entry -> channelNamesToKeep.contains(entry.getKey()))
+                .filter(entry -> asyncApiGroup.getChannelNamesToKeep().contains(entry.getKey()))
                 .forEach(entry -> {
                     markedChannelIds.add(entry.getKey());
 
@@ -82,14 +82,14 @@ public class AsyncApiGroupingService {
                 });
     }
 
-    private void markOperations(AsyncAPI fullAsyncApi) {
+    private void markOperations(AsyncAPI fullAsyncApi, AsyncApiGroup asyncApiGroup, Boolean markEverything) {
         if (fullAsyncApi.getOperations() == null) {
             return;
         }
 
         fullAsyncApi.getOperations().entrySet().stream()
                 .filter(entry ->
-                        operationActionsToKeep.contains(entry.getValue().getAction()))
+                        markEverything || asyncApiGroup.getOperationActionsToKeep().contains(entry.getValue().getAction()))
                 .forEach(entry -> {
                     markedOperationIds.add(entry.getKey());
 

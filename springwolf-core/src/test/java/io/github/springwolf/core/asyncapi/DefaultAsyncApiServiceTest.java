@@ -7,6 +7,7 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import io.github.springwolf.core.fixtures.AsyncApiDocketFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,7 @@ class DefaultAsyncApiServiceTest {
     private OperationsService operationsService;
     private ComponentsService componentsService;
     private List<AsyncApiCustomizer> customizers = new ArrayList<>();
+    private List<AsyncApiGroup> asyncApiGroups = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
@@ -43,7 +45,7 @@ class DefaultAsyncApiServiceTest {
         when(componentsService.getSchemas()).thenReturn(Map.of());
 
         defaultAsyncApiService = new DefaultAsyncApiService(
-                asyncApiDocketService, channelsService, operationsService, componentsService, customizers);
+                asyncApiDocketService, channelsService, operationsService, componentsService, customizers, asyncApiGroups);
     }
 
     @Test

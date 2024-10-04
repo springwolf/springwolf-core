@@ -10,11 +10,15 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,7 +30,8 @@ public class DefaultAsyncApiService implements AsyncApiService {
      * @param asyncAPI
      * @param exception
      */
-    private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {}
+    private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {
+    }
     // -> master (internal)
     // -> per group
 
@@ -35,8 +40,11 @@ public class DefaultAsyncApiService implements AsyncApiService {
     private final OperationsService operationsService;
     private final ComponentsService componentsService;
     private final List<AsyncApiCustomizer> customizers;
+    private final List<AsyncApiGroup> apiGroups;
+    AsyncApiGroupingService groupingService = new AsyncApiGroupingService();
 
     private volatile AsyncAPIResult asyncAPIResult = null;
+    private volatile Map<String, AsyncAPI> asyncApiGroupMap = new HashMap<>();
 
     @Override
     public AsyncAPI getAsyncAPI() {
@@ -49,6 +57,11 @@ public class DefaultAsyncApiService implements AsyncApiService {
         } else {
             throw new RuntimeException("Error occured during creation of AsyncAPI", asyncAPIResult.exception);
         }
+    }
+
+    @Override
+    public Optional<AsyncAPI> getForGroupName(String groupName) {
+        return Optional.ofNullable(this.asyncApiGroupMap.get(groupName));
     }
 
     /**
@@ -94,6 +107,9 @@ public class DefaultAsyncApiService implements AsyncApiService {
                 customizer.customize(asyncAPI);
             }
             this.asyncAPIResult = new AsyncAPIResult(asyncAPI, null);
+
+
+            this.asyncApiGroupMap = apiGroups.stream().map(asyncApiGroup -> Map.entry(asyncApiGroup.getGroupName(), groupingService.groupAPI(asyncAPIResult.asyncAPI(), asyncApiGroup))).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             log.debug("AsyncAPI document was built");
         } catch (Throwable t) {
