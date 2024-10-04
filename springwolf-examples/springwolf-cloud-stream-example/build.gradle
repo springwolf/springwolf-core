@@ -20,12 +20,12 @@ dependencyManagement {
 ext['junit-jupiter.version'] = "${junitJupiterVersion}"
 
 dependencies {
-    testImplementation project(":springwolf-core")
+    permitUnusedDeclared(implementation project(":springwolf-core"))
 
     runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream")
-    annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream")
-
     implementation project(":springwolf-bindings:springwolf-googlepubsub-binding")
+
+    annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream")
 
     runtimeOnly project(":springwolf-ui")
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
