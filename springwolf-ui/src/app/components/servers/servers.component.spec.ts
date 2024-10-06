@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { render, screen } from "@testing-library/angular";
 import { ServersComponent } from "./servers.component";
-import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import {
   mockedAsyncApiService,
   mockedExampleSchemaMapped,
 } from "../../service/mock/mock-asyncapi.service";
 import { MaterialModule } from "../../material.module";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 
 describe("ServerComponent", () => {
   mockedAsyncApiService.getAsyncApi.mockClear();

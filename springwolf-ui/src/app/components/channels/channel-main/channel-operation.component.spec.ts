@@ -1,19 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { render, screen } from "@testing-library/angular";
 import { ChannelOperationComponent } from "./channel-operation.component";
-import { AsyncApiService } from "../../../../service/asyncapi/asyncapi.service";
-import { PublisherService } from "../../../../service/publisher.service";
-import { MaterialModule } from "../../../../material.module";
+import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
+import { PublisherService } from "../../../service/publisher.service";
+import { MaterialModule } from "../../../material.module";
 import { MarkdownModule } from "ngx-markdown";
 import {
   mockedAsyncApiService,
   mockedExampleSchemaMapped,
-} from "../../../../service/mock/mock-asyncapi.service";
+} from "../../../service/mock/mock-asyncapi.service";
 import {
   MockAppJson,
   MockAppSchemaNewComponent,
   MockPrismEditorComponent,
-} from "../../../mock-components.spec";
+} from "../../mock-components.spec";
 
 describe("ChannelOperationComponent", () => {
   const mockData = mockedExampleSchemaMapped.channelOperations
