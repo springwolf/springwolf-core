@@ -100,7 +100,7 @@
       *ngIf="value.minItems != null || value.maxItems != null"
       class="attribute"
     >
-      <app-schema-range-new
+      <app-schema-range
         [lowerBound]="value.minItems"
         [upperBound]="value.maxItems"
         lowerBoundInclusive="true"
@@ -124,7 +124,7 @@
       *ngIf="value.minLength != null || value.maxLength != null"
       class="attribute"
     >
-      <app-schema-range-new
+      <app-schema-range
         [lowerBound]="value.minLength"
         [upperBound]="value.maxLength"
         lowerBoundInclusive="true"
@@ -137,7 +137,7 @@
       *ngIf="value.minimum != undefined || value.maximum != undefined"
       class="attribute"
     >
-      <app-schema-range-new
+      <app-schema-range
         [lowerBound]="value.minimum"
         [upperBound]="value.maximum"
         [lowerBoundInclusive]="!value.exclusiveMinimum"

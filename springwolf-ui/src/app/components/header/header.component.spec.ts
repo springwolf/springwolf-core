@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { HeaderComponent } from "./header.component";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { render } from "@testing-library/angular";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { mockedAsyncApiService } from "../../service/mock/mock-asyncapi.service";
@@ -14,7 +13,7 @@ describe("HeaderComponent", () => {
   beforeEach(async () => {
     await render(HeaderComponent, {
       declarations: [MockMatIcon],
-      imports: [MatToolbarModule, MatSlideToggleModule, MatMenuModule],
+      imports: [MatToolbarModule, MatMenuModule],
       providers: [
         { provide: IAssetService, useValue: mockedAssetService },
         { provide: AsyncApiService, useValue: mockedAsyncApiService },

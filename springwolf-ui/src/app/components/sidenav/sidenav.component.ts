@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import {
   AfterViewInit,
   Component,
@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { NavigationTargetDirective } from "./navigation.directive";
-import { AsyncApiMapperService } from "../../../service/asyncapi/asyncapi-mapper.service";
+import { AsyncApiMapperService } from "../../service/asyncapi/asyncapi-mapper.service";
 import { Location } from "@angular/common";
 
 interface NavigationEntry {
