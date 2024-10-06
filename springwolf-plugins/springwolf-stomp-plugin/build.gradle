@@ -1,8 +1,9 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'java-library'
 
     id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
 }
 
@@ -20,6 +21,8 @@ dependencies {
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-core"
     implementation "org.springframework:spring-messaging"
@@ -28,7 +31,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot-starter-websocket"
     permitUnusedDeclared("org.springframework.boot:spring-boot-starter-websocket")
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -40,8 +43,8 @@ dependencies {
 
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 }
 
 jar {
