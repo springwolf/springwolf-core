@@ -3,8 +3,8 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 plugins {
     id 'java-library'
 
-    id 'org.springframework.boot'
-    id 'ca.cutterslade.analyze'
+    alias libs.plugins.spring.boot
+    alias libs.plugins.cutterslade.analyze
 
     alias libs.plugins.kotlin.jvm
     alias libs.plugins.kotlin.serialization
