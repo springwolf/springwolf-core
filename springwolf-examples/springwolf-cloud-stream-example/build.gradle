@@ -8,7 +8,6 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application'
 }
 
-ext['junit-jupiter.version'] = "${junitJupiterVersion}"
 ext['springCloudVersion'] = "2022.0.1"
 
 dependencies {
