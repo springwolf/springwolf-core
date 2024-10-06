@@ -13,31 +13,32 @@ dependencies {
     api project(":springwolf-asyncapi")
     api project(":springwolf-core")
 
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+    implementation libs.slf4j.api
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework.cloud:spring-cloud-stream"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation platform(libs.spring.cloud.dependencies)
+    implementation platform(libs.spring.cloud.aws.dependencies)
+    implementation libs.spring.context
+    implementation libs.spring.cloud.stream
+    implementation libs.spring.boot.autoconfigure
 
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor libs.lombok
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.apache.kafka:kafka-streams:${kafkaStreamsVersion}"
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation libs.assertj.core
+    testImplementation libs.kafka.streams
+    testImplementation libs.mockito.core
 
-    testImplementation "org.springframework.boot:spring-boot"
-    testImplementation "org.springframework.boot:spring-boot-test"
-    testImplementation "org.springframework:spring-beans"
-    testImplementation "org.springframework:spring-test"
-    testImplementation "org.springframework:spring-messaging"
+    testImplementation libs.spring.boot
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.beans
+    testImplementation libs.spring.test
+    testImplementation libs.spring.messaging
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
 }
 
 jar {

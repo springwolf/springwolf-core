@@ -1,10 +1,5 @@
 import org.owasp.dependencycheck.reporting.ReportGenerator
 
-buildscript {
-    // include dependency versions from explicit dependencies.gradle file
-    apply from: 'dependencies.gradle'
-}
-
 plugins {
     alias libs.plugins.nexus.publish
     alias libs.plugins.cutterslade.analyze

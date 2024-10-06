@@ -9,57 +9,56 @@ plugins {
 
 dependencies {
     api project(":springwolf-asyncapi")
+    testImplementation project(":springwolf-add-ons:springwolf-common-model-converters")
+    permitTestUnusedDeclared project(":springwolf-add-ons:springwolf-common-model-converters")
 
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}@jar"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    implementation libs.swagger.annotations.jakarta
+    implementation libs.swagger.core.jakarta
 
-    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation libs.jackson.core
+    implementation libs.jackson.databind
 
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+    implementation libs.slf4j.api
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
     compileOnly platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework.boot:spring-boot"
+    implementation libs.spring.boot
 
-    implementation "org.springframework:spring-web"
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-messaging"
-    implementation "org.springframework:spring-beans"
-    implementation "org.springframework:spring-core"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation libs.spring.web
+    implementation libs.spring.context
+    implementation libs.spring.messaging
+    implementation libs.spring.beans
+    implementation libs.spring.core
+    implementation libs.spring.boot.autoconfigure
 
-    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
-    implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationApiVersion}"
-    implementation "jakarta.validation:jakarta.validation-api:${jakartaValidationApiVersion}"
+    implementation libs.swagger.models.jakarta
+    implementation libs.jakarta.annotation.api
+    implementation libs.jakarta.validation.api
 
-    implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    implementation libs.commons.lang3
 
-    compileOnly "org.springframework.boot:spring-boot-actuator"
-    compileOnly "org.springframework:spring-webmvc"
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly libs.spring.boot.actuator
+    compileOnly libs.spring.webmvc
+    compileOnly libs.lombok
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor libs.lombok
+    annotationProcessor libs.spring.boot.configuration.processor
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor libs.lombok
+    testCompileOnly libs.lombok
 
-    testImplementation project(":springwolf-add-ons:springwolf-common-model-converters")
-    permitTestUnusedDeclared project(":springwolf-add-ons:springwolf-common-model-converters")
+    testImplementation libs.assertj.core
+    testImplementation libs.awaitility
+    testImplementation libs.mockito.core
+    testImplementation libs.mockito.junit.jupiter
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.test
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
-    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
-    testImplementation "org.springframework.boot:spring-boot-test"
-    testImplementation "org.springframework:spring-test"
-
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.params
+    testRuntimeOnly libs.junit.jupiter
+    testRuntimeOnly libs.slf4j.simple
 }
 
 jar {

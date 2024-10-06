@@ -13,48 +13,48 @@ dependencies {
     api project(":springwolf-bindings:springwolf-jms-binding")
     permitUnusedDeclared project(":springwolf-bindings:springwolf-jms-binding")
 
-    implementation "jakarta.jms:jakarta.jms-api"
+    implementation libs.jakarta.jms.api
 
-    implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+    implementation libs.jakarta.annotation.api
+    implementation libs.slf4j.api
 
-    runtimeOnly "org.apache.activemq:activemq-broker"
+    runtimeOnly libs.activemq.broker
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-core"
-    implementation "org.springframework:spring-jms"
-    implementation "org.springframework:spring-web"
+    implementation libs.spring.context
+    implementation libs.spring.core
+    implementation libs.spring.jms
+    implementation libs.spring.web
 
-    implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation libs.spring.boot
+    implementation libs.spring.boot.autoconfigure
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
 
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor libs.spring.boot.configuration.processor
 
-    testRuntimeOnly "org.springframework.boot:spring-boot-starter-web"
+    testRuntimeOnly libs.spring.boot.starter.web
 
-    testImplementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    testImplementation libs.jackson.annotations
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    testImplementation libs.assertj.core
 
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation libs.mockito.core
 
-    testImplementation "org.springframework:spring-beans"
-    testImplementation "org.springframework:spring-test"
+    testImplementation libs.spring.beans
+    testImplementation libs.spring.test
 
-    testImplementation "org.springframework.boot:spring-boot-test"
-    testImplementation "org.springframework.boot:spring-boot-test-autoconfigure"
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.boot.test.autoconfigure
 
-    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation libs.jackson.databind
+    testAnnotationProcessor libs.lombok
+    testCompileOnly libs.lombok
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
 }
 
 jar {

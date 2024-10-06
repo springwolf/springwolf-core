@@ -7,47 +7,45 @@ plugins {
     id 'ca.cutterslade.analyze'
 }
 
-ext['springCloudAwsVersion'] = "3.2.0"
-
 dependencies {
     api project(":springwolf-core")
     api project(":springwolf-bindings:springwolf-sns-binding")
     permitUnusedDeclared project(":springwolf-bindings:springwolf-sns-binding")
 
-    implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+    implementation libs.jakarta.annotation.api
+    implementation libs.slf4j.api
 
-    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:$springCloudAwsVersion")
-    implementation 'io.awspring.cloud:spring-cloud-aws-sns'
-    implementation "io.awspring.cloud:spring-cloud-aws-starter-sns:$springCloudAwsVersion"
-    permitUnusedDeclared "io.awspring.cloud:spring-cloud-aws-starter-sns:$springCloudAwsVersion"
+    runtimeOnly platform(libs.spring.cloud.aws.dependencies)
+    implementation platform(libs.spring.cloud.aws.dependencies)
+    implementation libs.spring.cloud.aws.sns
+    runtimeOnly libs.spring.cloud.aws.starter.sns
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-messaging"
-    implementation "org.springframework:spring-web"
-    implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation libs.spring.context
+    implementation libs.spring.messaging
+    implementation libs.spring.web
+    implementation libs.spring.boot
+    implementation libs.spring.boot.autoconfigure
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
 
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor libs.spring.boot.configuration.processor
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor libs.lombok
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation libs.assertj.core
+    testImplementation libs.mockito.core
 
-    testImplementation "org.springframework.boot:spring-boot-test"
-    testImplementation "org.springframework:spring-beans"
-    testImplementation "org.springframework:spring-test"
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.beans
+    testImplementation libs.spring.test
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor libs.lombok
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
 }
 
 jar {
