@@ -9,8 +9,7 @@ plugins {
 
 dependencies {
     api project(":springwolf-asyncapi")
-    testImplementation project(":springwolf-add-ons:springwolf-common-model-converters")
-    permitTestUnusedDeclared project(":springwolf-add-ons:springwolf-common-model-converters")
+    testRuntimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
 
     implementation libs.swagger.annotations.jakarta
     implementation libs.swagger.core.jakarta

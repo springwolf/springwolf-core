@@ -24,7 +24,7 @@ dependencies {
     runtimeOnly libs.spring.boot.starter.web
 
     implementation libs.spring.rabbit
-    permitUsedUndeclared libs.amqp.client
+    implementation libs.amqp.client
 
     implementation libs.slf4j.api
     implementation libs.swagger.annotations.jakarta
