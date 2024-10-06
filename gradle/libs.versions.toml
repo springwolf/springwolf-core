@@ -1,0 +1,15 @@
+[versions]
+gradle-nexus-publish-plugin = "2.0.0"
+cutterslade-analyze = "1.10.0"
+spring-boot = "3.3.4"
+owasp-dependencycheck = "10.0.4"
+spotless = "6.25.0"
+docker-spring-boot = "9.4.0"
+
+[plugins]
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "gradle-nexus-publish-plugin" }
+cutterslade-analyze = { id = "ca.cutterslade.analyze", version.ref = "cutterslade-analyze" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+owasp-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "owasp-dependencycheck" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+docker-spring-boot = { id = "com.bmuschko.docker-spring-boot-application", version.ref = "docker-spring-boot" }
