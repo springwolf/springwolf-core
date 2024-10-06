@@ -3,26 +3,26 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 plugins {
     id 'java-library'
 
-    id 'org.springframework.boot'
-    id 'ca.cutterslade.analyze'
+    alias libs.plugins.spring.boot
+    alias libs.plugins.cutterslade.analyze
 }
 
 dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework:spring-context"
+    implementation libs.spring.context
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation libs.jackson.annotations
+    implementation libs.jackson.databind
 
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+    implementation libs.swagger.annotations.jakarta
+    implementation libs.swagger.core.jakarta
+    implementation libs.swagger.models.jakarta
 
-    implementation "javax.money:money-api:${moneyApiVersion}"
+    implementation libs.money.api
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
+    testRuntimeOnly libs.slf4j.api
 }
 
 jar {

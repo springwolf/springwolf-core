@@ -11,31 +11,31 @@ dependencies {
     api project(":springwolf-core")
     api project(":springwolf-asyncapi")
 
-    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation libs.jackson.core
+    implementation libs.jackson.databind
 
-    testImplementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
-    testImplementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+    testImplementation libs.swagger.core.jakarta
+    testImplementation libs.swagger.models.jakarta
 
-    implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    implementation libs.commons.lang3
 
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+    implementation libs.slf4j.api
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework:spring-context"
+    implementation libs.spring.context
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
 
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    testImplementation libs.mockito.core
+    testImplementation libs.assertj.core
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.params
+    testRuntimeOnly libs.junit.jupiter
+    testRuntimeOnly libs.slf4j.simple
 
-    testImplementation "com.networknt:json-schema-validator:${jsonSchemaValidator}"
+    testImplementation libs.json.schema.validator
 }
 
 jar {

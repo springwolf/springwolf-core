@@ -11,23 +11,22 @@ dependencies {
     api project(":springwolf-core")
     api project(":springwolf-asyncapi")
 
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+    implementation libs.slf4j.api
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-core"
+    implementation libs.spring.context
+    implementation libs.spring.core
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
 
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation libs.assertj.core
+    testImplementation libs.mockito.core
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
-
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.params
+    testRuntimeOnly libs.junit.jupiter
+    testRuntimeOnly libs.slf4j.simple
 }
 
 jar {
