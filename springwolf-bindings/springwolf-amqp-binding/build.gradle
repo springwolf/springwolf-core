@@ -12,19 +12,19 @@ dependencies {
     api project(":springwolf-core")
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-core"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation libs.spring.context
+    implementation libs.spring.core
+    implementation libs.spring.boot.autoconfigure
 
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation libs.assertj.core
+    testImplementation libs.mockito.core
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
+    testRuntimeOnly libs.slf4j.simple
 }
 
 jar {

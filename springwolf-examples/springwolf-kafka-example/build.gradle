@@ -7,10 +7,10 @@ plugins {
     id 'ca.cutterslade.analyze'
 
     id 'com.bmuschko.docker-spring-boot-application'
-    id 'org.springdoc.openapi-gradle-plugin' version '1.9.0'
+    alias libs.plugins.openapi.gradle
 
-    id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
-    id 'com.google.protobuf' version '0.9.4'
+    alias libs.plugins.avro
+    alias libs.plugins.protobuf
 }
 
 dependencies {
@@ -25,70 +25,69 @@ dependencies {
 
     annotationProcessor project(":springwolf-plugins:springwolf-kafka")
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
 
-    runtimeOnly "org.springframework.boot:spring-boot-starter-web"
+    runtimeOnly libs.spring.boot.starter.web
 
+    runtimeOnly platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework:spring-beans"
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-messaging"
-    implementation "org.springframework:spring-web"
+    implementation libs.spring.beans
+    implementation libs.spring.context
+    implementation libs.spring.messaging
+    implementation libs.spring.web
 
-    implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation libs.spring.boot
+    implementation libs.spring.boot.autoconfigure
 
-    implementation "org.springframework.kafka:spring-kafka"
+    implementation libs.spring.kafka
 
-    implementation "org.springframework.security:spring-security-config"
-    implementation "org.springframework.security:spring-security-web"
+    implementation libs.spring.security.config
+    implementation libs.spring.security.web
 
-    implementation "org.apache.avro:avro:${avroVersion}@jar"
-    implementation "io.confluent:kafka-avro-serializer:${kafkaAvroSerializerVersion}"
-    permitUnusedDeclared "io.confluent:kafka-avro-serializer:${kafkaAvroSerializerVersion}@jar"
+    implementation libs.avro
+    runtimeOnly libs.kafka.avro.serializer
 
-    runtimeOnly "io.confluent:kafka-protobuf-serializer:${kafkaProtobufSerializerVersion}"
-    implementation "com.google.protobuf:protobuf-java:${protobufJavaVersion}"
-    implementation "com.hubspot.jackson:jackson-datatype-protobuf:${jacksonDatatypeProtobufVersion}"
+    runtimeOnly libs.kafka.protobuf.serializer
+    implementation libs.protobuf.java
+    implementation libs.jackson.datatype.protobuf
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation libs.jackson.annotations
+    implementation libs.jackson.core
+    implementation libs.jackson.databind
 
-    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${jakartaXmlBindApiVersion}"
+    implementation libs.jakarta.xml.bind.api
 
-    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    implementation libs.swagger.annotations.jakarta
+    implementation libs.swagger.core.jakarta
 
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+    implementation libs.slf4j.api
 
-    implementation "org.apache.kafka:kafka-clients:${kafkaClientsVersion}@jar"
+    implementation libs.kafka.clients
 
-    implementation "javax.money:money-api:${moneyApiVersion}"
-    implementation "org.javamoney:moneta:${monetaVersion}"
+    implementation libs.money.api
+    implementation libs.moneta
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation libs.assertj.core
+    testImplementation libs.awaitility
+    testImplementation libs.mockito.core
 
-    testImplementation "org.springframework.boot:spring-boot-test"
-    testImplementation "org.springframework.kafka:spring-kafka-test"
-    testImplementation "org.springframework:spring-test"
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.kafka.test
+    testImplementation libs.spring.test
 
-    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
-    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+    testImplementation libs.testcontainers
+    testImplementation libs.testcontainers.junit.jupiter
 
-    permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaClientsVersion}:test@jar"
+    permitTestUnusedDeclared libs.kafka.clients
 
-    testImplementation("org.springframework.boot:spring-boot-starter-actuator:$SpringBootPlugin.SPRING_BOOT_VERSION")
-    permitTestUnusedDeclared("org.springframework.boot:spring-boot-starter-actuator:$SpringBootPlugin.SPRING_BOOT_VERSION")
+    runtimeOnly libs.spring.boot.starter.actuator
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor libs.lombok
+    testCompileOnly libs.lombok
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
 }
 
 docker {
@@ -120,7 +119,7 @@ openApi {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:${protobufJavaVersion}"
+        artifact = libs.protoc.get()
     }
 }
 

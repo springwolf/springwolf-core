@@ -8,8 +8,6 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application'
 }
 
-ext['springCloudVersion'] = "2022.0.1"
-
 dependencies {
     permitUnusedDeclared(implementation project(":springwolf-core"))
 
@@ -20,37 +18,37 @@ dependencies {
 
     runtimeOnly project(":springwolf-ui")
 
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
+    implementation libs.slf4j.api
+    implementation libs.swagger.annotations.jakarta
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework:spring-context"
-    runtimeOnly "org.springframework.boot:spring-boot-starter-web"
-    runtimeOnly "org.springframework.boot:spring-boot-starter-actuator"
-    runtimeOnly "org.springframework.cloud:spring-cloud-starter-stream-kafka"
+    implementation libs.spring.cloud.dependencies
+    implementation libs.spring.boot.autoconfigure
+    implementation libs.spring.boot
+    implementation libs.spring.context
+    runtimeOnly libs.spring.boot.starter.web
+    runtimeOnly libs.spring.boot.starter.actuator
+    runtimeOnly libs.spring.cloud.starter.stream.kafka
 
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly libs.lombok
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor libs.lombok
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "org.springframework.boot:spring-boot-test"
-    testImplementation "org.springframework:spring-test"
+    testImplementation libs.assertj.core
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.test
 
-    testImplementation "org.springframework:spring-beans"
-    testImplementation "org.springframework:spring-web"
-    testImplementation "org.springframework.kafka:spring-kafka-test"
-    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
-    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+    testImplementation libs.spring.beans
+    testImplementation libs.spring.web
+    testImplementation libs.spring.kafka.test
+    testImplementation libs.testcontainers
+    testImplementation libs.testcontainers.junit.jupiter
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor libs.lombok
+    testCompileOnly libs.lombok
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
 }
 
 docker {
