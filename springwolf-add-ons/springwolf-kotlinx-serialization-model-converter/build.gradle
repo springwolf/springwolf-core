@@ -1,43 +1,35 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
-buildscript {
-    ext {
-        kotlinVersion = '2.0.20'
-        kotlinxSerializationVersion = '1.7.2'
-    }
-}
-
 plugins {
     id 'java-library'
 
     id 'org.springframework.boot'
     id 'ca.cutterslade.analyze'
 
-    id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
-    id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}"
+    alias libs.plugins.kotlin.jvm
+    alias libs.plugins.kotlin.serialization
 }
 
 dependencies {
     api project(":springwolf-core")
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation libs.spring.context
+    implementation libs.spring.boot.autoconfigure
 
-    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+    implementation libs.swagger.core.jakarta
+    implementation libs.swagger.models.jakarta
 
-    implementation "org.jetbrains:annotations"
+    implementation libs.jetbrains.annotations
+    implementation libs.kotlinx.serialization.core.jvm
+    implementation libs.kotlin.reflect
 
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:${kotlinxSerializationVersion}"
-    implementation "org.jetbrains.kotlin:kotlin-reflect"
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
+    testRuntimeOnly libs.slf4j.simple
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
-
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    testImplementation "net.javacrumbs.json-unit:json-unit-assertj:${jsonUnitAssertJVersion}"
+    testImplementation libs.assertj.core
+    testImplementation libs.json.unit.assertj
 }
 
 jar {
