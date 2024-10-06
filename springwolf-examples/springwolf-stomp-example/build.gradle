@@ -9,8 +9,6 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application'
 }
 
-ext['junit-jupiter.version'] = "${junitJupiterVersion}"
-
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-stomp")
