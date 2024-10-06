@@ -1,8 +1,8 @@
 plugins {
     id 'java-library'
 
-    id 'org.springframework.boot'
-    id 'ca.cutterslade.analyze'
+    alias libs.plugins.spring.boot
+    alias libs.plugins.cutterslade.analyze
 }
 
 dependencies {
