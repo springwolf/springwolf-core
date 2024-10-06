@@ -1,14 +1,14 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'java-library'
 
     id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
 }
 
-ext['junit-jupiter.version'] = "${junitJupiterVersion}"
-
 dependencies {
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation "org.springframework:spring-context"
 
     implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
@@ -20,8 +20,8 @@ dependencies {
 
     implementation "javax.money:money-api:${moneyApiVersion}"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
     testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
 }
 

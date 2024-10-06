@@ -1,8 +1,9 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'java-library'
 
     id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
 }
 
@@ -16,6 +17,8 @@ dependencies {
 
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-core"
     implementation "org.springframework:spring-web"
@@ -29,7 +32,7 @@ dependencies {
 
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
 
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
@@ -44,8 +47,8 @@ dependencies {
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 }
 
 jar {
