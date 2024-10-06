@@ -1,15 +1,127 @@
 [versions]
-gradle-nexus-publish-plugin = "2.0.0"
 cutterslade-analyze = "1.10.0"
-spring-boot = "3.3.4"
-owasp-dependencycheck = "10.0.4"
-spotless = "6.25.0"
 docker-spring-boot = "9.4.0"
+gradle-nexus-publish-plugin = "2.0.0"
+io-awspring-cloud = "3.2.0"
+io-confluent = "7.7.1"
+io-swagger-core-v3 = "2.2.24"
+jackson-core = "2.17.2"
+kotlin =  "2.0.20"
+node =  "7.1.0"
+openapi-gradle =  "1.9.0"
+org-jetbrains-kotlin = "2.0.20"
+org-junit-jupiter = "5.11.0"
+org-mockito = "5.14.1"
+org-slf4j = "2.0.16"
+org-testcontainers = "1.20.2"
+owasp-dependencycheck = "10.0.4"
+protobuf = "4.28.2"
+protobuf-plugin =  "0.9.4"
+spotless = "6.25.0"
+# ideally, spring boot version are managed by bom
+spring-boot = "3.3.4"
+springframework = "6.1.13"
+amqp = "3.1.7"
+boot = "3.3.4"
+cloud = "4.0.1"
+kafka = "3.2.4"
+security = "6.3.3"
+
+[libraries]
+amqp-client = "com.rabbitmq:amqp-client:5.21.0"
+assertj-core = "org.assertj:assertj-core:3.26.3"
+avro = "org.apache.avro:avro:1.12.0"
+awaitility = "org.awaitility:awaitility:4.2.2"
+commons-lang3 = "org.apache.commons:commons-lang3:3.17.0"
+google-java-format = "com.google.googlejavaformat:google-java-format:1.19.2"
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-core" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-core" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-core" }
+jackson-dataformat-yaml = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.2"
+jackson-datatype-protobuf = "com.hubspot.jackson:jackson-datatype-protobuf:0.9.15"
+jakarta-annotation-api = "jakarta.annotation:jakarta.annotation-api:3.0.0"
+jakarta-jms-api = "jakarta.jms:jakarta.jms-api:3.1.0"
+jakarta-validation-api = "jakarta.validation:jakarta.validation-api:3.1.0"
+jakarta-xml-bind-api = "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2"
+jetbrains-annotations = "org.jetbrains:annotations:13.0"
+json-schema-validator = "com.networknt:json-schema-validator:1.5.2"
+json-unit-assertj = "net.javacrumbs.json-unit:json-unit-assertj:3.4.1"
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "org-junit-jupiter" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "org-junit-jupiter" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "org-junit-jupiter" }
+kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version.ref = "io-confluent" }
+kafka-clients = "org.apache.kafka:kafka-clients:7.7.1-ccs"
+kafka-streams = "org.apache.kafka:kafka-streams:3.8.0"
+kafka-protobuf-serializer = { module = "io.confluent:kafka-protobuf-serializer", version.ref = "io-confluent" }
+kotlin-build-tools-impl = { module = "org.jetbrains.kotlin:kotlin-build-tools-impl", version.ref = "org-jetbrains-kotlin" }
+kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:1.9.25"
+kotlin-scripting-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable", version.ref = "org-jetbrains-kotlin" }
+kotlin-serialization-compiler-plugin-embeddable = { module = "org.jetbrains.kotlin:kotlin-serialization-compiler-plugin-embeddable", version.ref = "org-jetbrains-kotlin" }
+kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.2"
+ktfmt = "com.facebook:ktfmt:0.46"
+ktlint-cli = "com.pinterest.ktlint:ktlint-cli:1.1.1"
+log4j-core = "org.apache.logging.log4j:log4j-core:2.17.1"
+lombok = "org.projectlombok:lombok:1.18.34"
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "org-mockito" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "org-mockito" }
+moneta = "org.javamoney:moneta:1.4.4"
+money-api = "javax.money:money-api:1.1"
+palantir-java-format = "com.palantir.javaformat:palantir-java-format:2.28.0"
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
+protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "org-slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "org-slf4j" }
+spring-cloud-aws-dependencies = { module = "io.awspring.cloud:spring-cloud-aws-dependencies", version.ref = "io-awspring-cloud" }
+spring-cloud-aws-sns = { module = "io.awspring.cloud:spring-cloud-aws-sns", version.ref = "io-awspring-cloud" }
+spring-cloud-aws-sqs = { module = "io.awspring.cloud:spring-cloud-aws-sqs", version.ref = "io-awspring-cloud" }
+spring-cloud-aws-starter-sns = { module = "io.awspring.cloud:spring-cloud-aws-starter-sns", version.ref = "io-awspring-cloud" }
+spring-cloud-aws-starter-sqs = { module = "io.awspring.cloud:spring-cloud-aws-starter-sqs", version.ref = "io-awspring-cloud" }
+amqp-spring-amqp = { module = "org.springframework.amqp:spring-amqp", version.ref = "amqp" }
+amqp-spring-rabbit = { module = "org.springframework.amqp:spring-rabbit", version.ref = "amqp" }
+spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "boot" }
+spring-boot-actuator = { module = "org.springframework.boot:spring-boot-actuator", version.ref = "boot" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "boot" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "boot" }
+spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "boot" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "boot" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "boot" }
+spring-boot-starter-websocket = { module = "org.springframework.boot:spring-boot-starter-websocket", version.ref = "boot" }
+spring-boot-test = { module = "org.springframework.boot:spring-boot-test", version.ref = "boot" }
+spring-boot-test-autoconfigure = { module = "org.springframework.boot:spring-boot-test-autoconfigure", version.ref = "boot" }
+spring-cloud-dependencies = "org.springframework.cloud:spring-cloud-dependencies:2022.0.1"
+spring-cloud-starter-stream-kafka = { module = "org.springframework.cloud:spring-cloud-starter-stream-kafka", version.ref = "cloud" }
+spring-cloud-stream = { module = "org.springframework.cloud:spring-cloud-stream", version.ref = "cloud" }
+spring-kafka = { module = "org.springframework.kafka:spring-kafka", version.ref = "kafka" }
+spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test", version.ref = "kafka" }
+spring-security-config = { module = "org.springframework.security:spring-security-config", version.ref = "security" }
+spring-security-web = { module = "org.springframework.security:spring-security-web", version.ref = "security" }
+spring-beans = { module = "org.springframework:spring-beans", version.ref = "springframework" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "springframework" }
+spring-core = { module = "org.springframework:spring-core", version.ref = "springframework" }
+spring-jcl = { module = "org.springframework:spring-jcl", version.ref = "springframework" }
+spring-jms = { module = "org.springframework:spring-jms", version.ref = "springframework" }
+spring-messaging = { module = "org.springframework:spring-messaging", version.ref = "springframework" }
+spring-test = { module = "org.springframework:spring-test", version.ref = "springframework" }
+spring-web = { module = "org.springframework:spring-web", version.ref = "springframework" }
+spring-webmvc = { module = "org.springframework:spring-webmvc", version.ref = "springframework" }
+spring-websocket = { module = "org.springframework:spring-websocket", version.ref = "springframework" }
+swagger-annotations = { module = "io.swagger.core.v3:swagger-annotations", version.ref = "io-swagger-core-v3" }
+swagger-annotations-jakarta = { module = "io.swagger.core.v3:swagger-annotations-jakarta", version.ref = "io-swagger-core-v3" }
+swagger-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version.ref = "io-swagger-core-v3" }
+swagger-models-jakarta = { module = "io.swagger.core.v3:swagger-models-jakarta", version.ref = "io-swagger-core-v3" }
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "org-testcontainers" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "org-testcontainers" }
+testcontainers-localstack = { module = "org.testcontainers:localstack", version.ref = "org-testcontainers" }
 
 [plugins]
-nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "gradle-nexus-publish-plugin" }
 cutterslade-analyze = { id = "ca.cutterslade.analyze", version.ref = "cutterslade-analyze" }
-spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
-owasp-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "owasp-dependencycheck" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 docker-spring-boot = { id = "com.bmuschko.docker-spring-boot-application", version.ref = "docker-spring-boot" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "gradle-nexus-publish-plugin" }
+node = { id = "com.github.node-gradle.node", version.ref = "node" }
+openapi-gradle = { id = "org.springdoc.openapi-gradle-plugin", version.ref = "openapi-gradle" }
+owasp-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "owasp-dependencycheck" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
