@@ -2,10 +2,10 @@
 import { Component, input } from "@angular/core";
 
 @Component({
-  selector: "app-schema-range-new",
+  selector: "app-schema-range",
   templateUrl: "./range.component.html",
 })
-export class RangeNewComponent {
+export class RangeComponent {
   lowerBound = input<number>();
   upperBound = input<number>();
   lowerBoundInclusive = input<boolean, boolean | string>(true, {

@@ -1,14 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, input } from "@angular/core";
-import { Schema } from "../../../models/schema.model";
-import { last } from "rxjs";
+import { Schema } from "../../models/schema.model";
+import "../code/prism.bridge";
 
 @Component({
-  selector: "app-schema-new",
+  selector: "app-schema",
   templateUrl: "./schema.component.html",
   styleUrls: ["./schema.component.css"],
 })
-export class SchemaNewComponent {
+export class SchemaComponent {
   schema = input.required<Schema>();
   protected readonly Object = Object;
 }

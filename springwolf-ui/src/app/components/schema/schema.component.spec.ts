@@ -1,21 +1,22 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { SchemaComponent } from "./schema.component";
-import { SchemaRangeComponent } from "../range/schema-range.component";
 import { MatChipsModule } from "@angular/material/chips";
 import { MarkdownModule } from "ngx-markdown";
-import { Example } from "../../../models/example.model";
-import { JsonComponent } from "../../json/json.component";
+import { Example } from "../../models/example.model";
+import { JsonComponent } from "../json/json.component";
 import { render, screen } from "@testing-library/angular";
+import { MatDividerModule } from "@angular/material/divider";
+import { RangeComponent } from "./range/range.component";
 
-describe("SchemaComponent", () => {
+describe("SchemaNewComponent", () => {
   beforeEach(async () => {
     const mockedSchemaRangeComponent = jest.fn();
 
     await render(SchemaComponent, {
-      declarations: [SchemaComponent, SchemaRangeComponent, JsonComponent],
-      imports: [MatChipsModule, MarkdownModule.forRoot()],
+      declarations: [SchemaComponent, RangeComponent, JsonComponent],
+      imports: [MatChipsModule, MatDividerModule, MarkdownModule.forRoot()],
       providers: [
-        { provide: SchemaRangeComponent, useValue: mockedSchemaRangeComponent },
+        { provide: RangeComponent, useValue: mockedSchemaRangeComponent },
       ],
       componentInputs: {
         schema: {
@@ -32,6 +33,6 @@ describe("SchemaComponent", () => {
   });
 
   it("should render primitive string example", async () => {
-    expect(screen.getAllByText(/example value/i)).toBeTruthy();
+    expect(screen.getByText(/example value/i)).toBeTruthy();
   });
 });

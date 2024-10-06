@@ -104,7 +104,7 @@
       >
     </mat-chip-set>
 
-    <app-schema-new *ngIf="headers" [schema]="headers"></app-schema-new>
+    <app-schema *ngIf="headers" [schema]="headers"></app-schema>
   </div>
   <div class="width-6/12 width-12/12-s">
     <app-prism-editor [(code)]="headersExample.value" language="json" />
@@ -123,10 +123,7 @@
       >
     </mat-chip-set>
 
-    <app-schema-new
-      *ngIf="defaultSchema"
-      [schema]="defaultSchema"
-    ></app-schema-new>
+    <app-schema *ngIf="defaultSchema" [schema]="defaultSchema"></app-schema>
   </div>
 
   <div class="width-6/12 width-12/12-s">
