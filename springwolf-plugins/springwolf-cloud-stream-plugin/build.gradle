@@ -7,7 +7,6 @@ plugins {
     id 'ca.cutterslade.analyze'
 }
 
-ext['junit-jupiter.version'] = "${junitJupiterVersion}"
 ext['springCloudVersion'] = "2022.0.1"
 
 dependencies {

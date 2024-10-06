@@ -7,8 +7,6 @@ plugins {
     id 'ca.cutterslade.analyze'
 }
 
-ext['junit-jupiter.version'] = "${junitJupiterVersion}"
-
 dependencies {
     api project(":springwolf-core")
     api project(":springwolf-asyncapi")

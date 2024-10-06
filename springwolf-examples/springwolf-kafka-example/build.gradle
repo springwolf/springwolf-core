@@ -13,8 +13,6 @@ plugins {
     id 'com.google.protobuf' version '0.9.4'
 }
 
-ext['junit-jupiter.version'] = "${junitJupiterVersion}"
-
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-kafka")
