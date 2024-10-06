@@ -9,8 +9,6 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application'
 }
 
-ext['springCloudAwsVersion'] = "3.2.0"
-
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-sns")
@@ -21,38 +19,39 @@ dependencies {
     runtimeOnly project(":springwolf-add-ons:springwolf-json-schema")
     runtimeOnly project(":springwolf-ui")
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
 
-    runtimeOnly "org.springframework.boot:spring-boot-starter-web"
+    runtimeOnly libs.spring.boot.starter.web
 
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
-    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
+    implementation libs.slf4j.api
+    implementation libs.swagger.annotations.jakarta
 
-    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:$springCloudAwsVersion")
-    implementation 'io.awspring.cloud:spring-cloud-aws-sns'
-    implementation 'io.awspring.cloud:spring-cloud-aws-starter-sns'
-    permitUnusedDeclared 'io.awspring.cloud:spring-cloud-aws-starter-sns'
+    runtimeOnly platform(libs.spring.cloud.aws.dependencies)
+    implementation platform(libs.spring.cloud.aws.dependencies)
+    implementation libs.spring.cloud.aws.sns
+    runtimeOnly libs.spring.cloud.aws.starter.sns
+
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-messaging"
+    implementation libs.spring.boot.autoconfigure
+    implementation libs.spring.boot
+    implementation libs.spring.context
+    implementation libs.spring.messaging
 
-    testImplementation "org.springframework.boot:spring-boot-test"
-    testImplementation "org.springframework:spring-beans"
-    testImplementation "org.springframework:spring-web"
-    testImplementation "org.springframework:spring-test"
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.beans
+    testImplementation libs.spring.web
+    testImplementation libs.spring.test
 
-    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
-    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
-    testImplementation "org.testcontainers:localstack:${testcontainersVersion}"
+    testImplementation libs.testcontainers
+    testImplementation libs.testcontainers.junit.jupiter
+    testImplementation libs.testcontainers.localstack
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor libs.lombok
+    testCompileOnly libs.lombok
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
 }
 
 docker {
