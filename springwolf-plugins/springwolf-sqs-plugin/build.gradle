@@ -1,18 +1,14 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'java-library'
 
     id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.2.0"
-    }
-}
-
 ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+ext['springCloudAwsVersion'] = "3.2.0"
 
 dependencies {
     api project(":springwolf-asyncapi")
@@ -23,10 +19,13 @@ dependencies {
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
+    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:$springCloudAwsVersion")
     implementation 'io.awspring.cloud:spring-cloud-aws-sqs'
-    implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
-    permitUnusedDeclared 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+    implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs:$springCloudAwsVersion"
+    permitUnusedDeclared "io.awspring.cloud:spring-cloud-aws-starter-sqs:$springCloudAwsVersion"
 
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-core"
     implementation "org.springframework:spring-web"
@@ -36,7 +35,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
@@ -49,8 +48,8 @@ dependencies {
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 }
 
 jar {

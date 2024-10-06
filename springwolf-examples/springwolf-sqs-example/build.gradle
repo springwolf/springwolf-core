@@ -1,20 +1,16 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'java'
 
     id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
 
     id 'com.bmuschko.docker-spring-boot-application'
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.2.0"
-    }
-}
-
 ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+ext['springCloudAwsVersion'] = "3.2.0"
 
 dependencies {
     implementation project(":springwolf-core")
@@ -33,9 +29,11 @@ dependencies {
     implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
     implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
 
+    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:$springCloudAwsVersion")
     implementation 'io.awspring.cloud:spring-cloud-aws-sqs'
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
     permitUnusedDeclared 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot"
     implementation "org.springframework:spring-context"
@@ -54,8 +52,8 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
 
 }
 

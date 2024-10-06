@@ -2,11 +2,8 @@ plugins {
     id 'java-library'
 
     id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
     id 'ca.cutterslade.analyze'
 }
-
-ext['junit-jupiter.version'] = "${junitJupiterVersion}"
 
 dependencies {
     implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
@@ -30,8 +27,8 @@ dependencies {
     testImplementation "net.javacrumbs.json-unit:json-unit-assertj:${jsonUnitAssertJVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
     testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
 }
 
