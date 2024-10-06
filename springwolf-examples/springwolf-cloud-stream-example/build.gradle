@@ -9,7 +9,7 @@ plugins {
 }
 
 dependencies {
-    permitUnusedDeclared(implementation project(":springwolf-core"))
+    runtimeOnly project(":springwolf-core")
 
     runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream")
     implementation project(":springwolf-bindings:springwolf-googlepubsub-binding")

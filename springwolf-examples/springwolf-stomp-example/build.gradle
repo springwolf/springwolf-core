@@ -40,9 +40,6 @@ dependencies {
     testImplementation libs.spring.core
     testImplementation libs.spring.web
 
-    permitTestUnusedDeclared libs.mockito.core
-    permitTestUnusedDeclared libs.mockito.junit.jupiter
-
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter
 

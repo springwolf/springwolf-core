@@ -16,10 +16,10 @@ dependencies {
     implementation libs.jakarta.annotation.api
     implementation libs.slf4j.api
 
+    runtimeOnly platform(libs.spring.cloud.aws.dependencies)
     implementation platform(libs.spring.cloud.aws.dependencies)
     implementation libs.spring.cloud.aws.sqs
-    implementation libs.spring.cloud.aws.starter.sqs
-    permitUnusedDeclared libs.spring.cloud.aws.starter.sqs
+    runtimeOnly libs.spring.cloud.aws.starter.sqs
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
