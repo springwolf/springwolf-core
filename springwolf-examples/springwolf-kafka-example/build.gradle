@@ -12,6 +12,8 @@ plugins {
     id 'com.google.protobuf' version '0.9.4'
 }
 
+ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+
 dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-kafka")
@@ -66,8 +68,6 @@ dependencies {
     implementation "javax.money:money-api:${moneyApiVersion}"
     implementation "org.javamoney:moneta:${monetaVersion}"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
@@ -79,8 +79,6 @@ dependencies {
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-
     permitTestUnusedDeclared "org.apache.kafka:kafka-clients:${kafkaClientsVersion}:test@jar"
 
     testImplementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -88,6 +86,9 @@ dependencies {
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
 }
 
 docker {

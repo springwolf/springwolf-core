@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.stomp.stomp.config;
+package io.github.springwolf.examples.stomp.config;
 
 import com.sun.security.auth.UserPrincipal;
 import lombok.val;

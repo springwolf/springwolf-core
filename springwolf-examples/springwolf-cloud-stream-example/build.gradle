@@ -17,13 +17,15 @@ dependencyManagement {
     }
 }
 
+ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+
 dependencies {
-    testImplementation project(":springwolf-core")
+    permitUnusedDeclared(implementation project(":springwolf-core"))
 
     runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream")
-    annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream")
-
     implementation project(":springwolf-bindings:springwolf-googlepubsub-binding")
+
+    annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream")
 
     runtimeOnly project(":springwolf-ui")
     runtimeOnly "org.springframework.boot:spring-boot-starter-web"
@@ -41,9 +43,6 @@ dependencies {
 
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
-
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
@@ -56,6 +55,9 @@ dependencies {
 
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
 }
 
 docker {

@@ -6,6 +6,8 @@ plugins {
     id 'ca.cutterslade.analyze'
 }
 
+ext['junit-jupiter.version'] = "${junitJupiterVersion}"
+
 dependencies {
     api project(":springwolf-asyncapi")
 
@@ -45,18 +47,17 @@ dependencies {
     testImplementation project(":springwolf-add-ons:springwolf-common-model-converters")
     permitTestUnusedDeclared project(":springwolf-add-ons:springwolf-common-model-converters")
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
     testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework:spring-test"
-    permitTestUnusedDeclared "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
 
-
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter:${junitJupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-params"
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jSimpleVersion}"
 }
 
 jar {

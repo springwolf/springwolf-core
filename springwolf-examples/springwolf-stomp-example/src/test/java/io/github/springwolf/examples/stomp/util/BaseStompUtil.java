@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.stomp.stomp.util;
+package io.github.springwolf.examples.stomp.util;
 
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;

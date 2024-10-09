@@ -52,17 +52,17 @@ ext {
 
     jakartaXmlBindApiVersion = '4.0.2'
 
-    jsonSchemaValidator = '1.5.1'
+    jsonSchemaValidator = '1.5.2'
 
-    mockitoCoreVersion = '5.13.0'
-    mockitoJunitJupiterVersion = '5.13.0'
+    mockitoCoreVersion = '5.14.1'
+    mockitoJunitJupiterVersion = '5.14.1'
 
     monetaVersion = '1.4.4'
     moneyApiVersion = '1.1'
 
-    protobufJavaVersion = '4.28.1'
+    protobufJavaVersion = '4.28.2'
 
-    junitJupiterVersion = '5.10.3'
+    junitJupiterVersion = '5.11.0'
     jsonUnitAssertJVersion = '3.4.1'
 
     lombokVersion = '1.18.34'
@@ -70,7 +70,7 @@ ext {
     slf4jApiVersion = '2.0.16'
     slf4jSimpleVersion = '2.0.16'
 
-    swaggerVersion = '2.2.23'
+    swaggerVersion = '2.2.24'
 
-    testcontainersVersion = '1.20.1'
+    testcontainersVersion = '1.20.2'
 }
