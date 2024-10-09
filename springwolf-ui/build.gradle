@@ -1,11 +1,11 @@
 plugins {
   id 'java'
-  id 'com.github.node-gradle.node' version '7.1.0'
+  alias libs.plugins.node
 }
 
 node {
-  version = '18.20.3'
-  npmVersion = '10.7.0'
+  version = libs.versions.nodeVersion
+  npmVersion = libs.versions.npm
   download = true
 }
 
