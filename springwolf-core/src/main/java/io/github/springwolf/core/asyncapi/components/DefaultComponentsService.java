@@ -30,9 +30,9 @@ public class DefaultComponentsService implements ComponentsService {
 
     @Override
     public ComponentSchema resolvePayloadSchema(Type type, String contentType) {
-        SwaggerSchemaService.Payload payload = schemaService.resolvePayloadSchema(type, contentType);
+        SwaggerSchemaService.ExtractedSchemas payload = schemaService.resolveSchema(type, contentType);
         payload.referencedSchemas().forEach(this.schemas::putIfAbsent);
-        return payload.payloadSchema();
+        return payload.rootSchema();
     }
 
     @Override

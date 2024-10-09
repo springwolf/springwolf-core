@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -57,11 +58,11 @@ class SwaggerSchemaServiceTest {
 
     @Test
     void classWithSchemaAnnotation() {
-        String modelName = schemaService
-                .extractSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant")
-                .rootSchemaName();
+        ComponentSchema schema = schemaService
+                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant")
+                .rootSchema();
 
-        assertThat(modelName).isEqualTo("DifferentName");
+        assertThat(schema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
     }
 
     @Test
@@ -77,8 +78,8 @@ class SwaggerSchemaServiceTest {
         Class<?> clazz =
                 OneFieldFooWithoutFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
         Map<String, SchemaObject> schemas = schemaServiceWithFqn
-                .extractSchema(clazz, "content-type-not-relevant")
-                .schemas();
+                .resolveSchema(clazz, "content-type-not-relevant")
+                .referencedSchemas();
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemas);
 
         // then
@@ -89,7 +90,7 @@ class SwaggerSchemaServiceTest {
 
     @Test
     void postProcessorsAreCalled() {
-        schemaService.extractSchema(ClassWithSchemaAnnotation.class, "some-content-type");
+        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type");
 
         verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
         verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
@@ -105,7 +106,7 @@ class SwaggerSchemaServiceTest {
                 .when(schemasPostProcessor)
                 .process(any(), any(), any());
 
-        schemaService.extractSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
+        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
 
         verifyNoInteractions(schemasPostProcessor2);
     }

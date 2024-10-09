@@ -15,11 +15,8 @@ import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.core.util.RefUtils;
-import io.swagger.v3.oas.models.media.BooleanSchema;
-import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,7 +27,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -55,13 +51,7 @@ public class SwaggerSchemaService {
         this.properties = properties;
     }
 
-    public record ExtractedSchemas(String rootSchemaName, Map<String, SchemaObject> schemas) {
-        public SchemaObject getRootSchema() {
-            return schemas.get(rootSchemaName);
-        }
-    }
-
-    public record Payload(ComponentSchema payloadSchema, Map<String, SchemaObject> referencedSchemas) {}
+    public record ExtractedSchemas(ComponentSchema rootSchema, Map<String, SchemaObject> referencedSchemas) {}
 
     public SchemaObject extractSchema(SchemaObject headers) {
         String schemaName = headers.getTitle();
@@ -76,35 +66,19 @@ public class SwaggerSchemaService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         headerSchema.setProperties(properties);
 
-        postProcessSchema(headerSchema, new HashMap<>(Map.of(schemaName, headerSchema)), DEFAULT_CONTENT_TYPE);
+        postProcessSchema(
+                new HashMap<>(Map.of(schemaName, headerSchema)),
+                new HashMap<>(Map.of(schemaName, headerSchema)),
+                DEFAULT_CONTENT_TYPE);
 
         return swaggerSchemaUtil.mapSchema(headerSchema);
     }
 
     public ExtractedSchemas extractSchema(Class<?> type) {
-        return this.extractSchema(type, "");
+        return this.resolveSchema(type, "");
     }
 
-    public ExtractedSchemas extractSchema(Class<?> type, String contentType) {
-        String actualContentType =
-                StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
-
-        Map<String, Schema> swaggerSchemas =
-                new LinkedHashMap<>(runWithFqnSetting((unused) -> converter.readAll(type)));
-
-        String schemaName = getSchemaName(type, swaggerSchemas);
-        preProcessSchemas(swaggerSchemas, schemaName, type);
-
-        Map<String, Schema> postProcessedSchemas = new HashMap<>(swaggerSchemas);
-        for (Schema schema : swaggerSchemas.values()) {
-            postProcessSchema(schema, postProcessedSchemas, actualContentType);
-        }
-
-        Map<String, SchemaObject> schemas = swaggerSchemaUtil.mapSchemasMap(postProcessedSchemas);
-        return new ExtractedSchemas(schemaName, schemas);
-    }
-
-    public Payload resolvePayloadSchema(Type type, String contentType) {
+    public ExtractedSchemas resolveSchema(Type type, String contentType) {
         String actualContentType =
                 StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
         ResolvedSchema resolvedSchema = runWithFqnSetting(
@@ -114,7 +88,7 @@ public class SwaggerSchemaService {
             // defaulting to stringSchema when resolvedSchema is null
             SchemaObject payloadSchema = swaggerSchemaUtil.mapSchema(
                     PrimitiveType.fromType(String.class).createProperty());
-            return new Payload(ComponentSchema.of(payloadSchema), Map.of());
+            return new ExtractedSchemas(ComponentSchema.of(payloadSchema), Map.of());
         } else {
             Map<String, Schema> preProcessSchemas = new LinkedHashMap<>(resolvedSchema.referencedSchemas);
             Schema payloadSchema = resolvedSchema.schema;
@@ -122,79 +96,16 @@ public class SwaggerSchemaService {
             preProcessSchemas(payloadSchema, preProcessSchemas, type);
             HashMap<String, Schema> postProcessSchemas = new HashMap<>(preProcessSchemas);
             postProcessSchema(preProcessSchemas, postProcessSchemas, actualContentType);
-            return new Payload(
+            return new ExtractedSchemas(
                     swaggerSchemaUtil.mapSchemaOrRef(payloadSchema),
                     swaggerSchemaUtil.mapSchemasMap(postProcessSchemas));
         }
-    }
-
-    private String getSchemaName(Class<?> type, Map<String, Schema> schemas) {
-        if (schemas.isEmpty()) {
-            // swagger-parser does not create schemas for primitives
-            if (type.equals(String.class) || type.equals(Character.class) || type.equals(Byte.class)) {
-                return registerPrimitive(String.class, new StringSchema(), schemas);
-            }
-            if (Boolean.class.isAssignableFrom(type)) {
-                return registerPrimitive(Boolean.class, new BooleanSchema(), schemas);
-            }
-            if (Number.class.isAssignableFrom(type)) {
-                return registerPrimitive(Number.class, new NumberSchema(), schemas);
-            }
-            if (Object.class.isAssignableFrom(type)) {
-                return registerPrimitive(Object.class, new ObjectSchema(), schemas);
-            }
-        }
-
-        if (schemas.size() == 1) {
-            return schemas.keySet().stream().findFirst().get();
-        }
-
-        Set<String> resolvedPayloadModelName =
-                runWithFqnSetting((unused) -> converter.read(type).keySet());
-        if (!resolvedPayloadModelName.isEmpty()) {
-            return resolvedPayloadModelName.stream().findFirst().get();
-        }
-
-        return getNameFromClass(type);
-    }
-
-    private String registerPrimitive(Class<?> type, Schema schema, Map<String, Schema> schemas) {
-        String schemaName = getNameFromClass(type);
-        schema.setName(schemaName);
-
-        schemas.put(schemaName, schema);
-        postProcessSchema(schema, schemas, DEFAULT_CONTENT_TYPE);
-
-        return schemaName;
-    }
-
-    private void preProcessSchemas(Map<String, Schema> schemas, String schemaName, Class<?> type) {
-        processCommonModelConverters(schemas);
-        processAsyncApiPayloadAnnotation(schemas, schemaName, type);
-        processSchemaAnnotation(schemas, schemaName, type);
     }
 
     private void preProcessSchemas(Schema payloadSchema, Map<String, Schema> schemas, Type type) {
         processCommonModelConverters(payloadSchema, schemas);
         processAsyncApiPayloadAnnotation(schemas, type);
         processSchemaAnnotation(payloadSchema, type);
-    }
-
-    private void processCommonModelConverters(Map<String, Schema> schemas) {
-        schemas.values().stream()
-                .filter(schema -> schema.getType() == null)
-                .filter(schema -> schema.get$ref() != null)
-                .forEach(schema -> {
-                    String targetSchemaName = schema.getName();
-                    String sourceSchemaName = StringUtils.substringAfterLast(schema.get$ref(), "/");
-
-                    Schema<?> actualSchema = schemas.get(sourceSchemaName);
-
-                    if (actualSchema != null) {
-                        schemas.put(targetSchemaName, actualSchema);
-                        schemas.remove(sourceSchemaName);
-                    }
-                });
     }
 
     private void processCommonModelConverters(Schema payloadSchema, Map<String, Schema> schemas) {
@@ -225,19 +136,6 @@ public class SwaggerSchemaService {
         }
     }
 
-    private void processSchemaAnnotation(Map<String, Schema> schemas, String schemaName, Class<?> type) {
-        Schema schemaForType = schemas.get(schemaName);
-        if (schemaForType != null) {
-            var schemaAnnotation = type.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
-            if (schemaAnnotation != null) {
-                String description = schemaAnnotation.description();
-                if (StringUtils.isNotBlank(description)) {
-                    schemaForType.setDescription(description);
-                }
-            }
-        }
-    }
-
     private void processSchemaAnnotation(Schema payloadSchema, Type type) {
         JavaType javaType = Json.mapper().constructType(type);
         Class<?> clazz = javaType.getRawClass();
@@ -246,29 +144,6 @@ public class SwaggerSchemaService {
             if (schemaAnnotation != null && StringUtils.isNotBlank(schemaAnnotation.description())) {
                 payloadSchema.setDescription(schemaAnnotation.description());
             }
-        }
-    }
-
-    private void processAsyncApiPayloadAnnotation(Map<String, Schema> schemas, String schemaName, Class<?> type) {
-        List<Field> withPayloadAnnotatedFields = Arrays.stream(type.getDeclaredFields())
-                .filter(field -> field.isAnnotationPresent(AsyncApiPayload.class))
-                .toList();
-
-        if (withPayloadAnnotatedFields.size() == 1) {
-            Schema envelopSchema = schemas.get(schemaName);
-            if (envelopSchema != null && envelopSchema.getProperties() != null) {
-                String fieldName = withPayloadAnnotatedFields.get(0).getName();
-                Schema actualSchema = (Schema) envelopSchema.getProperties().get(fieldName);
-                if (actualSchema != null) {
-                    schemas.put(schemaName, actualSchema);
-                }
-            }
-
-        } else if (withPayloadAnnotatedFields.size() > 1) {
-            log.warn(
-                    ("Found more than one field with @AsyncApiPayload annotation in class {}. "
-                            + "Falling back and ignoring annotation."),
-                    type.getName());
         }
     }
 
@@ -306,13 +181,6 @@ public class SwaggerSchemaService {
         return result;
     }
 
-    private String getNameFromClass(Class<?> type) {
-        if (properties.isUseFqn()) {
-            return type.getName();
-        }
-        return type.getSimpleName();
-    }
-
     public String getNameFromType(Type type) {
         PrimitiveType primitiveType = PrimitiveType.fromType(type);
         if (primitiveType != null && properties.isUseFqn()) {
@@ -328,18 +196,6 @@ public class SwaggerSchemaService {
         String name = TypeNameResolver.std.nameForType(javaType);
         TypeNameResolver.std.setUseFqn(properties.isUseFqn());
         return name;
-    }
-
-    private void postProcessSchema(Schema schema, Map<String, Schema> schemas, String contentType) {
-        boolean schemasHadEntries = !schemas.isEmpty();
-        for (SchemasPostProcessor processor : schemaPostProcessors) {
-            processor.process(schema, schemas, contentType);
-
-            if (schemasHadEntries && !schemas.containsValue(schema)) {
-                // If the post-processor removed the schema, we can stop processing
-                break;
-            }
-        }
     }
 
     private void postProcessSchema(
