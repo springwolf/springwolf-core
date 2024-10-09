@@ -66,10 +66,8 @@ public class SwaggerSchemaService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         headerSchema.setProperties(properties);
 
-        postProcessSchema(
-                new HashMap<>(Map.of(schemaName, headerSchema)),
-                new HashMap<>(Map.of(schemaName, headerSchema)),
-                DEFAULT_CONTENT_TYPE);
+        Map<String, Schema> newSchemasToProcess = Map.of(schemaName, headerSchema);
+        postProcessSchemas(newSchemasToProcess, new HashMap<>(newSchemasToProcess), DEFAULT_CONTENT_TYPE);
 
         return swaggerSchemaUtil.mapSchema(headerSchema);
     }
@@ -90,15 +88,16 @@ public class SwaggerSchemaService {
                     PrimitiveType.fromType(String.class).createProperty());
             return new ExtractedSchemas(ComponentSchema.of(payloadSchema), Map.of());
         } else {
-            Map<String, Schema> preProcessSchemas = new LinkedHashMap<>(resolvedSchema.referencedSchemas);
-            Schema payloadSchema = resolvedSchema.schema;
-            preProcessSchemas.putIfAbsent(getNameFromType(type), payloadSchema);
-            preProcessSchemas(payloadSchema, preProcessSchemas, type);
-            HashMap<String, Schema> postProcessSchemas = new HashMap<>(preProcessSchemas);
-            postProcessSchema(preProcessSchemas, postProcessSchemas, actualContentType);
+            Map<String, Schema> newSchemasToProcess = new LinkedHashMap<>(resolvedSchema.referencedSchemas);
+            newSchemasToProcess.putIfAbsent(getNameFromType(type), resolvedSchema.schema);
+
+            preProcessSchemas(resolvedSchema.schema, newSchemasToProcess, type);
+            HashMap<String, Schema> processedSchemas = new HashMap<>(newSchemasToProcess);
+            postProcessSchemas(newSchemasToProcess, processedSchemas, actualContentType);
+
             return new ExtractedSchemas(
-                    swaggerSchemaUtil.mapSchemaOrRef(payloadSchema),
-                    swaggerSchemaUtil.mapSchemasMap(postProcessSchemas));
+                    swaggerSchemaUtil.mapSchemaOrRef(resolvedSchema.schema),
+                    swaggerSchemaUtil.mapSchemasMap(processedSchemas));
         }
     }
 
@@ -198,14 +197,14 @@ public class SwaggerSchemaService {
         return name;
     }
 
-    private void postProcessSchema(
-            Map<String, Schema> preProcess, Map<String, Schema> postProcess, String contentType) {
-        boolean schemasHadEntries = !postProcess.isEmpty();
-        for (Schema schema : preProcess.values()) {
+    private void postProcessSchemas(
+            Map<String, Schema> schemasToProcess, Map<String, Schema> schemas, String contentType) {
+        boolean schemasHadEntries = !schemas.isEmpty();
+        for (Schema schema : schemasToProcess.values()) {
             for (SchemasPostProcessor processor : schemaPostProcessors) {
-                processor.process(schema, postProcess, contentType);
+                processor.process(schema, schemas, contentType);
 
-                if (schemasHadEntries && !postProcess.containsValue(schema)) {
+                if (schemasHadEntries && !schemas.containsValue(schema)) {
                     // If the post-processor removed the schema, we can stop processing
                     break;
                 }
