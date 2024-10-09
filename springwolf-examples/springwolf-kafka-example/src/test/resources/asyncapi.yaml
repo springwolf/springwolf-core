@@ -303,8 +303,8 @@ components:
             type: string
         title: SpringKafkaDefaultHeaders-AnotherPayloadDto
         type: object
-    SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997:
-      title: SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997
+    SpringKafkaDefaultHeaders-ExamplePayloadDto-1316119953:
+      title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1316119953
       type: object
       properties:
         __TypeId__:
@@ -315,16 +315,16 @@ components:
           examples:
             - io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
         kafka_offset:
-          type: number
+          type: integer
           examples:
-            - 1.1
+            - 0
         kafka_receivedMessageKey:
           type: string
           examples:
             - '"string"'
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
-          kafka_offset: 1.1
+          kafka_offset: 0
           kafka_receivedMessageKey: string
       x-json-schema:
         $schema: https://json-schema.org/draft-04/schema#
@@ -335,10 +335,10 @@ components:
               - io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
             type: string
           kafka_offset:
-            type: number
+            type: integer
           kafka_receivedMessageKey:
             type: string
-        title: SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997
+        title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1316119953
         type: object
     SpringKafkaDefaultHeaders-Message:
       title: SpringKafkaDefaultHeaders-Message
@@ -1145,7 +1145,7 @@ components:
           bindingVersion: 0.5.0
     io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto:
       headers:
-        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-220435997"
+        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-1316119953"
       payload:
         schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
         schema:

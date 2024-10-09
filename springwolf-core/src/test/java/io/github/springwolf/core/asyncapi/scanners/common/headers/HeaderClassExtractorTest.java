@@ -27,14 +27,14 @@ class HeaderClassExtractorTest {
             "payloadSchemaName", String.class.getSimpleName(), ComponentSchema.of(new SchemaObject()));
     private final SchemaObject stringSchema =
             SchemaObject.builder().type(SchemaType.STRING).build();
-    private final SchemaObject stringSwaggerSchema =
-            SchemaObject.builder().type(SchemaType.STRING).build();
+    private final ComponentSchema stringSwaggerSchema =
+            ComponentSchema.of(SchemaObject.builder().type(SchemaType.STRING).build());
 
     @Test
     void getNoDocumentedHeaders() throws NoSuchMethodException {
         // given
         when(schemaService.extractSchema(String.class))
-                .thenReturn(new SwaggerSchemaService.ExtractedSchemas("String", Map.of("String", stringSwaggerSchema)));
+                .thenReturn(new SwaggerSchemaService.ExtractedSchemas(stringSwaggerSchema, Map.of()));
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
@@ -48,7 +48,7 @@ class HeaderClassExtractorTest {
     void getHeaderWithSingleHeaderAnnotation() throws NoSuchMethodException {
         // given
         when(schemaService.extractSchema(String.class))
-                .thenReturn(new SwaggerSchemaService.ExtractedSchemas("String", Map.of("String", stringSwaggerSchema)));
+                .thenReturn(new SwaggerSchemaService.ExtractedSchemas(stringSwaggerSchema, Map.of()));
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithSingleHeaderAnnotation", String.class);
@@ -69,7 +69,7 @@ class HeaderClassExtractorTest {
     void getHeaderWithMultipleHeaderAnnotation() throws NoSuchMethodException {
         // given
         when(schemaService.extractSchema(String.class))
-                .thenReturn(new SwaggerSchemaService.ExtractedSchemas("String", Map.of("String", stringSwaggerSchema)));
+                .thenReturn(new SwaggerSchemaService.ExtractedSchemas(stringSwaggerSchema, Map.of()));
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithMultipleHeaderAnnotation", String.class, String.class);

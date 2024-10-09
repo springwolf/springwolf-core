@@ -33,8 +33,10 @@ public class HeaderClassExtractor {
                 Header headerAnnotation = argument.getAnnotation(Header.class);
                 String headerName = getHeaderAnnotationName(headerAnnotation);
 
-                SchemaObject schema =
-                        schemaService.extractSchema(argument.getType()).getRootSchema();
+                SchemaObject schema = schemaService
+                        .extractSchema(argument.getType())
+                        .rootSchema()
+                        .getSchema();
 
                 headers.getProperties().put(headerName, schema);
             }
