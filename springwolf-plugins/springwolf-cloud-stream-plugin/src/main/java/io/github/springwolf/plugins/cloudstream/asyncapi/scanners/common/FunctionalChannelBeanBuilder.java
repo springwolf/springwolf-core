@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -16,8 +17,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static java.util.stream.Collectors.toList;
-
 @RequiredArgsConstructor
 public class FunctionalChannelBeanBuilder {
     private final TypeToClassConverter typeToClassConverter;
@@ -26,18 +25,18 @@ public class FunctionalChannelBeanBuilder {
         Class<?> type = getRawType(element);
 
         if (Consumer.class.isAssignableFrom(type)) {
-            Class<?> payloadType = getTypeGenerics(element).get(0);
+            Type payloadType = getTypeGenerics(element).get(0);
             return Set.of(ofConsumer(element, payloadType));
         }
 
         if (Supplier.class.isAssignableFrom(type)) {
-            Class<?> payloadType = getTypeGenerics(element).get(0);
+            Type payloadType = getTypeGenerics(element).get(0);
             return Set.of(ofSupplier(element, payloadType));
         }
 
         if (Function.class.isAssignableFrom(type)) {
-            Class<?> inputType = getTypeGenerics(element).get(0);
-            Class<?> outputType = getTypeGenerics(element).get(1);
+            Type inputType = getTypeGenerics(element).get(0);
+            Type outputType = getTypeGenerics(element).get(1);
 
             return Set.of(ofConsumer(element, inputType), ofSupplier(element, outputType));
         }
@@ -57,14 +56,14 @@ public class FunctionalChannelBeanBuilder {
         throw new IllegalArgumentException("Must be a Method or Class");
     }
 
-    private static FunctionalChannelBeanData ofConsumer(AnnotatedElement element, Class<?> payloadType) {
+    private static FunctionalChannelBeanData ofConsumer(AnnotatedElement element, Type payloadType) {
         String name = getElementName(element);
         String cloudStreamBinding = firstCharToLowerCase(name) + "-in-0";
         return new FunctionalChannelBeanData(
                 name, element, payloadType, FunctionalChannelBeanData.BeanType.CONSUMER, cloudStreamBinding);
     }
 
-    private static FunctionalChannelBeanData ofSupplier(AnnotatedElement element, Class<?> payloadType) {
+    private static FunctionalChannelBeanData ofSupplier(AnnotatedElement element, Type payloadType) {
         String name = getElementName(element);
         String cloudStreamBinding = firstCharToLowerCase(name) + "-out-0";
         return new FunctionalChannelBeanData(
@@ -87,7 +86,7 @@ public class FunctionalChannelBeanBuilder {
         throw new IllegalArgumentException("Must be a Method or Class");
     }
 
-    private List<Class<?>> getTypeGenerics(AnnotatedElement element) {
+    private List<Type> getTypeGenerics(AnnotatedElement element) {
         if (element instanceof Method m) {
             ParameterizedType genericReturnType = (ParameterizedType) m.getGenericReturnType();
             return getTypeGenerics(genericReturnType);
@@ -100,7 +99,7 @@ public class FunctionalChannelBeanBuilder {
         throw new IllegalArgumentException("Must be a Method or Class");
     }
 
-    private List<Class<?>> getTypeGenerics(Class<?> c) {
+    private List<Type> getTypeGenerics(Class<?> c) {
         Predicate<Class<?>> isConsumerPredicate = Consumer.class::isAssignableFrom;
         Predicate<Class<?>> isSupplierPredicate = Supplier.class::isAssignableFrom;
         Predicate<Class<?>> isFunctionPredicate = Function.class::isAssignableFrom;
@@ -117,9 +116,9 @@ public class FunctionalChannelBeanBuilder {
                 .orElse(Collections.emptyList());
     }
 
-    private List<Class<?>> getTypeGenerics(ParameterizedType parameterizedType) {
+    private List<Type> getTypeGenerics(ParameterizedType parameterizedType) {
         return Arrays.stream(parameterizedType.getActualTypeArguments())
-                .map(typeToClassConverter::extractClass)
-                .collect(toList());
+                .map(typeToClassConverter::extractActualType)
+                .toList();
     }
 }
