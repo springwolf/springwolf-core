@@ -87,12 +87,21 @@
   },
   "components": {
     "schemas": {
-      "AnotherPayloadDto": {
+      "HeadersNotDocumented": {
+        "title": "HeadersNotDocumented",
+        "type": "object",
+        "properties": { },
+        "description": "There can be headers, but they are not explicitly documented.",
+        "examples": [
+          { }
+        ]
+      },
+      "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
         "title": "AnotherPayloadDto",
         "type": "object",
         "properties": {
           "example": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
           },
           "foo": {
             "type": "string",
@@ -118,7 +127,7 @@
           "example"
         ]
       },
-      "ExamplePayloadDto": {
+      "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto": {
         "title": "ExamplePayloadDto",
         "type": "object",
         "properties": {
@@ -164,7 +173,7 @@
           "someString"
         ]
       },
-      "GooglePubSubPayloadDto": {
+      "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto": {
         "title": "GooglePubSubPayloadDto",
         "type": "object",
         "properties": {
@@ -195,15 +204,6 @@
         "required": [
           "someString"
         ]
-      },
-      "HeadersNotDocumented": {
-        "title": "HeadersNotDocumented",
-        "type": "object",
-        "properties": { },
-        "description": "There can be headers, but they are not explicitly documented.",
-        "examples": [
-          { }
-        ]
       }
     },
     "messages": {
@@ -214,7 +214,7 @@
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/AnotherPayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
           }
         },
         "name": "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto",
@@ -230,7 +230,7 @@
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/ExamplePayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
           }
         },
         "name": "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto",
@@ -246,7 +246,7 @@
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/GooglePubSubPayloadDto"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto"
           }
         },
         "name": "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto",

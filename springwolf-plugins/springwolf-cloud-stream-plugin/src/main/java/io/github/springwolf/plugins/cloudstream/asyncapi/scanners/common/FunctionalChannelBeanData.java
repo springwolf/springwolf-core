@@ -2,6 +2,7 @@
 package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Type;
 
 /**
  * @param elementName        The simple name of the element (Method or Class).
@@ -13,7 +14,7 @@ import java.lang.reflect.AnnotatedElement;
 public record FunctionalChannelBeanData(
         String elementName,
         AnnotatedElement annotatedElement,
-        Class<?> payloadType,
+        Type payloadType,
         BeanType beanType,
         String cloudStreamBinding) {
 
