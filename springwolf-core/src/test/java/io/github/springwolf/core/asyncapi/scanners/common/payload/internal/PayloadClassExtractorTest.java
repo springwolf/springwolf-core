@@ -14,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class PayloadClassExtractorTest {
 
-    private final PayloadClassExtractor extractor = new PayloadClassExtractor(new SpringwolfConfigProperties());
+    private final PayloadClassExtractor extractor =
+            new PayloadClassExtractor(new TypeToClassConverter(new SpringwolfConfigProperties()));
 
     @Test
     void getPayloadType() throws NoSuchMethodException {
