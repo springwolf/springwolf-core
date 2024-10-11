@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { RangeNewComponent as RangeComponent } from "./range.component";
+import { RangeComponent as RangeComponent } from "./range.component";
 import { render, screen } from "@testing-library/angular";
 
 describe("SchemaRangeNewComponent", function () {

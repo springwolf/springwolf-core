@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, input, OnInit } from "@angular/core";
+import { Component, input, computed, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { STATUS } from "angular-in-memory-web-api";
 import { Binding } from "../../../models/bindings.model";
@@ -14,32 +14,39 @@ import {
   initSchema,
   noExample,
 } from "../../../service/mock/init-values";
+import { UiService } from "../../../service/ui.service";
 
 @Component({
-  selector: "app-channel-main",
-  templateUrl: "./channel-main.component.html",
-  styleUrls: ["./channel-main.component.css"],
+  selector: "app-channel-operation",
+  templateUrl: "./channel-operation.component.html",
+  styleUrls: ["./channel-operation.component.css"],
 })
-export class ChannelMainComponent implements OnInit {
+export class ChannelOperationComponent implements OnInit {
   channelName = input.required<string>();
   operation = input.required<Operation>();
 
-  schema: Schema = initSchema;
-  schemaIdentifier: string = "";
+  defaultSchema: Schema = initSchema;
   defaultExample: Example = initExample;
-  defaultExampleType: string = "";
-  exampleTextAreaLineCount: number = 1;
+  originalDefaultExample: Example = this.defaultExample;
+  exampleContentType = computed(
+    () => this.operation().message.contentType.split("/").pop() || "json"
+  );
+
   headers: Schema = initSchema;
-  headersSchemaIdentifier: string = "";
   headersExample: Example = initExample;
-  headersTextAreaLineCount: number = 1;
-  messageBindingExample?: Example;
-  messageBindingExampleTextAreaLineCount: number = 1;
+  originalHeadersExample: Example = this.headersExample;
+
+  operationBindingExampleString?: string;
+  messageBindingExampleString?: string;
+
+  isShowBindings: boolean = UiService.DEFAULT_SHOW_BINDINGS;
+  isShowHeaders: boolean = UiService.DEFAULT_SHOW_HEADERS;
   canPublish: boolean = false;
 
   constructor(
     private asyncApiService: AsyncApiService,
     private publisherService: PublisherService,
+    private uiService: UiService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -53,21 +60,27 @@ export class ChannelMainComponent implements OnInit {
           payload.name.lastIndexOf("/") + 1
         );
         const schema = schemas.get(schemaIdentifier)!!;
-        this.schema = schema;
+        this.defaultSchema = schema;
         this.defaultExample = schema.example || noExample;
+        this.originalDefaultExample = this.defaultExample;
       } else {
-        this.schema = payload;
+        this.defaultSchema = payload;
         this.defaultExample = payload.example || noExample;
+        this.originalDefaultExample = this.defaultExample;
       }
-      this.exampleTextAreaLineCount = this.defaultExample?.lineCount || 1;
-      this.defaultExampleType = this.operation().message.payload.name;
 
-      this.headersSchemaIdentifier = this.operation().message.headers.name;
-      this.headers = schemas.get(this.headersSchemaIdentifier)!!;
-      this.headersExample = this.headers.example || noExample;
-      this.headersTextAreaLineCount = this.headersExample?.lineCount || 1;
-      this.messageBindingExampleTextAreaLineCount =
-        this.messageBindingExample?.lineCount || 1;
+      const headersSchemaIdentifier = this.operation().message.headers.name;
+      this.headers = schemas.get(headersSchemaIdentifier)!!;
+      this.originalHeadersExample = this.headers.example || noExample;
+
+      this.operationBindingExampleString = new Example(
+        this.operation().bindings[this.operation().protocol]
+      )?.value;
+      this.messageBindingExampleString = this.createBindingExample(
+        this.operation().message.bindings.get(this.operation().protocol)
+      )?.value;
+
+      this.reset();
 
       this.publisherService
         .canPublish(this.operation().protocol)
@@ -75,35 +88,30 @@ export class ChannelMainComponent implements OnInit {
           this.canPublish = response;
         });
     });
-  }
 
-  isEmptyObject(object?: any): boolean {
-    return (
-      object === undefined ||
-      object === null ||
-      Object.keys(object).length === 0
+    this.uiService.isShowBindings$.subscribe(
+      (value) => (this.isShowBindings = value)
+    );
+    this.uiService.isShowHeaders$.subscribe(
+      (value) => (this.isShowHeaders = value)
     );
   }
 
-  createMessageBindingExample(messageBinding?: Binding): Example | undefined {
-    if (messageBinding === undefined || messageBinding === null) {
+  createBindingExample(binding?: Binding): Example | undefined {
+    if (binding === undefined || binding === null) {
       return undefined;
     }
 
     const bindingExampleObject: { [key: string]: any } = {};
-    Object.keys(messageBinding).forEach((bindingKey) => {
+    Object.keys(binding).forEach((bindingKey) => {
       if (bindingKey !== "bindingVersion") {
         bindingExampleObject[bindingKey] = this.getExampleValue(
-          messageBinding[bindingKey]
+          binding[bindingKey]
         );
       }
     });
 
-    const bindingExample = new Example(bindingExampleObject);
-
-    this.messageBindingExampleTextAreaLineCount = bindingExample.lineCount;
-
-    return bindingExample;
+    return new Example(bindingExampleObject);
   }
 
   getExampleValue(bindingValue: string | Binding): any {
@@ -111,33 +119,23 @@ export class ChannelMainComponent implements OnInit {
       return bindingValue;
     } else if (
       "examples" in bindingValue &&
-      typeof bindingValue["examples"] == "object"
+      typeof bindingValue["examples"] === "object"
     ) {
-      return bindingValue["examples"]["0"];
+      return bindingValue["examples"][0];
     }
     return undefined;
   }
 
-  recalculateLineCount(field: string, text: string): void {
-    switch (field) {
-      case "example":
-        this.exampleTextAreaLineCount = text.split("\n").length;
-        break;
-      case "headers":
-        this.headersTextAreaLineCount = text.split("\n").length;
-        break;
-      case "messageBindingExample":
-        this.messageBindingExampleTextAreaLineCount = text.split("\n").length;
-        break;
-    }
+  reset(): void {
+    this.defaultExample = new Example(this.originalDefaultExample.rawValue);
+    this.headersExample = new Example(this.originalHeadersExample.rawValue);
   }
 
-  publish(
-    example: string,
-    payloadType: string,
-    headers?: string,
-    bindings?: string
-  ): void {
+  publish(): void {
+    const example = this.defaultExample.value;
+    const payloadType = this.operation().message.payload.name;
+    const headers = this.headersExample.value;
+    const bindings = this.messageBindingExampleString;
     try {
       const headersJson =
         headers === ""
@@ -156,7 +154,7 @@ export class ChannelMainComponent implements OnInit {
 
       this.publisherService
         .publish(
-          this.operation().protocol,
+          this.operation().protocol || "not-supported-protocol",
           this.channelName(),
           example,
           payloadType,

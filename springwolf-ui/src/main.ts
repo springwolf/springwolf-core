@@ -11,5 +11,3 @@ if (environment.production) {
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch((err) => console.error(err));
-
-// TODO: remove prism in angular.json + dependency after using new theme

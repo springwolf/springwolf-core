@@ -40,7 +40,7 @@ export class MockPrismEditorComponent {
   language = input<string>("");
 }
 
-@Component({ selector: "app-schema-new", template: "" })
+@Component({ selector: "app-schema", template: "" })
 export class MockAppSchemaNewComponent {
   schema = input.required<Schema>();
 }
