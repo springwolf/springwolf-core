@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, input } from "@angular/core";
+import { Component, input, model } from "@angular/core";
 import { Schema } from "../models/schema.model";
 import { Operation } from "../models/operation.model";
 
@@ -36,8 +36,11 @@ export class MockChannelOperationComponent {
 
 @Component({ selector: "app-prism-editor", template: "" })
 export class MockPrismEditorComponent {
-  code = input<string>("");
+  code = model<string>("");
   language = input<string>("");
+  readonly = input<boolean, string>(false, {
+    transform: (value: string) => value == "true",
+  });
 }
 
 @Component({ selector: "app-schema-new", template: "" })
