@@ -15,7 +15,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
@@ -41,7 +40,6 @@ import static org.mockito.Mockito.verify;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Testcontainers
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 @TestPropertySource(properties = {"spring.rabbitmq.host=localhost"})
 @Slf4j
