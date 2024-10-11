@@ -17,7 +17,7 @@ public class ExampleConsumer {
 
     @JmsListener(destination = "example-queue")
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in example-queue: {}", payload.toString());
+        log.info("Received new message in example-queue {}: {}", this, payload.toString()); // TODO: remove (this)
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
