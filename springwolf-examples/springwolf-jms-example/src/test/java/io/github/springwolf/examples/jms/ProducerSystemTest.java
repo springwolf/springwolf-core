@@ -12,7 +12,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
@@ -32,8 +32,8 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest(
         classes = {SpringwolfJmsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 @Testcontainers
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS) // Ensure no other spring context is consuming events
 @TestMethodOrder(OrderAnnotation.class)
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
