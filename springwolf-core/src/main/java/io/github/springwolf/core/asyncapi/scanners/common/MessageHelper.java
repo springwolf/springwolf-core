@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common;
 
-import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +27,13 @@ public class MessageHelper {
         return toMessageReferences(messages, aggregator);
     }
 
-    public static Map<String, MessageReference> toOperationsMessagesMap(
-            String channelName, Set<MessageObject> messages) {
-        if (channelName == null || channelName.isBlank()) {
-            throw new IllegalArgumentException("channelName must not be empty");
+    public static Map<String, MessageReference> toOperationsMessagesMap(String channelId, Set<MessageObject> messages) {
+        if (channelId == null || channelId.isBlank()) {
+            throw new IllegalArgumentException("channelId must not be empty");
         }
 
-        Function<MessageObject, MessageReference> aggregator = (message) ->
-                MessageReference.toChannelMessage(ReferenceUtil.toValidId(channelName), message.getMessageId());
+        Function<MessageObject, MessageReference> aggregator =
+                (message) -> MessageReference.toChannelMessage(channelId, message.getMessageId());
         return toMessageReferences(messages, aggregator);
     }
 

@@ -49,8 +49,8 @@ public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation>
                 .collect(toSet());
 
         if (messageType == MessageType.OPERATION) {
-            String channelName = bindingFactory.getChannelName(classAnnotation);
-            return toOperationsMessagesMap(channelName, messages);
+            String channelId = bindingFactory.getChannelName(classAnnotation);
+            return toOperationsMessagesMap(channelId, messages);
         }
         return toMessagesMap(messages);
     }

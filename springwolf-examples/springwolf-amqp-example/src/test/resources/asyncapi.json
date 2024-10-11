@@ -25,12 +25,9 @@
     }
   },
   "channels": {
-    "#": {
-      "address": "#",
+    "CRUD-topic-exchange-1": {
+      "address": "CRUD-topic-exchange-1",
       "messages": {
-        "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
-        },
         "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
         }
@@ -40,6 +37,27 @@
           "is": "routingKey",
           "exchange": {
             "name": "CRUD-topic-exchange-1",
+            "type": "topic",
+            "durable": true,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.3.0"
+        }
+      }
+    },
+    "CRUD-topic-exchange-2": {
+      "address": "CRUD-topic-exchange-2",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "routingKey",
+          "exchange": {
+            "name": "CRUD-topic-exchange-2",
             "type": "topic",
             "durable": true,
             "autoDelete": false,
@@ -78,7 +96,7 @@
           "queue": {
             "name": "example-bindings-queue",
             "durable": false,
-            "exclusive": false,
+            "exclusive": true,
             "autoDelete": true,
             "vhost": "/"
           },
@@ -112,27 +130,6 @@
       "messages": {
         "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
-        }
-      }
-    },
-    "example-topic-routing-key": {
-      "address": "example-topic-routing-key",
-      "messages": {
-        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
-        }
-      },
-      "bindings": {
-        "amqp": {
-          "is": "routingKey",
-          "exchange": {
-            "name": "example-topic-exchange",
-            "type": "topic",
-            "durable": true,
-            "autoDelete": false,
-            "vhost": "/"
-          },
-          "bindingVersion": "0.3.0"
         }
       }
     },
@@ -487,43 +484,37 @@
     }
   },
   "operations": {
-    "#_receive_bindingsRead": {
+    "CRUD-topic-exchange-1_receive_bindingsUpdate": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/#"
+        "$ref": "#/channels/CRUD-topic-exchange-1"
       },
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "cc": [
-            "#"
-          ],
           "bindingVersion": "0.3.0"
         }
       },
       "messages": [
         {
-          "$ref": "#/channels/#/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/CRUD-topic-exchange-1/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
         }
       ]
     },
-    "#_receive_bindingsUpdate": {
+    "CRUD-topic-exchange-2_receive_bindingsRead": {
       "action": "receive",
       "channel": {
-        "$ref": "#/channels/#"
+        "$ref": "#/channels/CRUD-topic-exchange-2"
       },
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "cc": [
-            "#"
-          ],
           "bindingVersion": "0.3.0"
         }
       },
       "messages": [
         {
-          "$ref": "#/channels/#/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/CRUD-topic-exchange-2/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
         }
       ]
     },
@@ -535,9 +526,6 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "cc": [
-            "another-queue"
-          ],
           "bindingVersion": "0.3.0"
         }
       },
@@ -555,15 +543,29 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "cc": [
-            "example-queue"
-          ],
           "bindingVersion": "0.3.0"
         }
       },
       "messages": [
         {
           "$ref": "#/channels/example-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "example-topic-exchange_receive_bindingsExample": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-topic-exchange"
+      },
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-topic-exchange/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
       ]
     },
@@ -593,26 +595,6 @@
         }
       ]
     },
-    "example-topic-routing-key_receive_bindingsExample": {
-      "action": "receive",
-      "channel": {
-        "$ref": "#/channels/example-topic-routing-key"
-      },
-      "bindings": {
-        "amqp": {
-          "expiration": 0,
-          "cc": [
-            "example-topic-routing-key"
-          ],
-          "bindingVersion": "0.3.0"
-        }
-      },
-      "messages": [
-        {
-          "$ref": "#/channels/example-topic-routing-key/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
-        }
-      ]
-    },
     "multi-payload-queue_receive_bindingsBeanExample": {
       "action": "receive",
       "channel": {
@@ -621,9 +603,6 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "cc": [
-            "multi-payload-queue"
-          ],
           "bindingVersion": "0.3.0"
         }
       },
@@ -644,9 +623,6 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "cc": [
-            "queue-create"
-          ],
           "bindingVersion": "0.3.0"
         }
       },
@@ -664,9 +640,6 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "cc": [
-            "queue-delete"
-          ],
           "bindingVersion": "0.3.0"
         }
       },
