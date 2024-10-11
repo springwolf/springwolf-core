@@ -73,6 +73,7 @@ public class ProducerSystemTest {
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+            .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
             .withLogConsumer(KAFKA_NAME, l -> log.debug("kafka: {}", l.getUtf8StringWithoutLineEnding()));
 

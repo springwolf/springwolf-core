@@ -48,6 +48,7 @@ public class ProducerSystemTest {
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+            .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(APP_JMS)
             .withLogConsumer(APP_JMS, l -> log.debug("jms: {}", l.getUtf8StringWithoutLineEnding()))
             .waitingFor(APP_JMS, Wait.forLogMessage(".*Artemis Console available.*", 1));

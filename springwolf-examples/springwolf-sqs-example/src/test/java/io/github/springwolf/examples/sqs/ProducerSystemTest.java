@@ -61,6 +61,7 @@ public class ProducerSystemTest {
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+            .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withEnv(ENV)
             .withServices(LOCALSTACK_NAME)
             .withLogConsumer(LOCALSTACK_NAME, l -> log.debug("localstack: {}", l.getUtf8StringWithoutLineEnding()))

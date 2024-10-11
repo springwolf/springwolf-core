@@ -47,6 +47,7 @@ public class ApiSystemTest {
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+            .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withExposedService(APP_NAME, APP_PORT)
             .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
             .withEnv(ENV)
