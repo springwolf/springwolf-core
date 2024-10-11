@@ -84,17 +84,18 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private ChannelObject buildChannel(FunctionalChannelBeanData beanData, String channelName) {
         Type payloadType = beanData.payloadType();
         PayloadSchemaObject payloadSchema = payloadService.buildSchema(payloadType);
-        String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
-
         var messagePayload = MessagePayload.of(
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
+
+        String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+        MessageHeaders messageHeaders = MessageHeaders.of(MessageReference.toSchema(headerModelName));
 
         Map<String, MessageBinding> messageBinding = buildMessageBinding(beanData.annotatedElement());
         MessageObject message = MessageObject.builder()
                 .name(payloadSchema.name())
                 .title(payloadSchema.title())
                 .payload(messagePayload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
+                .headers(messageHeaders)
                 .bindings(messageBinding)
                 .build();
         this.componentsService.registerMessage(message);
