@@ -1,60 +1,71 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.jms;
+package io.github.springwolf.examples.sqs;
 
-import io.github.springwolf.examples.jms.consumers.ExampleConsumer;
-import io.github.springwolf.examples.jms.dtos.ExamplePayloadDto;
-import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
+import io.github.springwolf.examples.sqs.consumers.ExampleConsumer;
+import io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto;
+import io.github.springwolf.plugins.sqs.producer.SpringwolfSqsProducer;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
-import static io.github.springwolf.examples.jms.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
+import static io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 /**
  * While the assertion of this test is identical to ApiIntegrationTests,
- * the setup uses a full docker-compose context with a real jms instance.
+ * the setup uses a full docker-compose context with a real sqs instance.
  */
 @SpringBootTest(
-        classes = {SpringwolfJmsExampleApplication.class},
+        classes = {SpringwolfSqsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test") // ensures that no other spring test contexts consume the producer message
 @Testcontainers
-@TestMethodOrder(OrderAnnotation.class)
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ProducerSystemTest {
-    private static final String APP_JMS = "activemq";
+public class SqsProducerSystemTest {
+    private static final String LOCALSTACK_NAME = "localstack";
 
     @Autowired
-    SpringwolfJmsProducer springwolfJmsProducer;
+    SpringwolfSqsProducer springwolfSqsProducer;
 
     @SpyBean
     ExampleConsumer exampleConsumer;
 
+    private static final Map<String, String> ENV = new HashMap<>();
+
+    static {
+        try (InputStream input = new FileInputStream(".env")) {
+            var properties = new Properties();
+            properties.load(input);
+            properties.forEach((key, value) -> ENV.put(String.valueOf(key), String.valueOf(value)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
-            .withServices(APP_JMS)
-            .withLogConsumer(APP_JMS, l -> log.debug("jms: {}", l.getUtf8StringWithoutLineEnding()))
-            .waitingFor(APP_JMS, Wait.forLogMessage(".*Artemis Console available.*", 1));
+            .withEnv(ENV)
+            .withServices(LOCALSTACK_NAME)
+            .withLogConsumer(LOCALSTACK_NAME, l -> log.debug("localstack: {}", l.getUtf8StringWithoutLineEnding()))
+            .waitingFor(LOCALSTACK_NAME, Wait.forLogMessage(".*Ready.*", 1));
 
     @Test
-    @Order(2)
     void producerCanUseSpringwolfConfigurationToSendMessage() {
         // given
         ExamplePayloadDto payload = new ExamplePayloadDto();
@@ -63,7 +74,7 @@ public class ProducerSystemTest {
         payload.setSomeEnum(FOO1);
 
         // when
-        springwolfJmsProducer.send("example-queue", Map.of(), payload);
+        springwolfSqsProducer.send("example-queue", payload);
 
         // then
         verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);

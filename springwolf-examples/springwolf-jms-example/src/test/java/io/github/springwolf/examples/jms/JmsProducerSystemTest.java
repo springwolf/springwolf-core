@@ -1,54 +1,47 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.amqp;
+package io.github.springwolf.examples.jms;
 
-import io.github.springwolf.examples.amqp.consumers.ExampleConsumer;
-import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
-import io.github.springwolf.plugins.amqp.producer.SpringwolfAmqpProducer;
+import io.github.springwolf.examples.jms.consumers.ExampleConsumer;
+import io.github.springwolf.examples.jms.dtos.ExamplePayloadDto;
+import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.amqp.AmqpIOException;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
+import java.util.Map;
 
-import static io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
+import static io.github.springwolf.examples.jms.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 /**
  * While the assertion of this test is identical to ApiIntegrationTests,
- * the setup uses a full docker-compose context with a real sqs instance.
+ * the setup uses a full docker-compose context with a real jms instance.
  */
 @SpringBootTest(
-        classes = {SpringwolfAmqpExampleApplication.class},
+        classes = {SpringwolfJmsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
+@ActiveProfiles("test") // ensures that no other spring test contexts consume the producer message
 @Testcontainers
 @TestMethodOrder(OrderAnnotation.class)
-@TestPropertySource(properties = {"spring.rabbitmq.host=localhost"})
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ProducerSystemTest {
-    private static final String AMQP_NAME = "amqp";
+public class JmsProducerSystemTest {
+    private static final String APP_JMS = "activemq";
 
     @Autowired
-    SpringwolfAmqpProducer springwolfAmqpProducer;
+    SpringwolfJmsProducer springwolfJmsProducer;
 
     @SpyBean
     ExampleConsumer exampleConsumer;
@@ -56,19 +49,9 @@ public class ProducerSystemTest {
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
-            .withServices(AMQP_NAME)
-            .waitingFor(AMQP_NAME, Wait.forLogMessage(".*Server startup complete.*", 1))
-            .withLogConsumer(AMQP_NAME, l -> log.debug("amqp: {}", l.getUtf8StringWithoutLineEnding()));
-
-    @Test
-    @Order(1)
-    void verifyAmqpIsAvailable() {
-        ConnectionFactory factory = new CachingConnectionFactory("localhost");
-
-        await().atMost(60, SECONDS).ignoreException(AmqpIOException.class).untilAsserted(() -> assertThat(
-                        factory.createConnection().isOpen())
-                .isTrue());
-    }
+            .withServices(APP_JMS)
+            .withLogConsumer(APP_JMS, l -> log.debug("jms: {}", l.getUtf8StringWithoutLineEnding()))
+            .waitingFor(APP_JMS, Wait.forLogMessage(".*Artemis Console available.*", 1));
 
     @Test
     @Order(2)
@@ -80,7 +63,7 @@ public class ProducerSystemTest {
         payload.setSomeEnum(FOO1);
 
         // when
-        springwolfAmqpProducer.send(AmqpConstants.QUEUE_EXAMPLE_QUEUE, payload);
+        springwolfJmsProducer.send("example-queue", Map.of(), payload);
 
         // then
         verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
