@@ -57,6 +57,7 @@ public class ProducerSystemTest {
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+            .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(AMQP_NAME)
             .waitingFor(AMQP_NAME, Wait.forLogMessage(".*Server startup complete.*", 1))
             .withLogConsumer(AMQP_NAME, l -> log.debug("amqp: {}", l.getUtf8StringWithoutLineEnding()));
