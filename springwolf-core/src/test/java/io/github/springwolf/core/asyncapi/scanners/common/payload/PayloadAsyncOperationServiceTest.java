@@ -6,7 +6,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PayloadAsyncOperationServiceTest {
-    private PayloadClassExtractor payloadClassExtractor = mock(PayloadClassExtractor.class);
+    private PayloadExtractor payloadExtractor = mock(PayloadExtractor.class);
     private ComponentsService componentsService = mock(ComponentsService.class);
     private SpringwolfConfigProperties properties = mock(SpringwolfConfigProperties.class);
 
@@ -35,7 +35,7 @@ class PayloadAsyncOperationServiceTest {
     @BeforeEach
     void setUp() {
         payloadService = new PayloadService(componentsService, properties);
-        payloadAsyncOperationService = new PayloadAsyncOperationService(payloadClassExtractor, payloadService);
+        payloadAsyncOperationService = new PayloadAsyncOperationService(payloadExtractor, payloadService);
     }
 
     @Test
@@ -73,7 +73,7 @@ class PayloadAsyncOperationServiceTest {
         when(asyncOperation.message()).thenReturn(asyncMessage);
 
         Method method = mock(Method.class);
-        when(payloadClassExtractor.extractFrom(method)).thenReturn(Optional.of(String.class));
+        when(payloadExtractor.extractFrom(method)).thenReturn(Optional.of(String.class));
 
         String schemaName = "my-schema-name";
         when(componentsService.getSchemaName(String.class)).thenReturn(schemaName);
@@ -100,7 +100,7 @@ class PayloadAsyncOperationServiceTest {
         when(asyncOperation.message()).thenReturn(asyncMessage);
 
         Method method = mock(Method.class);
-        when(payloadClassExtractor.extractFrom(method)).thenReturn(Optional.empty());
+        when(payloadExtractor.extractFrom(method)).thenReturn(Optional.empty());
 
         // when
         var result = payloadAsyncOperationService.extractSchema(asyncOperation, method);

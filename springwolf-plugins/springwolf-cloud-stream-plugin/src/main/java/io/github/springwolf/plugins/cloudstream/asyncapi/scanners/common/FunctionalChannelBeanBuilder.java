@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common;
 
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.AnnotatedElement;
@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public class FunctionalChannelBeanBuilder {
-    private final TypeToClassConverter typeToClassConverter;
+    private final TypeExtractor typeExtractor;
 
     public Set<FunctionalChannelBeanData> build(AnnotatedElement element) {
         Class<?> type = getRawType(element);
@@ -118,7 +118,7 @@ public class FunctionalChannelBeanBuilder {
 
     private List<Type> getTypeGenerics(ParameterizedType parameterizedType) {
         return Arrays.stream(parameterizedType.getActualTypeArguments())
-                .map(typeToClassConverter::extractActualType)
+                .map(typeExtractor::extractActualType)
                 .toList();
     }
 }

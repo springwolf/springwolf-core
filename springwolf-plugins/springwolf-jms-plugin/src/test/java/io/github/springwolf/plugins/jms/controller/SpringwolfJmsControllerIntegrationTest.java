@@ -8,9 +8,9 @@ import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -52,8 +52,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             SpringwolfJmsController.class,
             PublishingPayloadCreator.class,
             SpringwolfJmsProducer.class,
-            PayloadClassExtractor.class,
-            TypeToClassConverter.class,
+            PayloadExtractor.class,
+            TypeExtractor.class,
             DefaultComponentsService.class,
             SwaggerSchemaService.class,
             PayloadService.class,

@@ -10,11 +10,11 @@ import java.lang.reflect.WildcardType;
 import java.util.Map;
 
 @Slf4j
-public class TypeToClassConverter {
+public class TypeExtractor {
 
     private final Map<String, Integer> extractableClassToArgumentIndex;
 
-    public TypeToClassConverter(SpringwolfConfigProperties properties) {
+    public TypeExtractor(SpringwolfConfigProperties properties) {
         if (properties.getPayload() != null) {
             extractableClassToArgumentIndex = properties.getPayload().getExtractableClasses();
         } else {
