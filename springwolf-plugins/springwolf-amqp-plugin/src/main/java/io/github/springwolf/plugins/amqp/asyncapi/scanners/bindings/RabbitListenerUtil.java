@@ -34,8 +34,8 @@ import java.util.stream.Stream;
  * Note: bindings, queues, and queuesToDeclare are mutually exclusive
  * <ul>
  * <li> queues (string) point to queue beans (default exchange + routing key)
- * <li> queuesToDeclare (object) will create queues on broker & matching beans (default exchange + routing key)
- * <li> queueBinding (object) will create queue and exchange on broker & matching beans (exchange must match if present)
+ * <li> queuesToDeclare (object) will create queues on broker and matching beans (default exchange + routing key)
+ * <li> queueBinding (object) will create queue and exchange on broker and matching beans (exchange must match if present)
  * </ul>
  * <br/>
  * How does rabbitmq work?
