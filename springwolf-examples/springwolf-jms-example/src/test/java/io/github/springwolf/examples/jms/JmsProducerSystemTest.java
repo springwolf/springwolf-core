@@ -7,6 +7,7 @@ import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -42,6 +43,9 @@ public class JmsProducerSystemTest {
     @SpyBean
     ExampleConsumer exampleConsumer;
 
+    @Value("${spring.activemq.broker-url}")
+    String brokerUrl;
+
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
@@ -61,7 +65,7 @@ public class JmsProducerSystemTest {
 
     @Test
     void producerCanUseSpringwolfConfigurationToSendMessage() {
-        log.info("Waiting for message in {}", exampleConsumer); // TODO: remove
+        log.info("Waiting for message in {} on {}", exampleConsumer, brokerUrl); // TODO: remove
 
         // given
         ExamplePayloadDto payload = new ExamplePayloadDto();
