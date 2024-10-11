@@ -4,9 +4,9 @@ plugins {
 }
 
 node {
-  version = '22.8.0'
+  version = '18.16.1'
+  npmVersion = '9.5.1'
   download = true
-  npmInstallCommand = "ci"
 }
 
 npm_run_test {
