@@ -5,10 +5,7 @@ import io.github.springwolf.examples.jms.consumers.ExampleConsumer;
 import io.github.springwolf.examples.jms.dtos.ExamplePayloadDto;
 import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -32,9 +29,8 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest(
         classes = {SpringwolfJmsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test") // ensures that no other spring test contexts consume the producer message
+@ActiveProfiles("test")
 @Testcontainers
-@TestMethodOrder(OrderAnnotation.class)
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class JmsProducerSystemTest {
@@ -54,8 +50,9 @@ public class JmsProducerSystemTest {
             .waitingFor(APP_JMS, Wait.forLogMessage(".*Artemis Console available.*", 1));
 
     @Test
-    @Order(2)
     void producerCanUseSpringwolfConfigurationToSendMessage() {
+        log.info("Waiting for message in {}", exampleConsumer); // TODO: remove
+
         // given
         ExamplePayloadDto payload = new ExamplePayloadDto();
         payload.setSomeString("foo");
