@@ -13,12 +13,14 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
@@ -30,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -81,15 +84,19 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     }
 
     private Operation buildOperation(FunctionalChannelBeanData beanData, String channelId) {
-        Class<?> payloadType = beanData.payloadType();
-        String modelName = payloadService.buildSchema(payloadType).name();
+        Type payloadType = beanData.payloadType();
+        PayloadSchemaObject payloadSchema = payloadService.buildSchema(payloadType);
+        MessagePayload payload = MessagePayload.of(
+                MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
+
         String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+        MessageHeaders messageHeaders = MessageHeaders.of(MessageReference.toSchema(headerModelName));
 
         MessageObject message = MessageObject.builder()
-                .name(payloadType.getName())
-                .title(modelName)
-                .payload(MessagePayload.of(MessageReference.toSchema(modelName)))
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerModelName)))
+                .name(payloadSchema.name())
+                .title(payloadSchema.title())
+                .payload(payload)
+                .headers(messageHeaders)
                 .bindings(buildMessageBinding())
                 .build();
 

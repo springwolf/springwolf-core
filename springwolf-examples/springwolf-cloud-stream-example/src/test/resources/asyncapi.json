@@ -25,8 +25,8 @@
     "another-topic": {
       "address": "another-topic",
       "messages": {
-        "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
+        "AnotherPayloadDto": {
+          "$ref": "#/components/messages/AnotherPayloadDto"
         }
       },
       "bindings": {
@@ -36,8 +36,8 @@
     "consumer-class-topic": {
       "address": "consumer-class-topic",
       "messages": {
-        "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
+        "ExamplePayloadDto": {
+          "$ref": "#/components/messages/ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -47,8 +47,8 @@
     "consumer-topic": {
       "address": "consumer-topic",
       "messages": {
-        "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
+        "AnotherPayloadDto": {
+          "$ref": "#/components/messages/AnotherPayloadDto"
         }
       },
       "bindings": {
@@ -58,8 +58,8 @@
     "example-topic": {
       "address": "example-topic",
       "messages": {
-        "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
+        "ExamplePayloadDto": {
+          "$ref": "#/components/messages/ExamplePayloadDto"
         }
       },
       "bindings": {
@@ -69,8 +69,8 @@
     "google-pubsub-topic": {
       "address": "google-pubsub-topic",
       "messages": {
-        "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto"
+        "GooglePubSubPayloadDto": {
+          "$ref": "#/components/messages/GooglePubSubPayloadDto"
         }
       },
       "bindings": {
@@ -207,7 +207,7 @@
       }
     },
     "messages": {
-      "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto": {
+      "AnotherPayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
@@ -217,13 +217,13 @@
             "$ref": "#/components/schemas/AnotherPayloadDto"
           }
         },
-        "name": "io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto",
+        "name": "AnotherPayloadDto",
         "title": "AnotherPayloadDto",
         "bindings": {
           "kafka": { }
         }
       },
-      "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto": {
+      "ExamplePayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
@@ -233,13 +233,13 @@
             "$ref": "#/components/schemas/ExamplePayloadDto"
           }
         },
-        "name": "io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto",
+        "name": "ExamplePayloadDto",
         "title": "ExamplePayloadDto",
         "bindings": {
           "kafka": { }
         }
       },
-      "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto": {
+      "GooglePubSubPayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
@@ -249,7 +249,7 @@
             "$ref": "#/components/schemas/GooglePubSubPayloadDto"
           }
         },
-        "name": "io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto",
+        "name": "GooglePubSubPayloadDto",
         "title": "GooglePubSubPayloadDto",
         "bindings": {
           "googlepubsub": {
@@ -274,7 +274,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/another-topic/messages/AnotherPayloadDto"
         }
       ]
     },
@@ -289,7 +289,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/consumer-class-topic/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/consumer-class-topic/messages/ExamplePayloadDto"
         }
       ]
     },
@@ -304,7 +304,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/consumer-topic/messages/io.github.springwolf.examples.cloudstream.dtos.AnotherPayloadDto"
+          "$ref": "#/channels/consumer-topic/messages/AnotherPayloadDto"
         }
       ]
     },
@@ -319,7 +319,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/example-topic/messages/io.github.springwolf.examples.cloudstream.dtos.ExamplePayloadDto"
+          "$ref": "#/channels/example-topic/messages/ExamplePayloadDto"
         }
       ]
     },
@@ -334,7 +334,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/google-pubsub-topic/messages/io.github.springwolf.examples.cloudstream.dtos.GooglePubSubPayloadDto"
+          "$ref": "#/channels/google-pubsub-topic/messages/GooglePubSubPayloadDto"
         }
       ]
     }

@@ -15,7 +15,9 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
@@ -131,9 +133,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         // Then the returned channels contain a ChannelItem with the correct data
         MessageObject message = MessageObject.builder()
                 .name(String.class.getName())
-                .title(String.class.getSimpleName())
+                .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema(String.class.getName()))
+                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
                         .build()))
                 .headers(MessageHeaders.of(
                         MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -177,9 +179,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         MessageObject message = MessageObject.builder()
                 .name(String.class.getName())
-                .title(String.class.getSimpleName())
+                .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema(String.class.getName()))
+                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
                         .build()))
                 .headers(MessageHeaders.of(
                         MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -315,9 +317,12 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(Integer.class.getName())
-                .title(Integer.class.getSimpleName())
+                .title("integer")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema(Integer.class.getName()))
+                        .schema(SchemaObject.builder()
+                                .type(SchemaType.INTEGER)
+                                .format("int32")
+                                .build())
                         .build()))
                 .headers(MessageHeaders.of(
                         MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -343,9 +348,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         MessageObject publishMessage = MessageObject.builder()
                 .name(String.class.getName())
-                .title(String.class.getSimpleName())
+                .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema(String.class.getName()))
+                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
                         .build()))
                 .headers(MessageHeaders.of(
                         MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -400,9 +405,12 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         // Then the returned merged channels contain a publish operation and  a subscribe operation
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(Integer.class.getName())
-                .title(Integer.class.getSimpleName())
+                .title("integer")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema(Integer.class.getName()))
+                        .schema(SchemaObject.builder()
+                                .type(SchemaType.INTEGER)
+                                .format("int32")
+                                .build())
                         .build()))
                 .headers(MessageHeaders.of(
                         MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -420,9 +428,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         MessageObject publishMessage = MessageObject.builder()
                 .name(String.class.getName())
-                .title(String.class.getSimpleName())
+                .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema(String.class.getName()))
+                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
                         .build()))
                 .headers(MessageHeaders.of(
                         MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
