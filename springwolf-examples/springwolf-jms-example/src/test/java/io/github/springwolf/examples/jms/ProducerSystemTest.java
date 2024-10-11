@@ -32,7 +32,7 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest(
         classes = {SpringwolfJmsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
+@ActiveProfiles("test") // ensures that no other spring test contexts consume the producer message
 @Testcontainers
 @TestMethodOrder(OrderAnnotation.class)
 @Slf4j
@@ -63,7 +63,6 @@ public class ProducerSystemTest {
         payload.setSomeEnum(FOO1);
 
         // when
-        log.info("Waiting for message in {}", exampleConsumer); // TODO: remove
         springwolfJmsProducer.send("example-queue", Map.of(), payload);
 
         // then
