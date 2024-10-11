@@ -17,9 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class TypeToClassConverterTest {
+class TypeExtractorTest {
 
-    private final TypeToClassConverter typeToClassConverter;
+    private final TypeExtractor typeExtractor;
 
     {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
@@ -28,14 +28,14 @@ class TypeToClassConverterTest {
                 .getPayload()
                 .setExtractableClasses(new HashMap<>(properties.getPayload().getExtractableClasses()));
         properties.getPayload().getExtractableClasses().put(TestClass.CustomPair.class.getName(), 1);
-        typeToClassConverter = new TypeToClassConverter(properties);
+        typeExtractor = new TypeExtractor(properties);
     }
 
     @Test
     void getPayloadType() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithString", String.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isEqualTo(String.class);
     }
@@ -44,7 +44,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithMessageOfInterfaces() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfGenericClasses", Message.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isInstanceOf(ParameterizedType.class);
         ParameterizedType paramerizedResult = (ParameterizedType) result;
@@ -57,7 +57,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithInterface() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithGenericClass", Collection.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isInstanceOf(ParameterizedType.class);
         ParameterizedType paramerizedResult = (ParameterizedType) result;
@@ -70,7 +70,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithMessageOfListOfString() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfListOfString", Message.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isEqualTo(String.class);
     }
@@ -79,7 +79,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithMessageOfListOfCustomPair() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfCustomPair", Message.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         // payload is extracted from the second generic argument
         assertThat(result).isEqualTo(Double.class);
@@ -89,7 +89,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithMessageOfString() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfString", Message.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isEqualTo(String.class);
     }
@@ -98,7 +98,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithCustomMessageExtendsInterface() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessageExtendsInterface", List.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isEqualTo(TestClass.CustomMessage.class);
     }
@@ -107,7 +107,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithCustomMessagePairExtendsInterface() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessagePairExtendsInterface", List.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         // payload is extracted from the second generic argument
         assertThat(result).isEqualTo(Double.class);
@@ -117,7 +117,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithCustomMessageSuperInterface() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessageSuperInterface", List.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isEqualTo(TestClass.CustomMessage.class);
     }
@@ -126,7 +126,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithCustomMessagePairSuperInterface() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessagePairSuperInterface", List.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         // payload is extracted from the second generic argument
         assertThat(result).isEqualTo(Double.class);
@@ -136,16 +136,25 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithPrimitive() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithPrimitive", int.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isEqualTo(int.class);
+    }
+
+    @Test
+    void getPayloadTypeWithPrimitiveArray() throws NoSuchMethodException {
+        Method m = TestClass.class.getDeclaredMethod("consumeWithPrimitiveArray", int[].class);
+
+        Type result = typeExtractor.extractActualType(extractFrom(m));
+
+        assertThat(result).isEqualTo(int[].class);
     }
 
     @Test
     void getPayloadTypeWithListOfPrimitiveArray() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCollectionOfPrimitiveArray", List.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isEqualTo(int[].class);
     }
@@ -154,7 +163,7 @@ class TypeToClassConverterTest {
     void getPayloadTypeWithCustomType() throws NoSuchMethodException {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomType", TestClass.MyType.class);
 
-        Type result = typeToClassConverter.extractActualType(extractFrom(m));
+        Type result = typeExtractor.extractActualType(extractFrom(m));
 
         assertThat(result).isEqualTo(TestClass.MyType.class);
     }
@@ -164,7 +173,7 @@ class TypeToClassConverterTest {
         ParameterizedType spiedType = mock(ParameterizedType.class);
         when(spiedType.getRawType()).thenThrow(new ClassCastException());
 
-        Type result = typeToClassConverter.extractActualType(spiedType);
+        Type result = typeExtractor.extractActualType(spiedType);
 
         assertThat(result).isEqualTo(Void.class);
     }

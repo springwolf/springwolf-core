@@ -26,9 +26,9 @@ import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotati
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadClassExtractor;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeToClassConverter;
+import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -66,9 +66,9 @@ import static org.assertj.core.api.Assertions.assertThat;
             PayloadMethodParameterService.class,
             PayloadAsyncOperationService.class,
             PayloadService.class,
-            PayloadClassExtractor.class,
+            PayloadExtractor.class,
             HeaderClassExtractor.class,
-            TypeToClassConverter.class,
+            TypeExtractor.class,
             DefaultSchemaWalker.class,
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,

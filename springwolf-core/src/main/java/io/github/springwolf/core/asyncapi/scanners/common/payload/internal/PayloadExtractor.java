@@ -13,9 +13,9 @@ import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
-public class PayloadClassExtractor {
+public class PayloadExtractor {
 
-    private final TypeToClassConverter typeToClassConverter;
+    private final TypeExtractor typeExtractor;
 
     public Optional<Type> extractFrom(Method method) {
         String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
@@ -23,7 +23,7 @@ public class PayloadClassExtractor {
 
         return getPayloadParameterIndex(method.getParameterTypes(), method.getParameterAnnotations(), methodName)
                 .map((parameterPayloadIndex) -> method.getGenericParameterTypes()[parameterPayloadIndex])
-                .map(typeToClassConverter::extractActualType);
+                .map(typeExtractor::extractActualType);
     }
 
     private Optional<Integer> getPayloadParameterIndex(

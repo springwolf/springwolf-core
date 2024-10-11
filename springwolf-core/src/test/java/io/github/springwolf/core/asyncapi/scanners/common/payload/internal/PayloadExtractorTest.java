@@ -12,10 +12,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class PayloadClassExtractorTest {
+class PayloadExtractorTest {
 
-    private final PayloadClassExtractor extractor =
-            new PayloadClassExtractor(new TypeToClassConverter(new SpringwolfConfigProperties()));
+    private final PayloadExtractor extractor =
+            new PayloadExtractor(new TypeExtractor(new SpringwolfConfigProperties()));
 
     @Test
     void getPayloadType() throws NoSuchMethodException {
