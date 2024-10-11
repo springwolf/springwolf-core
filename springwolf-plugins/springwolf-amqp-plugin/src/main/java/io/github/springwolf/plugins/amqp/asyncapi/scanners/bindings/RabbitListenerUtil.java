@@ -53,24 +53,26 @@ public class RabbitListenerUtil {
     private static final Boolean DEFAULT_EXCLUSIVE = false;
     private static final String DEFAULT_EXCHANGE_TYPE = ExchangeTypes.DIRECT;
     private static final String DEFAULT_EXCHANGE_ROUTING_KEY = "#";
-    private static final String DEFAULT_EXCHANGE_ROUTING_KEY_TRANSLATED = "default";
 
     public static String getChannelName(RabbitListener annotation, StringValueResolver stringValueResolver) {
         Stream<String> annotationBindingChannelNames = Arrays.stream(annotation.bindings())
-                .flatMap(binding ->
-                        channelNameFromAnnotationBindings(binding.exchange().name(), stringValueResolver));
+                .flatMap(binding -> channelNameFromAnnotationBindings(
+                                binding.exchange().name(), binding.key())
+                        .map(stringValueResolver::resolveStringValue));
 
         Stream<String> stream = Stream.concat(streamQueueNames(annotation), annotationBindingChannelNames);
         return resolveFirstValue(stream, stringValueResolver, "channel name");
     }
 
-    public static String getChannelId(RabbitListener annotation, StringValueResolver resolver) {
+    public static String getChannelId(RabbitListener annotation, StringValueResolver stringValueResolver) {
         Stream<String> annotationBindingChannelIds = Arrays.stream(annotation.bindings())
-                .flatMap(binding -> channelIdFromAnnotationBindings(binding, resolver));
+                .flatMap(binding -> channelIdFromAnnotationBindings(
+                                binding.exchange().name(), binding.key())
+                        .map(stringValueResolver::resolveStringValue));
 
         Stream<String> stream =
                 Stream.concat(streamQueueNames(annotation).map(ReferenceUtil::toValidId), annotationBindingChannelIds);
-        return resolveFirstValue(stream, resolver, "channel id");
+        return resolveFirstValue(stream, stringValueResolver, "channel id");
     }
 
     private static String getQueueName(RabbitListener annotation, StringValueResolver resolver) {
@@ -81,14 +83,18 @@ public class RabbitListenerUtil {
         return resolveFirstValue(stream, resolver, "queue name");
     }
 
-    private static Stream<String> channelNameFromAnnotationBindings(
-            String exchangeName, StringValueResolver stringValueResolver) {
-        return Stream.of(stringValueResolver.resolveStringValue(exchangeName));
+    private static Stream<String> channelNameFromAnnotationBindings(String exchangeName, String[] routingKeys) {
+        List<String> keys = Arrays.stream(routingKeys)
+                .filter(s -> !s.equals(DEFAULT_EXCHANGE_ROUTING_KEY))
+                .toList();
+        if (keys.isEmpty()) {
+            return Stream.of(exchangeName);
+        }
+        return keys.stream().map(key -> String.join("_", exchangeName, key));
     }
 
-    private static Stream<String> channelIdFromAnnotationBindings(QueueBinding binding, StringValueResolver resolver) {
-        return channelNameFromAnnotationBindings(binding.exchange().name(), resolver)
-                .map(ReferenceUtil::toValidId);
+    private static Stream<String> channelIdFromAnnotationBindings(String exchangeName, String[] keys) {
+        return channelNameFromAnnotationBindings(exchangeName, keys).map(ReferenceUtil::toValidId);
     }
 
     /**
@@ -205,10 +211,14 @@ public class RabbitListenerUtil {
     }
 
     public static List<ChannelObject> buildChannelObject(Binding binding) {
+        String exchangeId = channelIdFromAnnotationBindings(
+                        binding.getExchange(), List.of(binding.getRoutingKey()).toArray(String[]::new))
+                .findFirst()
+                .get();
         return List.of(
                 // exchange
                 ChannelObject.builder()
-                        .channelId(ReferenceUtil.toValidId(binding.getExchange()))
+                        .channelId(exchangeId)
                         .address(binding.getRoutingKey())
                         .bindings(Map.of(
                                 BINDING_NAME,

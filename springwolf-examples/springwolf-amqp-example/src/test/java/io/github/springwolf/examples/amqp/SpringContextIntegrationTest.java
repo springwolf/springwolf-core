@@ -52,6 +52,7 @@ public class SpringContextIntegrationTest {
                             "example-bindings-queue",
                             "example-queue",
                             "example-topic-exchange",
+                            "example-topic-exchange_example-topic-routing-key",
                             "multi-payload-queue",
                             "queue-create",
                             "queue-delete",

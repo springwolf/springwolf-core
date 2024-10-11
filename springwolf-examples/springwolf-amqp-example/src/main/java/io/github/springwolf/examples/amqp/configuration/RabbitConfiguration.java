@@ -53,7 +53,7 @@ public class RabbitConfiguration {
      */
     @Bean
     public Queue exampleBindingsQueue() {
-        return new Queue(AmqpConstants.QUEUE_EXAMPLE_BINDINGS_QUEUE, false, true, true);
+        return new Queue(AmqpConstants.QUEUE_EXAMPLE_BINDINGS_QUEUE, false, false, true);
     }
 
     /**

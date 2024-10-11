@@ -56,6 +56,7 @@ class RabbitListenerUtilTest {
                         case "${queue-1}-id" -> "queue-1-id";
                         case "${routing-key}" -> "routing-key";
                         case "${exchange-name}" -> "exchange-name";
+                        case "${exchange-name}_${routing-key}" -> "exchange-name_routing-key";
                         default -> arg;
                     };
                 })
@@ -491,7 +492,7 @@ class RabbitListenerUtilTest {
             String channelName = RabbitListenerUtil.getChannelId(annotation, stringValueResolver);
 
             // then
-            assertEquals("exchange-name", channelName);
+            assertEquals("exchange-name_routing-key", channelName);
         }
 
         @Test
@@ -503,7 +504,7 @@ class RabbitListenerUtilTest {
             String channelName = RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
-            assertEquals("exchange-name", channelName);
+            assertEquals("exchange-name_routing-key", channelName);
         }
 
         @Test

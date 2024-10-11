@@ -46,9 +46,9 @@ class RabbitQueueBeanScannerTest {
                                                         .build())
                                                 .build()))
                                 .build(),
-                        "exchange",
+                        "exchange_routingKey",
                         ChannelObject.builder()
-                                .channelId("exchange")
+                                .channelId("exchange_routingKey")
                                 .address("routingKey")
                                 .bindings(Map.of(
                                         "amqp",
