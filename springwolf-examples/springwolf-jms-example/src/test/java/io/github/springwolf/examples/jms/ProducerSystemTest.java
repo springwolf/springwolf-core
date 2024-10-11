@@ -33,7 +33,7 @@ import static org.mockito.Mockito.verify;
         classes = {SpringwolfJmsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS) // Ensure no other spring context is consuming events
 @TestMethodOrder(OrderAnnotation.class)
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
@@ -66,7 +66,6 @@ public class ProducerSystemTest {
         springwolfJmsProducer.send("example-queue", Map.of(), payload);
 
         // then
-        // Increased timeout once from 10s to 20s to fix flaky test in ci
-        verify(exampleConsumer, timeout(20000)).receiveExamplePayload(payload);
+        verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
     }
 }

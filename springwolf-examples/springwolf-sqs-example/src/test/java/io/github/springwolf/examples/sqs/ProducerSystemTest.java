@@ -35,7 +35,7 @@ import static org.mockito.Mockito.verify;
         classes = {SpringwolfSqsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ProducerSystemTest {

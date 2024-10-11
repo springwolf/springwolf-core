@@ -41,7 +41,7 @@ import static org.mockito.Mockito.verify;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Testcontainers
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 @TestPropertySource(properties = {"spring.rabbitmq.host=localhost"})
 @Slf4j
