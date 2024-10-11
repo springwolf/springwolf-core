@@ -63,10 +63,10 @@ public class ProducerSystemTest {
         payload.setSomeEnum(FOO1);
 
         // when
+        log.info("Waiting for message in {}", exampleConsumer); // TODO: remove
         springwolfJmsProducer.send("example-queue", Map.of(), payload);
 
         // then
-        log.info("Waiting for message in {}", exampleConsumer); // TODO: remove
         verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
     }
 }
