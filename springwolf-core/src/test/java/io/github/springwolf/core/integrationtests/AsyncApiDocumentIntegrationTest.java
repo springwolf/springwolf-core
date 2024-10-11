@@ -41,20 +41,20 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI).isNotNull();
 
             assertThat(asyncAPI.getChannels().keySet())
-                    .containsExactlyInAnyOrder("listener-channel", "listener-class-channel");
-            assertThat(asyncAPI.getChannels().get("listener-channel").getMessages())
+                    .containsExactlyInAnyOrder("listener-channel_id", "listener-class-channel_id");
+            assertThat(asyncAPI.getChannels().get("listener-channel_id").getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
-            assertThat(asyncAPI.getChannels().get("listener-class-channel").getMessages())
+            assertThat(asyncAPI.getChannels().get("listener-class-channel_id").getMessages())
                     .containsOnlyKeys("java.lang.Integer");
             assertThat(asyncAPI.getOperations())
                     .containsOnlyKeys(
-                            "listener-channel_receive_listen",
-                            "listener-channel_receive_listen2",
-                            "listener-channel_receive_listen3",
-                            "listener-channel_receive_listen4",
-                            "listener-class-channel_receive_ClassListener");
+                            "listener-channel_id_receive_listen",
+                            "listener-channel_id_receive_listen2",
+                            "listener-channel_id_receive_listen3",
+                            "listener-channel_id_receive_listen4",
+                            "listener-class-channel_id_receive_ClassListener");
             assertThat(asyncAPI.getComponents().getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
@@ -106,20 +106,20 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI).isNotNull();
 
             assertThat(asyncAPI.getChannels().keySet())
-                    .containsExactlyInAnyOrder("publisher-channel", "publisher-class-channel");
-            assertThat(asyncAPI.getChannels().get("publisher-channel").getMessages())
+                    .containsExactlyInAnyOrder("publisher-channel_id", "publisher-class-channel_id");
+            assertThat(asyncAPI.getChannels().get("publisher-channel_id").getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
                             "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
-            assertThat(asyncAPI.getChannels().get("publisher-class-channel").getMessages())
+            assertThat(asyncAPI.getChannels().get("publisher-class-channel_id").getMessages())
                     .containsOnlyKeys("java.lang.Integer");
             assertThat(asyncAPI.getOperations())
                     .containsOnlyKeys(
-                            "publisher-channel_send_publish",
-                            "publisher-channel_send_publish2",
-                            "publisher-channel_send_publish3",
-                            "publisher-channel_send_publish4",
-                            "publisher-class-channel_send_ClassPublisher");
+                            "publisher-channel_id_send_publish",
+                            "publisher-channel_id_send_publish2",
+                            "publisher-channel_id_send_publish3",
+                            "publisher-channel_id_send_publish4",
+                            "publisher-class-channel_id_send_ClassPublisher");
             assertThat(asyncAPI.getComponents().getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",

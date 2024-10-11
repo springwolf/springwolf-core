@@ -10,6 +10,6 @@ class ReferenceUtilTest {
     void shouldCorrectIllegalCharacter() {
         String name = "users/{userId}";
 
-        assertThat(ReferenceUtil.toValidId(name)).isEqualTo("users_{userId}");
+        assertThat(ReferenceUtil.toValidId(name)).isEqualTo("users_{userId}_id");
     }
 }

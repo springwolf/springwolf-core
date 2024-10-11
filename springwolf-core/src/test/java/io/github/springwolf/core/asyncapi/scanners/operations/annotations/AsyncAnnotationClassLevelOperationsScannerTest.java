@@ -65,7 +65,7 @@ class AsyncAnnotationClassLevelOperationsScannerTest {
         // then
         assertThat(actualOperations).hasSize(1);
         assertThat(actualOperations)
-                .containsExactlyEntriesOf(Map.of("test-channel_send_ClassWithListenerAnnotation", operation));
+                .containsExactlyEntriesOf(Map.of("test-channel_id_send_ClassWithListenerAnnotation", operation));
     }
 
     @Test
