@@ -16,12 +16,13 @@ import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 import java.io.File;
 import java.util.Map;
 
 import static io.github.springwolf.examples.jms.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
-import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -51,6 +52,7 @@ public class JmsProducerSystemTest {
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(APP_JMS)
             .withExposedService(APP_JMS, 61616)
+            .withExposedService(APP_JMS, 8161)
             .withLogConsumer(APP_JMS, l -> log.debug("jms: {}", l.getUtf8StringWithoutLineEnding()))
             .waitingFor(APP_JMS, Wait.forLogMessage(".*Artemis Console available.*", 1));
 
@@ -64,8 +66,12 @@ public class JmsProducerSystemTest {
     }
 
     @Test
-    void producerCanUseSpringwolfConfigurationToSendMessage() {
+    void producerCanUseSpringwolfConfigurationToSendMessage() throws InterruptedException {
         log.info("Waiting for message in {} on {}", exampleConsumer, brokerUrl); // TODO: remove
+        log.info(
+                "Management port http://{}:{}",
+                environment.getServiceHost(APP_JMS, 8161),
+                environment.getServicePort(APP_JMS, 8161)); // TODO: remove
 
         // given
         ExamplePayloadDto payload = new ExamplePayloadDto();
@@ -73,10 +79,14 @@ public class JmsProducerSystemTest {
         payload.setSomeLong(5);
         payload.setSomeEnum(FOO1);
 
-        // when
-        springwolfJmsProducer.send("example-queue", Map.of(), payload);
+        // Awaitility is used, because message sent before amqp is ready are lost
+        Awaitility.await().untilAsserted(() -> {
+            // when
+            log.info("Waiting for message in {} on {}", exampleConsumer, brokerUrl); // TODO: remove
+            springwolfJmsProducer.send("example-queue", Map.of(), payload);
 
-        // then
-        verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
+            // then
+            verify(exampleConsumer, atLeastOnce()).receiveExamplePayload(payload);
+        });
     }
 }
