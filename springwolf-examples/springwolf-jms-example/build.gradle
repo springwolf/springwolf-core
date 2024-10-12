@@ -29,6 +29,7 @@ dependencies {
 
     implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}"
 
+    implementation "org.springframework:spring-beans"
     implementation "org.springframework:spring-context"
     implementation "org.springframework:spring-jms"
     implementation "org.springframework.boot:spring-boot"
