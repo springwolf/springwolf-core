@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -47,7 +46,6 @@ import static org.mockito.Mockito.verify;
         classes = {SpringwolfKafkaExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-@TestPropertySource(properties = {"spring.kafka.bootstrap-servers=localhost:9092"})
 @TestMethodOrder(OrderAnnotation.class)
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
@@ -75,7 +73,15 @@ public class KafkaProducerSystemTest {
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
+            .withExposedService(KAFKA_NAME, 9092)
             .withLogConsumer(KAFKA_NAME, l -> log.debug("kafka: {}", l.getUtf8StringWithoutLineEnding()));
+
+    static {
+        // Kafka port must be mapped, since the docker-compose setup KAFKA_ADVERTISED_LISTENERS is set to 9092
+        environment
+                .getContainerByServiceName(KAFKA_NAME)
+                .map(container -> container.getPortBindings().add("9092:9092"));
+    }
 
     @Test
     @Order(1)
