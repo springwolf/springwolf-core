@@ -15,8 +15,9 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -41,12 +42,11 @@ import static org.mockito.Mockito.verify;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Testcontainers
-@DirtiesContext
 @TestMethodOrder(OrderAnnotation.class)
 @TestPropertySource(properties = {"spring.rabbitmq.host=localhost"})
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ProducerSystemTest {
+public class AmqpProducerSystemTest {
     private static final String AMQP_NAME = "amqp";
 
     @Autowired
@@ -59,8 +59,15 @@ public class ProducerSystemTest {
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(AMQP_NAME)
+            .withExposedService(AMQP_NAME, 5672)
             .waitingFor(AMQP_NAME, Wait.forLogMessage(".*Server startup complete.*", 1))
             .withLogConsumer(AMQP_NAME, l -> log.debug("amqp: {}", l.getUtf8StringWithoutLineEnding()));
+
+    @DynamicPropertySource
+    static void registerActiveMqBroker(DynamicPropertyRegistry registry) {
+        registry.add("spring.rabbitmq.host", () -> environment.getServiceHost(AMQP_NAME, 5672));
+        registry.add("spring.rabbitmq.port", () -> environment.getServicePort(AMQP_NAME, 5672));
+    }
 
     @Test
     @Order(1)

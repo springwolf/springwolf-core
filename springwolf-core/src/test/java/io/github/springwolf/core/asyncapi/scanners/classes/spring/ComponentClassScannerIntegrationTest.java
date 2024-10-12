@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Set;
@@ -32,7 +31,6 @@ import static org.mockito.Mockito.when;
             TestConditionalComponent.class,
             TestOtherConditionalComponent.class
         })
-@DirtiesContext
 class ComponentClassScannerIntegrationTest {
     @MockBean
     private AsyncApiDocketService asyncApiDocketService;

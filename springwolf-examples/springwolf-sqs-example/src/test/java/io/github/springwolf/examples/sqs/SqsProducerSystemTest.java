@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.DirtiesContext;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
@@ -35,10 +34,9 @@ import static org.mockito.Mockito.verify;
         classes = {SpringwolfSqsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-@DirtiesContext
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ProducerSystemTest {
+public class SqsProducerSystemTest {
     private static final String LOCALSTACK_NAME = "localstack";
 
     @Autowired

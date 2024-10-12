@@ -51,7 +51,7 @@ import static org.mockito.Mockito.verify;
 @TestMethodOrder(OrderAnnotation.class)
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
-public class ProducerSystemTest {
+public class KafkaProducerSystemTest {
     private static final String KAFKA_NAME = "kafka";
 
     private static final boolean USE_SCHEMA_REGISTRY = false;
