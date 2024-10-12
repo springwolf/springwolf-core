@@ -46,7 +46,9 @@ dependencies {
     implementation libs.spring.security.web
 
     implementation libs.avro
-    runtimeOnly libs.kafka.avro.serializer
+    runtimeOnly dependencies.create(libs.kafka.avro.serializer.get()) {
+        exclude group: 'io.swagger.core.v3', module: 'swagger-annotations'
+    }
 
     runtimeOnly libs.kafka.protobuf.serializer
     implementation libs.protobuf.java

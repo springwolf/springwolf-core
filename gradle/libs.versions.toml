@@ -110,7 +110,6 @@ spring-test = { module = "org.springframework:spring-test", version.ref = "sprin
 spring-web = { module = "org.springframework:spring-web", version.ref = "springframework" }
 spring-webmvc = { module = "org.springframework:spring-webmvc", version.ref = "springframework" }
 spring-websocket = { module = "org.springframework:spring-websocket", version.ref = "springframework" }
-swagger-annotations = { module = "io.swagger.core.v3:swagger-annotations", version.ref = "io-swagger-core-v3" }
 swagger-annotations-jakarta = { module = "io.swagger.core.v3:swagger-annotations-jakarta", version.ref = "io-swagger-core-v3" }
 swagger-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version.ref = "io-swagger-core-v3" }
 swagger-models-jakarta = { module = "io.swagger.core.v3:swagger-models-jakarta", version.ref = "io-swagger-core-v3" }
