@@ -19,6 +19,7 @@ springwolf-plugins/springwolf-sqs-plugin/build/
 springwolf-bindings/springwolf-sqs-binding/build/
 
 .gradle/
+.kotlin/
 .idea/
 /gradle.properties
 node_modules/
