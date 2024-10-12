@@ -20,6 +20,7 @@ import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 import java.io.File;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static io.github.springwolf.examples.jms.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.mockito.Mockito.atLeastOnce;
@@ -52,7 +53,6 @@ public class JmsProducerSystemTest {
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(APP_JMS)
             .withExposedService(APP_JMS, 61616)
-            .withExposedService(APP_JMS, 8161)
             .withLogConsumer(APP_JMS, l -> log.debug("jms: {}", l.getUtf8StringWithoutLineEnding()))
             .waitingFor(APP_JMS, Wait.forLogMessage(".*Artemis Console available.*", 1));
 
@@ -66,13 +66,7 @@ public class JmsProducerSystemTest {
     }
 
     @Test
-    void producerCanUseSpringwolfConfigurationToSendMessage() throws InterruptedException {
-        log.info("Waiting for message in {} on {}", exampleConsumer, brokerUrl); // TODO: remove
-        log.info(
-                "Management port http://{}:{}",
-                environment.getServiceHost(APP_JMS, 8161),
-                environment.getServicePort(APP_JMS, 8161)); // TODO: remove
-
+    void producerCanUseSpringwolfConfigurationToSendMessage() {
         // given
         ExamplePayloadDto payload = new ExamplePayloadDto();
         payload.setSomeString("foo");
@@ -80,9 +74,9 @@ public class JmsProducerSystemTest {
         payload.setSomeEnum(FOO1);
 
         // Awaitility is used, because message sent before amqp is ready are lost
-        Awaitility.await().untilAsserted(() -> {
+        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             // when
-            log.info("Waiting for message in {} on {}", exampleConsumer, brokerUrl); // TODO: remove
+            log.info("Waiting for message in {} on {}", exampleConsumer, brokerUrl);
             springwolfJmsProducer.send("example-queue", Map.of(), payload);
 
             // then
