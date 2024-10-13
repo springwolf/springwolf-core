@@ -46,12 +46,13 @@ public class SpringContextIntegrationTest {
         void testAllChannelsAreFound() {
             assertThat(asyncApiService.getAsyncAPI().getChannels().keySet())
                     .containsExactlyInAnyOrder(
-                            "#",
+                            "CRUD-topic-exchange-1",
+                            "CRUD-topic-exchange-2",
                             "another-queue",
                             "example-bindings-queue",
                             "example-queue",
                             "example-topic-exchange",
-                            "example-topic-routing-key",
+                            "example-topic-exchange_example-topic-routing-key",
                             "multi-payload-queue",
                             "queue-create",
                             "queue-delete",

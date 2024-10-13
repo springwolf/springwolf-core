@@ -193,7 +193,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    public RabbitQueueBeanScanner rabbitQueueBeanScanner(List<Queue> queues) {
-        return new RabbitQueueBeanScanner(queues);
+    public RabbitQueueBeanScanner rabbitQueueBeanScanner(List<Queue> queues, List<Binding> bindings) {
+        return new RabbitQueueBeanScanner(queues, bindings);
     }
 }

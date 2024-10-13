@@ -72,8 +72,8 @@ function testPublishingEveryChannelItem() {
         messageTitle === "Message" || // Unable to instantiate ExamplePayloadProtobufDto$Message class
         messageTitle === "VehicleBase" || // Unable to publish abstract class for discriminator demo
         messageTitle.startsWith("GenericPayload") || // Unable to publish generic payload (amqp)
-        channelName === "#" || // Publishing through amqp exchange is not supported, see GH-366
-        channelName === "example-topic-routing-key" // Publishing through amqp exchange is not supported, see GH-366
+        channelName === "CRUD-topic-exchange-2" || // Publishing through amqp exchange is not supported, see GH-366
+        channelName === "example-topic-exchange_example-topic-routing-key" // Publishing through amqp exchange is not supported, see GH-366
       ) {
         return; // skip
       }

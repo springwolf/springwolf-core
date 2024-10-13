@@ -2,7 +2,6 @@
 package io.github.springwolf.core.asyncapi.scanners.common.operation;
 
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
@@ -30,7 +29,7 @@ public class SpringAnnotationOperationService<MethodAnnotation extends Annotatio
         MessageObject message = springAnnotationMessageService.buildMessage(annotation, payloadType, headerSchema);
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(annotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        String channelId = ReferenceUtil.toValidId(bindingFactory.getChannelName(annotation));
+        String channelId = bindingFactory.getChannelId(annotation);
 
         return Operation.builder()
                 .action(OperationAction.RECEIVE)

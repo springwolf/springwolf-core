@@ -55,7 +55,7 @@ public class ExampleConsumer {
                                         autoDelete = "true"),
                         key = AmqpConstants.ROUTING_KEY_EXAMPLE_TOPIC_ROUTING_KEY)
             })
-    public void bindingsExample(AnotherPayloadDto payload) {
+    public void bindingsExample(ExamplePayloadDto payload) {
         log.info(
                 "Received new message in {}" + " through exchange {}" + " using routing key {}: {}",
                 AmqpConstants.QUEUE_EXAMPLE_BINDINGS_QUEUE,
@@ -112,7 +112,7 @@ public class ExampleConsumer {
         log.info(
                 "Received new message {} in {} (GenericPayloadDto<ExamplePayloadDto>): {}",
                 message,
-                AmqpConstants.QUEUE_UPDATE,
+                AmqpConstants.EXCHANGE_CRUD_TOPIC_EXCHANGE_1,
                 payload.toString());
     }
 
@@ -130,7 +130,7 @@ public class ExampleConsumer {
         log.info(
                 "Received new message {} in {} (ExamplePayloadDto): {}",
                 message,
-                AmqpConstants.QUEUE_UPDATE,
+                AmqpConstants.EXCHANGE_CRUD_TOPIC_EXCHANGE_2,
                 payload.toString());
     }
 }

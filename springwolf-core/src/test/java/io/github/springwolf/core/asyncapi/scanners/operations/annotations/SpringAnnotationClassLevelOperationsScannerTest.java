@@ -35,14 +35,14 @@ class SpringAnnotationClassLevelOperationsScannerTest {
                     springAnnotationOperationsService,
                     List.of(operationCustomizer));
 
-    private static final String CHANNEL_NAME = "test-channel";
+    private static final String CHANNEL_NAME_ID = "test-channel";
 
     private static final Map<String, MessageBinding> defaultMessageBinding =
             Map.of("protocol", new AMQPMessageBinding());
 
     @BeforeEach
     void setUp() {
-        when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL_NAME);
+        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_NAME_ID);
     }
 
     @Test
@@ -56,7 +56,7 @@ class SpringAnnotationClassLevelOperationsScannerTest {
                 scanner.scan(ClassWithTestListenerAnnotation.class).toList();
 
         // then
-        String operationName = CHANNEL_NAME + "_receive_ClassWithTestListenerAnnotation";
+        String operationName = CHANNEL_NAME_ID + "_receive_ClassWithTestListenerAnnotation";
         assertThat(operations).containsExactly(Map.entry(operationName, operation));
     }
 
