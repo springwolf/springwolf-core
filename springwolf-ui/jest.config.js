@@ -1,7 +1,5 @@
 /** @type {import('jest').Config} */
-
 const esModules = ['@angular', 'jsonpath-plus', '@stoplight', 'nimma', 'prism-code-editor'];
-
 const config = {
   preset: 'jest-preset-angular',
   reporters: [
@@ -9,19 +7,14 @@ const config = {
     "jest-junit"
   ],
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
-  "modulePaths": [
-    "<rootDir>"
-  ],
-  modulePaths: ["<rootDir>", "<rootDir>/src/", "<rootDir>/node_modules/"],
-  modulePathIgnorePatterns: [
+  "modulePathIgnorePatterns": [
     "<rootDir>/build/"
   ],
-  transformIgnorePatterns: [
+  "transformIgnorePatterns": [
     `<rootDir>/node_modules/(?!.*\\.mjs$|${esModules.join('|')})`,
   ],
   moduleNameMapper: {
     '\\.(css|scss)$': '<rootDir>/setup-jest.ts', // any ts file
   },
 };
-
 module.exports = config;
