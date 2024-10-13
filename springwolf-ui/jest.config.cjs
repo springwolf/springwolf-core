@@ -9,7 +9,10 @@ const config = {
     "jest-junit"
   ],
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
-  modulePaths: ["<rootDir>/src/"],
+  "modulePaths": [
+    "<rootDir>"
+  ],
+  modulePaths: ["<rootDir>", "<rootDir>/src/", "<rootDir>/node_modules/"],
   modulePathIgnorePatterns: [
     "<rootDir>/build/"
   ],
