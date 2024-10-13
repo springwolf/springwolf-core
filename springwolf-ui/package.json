@@ -7,7 +7,7 @@
     "build": "ng build",
     "build_pages": "ng build",
     "watch": "ng build --watch",
-    "test": "jest"
+    "test": "jest --no-cache"
   },
   "private": true,
   "dependencies": {
