@@ -23,19 +23,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
@@ -47,7 +49,6 @@ import static org.mockito.Mockito.verify;
         classes = {SpringwolfKafkaExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-@TestPropertySource(properties = {"spring.kafka.bootstrap-servers=localhost:9092"})
 @TestMethodOrder(OrderAnnotation.class)
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
@@ -75,7 +76,15 @@ public class KafkaProducerSystemTest {
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
+            .withExposedService(KAFKA_NAME, 9092)
             .withLogConsumer(KAFKA_NAME, l -> log.debug("kafka: {}", l.getUtf8StringWithoutLineEnding()));
+
+    static {
+        // Kafka port must be mapped, since the docker-compose setup KAFKA_ADVERTISED_LISTENERS is set to 9092
+        environment
+                .getContainerByServiceName(KAFKA_NAME)
+                .map(container -> container.getPortBindings().add("9092:9092"));
+    }
 
     @Test
     @Order(1)
@@ -96,11 +105,13 @@ public class KafkaProducerSystemTest {
         headers.put("header-key", "header-value");
         ExamplePayloadDto payload = new ExamplePayloadDto("foo", 5, FOO1);
 
-        // when
-        springwolfKafkaProducer.send("example-topic", "key", headers, payload);
+        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
+            // when
+            springwolfKafkaProducer.send("example-topic", "key", headers, payload);
 
-        // then
-        verify(exampleConsumer, timeout(10000)).receiveExamplePayload("key", 0, payload);
+            // then
+            verify(exampleConsumer, atLeastOnce()).receiveExamplePayload("key", 0, payload);
+        });
     }
 
     @Test

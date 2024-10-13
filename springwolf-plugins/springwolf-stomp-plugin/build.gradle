@@ -1,12 +1,11 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'java-library'
 
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
-    id 'ca.cutterslade.analyze'
+    alias libs.plugins.spring.boot
+    alias libs.plugins.cutterslade.analyze
 }
-
-ext['junit-jupiter.version'] = "${junitJupiterVersion}"
 
 dependencies {
     api project(":springwolf-asyncapi")
@@ -14,34 +13,35 @@ dependencies {
     api project(":springwolf-bindings:springwolf-stomp-binding")
     permitUnusedDeclared project(":springwolf-bindings:springwolf-stomp-binding")
 
-    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
-    permitUnusedDeclared "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
+    runtimeOnly libs.swagger.models.jakarta
 
-    implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+    implementation libs.jakarta.annotation.api
+    implementation libs.slf4j.api
 
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-core"
-    implementation "org.springframework:spring-messaging"
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    runtimeOnly platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation libs.spring.context
+    implementation libs.spring.core
+    implementation libs.spring.messaging
 
-    implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.springframework.boot:spring-boot-starter-websocket"
-    permitUnusedDeclared("org.springframework.boot:spring-boot-starter-websocket")
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    implementation libs.spring.boot
+    implementation libs.spring.boot.autoconfigure
+    runtimeOnly libs.spring.boot.starter.websocket
+    annotationProcessor libs.spring.boot.configuration.processor
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
 
-    testRuntimeOnly "org.springframework.boot:spring-boot-starter-web"
+    testRuntimeOnly libs.spring.boot.starter.web
 
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation libs.mockito.core
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    testImplementation libs.assertj.core
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
 }
 
 jar {
