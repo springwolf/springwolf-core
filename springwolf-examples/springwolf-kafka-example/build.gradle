@@ -46,9 +46,7 @@ dependencies {
     implementation libs.spring.security.web
 
     implementation libs.avro
-    runtimeOnly dependencies.create(libs.kafka.avro.serializer.get()) {
-        exclude group: 'io.swagger.core.v3', module: 'swagger-annotations'
-    }
+    runtimeOnly libs.kafka.avro.serializer
 
     runtimeOnly libs.kafka.protobuf.serializer
     implementation libs.protobuf.java
@@ -60,7 +58,7 @@ dependencies {
 
     implementation libs.jakarta.xml.bind.api
 
-    implementation libs.swagger.annotations.jakarta
+    implementation libs.swagger.annotations.outdated
     implementation libs.swagger.core.jakarta
 
     implementation libs.slf4j.api
@@ -75,7 +73,6 @@ dependencies {
     testImplementation libs.mockito.core
 
     testImplementation libs.spring.boot.test
-    testImplementation libs.spring.kafka.test
     testImplementation libs.spring.test
 
     testImplementation libs.testcontainers
