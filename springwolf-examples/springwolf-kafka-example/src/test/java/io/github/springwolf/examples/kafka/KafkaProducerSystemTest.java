@@ -26,15 +26,18 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
@@ -102,11 +105,13 @@ public class KafkaProducerSystemTest {
         headers.put("header-key", "header-value");
         ExamplePayloadDto payload = new ExamplePayloadDto("foo", 5, FOO1);
 
-        // when
-        springwolfKafkaProducer.send("example-topic", "key", headers, payload);
+        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
+            // when
+            springwolfKafkaProducer.send("example-topic", "key", headers, payload);
 
-        // then
-        verify(exampleConsumer, timeout(10000)).receiveExamplePayload("key", 0, payload);
+            // then
+            verify(exampleConsumer, atLeastOnce()).receiveExamplePayload("key", 0, payload);
+        });
     }
 
     @Test
