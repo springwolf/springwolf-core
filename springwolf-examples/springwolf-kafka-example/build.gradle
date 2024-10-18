@@ -46,12 +46,12 @@ dependencies {
     implementation libs.spring.security.web
 
     implementation libs.avro
-    runtimeOnly libs.kafka.avro.serializer
+    implementation libs.kafka.avro.serializer
+    permitUnusedDeclared libs.kafka.avro.serializer
 
     runtimeOnly libs.kafka.protobuf.serializer
     implementation libs.protobuf.java
     implementation libs.jackson.datatype.protobuf
-
     implementation libs.jackson.annotations
     implementation libs.jackson.core
     implementation libs.jackson.databind
@@ -78,7 +78,8 @@ dependencies {
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter
 
-    runtimeOnly libs.spring.boot.starter.actuator
+    testImplementation libs.spring.boot.starter.actuator
+    permitTestUnusedDeclared libs.spring.boot.starter.actuator
 
     testAnnotationProcessor libs.lombok
     testCompileOnly libs.lombok
