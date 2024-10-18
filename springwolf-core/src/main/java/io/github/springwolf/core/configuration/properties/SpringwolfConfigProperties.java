@@ -7,11 +7,15 @@ import io.github.springwolf.asyncapi.v3.model.info.License;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import jakarta.annotation.Nullable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -186,6 +190,39 @@ public class SpringwolfConfigProperties {
              */
             @Nullable
             private Map<String, String> extensionFields = Map.of("x-generator", "springwolf");
+        }
+
+        private List<Group> groupConfigs = List.of();
+
+        @Getter
+        @Setter
+        @EqualsAndHashCode
+        @ToString
+        public static class Group {
+            /**
+             * The name of the Group
+             */
+            private String group;
+
+            /**
+             * The action to match for the group
+             */
+            private List<Action> actionToMatch = Collections.emptyList();
+
+            /**
+             * The channel names to match
+             */
+            private List<String> channelNameToMatch = Collections.emptyList();
+
+            /**
+             * The message names to match
+             */
+            private List<String> messageNameToMatch = Collections.emptyList();
+
+            public enum Action {
+                SEND,
+                RECEIVE
+            }
         }
     }
 

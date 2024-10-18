@@ -9,8 +9,8 @@ public interface AsyncApiService {
 
     AsyncAPI getAsyncAPI();
 
-     // TODO where do we want do add the breaking change?
-     default Optional<AsyncAPI> getForGroupName(String groupName) {
-         return Optional.ofNullable(getAsyncAPI());
-     }
+    // TODO where do we want do add the breaking change?
+    default Optional<AsyncAPI> getForGroupName(String groupName) {
+        return Optional.ofNullable(getAsyncAPI());
+    }
 }

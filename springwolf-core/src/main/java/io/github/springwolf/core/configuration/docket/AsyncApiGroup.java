@@ -19,13 +19,13 @@ public class AsyncApiGroup {
 
     // Implementation Roadmap
     // first draft/beta:
-    // * option to group by a single aspect i.e. only by Operation Option OR by ChannelName OR Message/Payload-Prefix (v1.Message, v2.Message)
+    // * option to group by a single aspect i.e. only by Operation Option OR by ChannelName OR Message/Payload-Prefix
+    // (v1.Message, v2.Message)
     // * different groups selectable via ui
     // * Options are exclusive -> validation/undefined behavior
     // * configuration via properties no code/no beans
 
-
-    //private final String title;
+    // private final String title;
 
     //    public boolean match(Operation operation,
     //                                  AsyncAPI fullApi,

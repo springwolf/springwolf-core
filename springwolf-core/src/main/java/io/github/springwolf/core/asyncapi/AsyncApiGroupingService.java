@@ -21,7 +21,6 @@ public class AsyncApiGroupingService {
 
     // if empty, keep all
 
-
     // TODO: Context class/object
     //    private final Map<String, Boolean> markedChannelIds;
     private final Set<String> markedOperationIds = new HashSet<>();
@@ -29,7 +28,8 @@ public class AsyncApiGroupingService {
     //    private final Map<String, Boolean> markedComponentIds;
 
     public AsyncAPI groupAPI(AsyncAPI fullAsyncApi, AsyncApiGroup asyncApiGroup) {
-        Boolean markEverything = asyncApiGroup.getOperationActionsToKeep().isEmpty() && asyncApiGroup.getChannelNamesToKeep().isEmpty();
+        Boolean markEverything = asyncApiGroup.getOperationActionsToKeep().isEmpty()
+                && asyncApiGroup.getChannelNamesToKeep().isEmpty();
 
         markOperations(fullAsyncApi, asyncApiGroup, markEverything);
         markChannels(fullAsyncApi, asyncApiGroup);
@@ -88,8 +88,10 @@ public class AsyncApiGroupingService {
         }
 
         fullAsyncApi.getOperations().entrySet().stream()
-                .filter(entry ->
-                        markEverything || asyncApiGroup.getOperationActionsToKeep().contains(entry.getValue().getAction()))
+                .filter(entry -> markEverything
+                        || asyncApiGroup
+                                .getOperationActionsToKeep()
+                                .contains(entry.getValue().getAction()))
                 .forEach(entry -> {
                     markedOperationIds.add(entry.getKey());
 
@@ -115,90 +117,4 @@ public class AsyncApiGroupingService {
                 .filter(entry -> markedOperationIds.contains(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
-
-    //    private Map<String, ChannelObject> filterChannels(AsyncAPI fullAsyncApi) {
-    //        Map<String, ChannelObject> allChannels = fullAsyncApi.getChannels();
-    //        if (allChannels == null) {
-    //            return null;
-    //        }
-    //
-    //        Map<String, ChannelObject> asdf = filterChannelsByOperation(allChannels, fullAsyncApi);
-    //        if (asdf == null) {
-    //            return null;
-    //        }
-    //
-    //        return asdf.entrySet().stream()
-    //                .filter((channel) -> channelNamesToKeep.isEmpty() ||
-    // channelNamesToKeep.contains(channel.getKey()))
-    //                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    //    }
-    //
-    //    private Map<String, ChannelObject> filterChannelsByOperation(
-    //            Map<String, ChannelObject> channels, AsyncAPI fullAsyncApi) {
-    //        Map<String, Operation> operations = filterOperations(fullAsyncApi);
-    //        if (fullAsyncApi.getChannels() == null || operations == null) {
-    //            return null;
-    //        }
-    //
-    //        Set<String> channelReferences = operations.values().stream()
-    //                .map((operation) -> operation.getChannel().getRef())
-    //                .collect(Collectors.toSet());
-    //
-    //        return channels.entrySet().stream()
-    //                .filter((channel) -> {
-    //                    String channelId = channel.getValue().getChannelId();
-    //                    String channelReference =
-    //                            ChannelReference.fromChannel(channelId).getRef();
-    //                    return channelReferences.contains(channelReference);
-    //                })
-    //                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    //    }
-    //
-    //    public Map<String, Operation> filterOperations(AsyncAPI fullAsyncApi) {
-    //        if (fullAsyncApi.getOperations() == null) {
-    //            return null;
-    //        }
-    //
-    //        // filterOperationsByChannel(fullAsyncApi);
-    //
-    //        return fullAsyncApi.getOperations().entrySet().stream()
-    //                .filter(entry -> operationActionsToKeep.isEmpty()
-    //                        || operationActionsToKeep.contains(entry.getValue().getAction()))
-    //                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    //    }
-    //     for group -> {
-    //        service.filterForGroup(group, asyncAPI);
-
-    // info - same
-    // id - same
-    // contentType - same
-
-    // 4 kinds
-    // servers - filter
-    // - map entries - same
-    // channels - filter
-    // - map entries - filter (contains messages)
-    // operations - filter
-    // - map entries - same
-    // components - filter
-    // - schemas - filter
-    //   - map entries - same
-    // - messages - filter
-    //   - map entries - same
-
-    // AsyncAPI
-    //        Map<ServerId, Boolean>
-    //        Map<ChannelId, Boolean>
-
-    // graph problem
-    // - nodes:
-    //   - kind: servers, channels, operations, components
-    //   - marked: true / false
-
-    // 1. pass -> mark by matcher
-    // 2. pass -> mark by transitive per type (channels, operations, components)
-    // 3. fixup channels#messages (builder / clone)
-
-    // trade-off marking (state, memory) vs simple filter (duplicate processing)
-    // -> assumption: easier to filter (no state management)
 }

@@ -11,6 +11,7 @@ import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,8 +31,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
      * @param asyncAPI
      * @param exception
      */
-    private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {
-    }
+    private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {}
     // -> master (internal)
     // -> per group
 
@@ -40,7 +40,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
     private final OperationsService operationsService;
     private final ComponentsService componentsService;
     private final List<AsyncApiCustomizer> customizers;
-    private final List<AsyncApiGroup> apiGroups;
+    private final SpringwolfConfigProperties springwolfConfigProperties;
     AsyncApiGroupingService groupingService = new AsyncApiGroupingService();
 
     private volatile AsyncAPIResult asyncAPIResult = null;
@@ -108,8 +108,11 @@ public class DefaultAsyncApiService implements AsyncApiService {
             }
             this.asyncAPIResult = new AsyncAPIResult(asyncAPI, null);
 
-
-            this.asyncApiGroupMap = apiGroups.stream().map(asyncApiGroup -> Map.entry(asyncApiGroup.getGroupName(), groupingService.groupAPI(asyncAPIResult.asyncAPI(), asyncApiGroup))).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            this.asyncApiGroupMap = getAsyncApiGroups().stream()
+                    .map(asyncApiGroup -> Map.entry(
+                            asyncApiGroup.getGroupName(),
+                            groupingService.groupAPI(asyncAPIResult.asyncAPI(), asyncApiGroup)))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             log.debug("AsyncAPI document was built");
         } catch (Throwable t) {
@@ -125,5 +128,12 @@ public class DefaultAsyncApiService implements AsyncApiService {
      */
     public boolean isNotInitialized() {
         return this.asyncAPIResult == null;
+    }
+
+    private List<AsyncApiGroup> getAsyncApiGroups() {
+        return springwolfConfigProperties.getDocket().getGroupConfigs().stream()
+                .map(group ->
+                        AsyncApiGroup.builder().groupName(group.getGroup()).build())
+                .toList();
     }
 }
