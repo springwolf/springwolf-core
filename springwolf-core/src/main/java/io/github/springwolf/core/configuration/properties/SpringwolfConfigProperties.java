@@ -4,6 +4,7 @@ package io.github.springwolf.core.configuration.properties;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.info.Contact;
 import io.github.springwolf.asyncapi.v3.model.info.License;
+import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import jakarta.annotation.Nullable;
@@ -202,12 +203,12 @@ public class SpringwolfConfigProperties {
             /**
              * The name of the Group
              */
-            private String group;
+            private String group = "";
 
             /**
              * The action to match for the group
              */
-            private List<Action> actionToMatch = Collections.emptyList();
+            private List<OperationAction> actionToMatch = Collections.emptyList();
 
             /**
              * The channel names to match
@@ -218,11 +219,6 @@ public class SpringwolfConfigProperties {
              * The message names to match
              */
             private List<String> messageNameToMatch = Collections.emptyList();
-
-            public enum Action {
-                SEND,
-                RECEIVE
-            }
         }
     }
 

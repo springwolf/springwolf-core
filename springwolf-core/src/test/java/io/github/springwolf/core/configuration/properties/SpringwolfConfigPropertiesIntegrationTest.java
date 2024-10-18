@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.configuration.properties;
 
+import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket.Group;
 import org.junit.jupiter.api.Nested;
@@ -177,7 +178,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
                 "springwolf.docket.group-configs[0].action-to-match=send",
                 "springwolf.docket.group-configs[0].channel-name-to-match=/*,a*b",
                 "springwolf.docket.group-configs[0].message-name-to-match=/*",
-                "springwolf.docket.group-configs[1].group=RECEIVE-GROUP",
+                "springwolf.docket.group-configs[1].group=",
                 "springwolf.docket.group-configs[1].action-to-match=",
                 "springwolf.docket.group-configs[1].channel-name-to-match=",
                 "springwolf.docket.group-configs[1].message-name-to-match="
@@ -192,11 +193,10 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             // given
             Group sendGroup = new Group();
             sendGroup.setGroup("SEND-GROUP");
-            sendGroup.setActionToMatch(List.of(Group.Action.SEND));
+            sendGroup.setActionToMatch(List.of(OperationAction.SEND));
             sendGroup.setChannelNameToMatch(List.of("/*", "a*b"));
             sendGroup.setMessageNameToMatch(List.of("/*"));
             Group receiveGroup = new Group();
-            receiveGroup.setGroup("RECEIVE-GROUP");
 
             // when
             List<Group> actual = properties.getDocket().getGroupConfigs();
