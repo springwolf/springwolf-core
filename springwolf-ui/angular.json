@@ -34,6 +34,9 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
+              "node_modules/prism-code-editor/dist/layout.css",
+              "node_modules/prism-code-editor/dist/themes/prism.css",
+              "node_modules/prism-code-editor/dist/themes/prism-okaidia.css",
               "src/main.css",
               "src/styles.scss"
             ],
