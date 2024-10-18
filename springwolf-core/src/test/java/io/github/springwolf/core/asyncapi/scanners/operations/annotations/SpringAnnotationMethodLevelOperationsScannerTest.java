@@ -37,11 +37,11 @@ class SpringAnnotationMethodLevelOperationsScannerTest {
                     springAnnotationOperationService,
                     List.of(operationCustomizer));
 
-    private static final String CHANNEL_NAME = "test-channel";
+    private static final String CHANNEL_ID = "test-channel";
 
     @BeforeEach
     void setUp() {
-        when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL_NAME);
+        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_ID);
     }
 
     @Test
@@ -56,7 +56,7 @@ class SpringAnnotationMethodLevelOperationsScannerTest {
                 scanner.scan(ClassWithTestListenerAnnotation.class).toList();
 
         // then
-        String operationName = CHANNEL_NAME + "_receive_methodWithAnnotation";
+        String operationName = CHANNEL_ID + "_receive_methodWithAnnotation";
         assertThat(operations).containsExactly(Map.entry(operationName, operation));
     }
 

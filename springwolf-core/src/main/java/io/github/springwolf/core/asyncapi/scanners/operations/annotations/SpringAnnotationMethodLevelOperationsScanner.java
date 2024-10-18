@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
-import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
@@ -44,8 +43,7 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
     private Map.Entry<String, Operation> mapMethodToOperation(MethodAndAnnotation<MethodAnnotation> method) {
         MethodAnnotation annotation = AnnotationUtil.findFirstAnnotationOrThrow(methodAnnotationClass, method.method());
 
-        String channelName = bindingFactory.getChannelName(annotation);
-        String channelId = ReferenceUtil.toValidId(channelName);
+        String channelId = bindingFactory.getChannelId(annotation);
         String operationId = StringUtils.joinWith(
                 "_", channelId, OperationAction.RECEIVE.type, method.method().getName());
 
