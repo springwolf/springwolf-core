@@ -122,7 +122,7 @@ class AsyncApiGroupingServiceTest {
     }
 
     @Test
-        // should get all copied for all empty filters
+    // should get all copied for all empty filters
     void shouldGetAllOperationsWhenActionsIsEmpty() {
         // given
         String channelId = "channelId";
@@ -256,19 +256,16 @@ class AsyncApiGroupingServiceTest {
         AsyncAPI full = AsyncAPI.builder()
                 .channels(Map.of(channel1.getChannelId(), channel1, channel2.getChannelId(), channel2))
                 .operations(Map.of(
-                                "channel1_send", sendOperation1,
-                                "channel1_receive", receiveOperation1,
-                                "channel2_send", sendOperation2,
-                                "channel2_receive", receiveOperation2
-                        )
-                )
+                        "channel1_send", sendOperation1,
+                        "channel1_receive", receiveOperation1,
+                        "channel2_send", sendOperation2,
+                        "channel2_receive", receiveOperation2))
                 .build();
 
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of(OperationAction.SEND))
                 .channelNamesToKeep(List.of(channel1.getChannelId()))
                 .build();
-
 
         // when
         AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);

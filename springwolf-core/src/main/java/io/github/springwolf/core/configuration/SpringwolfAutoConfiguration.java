@@ -40,7 +40,6 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
-import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -84,9 +83,14 @@ public class SpringwolfAutoConfiguration {
             OperationsService operationsService,
             ComponentsService componentsService,
             List<AsyncApiCustomizer> customizers,
-            List<AsyncApiGroup> asyncApiGroups) {
+            SpringwolfConfigProperties springwolfConfigProperties) {
         return new DefaultAsyncApiService(
-                asyncApiDocketService, channelsService, operationsService, componentsService, customizers, asyncApiGroups);
+                asyncApiDocketService,
+                channelsService,
+                operationsService,
+                componentsService,
+                customizers,
+                springwolfConfigProperties);
     }
 
     @Bean
