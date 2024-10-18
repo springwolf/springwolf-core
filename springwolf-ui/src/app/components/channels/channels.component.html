@@ -1,36 +1,65 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<h1>Channels</h1>
+<h2>Channels</h2>
+@for (channel of channels; track channel) {
+<article appNavigationTarget [id]="channel.anchorIdentifier">
+  <h3>{{ channel.name }}</h3>
 
-<mat-accordion>
-  <mat-expansion-panel
-    *ngFor="let channel of channels"
-    [id]="channel.anchorIdentifier"
-    [attr.data-testid]="channel.anchorIdentifier"
-    [expanded]="selectedChannel == channel.anchorIdentifier"
-    (opened)="this.setChannelSelection(channel)"
+  <div class="row" *ngIf="isShowBindings">
+    <div class="width-6/12 width-12/12-s">
+      <h6>Channel Binding</h6>
+    </div>
+    <div class="width-6/12 width-12/12-s">
+      <div *ngIf="channel.bindings">
+        <app-prism-editor
+          code="{{ JSON.stringify(channel.bindings, null, 2) }}"
+          language="json"
+          readonly="true"
+        />
+      </div>
+    </div>
+  </div>
+
+  @for (channelOperation of channel.operations; track channelOperation) {
+  <mat-card
+    appearance="outlined"
+    appNavigationTarget
+    [id]="channelOperation.anchorIdentifier"
   >
-    <mat-expansion-panel-header>
-      <mat-panel-title class="flex-column gap-16 flex-start items-center">
-        <div class="badge protocol-badge" *ngIf="channel.operation.protocol">
-          {{ channel.operation.protocol }}
-        </div>
-        <div
+    <mat-card-header>
+      <mat-card-title [attr.data-testid]="channel.anchorIdentifier">
+        {{ channelOperation.operation.message.title }}
+      </mat-card-title>
+      <span class="flex gap-16 padding-horizontal-1em">
+        <span
+          class="badge protocol-badge"
+          *ngIf="channelOperation.operation.protocol"
+        >
+          {{ channelOperation.operation.protocol }}
+        </span>
+        <span
           class="badge"
           [ngClass]="{
-            'send-badge': channel.operation.operationType === 'send',
-            'receive-badge': channel.operation.operationType === 'receive'
+            'send-badge': channelOperation.operation.operationType === 'send',
+            'receive-badge':
+              channelOperation.operation.operationType === 'receive'
           }"
         >
-          {{ channel.operation.operationType }}
-        </div>
-        <h3>{{ channel.name }}</h3>
-        <span class="payload-name">{{ channel.operation.message.title }}</span>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-channel-main
-      [channelName]="channel.name"
-      [operation]="channel.operation"
-    >
-    </app-channel-main>
-  </mat-expansion-panel>
-</mat-accordion>
+          {{ channelOperation.operation.operationType }}
+        </span>
+      </span>
+    </mat-card-header>
+    <mat-card-content>
+      <app-channel-operation
+        [channelName]="channel.name"
+        [operation]="channelOperation.operation"
+      ></app-channel-operation>
+    </mat-card-content>
+  </mat-card>
+
+  @if (!$last) {
+  <br />
+  } } @if (!$last) {
+  <br />
+  }
+</article>
+}

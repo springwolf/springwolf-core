@@ -8,17 +8,10 @@ import { BrowserModule } from "@angular/platform-browser";
 import { InMemoryWebApiModule } from "angular-in-memory-web-api";
 import { environment } from "../environments/environment";
 import { AppComponent } from "./app.component";
-import { ChannelMainComponent } from "./components/channels/channel-main/channel-main.component";
-import { ChannelOperationComponent } from "./components/new/channels/channel-main/channel-operation.component";
-import { ChannelsComponent } from "./components/channels/channels.component";
-import { ChannelsNewComponent } from "./components/new/channels/channels.component";
+import { ChannelOperationComponent } from "./components/channels/channel-main/channel-operation.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { InfoComponent } from "./components/info/info.component";
 import { MaterialModule } from "./material.module";
-import { SchemaComponent } from "./components/schemas/schema/schema.component";
-import { SchemaRangeComponent } from "./components/schemas/range/schema-range.component";
-import { SchemasComponent } from "./components/schemas/schemas.component";
-import { ServersComponent } from "./components/servers/servers.component";
 import { AsyncApiService } from "./service/asyncapi/asyncapi.service";
 import { MockServer } from "./service/mock/mock-server";
 import { PublisherService } from "./service/publisher.service";
@@ -32,14 +25,15 @@ import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.servic
 import { MarkdownModule, provideMarkdown } from "ngx-markdown";
 import { UiService } from "./service/ui.service";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
-import { SidenavComponent } from "./components/new/sidenav/sidenav.component";
-import { NavigationTargetDirective } from "./components/new/sidenav/navigation.directive";
-import { PrismEditorComponent } from "./components/new/code/prism-editor.component";
-import { SchemaNewComponent } from "./components/new/schema/schema.component";
-import { ServersNewComponent } from "./components/new/servers/servers.component";
-import { SchemasNewComponent } from "./components/new/schemas/schemas.component";
-import { RangeNewComponent } from "./components/new/schema/range/range.component";
+import { SidenavComponent } from "./components/sidenav/sidenav.component";
+import { NavigationTargetDirective } from "./components/sidenav/navigation.directive";
+import { PrismEditorComponent } from "./components/code/prism-editor.component";
+import { SchemaComponent } from "./components/schema/schema.component";
+import { RangeComponent } from "./components/schema/range/range.component";
 import { AssetService, IAssetService } from "./service/asset.service";
+import { SchemasComponent } from "./components/schemas/schemas.component";
+import { ServersComponent } from "./components/servers/servers.component";
+import { ChannelsComponent } from "./components/channels/channels.component";
 
 @NgModule({
   imports: [],
@@ -54,19 +48,13 @@ export const declarations = [
   InfoComponent,
   ServersComponent,
   ChannelsComponent,
-  ChannelMainComponent,
   SchemasComponent,
   SchemaComponent,
-  SchemaRangeComponent,
   JsonComponent,
   PrismEditorComponent,
   SidenavComponent,
-  ServersNewComponent,
-  ChannelsNewComponent,
   ChannelOperationComponent,
-  SchemasNewComponent,
-  SchemaNewComponent,
-  RangeNewComponent,
+  RangeComponent,
 ];
 export const imports = [
   DirectivesModule,

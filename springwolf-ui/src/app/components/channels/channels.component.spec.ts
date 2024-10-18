@@ -7,15 +7,15 @@ import {
   mockedExampleSchemaMapped,
 } from "../../service/mock/mock-asyncapi.service";
 import { MaterialModule } from "../../material.module";
-import { MockChannelMainComponent } from "../mock-components.spec";
+import { MockChannelOperationComponent } from "../mock-components.spec";
 
-describe("ChannelsComponent", () => {
+describe("ChannelsNewComponent", () => {
   beforeEach(async () => {
     mockedAsyncApiService.getAsyncApi.mockClear();
 
     await render(ChannelsComponent, {
       imports: [MaterialModule],
-      declarations: [MockChannelMainComponent],
+      declarations: [MockChannelOperationComponent],
       providers: [
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
       ],

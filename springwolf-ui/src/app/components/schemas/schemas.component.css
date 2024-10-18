@@ -1,19 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-h3 {
-  margin: 0;
+.table-row > *:first-child {
+  vertical-align: middle;
 }
-
-.schema-name {
-  background-color: #e0e0e0;
-  border-radius: 4px;
-  padding: 6px;
-  font-weight: normal;
-}
-
-.badge {
+.table-row > *:last-child {
+  word-break: break-word;
 }
 
 .type-badge {
+  display: inline;
   background-color: #e0e0e0;
   border-radius: 4px;
   padding: 4px;
