@@ -1,154 +1,128 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka;
 
-import io.github.springwolf.examples.kafka.consumers.AvroConsumer;
-import io.github.springwolf.examples.kafka.consumers.ExampleConsumer;
-import io.github.springwolf.examples.kafka.consumers.ProtobufConsumer;
-import io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto;
-import io.github.springwolf.examples.kafka.dto.avro.ExampleEnum;
-import io.github.springwolf.examples.kafka.dto.avro.ExamplePayloadAvroDto;
-import io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto;
-import io.github.springwolf.plugins.kafka.configuration.properties.SpringwolfKafkaConfigProperties;
-import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.KafkaAdminClient;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
+import org.awaitility.Awaitility;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.condition.DisabledIf;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ssl.DefaultSslBundleRegistry;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.verify;
 
 /**
  * While the assertion of this test is identical to ApiIntegrationTests,
  * the setup uses a full docker-compose context with a real kafka instance.
  */
-@SpringBootTest(
-        classes = {SpringwolfKafkaExampleApplication.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-@TestMethodOrder(OrderAnnotation.class)
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class KafkaProducerSystemTest {
+    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final String APP_NAME = "app";
+    private static final int APP_PORT = 8080;
     private static final String KAFKA_NAME = "kafka";
 
     private static final boolean USE_SCHEMA_REGISTRY = false;
 
-    @Autowired
-    SpringwolfKafkaProducer springwolfKafkaProducer;
-
-    @SpyBean
-    ExampleConsumer exampleConsumer;
-
-    @SpyBean
-    AvroConsumer avroConsumer;
-
-    @SpyBean
-    ProtobufConsumer protobufConsumer;
-
-    @Autowired
-    SpringwolfKafkaConfigProperties properties;
-
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
-            .withServices(KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
-            .withExposedService(KAFKA_NAME, 9092)
-            .withLogConsumer(KAFKA_NAME, l -> log.debug("kafka: {}", l.getUtf8StringWithoutLineEnding()));
+            .withServices(APP_NAME, KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
+            .withExposedService(APP_NAME, APP_PORT)
+            .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
+            .withLogConsumer(APP_NAME, l -> log.debug("APP: {}", l.getUtf8StringWithoutLineEnding()))
+            .waitingFor(KAFKA_NAME, Wait.forLogMessage(".*Kafka Server started.*", 1))
+            .withLogConsumer(KAFKA_NAME, l -> log.debug("KAFKA: {}", l.getUtf8StringWithoutLineEnding()));
 
-    static {
-        // Kafka port must be mapped, since the docker-compose setup KAFKA_ADVERTISED_LISTENERS is set to 9092
-        environment
-                .getContainerByServiceName(KAFKA_NAME)
-                .map(container -> container.getPortBindings().add("9092:9092"));
+    private String baseUrl() {
+        String host = environment.getServiceHost(APP_NAME, APP_PORT);
+        int port = environment.getServicePort(APP_NAME, APP_PORT);
+        return String.format("http://%s:%d", host, port);
     }
 
     @Test
-    @Order(1)
-    void verifyKafkaIsAvailable() {
-        Map<String, Object> consumerProperties =
-                properties.getPublishing().getProducer().buildProperties(new DefaultSslBundleRegistry());
-        AdminClient adminClient = KafkaAdminClient.create(consumerProperties);
-        await().atMost(60, SECONDS)
-                .untilAsserted(
-                        () -> assertThat(adminClient.listTopics().names().get()).contains("example-topic"));
-    }
-
-    @Test
-    @Order(2)
-    void producerCanUseSpringwolfConfigurationToSendMessage() {
+    void producerCanUseSpringwolfConfigurationToSendMessage() throws JsonProcessingException {
         // given
-        Map<String, String> headers = new HashMap<>();
-        headers.put("header-key", "header-value");
+        HttpHeaders headers = new HttpHeaders();
+        headers.put("Content-Type", List.of("application/json"));
+        headers.put("kafka_offset", List.of("0"));
+        headers.put("kafka_receivedMessageKey", List.of("string"));
+
         ExamplePayloadDto payload = new ExamplePayloadDto("foo", 5, FOO1);
+        String payloadAsString = new ObjectMapper().writeValueAsString(payload).replaceAll("\"", "\\\\\"");
+        String message = "{\n" //
+                + "    \"bindings\": {},\n"
+                + "    \"headers\": {" //
+                + "        \"kafka_offset\": 0,\n" //
+                + "        \"kafka_receivedMessageKey\": \"string\"\n" //
+                + "    },\n"
+                + "    \"payloadType\": \"io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto\",\n"
+                + "    \"payload\": \"" + payloadAsString + "\"\n"
+                + "}";
+
+        String topic = "example-topic";
+        String url = baseUrl() + "/springwolf/kafka/publish?topic=" + topic;
+        HttpEntity<String> request = new HttpEntity<>(message, headers);
 
         Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             // when
-            springwolfKafkaProducer.send("example-topic", "key", headers, payload);
+            ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 
             // then
-            verify(exampleConsumer, atLeastOnce()).receiveExamplePayload("key", 0, payload);
+            assertThat(response.getStatusCode().value()).isEqualTo(200);
+            assertThat(environment.getContainerByServiceName(APP_NAME).get().getLogs())
+                    .contains("Received new message in " + topic + ": " + payload);
         });
     }
 
     @Test
-    @Order(3)
+    @Disabled("Publishing AVRO is not supported")
     @DisabledIf(
             value = "withoutSchemaRegistry",
             disabledReason = "because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
-    void producerCanUseSpringwolfConfigurationToSendAvroMessage() {
+    void producerCanUseSpringwolfConfigurationToSendAvroMessage() throws JsonProcessingException {
         // given
-        ExamplePayloadAvroDto payload = new ExamplePayloadAvroDto("foo", 5L);
-        AnotherPayloadAvroDto anotherPayload = new AnotherPayloadAvroDto(ExampleEnum.FOO1, payload);
+        HttpHeaders headers = new HttpHeaders();
+        headers.put("Content-Type", List.of("application/json"));
 
-        // when
-        springwolfKafkaProducer.send("avro-topic", "key", Map.of(), anotherPayload);
+        String payloadAsString =
+                "{\"someEnum\": \"FOO1\", \"ExamplePayloadAvroDto\": {\"someString\": \"string\", \"someLong\": 0}}";
+        String message = "{\n" //
+                + "    \"bindings\": {},\n"
+                + "    \"headers\": {},\n"
+                + "    \"payloadType\": \"io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto\",\n"
+                + "    \"payload\": \"" + payloadAsString.replaceAll("\"", "\\\\\"") + "\"\n"
+                + "}";
 
-        // then
-        verify(avroConsumer, timeout(10000)).receiveExampleAvroPayload(anotherPayload);
-    }
+        String topic = "avro-topic";
+        String url = baseUrl() + "/springwolf/kafka/publish?topic=" + topic;
+        HttpEntity<String> request = new HttpEntity<>(message, headers);
 
-    @Test
-    @Order(4)
-    @DisabledIf(
-            value = "withoutSchemaRegistry",
-            disabledReason = "because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
-    void producerCanUseSpringwolfConfigurationToSendProtobufMessage() {
-        // given
-        ExamplePayloadProtobufDto.Message payload = ExamplePayloadProtobufDto.Message.newBuilder()
-                .setSomeString("foo")
-                .setSomeLong(5)
-                .setSomeEnum(ExamplePayloadProtobufDto.ExampleEnum.FOO1)
-                .build();
+        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
+            // when
+            ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 
-        // when
-        springwolfKafkaProducer.send("protobuf-topic", "key", Map.of(), payload);
-
-        // then
-        verify(protobufConsumer, timeout(10000)).receiveExampleProtobufPayload(payload);
+            // then
+            assertThat(response.getStatusCode().value()).isEqualTo(200);
+            assertThat(environment.getContainerByServiceName(APP_NAME).get().getLogs())
+                    .contains("Received new message in " + topic + ": " + payloadAsString);
+        });
     }
 
     boolean withoutSchemaRegistry() {

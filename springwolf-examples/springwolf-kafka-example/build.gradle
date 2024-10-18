@@ -70,16 +70,15 @@ dependencies {
 
     testImplementation libs.assertj.core
     testImplementation libs.awaitility
-    testImplementation libs.mockito.core
 
     testImplementation libs.spring.boot.test
+    testImplementation libs.spring.core
     testImplementation libs.spring.test
 
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter
 
-    testImplementation libs.spring.boot.starter.actuator
-    permitTestUnusedDeclared libs.spring.boot.starter.actuator
+    runtimeOnly libs.spring.boot.starter.actuator
 
     testAnnotationProcessor libs.lombok
     testCompileOnly libs.lombok
