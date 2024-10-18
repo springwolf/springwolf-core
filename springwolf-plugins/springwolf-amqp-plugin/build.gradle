@@ -1,12 +1,11 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'java-library'
 
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
-    id 'ca.cutterslade.analyze'
+    alias libs.plugins.spring.boot
+    alias libs.plugins.cutterslade.analyze
 }
-
-ext['junit-jupiter.version'] = "${junitJupiterVersion}"
 
 dependencies {
     api project(":springwolf-core")
@@ -14,38 +13,40 @@ dependencies {
     api project(":springwolf-bindings:springwolf-amqp-binding")
     permitUnusedDeclared project(":springwolf-bindings:springwolf-amqp-binding")
 
-    implementation "org.slf4j:slf4j-api:${slf4jApiVersion}"
+    implementation libs.slf4j.api
 
-    implementation "org.springframework:spring-context"
-    implementation "org.springframework:spring-core"
-    implementation "org.springframework:spring-web"
-    implementation "org.springframework.boot:spring-boot"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.springframework.amqp:spring-amqp"
-    implementation "org.springframework.amqp:spring-rabbit"
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation libs.spring.context
+    implementation libs.spring.core
+    implementation libs.spring.web
+    implementation libs.spring.boot
+    implementation libs.spring.boot.autoconfigure
+    implementation libs.spring.amqp
+    implementation libs.spring.rabbit
 
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
 
-    implementation "jakarta.annotation:jakarta.annotation-api:${annotationApiVersion}"
+    implementation libs.jakarta.annotation.api
 
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor libs.spring.boot.configuration.processor
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor libs.lombok
 
-    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    testImplementation libs.assertj.core
 
-    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
-    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    testImplementation libs.mockito.core
+    testImplementation libs.jackson.databind
 
-    testImplementation "org.springframework.boot:spring-boot-test"
-    testImplementation "org.springframework:spring-beans"
-    testImplementation "org.springframework:spring-test"
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.beans
+    testImplementation libs.spring.test
 
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor libs.lombok
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter'
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
 }
 
 jar {
