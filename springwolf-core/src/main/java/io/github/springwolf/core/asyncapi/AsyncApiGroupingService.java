@@ -22,17 +22,19 @@ public class AsyncApiGroupingService {
     // if empty, keep all
 
     // TODO: Context class/object
-    //    private final Map<String, Boolean> markedChannelIds;
     private final Set<String> markedOperationIds = new HashSet<>();
     private final Set<String> markedChannelIds = new HashSet<>();
+    //    private final Set<String> markedMessageIds = new HashSet<>();
     //    private final Map<String, Boolean> markedComponentIds;
 
     public AsyncAPI groupAPI(AsyncAPI fullAsyncApi, AsyncApiGroup asyncApiGroup) {
         Boolean markEverything = asyncApiGroup.getOperationActionsToKeep().isEmpty()
-                && asyncApiGroup.getChannelNamesToKeep().isEmpty();
+                && asyncApiGroup.getChannelNamesToKeep().isEmpty()
+                && asyncApiGroup.getMessageNamesToKeep().isEmpty();
 
         markOperations(fullAsyncApi, asyncApiGroup, markEverything);
         markChannels(fullAsyncApi, asyncApiGroup);
+        //        markMessages(fullAsyncApi, asyncApiGroup);
 
         AsyncAPI asyncAPI = AsyncAPI.builder()
                 .info(fullAsyncApi.getInfo())
@@ -41,7 +43,7 @@ public class AsyncApiGroupingService {
                 //                        .servers(docket.getServers())
                 .channels(filterChannels(fullAsyncApi))
                 .operations(filterOperations(fullAsyncApi))
-                //                        .components(components)
+                //                        .components(components) // TODO: for DaTi
                 .build();
 
         return asyncAPI;
