@@ -82,9 +82,15 @@ public class SpringwolfAutoConfiguration {
             ChannelsService channelsService,
             OperationsService operationsService,
             ComponentsService componentsService,
-            List<AsyncApiCustomizer> customizers) {
+            List<AsyncApiCustomizer> customizers,
+            SpringwolfConfigProperties springwolfConfigProperties) {
         return new DefaultAsyncApiService(
-                asyncApiDocketService, channelsService, operationsService, componentsService, customizers);
+                asyncApiDocketService,
+                channelsService,
+                operationsService,
+                componentsService,
+                customizers,
+                springwolfConfigProperties);
     }
 
     @Bean
