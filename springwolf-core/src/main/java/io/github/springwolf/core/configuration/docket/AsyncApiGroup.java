@@ -53,9 +53,15 @@ public class AsyncApiGroup {
         return false;
     }
 
-    public boolean matchesChannel(ChannelObject value) {
-        return channelNamesToKeep.stream()
-                .anyMatch(pattern -> pattern.matcher(value.getAddress()).matches());
+    public boolean matchesChannel(ChannelObject channelObject) {
+        // TODO: differentiate between messageId (wrong) and messageName (should be)
+
+        boolean messageMatch = messageNamesToKeep.stream()
+                .anyMatch(pattern -> channelObject.getMessages().keySet().stream()
+                        .anyMatch(messageId -> pattern.matcher(messageId).matches()));
+        boolean channelNameMatch = channelNamesToKeep.stream()
+                .anyMatch(pattern -> pattern.matcher(channelObject.getAddress()).matches());
+        return messageMatch || channelNameMatch;
     }
 
     class OperationMatcher {

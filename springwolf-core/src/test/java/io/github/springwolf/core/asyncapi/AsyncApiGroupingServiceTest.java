@@ -4,13 +4,16 @@ package io.github.springwolf.core.asyncapi;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -18,6 +21,42 @@ import java.util.regex.Pattern;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class AsyncApiGroupingServiceTest {
+
+    private final MessageObject message1 =
+            MessageObject.builder().messageId("messageId1").build();
+    private final MessageObject message2 =
+            MessageObject.builder().messageId("messageId2").build();
+    private final MessageObject message3 =
+            MessageObject.builder().messageId("messageId3").build();
+
+    private final ChannelObject channel1 = ChannelObject.builder()
+            .channelId("channelId1")
+            .address("channelId1") // TODO: change value
+            .messages(new HashMap<>(Map.of(
+                    message1.getMessageId(),
+                    MessageReference.toComponentMessage(message1.getMessageId()),
+                    message2.getMessageId(),
+                    MessageReference.toComponentMessage(message2.getMessageId()))))
+            .build();
+    private final ChannelObject channel2 = ChannelObject.builder()
+            .channelId("channelId2")
+            .address("channelId2") // TODO: change value)
+            .messages(new HashMap<>(
+                    Map.of(message3.getMessageId(), MessageReference.toComponentMessage(message3.getMessageId()))))
+            .build();
+
+    private final Operation sendOperation = Operation.builder()
+            .action(OperationAction.SEND)
+            .channel(ChannelReference.fromChannel(channel1))
+            .messages(List.of(
+                    MessageReference.toComponentMessage(message1.getMessageId()),
+                    MessageReference.toComponentMessage(message2.getMessageId())))
+            .build();
+    private final Operation receiveOperation = Operation.builder()
+            .action(OperationAction.RECEIVE)
+            .channel(ChannelReference.fromChannel(channel2))
+            .messages(List.of(MessageReference.toComponentMessage(message3.getMessageId())))
+            .build();
 
     @Test
     void shouldCreateNewAsyncApi() {
@@ -27,6 +66,7 @@ class AsyncApiGroupingServiceTest {
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of())
                 .channelNamesToKeep(List.of())
+                .messageNamesToKeep(List.of())
                 .build();
 
         // when
@@ -45,6 +85,7 @@ class AsyncApiGroupingServiceTest {
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of())
                 .channelNamesToKeep(List.of())
+                .messageNamesToKeep(List.of())
                 .build();
 
         // when
@@ -62,6 +103,7 @@ class AsyncApiGroupingServiceTest {
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of())
                 .channelNamesToKeep(List.of())
+                .messageNamesToKeep(List.of())
                 .build();
 
         // when
@@ -80,6 +122,7 @@ class AsyncApiGroupingServiceTest {
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of())
                 .channelNamesToKeep(List.of())
+                .messageNamesToKeep(List.of())
                 .build();
 
         // when
@@ -92,33 +135,22 @@ class AsyncApiGroupingServiceTest {
     @Test
     void shouldFilterOperationByAction() {
         // given
-        String channelId = "channelId";
-        ChannelObject channel = ChannelObject.builder().channelId(channelId).build();
-
-        Operation sendOperation = Operation.builder()
-                .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel(channel))
-                .build();
-        Operation receiveOperation = Operation.builder()
-                .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(channel))
-                .build();
-
         AsyncAPI full = AsyncAPI.builder()
-                .channels(Map.of(channel.getChannelId(), channel))
+                .channels(Map.of(channel1.getChannelId(), channel1))
                 .operations(Map.of("send", sendOperation, "receive", receiveOperation))
                 .build();
 
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of(OperationAction.SEND))
                 .channelNamesToKeep(List.of())
+                .messageNamesToKeep(List.of())
                 .build();
 
         // when
         AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
 
         // then
-        assertThat(grouped.getChannels()).isEqualTo(Map.of(channel.getChannelId(), channel));
+        assertThat(grouped.getChannels()).isEqualTo(Map.of(channel1.getChannelId(), channel1));
         assertThat(grouped.getOperations()).isEqualTo(Map.of("send", sendOperation));
     }
 
@@ -126,54 +158,28 @@ class AsyncApiGroupingServiceTest {
     // should get all copied for all empty filters
     void shouldGetAllOperationsWhenActionsIsEmpty() {
         // given
-        String channelId = "channelId";
-        ChannelObject channel = ChannelObject.builder().channelId(channelId).build();
-
-        Operation sendOperation = Operation.builder()
-                .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel(channel))
-                .build();
-        Operation receiveOperation = Operation.builder()
-                .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(channel))
-                .build();
-
         AsyncAPI full = AsyncAPI.builder()
-                .channels(Map.of(channel.getChannelId(), channel))
+                .channels(Map.of(channel1.getChannelId(), channel1))
                 .operations(Map.of("send", sendOperation, "receive", receiveOperation))
                 .build();
 
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of())
                 .channelNamesToKeep(List.of())
+                .messageNamesToKeep(List.of())
                 .build();
 
         // when
         AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
 
         // then
-        // TODO: special case: when nothing is marked, mark everything
         assertThat(grouped.getOperations()).isEqualTo(Map.of("send", sendOperation, "receive", receiveOperation));
-        assertThat(grouped.getChannels()).isEqualTo(Map.of(channel.getChannelId(), channel));
+        assertThat(grouped.getChannels()).isEqualTo(Map.of(channel1.getChannelId(), channel1));
     }
 
     @Test
     void shouldFilterOperationByActionAndTransitiveChannels() {
         // given
-        String channelId1 = "channelId1";
-        ChannelObject channel1 = ChannelObject.builder().channelId(channelId1).build();
-        String channelId2 = "channelId2";
-        ChannelObject channel2 = ChannelObject.builder().channelId(channelId2).build();
-
-        Operation sendOperation = Operation.builder()
-                .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel(channel1))
-                .build();
-        Operation receiveOperation = Operation.builder()
-                .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(channelId2))
-                .build();
-
         AsyncAPI full = AsyncAPI.builder()
                 .channels(Map.of(channel1.getChannelId(), channel1, channel2.getChannelId(), channel2))
                 .operations(Map.of("send", sendOperation, "receive", receiveOperation))
@@ -182,6 +188,7 @@ class AsyncApiGroupingServiceTest {
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of(OperationAction.SEND))
                 .channelNamesToKeep(List.of())
+                .messageNamesToKeep(List.of())
                 .build();
 
         // when
@@ -195,26 +202,6 @@ class AsyncApiGroupingServiceTest {
     @Test
     void shouldFilterOperationsByChannelName() {
         // given
-        String channelId1 = "channelId1";
-        ChannelObject channel1 = ChannelObject.builder()
-                .channelId(channelId1)
-                .address(channelId1)
-                .build();
-        String channelId2 = "channelId2";
-        ChannelObject channel2 = ChannelObject.builder()
-                .channelId(channelId2)
-                .address(channelId2)
-                .build();
-
-        Operation sendOperation = Operation.builder()
-                .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel(channel1))
-                .build();
-        Operation receiveOperation = Operation.builder()
-                .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(channelId2))
-                .build();
-
         AsyncAPI full = AsyncAPI.builder()
                 .channels(Map.of(channel1.getChannelId(), channel1, channel2.getChannelId(), channel2))
                 .operations(Map.of("send", sendOperation, "receive", receiveOperation))
@@ -223,6 +210,7 @@ class AsyncApiGroupingServiceTest {
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of())
                 .channelNamesToKeep(List.of(Pattern.compile(channel1.getChannelId())))
+                .messageNamesToKeep(List.of())
                 .build();
 
         // when
@@ -234,51 +222,29 @@ class AsyncApiGroupingServiceTest {
     }
 
     @Test
-    @Disabled
-    void testOrIsNotEnough() {
+    void shouldFilterOperationByMessageName() {
         // given
-        String channelId1 = "channelId1";
-        ChannelObject channel1 = ChannelObject.builder().channelId(channelId1).build();
-        String channelId2 = "channelId2";
-        ChannelObject channel2 = ChannelObject.builder().channelId(channelId2).build();
-
-        Operation sendOperation1 = Operation.builder()
-                .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel(channel1))
-                .build();
-        Operation receiveOperation1 = Operation.builder()
-                .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(channelId1))
-                .build();
-
-        Operation sendOperation2 = Operation.builder()
-                .action(OperationAction.SEND)
-                .channel(ChannelReference.fromChannel(channel2))
-                .build();
-        Operation receiveOperation2 = Operation.builder()
-                .action(OperationAction.RECEIVE)
-                .channel(ChannelReference.fromChannel(channelId2))
-                .build();
-
         AsyncAPI full = AsyncAPI.builder()
                 .channels(Map.of(channel1.getChannelId(), channel1, channel2.getChannelId(), channel2))
-                .operations(Map.of(
-                        "channel1_send", sendOperation1,
-                        "channel1_receive", receiveOperation1,
-                        "channel2_send", sendOperation2,
-                        "channel2_receive", receiveOperation2))
+                .operations(Map.of("send", sendOperation, "receive", receiveOperation))
+                .components(Components.builder()
+                        .messages(Map.of(message1.getMessageId(), message1, message2.getMessageId(), message2))
+                        .build())
                 .build();
 
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
-                .operationActionsToKeep(List.of(OperationAction.SEND))
-                .channelNamesToKeep(List.of(Pattern.compile(channel1.getChannelId())))
+                .operationActionsToKeep(List.of())
+                .channelNamesToKeep(List.of())
+                .messageNamesToKeep(List.of(Pattern.compile(message1.getMessageId())))
                 .build();
 
         // when
         AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
 
         // then
-        assertThat(grouped.getOperations()).isEqualTo(Map.of("send", sendOperation1));
+        assertThat(grouped.getOperations()).isEqualTo(Map.of("send", sendOperation));
+        channel1.getMessages().remove(message2.getMessageId());
         assertThat(grouped.getChannels()).isEqualTo(Map.of(channel1.getChannelId(), channel1));
+        assertThat(grouped.getComponents().getMessages()).isEqualTo(Map.of(message1.getMessageId(), message1));
     }
 }
