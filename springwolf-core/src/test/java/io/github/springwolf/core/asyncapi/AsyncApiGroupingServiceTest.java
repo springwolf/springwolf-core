@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -195,9 +196,15 @@ class AsyncApiGroupingServiceTest {
     void shouldFilterOperationsByChannelName() {
         // given
         String channelId1 = "channelId1";
-        ChannelObject channel1 = ChannelObject.builder().channelId(channelId1).build();
+        ChannelObject channel1 = ChannelObject.builder()
+                .channelId(channelId1)
+                .address(channelId1)
+                .build();
         String channelId2 = "channelId2";
-        ChannelObject channel2 = ChannelObject.builder().channelId(channelId2).build();
+        ChannelObject channel2 = ChannelObject.builder()
+                .channelId(channelId2)
+                .address(channelId2)
+                .build();
 
         Operation sendOperation = Operation.builder()
                 .action(OperationAction.SEND)
@@ -215,7 +222,7 @@ class AsyncApiGroupingServiceTest {
 
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of())
-                .channelNamesToKeep(List.of(channel1.getChannelId()))
+                .channelNamesToKeep(List.of(Pattern.compile(channel1.getChannelId())))
                 .build();
 
         // when
@@ -264,7 +271,7 @@ class AsyncApiGroupingServiceTest {
 
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .operationActionsToKeep(List.of(OperationAction.SEND))
-                .channelNamesToKeep(List.of(channel1.getChannelId()))
+                .channelNamesToKeep(List.of(Pattern.compile(channel1.getChannelId())))
                 .build();
 
         // when

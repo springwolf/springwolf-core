@@ -63,7 +63,7 @@ public class AsyncApiGroupingService {
         }
 
         fullAsyncApi.getChannels().entrySet().stream()
-                .filter(entry -> asyncApiGroup.getChannelNamesToKeep().contains(entry.getKey()))
+                .filter(entry -> asyncApiGroup.matchesChannel(entry.getValue()))
                 .forEach(entry -> {
                     markedChannelIds.add(entry.getKey());
 

@@ -14,11 +14,13 @@ import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -132,8 +134,39 @@ public class DefaultAsyncApiService implements AsyncApiService {
 
     private List<AsyncApiGroup> getAsyncApiGroups() {
         return springwolfConfigProperties.getDocket().getGroupConfigs().stream()
-                .map(group ->
-                        AsyncApiGroup.builder().groupName(group.getGroup()).build())
+                .map(DefaultAsyncApiService::toGroupAndValidate)
                 .toList();
+    }
+
+    private static AsyncApiGroup toGroupAndValidate(SpringwolfConfigProperties.ConfigDocket.Group group) {
+        // TODO: extract to own class
+        String groupName = group.getGroup();
+        List<Pattern> channelNameToMatch =
+                group.getChannelNameToMatch().stream().map(Pattern::compile).toList();
+        List<Pattern> messageNameToMatch =
+                group.getMessageNameToMatch().stream().map(Pattern::compile).toList();
+
+        if (!StringUtils.hasText(groupName)) {
+            // TODO: throw exception -> groupName must be set
+        }
+
+        int allItemCount = group.getActionToMatch().size()
+                + group.getChannelNameToMatch().size()
+                + group.getMessageNameToMatch().size();
+        if (allItemCount != 0
+                && group.getActionToMatch().size() != allItemCount
+                && channelNameToMatch.size() != allItemCount
+                && messageNameToMatch.size() != allItemCount) {
+            // TODO: throw exception -> only one of the list may be set
+        }
+
+        AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
+                .groupName(groupName)
+                .operationActionsToKeep(group.getActionToMatch())
+                .channelNamesToKeep(channelNameToMatch)
+                .messageNamesToKeep(messageNameToMatch)
+                .build();
+        log.debug("Found AsyncApiGroup: {}", asyncApiGroup);
+        return asyncApiGroup;
     }
 }

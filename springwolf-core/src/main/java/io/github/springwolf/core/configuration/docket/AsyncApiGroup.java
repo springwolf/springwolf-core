@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.configuration.docket;
 
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @AllArgsConstructor
 @Getter
@@ -15,7 +17,8 @@ public class AsyncApiGroup {
     private final String groupName;
 
     private final List<OperationAction> operationActionsToKeep;
-    private final List<String> channelNamesToKeep; // TODO: currently Ids, change to name
+    private final List<Pattern> channelNamesToKeep;
+    private final List<Pattern> messageNamesToKeep; // TODO: use this
 
     // Implementation Roadmap
     // first draft/beta:
@@ -48,6 +51,11 @@ public class AsyncApiGroup {
     public boolean matchOperation(OperationMatcher op) {
         //        return op.match(this);
         return false;
+    }
+
+    public boolean matchesChannel(ChannelObject value) {
+        return channelNamesToKeep.stream()
+                .anyMatch(pattern -> pattern.matcher(value.getAddress()).matches());
     }
 
     class OperationMatcher {
