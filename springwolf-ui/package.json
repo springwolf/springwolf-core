@@ -32,7 +32,7 @@
     "@angular-devkit/build-angular": "^18.2.8",
     "@angular/cli": "^18.2.8",
     "@angular/compiler-cli": "^18.2.8",
-    "@asyncapi/parser": "^3.2.2",
+    "@asyncapi/parser": "^3.3.0",
     "@testing-library/angular": "^17.3.1",
     "@types/jest": "^29.5.13",
     "@types/node": "^18.19.50",
