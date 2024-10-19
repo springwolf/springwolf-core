@@ -6,6 +6,7 @@ services:
     environment:
       BOOTSTRAP_SERVER: kafka:29092
       BOOTSTRAP_SERVER_SASL: kafka:29093
+      SPRING_KAFKA_CONSUMER_GROUP_ID: example-group-id-docker
       KAFKA_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
     ports:
       - "8080:8080"

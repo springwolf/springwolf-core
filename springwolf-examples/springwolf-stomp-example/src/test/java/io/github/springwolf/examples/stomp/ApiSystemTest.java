@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -49,7 +50,9 @@ public class ApiSystemTest {
             .withExposedService(APP_NAME, APP_PORT)
             .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
             .withEnv(ENV)
-            .withLogConsumer(APP_NAME, l -> log.debug("APP: {}", l.getUtf8StringWithoutLineEnding()));
+            .withLogConsumer(APP_NAME, l -> Arrays.stream(
+                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                    .forEach(m -> log.debug("APP: {}", m)));
 
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);

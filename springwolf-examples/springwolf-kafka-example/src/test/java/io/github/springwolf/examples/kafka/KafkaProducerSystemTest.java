@@ -19,6 +19,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -44,14 +45,17 @@ public class KafkaProducerSystemTest {
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
-            .withEnv("SPRING_KAFKA_CONSUMER_GROUP_ID", "KafkaProducerSystemTest")
             .withServices(APP_NAME, KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
             .withExposedService(APP_NAME, APP_PORT)
             .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
             .waitingFor(APP_NAME, Wait.forLogMessage(".*partitions assigned.*" + topic + ".*", 1))
-            .withLogConsumer(APP_NAME, l -> log.debug("APP: {}", l.getUtf8StringWithoutLineEnding()))
+            .withLogConsumer(APP_NAME, l -> Arrays.stream(
+                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                    .forEach(m -> log.debug("APP: {}", m)))
             .waitingFor(KAFKA_NAME, Wait.forLogMessage(".*Kafka Server started.*", 1))
-            .withLogConsumer(KAFKA_NAME, l -> log.debug("KAFKA: {}", l.getUtf8StringWithoutLineEnding()));
+            .withLogConsumer(KAFKA_NAME, l -> Arrays.stream(
+                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                    .forEach(m -> log.debug("KAFKA: {}", m)));
 
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);

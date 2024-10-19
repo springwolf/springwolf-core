@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -62,7 +63,9 @@ public class SqsProducerSystemTest {
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withEnv(ENV)
             .withServices(LOCALSTACK_NAME)
-            .withLogConsumer(LOCALSTACK_NAME, l -> log.debug("localstack: {}", l.getUtf8StringWithoutLineEnding()))
+            .withLogConsumer(LOCALSTACK_NAME, l -> Arrays.stream(
+                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                    .forEach(m -> log.debug("LOCALSTACK: {}", m)))
             .waitingFor(LOCALSTACK_NAME, Wait.forLogMessage(".*Ready.*", 1));
 
     @Test
