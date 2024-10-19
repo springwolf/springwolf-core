@@ -46,6 +46,7 @@ public class KafkaProducerSystemTest {
             .withServices(APP_NAME, KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
             .withExposedService(APP_NAME, APP_PORT)
             .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
+            .waitingFor(APP_NAME, Wait.forLogMessage(".*partitions assigned:.*\\[example-topic-0\\].*", 1))
             .withLogConsumer(APP_NAME, l -> log.debug("APP: {}", l.getUtf8StringWithoutLineEnding()))
             .waitingFor(KAFKA_NAME, Wait.forLogMessage(".*Kafka Server started.*", 1))
             .withLogConsumer(KAFKA_NAME, l -> log.debug("KAFKA: {}", l.getUtf8StringWithoutLineEnding()));
