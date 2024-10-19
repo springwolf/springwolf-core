@@ -37,16 +37,18 @@ public class KafkaProducerSystemTest {
     private static final String APP_NAME = "app";
     private static final int APP_PORT = 8080;
     private static final String KAFKA_NAME = "kafka";
+    private static final String topic = "example-topic";
 
     private static final boolean USE_SCHEMA_REGISTRY = false;
 
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
+            .withEnv("SPRING_KAFKA_GROUP_ID", "KafkaProducerSystemTest")
             .withServices(APP_NAME, KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
             .withExposedService(APP_NAME, APP_PORT)
             .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
-            .waitingFor(APP_NAME, Wait.forLogMessage(".*partitions assigned:.*\\[example-topic-0\\].*", 1))
+            .waitingFor(APP_NAME, Wait.forLogMessage(".*partitions assigned.*" + topic + ".*", 1))
             .withLogConsumer(APP_NAME, l -> log.debug("APP: {}", l.getUtf8StringWithoutLineEnding()))
             .waitingFor(KAFKA_NAME, Wait.forLogMessage(".*Kafka Server started.*", 1))
             .withLogConsumer(KAFKA_NAME, l -> log.debug("KAFKA: {}", l.getUtf8StringWithoutLineEnding()));
@@ -77,7 +79,6 @@ public class KafkaProducerSystemTest {
                 + "    \"payload\": \"" + payloadAsString + "\"\n"
                 + "}";
 
-        String topic = "example-topic";
         String url = baseUrl() + "/springwolf/kafka/publish?topic=" + topic;
         HttpEntity<String> request = new HttpEntity<>(message, headers);
 
