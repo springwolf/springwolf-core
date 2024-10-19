@@ -44,7 +44,7 @@ public class KafkaProducerSystemTest {
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
-            .withEnv("SPRING_KAFKA_GROUP_ID", "KafkaProducerSystemTest")
+            .withEnv("SPRING_KAFKA_CONSUMER_GROUP_ID", "KafkaProducerSystemTest")
             .withServices(APP_NAME, KAFKA_NAME, USE_SCHEMA_REGISTRY ? "kafka-schema-registry" : "")
             .withExposedService(APP_NAME, APP_PORT)
             .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
