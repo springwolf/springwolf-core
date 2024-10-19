@@ -1,18 +1,12 @@
 import org.owasp.dependencycheck.reporting.ReportGenerator
 
-buildscript {
-    // include dependency versions from explicit dependencies.gradle file
-    apply from: 'dependencies.gradle'
-}
-
 plugins {
-    id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
-    id 'ca.cutterslade.analyze' version '1.10.0'
-    id 'io.spring.dependency-management' version '1.1.6' apply false
-    id 'org.springframework.boot' version '3.3.4' apply false
-    id 'org.owasp.dependencycheck' version '10.0.4'
-    id 'com.diffplug.spotless' version '6.25.0'
-    id 'com.bmuschko.docker-spring-boot-application' version '9.4.0' apply false
+    alias libs.plugins.nexus.publish
+    alias libs.plugins.cutterslade.analyze
+    alias libs.plugins.spring.boot apply false
+    alias libs.plugins.owasp.dependencycheck
+    alias libs.plugins.spotless
+    alias libs.plugins.docker.spring.boot apply false
 }
 
 applyDotEnvFileAsGradleProperties()

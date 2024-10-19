@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,11 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         classes = {SpringwolfKafkaExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {
-            "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
             "springwolf.endpoint.actuator.enabled=true",
             "management.endpoints.web.exposure.include=springwolf"
         })
-@EmbeddedKafka
 public class ApiIntegrationWithActuatorIntegrationTest {
 
     @Autowired

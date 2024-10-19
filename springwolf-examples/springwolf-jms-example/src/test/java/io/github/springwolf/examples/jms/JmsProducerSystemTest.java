@@ -19,6 +19,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -53,7 +54,9 @@ public class JmsProducerSystemTest {
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(APP_JMS)
             .withExposedService(APP_JMS, 61616)
-            .withLogConsumer(APP_JMS, l -> log.debug("jms: {}", l.getUtf8StringWithoutLineEnding()))
+            .withLogConsumer(APP_JMS, l -> Arrays.stream(
+                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                    .forEach(m -> log.debug("JMS: {}", m)))
             .waitingFor(APP_JMS, Wait.forLogMessage(".*Artemis Console available.*", 1));
 
     @DynamicPropertySource
