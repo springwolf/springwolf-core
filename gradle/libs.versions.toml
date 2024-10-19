@@ -55,7 +55,7 @@ kotlin-build-tools-impl = { module = "org.jetbrains.kotlin:kotlin-build-tools-im
 kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:1.9.25"
 kotlin-scripting-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable", version.ref = "org-jetbrains-kotlin" }
 kotlin-serialization-compiler-plugin-embeddable = { module = "org.jetbrains.kotlin:kotlin-serialization-compiler-plugin-embeddable", version.ref = "org-jetbrains-kotlin" }
-kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.2"
+kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.3"
 ktfmt = "com.facebook:ktfmt:0.46"
 ktlint-cli = "com.pinterest.ktlint:ktlint-cli:1.1.1"
 log4j-core = "org.apache.logging.log4j:log4j-core:2.17.1"
