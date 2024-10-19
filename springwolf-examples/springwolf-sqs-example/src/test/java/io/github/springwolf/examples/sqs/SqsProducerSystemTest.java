@@ -15,13 +15,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 import static io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.mockito.Mockito.timeout;
@@ -46,22 +40,9 @@ public class SqsProducerSystemTest {
     @SpyBean
     ExampleConsumer exampleConsumer;
 
-    private static final Map<String, String> ENV = new HashMap<>();
-
-    static {
-        try (InputStream input = new FileInputStream(".env")) {
-            var properties = new Properties();
-            properties.load(input);
-            properties.forEach((key, value) -> ENV.put(String.valueOf(key), String.valueOf(value)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
-            .withEnv(ENV)
             .withServices(LOCALSTACK_NAME)
             .withLogConsumer(LOCALSTACK_NAME, l -> Arrays.stream(
                             l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
