@@ -10,11 +10,18 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,14 +34,19 @@ public class DefaultAsyncApiService implements AsyncApiService {
      * @param exception
      */
     private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {}
+    // -> master (internal)
+    // -> per group
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final ChannelsService channelsService;
     private final OperationsService operationsService;
     private final ComponentsService componentsService;
     private final List<AsyncApiCustomizer> customizers;
+    private final SpringwolfConfigProperties springwolfConfigProperties;
+    AsyncApiGroupingService groupingService = new AsyncApiGroupingService();
 
     private volatile AsyncAPIResult asyncAPIResult = null;
+    private volatile Map<String, AsyncAPI> asyncApiGroupMap = new HashMap<>();
 
     @Override
     public AsyncAPI getAsyncAPI() {
@@ -47,6 +59,11 @@ public class DefaultAsyncApiService implements AsyncApiService {
         } else {
             throw new RuntimeException("Error occured during creation of AsyncAPI", asyncAPIResult.exception);
         }
+    }
+
+    @Override
+    public Optional<AsyncAPI> getForGroupName(String groupName) {
+        return Optional.ofNullable(this.asyncApiGroupMap.get(groupName));
     }
 
     /**
@@ -85,11 +102,19 @@ public class DefaultAsyncApiService implements AsyncApiService {
                     .components(components)
                     .build();
 
+            //            master = asyncAPI;
+
             for (AsyncApiCustomizer customizer : customizers) {
                 log.debug("Starting customizer {}", customizer.getClass().getName());
                 customizer.customize(asyncAPI);
             }
             this.asyncAPIResult = new AsyncAPIResult(asyncAPI, null);
+
+            this.asyncApiGroupMap = getAsyncApiGroups().stream()
+                    .map(asyncApiGroup -> Map.entry(
+                            asyncApiGroup.getGroupName(),
+                            groupingService.groupAPI(asyncAPIResult.asyncAPI(), asyncApiGroup)))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             log.debug("AsyncAPI document was built");
         } catch (Throwable t) {
@@ -105,5 +130,43 @@ public class DefaultAsyncApiService implements AsyncApiService {
      */
     public boolean isNotInitialized() {
         return this.asyncAPIResult == null;
+    }
+
+    private List<AsyncApiGroup> getAsyncApiGroups() {
+        return springwolfConfigProperties.getDocket().getGroupConfigs().stream()
+                .map(DefaultAsyncApiService::toGroupAndValidate)
+                .toList();
+    }
+
+    private static AsyncApiGroup toGroupAndValidate(SpringwolfConfigProperties.ConfigDocket.Group group) {
+        // TODO: extract to own class
+        String groupName = group.getGroup();
+        List<Pattern> channelNameToMatch =
+                group.getChannelNameToMatch().stream().map(Pattern::compile).toList();
+        List<Pattern> messageNameToMatch =
+                group.getMessageNameToMatch().stream().map(Pattern::compile).toList();
+
+        if (!StringUtils.hasText(groupName)) {
+            // TODO: throw exception -> groupName must be set
+        }
+
+        int allItemCount = group.getActionToMatch().size()
+                + group.getChannelNameToMatch().size()
+                + group.getMessageNameToMatch().size();
+        if (allItemCount != 0
+                && group.getActionToMatch().size() != allItemCount
+                && channelNameToMatch.size() != allItemCount
+                && messageNameToMatch.size() != allItemCount) {
+            // TODO: throw exception -> only one of the list may be set
+        }
+
+        AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
+                .groupName(groupName)
+                .operationActionsToKeep(group.getActionToMatch())
+                .channelNamesToKeep(channelNameToMatch)
+                .messageNamesToKeep(messageNameToMatch)
+                .build();
+        log.debug("Found AsyncApiGroup: {}", asyncApiGroup);
+        return asyncApiGroup;
     }
 }
