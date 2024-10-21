@@ -21,7 +21,7 @@ protobuf = "4.28.2"
 protobuf-plugin =  "0.9.4"
 spotless = "6.25.0"
 spring = "3.3.4"
-spring-cloud = "2022.0.1"
+spring-cloud = "2023.0.3"
 spring-managed = "."
 
 [libraries]
