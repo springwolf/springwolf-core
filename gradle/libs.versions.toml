@@ -41,7 +41,7 @@ jakarta-annotation-api = "jakarta.annotation:jakarta.annotation-api:3.0.0"
 jakarta-jms-api = "jakarta.jms:jakarta.jms-api:3.1.0"
 jakarta-validation-api = "jakarta.validation:jakarta.validation-api:3.1.0"
 jakarta-xml-bind-api = "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2"
-jetbrains-annotations = "org.jetbrains:annotations:13.0"
+jetbrains-annotations = "org.jetbrains:annotations:26.0.1"
 json-schema-validator = "com.networknt:json-schema-validator:1.5.2"
 json-unit-assertj = "net.javacrumbs.json-unit:json-unit-assertj:3.4.1"
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "org-junit-jupiter" }
