@@ -52,7 +52,7 @@ kafka-clients = "org.apache.kafka:kafka-clients:3.7.1"
 kafka-streams = "org.apache.kafka:kafka-streams:3.8.0"
 kafka-protobuf-serializer = { module = "io.confluent:kafka-protobuf-serializer", version.ref = "io-confluent" }
 kotlin-build-tools-impl = { module = "org.jetbrains.kotlin:kotlin-build-tools-impl", version.ref = "org-jetbrains-kotlin" }
-kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:1.9.25"
+kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:2.0.21"
 kotlin-scripting-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable", version.ref = "org-jetbrains-kotlin" }
 kotlin-serialization-compiler-plugin-embeddable = { module = "org.jetbrains.kotlin:kotlin-serialization-compiler-plugin-embeddable", version.ref = "org-jetbrains-kotlin" }
 kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.3"
