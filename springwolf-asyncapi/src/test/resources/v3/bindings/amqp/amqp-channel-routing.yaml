@@ -10,4 +10,4 @@ channels:
           durable: true
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0

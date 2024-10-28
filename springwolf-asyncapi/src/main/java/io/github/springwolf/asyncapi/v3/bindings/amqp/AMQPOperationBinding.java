@@ -109,5 +109,5 @@ public class AMQPOperationBinding extends OperationBinding {
      */
     @Builder.Default
     @JsonProperty("bindingVersion")
-    private String bindingVersion = "0.3.0";
+    private String bindingVersion = "0.4.0";
 }

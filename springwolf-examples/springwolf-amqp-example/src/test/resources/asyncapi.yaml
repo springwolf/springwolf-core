@@ -26,6 +26,8 @@ channels:
         $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
     bindings:
       amqp:
+        channel:
+          $ref: "#/channels/queue-update"
         is: routingKey
         exchange:
           name: CRUD-topic-exchange-1
@@ -33,7 +35,8 @@ channels:
           durable: true
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        name: "#"
+        bindingVersion: 0.4.0
   CRUD-topic-exchange-2:
     address: CRUD-topic-exchange-2
     messages:
@@ -41,6 +44,8 @@ channels:
         $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
     bindings:
       amqp:
+        channel:
+          $ref: "#/channels/queue-read"
         is: routingKey
         exchange:
           name: CRUD-topic-exchange-2
@@ -48,7 +53,8 @@ channels:
           durable: true
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        name: "#"
+        bindingVersion: 0.4.0
   another-queue:
     address: another-queue
     messages:
@@ -63,7 +69,7 @@ channels:
           exclusive: false
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
   example-bindings-queue:
     address: example-bindings-queue
     bindings:
@@ -75,7 +81,7 @@ channels:
           exclusive: false
           autoDelete: true
           vhost: /
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
   example-queue:
     address: example-queue
     messages:
@@ -90,7 +96,7 @@ channels:
           exclusive: false
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
   example-topic-exchange:
     address: example-topic-exchange
     messages:
@@ -103,6 +109,8 @@ channels:
         $ref: "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
     bindings:
       amqp:
+        channel:
+          $ref: "#/channels/example-bindings-queue"
         is: routingKey
         exchange:
           name: example-topic-exchange
@@ -110,7 +118,8 @@ channels:
           durable: true
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        name: example-topic-routing-key
+        bindingVersion: 0.4.0
   multi-payload-queue:
     address: multi-payload-queue
     messages:
@@ -127,7 +136,7 @@ channels:
           exclusive: false
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
   queue-create:
     address: queue-create
     messages:
@@ -142,7 +151,7 @@ channels:
           exclusive: false
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
   queue-delete:
     address: queue-delete
     messages:
@@ -157,7 +166,7 @@ channels:
           exclusive: false
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
   queue-read:
     address: queue-read
     bindings:
@@ -169,7 +178,7 @@ channels:
           exclusive: false
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
   queue-update:
     address: queue-update
     bindings:
@@ -181,7 +190,7 @@ channels:
           exclusive: false
           autoDelete: false
           vhost: /
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
 components:
   schemas:
     HeadersNotDocumented:
@@ -302,7 +311,7 @@ components:
       title: AnotherPayloadDto
       bindings:
         amqp:
-          bindingVersion: 0.3.0
+          bindingVersion: 0.4.0
     io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
       headers:
         $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
@@ -314,7 +323,7 @@ components:
       title: ExamplePayloadDto
       bindings:
         amqp:
-          bindingVersion: 0.3.0
+          bindingVersion: 0.4.0
     io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto:
       headers:
         $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
@@ -326,7 +335,7 @@ components:
       title: GenericPayloadDtoExamplePayloadDto
       bindings:
         amqp:
-          bindingVersion: 0.3.0
+          bindingVersion: 0.4.0
     io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long:
       headers:
         $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
@@ -338,7 +347,7 @@ components:
       title: GenericPayloadDtoLong
       bindings:
         amqp:
-          bindingVersion: 0.3.0
+          bindingVersion: 0.4.0
     io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String:
       headers:
         $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
@@ -350,7 +359,7 @@ components:
       title: GenericPayloadDtoString
       bindings:
         amqp:
-          bindingVersion: 0.3.0
+          bindingVersion: 0.4.0
 operations:
   CRUD-topic-exchange-1_receive_bindingsUpdate:
     action: receive
@@ -359,7 +368,7 @@ operations:
     bindings:
       amqp:
         expiration: 0
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
     messages:
       - $ref: "#/channels/CRUD-topic-exchange-1/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
   CRUD-topic-exchange-2_receive_bindingsRead:
@@ -369,7 +378,7 @@ operations:
     bindings:
       amqp:
         expiration: 0
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
     messages:
       - $ref: "#/channels/CRUD-topic-exchange-2/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
   another-queue_receive_receiveAnotherPayload:
@@ -379,7 +388,7 @@ operations:
     bindings:
       amqp:
         expiration: 0
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
     messages:
       - $ref: "#/channels/another-queue/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
   example-queue_receive_receiveExamplePayload:
@@ -389,7 +398,7 @@ operations:
     bindings:
       amqp:
         expiration: 0
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
     messages:
       - $ref: "#/channels/example-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
   example-topic-exchange_example-topic-routing-key_receive_bindingsExample:
@@ -399,7 +408,7 @@ operations:
     bindings:
       amqp:
         expiration: 0
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
     messages:
       - $ref: "#/channels/example-topic-exchange_example-topic-routing-key/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
   example-topic-exchange_send_sendMessage:
@@ -418,7 +427,7 @@ operations:
         bcc: []
         timestamp: false
         ack: false
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
     messages:
       - $ref: "#/channels/example-topic-exchange/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
   multi-payload-queue_receive_bindingsBeanExample:
@@ -428,7 +437,7 @@ operations:
     bindings:
       amqp:
         expiration: 0
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
     messages:
       - $ref: "#/channels/multi-payload-queue/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
       - $ref: "#/channels/multi-payload-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
@@ -439,7 +448,7 @@ operations:
     bindings:
       amqp:
         expiration: 0
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
     messages:
       - $ref: "#/channels/queue-create/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String"
   queue-delete_receive_queuesToDeclareDelete:
@@ -449,6 +458,6 @@ operations:
     bindings:
       amqp:
         expiration: 0
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
     messages:
       - $ref: "#/channels/queue-delete/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long"

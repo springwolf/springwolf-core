@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelExchangePropert
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelQueueProperties;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
@@ -57,6 +58,8 @@ class RabbitQueueBeanScannerTest {
                                                 .exchange(AMQPChannelExchangeProperties.builder()
                                                         .name("exchange")
                                                         .build())
+                                                .channel(ChannelReference.fromChannel("destination"))
+                                                .name("routingKey")
                                                 .build()))
                                 .build(),
                         "destination",

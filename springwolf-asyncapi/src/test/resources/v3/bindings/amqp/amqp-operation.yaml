@@ -13,4 +13,4 @@ operations:
         bcc: ['external.audit']
         timestamp: true
         ack: false
-        bindingVersion: 0.3.0
+        bindingVersion: 0.4.0
