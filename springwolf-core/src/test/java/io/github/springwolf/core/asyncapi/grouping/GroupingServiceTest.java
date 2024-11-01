@@ -51,13 +51,13 @@ class GroupingServiceTest {
             .action(OperationAction.SEND)
             .channel(ChannelReference.fromChannel(channel1))
             .messages(List.of(
-                    MessageReference.toComponentMessage(message1.getMessageId()),
-                    MessageReference.toComponentMessage(message2.getMessageId())))
+                    MessageReference.toChannelMessage(channel1.getChannelId(), message1.getMessageId()),
+                    MessageReference.toChannelMessage(channel1.getChannelId(), message2.getMessageId())))
             .build();
     private final Operation receiveOperation = Operation.builder()
             .action(OperationAction.RECEIVE)
             .channel(ChannelReference.fromChannel(channel2))
-            .messages(List.of(MessageReference.toComponentMessage(message3.getMessageId())))
+            .messages(List.of(MessageReference.toChannelMessage(channel2.getChannelId(), message3.getMessageId())))
             .build();
 
     private final AsyncAPI simpleApi = AsyncAPI.builder()
@@ -309,7 +309,8 @@ class GroupingServiceTest {
                     .isEqualTo(sendOperation);
             assertThat(grouped.getOperations().get("send").getMessages())
                     .hasSize(1)
-                    .isEqualTo(List.of(MessageReference.toComponentMessage(message1.getMessageId())));
+                    .isEqualTo(List.of(
+                            MessageReference.toChannelMessage(channel1.getChannelId(), message1.getMessageId())));
 
             assertThat(grouped.getChannels().keySet()).isEqualTo(Set.of(channel1.getChannelId()));
             assertThat(grouped.getChannels().get(channel1.getChannelId()))

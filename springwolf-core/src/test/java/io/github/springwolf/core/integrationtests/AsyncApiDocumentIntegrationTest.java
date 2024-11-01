@@ -255,4 +255,51 @@ public class AsyncApiDocumentIntegrationTest {
                     .isEqualTo("\"DOG\"");
         }
     }
+
+    @Nested
+    @SpringBootTest(classes = ListenerApplication.class)
+    @MinimalIntegrationTestContextConfiguration
+    @TestPropertySource(
+            properties = {
+                "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.listener",
+                "springwolf.docket.group-configs[0].group=Foo Payload",
+                "springwolf.docket.group-configs[0].action-to-match=",
+                "springwolf.docket.group-configs[0].channel-name-to-match=",
+                "springwolf.docket.group-configs[0].message-name-to-match=.*Foo",
+            })
+    class GroupingTest {
+        @Autowired
+        private AsyncApiService asyncApiService;
+
+        @Test
+        void asyncListenerAnnotationIsFound() {
+            AsyncAPI asyncAPI = asyncApiService.getForGroupName("Foo Payload").get();
+            assertThat(asyncAPI).isNotNull();
+
+            assertThat(asyncAPI.getChannels().keySet()).containsExactlyInAnyOrder("listener-channel");
+            assertThat(asyncAPI.getChannels().get("listener-channel").getMessages())
+                    .containsOnlyKeys(
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+            assertThat(asyncAPI.getOperations())
+                    .containsOnlyKeys("listener-channel_receive_listen3", "listener-channel_receive_listen4");
+            assertThat(asyncAPI.getComponents().getMessages())
+                    .containsOnlyKeys(
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+            assertThat(asyncAPI.getComponents().getSchemas())
+                    .containsOnlyKeys(
+                            "HeadersNotDocumented",
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+
+            MessageObject fooMessage = (MessageObject) asyncAPI.getComponents()
+                    .getMessages()
+                    .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+            assertThat(fooMessage.getPayload().getMultiFormatSchema().getSchema())
+                    .isInstanceOf(MessageReference.class);
+            MessageReference fooRefMessage = (MessageReference)
+                    fooMessage.getPayload().getMultiFormatSchema().getSchema();
+            assertThat(fooRefMessage.getRef())
+                    .isEqualTo(
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+        }
+    }
 }

@@ -61,11 +61,9 @@ public class GroupingService {
         }
 
         fullAsyncApi.getChannels().values().stream()
-                .filter(channelObject ->
-                        // TODO: differentiate between messageId (wrong) and messageName (should be)
-                        asyncApiGroup.getChannelNamesToKeep().stream()
-                                .anyMatch(pattern -> pattern.matcher(channelObject.getAddress())
-                                        .matches()))
+                .filter(channelObject -> asyncApiGroup.getChannelNamesToKeep().stream()
+                        .anyMatch(pattern ->
+                                pattern.matcher(channelObject.getAddress()).matches()))
                 .forEach(entry -> {
                     markingContext.markedChannelIds.add(entry.getChannelId());
 
@@ -123,12 +121,9 @@ public class GroupingService {
 
         fullAsyncApi.getComponents().getMessages().values().stream()
                 .map((el) -> (MessageObject) el)
-                .filter(messageObject ->
-                        // TODO: differentiate between messageId (wrong) and messageName (should be)
-
-                        asyncApiGroup.getMessageNamesToKeep().stream()
-                                .anyMatch(pattern -> pattern.matcher(messageObject.getMessageId())
-                                        .matches()))
+                .filter(messageObject -> asyncApiGroup.getMessageNamesToKeep().stream()
+                        .anyMatch(pattern ->
+                                pattern.matcher(messageObject.getMessageId()).matches()))
                 .forEach(entry -> {
                     markingContext.markedComponentMessageIds.add(entry.getMessageId());
 
@@ -142,7 +137,7 @@ public class GroupingService {
 
                     fullAsyncApi.getOperations().entrySet().stream()
                             .filter(operationEntry -> operationEntry.getValue().getMessages().stream()
-                                    .anyMatch(message -> message.getRef().equals(messageReference)))
+                                    .anyMatch(message -> message.getRef().endsWith(entry.getMessageId())))
                             .forEach(operationEntry -> markingContext.markedOperationIds.add(operationEntry.getKey()));
                 });
     }
