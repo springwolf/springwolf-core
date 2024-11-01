@@ -10,6 +10,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
@@ -164,6 +165,7 @@ public class GroupingService {
                 .map(MessagePayload::getMultiFormatSchema)
                 .filter(Objects::nonNull)
                 .map(MultiFormatSchema::getSchema)
+                .filter(el -> el instanceof MessageReference) // skip inline schema
                 .map(el -> (MessageReference) el)
                 .map(MessageReference::getRef)
                 .map(ReferenceUtil::getLastSegment)
@@ -182,8 +184,11 @@ public class GroupingService {
 
                     if (schemaEntry.getValue().getProperties() != null) {
                         Set<String> nestedSchemas = schemaEntry.getValue().getProperties().values().stream()
-                                .filter(el -> el instanceof MessageReference)
-                                .map(el -> ((MessageReference) el).getRef())
+                                .filter(el -> el instanceof ComponentSchema)
+                                .map(el -> (ComponentSchema) el)
+                                .map(ComponentSchema::getReference)
+                                .filter(Objects::nonNull)
+                                .map(MessageReference::getRef)
                                 .map(ReferenceUtil::getLastSegment)
                                 .filter(schemaId -> !markingContext.markedComponentSchemaIds.contains(schemaId))
                                 .collect(Collectors.toSet());
