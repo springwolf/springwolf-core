@@ -37,5 +37,4 @@ class ReferenceUtilTest {
             assertThat(ReferenceUtil.getLastSegment(name)).isEqualTo(name);
         }
     }
-
 }

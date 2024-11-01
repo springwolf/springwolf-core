@@ -4,12 +4,17 @@ package io.github.springwolf.core.asyncapi.grouping;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -24,12 +29,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GroupingServiceTest {
 
-    private final MessageObject message1 =
-            MessageObject.builder().messageId("messageId1").build();
-    private final MessageObject message2 =
-            MessageObject.builder().messageId("messageId2").build();
-    private final MessageObject message3 =
-            MessageObject.builder().messageId("messageId3").build();
+    private final SchemaObject schema1 = SchemaObject.builder().title("Schema1").build();
+    private final SchemaObject schema2inlined =
+            SchemaObject.builder().title("Schema2").build();
+    private final SchemaObject schema3 = SchemaObject.builder().title("Schema3").build();
+    private final SchemaObject header1Schema =
+            SchemaObject.builder().title("Schema1Header").build();
+
+    private final MessageObject message1 = MessageObject.builder()
+            .messageId("messageId1")
+            .payload(MessagePayload.of(MultiFormatSchema.builder()
+                    .schema(MessageReference.toSchema(schema1.getTitle()))
+                    .build()))
+            .headers(MessageHeaders.of(MessageReference.toSchema(header1Schema.getTitle())))
+            .build();
+    private final MessageObject message2 = MessageObject.builder()
+            .messageId("messageId2")
+            .payload(MessagePayload.of(schema2inlined))
+            .build();
+    private final MessageObject message3 = MessageObject.builder()
+            .messageId("messageId3")
+            .payload(MessagePayload.of(MultiFormatSchema.builder()
+                    .schema(MessageReference.toSchema(schema3.getTitle()))
+                    .build()))
+            .build();
 
     private final ChannelObject channel1 = ChannelObject.builder()
             .channelId("channelId1")
@@ -65,6 +88,7 @@ class GroupingServiceTest {
             .operations(Map.of("receive", receiveOperation))
             .components(Components.builder()
                     .messages(Map.of(message3.getMessageId(), message3))
+                    .schemas(Map.of(schema3.getTitle(), schema3))
                     .build())
             .build();
     private final AsyncAPI fullApi = AsyncAPI.builder()
@@ -78,6 +102,10 @@ class GroupingServiceTest {
                             message2,
                             message3.getMessageId(),
                             message3))
+                    .schemas(Map.of(
+                            schema1.getTitle(), schema1,
+                            header1Schema.getTitle(), header1Schema,
+                            schema3.getTitle(), schema3))
                     .build())
             .build();
 
@@ -140,6 +168,20 @@ class GroupingServiceTest {
     }
 
     @Test
+    void shouldUseIdenticalServers() {
+        // given
+        AsyncAPI full = AsyncAPI.builder()
+                .servers(Map.of("server", Server.builder().build()))
+                .build();
+
+        // when
+        AsyncAPI grouped = groupingService.groupAPI(full, noFilterGroup);
+
+        // then
+        assertThat(grouped.getServers()).isEqualTo(full.getServers());
+    }
+
+    @Test
     void shouldCopyEverythingForEmptyFilter() {
         // when
         AsyncAPI grouped = groupingService.groupAPI(fullApi, noFilterGroup);
@@ -166,6 +208,7 @@ class GroupingServiceTest {
             assertThat(grouped.getChannels()).isEqualTo(Map.of(channel2.getChannelId(), channel2));
             assertThat(grouped.getOperations()).isEqualTo(Map.of("receive", receiveOperation));
             assertThat(grouped.getComponents().getMessages()).isEqualTo(Map.of(message3.getMessageId(), message3));
+            assertThat(grouped.getComponents().getSchemas()).isEqualTo(Map.of(schema3.getTitle(), schema3));
         }
 
         @Test
@@ -187,6 +230,8 @@ class GroupingServiceTest {
                     .isEqualTo(Map.of(
                             message1.getMessageId(), message1,
                             message2.getMessageId(), message2));
+            assertThat(grouped.getComponents().getSchemas())
+                    .isEqualTo(Map.of(schema1.getTitle(), schema1, header1Schema.getTitle(), header1Schema));
         }
     }
 
@@ -209,6 +254,7 @@ class GroupingServiceTest {
             assertThat(grouped.getChannels()).isEmpty();
             assertThat(grouped.getOperations()).isEmpty();
             assertThat(grouped.getComponents().getMessages()).isEmpty();
+            assertThat(grouped.getComponents().getSchemas()).isEmpty();
         }
 
         @Test
@@ -227,6 +273,7 @@ class GroupingServiceTest {
             assertThat(grouped.getChannels()).isEqualTo(Map.of(channel2.getChannelId(), channel2));
             assertThat(grouped.getOperations()).isEqualTo(Map.of("receive", receiveOperation));
             assertThat(grouped.getComponents().getMessages()).isEqualTo(Map.of(message3.getMessageId(), message3));
+            assertThat(grouped.getComponents().getSchemas()).isEqualTo(Map.of(schema3.getTitle(), schema3));
         }
 
         @Test
@@ -248,6 +295,8 @@ class GroupingServiceTest {
                     .isEqualTo(Map.of(
                             message1.getMessageId(), message1,
                             message2.getMessageId(), message2));
+            assertThat(grouped.getComponents().getSchemas())
+                    .isEqualTo(Map.of(schema1.getTitle(), schema1, header1Schema.getTitle(), header1Schema));
         }
     }
 
@@ -269,6 +318,7 @@ class GroupingServiceTest {
             assertThat(grouped.getChannels()).isEmpty();
             assertThat(grouped.getOperations()).isEmpty();
             assertThat(grouped.getComponents().getMessages()).isEmpty();
+            assertThat(grouped.getComponents().getSchemas()).isEmpty();
         }
 
         @Test
@@ -287,6 +337,7 @@ class GroupingServiceTest {
             assertThat(grouped.getChannels()).isEqualTo(Map.of(channel2.getChannelId(), channel2));
             assertThat(grouped.getOperations()).isEqualTo(Map.of("receive", receiveOperation));
             assertThat(grouped.getComponents().getMessages()).isEqualTo(Map.of(message3.getMessageId(), message3));
+            assertThat(grouped.getComponents().getSchemas()).isEqualTo(Map.of(schema3.getTitle(), schema3));
         }
 
         @Test
@@ -323,6 +374,9 @@ class GroupingServiceTest {
                             message1.getMessageId(), MessageReference.toComponentMessage(message1.getMessageId())));
 
             assertThat(grouped.getComponents().getMessages()).isEqualTo(Map.of(message1.getMessageId(), message1));
+
+            assertThat(grouped.getComponents().getSchemas())
+                    .isEqualTo(Map.of(schema1.getTitle(), schema1, header1Schema.getTitle(), header1Schema));
         }
     }
 }
