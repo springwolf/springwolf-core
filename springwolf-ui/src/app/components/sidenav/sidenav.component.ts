@@ -119,7 +119,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
   private splitForWordBreaking = (text: string) => {
     // Split by set of characters, but keep separators
-    return text.split(/(?<=[.,-_/])/);
+    return text.split(/(?<=[.,_/\-])/);
   };
 
   ngAfterViewInit() {
