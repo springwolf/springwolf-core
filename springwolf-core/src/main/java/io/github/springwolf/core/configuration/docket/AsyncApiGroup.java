@@ -5,20 +5,30 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
 @AllArgsConstructor
 @Getter
 @Builder
+@EqualsAndHashCode
+@ToString
 public class AsyncApiGroup {
     private final String groupName;
 
-    private final List<OperationAction> operationActionsToKeep;
-    private final List<Pattern> channelNamesToKeep;
-    private final List<Pattern> messageNamesToKeep; // TODO: use this
+    @Builder.Default
+    private final List<OperationAction> operationActionsToKeep = Collections.emptyList();
+
+    @Builder.Default
+    private final List<Pattern> channelNamesToKeep = Collections.emptyList();
+
+    @Builder.Default
+    private final List<Pattern> messageNamesToKeep = Collections.emptyList(); // TODO: use this
 
     // Implementation Roadmap
     // first draft/beta:

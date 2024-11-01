@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi;
+package io.github.springwolf.core.asyncapi.grouping;
 
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class AsyncApiGroupingServiceTest {
+class GroupingServiceTest {
 
     private final MessageObject message1 =
             MessageObject.builder().messageId("messageId1").build();
@@ -70,7 +70,7 @@ class AsyncApiGroupingServiceTest {
                 .build();
 
         // when
-        AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
+        AsyncAPI grouped = new GroupingService().groupAPI(full, asyncApiGroup);
 
         // then
         assertThat(grouped).isNotSameAs(full);
@@ -89,7 +89,7 @@ class AsyncApiGroupingServiceTest {
                 .build();
 
         // when
-        AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
+        AsyncAPI grouped = new GroupingService().groupAPI(full, asyncApiGroup);
 
         // then
         assertThat(grouped.getInfo()).isSameAs(info);
@@ -107,7 +107,7 @@ class AsyncApiGroupingServiceTest {
                 .build();
 
         // when
-        AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
+        AsyncAPI grouped = new GroupingService().groupAPI(full, asyncApiGroup);
 
         // then
         assertThat(grouped.getId()).isEqualTo("id");
@@ -126,7 +126,7 @@ class AsyncApiGroupingServiceTest {
                 .build();
 
         // when
-        AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
+        AsyncAPI grouped = new GroupingService().groupAPI(full, asyncApiGroup);
 
         // then
         assertThat(grouped.getDefaultContentType()).isEqualTo("application/json");
@@ -147,7 +147,7 @@ class AsyncApiGroupingServiceTest {
                 .build();
 
         // when
-        AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
+        AsyncAPI grouped = new GroupingService().groupAPI(full, asyncApiGroup);
 
         // then
         assertThat(grouped.getChannels()).isEqualTo(Map.of(channel1.getChannelId(), channel1));
@@ -170,7 +170,7 @@ class AsyncApiGroupingServiceTest {
                 .build();
 
         // when
-        AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
+        AsyncAPI grouped = new GroupingService().groupAPI(full, asyncApiGroup);
 
         // then
         assertThat(grouped.getOperations()).isEqualTo(Map.of("send", sendOperation, "receive", receiveOperation));
@@ -192,7 +192,7 @@ class AsyncApiGroupingServiceTest {
                 .build();
 
         // when
-        AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
+        AsyncAPI grouped = new GroupingService().groupAPI(full, asyncApiGroup);
 
         // then
         assertThat(grouped.getChannels()).isEqualTo(Map.of(channel1.getChannelId(), channel1));
@@ -214,7 +214,7 @@ class AsyncApiGroupingServiceTest {
                 .build();
 
         // when
-        AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
+        AsyncAPI grouped = new GroupingService().groupAPI(full, asyncApiGroup);
 
         // then
         assertThat(grouped.getOperations()).isEqualTo(Map.of("send", sendOperation));
@@ -239,7 +239,7 @@ class AsyncApiGroupingServiceTest {
                 .build();
 
         // when
-        AsyncAPI grouped = new AsyncApiGroupingService().groupAPI(full, asyncApiGroup);
+        AsyncAPI grouped = new GroupingService().groupAPI(full, asyncApiGroup);
 
         // then
         assertThat(grouped.getOperations()).isEqualTo(Map.of("send", sendOperation));

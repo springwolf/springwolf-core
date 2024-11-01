@@ -71,7 +71,7 @@ public class InitModeIntegrationTest {
                 SpringApplication.run(TestApplication.class, args);
                 fail("Exception expected, but not raised.");
             } catch (Exception ex) {
-                assertThat(ex.getMessage()).contains("Error occured during creation of AsyncAPI");
+                assertThat(ex.getMessage()).contains("Error occurred during creation of AsyncAPI");
             }
         }
     }

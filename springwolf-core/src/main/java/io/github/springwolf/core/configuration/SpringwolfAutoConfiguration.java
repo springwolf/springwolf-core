@@ -22,6 +22,8 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.Examp
 import io.github.springwolf.core.asyncapi.components.postprocessors.AvroSchemaPostProcessor;
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
+import io.github.springwolf.core.asyncapi.grouping.GroupingService;
 import io.github.springwolf.core.asyncapi.operations.DefaultOperationsService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
@@ -77,20 +79,33 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public GroupingService groupingService() {
+        return new GroupingService();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AsyncApiGroupService asyncApiGroupService(
+            SpringwolfConfigProperties springwolfConfigProperties, GroupingService groupingService) {
+        return new AsyncApiGroupService(springwolfConfigProperties, groupingService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public AsyncApiService asyncApiService(
             AsyncApiDocketService asyncApiDocketService,
             ChannelsService channelsService,
             OperationsService operationsService,
             ComponentsService componentsService,
             List<AsyncApiCustomizer> customizers,
-            SpringwolfConfigProperties springwolfConfigProperties) {
+            AsyncApiGroupService groupService) {
         return new DefaultAsyncApiService(
                 asyncApiDocketService,
                 channelsService,
                 operationsService,
                 componentsService,
                 customizers,
-                springwolfConfigProperties);
+                groupService);
     }
 
     @Bean
