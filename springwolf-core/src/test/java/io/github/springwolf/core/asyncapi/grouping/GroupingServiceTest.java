@@ -120,7 +120,11 @@ class GroupingServiceTest {
     @Test
     void shouldCreateNewAsyncApi() {
         // given
-        AsyncAPI full = AsyncAPI.builder().build();
+        AsyncAPI full = AsyncAPI.builder()
+                .channels(simpleApi.getChannels())
+                .operations(simpleApi.getOperations())
+                .components(simpleApi.getComponents())
+                .build();
 
         // when
         AsyncAPI grouped = groupingService.groupAPI(full, noFilterGroup);
@@ -133,7 +137,12 @@ class GroupingServiceTest {
     void shouldUseIdenticalInfo() {
         // given
         Info info = Info.builder().title("title").build();
-        AsyncAPI full = AsyncAPI.builder().info(info).build();
+        AsyncAPI full = AsyncAPI.builder()
+                .info(info)
+                .channels(simpleApi.getChannels())
+                .operations(simpleApi.getOperations())
+                .components(simpleApi.getComponents())
+                .build();
 
         // when
         AsyncAPI grouped = groupingService.groupAPI(full, noFilterGroup);
@@ -145,7 +154,12 @@ class GroupingServiceTest {
     @Test
     void shouldUseIdenticalId() {
         // given
-        AsyncAPI full = AsyncAPI.builder().id("id").build();
+        AsyncAPI full = AsyncAPI.builder()
+                .id("id")
+                .channels(simpleApi.getChannels())
+                .operations(simpleApi.getOperations())
+                .components(simpleApi.getComponents())
+                .build();
 
         // when
         AsyncAPI grouped = groupingService.groupAPI(full, noFilterGroup);
@@ -157,8 +171,12 @@ class GroupingServiceTest {
     @Test
     void shouldUseIdenticalDefaultContentType() {
         // given
-        AsyncAPI full =
-                AsyncAPI.builder().defaultContentType("application/json").build();
+        AsyncAPI full = AsyncAPI.builder()
+                .defaultContentType("application/json")
+                .channels(simpleApi.getChannels())
+                .operations(simpleApi.getOperations())
+                .components(simpleApi.getComponents())
+                .build();
 
         // when
         AsyncAPI grouped = groupingService.groupAPI(full, noFilterGroup);
@@ -172,6 +190,9 @@ class GroupingServiceTest {
         // given
         AsyncAPI full = AsyncAPI.builder()
                 .servers(Map.of("server", Server.builder().build()))
+                .channels(simpleApi.getChannels())
+                .operations(simpleApi.getOperations())
+                .components(simpleApi.getComponents())
                 .build();
 
         // when

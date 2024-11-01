@@ -29,42 +29,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class GroupingService {
 
-    @RequiredArgsConstructor
-    private static class MarkingContext {
-        public final boolean keepEverything;
-
-        public final Set<String> markedOperationIds = new HashSet<>();
-        public final Set<String> markedChannelIds = new HashSet<>();
-        public final Set<String> markedComponentMessageIds = new HashSet<>();
-        private final Set<String> markedComponentSchemaIds = new HashSet<>();
-
-        public boolean isChannelMarked(String channelId) {
-            return keepEverything || markedChannelIds.contains(channelId);
-        }
-
-        public boolean isOperationMarked(String operationId) {
-            return keepEverything || markedOperationIds.contains(operationId);
-        }
-
-        public boolean isComponentMessageMarked(String messageId) {
-            return keepEverything || markedComponentMessageIds.contains(messageId);
-        }
-
-        public boolean isComponentSchemaMarked(String schemaId) {
-            return keepEverything || markedComponentSchemaIds.contains(schemaId);
-        }
-    }
-
     public AsyncAPI groupAPI(AsyncAPI fullAsyncApi, AsyncApiGroup asyncApiGroup) {
-        boolean keepEverything = asyncApiGroup.getOperationActionsToKeep().isEmpty()
-                && asyncApiGroup.getChannelNamesToKeep().isEmpty()
-                && asyncApiGroup.getMessageNamesToKeep().isEmpty();
-        MarkingContext markingContext = new MarkingContext(keepEverything);
+        MarkingContext markingContext = MarkingContext.initFor(asyncApiGroup);
 
         markOperations(fullAsyncApi, asyncApiGroup, markingContext);
         markChannels(fullAsyncApi, asyncApiGroup, markingContext);
         markMessages(fullAsyncApi, asyncApiGroup, markingContext);
-        markSchemasInMessageIds(fullAsyncApi, markingContext, markingContext.markedComponentMessageIds);
+
+        markSchemasInMessageIds(fullAsyncApi, markingContext);
 
         return AsyncAPI.builder()
                 .info(fullAsyncApi.getInfo())
@@ -78,20 +50,19 @@ public class GroupingService {
     }
 
     private void markChannels(AsyncAPI fullAsyncApi, AsyncApiGroup asyncApiGroup, MarkingContext markingContext) {
-        if (fullAsyncApi.getChannels() == null
-                || asyncApiGroup.getChannelNamesToKeep().isEmpty()) {
+        if (asyncApiGroup.getChannelNamesToKeep().isEmpty()) {
             return;
         }
 
         fullAsyncApi.getChannels().values().stream()
                 .filter(asyncApiGroup::isMatch)
-                .forEach(entry -> {
-                    markingContext.markedChannelIds.add(entry.getChannelId());
+                .forEach(channel -> {
+                    markingContext.markedChannelIds.add(channel.getChannelId());
 
-                    markOperationsInChannel(fullAsyncApi, markingContext, entry);
+                    markOperationsInChannel(fullAsyncApi, markingContext, channel);
 
                     markingContext.markedComponentMessageIds.addAll(
-                            entry.getMessages().keySet());
+                            channel.getMessages().keySet());
                 });
     }
 
@@ -110,19 +81,18 @@ public class GroupingService {
     }
 
     private void markOperations(AsyncAPI fullAsyncApi, AsyncApiGroup asyncApiGroup, MarkingContext markingContext) {
-        if (fullAsyncApi.getOperations() == null
-                || asyncApiGroup.getOperationActionsToKeep().isEmpty()) {
+        if (asyncApiGroup.getOperationActionsToKeep().isEmpty()) {
             return;
         }
 
         fullAsyncApi.getOperations().entrySet().stream()
-                .filter(entry -> asyncApiGroup.isMatch(entry.getValue()))
-                .forEach(entry -> {
-                    markingContext.markedOperationIds.add(entry.getKey());
+                .filter(operationEntry -> asyncApiGroup.isMatch(operationEntry.getValue()))
+                .forEach(operationEntry -> {
+                    markingContext.markedOperationIds.add(operationEntry.getKey());
 
-                    markChannelsForOperation(fullAsyncApi, markingContext, entry.getValue());
+                    markChannelsForOperation(fullAsyncApi, markingContext, operationEntry.getValue());
 
-                    Set<String> messageIds = entry.getValue().getMessages().stream()
+                    Set<String> messageIds = operationEntry.getValue().getMessages().stream()
                             .map(MessageReference::getRef)
                             .map(ReferenceUtil::getLastSegment)
                             .collect(Collectors.toSet());
@@ -141,34 +111,32 @@ public class GroupingService {
     }
 
     private void markMessages(AsyncAPI fullAsyncApi, AsyncApiGroup asyncApiGroup, MarkingContext markingContext) {
-        if (fullAsyncApi.getComponents() == null
-                || fullAsyncApi.getComponents().getMessages() == null
-                || asyncApiGroup.getMessageNamesToKeep().isEmpty()) {
+        if (asyncApiGroup.getMessageNamesToKeep().isEmpty()) {
             return;
         }
 
         fullAsyncApi.getComponents().getMessages().values().stream()
-                .map((el) -> (MessageObject) el)
+                .map((message) -> (MessageObject) message)
                 .filter(asyncApiGroup::isMatch)
-                .forEach(entry -> {
-                    markingContext.markedComponentMessageIds.add(entry.getMessageId());
+                .forEach(message -> {
+                    markingContext.markedComponentMessageIds.add(message.getMessageId());
 
-                    String messageReference = MessageReference.toComponentMessage(entry.getMessageId())
+                    String messageReference = MessageReference.toComponentMessage(message.getMessageId())
                             .getRef();
                     fullAsyncApi.getChannels().values().stream()
                             .filter(channelEntry -> matchesMessageForChannel(channelEntry, messageReference))
                             .forEach(channelEntry -> markingContext.markedChannelIds.add(channelEntry.getChannelId()));
 
                     fullAsyncApi.getOperations().entrySet().stream()
-                            .filter(operationEntry -> matchesMessageForOperation(entry, operationEntry))
+                            .filter(operationEntry -> matchesMessageForOperation(message, operationEntry))
                             .forEach(operationEntry -> markingContext.markedOperationIds.add(operationEntry.getKey()));
                 });
     }
 
     private boolean matchesMessageForChannel(ChannelObject channel, String messageReference) {
         return channel.getMessages().values().stream()
-                .map((el) -> (MessageReference) el)
-                .anyMatch(message -> message.getRef().equals(messageReference));
+                .map((messageRef) -> (MessageReference) messageRef)
+                .anyMatch(messageRef -> messageRef.getRef().equals(messageReference));
     }
 
     private boolean matchesMessageForOperation(MessageObject message, Map.Entry<String, Operation> operationEntry) {
@@ -176,23 +144,18 @@ public class GroupingService {
                 .anyMatch(operationMessage -> operationMessage.getRef().endsWith(message.getMessageId()));
     }
 
-    private void markSchemasInMessageIds(AsyncAPI fullAsyncApi, MarkingContext markingContext, Set<String> messageIds) {
-        if (fullAsyncApi.getComponents() == null || fullAsyncApi.getComponents().getMessages() == null) {
-            return;
-        }
-
+    private void markSchemasInMessageIds(AsyncAPI fullAsyncApi, MarkingContext markingContext) {
         Set<String> schemaIds = new HashSet<>();
 
         List<MessageObject> messages = fullAsyncApi.getComponents().getMessages().values().stream()
-                .map((el) -> (MessageObject) el)
-                .filter(messageEntry -> messageIds.contains(messageEntry.getMessageId()))
+                .map((message) -> (MessageObject) message)
+                .filter(message -> markingContext.markedComponentMessageIds.contains(message.getMessageId()))
                 .toList();
 
         messages.stream()
                 .map(MessageObject::getHeaders)
                 .filter(Objects::nonNull)
                 .map(MessageHeaders::getReference)
-                .filter(Objects::nonNull)
                 .map(MessageReference::getRef)
                 .map(ReferenceUtil::getLastSegment)
                 .forEach(schemaIds::add);
@@ -210,19 +173,15 @@ public class GroupingService {
     }
 
     private void markSchemas(AsyncAPI fullAsyncApi, MarkingContext markingContext, Set<String> schemaIds) {
-        if (fullAsyncApi.getComponents() == null || fullAsyncApi.getComponents().getSchemas() == null) {
-            return;
-        }
-
         schemaIds.stream()
                 .map(schemaId -> Pair.of(
                         schemaId, fullAsyncApi.getComponents().getSchemas().getOrDefault(schemaId, null)))
                 .filter(entry -> entry.getValue() != null)
-                .forEach(schemaObject -> {
-                    markingContext.markedComponentSchemaIds.add(schemaObject.getKey());
+                .forEach(schemaEntry -> {
+                    markingContext.markedComponentSchemaIds.add(schemaEntry.getKey());
 
-                    if (schemaObject.getValue().getProperties() != null) {
-                        Set<String> nestedSchemas = schemaObject.getValue().getProperties().values().stream()
+                    if (schemaEntry.getValue().getProperties() != null) {
+                        Set<String> nestedSchemas = schemaEntry.getValue().getProperties().values().stream()
                                 .filter(el -> el instanceof MessageReference)
                                 .map(el -> ((MessageReference) el).getRef())
                                 .map(ReferenceUtil::getLastSegment)
@@ -236,10 +195,6 @@ public class GroupingService {
     }
 
     private Map<String, ChannelObject> filterChannels(AsyncAPI fullAsyncApi, MarkingContext markingContext) {
-        if (fullAsyncApi.getChannels() == null) {
-            return null;
-        }
-
         return fullAsyncApi.getChannels().values().stream()
                 .filter(channel -> markingContext.isChannelMarked(channel.getChannelId()))
                 .map(channel -> {
@@ -255,10 +210,6 @@ public class GroupingService {
     }
 
     private Map<String, Operation> filterOperations(AsyncAPI fullAsyncApi, MarkingContext markingContext) {
-        if (fullAsyncApi.getOperations() == null) {
-            return null;
-        }
-
         return fullAsyncApi.getOperations().entrySet().stream()
                 .filter(entry -> markingContext.isOperationMarked(entry.getKey()))
                 .map(entry -> {
@@ -276,33 +227,47 @@ public class GroupingService {
     }
 
     private Components filterComponents(AsyncAPI fullAsyncApi, MarkingContext markingContext) {
-        if (fullAsyncApi.getComponents() == null) {
-            return null;
-        }
-
-        return Components.builder()
-                .messages(filterComponentMessages(fullAsyncApi.getComponents(), markingContext))
-                .schemas(filterComponentSchemas(fullAsyncApi.getComponents(), markingContext))
-                .build();
-    }
-
-    private Map<String, Message> filterComponentMessages(Components components, MarkingContext markingContext) {
-        if (components.getMessages() == null) {
-            return null;
-        }
-
-        return components.getMessages().entrySet().stream()
+        Map<String, Message> messages = fullAsyncApi.getComponents().getMessages().entrySet().stream()
                 .filter(entry -> markingContext.isComponentMessageMarked(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
 
-    private Map<String, SchemaObject> filterComponentSchemas(Components components, MarkingContext markingContext) {
-        if (components.getSchemas() == null) {
-            return null;
-        }
-
-        return components.getSchemas().entrySet().stream()
+        Map<String, SchemaObject> schemas = fullAsyncApi.getComponents().getSchemas().entrySet().stream()
                 .filter(entry -> markingContext.isComponentSchemaMarked(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        return Components.builder().messages(messages).schemas(schemas).build();
+    }
+
+    @RequiredArgsConstructor
+    private static class MarkingContext {
+        private final boolean keepEverything;
+
+        private final Set<String> markedOperationIds = new HashSet<>();
+        private final Set<String> markedChannelIds = new HashSet<>();
+        private final Set<String> markedComponentMessageIds = new HashSet<>();
+        private final Set<String> markedComponentSchemaIds = new HashSet<>();
+
+        public static MarkingContext initFor(AsyncApiGroup asyncApiGroup) {
+            boolean keepEverything = asyncApiGroup.getOperationActionsToKeep().isEmpty()
+                    && asyncApiGroup.getChannelNamesToKeep().isEmpty()
+                    && asyncApiGroup.getMessageNamesToKeep().isEmpty();
+            return new MarkingContext(keepEverything);
+        }
+
+        public boolean isChannelMarked(String channelId) {
+            return keepEverything || markedChannelIds.contains(channelId);
+        }
+
+        public boolean isOperationMarked(String operationId) {
+            return keepEverything || markedOperationIds.contains(operationId);
+        }
+
+        public boolean isComponentMessageMarked(String messageId) {
+            return keepEverything || markedComponentMessageIds.contains(messageId);
+        }
+
+        public boolean isComponentSchemaMarked(String schemaId) {
+            return keepEverything || markedComponentSchemaIds.contains(schemaId);
+        }
     }
 }
