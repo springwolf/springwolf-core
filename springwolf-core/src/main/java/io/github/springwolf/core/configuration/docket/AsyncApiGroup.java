@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.configuration.docket;
 
-import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +27,7 @@ public class AsyncApiGroup {
     private final List<Pattern> channelNamesToKeep = Collections.emptyList();
 
     @Builder.Default
-    private final List<Pattern> messageNamesToKeep = Collections.emptyList(); // TODO: use this
+    private final List<Pattern> messageNamesToKeep = Collections.emptyList();
 
     // Implementation Roadmap
     // first draft/beta:
@@ -38,51 +37,10 @@ public class AsyncApiGroup {
     // * Options are exclusive -> validation/undefined behavior
     // * configuration via properties no code/no beans
 
-    // private final String title;
-
-    //    public boolean match(Operation operation,
-    //                                  AsyncAPI fullApi,
-    //                                  RefResolver refResolver
-    //    ) {
-    //        // low-level API
-    //        operation.getAction();
-    //        operation.getMessages();
-    //        operation.getMessages().get(0).title().startsWith()
-    //
-    //        return true;
-    //    }
-
+    // UseCases
     // action -> consumer or producer
     // binding -> type (kafka, sqs)
     // channelName (topicName) -> adminEndpunkt , hidden
     // schemaName -> Payload.v1 vs Payload.v2
     // (server, contentType, header)
-
-    public boolean matchOperation(OperationMatcher op) {
-        //        return op.match(this);
-        return false;
-    }
-
-    public boolean matchesChannel(ChannelObject channelObject) {
-        // TODO: differentiate between messageId (wrong) and messageName (should be)
-
-        boolean messageMatch = messageNamesToKeep.stream()
-                .anyMatch(pattern -> channelObject.getMessages().keySet().stream()
-                        .anyMatch(messageId -> pattern.matcher(messageId).matches()));
-        boolean channelNameMatch = channelNamesToKeep.stream()
-                .anyMatch(pattern -> pattern.matcher(channelObject.getAddress()).matches());
-        return messageMatch || channelNameMatch;
-    }
-
-    class OperationMatcher {
-        public OperationMatcher matchMessage(MessageMatcher message) {
-            return this;
-        }
-
-        class MessageMatcher {
-            public MessageMatcher matchMessageTitle(String title) {
-                return this;
-            }
-        }
-    }
 }
