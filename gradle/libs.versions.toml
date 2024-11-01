@@ -31,7 +31,7 @@ assertj-core = "org.assertj:assertj-core:3.26.3"
 avro = "org.apache.avro:avro:1.12.0"
 awaitility = "org.awaitility:awaitility:4.2.2"
 commons-lang3 = "org.apache.commons:commons-lang3:3.17.0"
-google-java-format = "com.google.googlejavaformat:google-java-format:1.19.2"
+google-java-format = "com.google.googlejavaformat:google-java-format:1.24.0"
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-core" }
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-core" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-core" }
