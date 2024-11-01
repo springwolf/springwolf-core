@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,5 +53,15 @@ class ApiIntegrationTest {
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
         assertEquals(expected, actualPatched);
+    }
+
+    @Test
+    void asyncApiResourceForGroupArtifactTest() {
+        // when
+        String url = "/springwolf/docs/Only Vehicles";
+        ResponseEntity<String> actual = restTemplate.getForEntity(url, String.class);
+
+        // then
+        assertEquals(200, actual.getStatusCode().value());
     }
 }
