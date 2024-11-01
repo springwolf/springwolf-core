@@ -11,10 +11,10 @@ import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,13 +25,9 @@ public class DefaultAsyncApiService implements AsyncApiService {
 
     /**
      * Record holding the result of AsyncAPI creation.
-     *
-     * @param asyncAPI
-     * @param exception
      */
-    private record AsyncAPIResult(AsyncAPI asyncAPI, Throwable exception) {}
-    // -> master (internal)
-    // -> per group
+    private record AsyncAPIResult(
+            @Nullable AsyncAPI asyncAPI, @Nullable Map<String, AsyncAPI> groupedApi, Throwable exception) {}
 
     private final AsyncApiDocketService asyncApiDocketService;
     private final ChannelsService channelsService;
@@ -41,7 +37,6 @@ public class DefaultAsyncApiService implements AsyncApiService {
     private final AsyncApiGroupService groupService;
 
     private volatile AsyncAPIResult asyncAPIResult = null;
-    private volatile Map<String, AsyncAPI> asyncApiGroupMap = new HashMap<>();
 
     @Override
     public AsyncAPI getAsyncAPI() {
@@ -62,8 +57,11 @@ public class DefaultAsyncApiService implements AsyncApiService {
             initAsyncAPI();
         }
 
-        // TODO: should be grouping be part of the AsyncAPIResult class?
-        return Optional.ofNullable(this.asyncApiGroupMap.get(groupName));
+        if (asyncAPIResult.asyncAPI != null) {
+            return Optional.ofNullable(asyncAPIResult.groupedApi.get(groupName));
+        } else {
+            throw new RuntimeException("Error occurred during creation of AsyncAPI", asyncAPIResult.exception);
+        }
     }
 
     /**
@@ -102,19 +100,17 @@ public class DefaultAsyncApiService implements AsyncApiService {
                     .components(components)
                     .build();
 
-            //            master = asyncAPI;
-
             for (AsyncApiCustomizer customizer : customizers) {
                 log.debug("Starting customizer {}", customizer.getClass().getName());
                 customizer.customize(asyncAPI);
             }
-            this.asyncAPIResult = new AsyncAPIResult(asyncAPI, null);
-            this.asyncApiGroupMap = groupService.group(asyncAPI);
+            Map<String, AsyncAPI> groupedApi = groupService.group(asyncAPI);
+            this.asyncAPIResult = new AsyncAPIResult(asyncAPI, groupedApi, null);
 
             log.debug("AsyncAPI document was built");
         } catch (Throwable t) {
             log.debug("Failed to build AsyncAPI document", t);
-            this.asyncAPIResult = new AsyncAPIResult(null, t);
+            this.asyncAPIResult = new AsyncAPIResult(null, null, t);
         }
     }
 

@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.Map;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -312,7 +311,8 @@ public class AsyncApiDocumentIntegrationTest {
             AsyncAPI fullApi = asyncApiService.getAsyncAPI();
 
             // when
-            AsyncAPI asyncAPIOpt = asyncApiService.getForGroupName("all & everything").get();
+            AsyncAPI asyncAPIOpt =
+                    asyncApiService.getForGroupName("all & everything").get();
 
             // then
 
