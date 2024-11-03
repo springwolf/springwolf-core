@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, OnInit } from "@angular/core";
-import { UiService } from "./service/ui.service";
+import { Component } from "@angular/core";
 
 @Component({
   selector: "app-root",

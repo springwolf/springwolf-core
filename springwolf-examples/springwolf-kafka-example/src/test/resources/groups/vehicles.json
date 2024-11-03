@@ -1,0 +1,157 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Springwolf example project - Kafka",
+    "version": "1.0.0",
+    "description": "Springwolf example project to demonstrate springwolfs abilities, including **markdown** support for descriptions.",
+    "contact": {
+      "name": "springwolf",
+      "url": "https://github.com/springwolf/springwolf-core",
+      "email": "example@example.com"
+    },
+    "license": {
+      "name": "Apache License 2.0"
+    },
+    "x-generator": "springwolf"
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "kafka-server": {
+      "host": "kafka:29092",
+      "protocol": "kafka"
+    }
+  },
+  "channels": {
+    "vehicle-topic": {
+      "address": "vehicle-topic",
+      "messages": {
+        "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+        }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SpringKafkaDefaultHeaders-VehicleBase": {
+        "title": "SpringKafkaDefaultHeaders-VehicleBase",
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+            ],
+            "examples": [
+              "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+              ],
+              "type": "string"
+            }
+          },
+          "title": "SpringKafkaDefaultHeaders-VehicleBase",
+          "type": "object"
+        }
+      },
+      "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase": {
+        "discriminator": "vehicleType",
+        "title": "VehicleBase",
+        "type": "object",
+        "properties": {
+          "powerSource": {
+            "type": "string"
+          },
+          "topSpeed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vehicleType": {
+            "type": "string"
+          }
+        },
+        "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
+        "examples": [
+          {
+            "powerSource": "string",
+            "topSpeed": 0,
+            "vehicleType": "string"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
+          "properties": {
+            "powerSource": {
+              "type": "string"
+            },
+            "topSpeed": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "vehicleType": { }
+          },
+          "title": "VehicleBase",
+          "type": "object"
+        }
+      }
+    },
+    "messages": {
+      "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-VehicleBase"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+          }
+        },
+        "name": "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase",
+        "title": "VehicleBase",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
+      }
+    }
+  },
+  "operations": {
+    "vehicle-topic_receive_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/vehicle-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/vehicle-topic/messages/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+        }
+      ]
+    }
+  }
+}

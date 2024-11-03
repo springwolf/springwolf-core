@@ -17,10 +17,10 @@ describe("AsyncApiMapperService", () => {
     service = new AsyncApiMapperService(notificationService);
   });
 
-  exampleSchemas.forEach((testData) => {
+  for (const [plugin, testData] of Object.entries(exampleSchemas)) {
     it(
       "should be able to parse example AsyncApi.json without errors - " +
-        testData.plugin +
+        plugin +
         " example",
       () => {
         service.toAsyncApi(testData.value);
@@ -29,12 +29,12 @@ describe("AsyncApiMapperService", () => {
         expect(notificationService.showWarning).not.toHaveBeenCalled();
       }
     );
-  });
+  }
 
-  exampleSchemas.forEach((testData) => {
+  for (const [plugin, testData] of Object.entries(exampleSchemas)) {
     const parser = new Parser();
     it(
-      "should be a valid AsyncApi schema - " + testData.plugin + " example",
+      "should be a valid AsyncApi schema - " + plugin + " example",
       async () => {
         const diagnostics = await parser.validate(
           JSON.stringify(testData.value)
@@ -45,5 +45,5 @@ describe("AsyncApiMapperService", () => {
         expect(diagnostics).toHaveLength(0);
       }
     );
-  });
+  }
 });

@@ -2,7 +2,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { Channel } from "../../models/channel.model";
-import { UiService } from "../../service/ui.service";
+import { IUiService } from "../../service/ui.service";
 
 @Component({
   selector: "app-channels",
@@ -11,12 +11,12 @@ import { UiService } from "../../service/ui.service";
 })
 export class ChannelsComponent implements OnInit {
   channels: Channel[] = [];
-  isShowBindings: boolean = UiService.DEFAULT_SHOW_BINDINGS;
+  isShowBindings: boolean = IUiService.DEFAULT_SHOW_BINDINGS;
   JSON = JSON;
 
   constructor(
     private asyncApiService: AsyncApiService,
-    private uiService: UiService
+    private uiService: IUiService
   ) {}
 
   ngOnInit(): void {

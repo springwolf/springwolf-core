@@ -26,7 +26,7 @@ public class AsyncApiGroupService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private Stream<AsyncApiGroup> getAsyncApiGroups() {
+    public Stream<AsyncApiGroup> getAsyncApiGroups() {
         return springwolfConfigProperties.getDocket().getGroupConfigs().stream()
                 .map(AsyncApiGroupService::toGroupConfigAndValidate);
     }

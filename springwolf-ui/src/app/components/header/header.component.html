@@ -18,11 +18,32 @@
   </span>
   <h1 class="width-s-hide">{{ title }}</h1>
   <div class="flex flex-column items-center">
-    <button mat-button [matMenuTriggerFor]="settings">
+    <button mat-button [matMenuTriggerFor]="settings" data-testid="settings">
       <mat-icon style="color: black">settings</mat-icon>
       Settings
     </button>
     <mat-menu #settings="matMenu">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="group"
+        *ngIf="0 < groups.length"
+        data-testid="settings-group-menu"
+      >
+        Group
+      </button>
+      <mat-menu #group="matMenu">
+        @for (group of groups; track group) {
+        <button mat-menu-item (click)="changeGroup(group.value)">
+          <mat-icon>{{
+            isGroup == group.value
+              ? "radio_button_checked"
+              : "radio_button_unchecked"
+          }}</mat-icon>
+          {{ group.viewValue }}
+        </button>
+        }
+      </mat-menu>
+
       <button mat-menu-item (click)="toggleIsShowBindings()">
         <mat-icon>{{
           isShowBindings ? "check_box" : "check_box_outline_blank"

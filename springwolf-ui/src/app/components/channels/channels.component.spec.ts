@@ -6,8 +6,13 @@ import {
   mockedAsyncApiService,
   mockedExampleSchemaMapped,
 } from "../../service/mock/mock-asyncapi.service";
+import { mockedUiService } from "../../service/mock/mock-ui.service";
 import { MaterialModule } from "../../material.module";
-import { MockChannelOperationComponent } from "../mock-components.spec";
+import {
+  MockChannelOperationComponent,
+  MockPrismEditorComponent,
+} from "../mock-components.spec";
+import { IUiService } from "../../service/ui.service";
 
 describe("ChannelsNewComponent", () => {
   beforeEach(async () => {
@@ -15,8 +20,9 @@ describe("ChannelsNewComponent", () => {
 
     await render(ChannelsComponent, {
       imports: [MaterialModule],
-      declarations: [MockChannelOperationComponent],
+      declarations: [MockChannelOperationComponent, MockPrismEditorComponent],
       providers: [
+        { provide: IUiService, useValue: mockedUiService },
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
       ],
     });

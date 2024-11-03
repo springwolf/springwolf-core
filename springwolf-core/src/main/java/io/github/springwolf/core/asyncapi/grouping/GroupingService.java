@@ -62,8 +62,7 @@ public class GroupingService {
 
                     markOperationsInChannel(fullAsyncApi, markingContext, channel);
 
-                    markingContext.markedComponentMessageIds.addAll(
-                            channel.getMessages().keySet());
+                    channel.getMessages().keySet().forEach(markingContext.markedComponentMessageIds::add);
                 });
     }
 
@@ -93,11 +92,10 @@ public class GroupingService {
 
                     markChannelsForOperation(fullAsyncApi, markingContext, operationEntry.getValue());
 
-                    Set<String> messageIds = operationEntry.getValue().getMessages().stream()
+                    operationEntry.getValue().getMessages().stream()
                             .map(MessageReference::getRef)
                             .map(ReferenceUtil::getLastSegment)
-                            .collect(Collectors.toSet());
-                    markingContext.markedComponentMessageIds.addAll(messageIds);
+                            .forEach(markingContext.markedComponentMessageIds::add);
                 });
     }
 
