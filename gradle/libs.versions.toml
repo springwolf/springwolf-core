@@ -20,7 +20,7 @@ owasp-dependencycheck = "10.0.4"
 protobuf = "4.28.3"
 protobuf-plugin =  "0.9.4"
 spotless = "6.25.0"
-spring = "3.3.4"
+spring = "3.3.5"
 spring-cloud = "2023.0.3"
 spring-managed = "."
 
