@@ -7,6 +7,8 @@ plugins {
     alias libs.plugins.cutterslade.analyze
 
     alias libs.plugins.docker.spring.boot
+
+    alias libs.plugins.protobuf
 }
 
 dependencies {
@@ -35,6 +37,8 @@ dependencies {
     implementation libs.spring.boot
     implementation libs.spring.context
     implementation libs.spring.messaging
+
+    implementation libs.protobuf.java
 
     testImplementation libs.assertj.core
     testImplementation libs.awaitility
@@ -71,4 +75,10 @@ docker {
 
 test {
     dependsOn dockerBuildImage
+}
+
+protobuf {
+    protoc {
+        artifact = libs.protoc.get()
+    }
 }

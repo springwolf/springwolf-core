@@ -6,6 +6,7 @@ import io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto;
 import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
 import io.github.springwolf.examples.amqp.dtos.GenericPayloadDto;
 import io.github.springwolf.examples.amqp.producers.AnotherProducer;
+import io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -25,18 +26,20 @@ public class ExampleConsumer {
     private final AnotherProducer anotherProducer;
 
     @RabbitListener(queues = AmqpConstants.QUEUE_EXAMPLE_QUEUE)
-    public void receiveExamplePayload(ExamplePayloadDto payload) {
+    public void receiveExamplePayload(ExamplePayloadProtobufDto.Message payload) {
         log.info("Received new message in {}: {}", AmqpConstants.QUEUE_EXAMPLE_QUEUE, payload.toString());
 
-        AnotherPayloadDto example = new AnotherPayloadDto();
-        example.setExample(payload);
-        example.setFoo("foo");
+        /*ExamplePayloadProtobufDto.Message example = new ExamplePayloadProtobufDto.Message.newBuilder()
+                .setSomeEnum(ExamplePayloadProtobufDto.ExampleEnum.FOO2)
+                .setSomeEnumValue(15)
+                .setSomeLong(593)
+                .build();
 
-        anotherProducer.sendMessage(example);
+        anotherProducer.sendMessage(example);*/
     }
 
     @RabbitListener(queues = AmqpConstants.QUEUE_ANOTHER_QUEUE)
-    public void receiveAnotherPayload(AnotherPayloadDto payload) {
+    public void receiveAnotherPayload(ExamplePayloadProtobufDto.Message payload) {
         log.info("Received new message in {}: {}", AmqpConstants.QUEUE_ANOTHER_QUEUE, payload.toString());
     }
 
@@ -55,7 +58,7 @@ public class ExampleConsumer {
                                         autoDelete = "true"),
                         key = AmqpConstants.ROUTING_KEY_EXAMPLE_TOPIC_ROUTING_KEY)
             })
-    public void bindingsExample(ExamplePayloadDto payload) {
+    public void bindingsExample(ExamplePayloadProtobufDto.Message payload) {
         log.info(
                 "Received new message in {}" + " through exchange {}" + " using routing key {}: {}",
                 AmqpConstants.QUEUE_EXAMPLE_BINDINGS_QUEUE,
@@ -65,7 +68,7 @@ public class ExampleConsumer {
     }
 
     @RabbitListener(queues = AmqpConstants.QUEUE_MULTI_PAYLOAD_QUEUE)
-    public void bindingsBeanExample(AnotherPayloadDto payload) {
+    public void bindingsBeanExample(ExamplePayloadProtobufDto.Message payload) {
         log.info(
                 "Received new message in {} (AnotherPayloadDto): {}",
                 AmqpConstants.QUEUE_MULTI_PAYLOAD_QUEUE,
@@ -126,7 +129,7 @@ public class ExampleConsumer {
                                             type = ExchangeTypes.TOPIC),
                             key = AmqpConstants.ROUTING_KEY_ALL_MESSAGES,
                             value = @Queue(name = AmqpConstants.QUEUE_READ, durable = "false", autoDelete = "false")))
-    public void bindingsRead(Message message, @Payload ExamplePayloadDto payload) {
+    public void bindingsRead(Message message, @Payload ExamplePayloadProtobufDto.Message payload) {
         log.info(
                 "Received new message {} in {} (ExamplePayloadDto): {}",
                 message,
