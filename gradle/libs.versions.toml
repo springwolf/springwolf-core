@@ -58,7 +58,7 @@ kotlin-serialization-compiler-plugin-embeddable = { module = "org.jetbrains.kotl
 kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.3"
 ktfmt = "com.facebook:ktfmt:0.53"
 ktlint-cli = "com.pinterest.ktlint:ktlint-cli:1.4.0"
-log4j-core = "org.apache.logging.log4j:log4j-core:2.17.1"
+log4j-core = "org.apache.logging.log4j:log4j-core:2.24.1"
 lombok = "org.projectlombok:lombok:1.18.34"
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "org-mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "org-mockito" }
