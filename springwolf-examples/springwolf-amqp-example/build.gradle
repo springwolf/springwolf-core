@@ -38,7 +38,9 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.messaging
 
+    runtimeOnly libs.kafka.protobuf.serializer
     implementation libs.protobuf.java
+    implementation libs.jackson.datatype.protobuf
 
     testImplementation libs.assertj.core
     testImplementation libs.awaitility

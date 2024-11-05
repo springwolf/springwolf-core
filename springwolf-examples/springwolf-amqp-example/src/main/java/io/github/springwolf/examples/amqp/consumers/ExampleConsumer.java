@@ -2,11 +2,10 @@
 package io.github.springwolf.examples.amqp.consumers;
 
 import io.github.springwolf.examples.amqp.AmqpConstants;
-import io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.amqp.dto.proto.ExamplePayloadProtobufDto;
 import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
 import io.github.springwolf.examples.amqp.dtos.GenericPayloadDto;
 import io.github.springwolf.examples.amqp.producers.AnotherProducer;
-import io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option java_package = "io.github.springwolf.examples.kafka.dto.proto";
+option java_package = "io.github.springwolf.examples.amqp.dto.proto";
 option java_outer_classname = "ExamplePayloadProtobufDto";
 
 enum ExampleEnum

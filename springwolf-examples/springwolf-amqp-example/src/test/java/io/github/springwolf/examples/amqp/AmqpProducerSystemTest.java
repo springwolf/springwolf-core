@@ -31,8 +31,6 @@ import static io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto.ExampleE
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.verify;
 
 /**
  * While the assertion of this test is identical to ApiIntegrationTests,
@@ -92,9 +90,9 @@ public class AmqpProducerSystemTest {
         payload.setSomeEnum(FOO1);
 
         // when
-        //springwolfAmqpProducer.send(AmqpConstants.QUEUE_EXAMPLE_QUEUE, payload);
+        // springwolfAmqpProducer.send(AmqpConstants.QUEUE_EXAMPLE_QUEUE, payload);
 
         // then
-        //verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
+        // verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
     }
 }
