@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 class AvroSchemaPostProcessorTest {
     SchemasPostProcessor processor = new AvroSchemaPostProcessor();
@@ -79,5 +80,26 @@ class AvroSchemaPostProcessorTest {
                         refSchema,
                         "customClassRefUnusedInThisTest",
                         new StringSchema()));
+    }
+
+    @Test
+    void handleRecursiveSchemasTest() {
+        var schema = new io.swagger.v3.oas.models.media.Schema();
+        schema.set$ref("#/components/schemas/intermediateSchema");
+
+        var intermediateSchema = new io.swagger.v3.oas.models.media.Schema();
+        intermediateSchema.set$ref("#/components/schemas/schema");
+
+        var definitions = new HashMap<String, io.swagger.v3.oas.models.media.Schema>();
+        definitions.put("schema", schema);
+        definitions.put("intermediateSchema", new StringSchema());
+
+        // when
+        try {
+            processor.process(schema, definitions, "content-type-ignored");
+        } catch (StackOverflowError ex) {
+            // then, no StackOverflowException is thrown
+            fail();
+        }
     }
 }

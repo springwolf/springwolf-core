@@ -12,18 +12,26 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Removes internal avro fields and classes from the schema.
+ * Removes internal protobuf fields and classes from the schema.
  * <br/>
  * For now, this class is located in springwolf-core as it provides value for the cloud-stream and kafka plugin.
  * To avoid to many (one-class) add-ons, this class was not moved to yet another artifact - as also no new dependencies are required.
  * This may change in the future.
  */
-public class AvroSchemaPostProcessor implements SchemasPostProcessor {
-    private static final String SCHEMA_AVRO_PREFIX = "org.apache.avro.";
-    private static final String SCHEMA_PROPERTY = "schema";
-    private static final String SPECIFIC_DATA_PROPERTY = "specificData";
-    private static final String SCHEMA_REF = "org.apache.avro.Schema";
-    private static final String SPECIFIC_DAT_REF = "org.apache.avro.specific.SpecificData";
+public class ProtobufSchemaPostProcessor implements SchemasPostProcessor {
+    private static final String PROTOBUF_SCHEMA_PREFIX = "com.google.protobuf.";
+    private static final String PROTOBUF_SCHEMA_REF_PREFIX =
+            MessageReference.toSchema(PROTOBUF_SCHEMA_PREFIX).getRef();
+    static final List<String> PROTOBUF_FIELDS = List.of(
+            "allFields",
+            "defaultInstanceForType",
+            "descriptorForType",
+            "initializationErrorString",
+            "initialized",
+            "memoizedSerializedSize",
+            "parserForType",
+            "serializedSize",
+            "unknownFields");
 
     @Override
     public void process(Schema schema, Map<String, Schema> definitions, String contentType) {
@@ -56,14 +64,12 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
     private void processProperties(Schema schema, Deque<Schema> queue) {
         Map<String, Schema> properties = schema.getProperties();
         if (properties != null) {
-            Schema schemaPropertySchema = properties.getOrDefault(SCHEMA_PROPERTY, null);
-            Schema specificDataPropertySchema = properties.getOrDefault(SPECIFIC_DATA_PROPERTY, null);
-            if (schemaPropertySchema != null && specificDataPropertySchema != null) {
-                if (StringUtils.endsWithIgnoreCase(schemaPropertySchema.get$ref(), SCHEMA_REF)
-                        && StringUtils.endsWithIgnoreCase(specificDataPropertySchema.get$ref(), SPECIFIC_DAT_REF)) {
-                    properties.remove(SCHEMA_PROPERTY);
-                    properties.remove(SPECIFIC_DATA_PROPERTY);
-                }
+            if (properties.keySet().containsAll(PROTOBUF_FIELDS)) {
+                properties
+                        .entrySet()
+                        .removeIf(entry -> PROTOBUF_FIELDS.contains(entry.getKey())
+                                || StringUtils.startsWithIgnoreCase(
+                                        entry.getValue().get$ref(), PROTOBUF_SCHEMA_REF_PREFIX));
             }
 
             properties.forEach((key, value) -> queue.add(value));
@@ -71,6 +77,8 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
     }
 
     private void removeSchemas(Map<String, Schema> definitions) {
-        definitions.entrySet().removeIf(entry -> StringUtils.startsWithIgnoreCase(entry.getKey(), SCHEMA_AVRO_PREFIX));
+        definitions
+                .entrySet()
+                .removeIf(entry -> StringUtils.startsWithIgnoreCase(entry.getKey(), PROTOBUF_SCHEMA_PREFIX));
     }
 }
