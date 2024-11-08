@@ -21,7 +21,6 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.Examp
 import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.ExampleYamlValueSerializer;
 import io.github.springwolf.core.asyncapi.components.postprocessors.AvroSchemaPostProcessor;
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
-import io.github.springwolf.core.asyncapi.components.postprocessors.ProtobufSchemaPostProcessor;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
 import io.github.springwolf.core.asyncapi.operations.DefaultOperationsService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
@@ -127,13 +126,6 @@ public class SpringwolfAutoConfiguration {
     @ConditionalOnMissingBean
     public AsyncApiDocketService asyncApiDocketService(SpringwolfConfigProperties springwolfConfigProperties) {
         return new DefaultAsyncApiDocketService(springwolfConfigProperties);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @Order(0)
-    public ProtobufSchemaPostProcessor protobufSchemaPostProcessor() {
-        return new ProtobufSchemaPostProcessor();
     }
 
     @Bean
