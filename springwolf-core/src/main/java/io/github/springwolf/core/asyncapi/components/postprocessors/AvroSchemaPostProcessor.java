@@ -5,6 +5,10 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springframework.util.StringUtils;
 
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,6 +19,7 @@ import java.util.Map;
  * This may change in the future.
  */
 public class AvroSchemaPostProcessor implements SchemasPostProcessor {
+    private static final String SCHEMA_AVRO_PREFIX = "org.apache.avro.";
     private static final String SCHEMA_PROPERTY = "schema";
     private static final String SPECIFIC_DATA_PROPERTY = "specificData";
     private static final String SCHEMA_REF = "org.apache.avro.Schema";
@@ -22,18 +27,33 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
 
     @Override
     public void process(Schema schema, Map<String, Schema> definitions, String contentType) {
-        removeAvroSchemas(definitions);
-        removeAvroProperties(schema, definitions);
+        removeSchemas(definitions);
+
+        Deque<Schema> queue = new LinkedList<>(List.of(schema));
+        HashSet<Schema> visited = new HashSet<>();
+        while (!queue.isEmpty()) {
+            Schema currentSchema = queue.pop();
+            if (visited.contains(currentSchema)) {
+                continue;
+            }
+            visited.add(currentSchema);
+
+            processRefSchema(currentSchema, queue, definitions);
+            processProperties(currentSchema, queue);
+        }
     }
 
-    private void removeAvroProperties(Schema schema, Map<String, Schema> definitions) {
+    private void processRefSchema(Schema schema, Deque<Schema> queue, Map<String, Schema> definitions) {
         if (schema.get$ref() != null) {
             String schemaName = MessageReference.extractRefName(schema.get$ref());
-            if (definitions.containsKey(schemaName)) {
-                removeAvroProperties(definitions.get(schemaName), definitions);
+            Schema refedSchema = definitions.get(schemaName);
+            if (refedSchema != null) {
+                queue.add(refedSchema);
             }
         }
+    }
 
+    private void processProperties(Schema schema, Deque<Schema> queue) {
         Map<String, Schema> properties = schema.getProperties();
         if (properties != null) {
             Schema schemaPropertySchema = properties.getOrDefault(SCHEMA_PROPERTY, null);
@@ -46,11 +66,11 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
                 }
             }
 
-            properties.forEach((key, value) -> removeAvroProperties(value, definitions));
+            properties.forEach((key, value) -> queue.add(value));
         }
     }
 
-    private void removeAvroSchemas(Map<String, Schema> definitions) {
-        definitions.entrySet().removeIf(entry -> StringUtils.startsWithIgnoreCase(entry.getKey(), "org.apache.avro"));
+    private void removeSchemas(Map<String, Schema> definitions) {
+        definitions.entrySet().removeIf(entry -> StringUtils.startsWithIgnoreCase(entry.getKey(), SCHEMA_AVRO_PREFIX));
     }
 }
