@@ -45,19 +45,4 @@ public class AsyncApiGroup {
         return getChannelNamesToKeep().stream()
                 .anyMatch(pattern -> pattern.matcher(channelObject.getAddress()).matches());
     }
-
-    // Implementation Roadmap
-    // first draft/beta:
-    // * option to group by a single aspect i.e. only by Operation Option OR by ChannelName OR Message/Payload-Prefix
-    // (v1.Message, v2.Message)
-    // * different groups selectable via ui
-    // * Options are exclusive -> validation/undefined behavior
-    // * configuration via properties no code/no beans
-
-    // UseCases
-    // action -> consumer or producer
-    // binding -> type (kafka, sqs)
-    // channelName (topicName) -> adminEndpunkt , hidden
-    // schemaName -> Payload.v1 vs Payload.v2
-    // (server, contentType, header)
 }

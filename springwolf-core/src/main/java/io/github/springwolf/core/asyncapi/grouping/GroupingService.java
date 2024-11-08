@@ -217,8 +217,7 @@ public class GroupingService {
                 .filter(entry -> markingContext.isOperationMarked(entry.getKey()))
                 .map(entry -> {
                     List<MessageReference> filteredMessagesInOperation = entry.getValue().getMessages().stream()
-                            .filter(messageEntry -> markingContext.isComponentMessageMarked(
-                                    ReferenceUtil.getLastSegment(messageEntry.getRef())))
+                            .filter(markingContext::isComponentMessageMarked)
                             .collect(Collectors.toList());
 
                     Operation updatedOperation = entry.getValue().toBuilder()
@@ -267,6 +266,11 @@ public class GroupingService {
 
         public boolean isComponentMessageMarked(String messageId) {
             return keepEverything || markedComponentMessageIds.contains(messageId);
+        }
+
+        public boolean isComponentMessageMarked(MessageReference messageEntry) {
+            return keepEverything
+                    || markedComponentMessageIds.contains(ReferenceUtil.getLastSegment(messageEntry.getRef()));
         }
 
         public boolean isComponentSchemaMarked(String schemaId) {

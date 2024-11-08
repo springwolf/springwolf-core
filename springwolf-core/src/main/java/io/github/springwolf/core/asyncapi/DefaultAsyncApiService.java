@@ -57,7 +57,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
             initAsyncAPI();
         }
 
-        if (asyncAPIResult.asyncAPI != null) {
+        if (asyncAPIResult.groupedApi != null) {
             return Optional.ofNullable(asyncAPIResult.groupedApi.get(groupName));
         } else {
             throw new RuntimeException("Error occurred during creation of AsyncAPI", asyncAPIResult.exception);
