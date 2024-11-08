@@ -13,14 +13,18 @@ permissions:
   checks: write
   id-token: write
 
-env:
-  project: springwolf-ui
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
+    env:
+      project: springwolf-ui
 
     steps:
       - uses: actions/checkout@v4
