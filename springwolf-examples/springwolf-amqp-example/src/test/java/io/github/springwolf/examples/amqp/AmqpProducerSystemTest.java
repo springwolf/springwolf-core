@@ -25,6 +25,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -61,7 +62,9 @@ public class AmqpProducerSystemTest {
             .withServices(AMQP_NAME)
             .withExposedService(AMQP_NAME, 5672)
             .waitingFor(AMQP_NAME, Wait.forLogMessage(".*Server startup complete.*", 1))
-            .withLogConsumer(AMQP_NAME, l -> log.debug("amqp: {}", l.getUtf8StringWithoutLineEnding()));
+            .withLogConsumer(AMQP_NAME, l -> Arrays.stream(
+                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                    .forEach(m -> log.debug("AMQP: {}", m)));
 
     @DynamicPropertySource
     static void registerActiveMqBroker(DynamicPropertyRegistry registry) {
