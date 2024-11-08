@@ -44,7 +44,7 @@ public class SpringContextControllerIntegrationTest {
             assertThat(asyncApiController).isPresent();
             assertThat(actuatorAsyncApiController).isNotPresent();
 
-            assertThat(asyncApiController.get().asyncApiJson()).isNotNull();
+            assertThat(asyncApiController.get().asyncApiJson(Optional.empty())).isNotNull();
         }
     }
 

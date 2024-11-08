@@ -23,7 +23,7 @@ import { FormsModule } from "@angular/forms";
 import { JsonComponent } from "./components/json/json.component";
 import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
 import { MarkdownModule, provideMarkdown } from "ngx-markdown";
-import { UiService } from "./service/ui.service";
+import { IUiService, UiService } from "./service/ui.service";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { SidenavComponent } from "./components/sidenav/sidenav.component";
 import { NavigationTargetDirective } from "./components/sidenav/navigation.directive";
@@ -80,7 +80,7 @@ export const providers = [
   AsyncApiMapperService,
   { provide: INotificationService, useClass: NotificationService },
   PublisherService,
-  UiService,
+  { provide: IUiService, useClass: UiService },
 ];
 
 export const ngModule = {

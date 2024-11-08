@@ -11,7 +11,6 @@ import jakarta.annotation.Nullable;
  * @param name The fully qualified name or the simple name of the schema.
  * @param simpleSchemaName
  * @param schema The SchemaObject.
- * @param schemaPayload The schema-payload to be inserted in the message, when not null this schema will override the payload of the message.
  */
 public record PayloadSchemaObject(String name, String simpleSchemaName, @Nullable ComponentSchema schema) {
     public String title() {

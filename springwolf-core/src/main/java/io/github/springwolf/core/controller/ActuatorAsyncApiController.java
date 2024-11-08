@@ -3,7 +3,6 @@ package io.github.springwolf.core.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
-import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,6 @@ public class ActuatorAsyncApiController {
 
     @ReadOperation
     public String asyncApiJson() throws JsonProcessingException {
-        AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
-        return serializer.toJsonString(asyncAPI);
+        return serializer.toJsonString(asyncApiService.getAsyncAPI());
     }
 }

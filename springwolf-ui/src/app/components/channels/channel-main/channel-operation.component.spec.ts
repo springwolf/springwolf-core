@@ -9,11 +9,13 @@ import {
   mockedAsyncApiService,
   mockedExampleSchemaMapped,
 } from "../../../service/mock/mock-asyncapi.service";
+import { mockedUiService } from "../../../service/mock/mock-ui.service";
 import {
   MockAppJson,
   MockAppSchemaNewComponent,
   MockPrismEditorComponent,
 } from "../../mock-components.spec";
+import { IUiService } from "../../../service/ui.service";
 
 describe("ChannelOperationComponent", () => {
   const mockData = mockedExampleSchemaMapped.channelOperations
@@ -31,6 +33,7 @@ describe("ChannelOperationComponent", () => {
       ],
       imports: [MaterialModule, MarkdownModule.forRoot()],
       providers: [
+        { provide: IUiService, useValue: mockedUiService },
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
         { provide: PublisherService, useValue: {} },
       ],

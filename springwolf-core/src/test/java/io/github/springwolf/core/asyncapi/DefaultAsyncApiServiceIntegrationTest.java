@@ -9,6 +9,7 @@ import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -62,6 +63,9 @@ class DefaultAsyncApiServiceIntegrationTest {
 
     @MockBean
     private ComponentsService componentsService;
+
+    @MockBean
+    private AsyncApiGroupService groupService;
 
     @Autowired
     private AsyncApiService asyncApiService;

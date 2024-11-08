@@ -1,8 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, OnInit } from "@angular/core";
-import { UiService } from "../../service/ui.service";
+import { IUiService } from "../../service/ui.service";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { IAssetService } from "../../service/asset.service";
+
+interface Group {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: "app-header",
@@ -10,12 +15,14 @@ import { IAssetService } from "../../service/asset.service";
   styleUrls: ["./header.component.css"],
 })
 export class HeaderComponent implements OnInit {
-  isShowBindings: boolean = UiService.DEFAULT_SHOW_BINDINGS;
-  isShowHeaders: boolean = UiService.DEFAULT_SHOW_HEADERS;
+  groups: Group[] = [];
+  isGroup: string = IUiService.DEFAULT_GROUP;
+  isShowBindings: boolean = IUiService.DEFAULT_SHOW_BINDINGS;
+  isShowHeaders: boolean = IUiService.DEFAULT_SHOW_HEADERS;
   title: string = "";
 
   constructor(
-    private uiService: UiService,
+    private uiService: IUiService,
     private asyncApiService: AsyncApiService,
     private assetService: IAssetService
   ) {}
@@ -26,9 +33,26 @@ export class HeaderComponent implements OnInit {
     this.uiService.isShowBindings$.subscribe(
       (value) => (this.isShowBindings = value)
     );
+
     this.uiService.isShowHeaders$.subscribe(
       (value) => (this.isShowHeaders = value)
     );
+
+    this.uiService.isGroup$.subscribe((value) => (this.isGroup = value));
+    this.uiService.uiConfig.subscribe((value) => {
+      if (value.groups.length > 0) {
+        const groups = value.groups.map((group) => {
+          return { value: group.name, viewValue: group.name };
+        });
+        this.groups = [
+          {
+            value: IUiService.DEFAULT_GROUP,
+            viewValue: IUiService.DEFAULT_GROUP,
+          },
+          ...groups,
+        ];
+      }
+    });
 
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       this.title = asyncapi.info.title;
@@ -41,5 +65,9 @@ export class HeaderComponent implements OnInit {
 
   toggleIsShowHeaders() {
     this.uiService.toggleIsShowHeaders(!this.isShowHeaders);
+  }
+
+  changeGroup(value: string) {
+    this.uiService.changeGroup(value);
   }
 }

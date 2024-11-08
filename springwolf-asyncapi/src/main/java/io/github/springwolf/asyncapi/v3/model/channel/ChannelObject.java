@@ -26,7 +26,7 @@ import java.util.Map;
  * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#channelObject">Channel Object</a>
  */
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)

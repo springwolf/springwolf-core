@@ -7,7 +7,12 @@ export class EndpointService {
     return url.split("/asyncapi-ui.html")[0];
   }
 
+  public static uiConfig = EndpointService.contextPath + "/ui-config";
+
   public static docs = EndpointService.contextPath + "/docs";
+  public static getDocsForGroupEndpoint(group: string): string {
+    return EndpointService.docs + `/${group}`;
+  }
 
   public static getPublishEndpoint(protocol: string): string {
     return EndpointService.contextPath + `/${protocol}/publish`;

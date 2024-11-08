@@ -8,7 +8,7 @@ const asyncApiMapperService = new AsyncApiMapperService({
   showWarning: jest.fn(),
 });
 export const mockedExampleSchemaMapped = asyncApiMapperService.toAsyncApi(
-  exampleSchemas.find((el) => el.plugin === "kafka")!!.value
+  exampleSchemas["kafka"].value
 )!!;
 export const mockedAsyncApiService: { getAsyncApi: jest.Mock } = {
   getAsyncApi: jest.fn().mockReturnValue(of(mockedExampleSchemaMapped)),

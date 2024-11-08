@@ -14,7 +14,7 @@ import {
   initSchema,
   noExample,
 } from "../../../service/mock/init-values";
-import { UiService } from "../../../service/ui.service";
+import { IUiService } from "../../../service/ui.service";
 
 @Component({
   selector: "app-channel-operation",
@@ -39,14 +39,14 @@ export class ChannelOperationComponent implements OnInit {
   operationBindingExampleString?: string;
   messageBindingExampleString?: string;
 
-  isShowBindings: boolean = UiService.DEFAULT_SHOW_BINDINGS;
-  isShowHeaders: boolean = UiService.DEFAULT_SHOW_HEADERS;
+  isShowBindings: boolean = IUiService.DEFAULT_SHOW_BINDINGS;
+  isShowHeaders: boolean = IUiService.DEFAULT_SHOW_HEADERS;
   canPublish: boolean = false;
 
   constructor(
     private asyncApiService: AsyncApiService,
     private publisherService: PublisherService,
-    private uiService: UiService,
+    private uiService: IUiService,
     private snackBar: MatSnackBar
   ) {}
 

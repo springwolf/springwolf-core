@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.configuration.properties;
 
+import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket.Group;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +12,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -163,6 +166,45 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             assertThat(actual).containsEntry("java.util.function.Consumer", 0);
             assertThat(actual).containsEntry("java.util.function.Supplier", 0);
             assertThat(actual).containsEntry("java.util.Optional", 0);
+        }
+    }
+
+    @Nested
+    @ExtendWith(SpringExtension.class)
+    @EnableConfigurationProperties(SpringwolfConfigProperties.class)
+    @TestPropertySource(
+            properties = {
+                "springwolf.docket.group-configs[0].group=SEND-GROUP",
+                "springwolf.docket.group-configs[0].action-to-match=send",
+                "springwolf.docket.group-configs[0].channel-name-to-match=/*,a*b",
+                "springwolf.docket.group-configs[0].message-name-to-match=/*",
+                "springwolf.docket.group-configs[1].group=",
+                "springwolf.docket.group-configs[1].action-to-match=",
+                "springwolf.docket.group-configs[1].channel-name-to-match=",
+                "springwolf.docket.group-configs[1].message-name-to-match="
+            })
+    class GroupConfigTest {
+
+        @Autowired
+        private SpringwolfConfigProperties properties;
+
+        @Test
+        void groupConfigIsMappedCorrectly() {
+            // given
+            Group sendGroup = new Group();
+            sendGroup.setGroup("SEND-GROUP");
+            sendGroup.setActionToMatch(List.of(OperationAction.SEND));
+            sendGroup.setChannelNameToMatch(List.of("/*", "a*b"));
+            sendGroup.setMessageNameToMatch(List.of("/*"));
+            Group receiveGroup = new Group();
+
+            // when
+            List<Group> actual = properties.getDocket().getGroupConfigs();
+
+            // then
+            assertThat(actual).hasSize(2);
+            assertThat(actual.get(0)).isEqualTo(sendGroup);
+            assertThat(actual.get(1)).isEqualTo(receiveGroup);
         }
     }
 }

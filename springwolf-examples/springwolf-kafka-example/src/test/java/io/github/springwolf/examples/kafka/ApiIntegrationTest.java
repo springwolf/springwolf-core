@@ -53,4 +53,30 @@ class ApiIntegrationTest {
 
         assertEquals(expected, actualPatched);
     }
+
+    @Test
+    void asyncApiResourceForVehicleGroupArtifactTest() throws IOException {
+        String url = "/springwolf/docs/Only Vehicles";
+        String actual = restTemplate.getForObject(url, String.class);
+        // When running with EmbeddedKafka, the kafka bootstrap server does run on random ports
+        String actualPatched = actual.replace(bootstrapServers, "kafka:29092").trim();
+        Files.writeString(Path.of("src", "test", "resources", "groups", "vehicles.actual.json"), actualPatched);
+
+        InputStream s = this.getClass().getResourceAsStream("/groups/vehicles.json");
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+
+        assertEquals(expected, actualPatched);
+    }
+
+    @Test
+    void uiConfigTest() throws IOException {
+        String url = "/springwolf/ui-config";
+        String actual = restTemplate.getForObject(url, String.class);
+        Files.writeString(Path.of("src", "test", "resources", "ui-config.actual.json"), actual);
+
+        InputStream s = this.getClass().getResourceAsStream("/ui-config.json");
+        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+
+        assertEquals(expected, actual);
+    }
 }

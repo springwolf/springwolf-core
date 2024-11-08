@@ -4,6 +4,7 @@ package io.github.springwolf.core.asyncapi;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -14,9 +15,11 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +34,7 @@ class DefaultAsyncApiServiceTest {
     private OperationsService operationsService;
     private ComponentsService componentsService;
     private List<AsyncApiCustomizer> customizers = new ArrayList<>();
+    private AsyncApiGroupService groupService;
 
     @BeforeEach
     public void setup() {
@@ -38,12 +42,18 @@ class DefaultAsyncApiServiceTest {
         channelsService = mock(ChannelsService.class);
         operationsService = mock(OperationsService.class);
         componentsService = mock(ComponentsService.class);
+        groupService = mock(AsyncApiGroupService.class);
 
         when(channelsService.findChannels()).thenReturn(Map.of());
         when(componentsService.getSchemas()).thenReturn(Map.of());
 
         defaultAsyncApiService = new DefaultAsyncApiService(
-                asyncApiDocketService, channelsService, operationsService, componentsService, customizers);
+                asyncApiDocketService,
+                channelsService,
+                operationsService,
+                componentsService,
+                customizers,
+                groupService);
     }
 
     @Test
@@ -58,7 +68,7 @@ class DefaultAsyncApiServiceTest {
             fail("RuntimeException expected");
         } catch (RuntimeException exc) {
             // Then a RuntimeException is thrown.
-            assertThat(exc.getMessage()).isEqualTo("Error occured during creation of AsyncAPI");
+            assertThat(exc.getMessage()).isEqualTo("Error occurred during creation of AsyncAPI");
             cause = exc.getCause();
             assertThat(cause.getMessage()).isEqualTo("test exception");
         }
@@ -70,7 +80,7 @@ class DefaultAsyncApiServiceTest {
         } catch (RuntimeException exc) {
             // Then the same RuntimeException as on first invocatin should be thrown.
 
-            assertThat(exc.getMessage()).isEqualTo("Error occured during creation of AsyncAPI");
+            assertThat(exc.getMessage()).isEqualTo("Error occurred during creation of AsyncAPI");
             assertThat(exc.getCause()).isSameAs(cause);
         }
     }
@@ -92,5 +102,34 @@ class DefaultAsyncApiServiceTest {
         // isNotInitialized() return 'false'.
         assertThat(asyncAPI).isNotNull();
         assertThat(defaultAsyncApiService.isNotInitialized()).isFalse();
+    }
+
+    @Test
+    void shouldGetGroupedAsyncApi() {
+        // given
+        AsyncApiDocket docket = AsyncApiDocketFixture.createMinimal();
+        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(docket);
+        AsyncAPI asyncAPI = AsyncAPI.builder().build();
+        when(groupService.group(any())).thenReturn(Map.of("group", asyncAPI));
+
+        // when
+        Optional<AsyncAPI> result = defaultAsyncApiService.getForGroupName("group");
+
+        // then
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(asyncAPI);
+    }
+
+    @Test
+    void shouldNotThrowWhenAsyncApiGroupDoesNotExist() {
+        // given
+        AsyncApiDocket docket = AsyncApiDocketFixture.createMinimal();
+        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(docket);
+
+        // when
+        Optional<AsyncAPI> result = defaultAsyncApiService.getForGroupName("group");
+
+        // then
+        assertThat(result).isEmpty();
     }
 }
