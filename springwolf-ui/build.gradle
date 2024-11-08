@@ -9,8 +9,10 @@ node {
   download = true
 }
 
-npm_run_build {
-  dependsOn spotlessCheck
+tasks.register('npm_run_build', NpmTask) {
+  dependsOn npmInstall, spotlessCheck
+
+  args = ['run', 'build']
 
   inputs.files fileTree("src")
   inputs.file 'angular.json'
@@ -19,13 +21,20 @@ npm_run_build {
 
   outputs.dir 'build'
 }
+assemble.dependsOn('npm_run_build')
 
-npm_run_test {
+tasks.register('npm_run_test', NpmTask) {
+  dependsOn npmInstall
+
+  args = ['run', 'test']
+
   inputs.files fileTree("src")
   inputs.file 'angular.json'
   inputs.file 'package.json'
   inputs.file 'package-lock.json'
+  outputs.upToDateWhen { true }
 }
+test.dependsOn('npm_run_test')
 
 tasks.register('buildPages', NpmTask) {
   args = ['run', 'build_pages']
