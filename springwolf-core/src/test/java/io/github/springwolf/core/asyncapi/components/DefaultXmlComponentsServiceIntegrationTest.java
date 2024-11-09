@@ -24,6 +24,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -191,9 +192,12 @@ class DefaultXmlComponentsServiceIntegrationTest {
         private String s;
         private Bar b;
 
+        @RequiredArgsConstructor
         private enum Bar {
-            BAR1,
-            BAR2
+            BAR1(1),
+            BAR2(2);
+
+            private final int code;
         }
     }
 

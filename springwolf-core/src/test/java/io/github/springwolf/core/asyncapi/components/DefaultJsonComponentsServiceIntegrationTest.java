@@ -26,6 +26,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -179,9 +180,12 @@ class DefaultJsonComponentsServiceIntegrationTest {
         private String s;
         private Bar b;
 
+        @RequiredArgsConstructor
         private enum Bar {
-            BAR1,
-            BAR2
+            BAR1(1),
+            BAR2(2);
+
+            private final int code;
         }
     }
 
