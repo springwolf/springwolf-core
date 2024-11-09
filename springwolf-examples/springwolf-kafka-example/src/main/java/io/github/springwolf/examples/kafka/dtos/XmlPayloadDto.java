@@ -5,6 +5,7 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -20,9 +21,12 @@ public class XmlPayloadDto {
 
     private ExampleEnum someEnum;
 
+    @RequiredArgsConstructor
     public enum ExampleEnum {
-        FOO1,
-        FOO2,
-        FOO3
+        FOO1(1),
+        FOO2(2),
+        FOO3(3);
+
+        private final int code;
     }
 }

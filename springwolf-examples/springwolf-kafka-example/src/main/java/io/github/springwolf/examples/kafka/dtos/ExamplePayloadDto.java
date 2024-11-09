@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
@@ -44,9 +45,12 @@ public class ExamplePayloadDto {
     @Schema(description = "Some enum field", example = "FOO2", requiredMode = REQUIRED)
     private ExampleEnum someEnum;
 
+    @RequiredArgsConstructor
     public enum ExampleEnum {
-        FOO1,
-        FOO2,
-        FOO3
+        FOO1(1),
+        FOO2(2),
+        FOO3(3);
+
+        private final int code;
     }
 }
