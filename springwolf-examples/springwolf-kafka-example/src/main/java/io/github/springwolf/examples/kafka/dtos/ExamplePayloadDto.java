@@ -4,8 +4,10 @@ package io.github.springwolf.examples.kafka.dtos;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
@@ -45,12 +47,26 @@ public class ExamplePayloadDto {
     @Schema(description = "Some enum field", example = "FOO2", requiredMode = REQUIRED)
     private ExampleEnum someEnum;
 
+    @Schema(enumAsRef = true, example = "OK")
+    @Getter
     @RequiredArgsConstructor
+    @ToString
     public enum ExampleEnum {
-        FOO1(1),
-        FOO2(2),
-        FOO3(3);
+        OK(200, "OK"),
+        BAD_REQUEST(400, "Bad Request"),
+        UNAUTHORIZED(401, "Unauthorized"),
+        NOT_FOUND(404, "Not Found"),
+        INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
+        ;
 
-        private final int code;
+        private final int value;
+        private final String reasonPhrase;
+
+        /**
+         * @return true if messageStatus's value indicates an error (value >= 400)
+         */
+        public boolean isError() {
+            return value >= 400;
+        }
     }
 }

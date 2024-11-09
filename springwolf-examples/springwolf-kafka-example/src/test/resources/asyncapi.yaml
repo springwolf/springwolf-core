@@ -648,7 +648,7 @@ components:
       description: Another payload model
       examples:
         - example:
-            someEnum: FOO2
+            someEnum: OK
             someLong: 5
             someString: some string value
           foo: bar
@@ -666,9 +666,12 @@ components:
               someEnum:
                 description: Some enum field
                 enum:
-                  - FOO1
-                  - FOO2
-                  - FOO3
+                  - OK
+                  - BAD_REQUEST
+                  - UNAUTHORIZED
+                  - NOT_FOUND
+                  - INTERNAL_SERVER_ERROR
+                title: ExampleEnum
                 type: string
               someLong:
                 description: Some long field
@@ -708,14 +711,7 @@ components:
       type: object
       properties:
         someEnum:
-          type: string
-          description: Some enum field
-          enum:
-            - FOO1
-            - FOO2
-            - FOO3
-          examples:
-            - FOO2
+          $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto$ExampleEnum"
         someLong:
           type: integer
           description: Some long field
@@ -744,7 +740,7 @@ components:
         Example payload model demonstrating markdown text styling:
         **bold**, *cursive* and <u>underlined</u>
       examples:
-        - someEnum: FOO2
+        - someEnum: OK
           someLong: 5
           someString: some string value
       required:
@@ -759,9 +755,12 @@ components:
           someEnum:
             description: Some enum field
             enum:
-              - FOO1
-              - FOO2
-              - FOO3
+              - OK
+              - BAD_REQUEST
+              - UNAUTHORIZED
+              - NOT_FOUND
+              - INTERNAL_SERVER_ERROR
+            title: ExampleEnum
             type: string
           someLong:
             description: Some long field
@@ -788,6 +787,29 @@ components:
           - someString
         title: ExamplePayloadDto
         type: object
+    io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto$ExampleEnum:
+      title: ExampleEnum
+      type: string
+      description: Some enum field
+      enum:
+        - OK
+        - BAD_REQUEST
+        - UNAUTHORIZED
+        - NOT_FOUND
+        - INTERNAL_SERVER_ERROR
+      examples:
+        - OK
+      x-json-schema:
+        $schema: https://json-schema.org/draft-04/schema#
+        description: Some enum field
+        enum:
+          - OK
+          - BAD_REQUEST
+          - UNAUTHORIZED
+          - NOT_FOUND
+          - INTERNAL_SERVER_ERROR
+        title: ExampleEnum
+        type: string
     io.github.springwolf.examples.kafka.dtos.NestedPayloadDto:
       title: NestedPayloadDto
       type: object
@@ -807,7 +829,7 @@ components:
       description: Payload model with nested complex types
       examples:
         - examplePayloads:
-            - someEnum: FOO2
+            - someEnum: OK
               someLong: 5
               someString: some string value
           someStrings:
@@ -825,9 +847,12 @@ components:
                 someEnum:
                   description: Some enum field
                   enum:
-                    - FOO1
-                    - FOO2
-                    - FOO3
+                    - OK
+                    - BAD_REQUEST
+                    - UNAUTHORIZED
+                    - NOT_FOUND
+                    - INTERNAL_SERVER_ERROR
+                  title: ExampleEnum
                   type: string
                 someLong:
                   description: Some long field
