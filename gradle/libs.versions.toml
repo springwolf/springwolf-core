@@ -48,7 +48,7 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "org
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "org-junit-jupiter" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "org-junit-jupiter" }
 kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version.ref = "io-confluent" }
-kafka-clients = "org.apache.kafka:kafka-clients:3.7.1"
+kafka-clients = "org.apache.kafka:kafka-clients:3.9.0"
 kafka-streams = "org.apache.kafka:kafka-streams:3.8.1"
 kafka-protobuf-serializer = { module = "io.confluent:kafka-protobuf-serializer", version.ref = "io-confluent" }
 kotlin-build-tools-impl = { module = "org.jetbrains.kotlin:kotlin-build-tools-impl", version.ref = "org-jetbrains-kotlin" }
