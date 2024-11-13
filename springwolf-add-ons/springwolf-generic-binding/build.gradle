@@ -16,6 +16,7 @@ dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.context
     implementation libs.spring.core
+    implementation libs.spring.boot.autoconfigure
 
     annotationProcessor libs.lombok
     compileOnly libs.lombok
