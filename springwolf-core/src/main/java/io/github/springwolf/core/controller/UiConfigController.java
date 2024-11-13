@@ -21,13 +21,17 @@ public class UiConfigController {
             path = {"${springwolf.path.base:/springwolf}/ui-config"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public UiConfig getUiConfig() {
-        return new UiConfig(asyncApiGroupService
-                .getAsyncApiGroups()
-                .map(el -> new UiConfig.UiConfigGroup(el.getGroupName()))
-                .toList());
+        return new UiConfig(
+                new UiConfig.InitialConfig(true, false),
+                asyncApiGroupService
+                        .getAsyncApiGroups()
+                        .map(el -> new UiConfig.UiConfigGroup(el.getGroupName()))
+                        .toList());
     }
 
-    private record UiConfig(List<UiConfigGroup> groups) {
+    private record UiConfig(InitialConfig initialConfig, List<UiConfigGroup> groups) {
+        private record InitialConfig(boolean showBindings, boolean showHeaders) {}
+
         private record UiConfigGroup(String name) {}
     }
 }
