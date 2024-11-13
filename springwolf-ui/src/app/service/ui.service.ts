@@ -43,6 +43,10 @@ export class UiService extends IUiService {
     this.uiConfig = this.http
       .get<ServerUiConfig>(EndpointService.uiConfig)
       .pipe(shareReplay());
+    this.uiConfig.subscribe((serverUiConfig: ServerUiConfig) => {
+      this.toggleIsShowBindings(serverUiConfig.initialConfig.showBindings);
+      this.toggleIsShowHeaders(serverUiConfig.initialConfig.showHeaders);
+    });
   }
 
   toggleIsShowBindings(value: boolean) {
