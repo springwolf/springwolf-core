@@ -207,4 +207,44 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             assertThat(actual.get(1)).isEqualTo(receiveGroup);
         }
     }
+
+    @Nested
+    @ExtendWith(SpringExtension.class)
+    @EnableConfigurationProperties(SpringwolfConfigProperties.class)
+    @TestPropertySource(
+            properties = {"springwolf.ui.initially-show-bindings=false", "springwolf.ui.initially-show-headers=true"})
+    class UiConfigTest {
+
+        @Autowired
+        private SpringwolfConfigProperties properties;
+
+        @Test
+        void uiConfigIsMappedCorrectly() {
+            // when
+            final SpringwolfConfigProperties.UI actual = properties.getUi();
+
+            // then
+            assertThat(actual.isInitiallyShowBindings()).isFalse();
+            assertThat(actual.isInitiallyShowHeaders()).isTrue();
+        }
+    }
+
+    @Nested
+    @ExtendWith(SpringExtension.class)
+    @EnableConfigurationProperties(SpringwolfConfigProperties.class)
+    class DefaultConfigTest {
+
+        @Autowired
+        private SpringwolfConfigProperties properties;
+
+        @Test
+        void uiConfigIsMappedCorrectly() {
+            // when
+            final SpringwolfConfigProperties.UI actual = properties.getUi();
+
+            // then
+            assertThat(actual.isInitiallyShowBindings()).isTrue();
+            assertThat(actual.isInitiallyShowHeaders()).isTrue();
+        }
+    }
 }

@@ -44,13 +44,21 @@
         }
       </mat-menu>
 
-      <button mat-menu-item (click)="toggleIsShowBindings()">
+      <button
+        mat-menu-item
+        (click)="toggleIsShowBindings()"
+        data-testid="settings-bindings"
+      >
         <mat-icon>{{
           isShowBindings ? "check_box" : "check_box_outline_blank"
         }}</mat-icon>
         Show bindings
       </button>
-      <button mat-menu-item (click)="toggleIsShowHeaders()">
+      <button
+        mat-menu-item
+        (click)="toggleIsShowHeaders()"
+        data-testid="settings-headers"
+      >
         <mat-icon>{{
           isShowHeaders ? "check_box" : "check_box_outline_blank"
         }}</mat-icon>

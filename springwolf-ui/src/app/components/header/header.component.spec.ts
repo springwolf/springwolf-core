@@ -39,6 +39,7 @@ describe("HeaderComponent", () => {
 
   it("should show groups when the uiConfig is updated", () => {
     uiConfigSubject.next({
+      initialConfig: { showBindings: true, showHeaders: true },
       groups: [{ name: "group1" }, { name: "group2" }],
     });
 
@@ -56,5 +57,37 @@ describe("HeaderComponent", () => {
     // when selecting a group, changeGroup is called
     fireEvent.click(screen.getByText("group1"));
     expect(mockedUiService.changeGroup).toHaveBeenCalledWith("group1");
+  });
+
+  it("should trigger show bindings when clicked in settings menu", () => {
+    uiConfigSubject.next({
+      initialConfig: { showBindings: true, showHeaders: true },
+      groups: [{ name: "group1" }, { name: "group2" }],
+    });
+
+    // when clicking the checkbox
+    const settingButton = screen.getByTestId("settings");
+    fireEvent.click(settingButton);
+    const checkBox = screen.getByTestId("settings-bindings");
+    fireEvent.click(checkBox);
+
+    // then toggleIsShowBindings is called
+    expect(mockedUiService.toggleIsShowBindings).toBeCalled();
+  });
+
+  it("should trigger show headers when clicked in settings menu", () => {
+    uiConfigSubject.next({
+      initialConfig: { showBindings: true, showHeaders: true },
+      groups: [{ name: "group1" }, { name: "group2" }],
+    });
+
+    // when clicking the checkbox
+    const settingButton = screen.getByTestId("settings");
+    fireEvent.click(settingButton);
+    const checkBox = screen.getByTestId("settings-headers");
+    fireEvent.click(checkBox);
+
+    // then toggleIsShowHeaders is called
+    expect(mockedUiService.toggleIsShowHeaders).toBeCalled();
   });
 });

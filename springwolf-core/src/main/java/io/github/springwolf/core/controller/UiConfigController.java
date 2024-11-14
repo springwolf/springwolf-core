@@ -2,6 +2,7 @@
 package io.github.springwolf.core.controller;
 
 import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -16,18 +17,35 @@ import java.util.List;
 public class UiConfigController {
 
     private final AsyncApiGroupService asyncApiGroupService;
+    private final SpringwolfConfigProperties configProperties;
 
     @GetMapping(
             path = {"${springwolf.path.base:/springwolf}/ui-config"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public UiConfig getUiConfig() {
-        return new UiConfig(asyncApiGroupService
-                .getAsyncApiGroups()
-                .map(el -> new UiConfig.UiConfigGroup(el.getGroupName()))
-                .toList());
+
+        final UiConfig.InitialConfig initial = createInitialConfig();
+        final List<UiConfig.UiConfigGroup> groups = createGroups();
+
+        return new UiConfig(initial, groups);
     }
 
-    private record UiConfig(List<UiConfigGroup> groups) {
+    private List<UiConfig.UiConfigGroup> createGroups() {
+        return asyncApiGroupService
+                .getAsyncApiGroups()
+                .map(el -> new UiConfig.UiConfigGroup(el.getGroupName()))
+                .toList();
+    }
+
+    private UiConfig.InitialConfig createInitialConfig() {
+        return new UiConfig.InitialConfig(
+                configProperties.getUi().isInitiallyShowBindings(),
+                configProperties.getUi().isInitiallyShowHeaders());
+    }
+
+    private record UiConfig(InitialConfig initialConfig, List<UiConfigGroup> groups) {
+        private record InitialConfig(boolean showBindings, boolean showHeaders) {}
+
         private record UiConfigGroup(String name) {}
     }
 }

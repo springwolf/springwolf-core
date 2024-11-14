@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.ActuatorAsyncApiController;
 import io.github.springwolf.core.controller.AsyncApiController;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
@@ -52,8 +53,9 @@ public class SpringwolfWebConfiguration {
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED, havingValue = "false", matchIfMissing = true)
     @ConditionalOnMissingBean
-    public UiConfigController uiConfigController(AsyncApiGroupService asyncApiGroupService) {
-        return new UiConfigController(asyncApiGroupService);
+    public UiConfigController uiConfigController(
+            AsyncApiGroupService asyncApiGroupService, SpringwolfConfigProperties configProperties) {
+        return new UiConfigController(asyncApiGroupService, configProperties);
     }
 
     @Bean

@@ -78,6 +78,13 @@ public class SpringwolfConfigProperties {
 
     private ConfigDocket docket = new ConfigDocket();
 
+    /**
+     * The UI configuration properties.
+     *
+     * @see UI
+     */
+    private UI ui = new UI();
+
     @Nullable
     private Scanner scanner;
 
@@ -220,6 +227,20 @@ public class SpringwolfConfigProperties {
              */
             private List<String> messageNameToMatch = Collections.emptyList();
         }
+    }
+
+    @Getter
+    @Setter
+    public static class UI {
+        /**
+         * Allows to show or hide the bindings in the UI when opening the UI.
+         */
+        private boolean initiallyShowBindings = true;
+
+        /**
+         * Allows to show or hide the headers in the UI when opening the UI.
+         */
+        private boolean initiallyShowHeaders = true;
     }
 
     @Getter
