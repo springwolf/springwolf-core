@@ -39,6 +39,7 @@ describe("HeaderComponent", () => {
 
   it("should show groups when the uiConfig is updated", () => {
     uiConfigSubject.next({
+      initialConfig: { showBindings: true, showHeaders: true },
       groups: [{ name: "group1" }, { name: "group2" }],
     });
 
