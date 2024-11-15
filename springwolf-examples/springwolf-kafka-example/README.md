@@ -11,7 +11,7 @@ Note: kafka-schema-registry (avro) and akhq (a kafka ui) are not started by defa
 Note: You need to execute the gradle `bootRun` task since the IntelliJ spring application will not include springwolf-ui correctly.
 
 1. Clone this repository: `$ git clone https://github.com/springwolf/springwolf-core.git`.
-2. Switch to folder: `$ cd springwolf-core/springwolf-examples/springwolf-cloud-stream-example`.
+2. Switch to folder: `$ cd springwolf-core/springwolf-examples/springwolf-kafka-example`.
 3. Start the infrastructure: `$ docker compose up kafka -d` (to run integration tests, stop the infrastructure).
    1. If you want to test avro as well, start the schema registry: `$ docker compose up kafka-schema-registry -d`.
 4. Start the application: `$ ../../gradlew bootRun`.
