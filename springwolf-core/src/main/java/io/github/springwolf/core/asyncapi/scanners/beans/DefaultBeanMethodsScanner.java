@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.beans;
 
-import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +16,11 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor
 public class DefaultBeanMethodsScanner implements BeanMethodsScanner {
 
-    private final ConfigurationClassScanner configurationClassScanner;
+    private final ComponentClassScanner componentClassScanner;
 
     @Override
     public Set<Method> getBeanMethods() {
-        return configurationClassScanner.scan().stream()
+        return componentClassScanner.scan().stream()
                 .map(Class::getDeclaredMethods)
                 .map(Arrays::asList)
                 .flatMap(List::stream)

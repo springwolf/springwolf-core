@@ -16,7 +16,6 @@ import io.github.springwolf.core.asyncapi.scanners.channels.annotations.AsyncAnn
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.AsyncAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.AsyncAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
@@ -55,14 +54,8 @@ public class SpringwolfScannerConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ConfigurationClassScanner configurationClassScanner(ComponentClassScanner componentClassScanner) {
-        return new ConfigurationClassScanner(componentClassScanner);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public BeanMethodsScanner beanMethodsScanner(ConfigurationClassScanner configurationClassScanner) {
-        return new DefaultBeanMethodsScanner(configurationClassScanner);
+    public BeanMethodsScanner beanMethodsScanner(ComponentClassScanner componentClassScanner) {
+        return new DefaultBeanMethodsScanner(componentClassScanner);
     }
 
     @Bean

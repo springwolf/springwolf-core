@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -31,6 +33,12 @@ public class CloudstreamConfiguration {
     @Bean
     public Consumer<AnotherPayloadDto> consumerMethod() {
         return input -> log.info("Received new message in another-topic: {}", input.toString());
+    }
+
+    @Bean
+    public BiConsumer<AnotherPayloadDto, Map<String, Object>> biConsumerMethod() {
+        return (input, headers) ->
+                log.info("Received new message in biconsumer-topic: {}. Headers {}.", input.toString(), headers);
     }
 
     @GooglePubSubAsyncChannelBinding(

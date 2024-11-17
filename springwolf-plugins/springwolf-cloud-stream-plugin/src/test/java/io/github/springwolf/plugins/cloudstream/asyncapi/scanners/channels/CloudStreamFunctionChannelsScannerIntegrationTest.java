@@ -54,6 +54,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -160,6 +161,51 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
         assertThat(actualOperations)
                 .containsExactly(Map.entry("test-consumer-input-topic_publish_testConsumer", expectedOperation));
+        assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
+    }
+
+    @Test
+    void testBiConsumerBinding() {
+        // Given a binding "spring.cloud.stream.bindings.testBiConsumer-in-0.destination=test-consumer-input-topic"
+        BindingProperties testBiConsumerInBinding = new BindingProperties();
+        String topicName = "test-biconsumer-input-topic";
+        testBiConsumerInBinding.setDestination(topicName);
+        when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testBiConsumer-in-0", testBiConsumerInBinding));
+
+        // When scan is called
+        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
+
+        // Then the returned channels contain a ChannelItem with the correct data
+        MessageObject message = MessageObject.builder()
+                .name(String.class.getName())
+                .title("string")
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
+                        .build()))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .build();
+
+        ChannelObject expectedChannel = ChannelObject.builder()
+                .channelId(topicName)
+                .address(topicName)
+                .bindings(channelBinding)
+                .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
+                .build();
+
+        Operation expectedOperation = Operation.builder()
+                .action(OperationAction.RECEIVE)
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .channel(ChannelReference.fromChannel(topicName))
+                .messages(List.of(MessageReference.toChannelMessage(topicName, message)))
+                .build();
+
+        assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
+        assertThat(actualOperations)
+                .containsExactly(Map.entry("test-biconsumer-input-topic_publish_testBiConsumer", expectedOperation));
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -487,6 +533,11 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         @Bean
         public Function<KStream<Void, String>, KStream<Void, Integer>> kStreamTestFunction() {
             return stream -> stream.mapValues(s -> 1);
+        }
+
+        @Bean
+        public BiConsumer<String, Map<String, Object>> testBiConsumer() {
+            return (value, header) -> System.out.println(value);
         }
     }
 }
