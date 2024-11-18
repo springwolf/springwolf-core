@@ -13,7 +13,6 @@ dependencies {
 
     runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream")
     implementation project(":springwolf-bindings:springwolf-googlepubsub-binding")
-    runtimeOnly project(":springwolf-plugins:springwolf-kafka")
 
     annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream")
 
