@@ -33,6 +33,17 @@
         "kafka": { }
       }
     },
+    "biconsumer-topic": {
+      "address": "biconsumer-topic",
+      "messages": {
+        "AnotherPayloadDto": {
+          "$ref": "#/components/messages/AnotherPayloadDto"
+        }
+      },
+      "bindings": {
+        "kafka": { }
+      }
+    },
     "consumer-class-topic": {
       "address": "consumer-class-topic",
       "messages": {
@@ -275,6 +286,21 @@
       "messages": [
         {
           "$ref": "#/channels/another-topic/messages/AnotherPayloadDto"
+        }
+      ]
+    },
+    "biconsumer-topic_publish_biConsumerMethod": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/biconsumer-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/biconsumer-topic/messages/AnotherPayloadDto"
         }
       ]
     },
