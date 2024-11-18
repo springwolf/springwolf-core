@@ -44,10 +44,10 @@ public class ExamplePayloadDto {
     @Schema(description = "Some long field", example = "5", minimum = "0")
     private long someLong;
 
-    @Schema(description = "Some enum field", example = "FOO2", requiredMode = REQUIRED)
+    @Schema(description = "Some enum field", requiredMode = REQUIRED)
     private ExampleEnum someEnum;
 
-    @Schema(enumAsRef = true, example = "OK")
+    @Schema(enumAsRef = true)
     @Getter
     @RequiredArgsConstructor
     @ToString
