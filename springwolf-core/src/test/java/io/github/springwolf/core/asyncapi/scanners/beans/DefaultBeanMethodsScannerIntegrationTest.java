@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.beans;
 
-import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,11 @@ class DefaultBeanMethodsScannerIntegrationTest {
     private DefaultBeanMethodsScanner beanMethodsScanner;
 
     @MockBean
-    private ConfigurationClassScanner configurationClassScanner;
+    private ComponentClassScanner componentClassScanner;
 
     @Test
     void name() {
-        when(configurationClassScanner.scan()).thenReturn(Set.of(ConfigurationClass.class));
+        when(componentClassScanner.scan()).thenReturn(Set.of(ConfigurationClass.class));
 
         Set<String> beanMethods = beanMethodsScanner.getBeanMethods().stream()
                 .map(Method::getName)
