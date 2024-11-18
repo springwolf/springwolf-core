@@ -296,7 +296,7 @@
     }
   },
   "operations": {
-    "another-topic_subscribe_process": {
+    "another-topic_send_process": {
       "action": "send",
       "channel": {
         "$ref": "#/channels/another-topic"
@@ -311,7 +311,7 @@
         }
       ]
     },
-    "biconsumer-topic_publish_biConsumerMethod": {
+    "biconsumer-topic_receive_biConsumerMethod": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/biconsumer-topic"
@@ -326,7 +326,7 @@
         }
       ]
     },
-    "bifunction-output-topic_subscribe_biProcess": {
+    "bifunction-output-topic_send_biProcess": {
       "action": "send",
       "channel": {
         "$ref": "#/channels/bifunction-output-topic"
@@ -341,7 +341,7 @@
         }
       ]
     },
-    "bifunction-topic_publish_biProcess": {
+    "bifunction-topic_receive_biProcess": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/bifunction-topic"
@@ -356,7 +356,7 @@
         }
       ]
     },
-    "consumer-class-topic_publish_ConsumerClass": {
+    "consumer-class-topic_receive_ConsumerClass": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/consumer-class-topic"
@@ -371,7 +371,7 @@
         }
       ]
     },
-    "consumer-topic_publish_consumerMethod": {
+    "consumer-topic_receive_consumerMethod": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/consumer-topic"
@@ -386,7 +386,7 @@
         }
       ]
     },
-    "example-topic_publish_process": {
+    "example-topic_receive_process": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/example-topic"
@@ -401,7 +401,7 @@
         }
       ]
     },
-    "google-pubsub-topic_publish_googlePubSubConsumerMethod": {
+    "google-pubsub-topic_receive_googlePubSubConsumerMethod": {
       "action": "receive",
       "channel": {
         "$ref": "#/channels/google-pubsub-topic"

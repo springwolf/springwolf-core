@@ -12,7 +12,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
@@ -22,6 +21,7 @@ import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClass
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -71,19 +71,20 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     }
 
     private Map.Entry<String, Operation> toOperationEntry(FunctionalChannelBeanData beanData) {
+        Operation operation = buildOperation(beanData);
+
+        return Map.entry(operation.getOperationId(), operation);
+    }
+
+    private Operation buildOperation(FunctionalChannelBeanData beanData) {
         String channelName = cloudStreamBindingsProperties
                 .getBindings()
                 .get(beanData.cloudStreamBinding())
                 .getDestination();
         String channelId = ReferenceUtil.toValidId(channelName);
+        String operationId = OperationIdHelper.buildOperationId(
+                channelId, beanData.beanType().toOperationAction(), beanData.elementName());
 
-        String operationId = buildOperationId(beanData, channelId);
-        Operation operation = buildOperation(beanData, channelId);
-
-        return Map.entry(operationId, operation);
-    }
-
-    private Operation buildOperation(FunctionalChannelBeanData beanData, String channelId) {
         Type payloadType = beanData.payloadType();
         PayloadSchemaObject payloadSchema = payloadService.buildSchema(payloadType);
         MessagePayload payload = MessagePayload.of(
@@ -100,18 +101,14 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 .bindings(buildMessageBinding())
                 .build();
 
-        var builder = Operation.builder()
+        return Operation.builder()
+                .operationId(operationId)
+                .action(beanData.beanType().toOperationAction())
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(channelId))
                 .messages(List.of(MessageReference.toChannelMessage(channelId, message)))
-                .bindings(buildOperationBinding());
-        if (beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER) {
-            builder.action(OperationAction.RECEIVE);
-        } else {
-            builder.action(OperationAction.SEND);
-        }
-
-        return builder.build();
+                .bindings(buildOperationBinding())
+                .build();
     }
 
     private Map<String, MessageBinding> buildMessageBinding() {
@@ -139,12 +136,5 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 .map(Server::getProtocol)
                 .orElseThrow(() ->
                         new IllegalStateException("There must be at least one server define in the AsyncApiDocker"));
-    }
-
-    private String buildOperationId(FunctionalChannelBeanData beanData, String channelId) {
-        String operationName =
-                beanData.beanType() == FunctionalChannelBeanData.BeanType.CONSUMER ? "publish" : "subscribe";
-
-        return String.format("%s_%s_%s", channelId, operationName, beanData.elementName());
     }
 }

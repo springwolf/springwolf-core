@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.model.operation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.ExtendableObject;
@@ -10,11 +11,13 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.security_scheme.SecurityScheme;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +33,15 @@ import java.util.Map;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Operation extends ExtendableObject {
+    /**
+     * The key represents the operation identifier. The operationId value is case-sensitive. Tools and libraries MAY use
+     * the operationId value to uniquely identify a operation, therefore, it is RECOMMENDED to follow common programming
+     * naming conventions.
+     */
+    @JsonIgnore
+    @Setter(AccessLevel.NONE)
+    private String operationId;
+
     /**
      * Required. Use send when it's expected that the application will send a message to the given channel,
      * and receive when the application should expect receiving messages from the given channel.
