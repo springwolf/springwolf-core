@@ -43,13 +43,13 @@ public class SpringAnnotationClassLevelOperationsScanner<
             Class<?> component, Set<MethodAndAnnotation<MethodAnnotation>> annotatedMethods) {
         ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotationOrThrow(classAnnotationClass, component);
 
-        String channelId = bindingFactory.getChannelId(classAnnotation);
+        String channelId = bindingFactory.getChannelId(classAnnotation, component);
         String operationId =
                 StringUtils.joinWith("_", channelId, OperationAction.RECEIVE.type, component.getSimpleName());
 
         Set<Method> methods =
                 annotatedMethods.stream().map(MethodAndAnnotation::method).collect(Collectors.toSet());
-        Operation operation = springAnnotationOperationsService.buildOperation(classAnnotation, methods);
+        Operation operation = springAnnotationOperationsService.buildOperation(classAnnotation, component, methods);
         annotatedMethods.forEach(
                 method -> customizers.forEach(customizer -> customizer.customize(operation, method.method())));
         return Stream.of(Map.entry(operationId, operation));

@@ -10,11 +10,11 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import java.util.Map;
 
 public interface BindingFactory<T> {
-    default String getChannelId(T annotation) {
-        return ReferenceUtil.toValidId(getChannelName(annotation));
+    default String getChannelId(T annotation, Class<?> component) {
+        return ReferenceUtil.toValidId(getChannelName(annotation, component));
     }
 
-    String getChannelName(T annotation);
+    String getChannelName(T annotation, Class<?> component);
 
     Map<String, ChannelBinding> buildChannelBinding(T annotation);
 
