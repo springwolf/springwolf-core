@@ -1,4 +1,5 @@
 [versions]
+activemq = "6.1.3"
 cutterslade-analyze = "1.10.0"
 docker-spring-boot = "9.4.0"
 gradle-nexus-publish-plugin = "2.0.0"
@@ -11,7 +12,6 @@ node-plugin = "7.1.0"
 nodeVersion = "22.9.0"
 npm = "10.8.3"
 openapi-gradle =  "1.9.0"
-org-jetbrains-kotlin = "2.0.21"
 org-junit-jupiter = "5.11.3"
 org-mockito = "5.14.2"
 org-slf4j = "2.0.16"
@@ -20,18 +20,17 @@ owasp-dependencycheck = "11.1.0"
 protobuf = "4.28.3"
 protobuf-plugin =  "0.9.4"
 spotless = "6.25.0"
-spring = "3.3.5"
-spring-cloud = "2023.0.3"
-spring-managed = "."
+spring-boot-plugin = "3.3.5"
+spring-cloud = "2023.0.3" # not managed by spring-boot-dependencies
+spring-cloud-stream = "4.1.3" # not managed by spring-boot-dependencies
 
 [libraries]
-activemq-broker = { module = "org.apache.activemq:activemq-broker", version.ref = "spring-managed" }
+activemq-broker = { module = "org.apache.activemq:activemq-broker", version.ref = "activemq" }
 amqp-client = "com.rabbitmq:amqp-client:5.22.0"
 assertj-core = "org.assertj:assertj-core:3.26.3"
 avro = "org.apache.avro:avro:1.12.0"
 awaitility = "org.awaitility:awaitility:4.2.2"
 commons-lang3 = "org.apache.commons:commons-lang3:3.17.0"
-google-java-format = "com.google.googlejavaformat:google-java-format:1.24.0"
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-core" }
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-core" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-core" }
@@ -51,20 +50,13 @@ kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version
 kafka-clients = "org.apache.kafka:kafka-clients:3.9.0"
 kafka-streams = "org.apache.kafka:kafka-streams:3.9.0"
 kafka-protobuf-serializer = { module = "io.confluent:kafka-protobuf-serializer", version.ref = "io-confluent" }
-kotlin-build-tools-impl = { module = "org.jetbrains.kotlin:kotlin-build-tools-impl", version.ref = "org-jetbrains-kotlin" }
 kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:2.0.21"
-kotlin-scripting-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable", version.ref = "org-jetbrains-kotlin" }
-kotlin-serialization-compiler-plugin-embeddable = { module = "org.jetbrains.kotlin:kotlin-serialization-compiler-plugin-embeddable", version.ref = "org-jetbrains-kotlin" }
 kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.3"
-ktfmt = "com.facebook:ktfmt:0.53"
-ktlint-cli = "com.pinterest.ktlint:ktlint-cli:1.4.1"
-log4j-core = "org.apache.logging.log4j:log4j-core:2.24.1"
 lombok = "org.projectlombok:lombok:1.18.34"
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "org-mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "org-mockito" }
 moneta = "org.javamoney:moneta:1.4.4"
 money-api = "javax.money:money-api:1.1"
-palantir-java-format = "com.palantir.javaformat:palantir-java-format:2.50.0"
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "org-slf4j" }
@@ -74,36 +66,35 @@ spring-cloud-aws-sns = { module = "io.awspring.cloud:spring-cloud-aws-sns", vers
 spring-cloud-aws-sqs = { module = "io.awspring.cloud:spring-cloud-aws-sqs", version.ref = "io-awspring-cloud" }
 spring-cloud-aws-starter-sns = { module = "io.awspring.cloud:spring-cloud-aws-starter-sns", version.ref = "io-awspring-cloud" }
 spring-cloud-aws-starter-sqs = { module = "io.awspring.cloud:spring-cloud-aws-starter-sqs", version.ref = "io-awspring-cloud" }
-spring-amqp = { module = "org.springframework.amqp:spring-amqp", version.ref = "spring-managed" }
-spring-rabbit = { module = "org.springframework.amqp:spring-rabbit", version.ref = "spring-managed" }
-spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "spring-managed" }
-spring-boot-actuator = { module = "org.springframework.boot:spring-boot-actuator", version.ref = "spring-managed" }
-spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-managed" }
-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-managed" }
-spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-managed" }
-spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-managed" }
-spring-boot-starter-artemis = { module = "org.springframework.boot:spring-boot-starter-artemis", version.ref = "spring-managed" }
-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-managed" }
-spring-boot-starter-websocket = { module = "org.springframework.boot:spring-boot-starter-websocket", version.ref = "spring-managed" }
-spring-boot-test = { module = "org.springframework.boot:spring-boot-test", version.ref = "spring-managed" }
-spring-boot-test-autoconfigure = { module = "org.springframework.boot:spring-boot-test-autoconfigure", version.ref = "spring-managed" }
+spring-amqp = { module = "org.springframework.amqp:spring-amqp" }
+spring-rabbit = { module = "org.springframework.amqp:spring-rabbit" }
+spring-boot = { module = "org.springframework.boot:spring-boot" }
+spring-boot-actuator = { module = "org.springframework.boot:spring-boot-actuator" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-artemis = { module = "org.springframework.boot:spring-boot-starter-artemis" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-websocket = { module = "org.springframework.boot:spring-boot-starter-websocket" }
+spring-boot-test = { module = "org.springframework.boot:spring-boot-test" }
+spring-boot-test-autoconfigure = { module = "org.springframework.boot:spring-boot-test-autoconfigure" }
 spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
-spring-cloud-starter-stream-kafka = { module = "org.springframework.cloud:spring-cloud-starter-stream-kafka", version.ref = "spring-managed" }
-spring-cloud-stream = { module = "org.springframework.cloud:spring-cloud-stream", version.ref = "spring-managed" }
-spring-kafka = { module = "org.springframework.kafka:spring-kafka", version.ref = "spring-managed" }
-spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test", version.ref = "spring-managed" }
-spring-security-config = { module = "org.springframework.security:spring-security-config", version.ref = "spring-managed" }
-spring-security-web = { module = "org.springframework.security:spring-security-web", version.ref = "spring-managed" }
-spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-managed" }
-spring-context = { module = "org.springframework:spring-context", version.ref = "spring-managed" }
-spring-core = { module = "org.springframework:spring-core", version.ref = "spring-managed" }
-spring-jcl = { module = "org.springframework:spring-jcl", version.ref = "spring-managed" }
-spring-jms = { module = "org.springframework:spring-jms", version.ref = "spring-managed" }
-spring-messaging = { module = "org.springframework:spring-messaging", version.ref = "spring-managed" }
-spring-test = { module = "org.springframework:spring-test", version.ref = "spring-managed" }
-spring-web = { module = "org.springframework:spring-web", version.ref = "spring-managed" }
-spring-webmvc = { module = "org.springframework:spring-webmvc", version.ref = "spring-managed" }
-spring-websocket = { module = "org.springframework:spring-websocket", version.ref = "spring-managed" }
+spring-cloud-starter-stream-kafka = { module = "org.springframework.cloud:spring-cloud-starter-stream-kafka", version.ref = "spring-cloud-stream" }
+spring-cloud-stream = { module = "org.springframework.cloud:spring-cloud-stream", version.ref = "spring-cloud-stream" }
+spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
+spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
+spring-security-config = { module = "org.springframework.security:spring-security-config" }
+spring-security-web = { module = "org.springframework.security:spring-security-web" }
+spring-beans = { module = "org.springframework:spring-beans" }
+spring-context = { module = "org.springframework:spring-context" }
+spring-core = { module = "org.springframework:spring-core" }
+spring-jcl = { module = "org.springframework:spring-jcl" }
+spring-jms = { module = "org.springframework:spring-jms" }
+spring-messaging = { module = "org.springframework:spring-messaging" }
+spring-test = { module = "org.springframework:spring-test" }
+spring-web = { module = "org.springframework:spring-web" }
+spring-webmvc = { module = "org.springframework:spring-webmvc" }
+spring-websocket = { module = "org.springframework:spring-websocket" }
 swagger-annotations-outdated = { module = "io.swagger.core.v3:swagger-annotations", version.ref = "io-swagger-core-v3" }
 swagger-annotations-jakarta = { module = "io.swagger.core.v3:swagger-annotations-jakarta", version.ref = "io-swagger-core-v3" }
 swagger-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version.ref = "io-swagger-core-v3" }
@@ -124,4 +115,4 @@ openapi-gradle = { id = "org.springdoc.openapi-gradle-plugin", version.ref = "op
 owasp-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "owasp-dependencycheck" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-spring-boot = { id = "org.springframework.boot", version.ref = "spring" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot-plugin" }
