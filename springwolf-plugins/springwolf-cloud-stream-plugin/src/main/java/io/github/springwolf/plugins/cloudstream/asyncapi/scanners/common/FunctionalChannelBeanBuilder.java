@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -38,6 +39,13 @@ public class FunctionalChannelBeanBuilder {
         if (Function.class.isAssignableFrom(type)) {
             Type inputType = getTypeGenerics(element).get(0);
             Type outputType = getTypeGenerics(element).get(1);
+
+            return Set.of(ofConsumer(element, inputType), ofSupplier(element, outputType));
+        }
+
+        if (BiFunction.class.isAssignableFrom(type)) {
+            Type inputType = getTypeGenerics(element).get(0);
+            Type outputType = getTypeGenerics(element).get(2);
 
             return Set.of(ofConsumer(element, inputType), ofSupplier(element, outputType));
         }

@@ -12,7 +12,10 @@ import org.springframework.messaging.Message;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -65,6 +68,25 @@ class FunctionalChannelBeanBuilderTest {
         }
 
         @Nested
+        class BiConsumerBean {
+            @Test
+            void testBiConsumerBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "biConsumerBean");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data)
+                        .containsExactly(new FunctionalChannelBeanData(
+                                "biConsumerBean", method, String.class, CONSUMER, "biConsumerBean-in-0"));
+            }
+
+            @Bean
+            private BiConsumer<String, Map<String, Object>> biConsumerBean() {
+                return (input, headers) -> System.out.println(input);
+            }
+        }
+
+        @Nested
         class SupplierBean {
             @Test
             void testSupplierBean() throws NoSuchMethodException {
@@ -102,6 +124,28 @@ class FunctionalChannelBeanBuilderTest {
             @Bean
             private Function<String, Integer> functionBean() {
                 return s -> 1;
+            }
+        }
+
+        @Nested
+        class BiFunctionBean {
+            @Test
+            void testBiFunctionBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "biFunctionBean");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data)
+                        .containsExactlyInAnyOrder(
+                                new FunctionalChannelBeanData(
+                                        "biFunctionBean", method, String.class, CONSUMER, "biFunctionBean-in-0"),
+                                new FunctionalChannelBeanData(
+                                        "biFunctionBean", method, Integer.class, SUPPLIER, "biFunctionBean-out-0"));
+            }
+
+            @Bean
+            private BiFunction<String, Map<String, Object>, Integer> biFunctionBean() {
+                return (s, headers) -> 1;
             }
         }
 
