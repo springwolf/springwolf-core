@@ -12,7 +12,6 @@ node-plugin = "7.1.0"
 nodeVersion = "22.9.0"
 npm = "10.8.3"
 openapi-gradle =  "1.9.0"
-org-jetbrains-kotlin = "2.0.21"
 org-junit-jupiter = "5.11.3"
 org-mockito = "5.14.2"
 org-slf4j = "2.0.16"
@@ -36,7 +35,6 @@ assertj-core = "org.assertj:assertj-core:3.26.3"
 avro = "org.apache.avro:avro:1.12.0"
 awaitility = "org.awaitility:awaitility:4.2.2"
 commons-lang3 = "org.apache.commons:commons-lang3:3.17.0"
-google-java-format = "com.google.googlejavaformat:google-java-format:1.24.0"
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-core" }
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-core" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-core" }
@@ -56,20 +54,13 @@ kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version
 kafka-clients = "org.apache.kafka:kafka-clients:3.9.0"
 kafka-streams = "org.apache.kafka:kafka-streams:3.9.0"
 kafka-protobuf-serializer = { module = "io.confluent:kafka-protobuf-serializer", version.ref = "io-confluent" }
-kotlin-build-tools-impl = { module = "org.jetbrains.kotlin:kotlin-build-tools-impl", version.ref = "org-jetbrains-kotlin" }
 kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:2.0.21"
-kotlin-scripting-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable", version.ref = "org-jetbrains-kotlin" }
-kotlin-serialization-compiler-plugin-embeddable = { module = "org.jetbrains.kotlin:kotlin-serialization-compiler-plugin-embeddable", version.ref = "org-jetbrains-kotlin" }
 kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.3"
-ktfmt = "com.facebook:ktfmt:0.53"
-ktlint-cli = "com.pinterest.ktlint:ktlint-cli:1.4.1"
-log4j-core = "org.apache.logging.log4j:log4j-core:2.24.1"
 lombok = "org.projectlombok:lombok:1.18.34"
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "org-mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "org-mockito" }
 moneta = "org.javamoney:moneta:1.4.4"
 money-api = "javax.money:money-api:1.1"
-palantir-java-format = "com.palantir.javaformat:palantir-java-format:2.50.0"
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "org-slf4j" }
@@ -85,7 +76,6 @@ spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "
 spring-boot-actuator = { module = "org.springframework.boot:spring-boot-actuator", version.ref = "spring-boot" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
-spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot" }
 spring-boot-starter-artemis = { module = "org.springframework.boot:spring-boot-starter-artemis", version.ref = "spring-boot" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
