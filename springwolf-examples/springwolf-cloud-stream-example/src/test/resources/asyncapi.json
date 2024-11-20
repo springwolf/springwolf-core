@@ -44,6 +44,28 @@
         "kafka": { }
       }
     },
+    "bifunction-output-topic": {
+      "address": "bifunction-output-topic",
+      "messages": {
+        "AnotherPayloadDto": {
+          "$ref": "#/components/messages/AnotherPayloadDto"
+        }
+      },
+      "bindings": {
+        "kafka": { }
+      }
+    },
+    "bifunction-topic": {
+      "address": "bifunction-topic",
+      "messages": {
+        "ExamplePayloadDto": {
+          "$ref": "#/components/messages/ExamplePayloadDto"
+        }
+      },
+      "bindings": {
+        "kafka": { }
+      }
+    },
     "consumer-class-topic": {
       "address": "consumer-class-topic",
       "messages": {
@@ -301,6 +323,36 @@
       "messages": [
         {
           "$ref": "#/channels/biconsumer-topic/messages/AnotherPayloadDto"
+        }
+      ]
+    },
+    "bifunction-output-topic_subscribe_biProcess": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/bifunction-output-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/bifunction-output-topic/messages/AnotherPayloadDto"
+        }
+      ]
+    },
+    "bifunction-topic_publish_biProcess": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/bifunction-topic"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/bifunction-topic/messages/ExamplePayloadDto"
         }
       ]
     },

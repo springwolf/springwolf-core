@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -24,6 +25,16 @@ public class CloudstreamConfiguration {
     public Function<ExamplePayloadDto, AnotherPayloadDto> process() {
         return input -> {
             log.info("Received new message in example-topic: {}", input);
+            AnotherPayloadDto output = new AnotherPayloadDto("foo", input);
+            log.info("Publishing output: {}", output);
+            return output;
+        };
+    }
+
+    @Bean
+    public BiFunction<ExamplePayloadDto, Map<String, Object>, AnotherPayloadDto> biProcess() {
+        return (input, headers) -> {
+            log.info("Received new message in bifunction-topic: {}. Headers: {}", input, headers);
             AnotherPayloadDto output = new AnotherPayloadDto("foo", input);
             log.info("Publishing output: {}", output);
             return output;

@@ -55,6 +55,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -341,6 +342,90 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     }
 
     @Test
+    void testBiFunctionBinding() {
+        // Given a binding "spring.cloud.stream.bindings.testFunction-in-0.destination=test-in-topic"
+        // And a binding "spring.cloud.stream.bindings.testFunction-out-0.destination=test-output-topic"
+        String inputTopicName = "test-in-topic";
+        BindingProperties testBiFunctionInBinding = new BindingProperties();
+        testBiFunctionInBinding.setDestination(inputTopicName);
+
+        String outputTopicName = "test-out-topic";
+        BindingProperties testBiFunctionOutBinding = new BindingProperties();
+        testBiFunctionOutBinding.setDestination(outputTopicName);
+        when(bindingServiceProperties.getBindings())
+                .thenReturn(Map.of(
+                        "testBiFunction-in-0", testBiFunctionInBinding,
+                        "testBiFunction-out-0", testBiFunctionOutBinding));
+
+        // When scan is called
+        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
+        Map<String, Operation> actualOperations = operationsScanner.scan();
+
+        // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
+        MessageObject subscribeMessage = MessageObject.builder()
+                .name(Integer.class.getName())
+                .title(Integer.class.getSimpleName())
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(Number.class.getSimpleName()))
+                        .build()))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .build();
+
+        Operation subscribeOperation = Operation.builder()
+                .bindings(operationBinding)
+                .action(OperationAction.SEND)
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .channel(ChannelReference.fromChannel(outputTopicName))
+                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, subscribeMessage)))
+                .build();
+
+        ChannelObject subscribeChannel = ChannelObject.builder()
+                .channelId(outputTopicName)
+                .address(outputTopicName)
+                .bindings(channelBinding)
+                .messages(
+                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
+                .build();
+
+        MessageObject publishMessage = MessageObject.builder()
+                .name(String.class.getName())
+                .title(String.class.getSimpleName())
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(String.class.getName()))
+                        .build()))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .build();
+
+        Operation publishOperation = Operation.builder()
+                .bindings(operationBinding)
+                .action(OperationAction.RECEIVE)
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .channel(ChannelReference.fromChannel(inputTopicName))
+                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, publishMessage)))
+                .build();
+
+        ChannelObject publishChannel = ChannelObject.builder()
+                .channelId(inputTopicName)
+                .address(inputTopicName)
+                .bindings(channelBinding)
+                .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
+                .build();
+
+        assertThat(actualChannels)
+                .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
+        assertThat(actualOperations)
+                .contains(
+                        Map.entry("test-in-topic_publish_testBiFunction", publishOperation),
+                        Map.entry("test-out-topic_subscribe_testBiFunction", subscribeOperation));
+    }
+
+    @Test
     void testKStreamFunctionBinding() {
         // Given a binding "spring.cloud.stream.bindings.kStreamTestFunction-in-0.destination=test-in-topic"
         // And a binding "spring.cloud.stream.bindings.kStreamTestFunction-out-0.destination=test-output-topic"
@@ -528,6 +613,11 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         @Bean
         public Function<String, Integer> testFunction() {
             return s -> 1;
+        }
+
+        @Bean
+        public BiFunction<String, Map<String, Object>, Integer> testBiFunction() {
+            return (value, headers) -> 1;
         }
 
         @Bean
