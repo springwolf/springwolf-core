@@ -31,8 +31,8 @@ class SendToCustomizerTest {
     void customize() throws NoSuchMethodException {
         // given
         Operation operation = new Operation();
-        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_ID);
-        when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL_ID);
+        when(bindingFactory.getChannelId(any(), any())).thenReturn(CHANNEL_ID);
+        when(bindingFactory.getChannelName(any(), any())).thenReturn(CHANNEL_ID);
         when(payloadService.extractSchema(any())).thenReturn(new PayloadSchemaObject(MESSAGE_ID, MESSAGE_ID, null));
 
         // when

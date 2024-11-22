@@ -29,7 +29,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 
@@ -46,8 +45,8 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    public KafkaBindingFactory kafkaBindingFactory(StringValueResolver stringValueResolver) {
-        return new KafkaBindingFactory(stringValueResolver);
+    public KafkaBindingFactory kafkaBindingFactory() {
+        return new KafkaBindingFactory();
     }
 
     @Bean

@@ -43,14 +43,16 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
     private Map.Entry<String, Operation> mapMethodToOperation(MethodAndAnnotation<MethodAnnotation> method) {
         MethodAnnotation annotation = AnnotationUtil.findFirstAnnotationOrThrow(methodAnnotationClass, method.method());
 
-        String channelId = bindingFactory.getChannelId(annotation);
+        String channelId =
+                bindingFactory.getChannelId(annotation, method.method().getDeclaringClass());
         String operationId = StringUtils.joinWith(
                 "_", channelId, OperationAction.RECEIVE.type, method.method().getName());
 
         PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method.method());
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
 
-        Operation operation = springAnnotationOperationService.buildOperation(annotation, payloadSchema, headerSchema);
+        Operation operation = springAnnotationOperationService.buildOperation(
+                annotation, method.method().getDeclaringClass(), payloadSchema, headerSchema);
         customizers.forEach(customizer -> customizer.customize(operation, method.method()));
         return Map.entry(operationId, operation);
     }

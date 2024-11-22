@@ -20,7 +20,7 @@ public class StompBindingSendToFactory implements BindingFactory<SendTo> {
     private final StringValueResolver stringValueResolver;
 
     @Override
-    public String getChannelName(SendTo annotation) {
+    public String getChannelName(SendTo annotation, Class<?> component) {
         return properties.getEndpoint().getApp() + SendToUtil.getChannelName(annotation, stringValueResolver);
     }
 

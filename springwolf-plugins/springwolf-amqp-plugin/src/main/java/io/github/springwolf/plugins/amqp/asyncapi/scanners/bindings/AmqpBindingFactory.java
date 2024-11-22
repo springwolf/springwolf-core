@@ -29,12 +29,12 @@ public class AmqpBindingFactory implements BindingFactory<RabbitListener> {
     }
 
     @Override
-    public String getChannelName(RabbitListener annotation) {
+    public String getChannelName(RabbitListener annotation, Class<?> component) {
         return RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
     }
 
     @Override
-    public String getChannelId(RabbitListener annotation) {
+    public String getChannelId(RabbitListener annotation, Class<?> component) {
         return RabbitListenerUtil.getChannelId(annotation, stringValueResolver);
     }
 

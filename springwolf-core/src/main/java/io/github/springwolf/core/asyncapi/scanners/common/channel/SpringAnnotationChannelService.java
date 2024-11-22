@@ -18,10 +18,10 @@ public class SpringAnnotationChannelService<Annotation extends java.lang.annotat
 
     private final BindingFactory<Annotation> bindingFactory;
 
-    public ChannelObject buildChannel(Annotation annotation, Map<String, Message> messages) {
+    public ChannelObject buildChannel(Annotation annotation, Class<?> component, Map<String, Message> messages) {
         Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(annotation);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-        String channelName = bindingFactory.getChannelName(annotation);
+        String channelName = bindingFactory.getChannelName(annotation, component);
         return ChannelObject.builder()
                 .channelId(ReferenceUtil.toValidId(channelName))
                 .address(channelName)

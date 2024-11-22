@@ -41,14 +41,14 @@ class SpringAnnotationMethodLevelOperationsScannerTest {
 
     @BeforeEach
     void setUp() {
-        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_ID);
+        when(bindingFactory.getChannelId(any(), any())).thenReturn(CHANNEL_ID);
     }
 
     @Test
     void scan_componentHasTestListenerMethods() {
         // given
         Operation operation = Operation.builder().build();
-        when(springAnnotationOperationService.buildOperation(any(), any(), any()))
+        when(springAnnotationOperationService.buildOperation(any(), any(), any(), any()))
                 .thenReturn(operation);
 
         // when
@@ -63,7 +63,7 @@ class SpringAnnotationMethodLevelOperationsScannerTest {
     @Test
     void operationCustomizerIsCalled() { // given
         Operation operation = Operation.builder().build();
-        when(springAnnotationOperationService.buildOperation(any(), any(), any()))
+        when(springAnnotationOperationService.buildOperation(any(), any(), any(), any()))
                 .thenReturn(operation);
 
         // when

@@ -40,7 +40,7 @@ class SpringAnnotationOperationServiceTest {
     @BeforeEach
     void setUp() {
         // when
-        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_ID);
+        when(bindingFactory.getChannelId(any(), any())).thenReturn(CHANNEL_ID);
         doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any());
     }
 
@@ -59,8 +59,8 @@ class SpringAnnotationOperationServiceTest {
                 .thenReturn(messageObject);
 
         // when
-        Operation operations =
-                springAnnotationOperationService.buildOperation(annotation, payloadSchemaName, headerSchema);
+        Operation operations = springAnnotationOperationService.buildOperation(
+                annotation, ClassWithTestListenerAnnotation.class, payloadSchemaName, headerSchema);
 
         // then
         Operation expectedOperation = Operation.builder()

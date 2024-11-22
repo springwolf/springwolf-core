@@ -42,14 +42,15 @@ class SpringAnnotationClassLevelOperationsScannerTest {
 
     @BeforeEach
     void setUp() {
-        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_NAME_ID);
+        when(bindingFactory.getChannelId(any(), any())).thenReturn(CHANNEL_NAME_ID);
     }
 
     @Test
     void scan() {
         // given
         Operation operation = Operation.builder().build();
-        when(springAnnotationOperationsService.buildOperation(any(), anySet())).thenReturn(operation);
+        when(springAnnotationOperationsService.buildOperation(any(), any(), anySet()))
+                .thenReturn(operation);
 
         // when
         List<Map.Entry<String, Operation>> operations =
@@ -64,7 +65,8 @@ class SpringAnnotationClassLevelOperationsScannerTest {
     void operationCustomizerIsCalled() {
         // given
         Operation operation = Operation.builder().build();
-        when(springAnnotationOperationsService.buildOperation(any(), anySet())).thenReturn(operation);
+        when(springAnnotationOperationsService.buildOperation(any(), any(), anySet()))
+                .thenReturn(operation);
 
         // when
         scanner.scan(ClassWithTestListenerAnnotation.class).toList();

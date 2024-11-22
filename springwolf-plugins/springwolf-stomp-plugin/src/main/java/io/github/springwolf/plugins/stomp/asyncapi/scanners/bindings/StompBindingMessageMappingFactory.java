@@ -20,7 +20,7 @@ public class StompBindingMessageMappingFactory implements BindingFactory<Message
     private final StringValueResolver stringValueResolver;
 
     @Override
-    public String getChannelName(MessageMapping annotation) {
+    public String getChannelName(MessageMapping annotation, Class<?> component) {
         return properties.getEndpoint().getApp() + MessageMappingUtil.getChannelName(annotation, stringValueResolver);
     }
 

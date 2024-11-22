@@ -23,16 +23,17 @@ public class SpringAnnotationOperationsService<ClassAnnotation extends Annotatio
     private final BindingFactory<ClassAnnotation> bindingFactory;
     private final SpringAnnotationMessagesService<ClassAnnotation> springAnnotationMessagesService;
 
-    public Operation buildOperation(ClassAnnotation classAnnotation, Set<Method> methods) {
+    public Operation buildOperation(ClassAnnotation classAnnotation, Class<?> component, Set<Method> methods) {
         var messages = springAnnotationMessagesService.buildMessages(
-                classAnnotation, methods, SpringAnnotationMessagesService.MessageType.OPERATION);
-        return buildOperation(classAnnotation, messages);
+                classAnnotation, component, methods, SpringAnnotationMessagesService.MessageType.OPERATION);
+        return buildOperation(classAnnotation, component, messages);
     }
 
-    private Operation buildOperation(ClassAnnotation classAnnotation, Map<String, MessageReference> messages) {
+    private Operation buildOperation(
+            ClassAnnotation classAnnotation, Class<?> component, Map<String, MessageReference> messages) {
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(classAnnotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        String channelName = bindingFactory.getChannelName(classAnnotation);
+        String channelName = bindingFactory.getChannelName(classAnnotation, component);
         String channelId = ReferenceUtil.toValidId(channelName);
 
         return Operation.builder()

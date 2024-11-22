@@ -48,6 +48,7 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
         MessageObject message = springAnnotationMessageService.buildMessage(annotation, payloadSchema, headerSchema);
         Map<String, Message> messages = Map.of(message.getMessageId(), MessageReference.toComponentMessage(message));
 
-        return springAnnotationChannelService.buildChannel(annotation, messages);
+        return springAnnotationChannelService.buildChannel(
+                annotation, method.method().getDeclaringClass(), messages);
     }
 }

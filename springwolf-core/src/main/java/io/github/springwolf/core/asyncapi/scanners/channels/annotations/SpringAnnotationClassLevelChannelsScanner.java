@@ -45,12 +45,13 @@ public class SpringAnnotationClassLevelChannelsScanner<
         Set<Method> methods =
                 annotatedMethods.stream().map(MethodAndAnnotation::method).collect(Collectors.toSet());
         Map<String, Message> messages = new HashMap<>(springAnnotationMessagesService.buildMessages(
-                classAnnotation, methods, SpringAnnotationMessagesService.MessageType.CHANNEL));
+                classAnnotation, component, methods, SpringAnnotationMessagesService.MessageType.CHANNEL));
 
-        return mapClassToChannel(classAnnotation, messages);
+        return mapClassToChannel(classAnnotation, component, messages);
     }
 
-    private Stream<ChannelObject> mapClassToChannel(ClassAnnotation classAnnotation, Map<String, Message> messages) {
-        return Stream.of(springAnnotationChannelService.buildChannel(classAnnotation, messages));
+    private Stream<ChannelObject> mapClassToChannel(
+            ClassAnnotation classAnnotation, Class<?> component, Map<String, Message> messages) {
+        return Stream.of(springAnnotationChannelService.buildChannel(classAnnotation, component, messages));
     }
 }

@@ -17,7 +17,7 @@ public class JmsBindingFactory implements BindingFactory<JmsListener> {
     private final StringValueResolver stringValueResolver;
 
     @Override
-    public String getChannelName(JmsListener annotation) {
+    public String getChannelName(JmsListener annotation, Class<?> component) {
         return JmsListenerUtil.getChannelName(annotation, stringValueResolver);
     }
 
