@@ -36,6 +36,7 @@ class DefaultAsyncApiDocketServiceTest {
         info.setTitle("some-title");
         info.setVersion("some-version");
         info.setDescription("some-description");
+        info.setTermsOfService("some-terms-of-service");
         info.setLicense(new License("license-name", "license-url"));
         info.setContact(new Contact("contact-name", "contact-url", "contact-email"));
         info.setExtensionFields(Map.of("x-api-name", "api-name"));
@@ -55,6 +56,7 @@ class DefaultAsyncApiDocketServiceTest {
         assertThat(asyncApiDocket.getInfo().getTitle()).isEqualTo(info.getTitle());
         assertThat(asyncApiDocket.getInfo().getVersion()).isEqualTo(info.getVersion());
         assertThat(asyncApiDocket.getInfo().getDescription()).isEqualTo(info.getDescription());
+        assertThat(asyncApiDocket.getInfo().getTermsOfService()).isEqualTo(info.getTermsOfService());
         assertThat(asyncApiDocket.getInfo().getLicense()).isEqualTo(info.getLicense());
         assertThat(asyncApiDocket.getInfo().getContact()).isEqualTo(info.getContact());
         assertThat(asyncApiDocket.getInfo().getExtensionFields().get("x-api-name"))

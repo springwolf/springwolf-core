@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
+import static io.github.springwolf.core.configuration.docket.AsyncApiInfoMapper.mapInfo;
 import static io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX;
 
 @Slf4j
@@ -63,26 +64,7 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
                     + " is not set.");
         }
 
-        Info asyncapiInfo = mapInfo(configDocketInfo);
-
-        return asyncapiInfo;
-    }
-
-    public static Info mapInfo(SpringwolfConfigProperties.ConfigDocket.Info configDocketInfo) {
-        Info asyncapiInfo = Info.builder()
-                .version(configDocketInfo.getVersion())
-                .title(configDocketInfo.getTitle())
-                .description(configDocketInfo.getDescription())
-                .contact(configDocketInfo.getContact())
-                .license(configDocketInfo.getLicense())
-                .build();
-
-        // copy extension fields from configDocketInfo to asyncapiInfo.
-        if (configDocketInfo.getExtensionFields() != null) {
-            Map<String, Object> extFieldsMap = Map.copyOf(configDocketInfo.getExtensionFields());
-            asyncapiInfo.setExtensionFields(extFieldsMap);
-        }
-        return asyncapiInfo;
+        return mapInfo(configDocketInfo);
     }
 
     private static Map<String, Server> buildServers(Map<String, Server> servers) {

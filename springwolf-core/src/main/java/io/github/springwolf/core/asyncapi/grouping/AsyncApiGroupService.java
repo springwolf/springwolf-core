@@ -2,7 +2,6 @@
 package io.github.springwolf.core.asyncapi.grouping;
 
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService.mapInfo;
+import static io.github.springwolf.core.configuration.docket.AsyncApiInfoMapper.mapInfo;
+import static io.github.springwolf.core.configuration.docket.AsyncApiInfoMapper.mergeInfo;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,7 +27,7 @@ public class AsyncApiGroupService {
         return getAsyncApiGroups()
                 .map(group -> {
                     AsyncAPI groupedApi = groupingService.groupAPI(asyncAPI, group);
-                    groupedApi.setInfo(merge(groupedApi.getInfo(), group.getGroupInfo()));
+                    groupedApi.setInfo(mergeInfo(groupedApi.getInfo(), group.getGroupInfo()));
                     return Map.entry(group.getGroupName(), groupedApi);
                 })
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -50,12 +50,12 @@ public class AsyncApiGroupService {
         }
 
         int allItemCount = group.getActionToMatch().size()
-                           + group.getChannelNameToMatch().size()
-                           + group.getMessageNameToMatch().size();
+                + group.getChannelNameToMatch().size()
+                + group.getMessageNameToMatch().size();
         if (allItemCount != 0
-            && group.getActionToMatch().size() != allItemCount
-            && channelNameToMatch.size() != allItemCount
-            && messageNameToMatch.size() != allItemCount) {
+                && group.getActionToMatch().size() != allItemCount
+                && channelNameToMatch.size() != allItemCount
+                && messageNameToMatch.size() != allItemCount) {
             throw new IllegalArgumentException(
                     "AsyncApiGroup %s must specify at most one filter criteria".formatted(groupName));
         }
@@ -69,20 +69,5 @@ public class AsyncApiGroupService {
                 .build();
         log.debug("Loaded AsyncApiGroup from configuration: {}", asyncApiGroup);
         return asyncApiGroup;
-    }
-
-    public static Info merge(Info original, Info updates) {
-        return Info.builder()
-                .title(updates.getTitle() != null ? updates.getTitle() : original.getTitle())
-                .version(updates.getVersion() != null ? updates.getVersion() : original.getVersion())
-                .description(updates.getDescription() != null ? updates.getDescription() : original.getDescription())
-                .termsOfService(updates.getTermsOfService() != null ? updates.getTermsOfService() : original.getTermsOfService())
-                .contact(updates.getContact() != null ? updates.getContact() : original.getContact())
-                .license(updates.getLicense() != null ? updates.getLicense() : original.getLicense())
-                .tags(updates.getTags() != null ? updates.getTags() : original.getTags())
-                .externalDocs(updates.getExternalDocs() != null ? updates.getExternalDocs() : original.getExternalDocs())
-                // TODO fixme
-                //.extensionFields(updates.getExtensionFields() != null ? updates.getExtensionFields() : original.getExtensionFields())
-                .build();
     }
 }

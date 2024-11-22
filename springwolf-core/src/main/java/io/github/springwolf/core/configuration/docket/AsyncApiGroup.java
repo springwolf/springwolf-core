@@ -24,7 +24,8 @@ import java.util.regex.Pattern;
 public class AsyncApiGroup {
     private final String groupName;
 
-    private final Info groupInfo;
+    @Builder.Default
+    private final Info groupInfo = Info.builder().build();
 
     @Builder.Default
     private final List<OperationAction> operationActionsToKeep = Collections.emptyList();

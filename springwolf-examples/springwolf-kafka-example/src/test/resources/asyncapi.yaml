@@ -4,6 +4,7 @@ info:
   version: 1.0.0
   description: "Springwolf example project to demonstrate springwolfs abilities, including\
     \ **markdown** support for descriptions."
+  termsOfService: http://asyncapi.org/terms
   contact:
     name: springwolf
     url: https://github.com/springwolf/springwolf-core

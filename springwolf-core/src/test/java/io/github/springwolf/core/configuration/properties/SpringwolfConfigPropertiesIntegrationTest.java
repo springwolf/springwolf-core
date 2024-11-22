@@ -175,6 +175,8 @@ public class SpringwolfConfigPropertiesIntegrationTest {
     @TestPropertySource(
             properties = {
                 "springwolf.docket.group-configs[0].group=SEND-GROUP",
+                "springwolf.docket.group-configs[0].info.title=title",
+                "springwolf.docket.group-configs[0].info.extension-fields.x-api-name=api-name",
                 "springwolf.docket.group-configs[0].action-to-match=send",
                 "springwolf.docket.group-configs[0].channel-name-to-match=/*,a*b",
                 "springwolf.docket.group-configs[0].message-name-to-match=/*",
@@ -196,6 +198,8 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             sendGroup.setActionToMatch(List.of(OperationAction.SEND));
             sendGroup.setChannelNameToMatch(List.of("/*", "a*b"));
             sendGroup.setMessageNameToMatch(List.of("/*"));
+            sendGroup.getInfo().setTitle("title");
+            sendGroup.getInfo().setExtensionFields(Map.of("x-generator", "springwolf", "x-api-name", "api-name"));
             Group receiveGroup = new Group();
 
             // when
