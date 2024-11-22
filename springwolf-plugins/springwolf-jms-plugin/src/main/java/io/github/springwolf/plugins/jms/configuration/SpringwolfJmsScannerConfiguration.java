@@ -82,7 +82,6 @@ public class SpringwolfJmsScannerConfiguration {
         SpringAnnotationMethodLevelOperationsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         JmsListener.class,
-                        jmsBindingFactory,
                         headerClassExtractor,
                         payloadMethodParameterService,
                         springAnnotationOperationService,

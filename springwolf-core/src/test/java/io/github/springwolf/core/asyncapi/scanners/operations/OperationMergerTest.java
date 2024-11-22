@@ -34,21 +34,24 @@ class OperationMergerTest {
     }
 
     @Test
-    void shouldMergeEqualoperationIdsIntoOneOperation() {
+    void shouldMergeEqualOperationIdsIntoOneOperation() {
         // given
         String operationId = "operation";
         Operation publishOperation = Operation.builder()
+                .operationId(operationId)
                 .action(OperationAction.SEND)
                 .title("publisher")
                 .build();
         Operation subscribeOperation = Operation.builder()
+                .operationId(operationId)
                 .action(OperationAction.RECEIVE)
                 .title("subscribe")
                 .build();
 
         // when
-        Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(
-                Arrays.asList(Map.entry(operationId, publishOperation), Map.entry(operationId, subscribeOperation)));
+        Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(Arrays.asList(
+                Map.entry(publishOperation.getOperationId(), publishOperation),
+                Map.entry(subscribeOperation.getOperationId(), subscribeOperation)));
 
         // then
         assertThat(mergedOperations).hasSize(1);
@@ -58,14 +61,19 @@ class OperationMergerTest {
     void shouldUseFirstOperationFound() {
         // given
         String operationId = "operation";
-        Operation senderOperation =
-                Operation.builder().action(OperationAction.SEND).build();
-        Operation receiverOperation =
-                Operation.builder().action(OperationAction.RECEIVE).build();
+        Operation senderOperation = Operation.builder()
+                .operationId(operationId)
+                .action(OperationAction.SEND)
+                .build();
+        Operation receiverOperation = Operation.builder()
+                .operationId(operationId)
+                .action(OperationAction.RECEIVE)
+                .build();
 
         // when
-        Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(
-                Arrays.asList(Map.entry(operationId, senderOperation), Map.entry(operationId, receiverOperation)));
+        Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(Arrays.asList(
+                Map.entry(senderOperation.getOperationId(), senderOperation),
+                Map.entry(receiverOperation.getOperationId(), receiverOperation)));
 
         // then
         assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationId, it -> {
@@ -95,16 +103,19 @@ class OperationMergerTest {
         MessageReference messageRef3 = MessageReference.toChannelMessage(channelId, message3);
 
         Operation senderOperation1 = Operation.builder()
+                .operationId(operationId)
                 .action(OperationAction.SEND)
                 .title("sender1")
                 .messages(List.of(messageRef1))
                 .build();
         Operation senderOperation2 = Operation.builder()
+                .operationId(operationId)
                 .action(OperationAction.SEND)
                 .title("sender2")
                 .messages(List.of(messageRef2))
                 .build();
         Operation senderOperation3 = Operation.builder()
+                .operationId(operationId)
                 .action(OperationAction.SEND)
                 .title("sender3")
                 .messages(List.of(messageRef3))
@@ -112,9 +123,9 @@ class OperationMergerTest {
 
         // when
         Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(List.of(
-                Map.entry(operationId, senderOperation1),
-                Map.entry(operationId, senderOperation2),
-                Map.entry(operationId, senderOperation3)));
+                Map.entry(senderOperation1.getOperationId(), senderOperation1),
+                Map.entry(senderOperation2.getOperationId(), senderOperation2),
+                Map.entry(senderOperation3.getOperationId(), senderOperation3)));
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2

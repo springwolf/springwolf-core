@@ -21,6 +21,7 @@ import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -35,20 +36,20 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
     public ChannelObject buildChannel(MethodAndAnnotation<Annotation> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
-        String channelName = stringValueResolver.resolveStringValue(operationAnnotation.channelName());
-        String channelId = ReferenceUtil.toValidId(channelName);
 
         ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
         List<String> servers = AsyncAnnotationUtil.getServers(operationAnnotation, stringValueResolver);
         if (servers != null && !servers.isEmpty()) {
             Operation operation = asyncAnnotationOperationService.buildOperation(
-                    operationAnnotation, methodAndAnnotation.method(), channelId);
+                    operationAnnotation, Set.of(methodAndAnnotation.method()));
             validateServers(servers, operation.getTitle());
 
             channelBuilder.servers(
                     servers.stream().map(ServerReference::fromServer).toList());
         }
 
+        String channelName = stringValueResolver.resolveStringValue(operationAnnotation.channelName());
+        String channelId = ReferenceUtil.toValidId(channelName);
         MessageObject message =
                 asyncAnnotationMessageService.buildMessage(operationAnnotation, methodAndAnnotation.method());
 

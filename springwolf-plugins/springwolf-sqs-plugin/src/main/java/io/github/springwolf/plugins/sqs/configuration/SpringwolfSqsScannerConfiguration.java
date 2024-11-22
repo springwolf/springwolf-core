@@ -81,7 +81,6 @@ public class SpringwolfSqsScannerConfiguration {
         SpringAnnotationMethodLevelOperationsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         SqsListener.class,
-                        sqsBindingFactory,
                         headerClassExtractor,
                         payloadMethodParameterService,
                         springAnnotationOperationService,
