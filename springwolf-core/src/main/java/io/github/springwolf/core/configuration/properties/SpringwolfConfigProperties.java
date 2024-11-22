@@ -232,15 +232,25 @@ public class SpringwolfConfigProperties {
     @Getter
     @Setter
     public static class UI {
-        /**
-         * Allows to show or hide the bindings in the UI when opening the UI.
-         */
-        private boolean initiallyShowBindings = true;
 
         /**
-         * Allows to show or hide the headers in the UI when opening the UI.
+         * Initial configuration when opening the UI.
          */
-        private boolean initiallyShowHeaders = true;
+        private Defaults defaults = new Defaults();
+
+        @Getter
+        @Setter
+        public static class Defaults {
+            /**
+             * Allows to show or hide the bindings in the UI when opening the UI.
+             */
+            private boolean showBindings = true;
+
+            /**
+             * Allows to show or hide the headers in the UI when opening the UI.
+             */
+            private boolean showHeaders = true;
+        }
     }
 
     @Getter

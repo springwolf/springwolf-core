@@ -212,7 +212,7 @@ public class SpringwolfConfigPropertiesIntegrationTest {
     @ExtendWith(SpringExtension.class)
     @EnableConfigurationProperties(SpringwolfConfigProperties.class)
     @TestPropertySource(
-            properties = {"springwolf.ui.initially-show-bindings=false", "springwolf.ui.initially-show-headers=true"})
+            properties = {"springwolf.ui.defaults.show-bindings=false", "springwolf.ui.defaults.show-headers=true"})
     class UiConfigTest {
 
         @Autowired
@@ -224,8 +224,8 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             final SpringwolfConfigProperties.UI actual = properties.getUi();
 
             // then
-            assertThat(actual.isInitiallyShowBindings()).isFalse();
-            assertThat(actual.isInitiallyShowHeaders()).isTrue();
+            assertThat(actual.getDefaults().isShowBindings()).isFalse();
+            assertThat(actual.getDefaults().isShowHeaders()).isTrue();
         }
     }
 
@@ -243,8 +243,8 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             final SpringwolfConfigProperties.UI actual = properties.getUi();
 
             // then
-            assertThat(actual.isInitiallyShowBindings()).isTrue();
-            assertThat(actual.isInitiallyShowHeaders()).isTrue();
+            assertThat(actual.getDefaults().isShowBindings()).isTrue();
+            assertThat(actual.getDefaults().isShowHeaders()).isTrue();
         }
     }
 }
