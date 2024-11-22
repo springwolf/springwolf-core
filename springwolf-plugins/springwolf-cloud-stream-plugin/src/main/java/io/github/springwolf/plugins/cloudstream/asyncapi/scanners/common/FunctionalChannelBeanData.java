@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common;
 
+import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Type;
 
@@ -20,6 +22,13 @@ public record FunctionalChannelBeanData(
 
     public enum BeanType {
         CONSUMER,
-        SUPPLIER
+        SUPPLIER;
+
+        public OperationAction toOperationAction() {
+            return switch (this) {
+                case CONSUMER -> OperationAction.RECEIVE;
+                case SUPPLIER -> OperationAction.SEND;
+            };
+        }
     }
 }
