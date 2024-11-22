@@ -226,6 +226,13 @@ public class SpringwolfConfigProperties {
              * The message names to match
              */
             private List<String> messageNameToMatch = Collections.emptyList();
+
+            /**
+             * Allows to override the info object with group specific information .
+             *
+             * @see Info
+             */
+            private Info info;
         }
     }
 

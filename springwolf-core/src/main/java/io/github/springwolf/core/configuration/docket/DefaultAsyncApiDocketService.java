@@ -63,6 +63,12 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
                     + " is not set.");
         }
 
+        Info asyncapiInfo = mapInfo(configDocketInfo);
+
+        return asyncapiInfo;
+    }
+
+    public static Info mapInfo(SpringwolfConfigProperties.ConfigDocket.Info configDocketInfo) {
         Info asyncapiInfo = Info.builder()
                 .version(configDocketInfo.getVersion())
                 .title(configDocketInfo.getTitle())
@@ -76,7 +82,6 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
             Map<String, Object> extFieldsMap = Map.copyOf(configDocketInfo.getExtensionFields());
             asyncapiInfo.setExtensionFields(extFieldsMap);
         }
-
         return asyncapiInfo;
     }
 

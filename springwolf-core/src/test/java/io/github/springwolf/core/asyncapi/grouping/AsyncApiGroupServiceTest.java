@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.grouping;
 
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -173,5 +174,32 @@ class AsyncApiGroupServiceTest {
 
         Pattern actualPattern = capturedGroup.getMessageNamesToKeep().get(0);
         assertThat(actualPattern.pattern()).isEqualTo(messages.get(0));
+    }
+
+    @Test
+    void shouldCustomizeInfoObject() {
+        // given
+        SpringwolfConfigProperties.ConfigDocket.Group group = new SpringwolfConfigProperties.ConfigDocket.Group();
+        group.setGroup("group1");
+
+        SpringwolfConfigProperties.ConfigDocket.Info groupInfo = new SpringwolfConfigProperties.ConfigDocket.Info();
+        groupInfo.setVersion("1.2.3");
+        groupInfo.setDescription("description-override");
+
+        group.setInfo(groupInfo);
+
+        when(configDocket.getGroupConfigs()).thenReturn(List.of(group));
+        Info originalInfo = new Info();
+        originalInfo.setDescription("description-original");
+        when(groupedAsyncApi.getInfo()).thenReturn(originalInfo);
+
+        // when
+        Map<String, AsyncAPI> result = asyncApiGroupService.group(asyncAPI);
+
+        // then
+        Info expectedInfo = new Info();
+        expectedInfo.setVersion("1.2.3");
+        expectedInfo.setDescription("description-override");
+        verify(groupedAsyncApi).setInfo(expectedInfo);
     }
 }
