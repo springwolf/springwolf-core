@@ -1,13 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.integrationtests;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
+import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
+import io.github.springwolf.core.integrationtests.application.fqn.FqnApplication;
 import io.github.springwolf.core.integrationtests.application.listener.ListenerApplication;
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.publisher.PublisherApplication;
@@ -151,6 +155,42 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(fooRefMessage.getRef())
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+        }
+    }
+
+    @Nested
+    @SpringBootTest(classes = FqnApplication.class)
+    @MinimalIntegrationTestContextConfiguration
+    @TestPropertySource(
+            properties = {
+                "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.fqn",
+                "springwolf.use-fqn=false",
+            })
+    class FqnTest {
+        @Autowired
+        private AsyncApiService asyncApiService;
+
+        @Autowired
+        private AsyncApiSerializerService asyncApiSerializerService;
+
+        @Test
+        void allClassesHaveSimpleNameNotFullQualifiedTest() throws JsonProcessingException {
+            AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
+            assertThat(asyncAPI).isNotNull();
+            String serialized = asyncApiSerializerService.toJsonString(asyncAPI);
+
+            assertThat(serialized)
+                    .contains(
+                            "string",
+                            "integer",
+                            FqnApplication.Foo.class.getSimpleName(),
+                            FqnApplication.Bar.class.getSimpleName(),
+                            AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())
+                    .doesNotContain(
+                            String.class.getName(),
+                            Integer.class.getName(),
+                            FqnApplication.Foo.class.getName(),
+                            FqnApplication.Bar.class.getName());
         }
     }
 
