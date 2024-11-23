@@ -123,6 +123,7 @@ public class SpringwolfAmqpScannerConfiguration {
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         RabbitListener.class,
                         RabbitHandler.class,
+                        amqpBindingFactory,
                         springAnnotationOperationsService,
                         operationCustomizers);
 
@@ -177,6 +178,7 @@ public class SpringwolfAmqpScannerConfiguration {
         SpringAnnotationMethodLevelOperationsScanner<RabbitListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         RabbitListener.class,
+                        amqpBindingFactory,
                         headerClassExtractor,
                         payloadMethodParameterService,
                         springAnnotationOperationService,

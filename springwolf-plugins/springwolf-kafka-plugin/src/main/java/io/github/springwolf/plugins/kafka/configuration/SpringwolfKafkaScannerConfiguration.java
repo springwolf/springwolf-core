@@ -115,6 +115,7 @@ public class SpringwolfKafkaScannerConfiguration {
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         KafkaListener.class,
                         KafkaHandler.class,
+                        kafkaBindingFactory,
                         springAnnotationOperationsService,
                         operationCustomizers);
 
@@ -168,6 +169,7 @@ public class SpringwolfKafkaScannerConfiguration {
         SpringAnnotationMethodLevelOperationsScanner<KafkaListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         KafkaListener.class,
+                        kafkaBindingFactory,
                         headerClassExtractor,
                         payloadMethodParameterService,
                         springAnnotationOperationService,

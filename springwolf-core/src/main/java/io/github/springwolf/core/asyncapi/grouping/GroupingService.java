@@ -67,13 +67,14 @@ public class GroupingService {
     }
 
     private void markOperationsInChannel(AsyncAPI fullAsyncApi, MarkingContext markingContext, ChannelObject channel) {
-        fullAsyncApi.getOperations().values().stream()
+        fullAsyncApi.getOperations().entrySet().stream()
                 .filter(operationEntry -> matchesOperationInChannel(channel, operationEntry))
-                .forEach(operationEntry -> markingContext.markedOperationIds.add(operationEntry.getOperationId()));
+                .forEach(operationEntry -> markingContext.markedOperationIds.add(operationEntry.getKey()));
     }
 
-    private boolean matchesOperationInChannel(ChannelObject channel, Operation operation) {
-        return operation
+    private boolean matchesOperationInChannel(ChannelObject channel, Map.Entry<String, Operation> operationEntry) {
+        return operationEntry
+                .getValue()
                 .getChannel()
                 .getRef()
                 .equals(ChannelReference.fromChannel(channel.getChannelId()).getRef());
@@ -84,14 +85,14 @@ public class GroupingService {
             return;
         }
 
-        fullAsyncApi.getOperations().values().stream()
-                .filter(asyncApiGroup::isMatch)
-                .forEach(operation -> {
-                    markingContext.markedOperationIds.add(operation.getOperationId());
+        fullAsyncApi.getOperations().entrySet().stream()
+                .filter(operationEntry -> asyncApiGroup.isMatch(operationEntry.getValue()))
+                .forEach(operationEntry -> {
+                    markingContext.markedOperationIds.add(operationEntry.getKey());
 
-                    markChannelsForOperation(fullAsyncApi, markingContext, operation);
+                    markChannelsForOperation(fullAsyncApi, markingContext, operationEntry.getValue());
 
-                    operation.getMessages().stream()
+                    operationEntry.getValue().getMessages().stream()
                             .map(MessageReference::getRef)
                             .map(ReferenceUtil::getLastSegment)
                             .forEach(markingContext.markedComponentMessageIds::add);
@@ -150,13 +151,6 @@ public class GroupingService {
                 .filter(message -> markingContext.markedComponentMessageIds.contains(message.getMessageId()))
                 .toList();
 
-        markMessageHeadersForSchemas(messages, schemaIds);
-        markMessagePayloadsForSchemas(messages, schemaIds);
-
-        markSchemas(fullAsyncApi, markingContext, schemaIds);
-    }
-
-    private void markMessageHeadersForSchemas(List<MessageObject> messages, Set<String> schemaIds) {
         messages.stream()
                 .map(MessageObject::getHeaders)
                 .filter(Objects::nonNull)
@@ -164,9 +158,6 @@ public class GroupingService {
                 .map(MessageReference::getRef)
                 .map(ReferenceUtil::getLastSegment)
                 .forEach(schemaIds::add);
-    }
-
-    private void markMessagePayloadsForSchemas(List<MessageObject> messages, Set<String> schemaIds) {
         messages.stream()
                 .map(MessageObject::getPayload)
                 .map(MessagePayload::getMultiFormatSchema)
@@ -177,6 +168,8 @@ public class GroupingService {
                 .map(MessageReference::getRef)
                 .map(ReferenceUtil::getLastSegment)
                 .forEach(schemaIds::add);
+
+        markSchemas(fullAsyncApi, markingContext, schemaIds);
     }
 
     private void markSchemas(AsyncAPI fullAsyncApi, MarkingContext markingContext, Set<String> schemaIds) {
@@ -188,24 +181,20 @@ public class GroupingService {
                     markingContext.markedComponentSchemaIds.add(schemaEntry.getKey());
 
                     if (schemaEntry.getValue().getProperties() != null) {
-                        Set<String> nestedSchemas = findUnmarkedNestedSchemas(markingContext, schemaEntry.getValue());
+                        Set<String> nestedSchemas = schemaEntry.getValue().getProperties().values().stream()
+                                .filter(el -> el instanceof ComponentSchema)
+                                .map(el -> (ComponentSchema) el)
+                                .map(ComponentSchema::getReference)
+                                .filter(Objects::nonNull)
+                                .map(MessageReference::getRef)
+                                .map(ReferenceUtil::getLastSegment)
+                                .filter(schemaId -> !markingContext.markedComponentSchemaIds.contains(schemaId))
+                                .collect(Collectors.toSet());
                         if (!nestedSchemas.isEmpty()) {
                             markSchemas(fullAsyncApi, markingContext, nestedSchemas);
                         }
                     }
                 });
-    }
-
-    private static Set<String> findUnmarkedNestedSchemas(MarkingContext markingContext, SchemaObject schema) {
-        return schema.getProperties().values().stream()
-                .filter(el -> el instanceof ComponentSchema)
-                .map(el -> (ComponentSchema) el)
-                .map(ComponentSchema::getReference)
-                .filter(Objects::nonNull)
-                .map(MessageReference::getRef)
-                .map(ReferenceUtil::getLastSegment)
-                .filter(schemaId -> !markingContext.markedComponentSchemaIds.contains(schemaId))
-                .collect(Collectors.toSet());
     }
 
     private Map<String, ChannelObject> filterChannels(AsyncAPI fullAsyncApi, MarkingContext markingContext) {

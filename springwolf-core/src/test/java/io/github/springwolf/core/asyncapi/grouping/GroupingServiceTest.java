@@ -71,7 +71,6 @@ class GroupingServiceTest {
             .build();
 
     private final Operation sendOperation = Operation.builder()
-            .operationId("send")
             .action(OperationAction.SEND)
             .channel(ChannelReference.fromChannel(channel1))
             .messages(List.of(
@@ -79,7 +78,6 @@ class GroupingServiceTest {
                     MessageReference.toChannelMessage(channel1.getChannelId(), message2.getMessageId())))
             .build();
     private final Operation receiveOperation = Operation.builder()
-            .operationId("receive")
             .action(OperationAction.RECEIVE)
             .channel(ChannelReference.fromChannel(channel2))
             .messages(List.of(MessageReference.toChannelMessage(channel2.getChannelId(), message3.getMessageId())))

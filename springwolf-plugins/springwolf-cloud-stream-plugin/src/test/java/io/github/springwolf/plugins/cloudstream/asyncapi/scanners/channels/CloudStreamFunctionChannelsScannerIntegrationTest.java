@@ -152,7 +152,6 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         Operation expectedOperation = Operation.builder()
-                .operationId("test-consumer-input-topic_receive_testConsumer")
                 .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
@@ -162,7 +161,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
         assertThat(actualOperations)
-                .containsExactly(Map.entry("test-consumer-input-topic_receive_testConsumer", expectedOperation));
+                .containsExactly(Map.entry("test-consumer-input-topic_publish_testConsumer", expectedOperation));
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -198,7 +197,6 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         Operation expectedOperation = Operation.builder()
-                .operationId("test-biconsumer-input-topic_receive_testBiConsumer")
                 .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
@@ -208,7 +206,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
         assertThat(actualOperations)
-                .containsExactly(Map.entry("test-biconsumer-input-topic_receive_testBiConsumer", expectedOperation));
+                .containsExactly(Map.entry("test-biconsumer-input-topic_publish_testBiConsumer", expectedOperation));
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -238,7 +236,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         Operation expectedOperation = Operation.builder()
-                .operationId("test-supplier-output-topic_send_testSupplier")
+                .bindings(operationBinding)
                 .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
@@ -255,7 +253,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
         assertThat(actualOperations)
-                .containsExactly(Map.entry("test-supplier-output-topic_send_testSupplier", expectedOperation));
+                .containsExactly(Map.entry("test-supplier-output-topic_subscribe_testSupplier", expectedOperation));
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -281,34 +279,6 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
-                .name(String.class.getName())
-                .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema(String.class.getName()))
-                        .build()))
-                .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
-                .build();
-
-        Operation subscribeOperation = Operation.builder()
-                .operationId("test-in-topic_receive_testFunction")
-                .action(OperationAction.RECEIVE)
-                .bindings(operationBinding)
-                .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(inputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, subscribeMessage)))
-                .build();
-
-        ChannelObject subscribeChannel = ChannelObject.builder()
-                .channelId(inputTopicName)
-                .address(inputTopicName)
-                .bindings(channelBinding)
-                .messages(
-                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
-                .build();
-
-        MessageObject publishMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title(Integer.class.getSimpleName())
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
@@ -319,28 +289,56 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
-        Operation publishOperation = Operation.builder()
-                .operationId("test-out-topic_send_testFunction")
+        Operation subscribeOperation = Operation.builder()
+                .bindings(operationBinding)
                 .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(outputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, publishMessage)))
+                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, subscribeMessage)))
+                .build();
+
+        ChannelObject subscribeChannel = ChannelObject.builder()
+                .channelId(outputTopicName)
+                .address(outputTopicName)
+                .bindings(channelBinding)
+                .messages(
+                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
+                .build();
+
+        MessageObject publishMessage = MessageObject.builder()
+                .name(String.class.getName())
+                .title(String.class.getSimpleName())
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(String.class.getName()))
+                        .build()))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .build();
+
+        Operation publishOperation = Operation.builder()
+                .bindings(operationBinding)
+                .action(OperationAction.RECEIVE)
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .channel(ChannelReference.fromChannel(inputTopicName))
+                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, publishMessage)))
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
-                .channelId(outputTopicName)
-                .address(outputTopicName)
+                .channelId(inputTopicName)
+                .address(inputTopicName)
                 .bindings(channelBinding)
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
         assertThat(actualChannels)
-                .contains(Map.entry(inputTopicName, subscribeChannel), Map.entry(outputTopicName, publishChannel));
+                .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
         assertThat(actualOperations)
                 .contains(
-                        Map.entry("test-in-topic_receive_testFunction", subscribeOperation),
-                        Map.entry("test-out-topic_send_testFunction", publishOperation));
+                        Map.entry("test-in-topic_publish_testFunction", publishOperation),
+                        Map.entry("test-out-topic_subscribe_testFunction", subscribeOperation));
     }
 
     @Test
@@ -365,34 +363,6 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
-                .name(String.class.getName())
-                .title(String.class.getSimpleName())
-                .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema(String.class.getName()))
-                        .build()))
-                .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
-                .build();
-
-        Operation subscribeOperation = Operation.builder()
-                .operationId("test-in-topic_receive_testBiFunction")
-                .action(OperationAction.RECEIVE)
-                .bindings(operationBinding)
-                .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(inputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, subscribeMessage)))
-                .build();
-
-        ChannelObject subscribeChannel = ChannelObject.builder()
-                .channelId(inputTopicName)
-                .address(inputTopicName)
-                .bindings(channelBinding)
-                .messages(
-                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
-                .build();
-
-        MessageObject publishMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title(Integer.class.getSimpleName())
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
@@ -403,28 +373,56 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
-        Operation publishOperation = Operation.builder()
-                .operationId("test-out-topic_send_testBiFunction")
+        Operation subscribeOperation = Operation.builder()
+                .bindings(operationBinding)
                 .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(outputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, publishMessage)))
+                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, subscribeMessage)))
+                .build();
+
+        ChannelObject subscribeChannel = ChannelObject.builder()
+                .channelId(outputTopicName)
+                .address(outputTopicName)
+                .bindings(channelBinding)
+                .messages(
+                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
+                .build();
+
+        MessageObject publishMessage = MessageObject.builder()
+                .name(String.class.getName())
+                .title(String.class.getSimpleName())
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaReference.fromSchema(String.class.getName()))
+                        .build()))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .build();
+
+        Operation publishOperation = Operation.builder()
+                .bindings(operationBinding)
+                .action(OperationAction.RECEIVE)
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .channel(ChannelReference.fromChannel(inputTopicName))
+                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, publishMessage)))
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
-                .channelId(outputTopicName)
-                .address(outputTopicName)
+                .channelId(inputTopicName)
+                .address(inputTopicName)
                 .bindings(channelBinding)
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
         assertThat(actualChannels)
-                .contains(Map.entry(outputTopicName, publishChannel), Map.entry(inputTopicName, subscribeChannel));
+                .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
         assertThat(actualOperations)
                 .contains(
-                        Map.entry("test-in-topic_receive_testBiFunction", subscribeOperation),
-                        Map.entry("test-out-topic_send_testBiFunction", publishOperation));
+                        Map.entry("test-in-topic_publish_testBiFunction", publishOperation),
+                        Map.entry("test-out-topic_subscribe_testBiFunction", subscribeOperation));
     }
 
     @Test
@@ -449,34 +447,6 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
-                .name(String.class.getName())
-                .title("string")
-                .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
-                        .build()))
-                .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
-                .build();
-
-        Operation subscribeOperation = Operation.builder()
-                .operationId("test-in-topic_receive_kStreamTestFunction")
-                .action(OperationAction.RECEIVE)
-                .bindings(operationBinding)
-                .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(inputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, subscribeMessage)))
-                .build();
-
-        ChannelObject subscribeChannel = ChannelObject.builder()
-                .channelId(inputTopicName)
-                .address(inputTopicName)
-                .bindings(channelBinding)
-                .messages(
-                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
-                .build();
-
-        MessageObject publishMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title("integer")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
@@ -490,30 +460,58 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
 
-        Operation publishOperation = Operation.builder()
-                .operationId("test-out-topic_send_kStreamTestFunction")
+        Operation subscribeOperation = Operation.builder()
+                .bindings(operationBinding)
                 .action(OperationAction.SEND)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(outputTopicName))
-                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, publishMessage)))
+                .messages(List.of(MessageReference.toChannelMessage(outputTopicName, subscribeMessage)))
+                .build();
+
+        ChannelObject subscribeChannel = ChannelObject.builder()
+                .channelId(outputTopicName)
+                .address(outputTopicName)
+                .bindings(channelBinding)
+                .messages(
+                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
+                .build();
+
+        MessageObject publishMessage = MessageObject.builder()
+                .name(String.class.getName())
+                .title("string")
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
+                        .build()))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .build();
+
+        Operation publishOperation = Operation.builder()
+                .bindings(operationBinding)
+                .action(OperationAction.RECEIVE)
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .channel(ChannelReference.fromChannel(inputTopicName))
+                .messages(List.of(MessageReference.toChannelMessage(inputTopicName, publishMessage)))
                 .build();
 
         ChannelObject publishChannel = ChannelObject.builder()
-                .channelId(outputTopicName)
-                .address(outputTopicName)
+                .channelId(inputTopicName)
+                .address(inputTopicName)
                 .bindings(channelBinding)
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
         assertThat(actualChannels)
-                .contains(Map.entry(outputTopicName, publishChannel), Map.entry(inputTopicName, subscribeChannel));
+                .contains(Map.entry(inputTopicName, publishChannel), Map.entry(outputTopicName, subscribeChannel));
         assertThat(actualOperations)
                 .contains(
-                        Map.entry("test-in-topic_receive_kStreamTestFunction", subscribeOperation),
-                        Map.entry("test-out-topic_send_kStreamTestFunction", publishOperation));
-        assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), subscribeMessage));
-        assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), publishMessage));
+                        Map.entry("test-in-topic_publish_kStreamTestFunction", publishOperation),
+                        Map.entry("test-out-topic_subscribe_kStreamTestFunction", subscribeOperation));
+        assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
+        assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
     }
 
     @Test
@@ -537,26 +535,6 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // Then the returned merged channels contain a publish operation and  a subscribe operation
         MessageObject subscribeMessage = MessageObject.builder()
-                .name(String.class.getName())
-                .title("string")
-                .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
-                        .build()))
-                .headers(MessageHeaders.of(
-                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
-                .build();
-
-        Operation subscribeOperation = Operation.builder()
-                .operationId("test-topic_receive_testFunction")
-                .action(OperationAction.RECEIVE)
-                .bindings(operationBinding)
-                .description("Auto-generated description")
-                .channel(ChannelReference.fromChannel(topicName))
-                .messages(List.of(MessageReference.toChannelMessage(topicName, subscribeMessage)))
-                .build();
-
-        MessageObject publishMessage = MessageObject.builder()
                 .name(Integer.class.getName())
                 .title("integer")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
@@ -569,9 +547,31 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                 .bindings(Map.of("kafka", new EmptyMessageBinding()))
                 .build();
-        Operation publishOperation = Operation.builder()
-                .operationId("test-topic_send_testFunction")
+
+        Operation subscribeOperation = Operation.builder()
+                .bindings(operationBinding)
                 .action(OperationAction.SEND)
+                .bindings(operationBinding)
+                .description("Auto-generated description")
+                .channel(ChannelReference.fromChannel(topicName))
+                .messages(List.of(MessageReference.toChannelMessage(topicName, subscribeMessage)))
+                .build();
+
+        MessageObject publishMessage = MessageObject.builder()
+                .name(String.class.getName())
+                .title("string")
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
+                        .build()))
+                .headers(MessageHeaders.of(
+                        MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .build();
+
+        // "test-topic_publish_testFunction"
+        Operation publishOperation = Operation.builder()
+                .bindings(operationBinding)
+                .action(OperationAction.RECEIVE)
                 .bindings(operationBinding)
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(topicName))
@@ -592,10 +592,10 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         assertThat(actualChannels).contains(Map.entry(topicName, mergedChannel));
         assertThat(actualOperations)
                 .contains(
-                        Map.entry("test-topic_send_testFunction", publishOperation),
-                        Map.entry("test-topic_receive_testFunction", subscribeOperation));
-        assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), subscribeMessage));
-        assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), publishMessage));
+                        Map.entry("test-topic_publish_testFunction", publishOperation),
+                        Map.entry("test-topic_subscribe_testFunction", subscribeOperation));
+        assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), publishMessage));
+        assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), subscribeMessage));
     }
 
     @TestConfiguration

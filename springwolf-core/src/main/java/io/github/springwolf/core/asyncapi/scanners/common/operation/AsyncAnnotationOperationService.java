@@ -2,8 +2,8 @@
 package io.github.springwolf.core.asyncapi.scanners.common.operation;
 
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
@@ -12,7 +12,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvide
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
-import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -34,10 +33,14 @@ public class AsyncAnnotationOperationService<Annotation extends java.lang.annota
     private final AsyncAnnotationMessageService asyncAnnotationMessageService;
     private final StringValueResolver stringValueResolver;
 
-    public Operation buildOperation(AsyncOperation asyncOperation, Set<Method> methods) {
-        String channelName = stringValueResolver.resolveStringValue(asyncOperation.channelName());
-        String channelId = ReferenceUtil.toValidId(channelName);
+    public Operation buildOperation(AsyncOperation asyncOperation, Method method, String channelId) {
+        MessageObject message = asyncAnnotationMessageService.buildMessage(asyncOperation, method);
+        List<MessageReference> messages = List.of(MessageReference.toChannelMessage(channelId, message));
 
+        return buildOperation(asyncOperation, method, channelId, messages);
+    }
+
+    public Operation buildOperation(AsyncOperation asyncOperation, Set<Method> methods, String channelId) {
         Method method = methods.stream().findFirst().orElseThrow();
         List<MessageReference> messages = methods.stream()
                 .map(m -> asyncAnnotationMessageService.buildMessage(asyncOperation, m))
@@ -49,9 +52,6 @@ public class AsyncAnnotationOperationService<Annotation extends java.lang.annota
 
     private Operation buildOperation(
             AsyncOperation asyncOperation, Method method, String channelId, List<MessageReference> messages) {
-        String operationId = OperationIdHelper.buildOperationId(
-                channelId, this.asyncAnnotationProvider.getOperationType(), method.getName());
-
         String description = this.stringValueResolver.resolveStringValue(asyncOperation.description());
         if (StringUtils.isBlank(description)) {
             description = "Auto-generated description";
@@ -67,7 +67,6 @@ public class AsyncAnnotationOperationService<Annotation extends java.lang.annota
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
 
         return Operation.builder()
-                .operationId(operationId)
                 .channel(ChannelReference.fromChannel(channelId))
                 .action(this.asyncAnnotationProvider.getOperationType())
                 .description(description)

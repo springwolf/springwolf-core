@@ -146,7 +146,7 @@ public class SpringwolfScannerConfiguration {
                 asyncAnnotationMessageService,
                 stringValueResolver);
         val strategy = new AsyncAnnotationMethodLevelOperationsScanner<>(
-                asyncAnnotationProvider, asyncAnnotationOperationService, operationCustomizers);
+                asyncAnnotationProvider, asyncAnnotationOperationService, operationCustomizers, stringValueResolver);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }
@@ -261,7 +261,7 @@ public class SpringwolfScannerConfiguration {
                 asyncAnnotationMessageService,
                 stringValueResolver);
         val strategy = new AsyncAnnotationMethodLevelOperationsScanner<>(
-                asyncAnnotationProvider, asyncAnnotationOperationService, customizers);
+                asyncAnnotationProvider, asyncAnnotationOperationService, customizers, stringValueResolver);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
     }

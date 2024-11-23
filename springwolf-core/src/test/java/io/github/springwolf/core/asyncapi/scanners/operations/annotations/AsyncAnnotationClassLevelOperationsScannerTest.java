@@ -53,8 +53,9 @@ class AsyncAnnotationClassLevelOperationsScannerTest {
     @Test
     void scan() {
         // given
-        Operation operation = Operation.builder().operationId("operationId").build();
-        when(asyncAnnotationOperationService.buildOperation(any(), anySet())).thenReturn(operation);
+        Operation operation = Operation.builder().build();
+        when(asyncAnnotationOperationService.buildOperation(any(), anySet(), any()))
+                .thenReturn(operation);
 
         // when
         Map<String, Operation> actualOperations = operationsScanner
@@ -63,14 +64,16 @@ class AsyncAnnotationClassLevelOperationsScannerTest {
 
         // then
         assertThat(actualOperations).hasSize(1);
-        assertThat(actualOperations).containsExactlyEntriesOf(Map.of("operationId", operation));
+        assertThat(actualOperations)
+                .containsExactlyEntriesOf(Map.of("test-channel_send_ClassWithListenerAnnotation", operation));
     }
 
     @Test
     void operationCustomizerIsCalled() {
         // given
-        Operation operation = Operation.builder().operationId("operationId").build();
-        when(asyncAnnotationOperationService.buildOperation(any(), anySet())).thenReturn(operation);
+        Operation operation = Operation.builder().build();
+        when(asyncAnnotationOperationService.buildOperation(any(), anySet(), any()))
+                .thenReturn(operation);
 
         // when
         operationsScanner.scan(ClassWithListenerAnnotation.class).toList();

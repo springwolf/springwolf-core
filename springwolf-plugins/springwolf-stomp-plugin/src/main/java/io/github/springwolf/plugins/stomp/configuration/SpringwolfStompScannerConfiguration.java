@@ -162,6 +162,7 @@ public class SpringwolfStompScannerConfiguration {
                 new SpringAnnotationClassLevelOperationsScanner<>(
                         MessageMapping.class,
                         AllMethods.class,
+                        stompBindingMessageMappingFactory,
                         springAnnotationOperationsService,
                         operationCustomizers);
 
@@ -215,6 +216,7 @@ public class SpringwolfStompScannerConfiguration {
         SpringAnnotationMethodLevelOperationsScanner<MessageMapping> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         MessageMapping.class,
+                        stompBindingMessageMappingFactory,
                         headerClassExtractor,
                         payloadMethodParameterService,
                         springAnnotationOperationService,
