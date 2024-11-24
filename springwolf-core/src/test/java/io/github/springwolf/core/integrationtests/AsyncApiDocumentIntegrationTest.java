@@ -58,7 +58,7 @@ public class AsyncApiDocumentIntegrationTest {
                             "listener-channel_receive_listen2",
                             "listener-channel_receive_listen3",
                             "listener-channel_receive_listen4",
-                            "listener-class-channel_receive_ClassListener");
+                            "listener-class-channel_receive_listen");
             assertThat(asyncAPI.getComponents().getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
@@ -123,7 +123,7 @@ public class AsyncApiDocumentIntegrationTest {
                             "publisher-channel_send_publish2",
                             "publisher-channel_send_publish3",
                             "publisher-channel_send_publish4",
-                            "publisher-class-channel_send_ClassPublisher");
+                            "publisher-class-channel_send_publish");
             assertThat(asyncAPI.getComponents().getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",

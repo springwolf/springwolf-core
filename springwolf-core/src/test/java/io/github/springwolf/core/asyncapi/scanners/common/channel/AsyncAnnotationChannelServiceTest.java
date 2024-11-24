@@ -30,6 +30,7 @@ import java.util.Map;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -108,7 +109,7 @@ class AsyncAnnotationChannelServiceTest {
             MethodAndAnnotation<TestListener> methodAndAnnotation =
                     new MethodAndAnnotation<>(method, method.getAnnotation(TestListener.class));
 
-            when(asyncAnnotationOperationService.buildOperation(any(), any(Method.class), any()))
+            when(asyncAnnotationOperationService.buildOperation(any(), anySet()))
                     .thenReturn(Operation.builder().title("operationId").build());
             AsyncApiDocket docket = AsyncApiDocket.builder()
                     .info(Info.builder().build())
@@ -141,7 +142,7 @@ class AsyncAnnotationChannelServiceTest {
             MethodAndAnnotation<TestListener> methodAndAnnotation =
                     new MethodAndAnnotation<>(method, method.getAnnotation(TestListener.class));
 
-            when(asyncAnnotationOperationService.buildOperation(any(), any(Method.class), any()))
+            when(asyncAnnotationOperationService.buildOperation(any(), anySet()))
                     .thenReturn(Operation.builder().title("operationId").build());
             AsyncApiDocket docket = AsyncApiDocket.builder()
                     .info(Info.builder().build())

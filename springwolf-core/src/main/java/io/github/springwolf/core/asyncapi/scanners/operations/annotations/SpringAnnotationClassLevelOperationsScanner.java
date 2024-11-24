@@ -2,8 +2,6 @@
 package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
@@ -11,7 +9,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.operation.SpringAnnota
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -29,7 +26,6 @@ public class SpringAnnotationClassLevelOperationsScanner<
 
     private final Class<ClassAnnotation> classAnnotationClass;
     private final Class<MethodAnnotation> methodAnnotationClass;
-    private final BindingFactory<ClassAnnotation> bindingFactory;
     private final SpringAnnotationOperationsService<ClassAnnotation> springAnnotationOperationsService;
     private final List<OperationCustomizer> customizers;
 
@@ -43,15 +39,11 @@ public class SpringAnnotationClassLevelOperationsScanner<
             Class<?> component, Set<MethodAndAnnotation<MethodAnnotation>> annotatedMethods) {
         ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotationOrThrow(classAnnotationClass, component);
 
-        String channelId = bindingFactory.getChannelId(classAnnotation);
-        String operationId =
-                StringUtils.joinWith("_", channelId, OperationAction.RECEIVE.type, component.getSimpleName());
-
         Set<Method> methods =
                 annotatedMethods.stream().map(MethodAndAnnotation::method).collect(Collectors.toSet());
-        Operation operation = springAnnotationOperationsService.buildOperation(classAnnotation, methods);
+        Operation operation = springAnnotationOperationsService.buildOperation(classAnnotation, component, methods);
         annotatedMethods.forEach(
                 method -> customizers.forEach(customizer -> customizer.customize(operation, method.method())));
-        return Stream.of(Map.entry(operationId, operation));
+        return Stream.of(Map.entry(operation.getOperationId(), operation));
     }
 }

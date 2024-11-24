@@ -10,6 +10,7 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -47,23 +49,25 @@ class SpringAnnotationOperationServiceTest {
     @Test
     void scan_componentHasTestListenerMethods() throws NoSuchMethodException {
         // given
-        TestMethodListener annotation = ClassWithTestListenerAnnotation.class
-                .getDeclaredMethod("methodWithAnnotation", String.class)
-                .getAnnotation(TestMethodListener.class);
+        Method method = ClassWithTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
+        MethodAndAnnotation<TestMethodListener> methodAndAnnotation =
+                new MethodAndAnnotation<>(method, method.getAnnotation(TestMethodListener.class));
         PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject("name", "full.name", null);
         SchemaObject headerSchema = new SchemaObject();
         MessageObject messageObject =
                 MessageObject.builder().messageId(String.class.getName()).build();
 
-        when(springAnnotationMessageService.buildMessage(annotation, payloadSchemaName, headerSchema))
+        when(springAnnotationMessageService.buildMessage(
+                        methodAndAnnotation.annotation(), payloadSchemaName, headerSchema))
                 .thenReturn(messageObject);
 
         // when
         Operation operations =
-                springAnnotationOperationService.buildOperation(annotation, payloadSchemaName, headerSchema);
+                springAnnotationOperationService.buildOperation(methodAndAnnotation, payloadSchemaName, headerSchema);
 
         // then
         Operation expectedOperation = Operation.builder()
+                .operationId(CHANNEL_ID + "_receive_methodWithAnnotation")
                 .action(OperationAction.RECEIVE)
                 .channel(ChannelReference.fromChannel(CHANNEL_ID))
                 .messages(List.of(MessageReference.toChannelMessage(CHANNEL_ID, messageObject)))
