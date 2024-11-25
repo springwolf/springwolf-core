@@ -35,7 +35,7 @@ jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-core" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-core" }
 jackson-dataformat-yaml = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.1"
-jackson-datatype-protobuf = "com.hubspot.jackson:jackson-datatype-protobuf:0.9.16"
+jackson-datatype-protobuf = "com.hubspot.jackson:jackson-datatype-protobuf:0.9.17"
 jakarta-annotation-api = "jakarta.annotation:jakarta.annotation-api:3.0.0"
 jakarta-jms-api = "jakarta.jms:jakarta.jms-api:3.1.0"
 jakarta-validation-api = "jakarta.validation:jakarta.validation-api:3.1.0"
