@@ -1,5 +1,5 @@
 [versions]
-activemq = "6.1.3"
+activemq = "6.1.4"
 cutterslade-analyze = "1.10.0"
 docker-spring-boot = "9.4.0"
 gradle-nexus-publish-plugin = "2.0.0"
