@@ -3,6 +3,7 @@ package io.github.springwolf.core.configuration.docket;
 
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,9 @@ import java.util.regex.Pattern;
 @ToString
 public class AsyncApiGroup {
     private final String groupName;
+
+    @Builder.Default
+    private final Info groupInfo = Info.builder().build();
 
     @Builder.Default
     private final List<OperationAction> operationActionsToKeep = Collections.emptyList();

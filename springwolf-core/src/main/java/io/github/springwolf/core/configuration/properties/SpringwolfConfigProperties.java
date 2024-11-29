@@ -152,6 +152,8 @@ public class SpringwolfConfigProperties {
 
         @Getter
         @Setter
+        @EqualsAndHashCode
+        @ToString
         public static class Info {
 
             /**
@@ -196,7 +198,6 @@ public class SpringwolfConfigProperties {
             /**
              * Extension properties for the Info block.
              */
-            @Nullable
             private Map<String, String> extensionFields = Map.of("x-generator", "springwolf");
         }
 
@@ -211,6 +212,13 @@ public class SpringwolfConfigProperties {
              * The name of the Group
              */
             private String group = "";
+
+            /**
+             * Allows to override the info object with group specific information .
+             *
+             * @see Info
+             */
+            private Info info = new Info();
 
             /**
              * The action to match for the group

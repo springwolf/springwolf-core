@@ -3,7 +3,8 @@
   "info": {
     "title": "Springwolf example project - Kafka",
     "version": "1.0.0",
-    "description": "Springwolf example project to demonstrate springwolfs abilities, including **markdown** support for descriptions.",
+    "description": "This group only contains endpoints that are related to vehicles.",
+    "termsOfService": "http://asyncapi.org/terms",
     "contact": {
       "name": "springwolf",
       "url": "https://github.com/springwolf/springwolf-core",
@@ -12,6 +13,7 @@
     "license": {
       "name": "Apache License 2.0"
     },
+    "x-apitype": "internal",
     "x-generator": "springwolf"
   },
   "defaultContentType": "application/json",

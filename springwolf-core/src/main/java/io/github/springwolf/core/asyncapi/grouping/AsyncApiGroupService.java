@@ -14,6 +14,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.github.springwolf.core.configuration.docket.AsyncApiInfoMapper.mapInfo;
+import static io.github.springwolf.core.configuration.docket.AsyncApiInfoMapper.mergeInfo;
+
 @Slf4j
 @RequiredArgsConstructor
 public class AsyncApiGroupService {
@@ -22,7 +25,11 @@ public class AsyncApiGroupService {
 
     public Map<String, AsyncAPI> group(AsyncAPI asyncAPI) {
         return getAsyncApiGroups()
-                .map(group -> Map.entry(group.getGroupName(), groupingService.groupAPI(asyncAPI, group)))
+                .map(group -> {
+                    AsyncAPI groupedApi = groupingService.groupAPI(asyncAPI, group);
+                    groupedApi.setInfo(mergeInfo(groupedApi.getInfo(), group.getGroupInfo()));
+                    return Map.entry(group.getGroupName(), groupedApi);
+                })
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
@@ -55,6 +62,7 @@ public class AsyncApiGroupService {
 
         AsyncApiGroup asyncApiGroup = AsyncApiGroup.builder()
                 .groupName(groupName)
+                .groupInfo(mapInfo(group.getInfo()))
                 .operationActionsToKeep(group.getActionToMatch())
                 .channelNamesToKeep(channelNameToMatch)
                 .messageNamesToKeep(messageNameToMatch)
