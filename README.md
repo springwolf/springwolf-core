@@ -210,6 +210,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ccudennec-otto"><img src="https://avatars.githubusercontent.com/u/158453078?v=4?s=100" width="100px;" alt="Christopher Cudennec"/><br /><sub><b>Christopher Cudennec</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=ccudennec-otto" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/dabeck81"><img src="https://avatars.githubusercontent.com/u/79102969?v=4?s=100" width="100px;" alt="dabeck81"/><br /><sub><b>dabeck81</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=dabeck81" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.janmarten.dev/"><img src="https://avatars.githubusercontent.com/u/546795?v=4?s=100" width="100px;" alt="Jan Marten"/><br /><sub><b>Jan Marten</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=LeovR" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/FabianBesner2020"><img src="https://avatars.githubusercontent.com/u/78488296?v=4?s=100" width="100px;" alt="FabianBesner2020"/><br /><sub><b>FabianBesner2020</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=FabianBesner2020" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
