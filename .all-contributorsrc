@@ -306,6 +306,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "LeovR",
+      "name": "Jan Marten",
+      "avatar_url": "https://avatars.githubusercontent.com/u/546795?v=4",
+      "profile": "https://www.janmarten.dev/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
