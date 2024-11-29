@@ -38,9 +38,9 @@ public class UiConfigController {
     }
 
     private UiConfig.InitialConfig createInitialConfig() {
-        return new UiConfig.InitialConfig(
-                configProperties.getUi().isInitiallyShowBindings(),
-                configProperties.getUi().isInitiallyShowHeaders());
+        SpringwolfConfigProperties.UI.Defaults defaults =
+                configProperties.getUi().getDefaults();
+        return new UiConfig.InitialConfig(defaults.isShowBindings(), defaults.isShowHeaders());
     }
 
     private record UiConfig(InitialConfig initialConfig, List<UiConfigGroup> groups) {
