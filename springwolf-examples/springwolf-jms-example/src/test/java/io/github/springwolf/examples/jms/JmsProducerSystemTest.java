@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
@@ -43,7 +43,7 @@ public class JmsProducerSystemTest {
     @Autowired
     SpringwolfJmsProducer springwolfJmsProducer;
 
-    @SpyBean
+    @MockitoSpyBean
     ExampleConsumer exampleConsumer;
 
     @Value("${spring.activemq.broker-url}")
