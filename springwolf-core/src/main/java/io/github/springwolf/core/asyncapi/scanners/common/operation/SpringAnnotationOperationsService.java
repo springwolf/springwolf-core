@@ -8,6 +8,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
 import lombok.RequiredArgsConstructor;
 
@@ -23,17 +24,18 @@ public class SpringAnnotationOperationsService<ClassAnnotation extends Annotatio
     private final BindingFactory<ClassAnnotation> bindingFactory;
     private final SpringAnnotationMessagesService<ClassAnnotation> springAnnotationMessagesService;
 
-    public Operation buildOperation(ClassAnnotation classAnnotation, Class<?> component, Set<Method> methods) {
+    public Operation buildOperation(
+            ClassAnnotation classAnnotation, BindingContext bindingContext, Set<Method> methods) {
         var messages = springAnnotationMessagesService.buildMessages(
-                classAnnotation, component, methods, SpringAnnotationMessagesService.MessageType.OPERATION);
-        return buildOperation(classAnnotation, component, messages);
+                classAnnotation, bindingContext, methods, SpringAnnotationMessagesService.MessageType.OPERATION);
+        return buildOperation(classAnnotation, bindingContext, messages);
     }
 
     private Operation buildOperation(
-            ClassAnnotation classAnnotation, Class<?> component, Map<String, MessageReference> messages) {
+            ClassAnnotation classAnnotation, BindingContext bindingContext, Map<String, MessageReference> messages) {
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(classAnnotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        String channelName = bindingFactory.getChannelName(classAnnotation, component);
+        String channelName = bindingFactory.getChannelName(classAnnotation, bindingContext);
         String channelId = ReferenceUtil.toValidId(channelName);
 
         return Operation.builder()

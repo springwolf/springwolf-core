@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,10 +19,11 @@ public class SpringAnnotationChannelService<Annotation extends java.lang.annotat
 
     private final BindingFactory<Annotation> bindingFactory;
 
-    public ChannelObject buildChannel(Annotation annotation, Class<?> component, Map<String, Message> messages) {
+    public ChannelObject buildChannel(
+            Annotation annotation, BindingContext bindingContext, Map<String, Message> messages) {
         Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(annotation);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
-        String channelName = bindingFactory.getChannelName(annotation, component);
+        String channelName = bindingFactory.getChannelName(annotation, bindingContext);
         return ChannelObject.builder()
                 .channelId(ReferenceUtil.toValidId(channelName))
                 .address(channelName)

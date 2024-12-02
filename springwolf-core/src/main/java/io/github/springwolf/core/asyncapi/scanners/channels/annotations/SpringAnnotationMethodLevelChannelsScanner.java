@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
@@ -48,7 +49,8 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
         MessageObject message = springAnnotationMessageService.buildMessage(annotation, payloadSchema, headerSchema);
         Map<String, Message> messages = Map.of(message.getMessageId(), MessageReference.toComponentMessage(message));
 
-        return springAnnotationChannelService.buildChannel(
-                annotation, method.method().getDeclaringClass(), messages);
+        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(method.method());
+
+        return springAnnotationChannelService.buildChannel(annotation, bindingContext, messages);
     }
 }

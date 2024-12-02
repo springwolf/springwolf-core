@@ -291,7 +291,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                 Map.of(CHANNEL_ID, new TestBindingFactory.TestOperationBinding());
 
         @Override
-        public String getChannelName(TestClassListener annotation, Class<?> component) {
+        public String getChannelName(TestClassListener annotation) {
             return CHANNEL;
         }
 

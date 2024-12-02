@@ -6,15 +6,27 @@ import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 
 import java.util.Map;
 
 public interface BindingFactory<T> {
-    default String getChannelId(T annotation, Class<?> component) {
-        return ReferenceUtil.toValidId(getChannelName(annotation, component));
+
+    // maintainer note: replaced by #getChannelId(T, BindingContext)
+    default String getChannelId(T annotation) {
+        return ReferenceUtil.toValidId(getChannelName(annotation));
     }
 
-    String getChannelName(T annotation, Class<?> component);
+    // maintainer note: replaced by #getChannelName(T, BindingContext)
+    String getChannelName(T annotation);
+
+    default String getChannelId(T annotation, BindingContext bindingContext) {
+        return getChannelId(annotation);
+    }
+
+    default String getChannelName(T annotation, BindingContext bindingContext) {
+        return getChannelName(annotation);
+    }
 
     Map<String, ChannelBinding> buildChannelBinding(T annotation);
 

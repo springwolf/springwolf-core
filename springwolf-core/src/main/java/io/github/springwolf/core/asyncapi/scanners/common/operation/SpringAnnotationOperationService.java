@@ -9,6 +9,7 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +27,13 @@ public class SpringAnnotationOperationService<MethodAnnotation extends Annotatio
 
     public Operation buildOperation(
             MethodAnnotation annotation,
-            Class<?> component,
+            BindingContext bindingContext,
             PayloadSchemaObject payloadType,
             SchemaObject headerSchema) {
         MessageObject message = springAnnotationMessageService.buildMessage(annotation, payloadType, headerSchema);
         Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(annotation);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
-        String channelId = bindingFactory.getChannelId(annotation, component);
+        String channelId = bindingFactory.getChannelId(annotation, bindingContext);
 
         return Operation.builder()
                 .action(OperationAction.RECEIVE)

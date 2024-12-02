@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
@@ -42,9 +43,9 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
 
     private Map.Entry<String, Operation> mapMethodToOperation(MethodAndAnnotation<MethodAnnotation> method) {
         MethodAnnotation annotation = AnnotationUtil.findFirstAnnotationOrThrow(methodAnnotationClass, method.method());
+        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(method.method());
 
-        String channelId =
-                bindingFactory.getChannelId(annotation, method.method().getDeclaringClass());
+        String channelId = bindingFactory.getChannelId(annotation, bindingContext);
         String operationId = StringUtils.joinWith(
                 "_", channelId, OperationAction.RECEIVE.type, method.method().getName());
 
@@ -52,7 +53,7 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
 
         Operation operation = springAnnotationOperationService.buildOperation(
-                annotation, method.method().getDeclaringClass(), payloadSchema, headerSchema);
+                annotation, bindingContext, payloadSchema, headerSchema);
         customizers.forEach(customizer -> customizer.customize(operation, method.method()));
         return Map.entry(operationId, operation);
     }

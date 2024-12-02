@@ -10,6 +10,7 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +61,10 @@ class SpringAnnotationOperationServiceTest {
 
         // when
         Operation operations = springAnnotationOperationService.buildOperation(
-                annotation, ClassWithTestListenerAnnotation.class, payloadSchemaName, headerSchema);
+                annotation,
+                BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class),
+                payloadSchemaName,
+                headerSchema);
 
         // then
         Operation expectedOperation = Operation.builder()

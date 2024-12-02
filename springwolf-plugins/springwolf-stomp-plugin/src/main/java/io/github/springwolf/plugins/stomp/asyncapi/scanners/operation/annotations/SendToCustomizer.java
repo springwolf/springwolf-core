@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationReply;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodReturnService;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
@@ -24,7 +25,7 @@ public class SendToCustomizer implements OperationCustomizer {
     public void customize(Operation operation, Method method) {
         SendTo annotation = AnnotationUtil.findFirstAnnotation(SendTo.class, method);
         if (annotation != null) {
-            String channelId = bindingFactory.getChannelId(annotation);
+            String channelId = bindingFactory.getChannelId(annotation, BindingContext.ofAnnotatedMethod(method));
             String payloadName = payloadService.extractSchema(method).name();
 
             operation.setReply(OperationReply.builder()

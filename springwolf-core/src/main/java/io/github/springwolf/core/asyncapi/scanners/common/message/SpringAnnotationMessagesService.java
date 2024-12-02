@@ -10,6 +10,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger;
@@ -43,13 +44,16 @@ public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation>
     }
 
     public Map<String, MessageReference> buildMessages(
-            ClassAnnotation classAnnotation, Class<?> component, Set<Method> methods, MessageType messageType) {
+            ClassAnnotation classAnnotation,
+            BindingContext bindingContext,
+            Set<Method> methods,
+            MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
                 .map(method -> buildMessage(classAnnotation, method))
                 .collect(toSet());
 
         if (messageType == MessageType.OPERATION) {
-            String channelId = bindingFactory.getChannelName(classAnnotation, component);
+            String channelId = bindingFactory.getChannelName(classAnnotation, bindingContext);
             return toOperationsMessagesMap(channelId, messages);
         }
         return toMessagesMap(messages);

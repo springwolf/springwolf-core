@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
+import io.github.springwolf.core.asyncapi.scanners.bindings.common.BindingContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.util.StringValueResolver;
@@ -17,7 +18,12 @@ public class JmsBindingFactory implements BindingFactory<JmsListener> {
     private final StringValueResolver stringValueResolver;
 
     @Override
-    public String getChannelName(JmsListener annotation, Class<?> component) {
+    public String getChannelName(JmsListener annotation) {
+        return JmsListenerUtil.getChannelName(annotation, stringValueResolver);
+    }
+
+    @Override
+    public String getChannelName(JmsListener annotation, BindingContext bindingContext) {
         return JmsListenerUtil.getChannelName(annotation, stringValueResolver);
     }
 

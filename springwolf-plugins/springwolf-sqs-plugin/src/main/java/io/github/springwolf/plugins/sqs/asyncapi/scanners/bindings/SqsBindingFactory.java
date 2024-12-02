@@ -17,7 +17,7 @@ public class SqsBindingFactory implements BindingFactory<SqsListener> {
     private final StringValueResolver stringValueResolver;
 
     @Override
-    public String getChannelName(SqsListener annotation, Class<?> component) {
+    public String getChannelName(SqsListener annotation) {
         return SqsListenerUtil.getChannelName(annotation, stringValueResolver);
     }
 
