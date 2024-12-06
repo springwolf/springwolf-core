@@ -4,7 +4,6 @@ package io.github.springwolf.plugins.kafka.configuration;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
-import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.kafka.controller.SpringwolfKafkaController;
@@ -13,10 +12,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StringValueResolver;
 
@@ -32,7 +30,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             classes = {
                 SpringwolfKafkaAutoConfiguration.class,
                 PublishingPayloadCreator.class,
-                ObjectMapperTestConfiguration.class
+                ObjectMapperTestConfiguration.class,
             })
     @TestPropertySource(
             properties = {
@@ -44,16 +42,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.kafka.publishing.enabled=true"
             })
-    @MockBeans(
-            value = {
-                @MockBean(SpringwolfClassScanner.class),
-                @MockBean(ComponentsService.class),
-                @MockBean(PayloadAsyncOperationService.class),
-                @MockBean(HeaderClassExtractor.class),
-                @MockBean(PayloadMethodParameterService.class),
-                @MockBean(StringValueResolver.class),
-            })
-    class KafkaProducerWillBeCreatedIfEnabledTest {
+    class KafkaProducerWillBeCreatedIfEnabledTest extends MockBeanConfiguration {
         @Autowired
         private Optional<SpringwolfKafkaProducer> springwolfKafkaProducer;
 
@@ -73,7 +62,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             classes = {
                 SpringwolfKafkaAutoConfiguration.class,
                 PublishingPayloadCreator.class,
-                ObjectMapperTestConfiguration.class
+                ObjectMapperTestConfiguration.class,
             })
     @TestPropertySource(
             properties = {
@@ -85,16 +74,7 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.kafka.publishing.enabled=false"
             })
-    @MockBeans(
-            value = {
-                @MockBean(SpringwolfClassScanner.class),
-                @MockBean(ComponentsService.class),
-                @MockBean(PayloadAsyncOperationService.class),
-                @MockBean(PayloadMethodParameterService.class),
-                @MockBean(HeaderClassExtractor.class),
-                @MockBean(StringValueResolver.class),
-            })
-    class KafkaProducerWillNotBeCreatedIfDisabledTest {
+    class KafkaProducerWillNotBeCreatedIfDisabledTest extends MockBeanConfiguration {
         @Autowired
         private Optional<SpringwolfKafkaProducer> springwolfKafkaProducer;
 
@@ -106,5 +86,27 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             assertThat(springwolfKafkaProducer).isNotPresent();
             assertThat(springwolfKafkaController).isNotPresent();
         }
+    }
+
+    /**
+     * Introduced due to migration of spring boot 3.3 -> 3.4 and @MockBean deprecation
+     *
+     * feature request: https://github.com/spring-projects/spring-framework/issues/33925
+     */
+    class MockBeanConfiguration {
+        @MockitoBean
+        private SpringwolfClassScanner springwolfClassScanner;
+
+        @MockitoBean
+        private ComponentsService componentsService;
+
+        @MockitoBean
+        private HeaderClassExtractor headerClassExtractor;
+
+        @MockitoBean
+        private PayloadMethodParameterService payloadMethodParameterService;
+
+        @MockitoBean
+        private StringValueResolver stringValueResolver;
     }
 }

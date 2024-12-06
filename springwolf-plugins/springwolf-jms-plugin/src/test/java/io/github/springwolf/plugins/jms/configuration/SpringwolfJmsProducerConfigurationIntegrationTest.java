@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StringValueResolver;
 
@@ -31,7 +30,7 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
             classes = {
                 SpringwolfJmsAutoConfiguration.class,
                 PublishingPayloadCreator.class,
-                ObjectMapperTestConfiguration.class
+                ObjectMapperTestConfiguration.class,
             })
     @TestPropertySource(
             properties = {
@@ -43,17 +42,8 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.jms.publishing.enabled=true"
             })
-    @MockBeans(
-            value = {
-                @MockBean(SpringwolfClassScanner.class),
-                @MockBean(ComponentsService.class),
-                @MockBean(PayloadMethodParameterService.class),
-                @MockBean(HeaderClassExtractor.class),
-                @MockBean(JmsTemplate.class),
-                @MockBean(StringValueResolver.class),
-            })
     @Nested
-    class JmsProducerWillBeCreatedIfEnabledTest {
+    class JmsProducerWillBeCreatedIfEnabledTest extends MockBeanConfiguration {
         @Autowired
         private Optional<SpringwolfJmsProducer> springwolfJmsProducer;
 
@@ -72,7 +62,7 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
             classes = {
                 SpringwolfJmsAutoConfiguration.class,
                 PublishingPayloadCreator.class,
-                ObjectMapperTestConfiguration.class
+                ObjectMapperTestConfiguration.class,
             })
     @TestPropertySource(
             properties = {
@@ -84,17 +74,8 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.jms.publishing.enabled=false"
             })
-    @MockBeans(
-            value = {
-                @MockBean(SpringwolfClassScanner.class),
-                @MockBean(ComponentsService.class),
-                @MockBean(PayloadMethodParameterService.class),
-                @MockBean(HeaderClassExtractor.class),
-                @MockBean(JmsTemplate.class),
-                @MockBean(StringValueResolver.class),
-            })
     @Nested
-    class JmsProducerWillNotBeCreatedIfDisabledTest {
+    class JmsProducerWillNotBeCreatedIfDisabledTest extends MockBeanConfiguration {
         @Autowired
         private Optional<SpringwolfJmsProducer> springwolfJmsProducer;
 
@@ -106,5 +87,30 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
             assertThat(springwolfJmsProducer).isNotPresent();
             assertThat(springwolfJmsController).isNotPresent();
         }
+    }
+
+    /**
+     * Introduced due to migration of spring boot 3.3 -> 3.4 and @MockBean deprecation
+     *
+     * feature request: https://github.com/spring-projects/spring-framework/issues/33925
+     */
+    class MockBeanConfiguration {
+        @MockitoBean
+        private SpringwolfClassScanner springwolfClassScanner;
+
+        @MockitoBean
+        private ComponentsService componentsService;
+
+        @MockitoBean
+        private HeaderClassExtractor headerClassExtractor;
+
+        @MockitoBean
+        private PayloadMethodParameterService payloadMethodParameterService;
+
+        @MockitoBean
+        private StringValueResolver stringValueResolver;
+
+        @MockitoBean
+        private JmsTemplate jmsTemplate;
     }
 }

@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Set;
 
@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
             TestOtherConditionalComponent.class
         })
 class SpringwolfClassScannerIntegrationTest {
-    @MockBean
+    @MockitoBean
     private AsyncApiDocketService asyncApiDocketService;
 
     @Autowired
