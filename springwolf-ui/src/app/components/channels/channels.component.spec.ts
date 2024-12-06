@@ -13,6 +13,10 @@ import {
   MockPrismEditorComponent,
 } from "../mock-components.spec";
 import { IUiService } from "../../service/ui.service";
+import { CommonModule } from "@angular/common";
+import { PrismEditorComponent } from "../code/prism-editor.component";
+import { MatCardModule } from "@angular/material/card";
+import { NavigationTargetDirective } from "../sidenav/navigation.directive";
 
 describe("ChannelsNewComponent", () => {
   beforeEach(async () => {
@@ -20,7 +24,14 @@ describe("ChannelsNewComponent", () => {
 
     await render(ChannelsComponent, {
       imports: [MaterialModule],
-      declarations: [MockChannelOperationComponent, MockPrismEditorComponent],
+      declarations: [MockPrismEditorComponent],
+      componentImports: [
+        MockChannelOperationComponent,
+        PrismEditorComponent,
+        CommonModule,
+        MatCardModule,
+        NavigationTargetDirective,
+      ],
       providers: [
         { provide: IUiService, useValue: mockedUiService },
         { provide: AsyncApiService, useValue: mockedAsyncApiService },

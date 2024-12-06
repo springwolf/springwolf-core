@@ -4,7 +4,7 @@ import { HeaderComponent } from "./header.component";
 import { render, screen, fireEvent } from "@testing-library/angular";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { mockedAsyncApiService } from "../../service/mock/mock-asyncapi.service";
-import { MatMenuModule } from "@angular/material/menu";
+import { MatMenu, MatMenuModule } from "@angular/material/menu";
 import { IAssetService } from "../../service/asset.service";
 import { mockedAssetService } from "../../service/mock/mock-asset.service";
 import {
@@ -18,7 +18,7 @@ describe("HeaderComponent", () => {
   beforeEach(async () => {
     await render(HeaderComponent, {
       declarations: [MockMatIcon],
-      imports: [MatToolbarModule, MatMenuModule],
+      imports: [MatToolbarModule, MatMenuModule, MatMenu],
       providers: [
         { provide: IUiService, useValue: mockedUiService },
         { provide: IAssetService, useValue: mockedAssetService },

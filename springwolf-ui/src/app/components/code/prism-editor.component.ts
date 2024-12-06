@@ -23,15 +23,15 @@ import "prism-code-editor/prism/languages/markdown";
 import "prism-code-editor/prism/languages/xml";
 
 @Component({
-    selector: "app-prism-editor",
-    template: "<div #editorContainer></div>",
-    styles: [
-        `
+  selector: "app-prism-editor",
+  template: "<div #editorContainer></div>",
+  styles: [
+    `
       :host > div {
         margin-bottom: 0.5em;
       }
     `,
-    ],
+  ],
 })
 export class PrismEditorComponent implements AfterViewInit, OnChanges {
   code = model<string>("");

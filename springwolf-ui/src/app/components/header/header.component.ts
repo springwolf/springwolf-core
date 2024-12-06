@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import {Component, OnInit} from "@angular/core";
-import {IUiService} from "../../service/ui.service";
-import {AsyncApiService} from "../../service/asyncapi/asyncapi.service";
-import {IAssetService} from "../../service/asset.service";
-import {CommonModule} from "@angular/common";
-import {MatButtonModule} from "@angular/material/button";
-import {MatMenuModule} from "@angular/material/menu";
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatIconModule} from "@angular/material/icon";
+import { Component, OnInit } from "@angular/core";
+import { IUiService } from "../../service/ui.service";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import { IAssetService } from "../../service/asset.service";
+import { CommonModule } from "@angular/common";
+import { MatButtonModule } from "@angular/material/button";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatIconModule } from "@angular/material/icon";
 
 interface Group {
   value: string;
@@ -15,16 +15,16 @@ interface Group {
 }
 
 @Component({
-    selector: "app-header",
-    templateUrl: "./header.component.html",
-    styleUrls: ["./header.component.css"],
-    imports: [
-      MatToolbarModule,
-      MatButtonModule,
-      MatMenuModule,
-      MatIconModule,
-      CommonModule,
-    ]
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.css"],
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+    CommonModule,
+  ],
 })
 export class HeaderComponent implements OnInit {
   groups: Group[] = [];

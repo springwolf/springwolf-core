@@ -1,11 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import {AsyncApiService} from "../../service/asyncapi/asyncapi.service";
-import {AfterViewInit, Component, ContentChildren, ElementRef, OnInit, QueryList, ViewChild,} from "@angular/core";
-import {NavigationTargetDirective} from "./navigation.directive";
-import {AsyncApiMapperService} from "../../service/asyncapi/asyncapi-mapper.service";
-import {CommonModule, Location} from "@angular/common";
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatIconModule} from "@angular/material/icon";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import {
+  AfterViewInit,
+  Component,
+  ContentChildren,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+} from "@angular/core";
+import { NavigationTargetDirective } from "./navigation.directive";
+import { AsyncApiMapperService } from "../../service/asyncapi/asyncapi-mapper.service";
+import { CommonModule, Location } from "@angular/common";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatIconModule } from "@angular/material/icon";
 
 interface NavigationEntry {
   name: string[];
@@ -21,11 +29,7 @@ interface NavigationEntry {
   selector: "app-sidenav",
   templateUrl: "./sidenav.component.html",
   styleUrls: ["./sidenav.component.css"],
-  imports: [
-    MatSidenavModule,
-    MatIconModule,
-    CommonModule,
-  ]
+  imports: [MatSidenavModule, MatIconModule, CommonModule],
 })
 export class SidenavComponent implements OnInit, AfterViewInit {
   @ViewChild("scrollableElement") scrollableElement!: ElementRef;
