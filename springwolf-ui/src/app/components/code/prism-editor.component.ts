@@ -32,7 +32,6 @@ import "prism-code-editor/prism/languages/xml";
       }
     `,
     ],
-    standalone: false
 })
 export class PrismEditorComponent implements AfterViewInit, OnChanges {
   code = model<string>("");
