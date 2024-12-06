@@ -3,7 +3,6 @@ import { Directive, ElementRef } from "@angular/core";
 
 @Directive({
     selector: "[appNavigationTarget]",
-    standalone: false
 })
 export class NavigationTargetDirective {
   constructor(public el: ElementRef) {}
