@@ -11,10 +11,14 @@ import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelQueueProperties
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPChannelType;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -24,8 +28,10 @@ import org.springframework.util.StringValueResolver;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyMap;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -354,6 +360,8 @@ class RabbitListenerUtilTest {
                                     .durable(true)
                                     .autoDelete(false)
                                     .build())
+                            .channel(ChannelReference.fromChannel("queue-1"))
+                            .name("#")
                             .build(),
                     channelBinding.get("amqp"));
         }
@@ -379,6 +387,8 @@ class RabbitListenerUtilTest {
                                     .durable(false)
                                     .autoDelete(true)
                                     .build())
+                            .channel(ChannelReference.fromChannel("queue-1"))
+                            .name("#")
                             .build(),
                     channelBinding.get("amqp"));
         }
@@ -407,6 +417,8 @@ class RabbitListenerUtilTest {
                                     .durable(true)
                                     .autoDelete(false)
                                     .build())
+                            .channel(ChannelReference.fromChannel("queue-1"))
+                            .name("#")
                             .build(),
                     channelBinding.get("amqp"));
         }
@@ -528,6 +540,8 @@ class RabbitListenerUtilTest {
                                     .durable(true)
                                     .autoDelete(false)
                                     .build())
+                            .channel(ChannelReference.fromChannel("queue-1"))
+                            .name("routing-key")
                             .build(),
                     channelBinding.get("amqp"));
         }
@@ -553,6 +567,8 @@ class RabbitListenerUtilTest {
                                     .durable(true)
                                     .autoDelete(false)
                                     .build())
+                            .channel(ChannelReference.fromChannel("queue-1"))
+                            .name("routing-key")
                             .build(),
                     channelBinding.get("amqp"));
         }
@@ -608,6 +624,138 @@ class RabbitListenerUtilTest {
                                 value = @Queue(name = "${queue-1}"))
                     })
             private void methodWithAnnotation(String payload) {}
+        }
+    }
+
+    @Nested
+    class BuildChannelObjectFromBeans {
+        org.springframework.amqp.core.Queue queue =
+                new org.springframework.amqp.core.Queue("queue-1", false, true, true);
+        TopicExchange exchange = new TopicExchange("exchange-name");
+
+        @Test
+        void simpleBinding() {
+            // given
+            List<Binding> bindings =
+                    List.of(BindingBuilder.bind(queue).to(exchange).with("routing-key"));
+
+            // when
+            Map<String, ChannelObject> channelObject = RabbitListenerUtil.buildChannelObjectFromBeans(
+                            List.of(queue), bindings)
+                    .collect(Collectors.toMap(ChannelObject::getChannelId, c -> c, (a, b) -> a));
+
+            // then
+            assertThat(channelObject)
+                    .containsOnly(
+                            Map.entry(
+                                    "queue-1",
+                                    ChannelObject.builder()
+                                            .channelId("queue-1")
+                                            .address(queue.getName())
+                                            .bindings(Map.of(
+                                                    "amqp",
+                                                    AMQPChannelBinding.builder()
+                                                            .is(AMQPChannelType.QUEUE)
+                                                            .queue(AMQPChannelQueueProperties.builder()
+                                                                    .name(queue.getName())
+                                                                    .durable(false)
+                                                                    .autoDelete(true)
+                                                                    .exclusive(true)
+                                                                    .build())
+                                                            .build()))
+                                            .build()),
+                            Map.entry(
+                                    "exchange-name_routing-key",
+                                    ChannelObject.builder()
+                                            .channelId("exchange-name_routing-key")
+                                            .address("routing-key")
+                                            .bindings(Map.of(
+                                                    "amqp",
+                                                    AMQPChannelBinding.builder()
+                                                            .is(AMQPChannelType.ROUTING_KEY)
+                                                            .exchange(AMQPChannelExchangeProperties.builder()
+                                                                    .name("exchange-name")
+                                                                    .type(null)
+                                                                    .build())
+                                                            .channel(ChannelReference.fromChannel("queue-1"))
+                                                            .name("routing-key")
+                                                            .build()))
+                                            .build()));
+        }
+
+        @Test
+        void onlyQueueBeanWithoutExchange() {
+            // when
+            Map<String, ChannelObject> channelObject = RabbitListenerUtil.buildChannelObjectFromBeans(
+                            List.of(queue), List.of())
+                    .collect(Collectors.toMap(ChannelObject::getChannelId, c -> c, (a, b) -> a));
+
+            // then
+            assertThat(channelObject)
+                    .containsOnly(Map.entry(
+                            "queue-1",
+                            ChannelObject.builder()
+                                    .channelId("queue-1")
+                                    .address(queue.getName())
+                                    .bindings(Map.of(
+                                            "amqp",
+                                            AMQPChannelBinding.builder()
+                                                    .is(AMQPChannelType.QUEUE)
+                                                    .queue(AMQPChannelQueueProperties.builder()
+                                                            .name(queue.getName())
+                                                            .durable(false)
+                                                            .autoDelete(true)
+                                                            .exclusive(true)
+                                                            .build())
+                                                    .build()))
+                                    .build()));
+        }
+
+        @Test
+        void oneBindingWithoutQueueBean() {
+            // given
+            List<Binding> bindings =
+                    List.of(BindingBuilder.bind(queue).to(exchange).with("routing-key"));
+
+            // when
+            Map<String, ChannelObject> channelObject = RabbitListenerUtil.buildChannelObjectFromBeans(
+                            List.of(), bindings)
+                    .collect(Collectors.toMap(ChannelObject::getChannelId, c -> c, (a, b) -> a));
+
+            // then
+            assertThat(channelObject)
+                    .containsOnly(
+                            Map.entry(
+                                    "queue-1",
+                                    ChannelObject.builder()
+                                            .channelId("queue-1")
+                                            .address(queue.getName())
+                                            .bindings(Map.of(
+                                                    "amqp",
+                                                    AMQPChannelBinding.builder()
+                                                            .is(AMQPChannelType.QUEUE)
+                                                            .queue(AMQPChannelQueueProperties.builder()
+                                                                    .name(queue.getName())
+                                                                    .build())
+                                                            .build()))
+                                            .build()),
+                            Map.entry(
+                                    "exchange-name_routing-key",
+                                    ChannelObject.builder()
+                                            .channelId("exchange-name_routing-key")
+                                            .address("routing-key")
+                                            .bindings(Map.of(
+                                                    "amqp",
+                                                    AMQPChannelBinding.builder()
+                                                            .is(AMQPChannelType.ROUTING_KEY)
+                                                            .exchange(AMQPChannelExchangeProperties.builder()
+                                                                    .name("exchange-name")
+                                                                    .type(null)
+                                                                    .build())
+                                                            .channel(ChannelReference.fromChannel("queue-1"))
+                                                            .name("routing-key")
+                                                            .build()))
+                                            .build()));
         }
     }
 
