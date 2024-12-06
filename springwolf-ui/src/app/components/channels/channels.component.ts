@@ -1,25 +1,25 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import {Component, OnInit} from "@angular/core";
-import {AsyncApiService} from "../../service/asyncapi/asyncapi.service";
-import {Channel} from "../../models/channel.model";
-import {IUiService} from "../../service/ui.service";
-import {PrismEditorComponent} from "../code/prism-editor.component";
-import {CommonModule} from "@angular/common";
-import {MatCardModule} from "@angular/material/card";
-import {ChannelOperationComponent} from "./channel-main/channel-operation.component";
-import {NavigationTargetDirective} from "../sidenav/navigation.directive";
+import { Component, OnInit } from "@angular/core";
+import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
+import { Channel } from "../../models/channel.model";
+import { IUiService } from "../../service/ui.service";
+import { PrismEditorComponent } from "../code/prism-editor.component";
+import { CommonModule } from "@angular/common";
+import { MatCardModule } from "@angular/material/card";
+import { ChannelOperationComponent } from "./channel-main/channel-operation.component";
+import { NavigationTargetDirective } from "../sidenav/navigation.directive";
 
 @Component({
-    selector: "app-channels",
-    templateUrl: "./channels.component.html",
-    styleUrls: ["./channels.component.css"],
+  selector: "app-channels",
+  templateUrl: "./channels.component.html",
+  styleUrls: ["./channels.component.css"],
   imports: [
     PrismEditorComponent,
     CommonModule,
     MatCardModule,
     ChannelOperationComponent,
-    NavigationTargetDirective
-  ]
+    NavigationTargetDirective,
+  ],
 })
 export class ChannelsComponent implements OnInit {
   channels: Channel[] = [];

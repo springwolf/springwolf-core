@@ -1,24 +1,28 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import {Component, computed, input, OnInit} from "@angular/core";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {STATUS} from "angular-in-memory-web-api";
-import {Binding} from "../../../models/bindings.model";
-import {Example} from "../../../models/example.model";
-import {Operation} from "../../../models/operation.model";
-import {Schema} from "../../../models/schema.model";
-import {AsyncApiService} from "../../../service/asyncapi/asyncapi.service";
-import {PublisherService} from "../../../service/publisher.service";
-import {wrapException} from "../../../util/error-boundary";
-import {initExample, initSchema, noExample,} from "../../../service/mock/init-values";
-import {IUiService} from "../../../service/ui.service";
-import {CommonModule} from "@angular/common";
-import {MarkdownModule} from "ngx-markdown";
-import {MatChipsModule} from "@angular/material/chips";
-import {MatIconModule} from "@angular/material/icon";
-import {PrismEditorComponent} from "../../code/prism-editor.component";
-import {SchemaComponent} from "../../schema/schema.component";
-import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
-import {MatButtonModule} from "@angular/material/button";
+import { Component, computed, input, OnInit } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { STATUS } from "angular-in-memory-web-api";
+import { Binding } from "../../../models/bindings.model";
+import { Example } from "../../../models/example.model";
+import { Operation } from "../../../models/operation.model";
+import { Schema } from "../../../models/schema.model";
+import { AsyncApiService } from "../../../service/asyncapi/asyncapi.service";
+import { PublisherService } from "../../../service/publisher.service";
+import { wrapException } from "../../../util/error-boundary";
+import {
+  initExample,
+  initSchema,
+  noExample,
+} from "../../../service/mock/init-values";
+import { IUiService } from "../../../service/ui.service";
+import { CommonModule } from "@angular/common";
+import { MarkdownModule } from "ngx-markdown";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatIconModule } from "@angular/material/icon";
+import { PrismEditorComponent } from "../../code/prism-editor.component";
+import { SchemaComponent } from "../../schema/schema.component";
+import { ClipboardModule } from "@angular/cdk/clipboard";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: "app-channel-operation",
@@ -31,9 +35,9 @@ import {MatButtonModule} from "@angular/material/button";
     MatIconModule,
     PrismEditorComponent,
     SchemaComponent,
-    CdkCopyToClipboard,
-    MatButtonModule
-  ]
+    ClipboardModule,
+    MatButtonModule,
+  ],
 })
 export class ChannelOperationComponent implements OnInit {
   channelName = input.required<string>();
@@ -62,8 +66,7 @@ export class ChannelOperationComponent implements OnInit {
     private publisherService: PublisherService,
     private uiService: IUiService,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
@@ -156,16 +159,16 @@ export class ChannelOperationComponent implements OnInit {
         headers === ""
           ? {}
           : wrapException(
-            "Unable to convert headers to JSON object (nor is empty)",
-            () => JSON.parse(headers || "")
-          );
+              "Unable to convert headers to JSON object (nor is empty)",
+              () => JSON.parse(headers || "")
+            );
       const bindingsJson =
         bindings === ""
           ? {}
           : wrapException(
-            "Unable to convert bindings to JSON object (nor is empty)",
-            () => JSON.parse(bindings || "")
-          );
+              "Unable to convert bindings to JSON object (nor is empty)",
+              () => JSON.parse(bindings || "")
+            );
 
       this.publisherService
         .publish(
