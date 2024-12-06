@@ -20,14 +20,14 @@ class OperationMergerTest {
     @Test
     void shouldNotMergeDifferentoperationIds() {
         // given
-        String operationId1 = "operation1";
-        String operationId2 = "operation2";
-        Operation publisherOperation = Operation.builder().build();
-        Operation subscriberOperation = Operation.builder().build();
+        Operation publisherOperation =
+                Operation.builder().operationId("operation1").build();
+        Operation subscriberOperation =
+                Operation.builder().operationId("operation2").build();
 
         // when
-        Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(Arrays.asList(
-                Map.entry(operationId1, publisherOperation), Map.entry(operationId2, subscriberOperation)));
+        Map<String, Operation> mergedOperations =
+                OperationMerger.mergeOperations(Arrays.asList(publisherOperation, subscriberOperation));
 
         // then
         assertThat(mergedOperations).hasSize(2);
@@ -49,9 +49,8 @@ class OperationMergerTest {
                 .build();
 
         // when
-        Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(Arrays.asList(
-                Map.entry(publishOperation.getOperationId(), publishOperation),
-                Map.entry(subscribeOperation.getOperationId(), subscribeOperation)));
+        Map<String, Operation> mergedOperations =
+                OperationMerger.mergeOperations(Arrays.asList(publishOperation, subscribeOperation));
 
         // then
         assertThat(mergedOperations).hasSize(1);
@@ -71,9 +70,8 @@ class OperationMergerTest {
                 .build();
 
         // when
-        Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(Arrays.asList(
-                Map.entry(senderOperation.getOperationId(), senderOperation),
-                Map.entry(receiverOperation.getOperationId(), receiverOperation)));
+        Map<String, Operation> mergedOperations =
+                OperationMerger.mergeOperations(Arrays.asList(senderOperation, receiverOperation));
 
         // then
         assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationId, it -> {
@@ -122,10 +120,8 @@ class OperationMergerTest {
                 .build();
 
         // when
-        Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(List.of(
-                Map.entry(senderOperation1.getOperationId(), senderOperation1),
-                Map.entry(senderOperation2.getOperationId(), senderOperation2),
-                Map.entry(senderOperation3.getOperationId(), senderOperation3)));
+        Map<String, Operation> mergedOperations =
+                OperationMerger.mergeOperations(List.of(senderOperation1, senderOperation2, senderOperation3));
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
@@ -174,17 +170,17 @@ class OperationMergerTest {
                 .build();
         Operation publishOperation1 = Operation.builder()
                 .action(OperationAction.SEND)
-                .title("publisher1")
+                .operationId("publisher1")
                 .build();
         Operation publishOperation2 = Operation.builder()
                 .action(OperationAction.SEND)
-                .title("publisher2")
+                .operationId("publisher1")
                 .messages(List.of(MessageReference.toChannelMessage(channelId, message2)))
                 .build();
 
         // when
-        Map<String, Operation> mergedOperations = OperationMerger.mergeOperations(
-                Arrays.asList(Map.entry("publisher1", publishOperation1), Map.entry("publisher1", publishOperation2)));
+        Map<String, Operation> mergedOperations =
+                OperationMerger.mergeOperations(Arrays.asList(publishOperation1, publishOperation2));
         // then expectedMessage message2
         var expectedMessage = MessageReference.toChannelMessage(channelId, message2);
 

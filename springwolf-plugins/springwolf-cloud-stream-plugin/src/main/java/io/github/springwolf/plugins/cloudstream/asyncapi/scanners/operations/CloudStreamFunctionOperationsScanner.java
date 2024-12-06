@@ -56,11 +56,11 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
         elements.addAll(componentClassScanner.scan());
         elements.addAll(beanMethodsScanner.getBeanMethods());
 
-        List<Map.Entry<String, Operation>> operations = elements.stream()
+        List<Operation> operations = elements.stream()
                 .map(functionalChannelBeanBuilder::build)
                 .flatMap(Set::stream)
                 .filter(this::isChannelBean)
-                .map(this::toOperationEntry)
+                .map(this::buildOperation)
                 .toList();
 
         return OperationMerger.mergeOperations(operations);
@@ -68,12 +68,6 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {
         return cloudStreamBindingsProperties.getBindings().containsKey(beanData.cloudStreamBinding());
-    }
-
-    private Map.Entry<String, Operation> toOperationEntry(FunctionalChannelBeanData beanData) {
-        Operation operation = buildOperation(beanData);
-
-        return Map.entry(operation.getOperationId(), operation);
     }
 
     private Operation buildOperation(FunctionalChannelBeanData beanData) {
