@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -27,19 +26,18 @@ public class AsyncAnnotationMethodLevelOperationsScanner<MethodAnnotation extend
     private final List<OperationCustomizer> customizers;
 
     @Override
-    public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
+    public Stream<Operation> scan(Class<?> clazz) {
         return AnnotationScannerUtil.findAnnotatedMethods(clazz, this.asyncAnnotationProvider.getAnnotation())
                 .map(this::mapMethodToOperation);
     }
 
-    private Map.Entry<String, Operation> mapMethodToOperation(
-            MethodAndAnnotation<MethodAnnotation> methodAndAnnotation) {
+    private Operation mapMethodToOperation(MethodAndAnnotation<MethodAnnotation> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
 
         Operation operation = asyncAnnotationOperationService.buildOperation(
                 operationAnnotation, Set.of(methodAndAnnotation.method()));
         customizers.forEach(customizer -> customizer.customize(operation, methodAndAnnotation.method()));
-        return Map.entry(operation.getOperationId(), operation);
+        return operation;
     }
 }

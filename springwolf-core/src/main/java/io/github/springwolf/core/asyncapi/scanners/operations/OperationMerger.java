@@ -25,18 +25,18 @@ public class OperationMerger {
      * If an operation is null, the next non-null operation is used
      * Messages within operations are merged
      *
-     * @param operationEntries Ordered pairs of operation name to Operation
+     * @param operations Ordered pairs of operation name to Operation
      * @return A map of operationId to a single Operation
      */
-    public static Map<String, Operation> mergeOperations(List<Map.Entry<String, Operation>> operationEntries) {
+    public static Map<String, Operation> mergeOperations(List<Operation> operations) {
         Map<String, Operation> mergedOperations = new HashMap<>();
 
-        for (Map.Entry<String, Operation> entry : operationEntries) {
-            if (!mergedOperations.containsKey(entry.getKey())) {
-                mergedOperations.put(entry.getKey(), entry.getValue());
+        for (Operation operation : operations) {
+            if (!mergedOperations.containsKey(operation.getOperationId())) {
+                mergedOperations.put(operation.getOperationId(), operation);
             } else {
-                Operation operation = mergeOperation(mergedOperations.get(entry.getKey()), entry.getValue());
-                mergedOperations.put(entry.getKey(), operation);
+                Operation mergedOperation = mergeOperation(mergedOperations.get(operation.getOperationId()), operation);
+                mergedOperations.put(operation.getOperationId(), mergedOperation);
             }
         }
 

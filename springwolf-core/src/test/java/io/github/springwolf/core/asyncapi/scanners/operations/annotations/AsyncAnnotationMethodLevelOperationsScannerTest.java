@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,7 +59,7 @@ class AsyncAnnotationMethodLevelOperationsScannerTest {
         // when
         Map<String, Operation> actualOperations = operationsScanner
                 .scan(ClassWithListenerAnnotation.class)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Operation::getOperationId, Function.identity()));
 
         // then
         assertThat(actualOperations).containsExactly(Map.entry("operationId", operation));

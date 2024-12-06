@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,7 +31,7 @@ public class AsyncAnnotationClassLevelOperationsScanner<ClassAnnotation extends 
     private final List<OperationCustomizer> customizers;
 
     @Override
-    public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
+    public Stream<Operation> scan(Class<?> clazz) {
         Set<MethodAndAnnotation<ClassAnnotation>> methodAndAnnotation = AnnotationScannerUtil.findAnnotatedMethods(
                         clazz, classAnnotationClass, AllMethods.class, (cl, m) -> {
                             ClassAnnotation classAnnotation =
@@ -48,7 +47,7 @@ public class AsyncAnnotationClassLevelOperationsScanner<ClassAnnotation extends 
         return mapClassToOperation(clazz, methodAndAnnotation);
     }
 
-    private Stream<Map.Entry<String, Operation>> mapClassToOperation(
+    private Stream<Operation> mapClassToOperation(
             Class<?> component, Set<MethodAndAnnotation<ClassAnnotation>> annotatedMethods) {
         ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotationOrThrow(classAnnotationClass, component);
         AsyncOperation asyncOperation = asyncAnnotationProvider.getAsyncOperation(classAnnotation);
@@ -58,6 +57,6 @@ public class AsyncAnnotationClassLevelOperationsScanner<ClassAnnotation extends 
         Operation operation = asyncAnnotationOperationsService.buildOperation(asyncOperation, methods);
         annotatedMethods.forEach(
                 method -> customizers.forEach(customizer -> customizer.customize(operation, method.method())));
-        return Stream.of(Map.entry(operation.getOperationId(), operation));
+        return Stream.of(operation);
     }
 }

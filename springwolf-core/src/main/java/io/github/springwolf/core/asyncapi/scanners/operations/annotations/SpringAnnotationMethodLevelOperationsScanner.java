@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -30,17 +29,17 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
     private final List<OperationCustomizer> customizers;
 
     @Override
-    public Stream<Map.Entry<String, Operation>> scan(Class<?> clazz) {
+    public Stream<Operation> scan(Class<?> clazz) {
         return AnnotationScannerUtil.findAnnotatedMethods(clazz, methodAnnotationClass)
                 .map(this::mapMethodToOperation);
     }
 
-    private Map.Entry<String, Operation> mapMethodToOperation(MethodAndAnnotation<MethodAnnotation> method) {
+    private Operation mapMethodToOperation(MethodAndAnnotation<MethodAnnotation> method) {
         PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method.method());
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
 
         Operation operation = springAnnotationOperationService.buildOperation(method, payloadSchema, headerSchema);
         customizers.forEach(customizer -> customizer.customize(operation, method.method()));
-        return Map.entry(operation.getOperationId(), operation);
+        return operation;
     }
 }

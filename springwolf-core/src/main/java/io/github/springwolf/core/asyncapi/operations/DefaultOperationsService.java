@@ -27,12 +27,12 @@ public class DefaultOperationsService implements OperationsService {
      */
     @Override
     public Map<String, Operation> findOperations() {
-        List<Map.Entry<String, Operation>> foundOperations = new ArrayList<>();
+        List<Operation> foundOperations = new ArrayList<>();
 
         for (OperationsScanner scanner : operationScanners) {
             try {
                 Map<String, Operation> channels = scanner.scan();
-                foundOperations.addAll(channels.entrySet());
+                foundOperations.addAll(channels.values());
             } catch (Exception e) {
                 log.error("An error was encountered during operation scanning with {}: {}", scanner, e.getMessage(), e);
             }
