@@ -2,8 +2,9 @@
 import { Component, input } from "@angular/core";
 
 @Component({
-  selector: "app-schema-range",
-  templateUrl: "./range.component.html",
+    selector: "app-schema-range",
+    templateUrl: "./range.component.html",
+    standalone: false
 })
 export class RangeComponent {
   lowerBound = input<number>();

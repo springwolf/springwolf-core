@@ -2,8 +2,9 @@
 import { Component, input } from "@angular/core";
 
 @Component({
-  selector: "app-json",
-  template: '<markdown [data]="data()"></markdown>',
+    selector: "app-json",
+    template: '<markdown [data]="data()"></markdown>',
+    standalone: false
 })
 export class JsonComponent {
   data = input.required<string, any>({

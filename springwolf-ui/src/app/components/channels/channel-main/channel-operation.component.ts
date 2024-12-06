@@ -17,9 +17,10 @@ import {
 import { IUiService } from "../../../service/ui.service";
 
 @Component({
-  selector: "app-channel-operation",
-  templateUrl: "./channel-operation.component.html",
-  styleUrls: ["./channel-operation.component.css"],
+    selector: "app-channel-operation",
+    templateUrl: "./channel-operation.component.html",
+    styleUrls: ["./channel-operation.component.css"],
+    standalone: false
 })
 export class ChannelOperationComponent implements OnInit {
   channelName = input.required<string>();

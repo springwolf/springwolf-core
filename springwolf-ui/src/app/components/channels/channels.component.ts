@@ -5,9 +5,10 @@ import { Channel } from "../../models/channel.model";
 import { IUiService } from "../../service/ui.service";
 
 @Component({
-  selector: "app-channels",
-  templateUrl: "./channels.component.html",
-  styleUrls: ["./channels.component.css"],
+    selector: "app-channels",
+    templateUrl: "./channels.component.html",
+    styleUrls: ["./channels.component.css"],
+    standalone: false
 })
 export class ChannelsComponent implements OnInit {
   channels: Channel[] = [];

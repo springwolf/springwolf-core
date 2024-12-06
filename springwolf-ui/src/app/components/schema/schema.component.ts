@@ -4,9 +4,10 @@ import { Schema } from "../../models/schema.model";
 import "../code/prism.bridge";
 
 @Component({
-  selector: "app-schema",
-  templateUrl: "./schema.component.html",
-  styleUrls: ["./schema.component.css"],
+    selector: "app-schema",
+    templateUrl: "./schema.component.html",
+    styleUrls: ["./schema.component.css"],
+    standalone: false
 })
 export class SchemaComponent {
   schema = input.required<Schema>();

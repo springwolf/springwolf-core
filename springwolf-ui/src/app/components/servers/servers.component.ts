@@ -4,9 +4,10 @@ import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { Server } from "../../models/server.model";
 
 @Component({
-  selector: "app-servers",
-  templateUrl: "./servers.component.html",
-  styleUrls: ["./servers.component.css"],
+    selector: "app-servers",
+    templateUrl: "./servers.component.html",
+    styleUrls: ["./servers.component.css"],
+    standalone: false
 })
 export class ServersComponent implements OnInit {
   servers: Map<string, Server> = new Map<string, Server>();
