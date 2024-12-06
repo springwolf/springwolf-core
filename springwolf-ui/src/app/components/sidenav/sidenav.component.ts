@@ -11,7 +11,9 @@ import {
 } from "@angular/core";
 import { NavigationTargetDirective } from "./navigation.directive";
 import { AsyncApiMapperService } from "../../service/asyncapi/asyncapi-mapper.service";
-import { Location } from "@angular/common";
+import { CommonModule, Location } from "@angular/common";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatIconModule } from "@angular/material/icon";
 
 interface NavigationEntry {
   name: string[];
@@ -27,6 +29,7 @@ interface NavigationEntry {
   selector: "app-sidenav",
   templateUrl: "./sidenav.component.html",
   styleUrls: ["./sidenav.component.css"],
+  imports: [MatSidenavModule, MatIconModule, CommonModule],
 })
 export class SidenavComponent implements OnInit, AfterViewInit {
   @ViewChild("scrollableElement") scrollableElement!: ElementRef;
