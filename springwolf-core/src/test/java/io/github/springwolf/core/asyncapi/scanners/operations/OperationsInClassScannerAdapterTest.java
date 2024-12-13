@@ -43,7 +43,8 @@ class OperationsInClassScannerAdapterTest {
         Map<String, Operation> operations = operationsInClassScannerAdapter.scan();
 
         // then
-        assertThat(operations).containsExactlyEntriesOf(Map.of("operation1", operation1, "operation2", operation2));
+        assertThat(operations)
+                .containsExactlyInAnyOrderEntriesOf(Map.of("operation1", operation1, "operation2", operation2));
     }
 
     @Test
