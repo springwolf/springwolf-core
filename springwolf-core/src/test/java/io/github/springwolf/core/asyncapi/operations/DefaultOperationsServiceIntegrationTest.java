@@ -46,12 +46,13 @@ class DefaultOperationsServiceIntegrationTest {
     static class SimpleOperationScanner implements OperationsScanner {
         @Override
         public Map<String, Operation> scan() {
-            return Map.of(
-                    "foo",
-                    Operation.builder()
-                            .channel(ChannelReference.fromChannel("foo"))
-                            .action(OperationAction.RECEIVE)
-                            .build());
+            Operation operation = Operation.builder()
+                    .operationId("foo")
+                    .channel(ChannelReference.fromChannel("foo"))
+                    .action(OperationAction.RECEIVE)
+                    .build();
+
+            return Map.of(operation.getOperationId(), operation);
         }
     }
 
@@ -61,26 +62,28 @@ class DefaultOperationsServiceIntegrationTest {
         @Component
         static class SendOperationScanner implements OperationsScanner {
             static final Operation sentOperation = Operation.builder()
+                    .operationId("send")
                     .channel(ChannelReference.fromChannel(topicName))
                     .action(OperationAction.SEND)
                     .build();
 
             @Override
             public Map<String, Operation> scan() {
-                return Map.of("send", sentOperation);
+                return Map.of(sentOperation.getOperationId(), sentOperation);
             }
         }
 
         @Component
         static class ReceiveOperationScanner implements OperationsScanner {
             static final Operation receiveOperation = Operation.builder()
+                    .operationId("receive")
                     .channel(ChannelReference.fromChannel(topicName))
                     .action(OperationAction.RECEIVE)
                     .build();
 
             @Override
             public Map<String, Operation> scan() {
-                return Map.of("receive", receiveOperation);
+                return Map.of(receiveOperation.getOperationId(), receiveOperation);
             }
         }
     }

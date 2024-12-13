@@ -21,12 +21,12 @@ public class OperationsInClassScannerAdapter implements OperationsScanner {
     public Map<String, Operation> scan() {
         Set<Class<?>> components = classScanner.scan();
 
-        List<Map.Entry<String, Operation>> operations = mapToOperations(components);
+        List<Operation> operations = mapToOperations(components);
 
         return OperationMerger.mergeOperations(operations);
     }
 
-    private List<Map.Entry<String, Operation>> mapToOperations(Set<Class<?>> components) {
+    private List<Operation> mapToOperations(Set<Class<?>> components) {
         return components.stream().flatMap(classProcessor::scan).toList();
     }
 }

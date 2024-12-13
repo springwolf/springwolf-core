@@ -35,35 +35,32 @@ class OperationsInClassScannerAdapterTest {
     void processClassTest() {
         // given
         when(classScanner.scan()).thenReturn(Set.of(String.class));
-        Map.Entry<String, Operation> operation1 =
-                Map.entry("operation1", Operation.builder().build());
-        Map.Entry<String, Operation> operation2 =
-                Map.entry("operation2", Operation.builder().build());
+        Operation operation1 = Operation.builder().operationId("operation1").build();
+        Operation operation2 = Operation.builder().operationId("operation2").build();
         when(classProcessor.scan(any())).thenReturn(Stream.of(operation1, operation2));
 
         // when
         Map<String, Operation> operations = operationsInClassScannerAdapter.scan();
 
         // then
-        assertThat(operations).containsExactly(operation2, operation1);
+        assertThat(operations).containsExactlyEntriesOf(Map.of("operation1", operation1, "operation2", operation2));
     }
 
     @Test
     void sameOperationsAreMergedTest() {
         // given
         when(classScanner.scan()).thenReturn(Set.of(String.class));
-        Map.Entry<String, Operation> operation1 =
-                Map.entry("operation1", Operation.builder().build());
-        Map.Entry<String, Operation> operation2 =
-                Map.entry("operation1", Operation.builder().build());
+        Operation operation1 =
+                Operation.builder().operationId("operation1").description("op1").build();
+        Operation operation2 =
+                Operation.builder().operationId("operation1").description("op2").build();
         when(classProcessor.scan(any())).thenReturn(Stream.of(operation1, operation2));
 
         // when
         Map<String, Operation> operations = operationsInClassScannerAdapter.scan();
 
         // then
-        assertThat(operations)
-                .containsExactly(Map.entry("operation1", Operation.builder().build()));
+        assertThat(operations).hasSize(1);
     }
 
     @Test

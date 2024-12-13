@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,11 +36,11 @@ class SpringAnnotationClassLevelOperationsScannerTest {
                 .thenReturn(operation);
 
         // when
-        List<Map.Entry<String, Operation>> operations =
+        List<Operation> operations =
                 scanner.scan(ClassWithTestListenerAnnotation.class).toList();
 
         // then
-        assertThat(operations).containsExactly(Map.entry("operationId", operation));
+        assertThat(operations).containsExactly(operation);
     }
 
     @Test
