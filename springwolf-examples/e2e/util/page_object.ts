@@ -2,11 +2,11 @@
 import { Locator, Page } from "@playwright/test";
 
 export function locateChannels(locator: Page | Locator) {
-  return locator.locator("section#channels article");
+  return locator.locator("article#channels article");
 }
 
 export function locateChannelItems(locator: Page | Locator) {
-  return locator.locator("section#channels article > mat-card");
+  return locator.locator("article#channels article > mat-card");
 }
 
 export function locateChannel(
