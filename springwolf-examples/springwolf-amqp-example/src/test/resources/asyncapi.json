@@ -35,6 +35,9 @@
       },
       "bindings": {
         "amqp": {
+          "channel": {
+            "$ref": "#/channels/queue-update"
+          },
           "is": "routingKey",
           "exchange": {
             "name": "CRUD-topic-exchange-1",
@@ -43,7 +46,8 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "name": "#",
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -56,6 +60,9 @@
       },
       "bindings": {
         "amqp": {
+          "channel": {
+            "$ref": "#/channels/queue-read"
+          },
           "is": "routingKey",
           "exchange": {
             "name": "CRUD-topic-exchange-2",
@@ -64,7 +71,8 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "name": "#",
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -85,7 +93,7 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -101,7 +109,7 @@
             "autoDelete": true,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -122,7 +130,7 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -143,6 +151,9 @@
       },
       "bindings": {
         "amqp": {
+          "channel": {
+            "$ref": "#/channels/example-bindings-queue"
+          },
           "is": "routingKey",
           "exchange": {
             "name": "example-topic-exchange",
@@ -151,7 +162,8 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "name": "example-topic-routing-key",
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -175,7 +187,7 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -196,7 +208,7 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -217,7 +229,7 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -233,7 +245,7 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       }
     },
@@ -249,7 +261,7 @@
             "autoDelete": false,
             "vhost": "/"
           },
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       }
     }
@@ -427,7 +439,7 @@
         "title": "AnotherPayloadDto",
         "bindings": {
           "amqp": {
-            "bindingVersion": "0.3.0"
+            "bindingVersion": "0.4.0"
           }
         }
       },
@@ -445,7 +457,7 @@
         "title": "ExamplePayloadDto",
         "bindings": {
           "amqp": {
-            "bindingVersion": "0.3.0"
+            "bindingVersion": "0.4.0"
           }
         }
       },
@@ -463,7 +475,7 @@
         "title": "GenericPayloadDtoExamplePayloadDto",
         "bindings": {
           "amqp": {
-            "bindingVersion": "0.3.0"
+            "bindingVersion": "0.4.0"
           }
         }
       },
@@ -481,7 +493,7 @@
         "title": "GenericPayloadDtoLong",
         "bindings": {
           "amqp": {
-            "bindingVersion": "0.3.0"
+            "bindingVersion": "0.4.0"
           }
         }
       },
@@ -499,7 +511,7 @@
         "title": "GenericPayloadDtoString",
         "bindings": {
           "amqp": {
-            "bindingVersion": "0.3.0"
+            "bindingVersion": "0.4.0"
           }
         }
       }
@@ -514,7 +526,7 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       },
       "messages": [
@@ -531,7 +543,7 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       },
       "messages": [
@@ -548,7 +560,7 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       },
       "messages": [
@@ -565,7 +577,7 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       },
       "messages": [
@@ -582,7 +594,7 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       },
       "messages": [
@@ -608,7 +620,7 @@
           "bcc": [ ],
           "timestamp": false,
           "ack": false,
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       },
       "messages": [
@@ -625,7 +637,7 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       },
       "messages": [
@@ -645,7 +657,7 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       },
       "messages": [
@@ -662,7 +674,7 @@
       "bindings": {
         "amqp": {
           "expiration": 0,
-          "bindingVersion": "0.3.0"
+          "bindingVersion": "0.4.0"
         }
       },
       "messages": [
