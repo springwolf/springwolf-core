@@ -7,4 +7,4 @@ channels:
           amqp:
             contentEncoding: gzip
             messageType: 'user.signup'
-            bindingVersion: 0.3.0
+            bindingVersion: 0.4.0
