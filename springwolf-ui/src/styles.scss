@@ -1,8 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
-
 @use '@angular/material' as mat;
 
-@include mat.core();
 $theme: mat.define-theme((
   color: (
     theme-type: light,
@@ -11,20 +8,17 @@ $theme: mat.define-theme((
   ),
 ));
 
-@mixin theme($theme) {
-    --mat-toolbar-container-text-color: #EEE;
-    mat-toolbar {
-      background: mat.get-theme-color($theme, primary, 40);
-      color: var(--mat-toolbar-container-text-color);
-    }
-
-    mat-list {
-      --mat-list-list-item-leading-icon-start-space: 0;
-      --mat-list-list-item-leading-icon-end-space: 0;
-    }
-}
-
 :root {
   @include mat.all-component-themes($theme);
-  @include theme($theme);
+  @include mat.typography-hierarchy($theme);
+
+  @include mat.toolbar-overrides((
+    container-background-color: mat.get-theme-color($theme, primary, 40),
+    container-text-color: #EEE,
+  ));
+
+  @include mat.list-overrides((
+    list-item-leading-icon-start-space: 0,
+    list-item-leading-icon-end-space: 0,
+  ));
 }

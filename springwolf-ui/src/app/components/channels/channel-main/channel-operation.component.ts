@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, input, computed, OnInit } from "@angular/core";
+import { Component, computed, input, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { STATUS } from "angular-in-memory-web-api";
 import { Binding } from "../../../models/bindings.model";
@@ -15,11 +15,29 @@ import {
   noExample,
 } from "../../../service/mock/init-values";
 import { IUiService } from "../../../service/ui.service";
+import { CommonModule } from "@angular/common";
+import { MarkdownModule } from "ngx-markdown";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatIconModule } from "@angular/material/icon";
+import { PrismEditorComponent } from "../../code/prism-editor.component";
+import { SchemaComponent } from "../../schema/schema.component";
+import { ClipboardModule } from "@angular/cdk/clipboard";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: "app-channel-operation",
   templateUrl: "./channel-operation.component.html",
   styleUrls: ["./channel-operation.component.css"],
+  imports: [
+    CommonModule,
+    MarkdownModule,
+    MatChipsModule,
+    MatIconModule,
+    PrismEditorComponent,
+    SchemaComponent,
+    ClipboardModule,
+    MatButtonModule,
+  ],
 })
 export class ChannelOperationComponent implements OnInit {
   channelName = input.required<string>();
