@@ -952,7 +952,7 @@
         "examples": [
           {
             "example": {
-              "someEnum": "FOO2",
+              "someEnum": "OK",
               "someLong": 5,
               "someString": "some string value"
             },
@@ -972,10 +972,13 @@
                 "someEnum": {
                   "description": "Some enum field",
                   "enum": [
-                    "FOO1",
-                    "FOO2",
-                    "FOO3"
+                    "OK",
+                    "BAD_REQUEST",
+                    "UNAUTHORIZED",
+                    "NOT_FOUND",
+                    "INTERNAL_SERVER_ERROR"
                   ],
+                  "title": "ExampleEnum",
                   "type": "string"
                 },
                 "someLong": {
@@ -1014,16 +1017,7 @@
         "type": "object",
         "properties": {
           "someEnum": {
-            "type": "string",
-            "description": "Some enum field",
-            "enum": [
-              "FOO1",
-              "FOO2",
-              "FOO3"
-            ],
-            "examples": [
-              "FOO2"
-            ]
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto$ExampleEnum"
           },
           "someLong": {
             "type": "integer",
@@ -1045,7 +1039,7 @@
         "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
         "examples": [
           {
-            "someEnum": "FOO2",
+            "someEnum": "OK",
             "someLong": 5,
             "someString": "some string value"
           }
@@ -1061,10 +1055,13 @@
             "someEnum": {
               "description": "Some enum field",
               "enum": [
-                "FOO1",
-                "FOO2",
-                "FOO3"
+                "OK",
+                "BAD_REQUEST",
+                "UNAUTHORIZED",
+                "NOT_FOUND",
+                "INTERNAL_SERVER_ERROR"
               ],
+              "title": "ExampleEnum",
               "type": "string"
             },
             "someLong": {
@@ -1084,6 +1081,34 @@
           ],
           "title": "ExamplePayloadDto",
           "type": "object"
+        }
+      },
+      "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto$ExampleEnum": {
+        "title": "ExampleEnum",
+        "type": "string",
+        "description": "Some enum field",
+        "enum": [
+          "OK",
+          "BAD_REQUEST",
+          "UNAUTHORIZED",
+          "NOT_FOUND",
+          "INTERNAL_SERVER_ERROR"
+        ],
+        "examples": [
+          "\"OK\""
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "Some enum field",
+          "enum": [
+            "OK",
+            "BAD_REQUEST",
+            "UNAUTHORIZED",
+            "NOT_FOUND",
+            "INTERNAL_SERVER_ERROR"
+          ],
+          "title": "ExampleEnum",
+          "type": "string"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.NestedPayloadDto": {
@@ -1113,7 +1138,7 @@
           {
             "examplePayloads": [
               {
-                "someEnum": "FOO2",
+                "someEnum": "OK",
                 "someLong": 5,
                 "someString": "some string value"
               }
@@ -1134,10 +1159,13 @@
                   "someEnum": {
                     "description": "Some enum field",
                     "enum": [
-                      "FOO1",
-                      "FOO2",
-                      "FOO3"
+                      "OK",
+                      "BAD_REQUEST",
+                      "UNAUTHORIZED",
+                      "NOT_FOUND",
+                      "INTERNAL_SERVER_ERROR"
                     ],
+                    "title": "ExampleEnum",
                     "type": "string"
                   },
                   "someLong": {

@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -71,7 +70,7 @@ public class KafkaProducerSystemTest {
         headers.put("kafka_offset", List.of("0"));
         headers.put("kafka_receivedMessageKey", List.of("string"));
 
-        ExamplePayloadDto payload = new ExamplePayloadDto("foo", 5, FOO1);
+        ExamplePayloadDto payload = new ExamplePayloadDto("foo", 5, ExamplePayloadDto.ExampleEnum.OK);
         String payloadAsString = new ObjectMapper().writeValueAsString(payload).replaceAll("\"", "\\\\\"");
         String message = "{\n" //
                 + "    \"bindings\": {},\n"
