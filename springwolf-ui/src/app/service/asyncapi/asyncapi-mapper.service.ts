@@ -47,6 +47,7 @@ export class AsyncApiMapperService {
         item.channels,
         item.operations,
         item.components.messages,
+        item.components.schemas,
         item.servers,
         item.defaultContentType
       );
@@ -110,6 +111,7 @@ export class AsyncApiMapperService {
     channels: ServerChannels,
     operations: ServerOperations,
     messages: ServerComponents["messages"],
+    schemas: ServerComponents["schemas"],
     servers: ServerServers,
     defaultContentType: string
   ): Channel[] {
@@ -139,6 +141,7 @@ export class AsyncApiMapperService {
           channelName,
           channels[channelId],
           messages,
+          schemas,
           operation.messages,
           defaultContentType
         );
@@ -249,6 +252,7 @@ export class AsyncApiMapperService {
     channelName: string,
     channel: ServerChannel,
     messages: ServerComponents["messages"],
+    schemas: ServerComponents["schemas"],
     operationMessages: ServerOperationMessage[],
     defaultContentType: string
   ): Message[] {
@@ -270,7 +274,11 @@ export class AsyncApiMapperService {
               title: message.title,
               description: message.description,
               contentType: message.contentType || defaultContentType,
-              payload: this.mapPayload(message.name, message.payload.schema),
+              payload: this.mapPayload(
+                message.name,
+                message.payload.schema,
+                schemas
+              ),
               headers: {
                 ts_type: "ref",
                 name: headerName,
@@ -289,7 +297,8 @@ export class AsyncApiMapperService {
 
   private mapPayload(
     payloadName: string,
-    schema: { $ref: string } | ServerAsyncApiSchema
+    schema: { $ref: string } | ServerAsyncApiSchema,
+    schemas: ServerComponents["schemas"]
   ): Message["payload"] {
     if ("$ref" in schema) {
       const payloadName = this.resolveRefId(schema.$ref);
@@ -302,7 +311,7 @@ export class AsyncApiMapperService {
       };
     }
 
-    return this.mapSchemaObj(payloadName, schema, {});
+    return this.mapSchemaObj(payloadName, schema, schemas);
   }
 
   private mapServerAsyncApiMessageBindings(
