@@ -7,39 +7,24 @@ import java.time.LocalDate
 
 @Serializable
 data class SampleEvent(
-    @SerialName("string_field")
-    val stringField: String,
-    @SerialName("optional_field")
-    val optionalField: String? = null,
-    @SerialName("boolean_field")
-    val booleanField: Boolean,
-    @SerialName("int_field")
-    val intField: Int,
-    @SerialName("long_field")
-    val longField: Long,
-    @SerialName("float_field")
-    val floatField: Float,
-    @SerialName("double_field")
-    val doubleField: Double,
-    @SerialName("short_field")
-    val shortField: Short,
-    @SerialName("byte_field")
-    val byteField: Byte,
-    @SerialName("list_field")
-    val listField: List<String>,
-    @SerialName("set_field")
-    val setField: Set<String>,
-    @SerialName("map_field")
-    val mapField: Map<Int, String>,
+    @SerialName("string_field") val stringField: String,
+    @SerialName("optional_field") val optionalField: String? = null,
+    @SerialName("boolean_field") val booleanField: Boolean,
+    @SerialName("int_field") val intField: Int,
+    @SerialName("long_field") val longField: Long,
+    @SerialName("float_field") val floatField: Float,
+    @SerialName("double_field") val doubleField: Double,
+    @SerialName("short_field") val shortField: Short,
+    @SerialName("byte_field") val byteField: Byte,
+    @SerialName("list_field") val listField: List<String>,
+    @SerialName("set_field") val setField: Set<String>,
+    @SerialName("map_field") val mapField: Map<Int, String>,
     @SerialName("date_field")
     @Serializable(with = LocalDateSerializer::class)
     val dateField: LocalDate,
-    @SerialName("enum_field")
-    val enumField: Color,
-    @SerialName("nested_class")
-    val nestedClass: NestedClass?,
-    @SerialName("listed_references")
-    val listedReferences: List<NestedClass>,
+    @SerialName("enum_field") val enumField: Color,
+    @SerialName("nested_class") val nestedClass: NestedClass?,
+    @SerialName("listed_references") val listedReferences: List<NestedClass>,
 ) {
     @Serializable
     data class NestedClass(
@@ -57,32 +42,27 @@ enum class Color {
 
 @Serializable
 data class ClassWithListProperty(
-    @SerialName("list_field")
-    val listField: List<String>,
+    @SerialName("list_field") val listField: List<String>,
 )
 
 @Serializable
 data class ClassWithSetProperty(
-    @SerialName("set_field")
-    val setField: Set<String>,
+    @SerialName("set_field") val setField: Set<String>,
 )
 
 @Serializable
 data class ClassWithCollectionProperty(
-    @SerialName("collection_field")
-    val setField: Collection<String>,
+    @SerialName("collection_field") val setField: Collection<String>,
 )
 
 @Serializable
 data class ClassWithEnumProperty(
-    @SerialName("enum_field")
-    val enumField: Color,
+    @SerialName("enum_field") val enumField: Color,
 )
 
 @Serializable
 data class ClassWithNestedProperty(
-    @SerialName("nested_class")
-    val nestedClass: NestedClass,
+    @SerialName("nested_class") val nestedClass: NestedClass,
 ) {
     @Serializable
     data class NestedClass(
@@ -94,12 +74,10 @@ data class ClassWithNestedProperty(
 
 @Serializable
 data class ClassWithPolymorphism(
-    @SerialName("pet")
-    val pet: Pet,
+    @SerialName("pet") val pet: Pet,
 )
 
-@Serializable
-sealed interface Pet
+@Serializable sealed interface Pet
 
 @Serializable
 @SerialName("dog")
