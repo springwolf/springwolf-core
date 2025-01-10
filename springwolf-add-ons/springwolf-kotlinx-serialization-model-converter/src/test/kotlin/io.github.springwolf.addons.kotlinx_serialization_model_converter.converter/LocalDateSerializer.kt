@@ -10,14 +10,13 @@ import kotlinx.serialization.encoding.Encoder
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-/**
- * Kotlinx LocalDate Serializer from string to LocalDate from ISO format (`yyyy-MM-dd`).
- */
+/** Kotlinx LocalDate Serializer from string to LocalDate from ISO format (`yyyy-MM-dd`). */
 object LocalDateSerializer : KSerializer<LocalDate> {
     private const val DATE_PATTERN: String = "yyyy-MM-dd"
     private val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
 
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("LocalDate", PrimitiveKind.STRING)
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("LocalDate", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): LocalDate {
         return LocalDate.parse(decoder.decodeString(), dateTimeFormatter)
