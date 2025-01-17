@@ -75,11 +75,46 @@
           "type": "object"
         }
       },
+      "io.github.springwolf.examples.kafka.dtos.discriminator.EnginePower": {
+        "title": "EnginePower",
+        "type": "object",
+        "properties": {
+          "hp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "torque": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "examples": [
+          {
+            "hp": 0,
+            "torque": 0
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "hp": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "torque": { }
+          },
+          "title": "EnginePower",
+          "type": "object"
+        }
+      },
       "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase": {
         "discriminator": "vehicleType",
         "title": "VehicleBase",
         "type": "object",
         "properties": {
+          "enginePower": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.EnginePower"
+          },
           "powerSource": {
             "type": "string"
           },
@@ -94,22 +129,73 @@
         "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
         "examples": [
           {
+            "batteryCapacity": 0,
+            "chargeTime": 0,
+            "enginePower": {
+              "hp": 0,
+              "torque": 0
+            },
             "powerSource": "string",
             "topSpeed": 0,
             "vehicleType": "string"
           }
         ],
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleElectricPayloadDto"
+          },
+          {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleGasolinePayloadDto"
+          }
+        ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
           "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
+          "oneOf": [
+            {
+              "allOf": [
+                { },
+                {
+                  "properties": {
+                    "batteryCapacity": { },
+                    "chargeTime": {
+                      "format": "int32",
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              ],
+              "description": "Electric vehicle implementation of VehicleBase",
+              "type": "object"
+            },
+            {
+              "allOf": [
+                { },
+                {
+                  "properties": {
+                    "fuelCapacity": { }
+                  },
+                  "type": "object"
+                }
+              ],
+              "description": "Gasoline vehicle implementation of VehicleBase",
+              "type": "object"
+            }
+          ],
           "properties": {
+            "enginePower": {
+              "properties": {
+                "hp": { },
+                "torque": { }
+              },
+              "title": "EnginePower",
+              "type": "object"
+            },
             "powerSource": {
               "type": "string"
             },
-            "topSpeed": {
-              "format": "int32",
-              "type": "integer"
-            },
+            "topSpeed": { },
             "vehicleType": { }
           },
           "title": "VehicleBase",
