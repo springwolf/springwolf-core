@@ -6,6 +6,7 @@ import io.github.springwolf.core.asyncapi.scanners.classes.TestBeanConfiguration
 import io.github.springwolf.core.asyncapi.scanners.classes.TestComponent;
 import io.github.springwolf.core.asyncapi.scanners.classes.TestConditionalComponent;
 import io.github.springwolf.core.asyncapi.scanners.classes.TestOtherConditionalComponent;
+import io.github.springwolf.core.asyncapi.scanners.classes2.TestComponent2;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +50,8 @@ class ComponentClassScannerIntegrationTest {
                                 .title("ComponentClassScannerTest-title")
                                 .version("ComponentClassScannerTest-version")
                                 .build())
-                        .basePackage("io.github.springwolf.core.asyncapi.scanners.classes")
+                        .basePackage("io.github.springwolf.core.asyncapi.scanners.classes, "
+                                + "io.github.springwolf.core.asyncapi.scanners.classes2")
                         .build());
     }
 
@@ -62,7 +64,7 @@ class ComponentClassScannerIntegrationTest {
 
         assertThat(components)
                 .doesNotContain(TestBeanConfiguration.TestBean.class)
-                .contains(TestComponent.class)
+                .contains(TestComponent.class, TestComponent2.class)
                 .doesNotContain(TestConditionalComponent.class)
                 .doesNotContain(TestOtherConditionalComponent.class);
     }
@@ -76,7 +78,7 @@ class ComponentClassScannerIntegrationTest {
 
         assertThat(components)
                 .doesNotContain(TestBeanConfiguration.TestBean.class)
-                .contains(TestComponent.class)
+                .contains(TestComponent.class, TestComponent2.class)
                 .contains(TestConditionalComponent.class)
                 .doesNotContain(TestOtherConditionalComponent.class);
     }
