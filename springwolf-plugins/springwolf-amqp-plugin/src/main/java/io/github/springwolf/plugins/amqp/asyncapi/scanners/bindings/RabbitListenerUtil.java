@@ -13,6 +13,7 @@ import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.amqp.AMQPOperationBinding;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -125,6 +127,18 @@ public class RabbitListenerUtil {
         } else {
             channelBinding.is(AMQPChannelType.ROUTING_KEY);
             channelBinding.exchange(buildExchangeProperties(annotation, exchangeName, context));
+
+            // Alternative: lookup the bindings from the context
+            QueueBinding[] queueBindings = annotation.bindings();
+            if (queueBindings.length > 0) {
+                QueueBinding binding = queueBindings[0];
+                String queueChannelId =
+                        stringValueResolver.resolveStringValue(binding.value().name());
+                String routingKey = stringValueResolver.resolveStringValue(
+                        Arrays.stream(binding.key()).findFirst().orElse(DEFAULT_EXCHANGE_ROUTING_KEY));
+                channelBinding.name(routingKey);
+                channelBinding.channel(ChannelReference.fromChannel(queueChannelId));
+            }
         }
 
         return Map.of(BINDING_NAME, channelBinding.build());
@@ -192,65 +206,6 @@ public class RabbitListenerUtil {
                 .build();
     }
 
-    public static ChannelObject buildChannelObject(org.springframework.amqp.core.Queue queue) {
-        return ChannelObject.builder()
-                .channelId(ReferenceUtil.toValidId(queue.getName()))
-                .address(queue.getName())
-                .bindings(Map.of(
-                        BINDING_NAME,
-                        AMQPChannelBinding.builder()
-                                .is(AMQPChannelType.QUEUE)
-                                .queue(AMQPChannelQueueProperties.builder()
-                                        .name(queue.getName())
-                                        .autoDelete(queue.isAutoDelete())
-                                        .durable(queue.isDurable())
-                                        .exclusive(queue.isExclusive())
-                                        .build())
-                                .build()))
-                .build();
-    }
-
-    public static List<ChannelObject> buildChannelObject(Binding binding) {
-        String exchangeId = channelIdFromAnnotationBindings(
-                        binding.getExchange(), List.of(binding.getRoutingKey()).toArray(String[]::new))
-                .findFirst()
-                .get();
-        return List.of(
-                // exchange
-                ChannelObject.builder()
-                        .channelId(exchangeId)
-                        .address(binding.getRoutingKey())
-                        .bindings(Map.of(
-                                BINDING_NAME,
-                                AMQPChannelBinding.builder()
-                                        .is(AMQPChannelType.ROUTING_KEY)
-                                        .exchange(AMQPChannelExchangeProperties.builder()
-                                                .name(binding.getExchange())
-                                                .build())
-                                        .build()))
-                        .build(),
-                // queue (where the exchange forwards the message to)
-                ChannelObject.builder()
-                        .channelId(ReferenceUtil.toValidId(binding.getDestination()))
-                        .address(binding.getDestination())
-                        .bindings(Map.of(
-                                BINDING_NAME,
-                                AMQPChannelBinding.builder()
-                                        .is(AMQPChannelType.QUEUE)
-                                        .queue(AMQPChannelQueueProperties.builder()
-                                                .name(binding.getDestination())
-                                                .build())
-                                        .build()))
-                        .build());
-    }
-
-    private static Boolean parse(String value, Boolean defaultIfEmpty) {
-        if ("".equals(value)) {
-            return defaultIfEmpty;
-        }
-        return Boolean.valueOf(value);
-    }
-
     private static String getExchangeName(
             RabbitListener annotation, StringValueResolver stringValueResolver, RabbitListenerUtilContext context) {
         String exchangeName = Stream.of(annotation.bindings())
@@ -271,6 +226,88 @@ public class RabbitListenerUtil {
         }
 
         return exchangeName;
+    }
+
+    public static Stream<ChannelObject> buildChannelObjectFromBeans(
+            List<org.springframework.amqp.core.Queue> queues, List<Binding> bindings) {
+        Map<String, ChannelObject> queueMap = queues.stream()
+                .map(RabbitListenerUtil::buildChannelObjectForQueue)
+                .collect(Collectors.toMap(ChannelObject::getChannelId, c -> c, (a, b) -> a));
+
+        Stream<ChannelObject> bindingStream =
+                bindings.stream().flatMap((binding) -> buildChannelObjectFromBeans(binding, queueMap));
+
+        return Stream.concat(bindingStream, queueMap.values().stream());
+    }
+
+    private static ChannelObject buildChannelObjectForQueue(org.springframework.amqp.core.Queue queue) {
+        return ChannelObject.builder()
+                .channelId(ReferenceUtil.toValidId(queue.getName()))
+                .address(queue.getName())
+                .bindings(Map.of(
+                        BINDING_NAME,
+                        AMQPChannelBinding.builder()
+                                .is(AMQPChannelType.QUEUE)
+                                .queue(AMQPChannelQueueProperties.builder()
+                                        .name(queue.getName())
+                                        .autoDelete(queue.isAutoDelete())
+                                        .durable(queue.isDurable())
+                                        .exclusive(queue.isExclusive())
+                                        .build())
+                                .build()))
+                .build();
+    }
+
+    private static ChannelObject buildChannelObjectForQueue(Binding binding) {
+        return ChannelObject.builder()
+                .channelId(ReferenceUtil.toValidId(binding.getDestination()))
+                .address(binding.getDestination())
+                .bindings(Map.of(
+                        BINDING_NAME,
+                        AMQPChannelBinding.builder()
+                                .is(AMQPChannelType.QUEUE)
+                                .queue(AMQPChannelQueueProperties.builder()
+                                        .name(binding.getDestination())
+                                        .build())
+                                .build()))
+                .build();
+    }
+
+    private static Stream<ChannelObject> buildChannelObjectFromBeans(
+            Binding binding, Map<String, ChannelObject> queueMap) {
+        String exchangeChannelId = channelIdFromAnnotationBindings(
+                        binding.getExchange(), List.of(binding.getRoutingKey()).toArray(String[]::new))
+                .findFirst()
+                .get();
+
+        String queueChannelId = ReferenceUtil.toValidId(binding.getDestination());
+        ChannelObject queue = queueMap.getOrDefault(queueChannelId, buildChannelObjectForQueue(binding));
+
+        return Stream.of(
+                // exchange
+                ChannelObject.builder()
+                        .channelId(exchangeChannelId)
+                        .address(binding.getRoutingKey())
+                        .bindings(Map.of(
+                                BINDING_NAME,
+                                AMQPChannelBinding.builder()
+                                        .is(AMQPChannelType.ROUTING_KEY)
+                                        .exchange(AMQPChannelExchangeProperties.builder()
+                                                .name(binding.getExchange())
+                                                .build())
+                                        .name(binding.getRoutingKey())
+                                        .channel(ChannelReference.fromChannel(queueChannelId))
+                                        .build()))
+                        .build(),
+                // queue (exchange forwards message to this queue)
+                queue);
+    }
+
+    private static Boolean parse(String value, Boolean defaultIfEmpty) {
+        if ("".equals(value)) {
+            return defaultIfEmpty;
+        }
+        return Boolean.valueOf(value);
     }
 
     public static Map<String, OperationBinding> buildOperationBinding(
