@@ -28,9 +28,6 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(
         classes = {
             ComponentClassScanner.class,
-            TestComponent.class,
-            TestConditionalComponent.class,
-            TestOtherConditionalComponent.class
         })
 class ComponentClassScannerIntegrationTest {
     @MockitoBean
