@@ -12,6 +12,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -28,8 +29,8 @@ public class AnnotationClassScanner<T extends Annotation> implements ClassScanne
 
     @Override
     public Set<Class<?>> scan() {
-        String basePackage = asyncApiDocketService.getAsyncApiDocket().getBasePackage();
-        if (!StringUtils.hasText(basePackage)) {
+        String basePackages = asyncApiDocketService.getAsyncApiDocket().getBasePackage();
+        if (!StringUtils.hasText(basePackages)) {
             throw new IllegalArgumentException("Base package must not be blank");
         }
 
@@ -38,12 +39,15 @@ public class AnnotationClassScanner<T extends Annotation> implements ClassScanne
 
         provider.addIncludeFilter(new AnnotationTypeFilter(annotation));
 
-        log.debug("Scanning for {} classes in {}", annotation.getSimpleName(), basePackage);
-        return provider.findCandidateComponents(basePackage).stream()
-                .map(BeanDefinition::getBeanClassName)
-                .map(this::getClass)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+        return Arrays.stream(basePackages.replaceAll("\\s", "").split(","))
+                .flatMap(basePackage -> {
+                    log.debug("Scanning for {} classes in {}", annotation.getSimpleName(), basePackage);
+                    return provider.findCandidateComponents(basePackage).stream()
+                            .map(BeanDefinition::getBeanClassName)
+                            .map(this::getClass)
+                            .filter(Optional::isPresent)
+                            .map(Optional::get);
+                })
                 .collect(toSet());
     }
 

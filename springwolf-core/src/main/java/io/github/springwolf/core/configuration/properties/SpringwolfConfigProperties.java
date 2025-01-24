@@ -117,7 +117,8 @@ public class SpringwolfConfigProperties {
         public static final String DEFAULT_CONTENT_TYPE = "application/json";
 
         /**
-         * The base package to scan for listeners which are declared inside a class annotated with @Component or @Service.
+         * The base package(s) to scan for listeners which are declared inside a class annotated with @Component or @Service.
+         * Comma-separated for multiple base packages.
          *
          * @see AsyncApiDocket.AsyncApiDocketBuilder#basePackage(String)
          */
