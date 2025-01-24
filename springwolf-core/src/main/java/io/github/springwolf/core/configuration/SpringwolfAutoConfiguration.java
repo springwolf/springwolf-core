@@ -210,13 +210,13 @@ public class SpringwolfAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TypeExtractor typeToClassConverter(SpringwolfConfigProperties springwolfConfigProperties) {
+    public TypeExtractor typeExtractor(SpringwolfConfigProperties springwolfConfigProperties) {
         return new TypeExtractor(springwolfConfigProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public PayloadExtractor payloadClassExtractor(TypeExtractor typeExtractor) {
+    public PayloadExtractor payloadExtractor(TypeExtractor typeExtractor) {
         return new PayloadExtractor(typeExtractor);
     }
 
