@@ -166,8 +166,8 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             AsyncAnnotationMessageService asyncAnnotationMessageService,
             List<OperationBindingProcessor> operationBindingProcessors,
-            StringValueResolverProxy stringValueResolver,
-            List<OperationCustomizer> operationCustomizers) {
+            List<OperationCustomizer> operationCustomizers,
+            StringValueResolverProxy stringValueResolver) {
         val asyncAnnotationOperationService = new AsyncAnnotationOperationService<>(
                 asyncAnnotationProvider,
                 operationBindingProcessors,
@@ -285,8 +285,8 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             List<OperationBindingProcessor> operationBindingProcessors,
             AsyncAnnotationMessageService asyncAnnotationMessageService,
-            StringValueResolverProxy stringValueResolver,
-            List<OperationCustomizer> operationCustomizers) {
+            List<OperationCustomizer> operationCustomizers,
+            StringValueResolverProxy stringValueResolver) {
         val asyncAnnotationOperationService = new AsyncAnnotationOperationService<>(
                 asyncAnnotationProvider,
                 operationBindingProcessors,

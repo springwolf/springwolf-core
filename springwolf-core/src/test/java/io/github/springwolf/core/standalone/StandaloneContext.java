@@ -11,6 +11,9 @@ import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.SchemaWalker;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.ExampleXmlValueSerializer;
+import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.ExampleYamlValueSerializer;
+import io.github.springwolf.core.asyncapi.components.postprocessors.AvroSchemaPostProcessor;
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
 import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
@@ -37,6 +40,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResol
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.SpringwolfAutoConfiguration;
 import io.github.springwolf.core.configuration.SpringwolfScannerConfiguration;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -70,20 +74,13 @@ public class StandaloneContext {
         AsyncApiDocketService asyncApiDocketService = autoConfiguration.asyncApiDocketService(properties);
 
         ClassScanner componentClassScanner = createComponentClassScanner(basePackage, properties);
-
         BeanMethodsScanner beanMethodsScanner = new DefaultBeanMethodsScanner(componentClassScanner);
         SpringwolfClassScanner springwolfClassScanner =
                 new SpringwolfClassScanner(componentClassScanner, beanMethodsScanner);
 
-        SchemaWalker jsonSchemaWalker = autoConfiguration.jsonSchemaWalker();
-        List<SchemaWalker> schemaWalkers = new ArrayList<>();
-        schemaWalkers.add(jsonSchemaWalker);
-        SchemaWalkerProvider schemaWalkerProvider = autoConfiguration.schemaWalkerProvider(schemaWalkers);
-        ExampleGeneratorPostProcessor exampleGeneratorPostProcessor =
-                autoConfiguration.exampleGeneratorPostProcessor(schemaWalkerProvider);
-
-        List<ModelConverter> modelConverters = new ArrayList<>(); // TODO:
-        List<SchemasPostProcessor> schemasPostProcessors = List.of(exampleGeneratorPostProcessor); // TODO:
+        List<SchemasPostProcessor> schemasPostProcessors = createSchemaPostProcessors(autoConfiguration, properties);
+        SchemaTitleModelConverter schemaTitleModelConverter = autoConfiguration.schemaTitleModelConverter();
+        List<ModelConverter> modelConverters = List.of(schemaTitleModelConverter);
         SwaggerSchemaUtil swaggerSchemaUtil = autoConfiguration.swaggerSchemaUtil();
         SwaggerSchemaService swaggerSchemaService =
                 autoConfiguration.schemasService(modelConverters, schemasPostProcessors, swaggerSchemaUtil, properties);
@@ -109,32 +106,31 @@ public class StandaloneContext {
                 scannerAutoConfiguration.asyncListenerAnnotationProvider();
         AsyncAnnotationProvider<AsyncPublisher> asyncPublisherAnnotationProvider =
                 scannerAutoConfiguration.asyncPublisherAnnotationProvider();
-        ChannelsScanner asyncListenerMethodLevelAnnotationChannelScanner =
-                scannerAutoConfiguration.asyncListenerMethodLevelAnnotationChannelScanner(
-                        asyncListenerAnnotationProvider,
-                        springwolfClassScanner,
-                        asyncApiDocketService,
-                        asyncAnnotationMessageService,
-                        operationBindingProcessors,
-                        stringValueResolver);
-        // TODO: class scanner
-        OperationsScanner asyncListenerMethodLevelAnnotationOperationScanner =
-                scannerAutoConfiguration.asyncListenerMethodLevelAnnotationOperationScanner(
-                        asyncListenerAnnotationProvider,
-                        springwolfClassScanner,
-                        asyncAnnotationMessageService,
-                        operationBindingProcessors,
-                        operationCustomizers,
-                        stringValueResolver);
+        List<ChannelsScanner> channelScanners = createChannelScanners(
+                scannerAutoConfiguration,
+                asyncListenerAnnotationProvider,
+                springwolfClassScanner,
+                asyncApiDocketService,
+                asyncAnnotationMessageService,
+                operationBindingProcessors,
+                stringValueResolver,
+                asyncPublisherAnnotationProvider);
+        List<OperationsScanner> operationScanners = createOperationScanners(
+                scannerAutoConfiguration,
+                asyncListenerAnnotationProvider,
+                springwolfClassScanner,
+                asyncAnnotationMessageService,
+                operationBindingProcessors,
+                operationCustomizers,
+                stringValueResolver,
+                asyncPublisherAnnotationProvider);
+        ChannelsService channelsService = autoConfiguration.channelsService(channelScanners);
+        OperationsService operationsService = autoConfiguration.operationsService(operationScanners);
+
+        List<AsyncApiCustomizer> customizers = new ArrayList<>();
 
         GroupingService groupingService = autoConfiguration.groupingService();
         AsyncApiGroupService asyncApiGroupService = autoConfiguration.asyncApiGroupService(properties, groupingService);
-        ChannelsService channelsService =
-                autoConfiguration.channelsService(List.of(asyncListenerMethodLevelAnnotationChannelScanner)); // TODO:
-        OperationsService operationsService = autoConfiguration.operationsService(
-                List.of(asyncListenerMethodLevelAnnotationOperationScanner)); // TODO:
-
-        List<AsyncApiCustomizer> customizers = new ArrayList<>();
 
         return autoConfiguration.asyncApiService(
                 asyncApiDocketService,
@@ -143,6 +139,119 @@ public class StandaloneContext {
                 componentsService,
                 customizers,
                 asyncApiGroupService);
+    }
+
+    private static List<OperationsScanner> createOperationScanners(
+            SpringwolfScannerConfiguration scannerAutoConfiguration,
+            AsyncAnnotationProvider<AsyncListener> asyncListenerAnnotationProvider,
+            SpringwolfClassScanner springwolfClassScanner,
+            AsyncAnnotationMessageService asyncAnnotationMessageService,
+            List<OperationBindingProcessor> operationBindingProcessors,
+            List<OperationCustomizer> operationCustomizers,
+            StringValueResolverProxy stringValueResolver,
+            AsyncAnnotationProvider<AsyncPublisher> asyncPublisherAnnotationProvider) {
+        OperationsScanner asyncListenerMethodLevelAnnotationOperationScanner =
+                scannerAutoConfiguration.asyncListenerMethodLevelAnnotationOperationScanner(
+                        asyncListenerAnnotationProvider,
+                        springwolfClassScanner,
+                        asyncAnnotationMessageService,
+                        operationBindingProcessors,
+                        operationCustomizers,
+                        stringValueResolver);
+        OperationsScanner asyncListenerClassLevelListenerAnnotationOperationsScanner =
+                scannerAutoConfiguration.asyncListenerClassLevelListenerAnnotationOperationsScanner(
+                        asyncListenerAnnotationProvider,
+                        springwolfClassScanner,
+                        asyncAnnotationMessageService,
+                        operationBindingProcessors,
+                        operationCustomizers,
+                        stringValueResolver);
+
+        OperationsScanner asyncPublisherClassLevelOperationAnnotationScanner =
+                scannerAutoConfiguration.asyncPublisherClassLevelOperationAnnotationScanner(
+                        asyncPublisherAnnotationProvider,
+                        springwolfClassScanner,
+                        asyncAnnotationMessageService,
+                        operationBindingProcessors,
+                        operationCustomizers,
+                        stringValueResolver);
+        OperationsScanner asyncPublisherClassLevelListenerAnnotationOperationsScanner =
+                scannerAutoConfiguration.asyncPublisherClassLevelListenerAnnotationOperationsScanner(
+                        asyncPublisherAnnotationProvider,
+                        springwolfClassScanner,
+                        operationBindingProcessors,
+                        asyncAnnotationMessageService,
+                        operationCustomizers,
+                        stringValueResolver);
+        return List.of(
+                asyncListenerMethodLevelAnnotationOperationScanner,
+                asyncListenerClassLevelListenerAnnotationOperationsScanner,
+                asyncPublisherClassLevelOperationAnnotationScanner,
+                asyncPublisherClassLevelListenerAnnotationOperationsScanner);
+    }
+
+    private static List<ChannelsScanner> createChannelScanners(
+            SpringwolfScannerConfiguration scannerAutoConfiguration,
+            AsyncAnnotationProvider<AsyncListener> asyncListenerAnnotationProvider,
+            SpringwolfClassScanner springwolfClassScanner,
+            AsyncApiDocketService asyncApiDocketService,
+            AsyncAnnotationMessageService asyncAnnotationMessageService,
+            List<OperationBindingProcessor> operationBindingProcessors,
+            StringValueResolverProxy stringValueResolver,
+            AsyncAnnotationProvider<AsyncPublisher> asyncPublisherAnnotationProvider) {
+        ChannelsScanner asyncListenerMethodLevelAnnotationChannelScanner =
+                scannerAutoConfiguration.asyncListenerMethodLevelAnnotationChannelScanner(
+                        asyncListenerAnnotationProvider,
+                        springwolfClassScanner,
+                        asyncApiDocketService,
+                        asyncAnnotationMessageService,
+                        operationBindingProcessors,
+                        stringValueResolver);
+        ChannelsScanner asyncListenerClassLevelAnnotationChannelScanner =
+                scannerAutoConfiguration.asyncListenerClassLevelAnnotationChannelScanner(
+                        asyncListenerAnnotationProvider,
+                        springwolfClassScanner,
+                        asyncApiDocketService,
+                        asyncAnnotationMessageService,
+                        operationBindingProcessors,
+                        stringValueResolver);
+
+        ChannelsScanner asyncPublisherClassLevelChannelAnnotationScanner =
+                scannerAutoConfiguration.asyncPublisherClassLevelChannelAnnotationScanner(
+                        asyncPublisherAnnotationProvider,
+                        springwolfClassScanner,
+                        asyncApiDocketService,
+                        asyncAnnotationMessageService,
+                        operationBindingProcessors,
+                        stringValueResolver);
+        ChannelsScanner asyncPublisherClassLevelAnnotationChannelScanner =
+                scannerAutoConfiguration.asyncPublisherClassLevelAnnotationChannelScanner(
+                        asyncPublisherAnnotationProvider,
+                        springwolfClassScanner,
+                        asyncApiDocketService,
+                        asyncAnnotationMessageService,
+                        operationBindingProcessors,
+                        stringValueResolver);
+        return List.of(
+                asyncListenerMethodLevelAnnotationChannelScanner,
+                asyncListenerClassLevelAnnotationChannelScanner,
+                asyncPublisherClassLevelChannelAnnotationScanner,
+                asyncPublisherClassLevelAnnotationChannelScanner);
+    }
+
+    private static List<SchemasPostProcessor> createSchemaPostProcessors(
+            SpringwolfAutoConfiguration autoConfiguration, SpringwolfConfigProperties properties) {
+        SchemaWalker jsonSchemaWalker = autoConfiguration.jsonSchemaWalker();
+        ExampleXmlValueSerializer exampleXmlValueSerializer = autoConfiguration.exampleXmlValueSerializer();
+        SchemaWalker xmlSchemaWalker = autoConfiguration.xmlSchemaWalker(exampleXmlValueSerializer);
+        ExampleYamlValueSerializer exampleYamlValueSerializer = autoConfiguration.exampleYamlValueSerializer();
+        SchemaWalker yamlSchemaWalker = autoConfiguration.yamlSchemaWalker(exampleYamlValueSerializer, properties);
+        List<SchemaWalker> schemaWalkers = List.of(jsonSchemaWalker, xmlSchemaWalker, yamlSchemaWalker);
+        SchemaWalkerProvider schemaWalkerProvider = autoConfiguration.schemaWalkerProvider(schemaWalkers);
+        ExampleGeneratorPostProcessor exampleGeneratorPostProcessor =
+                autoConfiguration.exampleGeneratorPostProcessor(schemaWalkerProvider);
+        AvroSchemaPostProcessor avroSchemaPostProcessor = autoConfiguration.avroSchemaPostProcessor();
+        return List.of(avroSchemaPostProcessor, exampleGeneratorPostProcessor);
     }
 
     private ClassScanner createComponentClassScanner(String basePackage, SpringwolfConfigProperties properties) {
