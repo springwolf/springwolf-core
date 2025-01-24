@@ -29,9 +29,6 @@ import static org.mockito.Mockito.when;
             ConfigurationClassScanner.class,
             ComponentClassScanner.class,
             DefaultBeanMethodsScanner.class,
-            TestComponent.class,
-            TestConditionalComponent.class,
-            TestOtherConditionalComponent.class
         })
 class SpringwolfClassScannerIntegrationTest {
     @MockitoBean
