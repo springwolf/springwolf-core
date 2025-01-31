@@ -45,8 +45,12 @@ import io.github.springwolf.core.configuration.SpringwolfAutoConfiguration;
 import io.github.springwolf.core.configuration.SpringwolfScannerConfiguration;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePlugin;
+import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginContext;
+import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginResult;
 import io.swagger.v3.core.converter.ModelConverter;
 import jakarta.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -61,16 +65,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 public class StandaloneLoader {
-    public AsyncApiService create(@Nullable String basePackage) throws IOException {
-        KafkaPluginContext kafkaPlugin = new KafkaPluginContext();
-        JsonSchemaPluginContext jsonSchemaPlugin = new JsonSchemaPluginContext();
-        CommonModelConverterPluginContext commonModelConverterPlugin = new CommonModelConverterPluginContext();
-
+    public AsyncApiService create(String basePackage, List<StandalonePlugin> plugins, List<String> profiles)
+            throws IOException {
         SpringwolfAutoConfiguration autoConfiguration = new SpringwolfAutoConfiguration();
         SpringwolfScannerConfiguration scannerAutoConfiguration = new SpringwolfScannerConfiguration();
 
-        Environment environment = new SpringwolfConfigPropertiesLoader().loadEnvironment();
+        Environment environment = new SpringwolfConfigPropertiesLoader().loadEnvironment(profiles);
         StringValueResolverProxy stringValueResolver = new StringValueResolverProxy();
         stringValueResolver.setEmbeddedValueResolver(createStringValueResolver(environment));
 
@@ -86,8 +88,7 @@ public class StandaloneLoader {
         List<SchemasPostProcessor> schemasPostProcessors = createSchemaPostProcessors(autoConfiguration, properties);
         SchemaTitleModelConverter schemaTitleModelConverter = autoConfiguration.schemaTitleModelConverter();
         List<ModelConverter> modelConverters = new ArrayList<>();
-        modelConverters.addAll(kafkaPlugin.getModelConverters());
-        modelConverters.addAll(commonModelConverterPlugin.getModelConverters());
+        plugins.forEach(plugin -> modelConverters.addAll(plugin.getModelConverters()));
         modelConverters.add(schemaTitleModelConverter);
         SwaggerSchemaUtil swaggerSchemaUtil = autoConfiguration.swaggerSchemaUtil();
         SwaggerSchemaService swaggerSchemaService =
@@ -133,7 +134,8 @@ public class StandaloneLoader {
                 stringValueResolver,
                 asyncPublisherAnnotationProvider);
 
-        StandaloneContext context = StandaloneContext.builder()
+        StandalonePluginContext context = StandalonePluginContext.builder()
+                .environment(environment)
                 .classScanner(springwolfClassScanner)
                 .stringValueResolver(stringValueResolver)
                 .payloadMethodParameterService(payloadMethodParameterService)
@@ -141,23 +143,30 @@ public class StandaloneLoader {
                 .componentsService(componentsService)
                 .operationCustomizers(operationCustomizers)
                 .build();
-        StandalonePluginResult kafka = kafkaPlugin.load(context);
-        operationBindingProcessors.addAll(kafka.getOperationBindingProcessors());
-        messageBindingProcessors.addAll(kafka.getMessageBindingProcessors());
 
-        List<ChannelsScanner> channelsScanners = new ArrayList<>();
-        channelsScanners.addAll(coreChannelScanners);
-        channelsScanners.addAll(kafka.getChannelsScanners());
+        List<ChannelsScanner> channelsScanners = new ArrayList<>(coreChannelScanners);
 
-        List<OperationsScanner> operationsScanners = new ArrayList<>();
-        operationsScanners.addAll(coreOperationScanners);
-        operationsScanners.addAll(kafka.getOperationsScanners());
+        List<OperationsScanner> operationsScanners = new ArrayList<>(coreOperationScanners);
+
+        List<AsyncApiCustomizer> customizers = new ArrayList<>();
+
+        plugins.forEach(plugin -> {
+            try {
+                customizers.addAll(plugin.getAsyncApiCustomizers());
+
+                StandalonePluginResult pluginResult = plugin.load(context);
+                operationBindingProcessors.addAll(pluginResult.getOperationBindingProcessors());
+                messageBindingProcessors.addAll(pluginResult.getMessageBindingProcessors());
+                channelsScanners.addAll(pluginResult.getChannelsScanners());
+                operationsScanners.addAll(pluginResult.getOperationsScanners());
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         ChannelsService channelsService = autoConfiguration.channelsService(channelsScanners);
         OperationsService operationsService = autoConfiguration.operationsService(operationsScanners);
-
-        List<AsyncApiCustomizer> customizers = new ArrayList<>();
-        customizers.addAll(jsonSchemaPlugin.getAsyncApiCustomizers());
 
         GroupingService groupingService = autoConfiguration.groupingService();
         AsyncApiGroupService asyncApiGroupService = autoConfiguration.asyncApiGroupService(properties, groupingService);
@@ -315,11 +324,13 @@ public class StandaloneLoader {
 
                 final String resolved;
                 if (strVal.contains("#{")) {
+                    String spel = strValReplaced.replace("#{", "").replace("}", "");
+
                     StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
                     evaluationContext.setRootObject(environment);
 
                     ExpressionParser parser = new SpelExpressionParser();
-                    resolved = parser.parseExpression(strValReplaced).getValue(evaluationContext, String.class);
+                    resolved = parser.parseExpression(spel).getValue(evaluationContext, String.class);
                 } else {
                     resolved = strValReplaced;
                 }

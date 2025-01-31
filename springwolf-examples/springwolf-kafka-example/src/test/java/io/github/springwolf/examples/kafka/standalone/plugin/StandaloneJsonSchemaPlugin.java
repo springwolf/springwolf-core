@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.kafka.standalone;
+package io.github.springwolf.examples.kafka.standalone.plugin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.addons.json_schema.JsonSchemaGenerator;
@@ -9,7 +9,7 @@ import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
 import java.util.Collection;
 import java.util.List;
 
-public class JsonSchemaPluginContext implements StandalonePluginContext {
+public class StandaloneJsonSchemaPlugin implements StandalonePlugin {
     @Override
     public Collection<AsyncApiCustomizer> getAsyncApiCustomizers() {
         SpringwolfJsonSchemaAutoConfiguration jsonSchemaConfiguration = new SpringwolfJsonSchemaAutoConfiguration();

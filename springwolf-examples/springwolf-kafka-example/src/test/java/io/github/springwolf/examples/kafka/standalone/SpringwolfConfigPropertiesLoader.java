@@ -3,6 +3,7 @@ package io.github.springwolf.examples.kafka.standalone;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.context.properties.bind.handler.IgnoreErrorsBindHandler;
 import org.springframework.boot.env.PropertiesPropertySourceLoader;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.core.env.Environment;
@@ -13,29 +14,39 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-class SpringwolfConfigPropertiesLoader {
+public class SpringwolfConfigPropertiesLoader {
 
-    public Environment loadEnvironment() throws IOException {
+    public Environment loadEnvironment(List<String> profiles) throws IOException {
         StandardEnvironment environment = new StandardEnvironment();
 
         loadYamlResource(environment, "application.yaml");
         loadPropertiesResource(environment, "application.properties");
-        // TODO: what about profiles?
-        loadTestProperties(environment);
+
+        profiles.forEach(profile -> {
+            try {
+                loadYamlResource(environment, "application-" + profile + ".yaml");
+                loadPropertiesResource(environment, "application-" + profile + ".properties");
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to load properties for profile: " + profile, e);
+            }
+        });
+
+        if (profiles.contains("test")) {
+            loadTestProperties(environment);
+        }
 
         return environment;
     }
 
-    public SpringwolfConfigProperties loadSpringwolfConfigProperties(Environment environment) throws IOException {
-        return Binder.get(environment)
-                .bind("springwolf", SpringwolfConfigProperties.class)
-                .orElseThrow(() -> new IllegalStateException("Failed to bind properties"));
+    public SpringwolfConfigProperties loadSpringwolfConfigProperties(Environment environment) {
+        return loadConfigProperties(environment, "springwolf", SpringwolfConfigProperties.class);
     }
 
-    public <T> T loadConfigProperties(Environment environment, String prefix, Class<T> clazz) throws IOException {
-        return Binder.get(environment)
+    public <T> T loadConfigProperties(Environment environment, String prefix, Class<T> clazz) {
+        return Binder.get(environment, new IgnoreErrorsBindHandler())
                 .bind(prefix, clazz)
                 .orElseThrow(() -> new IllegalStateException("Failed to bind properties"));
     }
