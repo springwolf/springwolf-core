@@ -63,6 +63,10 @@ import java.util.Set;
 
 public class StandaloneLoader {
     public AsyncApiService create(@Nullable String basePackage) throws IOException {
+        KafkaPluginContext kafkaPlugin = new KafkaPluginContext();
+        JsonSchemaPluginContext jsonSchemaPlugin = new JsonSchemaPluginContext();
+        CommonModelConverterPluginContext commonModelConverterPlugin = new CommonModelConverterPluginContext();
+
         SpringwolfAutoConfiguration autoConfiguration = new SpringwolfAutoConfiguration();
         SpringwolfScannerConfiguration scannerAutoConfiguration = new SpringwolfScannerConfiguration();
 
@@ -81,7 +85,10 @@ public class StandaloneLoader {
 
         List<SchemasPostProcessor> schemasPostProcessors = createSchemaPostProcessors(autoConfiguration, properties);
         SchemaTitleModelConverter schemaTitleModelConverter = autoConfiguration.schemaTitleModelConverter();
-        List<ModelConverter> modelConverters = List.of(schemaTitleModelConverter);
+        List<ModelConverter> modelConverters = new ArrayList<>();
+        modelConverters.addAll(kafkaPlugin.getModelConverters());
+        modelConverters.addAll(commonModelConverterPlugin.getModelConverters());
+        modelConverters.add(schemaTitleModelConverter);
         SwaggerSchemaUtil swaggerSchemaUtil = autoConfiguration.swaggerSchemaUtil();
         SwaggerSchemaService swaggerSchemaService =
                 autoConfiguration.schemasService(modelConverters, schemasPostProcessors, swaggerSchemaUtil, properties);
@@ -97,9 +104,9 @@ public class StandaloneLoader {
                 autoConfiguration.payloadMethodParameterService(payloadExtractor, payloadService);
         PayloadMethodReturnService payloadMethodReturnService =
                 autoConfiguration.payloadMethodReturnService(payloadService);
-        List<OperationBindingProcessor> operationBindingProcessors = new ArrayList<>(); // TODO:
-        List<MessageBindingProcessor> messageBindingProcessors = new ArrayList<>(); // TODO:
-        List<OperationCustomizer> operationCustomizers = new ArrayList<>(); // TODO:
+        List<OperationBindingProcessor> operationBindingProcessors = new ArrayList<>();
+        List<MessageBindingProcessor> messageBindingProcessors = new ArrayList<>();
+        List<OperationCustomizer> operationCustomizers = new ArrayList<>();
         AsyncAnnotationMessageService asyncAnnotationMessageService = autoConfiguration.asyncAnnotationMessageService(
                 componentsService, payloadAsyncOperationService, messageBindingProcessors, stringValueResolver);
 
@@ -107,7 +114,7 @@ public class StandaloneLoader {
                 scannerAutoConfiguration.asyncListenerAnnotationProvider();
         AsyncAnnotationProvider<AsyncPublisher> asyncPublisherAnnotationProvider =
                 scannerAutoConfiguration.asyncPublisherAnnotationProvider();
-        List<ChannelsScanner> channelScanners = createChannelScanners(
+        List<ChannelsScanner> coreChannelScanners = createChannelScanners(
                 scannerAutoConfiguration,
                 asyncListenerAnnotationProvider,
                 springwolfClassScanner,
@@ -116,7 +123,7 @@ public class StandaloneLoader {
                 operationBindingProcessors,
                 stringValueResolver,
                 asyncPublisherAnnotationProvider);
-        List<OperationsScanner> operationScanners = createOperationScanners(
+        List<OperationsScanner> coreOperationScanners = createOperationScanners(
                 scannerAutoConfiguration,
                 asyncListenerAnnotationProvider,
                 springwolfClassScanner,
@@ -134,14 +141,23 @@ public class StandaloneLoader {
                 .componentsService(componentsService)
                 .operationCustomizers(operationCustomizers)
                 .build();
-        StandalonePluginResult kafka = new KafkaPluginContext().load(context);
-        channelScanners.addAll(kafka.getChannelsScanners());
-        operationScanners.addAll(kafka.getOperationsScanners());
+        StandalonePluginResult kafka = kafkaPlugin.load(context);
+        operationBindingProcessors.addAll(kafka.getOperationBindingProcessors());
+        messageBindingProcessors.addAll(kafka.getMessageBindingProcessors());
 
-        ChannelsService channelsService = autoConfiguration.channelsService(channelScanners);
-        OperationsService operationsService = autoConfiguration.operationsService(operationScanners);
+        List<ChannelsScanner> channelsScanners = new ArrayList<>();
+        channelsScanners.addAll(coreChannelScanners);
+        channelsScanners.addAll(kafka.getChannelsScanners());
+
+        List<OperationsScanner> operationsScanners = new ArrayList<>();
+        operationsScanners.addAll(coreOperationScanners);
+        operationsScanners.addAll(kafka.getOperationsScanners());
+
+        ChannelsService channelsService = autoConfiguration.channelsService(channelsScanners);
+        OperationsService operationsService = autoConfiguration.operationsService(operationsScanners);
 
         List<AsyncApiCustomizer> customizers = new ArrayList<>();
+        customizers.addAll(jsonSchemaPlugin.getAsyncApiCustomizers());
 
         GroupingService groupingService = autoConfiguration.groupingService();
         AsyncApiGroupService asyncApiGroupService = autoConfiguration.asyncApiGroupService(properties, groupingService);
@@ -197,11 +213,11 @@ public class StandaloneLoader {
                         asyncAnnotationMessageService,
                         operationCustomizers,
                         stringValueResolver);
-        return new ArrayList<>(List.of(
+        return List.of(
                 asyncListenerMethodLevelAnnotationOperationScanner,
                 asyncListenerClassLevelListenerAnnotationOperationsScanner,
                 asyncPublisherClassLevelOperationAnnotationScanner,
-                asyncPublisherClassLevelListenerAnnotationOperationsScanner));
+                asyncPublisherClassLevelListenerAnnotationOperationsScanner);
     }
 
     private static List<ChannelsScanner> createChannelScanners(
@@ -246,11 +262,11 @@ public class StandaloneLoader {
                         asyncAnnotationMessageService,
                         operationBindingProcessors,
                         stringValueResolver);
-        return new ArrayList<>(List.of(
+        return List.of(
                 asyncListenerMethodLevelAnnotationChannelScanner,
                 asyncListenerClassLevelAnnotationChannelScanner,
                 asyncPublisherClassLevelChannelAnnotationScanner,
-                asyncPublisherClassLevelAnnotationChannelScanner));
+                asyncPublisherClassLevelAnnotationChannelScanner);
     }
 
     private static List<SchemasPostProcessor> createSchemaPostProcessors(
