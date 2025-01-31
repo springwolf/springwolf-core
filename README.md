@@ -214,6 +214,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/nwwerum"><img src="https://avatars.githubusercontent.com/u/32831057?v=4?s=100" width="100px;" alt="Norbert Wirges"/><br /><sub><b>Norbert Wirges</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=nwwerum" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ttulka"><img src="https://avatars.githubusercontent.com/u/7925050?v=4?s=100" width="100px;" alt="Tomas Tulka"/><br /><sub><b>Tomas Tulka</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=ttulka" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
