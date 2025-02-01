@@ -5,9 +5,6 @@ import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
-import io.github.springwolf.examples.kafka.standalone.plugin.StandaloneCommonModelConverterPlugin;
-import io.github.springwolf.examples.kafka.standalone.plugin.StandaloneJsonSchemaPlugin;
-import io.github.springwolf.examples.kafka.standalone.plugin.StandaloneKafkaPlugin;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePlugin;
 import org.junit.jupiter.api.Test;
 
@@ -30,12 +27,7 @@ public class StandaloneTest {
                     IllegalAccessException {
         // given
         String basePackage = "io.github.springwolf.examples.kafka";
-        List<StandalonePlugin> plugins = List.of(
-                new StandaloneKafkaPlugin(),
-                new StandaloneJsonSchemaPlugin(),
-                new StandaloneCommonModelConverterPlugin());
-        // TODO: order of plugins is important...
-        List<StandalonePlugin> discoveredPlugins = StandalonePlugin.discoverPlugins("io.github.springwolf");
+        List<StandalonePlugin> plugins = StandalonePlugin.discoverPlugins("io.github.springwolf");
         List<String> profiles = List.of();
         AsyncApiService asyncApiService = new StandaloneLoader().create(basePackage, plugins, profiles);
 
