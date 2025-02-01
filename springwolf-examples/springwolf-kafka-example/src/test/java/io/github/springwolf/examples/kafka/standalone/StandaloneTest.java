@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,13 +25,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class StandaloneTest {
 
     @Test
-    public void scanApplication() throws IOException {
+    public void scanApplication()
+            throws IOException, NoSuchMethodException, InvocationTargetException, InstantiationException,
+                    IllegalAccessException {
         // given
         String basePackage = "io.github.springwolf.examples.kafka";
         List<StandalonePlugin> plugins = List.of(
                 new StandaloneKafkaPlugin(),
                 new StandaloneJsonSchemaPlugin(),
                 new StandaloneCommonModelConverterPlugin());
+        // TODO: order of plugins is important...
+        List<StandalonePlugin> discoveredPlugins = StandalonePlugin.discoverPlugins("io.github.springwolf");
         List<String> profiles = List.of();
         AsyncApiService asyncApiService = new StandaloneLoader().create(basePackage, plugins, profiles);
 

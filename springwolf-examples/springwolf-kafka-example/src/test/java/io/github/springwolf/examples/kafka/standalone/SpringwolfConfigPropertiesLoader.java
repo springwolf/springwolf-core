@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka.standalone;
 
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.handler.IgnoreErrorsBindHandler;
 import org.springframework.boot.env.OriginTrackedMapPropertySource;
@@ -41,10 +40,6 @@ public class SpringwolfConfigPropertiesLoader {
         }
 
         return environment;
-    }
-
-    public SpringwolfConfigProperties loadSpringwolfConfigProperties(Environment environment) {
-        return loadConfigProperties(environment, "springwolf", SpringwolfConfigProperties.class);
     }
 
     public <T> T loadConfigProperties(Environment environment, String prefix, Class<T> clazz) {

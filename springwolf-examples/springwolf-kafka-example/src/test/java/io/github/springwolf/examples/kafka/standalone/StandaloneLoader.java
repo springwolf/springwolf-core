@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka.standalone;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ScanResult;
 import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
@@ -49,38 +47,31 @@ import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePlugin;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginContext;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginResult;
 import io.swagger.v3.core.converter.ModelConverter;
-import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.springframework.stereotype.Component;
-import org.springframework.util.PropertyPlaceholderHelper;
-import org.springframework.util.StringValueResolver;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 public class StandaloneLoader {
     public AsyncApiService create(String basePackage, List<StandalonePlugin> plugins, List<String> profiles)
             throws IOException {
+        Environment environment = new SpringwolfConfigPropertiesLoader().loadEnvironment(profiles);
+        StringValueResolverProxy stringValueResolver = new StringValueResolverProxy();
+
+        stringValueResolver.setEmbeddedValueResolver(new FakeStringValueResolver(environment));
+
+        SpringwolfConfigProperties properties = new SpringwolfConfigPropertiesLoader()
+                .loadConfigProperties(environment, "springwolf", SpringwolfConfigProperties.class);
+
         SpringwolfAutoConfiguration autoConfiguration = new SpringwolfAutoConfiguration();
         SpringwolfScannerConfiguration scannerAutoConfiguration = new SpringwolfScannerConfiguration();
 
-        Environment environment = new SpringwolfConfigPropertiesLoader().loadEnvironment(profiles);
-        StringValueResolverProxy stringValueResolver = new StringValueResolverProxy();
-        stringValueResolver.setEmbeddedValueResolver(createStringValueResolver(environment));
-
-        SpringwolfConfigProperties properties =
-                new SpringwolfConfigPropertiesLoader().loadSpringwolfConfigProperties(environment);
         AsyncApiDocketService asyncApiDocketService = autoConfiguration.asyncApiDocketService(properties);
 
-        ClassScanner componentClassScanner = createComponentClassScanner(basePackage, properties);
+        ClassScanner componentClassScanner = new StandaloneClassScanner(basePackage, properties);
         BeanMethodsScanner beanMethodsScanner = new DefaultBeanMethodsScanner(componentClassScanner);
         SpringwolfClassScanner springwolfClassScanner =
                 new SpringwolfClassScanner(componentClassScanner, beanMethodsScanner);
@@ -291,51 +282,5 @@ public class StandaloneLoader {
                 autoConfiguration.exampleGeneratorPostProcessor(schemaWalkerProvider);
         AvroSchemaPostProcessor avroSchemaPostProcessor = autoConfiguration.avroSchemaPostProcessor();
         return List.of(avroSchemaPostProcessor, exampleGeneratorPostProcessor);
-    }
-
-    private ClassScanner createComponentClassScanner(String basePackage, SpringwolfConfigProperties properties) {
-        String actualBasePackage =
-                basePackage != null ? basePackage : properties.getDocket().getBasePackage();
-        ScanResult scanResult = new ClassGraph()
-                .enableAllInfo() // TODO: is everything required?
-                .acceptPackages(actualBasePackage)
-                .scan();
-
-        return new ClassScanner() {
-            private final HashSet<Class<?>> classes = new HashSet<>(
-                    scanResult.getClassesWithAnnotation(Component.class).loadClasses());
-
-            @Override
-            public Set<Class<?>> scan() {
-                return classes;
-            }
-        };
-    }
-
-    private StringValueResolver createStringValueResolver(Environment environment) {
-        PropertyPlaceholderHelper helper = new PropertyPlaceholderHelper("${", "}");
-
-        return new StringValueResolver() {
-            @Override
-            public String resolveStringValue(@Nullable String strVal) {
-                if (strVal == null) return null;
-
-                final String strValReplaced = helper.replacePlaceholders(strVal, environment::getProperty);
-
-                final String resolved;
-                if (strVal.contains("#{")) {
-                    String spel = strValReplaced.replace("#{", "").replace("}", "");
-
-                    StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
-                    evaluationContext.setRootObject(environment);
-
-                    ExpressionParser parser = new SpelExpressionParser();
-                    resolved = parser.parseExpression(spel).getValue(evaluationContext, String.class);
-                } else {
-                    resolved = strValReplaced;
-                }
-                return resolved;
-            }
-        };
     }
 }
