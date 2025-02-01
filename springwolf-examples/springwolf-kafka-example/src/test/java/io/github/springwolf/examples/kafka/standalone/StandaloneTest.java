@@ -41,13 +41,13 @@ public class StandaloneTest {
         assertThat(asyncApi).isNotNull();
 
         AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
-        String jsonString = serializerService.toJsonString(asyncApi);
-        System.out.println(jsonString);
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), jsonString);
+        String actual = serializerService.toJsonString(asyncApi);
+        String actualPatched = actual.replace("localhost:9092", "kafka:29092");
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actualPatched);
 
         // then
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        assertEquals(expected, jsonString);
+        assertEquals(expected, actualPatched);
     }
 }

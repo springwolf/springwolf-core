@@ -4,6 +4,7 @@ package io.github.springwolf.examples.kafka.standalone;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.handler.IgnoreErrorsBindHandler;
+import org.springframework.boot.env.OriginTrackedMapPropertySource;
 import org.springframework.boot.env.PropertiesPropertySourceLoader;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.core.env.Environment;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SpringwolfConfigPropertiesLoader {
 
@@ -34,7 +36,7 @@ public class SpringwolfConfigPropertiesLoader {
             }
         });
 
-        if (profiles.contains("test")) {
+        if (profiles.contains("springwolf-unit-test")) {
             loadTestProperties(environment);
         }
 
@@ -60,18 +62,18 @@ public class SpringwolfConfigPropertiesLoader {
         testProperties.put("springwolf.docket.default-content-type", "application/json");
         testProperties.put("springwolf.docket.servers.test-protocol.protocol", "test");
         testProperties.put("springwolf.docket.servers.test-protocol.host", "some-server:1234");
-        environment.getPropertySources().addLast(new MapPropertySource("testProperties", testProperties));
+        environment.getPropertySources().addFirst(new MapPropertySource("testProperties", testProperties));
     }
 
     private static void loadPropertiesResource(StandardEnvironment environment, String fileName) throws IOException {
         Resource applicationPropertiesResource = new ClassPathResource(fileName);
         if (applicationPropertiesResource.exists()) {
             PropertiesPropertySourceLoader propertiesLoader = new PropertiesPropertySourceLoader();
-            MapPropertySource propertiesPropertySource = (MapPropertySource) propertiesLoader
+            MapPropertySource propertySource = (MapPropertySource) propertiesLoader
                     .load(fileName, applicationPropertiesResource)
                     .get(0);
-            Map<String, Object> properties = propertiesPropertySource.getSource();
-            environment.getPropertySources().addLast(new MapPropertySource("applicationProperties", properties));
+            Map<String, Object> properties = removeOriginTrackedPropertySource(propertySource);
+            environment.getPropertySources().addFirst(new MapPropertySource("applicationProperties", properties));
         }
     }
 
@@ -79,10 +81,22 @@ public class SpringwolfConfigPropertiesLoader {
         Resource applicationYamlResource = new ClassPathResource(fileName);
         if (applicationYamlResource.exists()) {
             YamlPropertySourceLoader sourceLoader = new YamlPropertySourceLoader();
-            MapPropertySource yamlPropertySource = (MapPropertySource)
+            MapPropertySource propertySource = (MapPropertySource)
                     sourceLoader.load(fileName, applicationYamlResource).get(0);
-            Map<String, Object> properties = yamlPropertySource.getSource();
-            environment.getPropertySources().addLast(new MapPropertySource("yamlProperties", properties));
+            Map<String, Object> properties = removeOriginTrackedPropertySource(propertySource);
+            environment.getPropertySources().addFirst(new MapPropertySource("yamlProperties", properties));
         }
+    }
+
+    /**
+     * OriginTrackedMapPropertySource does not support placeholder replacement, therefore it is removed
+     */
+    private static Map<String, Object> removeOriginTrackedPropertySource(MapPropertySource propertySource) {
+        if (propertySource instanceof OriginTrackedMapPropertySource) {
+            return propertySource.getSource().entrySet().stream()
+                    .map(entry -> Map.entry(entry.getKey(), entry.getValue().toString()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+        return propertySource.getSource();
     }
 }
