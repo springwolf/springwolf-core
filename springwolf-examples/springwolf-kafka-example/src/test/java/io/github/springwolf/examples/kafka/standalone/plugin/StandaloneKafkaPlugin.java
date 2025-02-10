@@ -6,7 +6,7 @@ import io.github.springwolf.bindings.kafka.scanners.messages.KafkaMessageBinding
 import io.github.springwolf.bindings.kafka.scanners.operations.KafkaOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
-import io.github.springwolf.examples.kafka.standalone.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.examples.kafka.standalone.common.SpringwolfConfigPropertiesLoader;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.header.AsyncHeadersForKafkaBuilder;
 import io.github.springwolf.plugins.kafka.configuration.SpringwolfKafkaScannerConfiguration;

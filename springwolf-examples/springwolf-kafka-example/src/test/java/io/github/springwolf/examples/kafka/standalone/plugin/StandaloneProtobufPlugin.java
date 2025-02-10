@@ -10,7 +10,6 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.jackson.ModelResolver;
 import org.springframework.core.annotation.Order;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ import java.util.List;
 public class StandaloneProtobufPlugin implements StandalonePlugin {
 
     @Override
-    public Collection<ModelConverter> getModelConverters() {
+    public List<ModelConverter> getModelConverters() {
         ObjectMapper protobufObjectMapper = new ObjectMapper();
         protobufObjectMapper.registerModule(new ProtobufModule(
                 ProtobufJacksonConfig.builder().acceptLiteralFieldnames(true).build()));

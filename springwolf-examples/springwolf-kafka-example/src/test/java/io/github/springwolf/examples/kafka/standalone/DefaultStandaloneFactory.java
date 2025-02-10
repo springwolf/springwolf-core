@@ -42,30 +42,50 @@ import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelCon
 import io.github.springwolf.core.configuration.SpringwolfAutoConfiguration;
 import io.github.springwolf.core.configuration.SpringwolfScannerConfiguration;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.examples.kafka.standalone.bean.StandaloneClassScanner;
+import io.github.springwolf.examples.kafka.standalone.bean.StandaloneStringValueResolver;
+import io.github.springwolf.examples.kafka.standalone.common.SpringwolfConfigPropertiesLoader;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePlugin;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginContext;
+import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginDiscovery;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginResult;
 import io.swagger.v3.core.converter.ModelConverter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
-public class StandaloneLoader {
-    public AsyncApiService create(String basePackage, List<StandalonePlugin> plugins, List<String> profiles)
+public class DefaultStandaloneFactory implements StandaloneFactory {
+    private final AsyncApiService asyncApiService;
+
+    public DefaultStandaloneFactory(String basePackage)
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException,
+                    IOException {
+        this(basePackage, StandalonePluginDiscovery.scan());
+    }
+
+    public DefaultStandaloneFactory(String basePackage, List<StandalonePlugin> plugins) throws IOException {
+        this(basePackage, plugins, List.of());
+    }
+
+    public DefaultStandaloneFactory(String basePackage, List<StandalonePlugin> plugins, List<String> profiles)
             throws IOException {
         Environment environment = new SpringwolfConfigPropertiesLoader().loadEnvironment(profiles);
         StringValueResolverProxy stringValueResolver = new StringValueResolverProxy();
 
-        stringValueResolver.setEmbeddedValueResolver(new FakeStringValueResolver(environment));
+        stringValueResolver.setEmbeddedValueResolver(new StandaloneStringValueResolver(environment));
 
         SpringwolfConfigProperties properties = new SpringwolfConfigPropertiesLoader()
-                .loadConfigProperties(environment, "springwolf", SpringwolfConfigProperties.class);
+                .loadConfigProperties(
+                        environment,
+                        SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX,
+                        SpringwolfConfigProperties.class);
 
+        // TODO: can this autoConfiguration be analysed and the beans instanciated via custom dependency injection?
         SpringwolfAutoConfiguration autoConfiguration = new SpringwolfAutoConfiguration();
         SpringwolfScannerConfiguration scannerAutoConfiguration = new SpringwolfScannerConfiguration();
 
@@ -150,7 +170,6 @@ public class StandaloneLoader {
                 messageBindingProcessors.addAll(pluginResult.getMessageBindingProcessors());
                 channelsScanners.addAll(pluginResult.getChannelsScanners());
                 operationsScanners.addAll(pluginResult.getOperationsScanners());
-
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -162,7 +181,7 @@ public class StandaloneLoader {
         GroupingService groupingService = autoConfiguration.groupingService();
         AsyncApiGroupService asyncApiGroupService = autoConfiguration.asyncApiGroupService(properties, groupingService);
 
-        return autoConfiguration.asyncApiService(
+        this.asyncApiService = autoConfiguration.asyncApiService(
                 asyncApiDocketService,
                 channelsService,
                 operationsService,
@@ -282,5 +301,10 @@ public class StandaloneLoader {
                 autoConfiguration.exampleGeneratorPostProcessor(schemaWalkerProvider);
         AvroSchemaPostProcessor avroSchemaPostProcessor = autoConfiguration.avroSchemaPostProcessor();
         return List.of(avroSchemaPostProcessor, exampleGeneratorPostProcessor);
+    }
+
+    @Override
+    public AsyncApiService getAsyncApiService() {
+        return this.asyncApiService;
     }
 }

@@ -6,12 +6,11 @@ import io.github.springwolf.addons.json_schema.JsonSchemaGenerator;
 import io.github.springwolf.addons.json_schema.configuration.SpringwolfJsonSchemaAutoConfiguration;
 import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
 
-import java.util.Collection;
 import java.util.List;
 
 public class StandaloneJsonSchemaPlugin implements StandalonePlugin {
     @Override
-    public Collection<AsyncApiCustomizer> getAsyncApiCustomizers() {
+    public List<AsyncApiCustomizer> getAsyncApiCustomizers() {
         SpringwolfJsonSchemaAutoConfiguration jsonSchemaConfiguration = new SpringwolfJsonSchemaAutoConfiguration();
 
         ObjectMapper objectMapper = new ObjectMapper();

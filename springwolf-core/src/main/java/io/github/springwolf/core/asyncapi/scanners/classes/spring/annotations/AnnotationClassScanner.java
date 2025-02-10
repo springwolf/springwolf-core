@@ -18,6 +18,9 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
 
+/**
+ * Scans the spring context for classes annotated with a specific annotation.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class AnnotationClassScanner<T extends Annotation> implements ClassScanner {

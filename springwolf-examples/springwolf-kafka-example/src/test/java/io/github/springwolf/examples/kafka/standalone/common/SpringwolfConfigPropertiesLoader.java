@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.kafka.standalone;
+package io.github.springwolf.examples.kafka.standalone.common;
 
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.handler.IgnoreErrorsBindHandler;
@@ -23,8 +23,9 @@ public class SpringwolfConfigPropertiesLoader {
     public Environment loadEnvironment(List<String> profiles) throws IOException {
         StandardEnvironment environment = new StandardEnvironment();
 
-        loadYamlResource(environment, "application.yaml");
-        loadPropertiesResource(environment, "application.properties");
+        if (profiles.contains("springwolf-unit-test")) {
+            loadTestProperties(environment);
+        }
 
         profiles.forEach(profile -> {
             try {
@@ -35,9 +36,8 @@ public class SpringwolfConfigPropertiesLoader {
             }
         });
 
-        if (profiles.contains("springwolf-unit-test")) {
-            loadTestProperties(environment);
-        }
+        loadPropertiesResource(environment, "application.properties");
+        loadYamlResource(environment, "application.yaml");
 
         return environment;
     }
@@ -49,6 +49,7 @@ public class SpringwolfConfigPropertiesLoader {
     }
 
     private static void loadTestProperties(StandardEnvironment environment) {
+        // TODO: remove later
         Map<String, Object> testProperties = new HashMap<>();
         testProperties.put("springwolf.enabled", "true");
         testProperties.put("springwolf.docket.info.title", "Info title was loaded from spring properties");
@@ -57,7 +58,7 @@ public class SpringwolfConfigPropertiesLoader {
         testProperties.put("springwolf.docket.default-content-type", "application/json");
         testProperties.put("springwolf.docket.servers.test-protocol.protocol", "test");
         testProperties.put("springwolf.docket.servers.test-protocol.host", "some-server:1234");
-        environment.getPropertySources().addFirst(new MapPropertySource("testProperties", testProperties));
+        environment.getPropertySources().addLast(new MapPropertySource("testProperties", testProperties));
     }
 
     private static void loadPropertiesResource(StandardEnvironment environment, String fileName) throws IOException {
@@ -68,7 +69,7 @@ public class SpringwolfConfigPropertiesLoader {
                     .load(fileName, applicationPropertiesResource)
                     .get(0);
             Map<String, Object> properties = removeOriginTrackedPropertySource(propertySource);
-            environment.getPropertySources().addFirst(new MapPropertySource("applicationProperties", properties));
+            environment.getPropertySources().addLast(new MapPropertySource("applicationProperties", properties));
         }
     }
 
@@ -79,7 +80,7 @@ public class SpringwolfConfigPropertiesLoader {
             MapPropertySource propertySource = (MapPropertySource)
                     sourceLoader.load(fileName, applicationYamlResource).get(0);
             Map<String, Object> properties = removeOriginTrackedPropertySource(propertySource);
-            environment.getPropertySources().addFirst(new MapPropertySource("yamlProperties", properties));
+            environment.getPropertySources().addLast(new MapPropertySource("yamlProperties", properties));
         }
     }
 
