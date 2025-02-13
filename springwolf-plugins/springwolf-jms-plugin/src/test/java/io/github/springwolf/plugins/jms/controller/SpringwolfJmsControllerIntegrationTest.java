@@ -15,6 +15,7 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.dtos.MessageDto;
 import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -87,7 +88,7 @@ class SpringwolfJmsControllerIntegrationTest {
     private ArgumentCaptor<PayloadDto> payloadCaptor;
 
     @Captor
-    private ArgumentCaptor<Map<String, String>> headerCaptor;
+    private ArgumentCaptor<Map<String, MessageDto.HeaderValue>> headerCaptor;
 
     @BeforeEach
     void setup() {
@@ -213,7 +214,8 @@ class SpringwolfJmsControllerIntegrationTest {
 
         verify(springwolfJmsProducer).send(eq("test-topic"), headerCaptor.capture(), payloadCaptor.capture());
 
-        assertThat(headerCaptor.getValue()).isEqualTo(singletonMap("some-header-key", "some-header-value"));
+        assertThat(headerCaptor.getValue())
+                .isEqualTo(singletonMap("some-header-key", new MessageDto.HeaderValue("some-header-value")));
         assertThat(payloadCaptor.getValue()).isEqualTo(new PayloadDto("some-payload-value"));
     }
 

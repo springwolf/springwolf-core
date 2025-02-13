@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.jms.producer;
 
+import io.github.springwolf.core.controller.dtos.MessageDto;
 import jakarta.jms.JMSException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.core.JmsTemplate;
@@ -22,13 +23,13 @@ public class SpringwolfJmsProducer {
         return template.isPresent();
     }
 
-    public void send(String channelName, Map<String, String> headers, Object payload) {
+    public void send(String channelName, Map<String, MessageDto.HeaderValue> headers, Object payload) {
         if (template.isPresent()) {
             template.get().convertAndSend(channelName, payload, message -> {
                 if (headers != null) {
                     headers.forEach((name, value) -> {
                         try {
-                            message.setStringProperty(name, value);
+                            message.setStringProperty(name, value.stringValue());
                         } catch (JMSException ex) {
                             log.warn("Unable to set JMS Header key={} value={}", name, value, ex);
                         }

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.kafka.producer;
 
+import io.github.springwolf.core.controller.dtos.MessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -26,7 +27,7 @@ public class SpringwolfKafkaProducer {
         return kafkaTemplateProvider.isPresent();
     }
 
-    public void send(String topic, String key, Map<String, String> headers, Object payload) {
+    public void send(String topic, String key, Map<String, MessageDto.HeaderValue> headers, Object payload) {
         Optional<KafkaTemplate<Object, Object>> kafkaTemplate = kafkaTemplateProvider.get(topic);
         if (kafkaTemplate.isPresent()) {
             kafkaTemplate
@@ -40,16 +41,16 @@ public class SpringwolfKafkaProducer {
     }
 
     private ProducerRecord<Object, Object> buildProducerRecord(
-            String topic, String key, Map<String, String> headers, Object payload) {
+            String topic, String key, Map<String, MessageDto.HeaderValue> headers, Object payload) {
         List<Header> recordHeaders = headers != null ? buildHeaders(headers) : Collections.emptyList();
 
         return new ProducerRecord<>(topic, null, null, key, payload, recordHeaders);
     }
 
-    private List<Header> buildHeaders(Map<String, String> headers) {
+    private List<Header> buildHeaders(Map<String, MessageDto.HeaderValue> headers) {
         return headers.entrySet().stream()
-                .map(header ->
-                        new RecordHeader(header.getKey(), header.getValue().getBytes(UTF_8)))
+                .map(header -> new RecordHeader(
+                        header.getKey(), header.getValue().stringValue().getBytes(UTF_8)))
                 .collect(Collectors.toList());
     }
 }

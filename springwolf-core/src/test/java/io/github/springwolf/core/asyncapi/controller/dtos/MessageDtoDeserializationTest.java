@@ -24,7 +24,8 @@ class MessageDtoDeserializationTest {
         MessageDto value = objectMapper.readValue(content, MessageDto.class);
 
         assertThat(value).isNotNull();
-        assertThat(value.getHeaders()).isEqualTo(singletonMap("some-header-key", "some-header-value"));
+        assertThat(value.getHeaders())
+                .isEqualTo(singletonMap("some-header-key", new MessageDto.HeaderValue("some-header-value")));
         assertThat(value.getPayload())
                 .isEqualTo(
                         new ObjectMapper().writeValueAsString(singletonMap("some-payload-key", "some-payload-value")));

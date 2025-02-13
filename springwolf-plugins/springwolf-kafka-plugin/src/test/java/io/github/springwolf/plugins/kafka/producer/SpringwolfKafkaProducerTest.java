@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.kafka.producer;
 
+import io.github.springwolf.core.controller.dtos.MessageDto;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Header;
 import org.assertj.core.util.Lists;
@@ -97,7 +98,8 @@ class SpringwolfKafkaProducerTest {
         future.complete(mock(SendResult.class));
 
         Map<String, Object> payload = Collections.singletonMap("some", "field");
-        Map<String, String> headers = Collections.singletonMap("header-key", "header");
+        Map<String, MessageDto.HeaderValue> headers =
+                Collections.singletonMap("header-key", new MessageDto.HeaderValue("header"));
 
         // when
         springwolfKafkaProducer.send("test-topic", null, headers, payload);
@@ -115,6 +117,7 @@ class SpringwolfKafkaProducerTest {
         assertThat(headersFromRecord).hasSize(1);
 
         assertThat(headersFromRecord.get(0).key()).isEqualTo("header-key");
-        assertThat(new String(headersFromRecord.get(0).value())).isEqualTo(headers.get("header-key"));
+        assertThat(new String(headersFromRecord.get(0).value()))
+                .isEqualTo(headers.get("header-key").stringValue());
     }
 }

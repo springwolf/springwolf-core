@@ -15,6 +15,7 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.dtos.MessageDto;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -87,7 +88,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     private ArgumentCaptor<PayloadDto> payloadCaptor;
 
     @Captor
-    private ArgumentCaptor<Map<String, String>> headerCaptor;
+    private ArgumentCaptor<Map<String, MessageDto.HeaderValue>> headerCaptor;
 
     @BeforeEach
     void setup() {
@@ -214,7 +215,8 @@ class SpringwolfKafkaControllerIntegrationTest {
         verify(springwolfKafkaProducer)
                 .send(eq("test-topic"), isNull(), headerCaptor.capture(), payloadCaptor.capture());
 
-        assertThat(headerCaptor.getValue()).isEqualTo(singletonMap("some-header-key", "some-header-value"));
+        assertThat(headerCaptor.getValue())
+                .isEqualTo(singletonMap("some-header-key", new MessageDto.HeaderValue("some-header-value")));
         assertThat(payloadCaptor.getValue()).isEqualTo(new PayloadDto("some-payload-value"));
     }
 
@@ -243,7 +245,8 @@ class SpringwolfKafkaControllerIntegrationTest {
         verify(springwolfKafkaProducer)
                 .send(eq("test-topic"), eq("kafka-key-value"), headerCaptor.capture(), payloadCaptor.capture());
 
-        assertThat(headerCaptor.getValue()).isEqualTo(singletonMap("some-header-key", "some-header-value"));
+        assertThat(headerCaptor.getValue())
+                .isEqualTo(singletonMap("some-header-key", new MessageDto.HeaderValue("some-header-value")));
         assertThat(payloadCaptor.getValue()).isEqualTo(new PayloadDto("some-payload-value"));
     }
 
