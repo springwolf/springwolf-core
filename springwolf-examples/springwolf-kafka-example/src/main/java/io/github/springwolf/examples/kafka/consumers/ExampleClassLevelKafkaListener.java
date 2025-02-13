@@ -11,7 +11,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata;
-import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -33,8 +32,7 @@ public class ExampleClassLevelKafkaListener {
             @Header(KafkaHeaders.RECEIVED_KEY) String key,
             @Header(KafkaHeaders.OFFSET) Integer offset,
             @Header(KafkaHeaders.RECORD_METADATA) ConsumerRecordMetadata meta,
-            @Payload ExamplePayloadDto payload,
-            Acknowledgment acknowledgment) {
+            @Payload ExamplePayloadDto payload) {
         log.info("Received new message in {}: {}", TOPIC, payload.toString());
     }
 
