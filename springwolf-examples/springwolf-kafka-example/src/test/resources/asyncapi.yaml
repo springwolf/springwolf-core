@@ -304,8 +304,8 @@ components:
             type: string
         title: SpringKafkaDefaultHeaders-AnotherPayloadDto
         type: object
-    SpringKafkaDefaultHeaders-ExamplePayloadDto-1316119953:
-      title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1316119953
+    SpringKafkaDefaultHeaders-ExamplePayloadDto-1119017590:
+      title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1119017590
       type: object
       properties:
         __TypeId__:
@@ -323,10 +323,15 @@ components:
           type: string
           examples:
             - '"string"'
+        kafka_recordMetadata:
+          type: object
+          examples:
+            - {}
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
           kafka_offset: 0
           kafka_receivedMessageKey: string
+          kafka_recordMetadata: {}
       x-json-schema:
         $schema: https://json-schema.org/draft-04/schema#
         properties:
@@ -339,7 +344,9 @@ components:
             type: integer
           kafka_receivedMessageKey:
             type: string
-        title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1316119953
+          kafka_recordMetadata:
+            type: object
+        title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1119017590
         type: object
     SpringKafkaDefaultHeaders-Message:
       title: SpringKafkaDefaultHeaders-Message
@@ -1237,7 +1244,7 @@ components:
           bindingVersion: 0.5.0
     io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto:
       headers:
-        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-1316119953"
+        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-1119017590"
       payload:
         schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
         schema:

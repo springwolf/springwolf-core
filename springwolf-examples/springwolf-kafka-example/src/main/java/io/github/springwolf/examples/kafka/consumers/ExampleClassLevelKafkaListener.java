@@ -10,6 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
+import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -22,6 +25,7 @@ import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.D
 
 @Component
 @Slf4j
+@RetryableTopic
 @KafkaListener(topics = TOPIC)
 public class ExampleClassLevelKafkaListener {
     protected static final String TOPIC = "multi-payload-topic";
@@ -30,7 +34,9 @@ public class ExampleClassLevelKafkaListener {
     public void receiveExamplePayload(
             @Header(KafkaHeaders.RECEIVED_KEY) String key,
             @Header(KafkaHeaders.OFFSET) Integer offset,
-            @Payload ExamplePayloadDto payload) {
+            @Header(KafkaHeaders.RECORD_METADATA) ConsumerRecordMetadata meta,
+            @Payload ExamplePayloadDto payload,
+            Acknowledgment acknowledgment) {
         log.info("Received new message in {}: {}", TOPIC, payload.toString());
     }
 
