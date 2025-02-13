@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { test, expect } from "@playwright/test";
-import { locateChannelItems } from "../util/page_object";
+import { locateChannelItems, pageIsReady } from "../util/page_object";
 import { getExampleAsyncApi } from "../util/example";
 
 test.beforeEach(async ({ page }) => {
@@ -14,6 +14,8 @@ test("has title", async ({ page }) => {
 test("can click download and get original asyncapi.json in new tab", async ({
   page,
 }) => {
+  await pageIsReady(page);
+
   const newPagePromise = page.waitForEvent("popup");
 
   await page.click("text=AsyncAPI JSON");
@@ -28,5 +30,5 @@ test("can click download and get original asyncapi.json in new tab", async ({
 });
 
 test("has channels and channel item", async ({ page }) => {
-  expect(await locateChannelItems(page).count()).toBeGreaterThan(0);
+  await expect(locateChannelItems(page)).not.toHaveCount(0);
 });
