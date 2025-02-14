@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 
 export function locateChannels(locator: Page | Locator) {
   return locator.locator("article#channels article");
@@ -27,4 +27,8 @@ export function locatePublishButton(locator: Locator) {
 
 export function locateSnackbar(locator: Page | Locator) {
   return locator.locator("simple-snack-bar");
+}
+
+export async function pageIsReady(locator: Page | Locator) {
+  await expect(locateChannelItems(locator)).not.toHaveCount(0);
 }
