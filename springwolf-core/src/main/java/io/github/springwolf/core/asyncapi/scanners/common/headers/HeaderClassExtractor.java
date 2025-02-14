@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
+import io.github.springwolf.asyncapi.v3.model.schema.Schema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
@@ -33,12 +34,21 @@ public class HeaderClassExtractor {
                 Header headerAnnotation = argument.getAnnotation(Header.class);
                 String headerName = getHeaderAnnotationName(headerAnnotation);
 
-                SchemaObject schema = schemaService
-                        .extractSchema(argument.getType())
-                        .rootSchema()
-                        .getSchema();
+                SwaggerSchemaService.ExtractedSchemas extractedSchema = schemaService.extractSchema(argument.getType());
+                Schema schema = extractedSchema.rootSchema().getSchema();
+                if (schema == null && extractedSchema.referencedSchemas().size() == 1) {
+                    schema = extractedSchema
+                            .referencedSchemas()
+                            .values()
+                            .iterator()
+                            .next();
+                }
 
-                headers.getProperties().put(headerName, schema);
+                if (schema != null) {
+                    headers.getProperties().put(headerName, schema);
+                } else {
+                    log.debug("Unable to extract schema for header {} in method {}", headerName, methodName);
+                }
             }
         }
 
