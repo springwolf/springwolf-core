@@ -58,8 +58,6 @@ dependencies {
     testImplementation libs.junit.jupiter.params
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.slf4j.simple
-
-    testImplementation 'io.github.classgraph:classgraph:4.8.154' // TODO:
 }
 
 jar {

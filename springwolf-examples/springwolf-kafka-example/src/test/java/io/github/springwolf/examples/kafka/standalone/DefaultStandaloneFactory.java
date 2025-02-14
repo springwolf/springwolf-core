@@ -23,8 +23,8 @@ import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
-import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
@@ -44,7 +44,6 @@ import io.github.springwolf.core.configuration.SpringwolfScannerConfiguration;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.examples.kafka.standalone.bean.StandaloneClassScanner;
 import io.github.springwolf.examples.kafka.standalone.bean.StandaloneStringValueResolver;
 import io.github.springwolf.examples.kafka.standalone.common.SpringwolfConfigPropertiesLoader;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePlugin;
@@ -84,6 +83,8 @@ public class DefaultStandaloneFactory implements StandaloneFactory {
                         environment,
                         SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX,
                         SpringwolfConfigProperties.class);
+        // TODO: is it a good way to set it?
+        properties.getDocket().setBasePackage(basePackage);
 
         // TODO: can this autoConfiguration be analysed and the beans instanciated via custom dependency injection?
         SpringwolfAutoConfiguration autoConfiguration = new SpringwolfAutoConfiguration();
@@ -91,7 +92,7 @@ public class DefaultStandaloneFactory implements StandaloneFactory {
 
         AsyncApiDocketService asyncApiDocketService = autoConfiguration.asyncApiDocketService(properties);
 
-        ClassScanner componentClassScanner = new StandaloneClassScanner(basePackage, properties);
+        ComponentClassScanner componentClassScanner = scannerAutoConfiguration.componentClassScanner(asyncApiDocketService, environment);
         BeanMethodsScanner beanMethodsScanner = new DefaultBeanMethodsScanner(componentClassScanner);
         SpringwolfClassScanner springwolfClassScanner =
                 new SpringwolfClassScanner(componentClassScanner, beanMethodsScanner);
