@@ -85,8 +85,6 @@ dependencies {
 
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
-
-    testImplementation 'io.github.classgraph:classgraph:4.8.154' // TODO:
 }
 
 docker {

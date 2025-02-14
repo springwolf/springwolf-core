@@ -5,9 +5,11 @@ import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
+import io.github.springwolf.examples.kafka.standalone.common.SpringwolfConfigPropertiesLoader;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePlugin;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginDiscovery;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.env.Environment;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,9 +30,11 @@ public class StandaloneTest {
                     IllegalAccessException {
         // given
         String basePackage = "io.github.springwolf.examples.kafka";
-        List<StandalonePlugin> plugins = StandalonePluginDiscovery.scan();
+
         List<String> profiles = List.of();
-        StandaloneFactory standaloneFactory = new DefaultStandaloneFactory(basePackage, plugins, profiles);
+        Environment environment = new SpringwolfConfigPropertiesLoader().loadEnvironment(profiles);
+        List<StandalonePlugin> plugins = StandalonePluginDiscovery.scan(environment);
+        StandaloneFactory standaloneFactory = new DefaultStandaloneFactory(basePackage, plugins, environment);
         AsyncApiService asyncApiService = standaloneFactory.getAsyncApiService();
 
         // when

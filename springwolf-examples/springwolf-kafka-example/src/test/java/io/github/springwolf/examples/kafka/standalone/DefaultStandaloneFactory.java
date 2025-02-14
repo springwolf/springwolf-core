@@ -48,32 +48,18 @@ import io.github.springwolf.examples.kafka.standalone.bean.StandaloneStringValue
 import io.github.springwolf.examples.kafka.standalone.common.SpringwolfConfigPropertiesLoader;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePlugin;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginContext;
-import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginDiscovery;
 import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginResult;
 import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.core.env.Environment;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultStandaloneFactory implements StandaloneFactory {
     private final AsyncApiService asyncApiService;
 
-    public DefaultStandaloneFactory(String basePackage)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException,
-                    IOException {
-        this(basePackage, StandalonePluginDiscovery.scan());
-    }
-
-    public DefaultStandaloneFactory(String basePackage, List<StandalonePlugin> plugins) throws IOException {
-        this(basePackage, plugins, List.of());
-    }
-
-    public DefaultStandaloneFactory(String basePackage, List<StandalonePlugin> plugins, List<String> profiles)
-            throws IOException {
-        Environment environment = new SpringwolfConfigPropertiesLoader().loadEnvironment(profiles);
+    public DefaultStandaloneFactory(String basePackage, List<StandalonePlugin> plugins, Environment environment) {
         StringValueResolverProxy stringValueResolver = new StringValueResolverProxy();
 
         stringValueResolver.setEmbeddedValueResolver(new StandaloneStringValueResolver(environment));
@@ -92,7 +78,8 @@ public class DefaultStandaloneFactory implements StandaloneFactory {
 
         AsyncApiDocketService asyncApiDocketService = autoConfiguration.asyncApiDocketService(properties);
 
-        ComponentClassScanner componentClassScanner = scannerAutoConfiguration.componentClassScanner(asyncApiDocketService, environment);
+        ComponentClassScanner componentClassScanner =
+                scannerAutoConfiguration.componentClassScanner(asyncApiDocketService, environment);
         BeanMethodsScanner beanMethodsScanner = new DefaultBeanMethodsScanner(componentClassScanner);
         SpringwolfClassScanner springwolfClassScanner =
                 new SpringwolfClassScanner(componentClassScanner, beanMethodsScanner);
