@@ -51,7 +51,7 @@ public class SpringwolfAmqpScannerConfiguration {
             name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "amqpBindingFactory")
     public AmqpBindingFactory amqpBindingFactory(
             List<Queue> queues,
             List<Exchange> exchanges,
@@ -65,7 +65,7 @@ public class SpringwolfAmqpScannerConfiguration {
             name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "asyncHeadersForAmqpBuilder")
     public AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder() {
         return new AsyncHeadersForAmqpBuilder();
     }
@@ -76,7 +76,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "simpleRabbitClassLevelListenerAnnotationChannelsScanner")
     public ChannelsScanner simpleRabbitClassLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             AmqpBindingFactory amqpBindingFactory,
@@ -107,7 +107,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "simpleRabbitClassLevelListenerAnnotationOperationsScanner")
     public OperationsScanner simpleRabbitClassLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             AmqpBindingFactory amqpBindingFactory,
@@ -140,7 +140,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "simpleRabbitMethodLevelListenerAnnotationChannelsScanner")
     public ChannelsScanner simpleRabbitMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             AmqpBindingFactory amqpBindingFactory,
@@ -168,7 +168,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "simpleRabbitMethodLevelListenerAnnotationOperationsScanner")
     public OperationsScanner simpleRabbitMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,
             AmqpBindingFactory amqpBindingFactory,
@@ -198,7 +198,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "rabbitQueueBeanScanner")
     public RabbitQueueBeanScanner rabbitQueueBeanScanner(List<Queue> queues, List<Binding> bindings) {
         return new RabbitQueueBeanScanner(queues, bindings);
     }
