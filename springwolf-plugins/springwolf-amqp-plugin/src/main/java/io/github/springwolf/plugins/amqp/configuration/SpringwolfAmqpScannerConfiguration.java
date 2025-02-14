@@ -51,7 +51,7 @@ public class SpringwolfAmqpScannerConfiguration {
             name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    @ConditionalOnMissingBean(name = "amqpBindingFactory")
+    @ConditionalOnMissingBean
     public AmqpBindingFactory amqpBindingFactory(
             List<Queue> queues,
             List<Exchange> exchanges,
@@ -65,7 +65,7 @@ public class SpringwolfAmqpScannerConfiguration {
             name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
-    @ConditionalOnMissingBean(name = "asyncHeadersForAmqpBuilder")
+    @ConditionalOnMissingBean
     public AsyncHeadersForAmqpBuilder asyncHeadersForAmqpBuilder() {
         return new AsyncHeadersForAmqpBuilder();
     }
@@ -198,7 +198,7 @@ public class SpringwolfAmqpScannerConfiguration {
             havingValue = "true",
             matchIfMissing = true)
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
-    @ConditionalOnMissingBean(name = "rabbitQueueBeanScanner")
+    @ConditionalOnMissingBean
     public RabbitQueueBeanScanner rabbitQueueBeanScanner(List<Queue> queues, List<Binding> bindings) {
         return new RabbitQueueBeanScanner(queues, bindings);
     }

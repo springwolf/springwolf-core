@@ -4,6 +4,7 @@ package io.github.springwolf.addons.generic_binding.annotation.configuration;
 import io.github.springwolf.addons.generic_binding.annotation.processor.AsyncGenericOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.util.StringValueResolver;
 public class SpringwolfGenericBindingAutoConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     @Order(value = BindingProcessorPriority.GENERIC_BINDING)
     public AsyncGenericOperationBindingProcessor asyncGenericOperationBindingProcessor(
             StringValueResolver stringValueResolver) {

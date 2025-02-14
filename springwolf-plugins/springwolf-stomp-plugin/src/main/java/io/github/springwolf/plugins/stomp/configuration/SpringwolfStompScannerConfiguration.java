@@ -30,6 +30,7 @@ import io.github.springwolf.plugins.stomp.asyncapi.scanners.operation.annotation
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.operation.annotations.SendToUserCustomizer;
 import io.github.springwolf.plugins.stomp.configuration.properties.SpringwolfStompConfigProperties;
 import lombok.val;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +57,7 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean
     public StompBindingMessageMappingFactory stompBindingMessageMappingFactory(
             SpringwolfStompConfigProperties properties, StringValueResolver stringValueResolver) {
         return new StompBindingMessageMappingFactory(properties, stringValueResolver);
@@ -63,6 +65,7 @@ public class SpringwolfStompScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED, havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean
     public StompBindingSendToFactory stompBindingSendToFactory(
             SpringwolfStompConfigProperties properties, StringValueResolver stringValueResolver) {
         return new StompBindingSendToFactory(properties, stringValueResolver);
@@ -73,6 +76,7 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_USER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean
     public StompBindingSendToUserFactory stompBindingSendToUserFactory(
             SpringwolfStompConfigProperties properties, StringValueResolver stringValueResolver) {
         return new StompBindingSendToUserFactory(properties, stringValueResolver);
@@ -83,12 +87,14 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean
     public AsyncHeadersForStompBuilder asyncHeadersForStompBuilder() {
         return new AsyncHeadersForStompBuilder();
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED, havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean
     public SendToCustomizer sendToCustomizer(
             StompBindingSendToFactory stompBindingSendToFactory,
             PayloadMethodReturnService payloadMethodReturnService) {
@@ -100,6 +106,7 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_USER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean
     public SendToUserCustomizer sendToUserCustomizer(
             StompBindingSendToUserFactory stompBindingSendToUserFactory,
             PayloadMethodReturnService payloadMethodReturnService) {
@@ -111,6 +118,7 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleStompClassLevelListenerAnnotationChannelsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ChannelsScanner simpleStompClassLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -141,6 +149,7 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleStompClassLevelListenerAnnotationOperationScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public OperationsScanner simpleStompClassLevelListenerAnnotationOperationScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -173,6 +182,7 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleStompMethodLevelListenerAnnotationChannelsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ChannelsScanner simpleStompMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -199,6 +209,7 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_MESSAGE_MAPPING_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleStompMethodLevelListenerAnnotationOperationsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public OperationsScanner simpleStompMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -225,6 +236,7 @@ public class SpringwolfStompScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_ENABLED, havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleStompMethodLevelListenerSendToAnnotationChannelsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ChannelsScanner simpleStompMethodLevelListenerSendToAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -250,6 +262,7 @@ public class SpringwolfStompScannerConfiguration {
             name = SPRINGWOLF_SCANNER_STOMP_SEND_TO_USER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleStompMethodLevelListenerSendToUserAnnotationChannelsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ChannelsScanner simpleStompMethodLevelListenerSendToUserAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
