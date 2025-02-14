@@ -20,6 +20,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Operat
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.sqs.asyncapi.scanners.bindings.SqsBindingFactory;
 import lombok.val;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,12 +39,14 @@ public class SpringwolfSqsScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean
     public SqsBindingFactory sqsBindingFactory(StringValueResolver stringValueResolver) {
         return new SqsBindingFactory(stringValueResolver);
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleSqsMethodLevelListenerAnnotationChannelsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ChannelsScanner simpleSqsMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -66,6 +69,7 @@ public class SpringwolfSqsScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_SQS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleSqsMethodLevelListenerAnnotationOperationsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public OperationsScanner simpleSqsMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,

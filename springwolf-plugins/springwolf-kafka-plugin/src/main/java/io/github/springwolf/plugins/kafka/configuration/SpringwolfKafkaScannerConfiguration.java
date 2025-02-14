@@ -23,6 +23,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Spring
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.header.AsyncHeadersForKafkaBuilder;
 import lombok.val;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,6 +47,7 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "kafkaBindingFactory")
     public KafkaBindingFactory kafkaBindingFactory(StringValueResolver stringValueResolver) {
         return new KafkaBindingFactory(stringValueResolver);
     }
@@ -55,6 +57,7 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "asyncHeadersForKafkaBuilder")
     public AsyncHeadersForKafkaBuilder asyncHeadersForKafkaBuilder() {
         return new AsyncHeadersForKafkaBuilder();
     }
@@ -64,6 +67,7 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleKafkaClassLevelListenerAnnotationChannelsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ChannelsScanner simpleKafkaClassLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -94,6 +98,7 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleKafkaClassLevelListenerAnnotationOperationScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public OperationsScanner simpleKafkaClassLevelListenerAnnotationOperationScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -126,6 +131,7 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleKafkaMethodLevelListenerAnnotationChannelsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ChannelsScanner simpleKafkaMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -152,6 +158,7 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleKafkaMethodLevelListenerAnnotationOperationsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public OperationsScanner simpleKafkaMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,

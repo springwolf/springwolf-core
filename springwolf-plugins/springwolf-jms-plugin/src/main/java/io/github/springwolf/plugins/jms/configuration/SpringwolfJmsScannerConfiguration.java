@@ -19,6 +19,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Operat
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.JmsBindingFactory;
 import lombok.val;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,12 +39,14 @@ public class SpringwolfJmsScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean
     public JmsBindingFactory jmsBindingFactory(StringValueResolver stringValueResolver) {
         return new JmsBindingFactory(stringValueResolver);
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleJmsMethodLevelListenerAnnotationChannelsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public ChannelsScanner simpleJmsMethodLevelListenerAnnotationChannelsScanner(
             SpringwolfClassScanner springwolfClassScanner,
@@ -67,6 +70,7 @@ public class SpringwolfJmsScannerConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = SPRINGWOLF_SCANNER_JMS_LISTENER_ENABLED, havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "simpleJmsMethodLevelListenerAnnotationOperationsScanner")
     @Order(value = ChannelPriority.AUTO_DISCOVERED)
     public OperationsScanner simpleJmsMethodLevelListenerAnnotationOperationsScanner(
             SpringwolfClassScanner springwolfClassScanner,

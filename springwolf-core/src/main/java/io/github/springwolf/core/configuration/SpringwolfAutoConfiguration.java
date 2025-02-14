@@ -176,6 +176,7 @@ public class SpringwolfAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "jsonSchemaWalker")
     public SchemaWalker jsonSchemaWalker() {
         return new DefaultSchemaWalker<>(new ExampleJsonValueGenerator());
     }
@@ -187,6 +188,7 @@ public class SpringwolfAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "xmlSchemaWalker")
     public SchemaWalker xmlSchemaWalker(ExampleXmlValueSerializer exampleXmlValueSerializer) {
         return new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(exampleXmlValueSerializer));
     }
@@ -198,6 +200,7 @@ public class SpringwolfAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "yamlSchemaWalker")
     public SchemaWalker yamlSchemaWalker(
             ExampleYamlValueSerializer exampleYamlValueSerializer,
             SpringwolfConfigProperties springwolfConfigProperties) {

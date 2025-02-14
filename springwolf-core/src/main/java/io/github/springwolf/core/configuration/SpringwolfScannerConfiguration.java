@@ -70,6 +70,7 @@ public class SpringwolfScannerConfiguration {
             name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "asyncListenerMethodLevelAnnotationChannelScanner")
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public ChannelsScanner asyncListenerMethodLevelAnnotationChannelScanner(
             AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider,
@@ -101,6 +102,7 @@ public class SpringwolfScannerConfiguration {
             name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "asyncListenerClassLevelAnnotationChannelScanner")
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public ChannelsScanner asyncListenerClassLevelAnnotationChannelScanner(
             AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider,
@@ -132,6 +134,7 @@ public class SpringwolfScannerConfiguration {
             name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "asyncListenerMethodLevelAnnotationOperationScanner")
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public OperationsScanner asyncListenerMethodLevelAnnotationOperationScanner(
             AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider,
@@ -156,6 +159,7 @@ public class SpringwolfScannerConfiguration {
             name = SPRINGWOLF_SCANNER_ASYNC_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "asyncListenerClassLevelListenerAnnotationOperationsScanner")
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public OperationsScanner asyncListenerClassLevelListenerAnnotationOperationsScanner(
             AsyncAnnotationProvider<AsyncListener> asyncAnnotationProvider,
@@ -184,6 +188,7 @@ public class SpringwolfScannerConfiguration {
             name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "asyncPublisherClassLevelChannelAnnotationScanner")
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public ChannelsScanner asyncPublisherClassLevelChannelAnnotationScanner(
             AsyncAnnotationProvider<AsyncPublisher> asyncAnnotationProvider,
@@ -215,6 +220,7 @@ public class SpringwolfScannerConfiguration {
             name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "asyncPublisherClassLevelAnnotationChannelScanner")
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public ChannelsScanner asyncPublisherClassLevelAnnotationChannelScanner(
             AsyncAnnotationProvider<AsyncPublisher> asyncAnnotationProvider,
@@ -246,6 +252,7 @@ public class SpringwolfScannerConfiguration {
             name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "asyncPublisherClassLevelOperationAnnotationScanner")
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public OperationsScanner asyncPublisherClassLevelOperationAnnotationScanner(
             AsyncAnnotationProvider<AsyncPublisher> asyncAnnotationProvider,
@@ -271,6 +278,7 @@ public class SpringwolfScannerConfiguration {
             name = SPRINGWOLF_SCANNER_ASYNC_PUBLISHER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "asyncPublisherClassLevelListenerAnnotationOperationsScanner")
     @Order(value = ChannelPriority.ASYNC_ANNOTATION)
     public OperationsScanner asyncPublisherClassLevelListenerAnnotationOperationsScanner(
             AsyncAnnotationProvider<AsyncPublisher> asyncAnnotationProvider,
@@ -295,6 +303,7 @@ public class SpringwolfScannerConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "asyncListenerAnnotationProvider")
     public AsyncAnnotationProvider<AsyncListener> asyncListenerAnnotationProvider() {
         return new AsyncAnnotationProvider<>() {
             @Override
@@ -315,6 +324,7 @@ public class SpringwolfScannerConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "asyncPublisherAnnotationProvider")
     public AsyncAnnotationProvider<AsyncPublisher> asyncPublisherAnnotationProvider() {
         return new AsyncAnnotationProvider<>() {
             @Override

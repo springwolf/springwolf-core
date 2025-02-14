@@ -14,6 +14,7 @@ import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.channels.Cloud
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.operations.CloudStreamFunctionOperationsScanner;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ import java.util.List;
 public class SpringwolfCloudStreamAutoConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     public CloudStreamFunctionChannelsScanner cloudStreamFunctionChannelsScanner(
             AsyncApiDocketService asyncApiDocketService,
             BeanMethodsScanner beanMethodsScanner,
@@ -51,6 +53,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public CloudStreamFunctionOperationsScanner cloudStreamFunctionOperationsScanner(
             AsyncApiDocketService asyncApiDocketService,
             BeanMethodsScanner beanMethodsScanner,
@@ -70,6 +73,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public FunctionalChannelBeanBuilder functionalChannelBeanBuilder(TypeExtractor typeExtractor) {
         return new FunctionalChannelBeanBuilder(typeExtractor);
     }
