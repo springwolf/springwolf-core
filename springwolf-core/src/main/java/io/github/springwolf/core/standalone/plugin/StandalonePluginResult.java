@@ -5,6 +5,7 @@ import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -25,4 +26,7 @@ public class StandalonePluginResult {
 
     @Singular
     private final List<MessageBindingProcessor> messageBindingProcessors;
+
+    @Singular
+    private final List<OperationCustomizer> operationCustomizers;
 }

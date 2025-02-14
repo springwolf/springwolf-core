@@ -138,6 +138,7 @@ public class DefaultStandaloneFactory implements StandaloneFactory {
                 .classScanner(springwolfClassScanner)
                 .stringValueResolver(stringValueResolver)
                 .payloadMethodParameterService(payloadMethodParameterService)
+                .payloadMethodReturnService(payloadMethodReturnService)
                 .headerClassExtractor(headerClassExtractor)
                 .componentsService(componentsService)
                 .operationCustomizers(operationCustomizers)
@@ -158,6 +159,7 @@ public class DefaultStandaloneFactory implements StandaloneFactory {
                 messageBindingProcessors.addAll(pluginResult.getMessageBindingProcessors());
                 channelsScanners.addAll(pluginResult.getChannelsScanners());
                 operationsScanners.addAll(pluginResult.getOperationsScanners());
+                operationCustomizers.addAll(pluginResult.getOperationCustomizers());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

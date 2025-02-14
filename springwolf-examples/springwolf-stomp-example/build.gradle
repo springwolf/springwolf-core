@@ -35,6 +35,8 @@ dependencies {
 
     implementation libs.slf4j.api
 
+    testImplementation libs.assertj.core
+
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.beans
     testImplementation libs.spring.core
@@ -43,6 +45,7 @@ dependencies {
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter
 
+    testImplementation libs.jackson.core
     testImplementation libs.jakarta.annotation.api
 
     testAnnotationProcessor libs.lombok
