@@ -45,6 +45,8 @@ dependencies {
     testImplementation libs.spring.web
     testImplementation libs.spring.test
 
+    testImplementation libs.jackson.core
+
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter
 
