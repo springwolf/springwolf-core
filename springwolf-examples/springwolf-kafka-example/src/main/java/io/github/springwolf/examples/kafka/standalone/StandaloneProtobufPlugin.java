@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.kafka.standalone.plugin;
+package io.github.springwolf.examples.kafka.standalone;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hubspot.jackson.datatype.protobuf.ProtobufJacksonConfig;
 import com.hubspot.jackson.datatype.protobuf.ProtobufModule;
+import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
 import io.github.springwolf.examples.kafka.configuration.ObjectMapperConfiguration;
 import io.github.springwolf.examples.kafka.configuration.ProtobufPropertiesModule;
 import io.swagger.v3.core.converter.ModelConverter;

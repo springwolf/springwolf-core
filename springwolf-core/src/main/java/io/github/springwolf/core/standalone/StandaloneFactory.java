@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.kafka.standalone;
+package io.github.springwolf.core.standalone;
 
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 

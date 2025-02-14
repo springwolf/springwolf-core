@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.kafka.standalone;
+package io.github.springwolf.examples.kafka;
 
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
-import io.github.springwolf.examples.kafka.standalone.common.SpringwolfConfigPropertiesLoader;
-import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePlugin;
-import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginDiscovery;
+import io.github.springwolf.core.standalone.DefaultStandaloneFactory;
+import io.github.springwolf.core.standalone.StandaloneFactory;
+import io.github.springwolf.core.standalone.common.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
+import io.github.springwolf.core.standalone.plugin.StandalonePluginDiscovery;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.env.Environment;
 

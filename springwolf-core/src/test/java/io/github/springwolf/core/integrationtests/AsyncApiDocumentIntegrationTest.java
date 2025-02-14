@@ -16,12 +16,20 @@ import io.github.springwolf.core.integrationtests.application.listener.ListenerA
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.publisher.PublisherApplication;
 import io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication;
+import io.github.springwolf.core.standalone.DefaultStandaloneFactory;
+import io.github.springwolf.core.standalone.StandaloneFactory;
+import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
+import io.github.springwolf.core.standalone.plugin.StandalonePluginDiscovery;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.TestPropertySource;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,6 +44,12 @@ public class AsyncApiDocumentIntegrationTest {
                 "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.listener",
             })
     class ListenerAnnotationTest {
+        @Value("${springwolf.docket.base-package}")
+        private String basePackage;
+
+        @Autowired
+        private Environment environment;
+
         @Autowired
         private AsyncApiService asyncApiService;
 
@@ -91,6 +105,20 @@ public class AsyncApiDocumentIntegrationTest {
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
         }
+
+        @Test
+        void ensureThatStandaloneResultIsIdentical()
+                throws InvocationTargetException, NoSuchMethodException, InstantiationException,
+                        IllegalAccessException {
+            // given
+            AsyncApiService asyncApiService = createStandaloneAsyncApiService(environment, basePackage);
+
+            // when
+            AsyncAPI asyncApi = asyncApiService.getAsyncAPI();
+
+            // then
+            assertThat(asyncApi).isEqualTo(asyncApiService.getAsyncAPI());
+        }
     }
 
     @Nested
@@ -101,6 +129,12 @@ public class AsyncApiDocumentIntegrationTest {
                 "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.publisher",
             })
     class PublisherAnnotationTest {
+        @Value("${springwolf.docket.base-package}")
+        private String basePackage;
+
+        @Autowired
+        private Environment environment;
+
         @Autowired
         private AsyncApiService asyncApiService;
 
@@ -155,6 +189,20 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(fooRefMessage.getRef())
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+        }
+
+        @Test
+        void ensureThatStandaloneResultIsIdentical()
+                throws InvocationTargetException, NoSuchMethodException, InstantiationException,
+                        IllegalAccessException {
+            // given
+            AsyncApiService asyncApiService = createStandaloneAsyncApiService(environment, basePackage);
+
+            // when
+            AsyncAPI asyncApi = asyncApiService.getAsyncAPI();
+
+            // then
+            assertThat(asyncApi).isEqualTo(asyncApiService.getAsyncAPI());
         }
     }
 
@@ -364,5 +412,12 @@ public class AsyncApiDocumentIntegrationTest {
 
             assertThat(asyncAPIOpt).isEqualTo(fullApi);
         }
+    }
+
+    private AsyncApiService createStandaloneAsyncApiService(Environment environment, String basePackage)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        List<StandalonePlugin> plugins = StandalonePluginDiscovery.scan(environment);
+        StandaloneFactory standaloneFactory = new DefaultStandaloneFactory(basePackage, plugins, environment);
+        return standaloneFactory.getAsyncApiService();
     }
 }

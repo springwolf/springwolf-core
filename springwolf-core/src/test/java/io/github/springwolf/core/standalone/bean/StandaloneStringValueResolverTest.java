@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.kafka.standalone.bean;
+package io.github.springwolf.core.standalone.bean;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.env.MockEnvironment;

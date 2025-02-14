@@ -19,8 +19,8 @@ dependencies {
     permitUnusedDeclared project(":springwolf-plugins:springwolf-kafka")
     permitUsedUndeclared project(":springwolf-bindings:springwolf-kafka-binding")
 
-    implementation project(":springwolf-add-ons:springwolf-common-model-converters")
-    implementation project(":springwolf-add-ons:springwolf-json-schema")
+    runtimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
+    runtimeOnly project(":springwolf-add-ons:springwolf-json-schema")
     runtimeOnly project(":springwolf-ui")
 
     annotationProcessor project(":springwolf-plugins:springwolf-kafka")
@@ -34,6 +34,7 @@ dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.beans
     implementation libs.spring.context
+    implementation libs.spring.core
     implementation libs.spring.messaging
     implementation libs.spring.web
 

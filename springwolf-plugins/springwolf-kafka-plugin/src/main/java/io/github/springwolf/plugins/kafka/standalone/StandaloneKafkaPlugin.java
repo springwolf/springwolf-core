@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.kafka.standalone.plugin;
+package io.github.springwolf.plugins.kafka.standalone;
 
 import io.github.springwolf.bindings.kafka.configuration.SpringwolfKafkaBindingAutoConfiguration;
 import io.github.springwolf.bindings.kafka.scanners.messages.KafkaMessageBindingProcessor;
 import io.github.springwolf.bindings.kafka.scanners.operations.KafkaOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
-import io.github.springwolf.examples.kafka.standalone.common.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.core.standalone.common.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
+import io.github.springwolf.core.standalone.plugin.StandalonePluginContext;
+import io.github.springwolf.core.standalone.plugin.StandalonePluginResult;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.header.AsyncHeadersForKafkaBuilder;
 import io.github.springwolf.plugins.kafka.configuration.SpringwolfKafkaScannerConfiguration;

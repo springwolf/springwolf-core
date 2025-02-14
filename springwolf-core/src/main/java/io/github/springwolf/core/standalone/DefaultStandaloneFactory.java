@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.kafka.standalone;
+package io.github.springwolf.core.standalone;
 
 import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
@@ -44,11 +44,11 @@ import io.github.springwolf.core.configuration.SpringwolfScannerConfiguration;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.examples.kafka.standalone.bean.StandaloneStringValueResolver;
-import io.github.springwolf.examples.kafka.standalone.common.SpringwolfConfigPropertiesLoader;
-import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePlugin;
-import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginContext;
-import io.github.springwolf.examples.kafka.standalone.plugin.StandalonePluginResult;
+import io.github.springwolf.core.standalone.bean.StandaloneStringValueResolver;
+import io.github.springwolf.core.standalone.common.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
+import io.github.springwolf.core.standalone.plugin.StandalonePluginContext;
+import io.github.springwolf.core.standalone.plugin.StandalonePluginResult;
 import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.core.env.Environment;
 
