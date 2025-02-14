@@ -142,6 +142,11 @@ public class DefaultStandaloneFactory implements StandaloneFactory {
                 .headerClassExtractor(headerClassExtractor)
                 .componentsService(componentsService)
                 .operationCustomizers(operationCustomizers)
+                .asyncApiDocketService(asyncApiDocketService)
+                .typeExtractor(typeExtractor)
+                .payloadService(payloadService)
+                .beanMethodsScanner(beanMethodsScanner)
+                .componentClassScanner(componentClassScanner)
                 .build();
 
         List<ChannelsScanner> channelsScanners = new ArrayList<>(coreChannelScanners);
