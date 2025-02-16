@@ -3,6 +3,7 @@ package io.github.springwolf.core.standalone.bean;
 
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -14,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
+@Primary // TODO: really needed?
 public class StandaloneStringValueResolver implements StringValueResolver {
     private static final PropertyPlaceholderHelper propertyHelper = new PropertyPlaceholderHelper("${", "}");
     private static final Pattern spelPattern = Pattern.compile("#\\{(.+)}");

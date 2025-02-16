@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.bind.handler.IgnoreErrorsBind
 import org.springframework.boot.env.OriginTrackedMapPropertySource;
 import org.springframework.boot.env.PropertiesPropertySourceLoader;
 import org.springframework.boot.env.YamlPropertySourceLoader;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.StandardEnvironment;
@@ -13,19 +14,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SpringwolfConfigPropertiesLoader {
 
-    public Environment loadEnvironment(List<String> profiles) throws IOException {
+    public static ConfigurableEnvironment loadEnvironment(List<String> profiles) throws IOException {
         StandardEnvironment environment = new StandardEnvironment();
-
-        if (profiles.contains("springwolf-unit-test")) {
-            loadTestProperties(environment);
-        }
 
         profiles.forEach(profile -> {
             try {
@@ -42,23 +38,10 @@ public class SpringwolfConfigPropertiesLoader {
         return environment;
     }
 
-    public <T> T loadConfigProperties(Environment environment, String prefix, Class<T> clazz) {
+    public static <T> T loadConfigProperties(Environment environment, String prefix, Class<T> clazz) {
         return Binder.get(environment, new IgnoreErrorsBindHandler())
                 .bind(prefix, clazz)
                 .orElseThrow(() -> new IllegalStateException("Failed to bind properties"));
-    }
-
-    private static void loadTestProperties(StandardEnvironment environment) {
-        // TODO: remove later
-        Map<String, Object> testProperties = new HashMap<>();
-        testProperties.put("springwolf.enabled", "true");
-        testProperties.put("springwolf.docket.info.title", "Info title was loaded from spring properties");
-        testProperties.put("springwolf.docket.info.version", "1.0.0");
-        testProperties.put("springwolf.docket.id", "urn:io:github:springwolf:example");
-        testProperties.put("springwolf.docket.default-content-type", "application/json");
-        testProperties.put("springwolf.docket.servers.test-protocol.protocol", "test");
-        testProperties.put("springwolf.docket.servers.test-protocol.host", "some-server:1234");
-        environment.getPropertySources().addLast(new MapPropertySource("testProperties", testProperties));
     }
 
     private static void loadPropertiesResource(StandardEnvironment environment, String fileName) throws IOException {

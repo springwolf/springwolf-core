@@ -45,6 +45,7 @@ import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -63,6 +64,7 @@ import java.util.List;
 @AutoConfiguration
 @Import({SpringwolfWebConfiguration.class, SpringwolfScannerConfiguration.class})
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
+@StandaloneConfiguration
 public class SpringwolfAutoConfiguration {
 
     @Bean

@@ -16,22 +16,19 @@ import io.github.springwolf.core.integrationtests.application.listener.ListenerA
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.publisher.PublisherApplication;
 import io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication;
-import io.github.springwolf.core.standalone.DefaultStandaloneFactory;
-import io.github.springwolf.core.standalone.StandaloneFactory;
-import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
-import io.github.springwolf.core.standalone.plugin.StandalonePluginDiscovery;
+import io.github.springwolf.core.standalone.StandaloneDIFactory;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.TestPropertySource;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
+import static io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_PACKAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AsyncApiDocumentIntegrationTest {
@@ -48,7 +45,7 @@ public class AsyncApiDocumentIntegrationTest {
         private String basePackage;
 
         @Autowired
-        private Environment environment;
+        private ConfigurableEnvironment environment;
 
         @Autowired
         private AsyncApiService asyncApiService;
@@ -107,9 +104,7 @@ public class AsyncApiDocumentIntegrationTest {
         }
 
         @Test
-        void ensureThatStandaloneResultIsIdentical()
-                throws InvocationTargetException, NoSuchMethodException, InstantiationException,
-                        IllegalAccessException {
+        void ensureThatStandaloneResultIsIdentical() {
             // given
             AsyncApiService asyncApiService = createStandaloneAsyncApiService(environment, basePackage);
 
@@ -133,7 +128,7 @@ public class AsyncApiDocumentIntegrationTest {
         private String basePackage;
 
         @Autowired
-        private Environment environment;
+        private ConfigurableEnvironment environment;
 
         @Autowired
         private AsyncApiService asyncApiService;
@@ -192,9 +187,7 @@ public class AsyncApiDocumentIntegrationTest {
         }
 
         @Test
-        void ensureThatStandaloneResultIsIdentical()
-                throws InvocationTargetException, NoSuchMethodException, InstantiationException,
-                        IllegalAccessException {
+        void ensureThatStandaloneResultIsIdentical() {
             // given
             AsyncApiService asyncApiService = createStandaloneAsyncApiService(environment, basePackage);
 
@@ -414,10 +407,9 @@ public class AsyncApiDocumentIntegrationTest {
         }
     }
 
-    private AsyncApiService createStandaloneAsyncApiService(Environment environment, String basePackage)
-            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        List<StandalonePlugin> plugins = StandalonePluginDiscovery.scan(environment);
-        StandaloneFactory standaloneFactory = new DefaultStandaloneFactory(basePackage, plugins, environment);
-        return standaloneFactory.getAsyncApiService();
+    private AsyncApiService createStandaloneAsyncApiService(ConfigurableEnvironment environment, String basePackage) {
+        List<Class<?>> configurations = StandaloneDIFactory.discover(SPRINGWOLF_PACKAGE, environment);
+
+        return new StandaloneDIFactory(basePackage, configurations, environment).getAsyncApiService();
     }
 }

@@ -26,6 +26,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.AsyncA
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.AsyncAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -43,6 +44,7 @@ import static io.github.springwolf.core.configuration.properties.SpringwolfConfi
  * Spring configuration defining the core scanner beans.
  */
 @Configuration(proxyBeanMethods = false)
+@StandaloneConfiguration
 public class SpringwolfScannerConfiguration {
 
     @Bean
