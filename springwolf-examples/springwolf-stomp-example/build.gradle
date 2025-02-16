@@ -46,6 +46,7 @@ dependencies {
     testImplementation libs.testcontainers.junit.jupiter
 
     testImplementation libs.jackson.core
+    permitTestUsedUndeclared libs.jackson.core
     testImplementation libs.jakarta.annotation.api
 
     testAnnotationProcessor libs.lombok

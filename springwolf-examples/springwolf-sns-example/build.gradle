@@ -40,12 +40,14 @@ dependencies {
 
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.beans
+    testImplementation libs.spring.core
     testImplementation libs.spring.web
     testImplementation libs.spring.test
 
     testImplementation libs.assertj.core
 
     testImplementation libs.jackson.core
+    permitTestUsedUndeclared libs.jackson.core
 
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter

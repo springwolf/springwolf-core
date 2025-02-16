@@ -39,11 +39,13 @@ dependencies {
     testImplementation libs.assertj.core
 
     testImplementation libs.jackson.core
+    permitTestUsedUndeclared libs.jackson.core
 
     testImplementation libs.mockito.core
 
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.beans
+    testImplementation libs.spring.core
     testImplementation libs.spring.web
     testImplementation libs.spring.test
 
