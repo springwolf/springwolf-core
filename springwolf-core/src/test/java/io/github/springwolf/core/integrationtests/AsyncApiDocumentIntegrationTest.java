@@ -16,14 +16,19 @@ import io.github.springwolf.core.integrationtests.application.listener.ListenerA
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.publisher.PublisherApplication;
 import io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication;
+import io.github.springwolf.core.standalone.StandaloneDIFactory;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.List;
 import java.util.Map;
 
+import static io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_PACKAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AsyncApiDocumentIntegrationTest {
@@ -36,6 +41,12 @@ public class AsyncApiDocumentIntegrationTest {
                 "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.listener",
             })
     class ListenerAnnotationTest {
+        @Value("${springwolf.docket.base-package}")
+        private String basePackage;
+
+        @Autowired
+        private ConfigurableEnvironment environment;
+
         @Autowired
         private AsyncApiService asyncApiService;
 
@@ -91,6 +102,18 @@ public class AsyncApiDocumentIntegrationTest {
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
         }
+
+        @Test
+        void ensureThatStandaloneResultIsIdentical() {
+            // given
+            AsyncApiService asyncApiService = createStandaloneAsyncApiService(environment, basePackage);
+
+            // when
+            AsyncAPI asyncApi = asyncApiService.getAsyncAPI();
+
+            // then
+            assertThat(asyncApi).isEqualTo(asyncApiService.getAsyncAPI());
+        }
     }
 
     @Nested
@@ -101,6 +124,12 @@ public class AsyncApiDocumentIntegrationTest {
                 "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.publisher",
             })
     class PublisherAnnotationTest {
+        @Value("${springwolf.docket.base-package}")
+        private String basePackage;
+
+        @Autowired
+        private ConfigurableEnvironment environment;
+
         @Autowired
         private AsyncApiService asyncApiService;
 
@@ -155,6 +184,18 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(fooRefMessage.getRef())
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+        }
+
+        @Test
+        void ensureThatStandaloneResultIsIdentical() {
+            // given
+            AsyncApiService asyncApiService = createStandaloneAsyncApiService(environment, basePackage);
+
+            // when
+            AsyncAPI asyncApi = asyncApiService.getAsyncAPI();
+
+            // then
+            assertThat(asyncApi).isEqualTo(asyncApiService.getAsyncAPI());
         }
     }
 
@@ -364,5 +405,11 @@ public class AsyncApiDocumentIntegrationTest {
 
             assertThat(asyncAPIOpt).isEqualTo(fullApi);
         }
+    }
+
+    private AsyncApiService createStandaloneAsyncApiService(ConfigurableEnvironment environment, String basePackage) {
+        List<Class<?>> configurations = StandaloneDIFactory.discover(SPRINGWOLF_PACKAGE, environment);
+
+        return new StandaloneDIFactory(basePackage, configurations, environment).getAsyncApiService();
     }
 }

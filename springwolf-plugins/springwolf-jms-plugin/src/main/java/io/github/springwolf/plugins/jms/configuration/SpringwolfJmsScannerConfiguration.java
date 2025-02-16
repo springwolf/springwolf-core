@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodP
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.JmsBindingFactory;
 import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,6 +36,7 @@ import static io.github.springwolf.plugins.jms.configuration.properties.Springwo
  * spring configuration defining the scanner beans for the jms plugin
  */
 @Configuration(proxyBeanMethods = false)
+@StandaloneConfiguration
 public class SpringwolfJmsScannerConfiguration {
 
     @Bean

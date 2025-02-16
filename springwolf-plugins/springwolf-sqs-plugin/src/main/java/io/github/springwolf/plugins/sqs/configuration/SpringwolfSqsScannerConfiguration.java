@@ -18,6 +18,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodP
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.sqs.asyncapi.scanners.bindings.SqsBindingFactory;
 import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,6 +36,7 @@ import static io.github.springwolf.plugins.sqs.configuration.properties.Springwo
  * spring configuration defining the scanner beans for the kafka plugin
  */
 @Configuration(proxyBeanMethods = false)
+@StandaloneConfiguration
 public class SpringwolfSqsScannerConfiguration {
 
     @Bean

@@ -10,6 +10,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.Paylo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.channels.CloudStreamFunctionChannelsScanner;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.operations.CloudStreamFunctionOperationsScanner;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @AutoConfiguration
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
+@StandaloneConfiguration
 public class SpringwolfCloudStreamAutoConfiguration {
 
     @Bean
@@ -36,7 +38,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
             ComponentClassScanner componentClassScanner,
             ComponentsService componentsService,
             PayloadService payloadService,
-            BindingServiceProperties cloudstreamBindingServiceProperties,
+            BindingServiceProperties bindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder,
             List<ChannelBindingProcessor> channelBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
@@ -46,7 +48,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
                 componentClassScanner,
                 componentsService,
                 payloadService,
-                cloudstreamBindingServiceProperties,
+                bindingServiceProperties,
                 functionalChannelBeanBuilder,
                 channelBindingProcessors,
                 messageBindingProcessors);

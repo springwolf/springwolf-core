@@ -2,6 +2,7 @@
 package io.github.springwolf.plugins.jms.configuration;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.jms.configuration.properties.SpringwolfJmsConfigProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Import;
 @AutoConfiguration
 @Import({SpringwolfJmsScannerConfiguration.class, SpringwolfJmsProducerConfiguration.class})
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
+@StandaloneConfiguration
 public class SpringwolfJmsAutoConfiguration {
 
     @Bean

@@ -21,6 +21,7 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.cloud.stream
     implementation libs.spring.boot.autoconfigure
+    implementation libs.spring.core
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok
@@ -36,6 +37,9 @@ dependencies {
     testImplementation libs.spring.beans
     testImplementation libs.spring.test
     testImplementation libs.spring.messaging
+
+    testImplementation libs.jackson.core
+    permitTestUsedUndeclared libs.jackson.core
 
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter

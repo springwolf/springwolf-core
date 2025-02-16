@@ -36,8 +36,7 @@ public class SendToUserUtil {
 
     public static Map<String, OperationBinding> buildOperationBinding(
             SendToUser annotation, StringValueResolver stringValueResolver) {
-        StompOperationBinding binding = new StompOperationBinding();
-        return Map.of("stomp", binding);
+        return Map.of("stomp", new StompOperationBinding());
     }
 
     public static Map<String, MessageBinding> buildMessageBinding() {

@@ -4,6 +4,7 @@ package io.github.springwolf.addons.kotlinx_serialization_model_converter.config
 import io.github.springwolf.addons.kotlinx_serialization_model_converter.converter.KotlinxSerializationModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
+@StandaloneConfiguration
 public class KotlinxSerializationModelConverterAutoConfiguration {
 
     @Bean
