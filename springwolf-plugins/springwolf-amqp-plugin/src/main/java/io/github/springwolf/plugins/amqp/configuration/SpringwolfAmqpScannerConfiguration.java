@@ -20,6 +20,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassS
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.AmqpBindingFactory;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.channels.RabbitQueueBeanScanner;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.common.headers.AsyncHeadersForAmqpBuilder;
@@ -44,6 +45,7 @@ import static io.github.springwolf.plugins.amqp.configuration.properties.Springw
  * Spring configuration defining the scanner beans for this amqp plugin.
  */
 @Configuration(proxyBeanMethods = false)
+@StandaloneConfiguration
 public class SpringwolfAmqpScannerConfiguration {
 
     @Bean

@@ -5,6 +5,7 @@ import io.github.springwolf.bindings.kafka.scanners.messages.KafkaMessageBinding
 import io.github.springwolf.bindings.kafka.scanners.operations.KafkaOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -17,6 +18,7 @@ import org.springframework.util.StringValueResolver;
  */
 @AutoConfiguration
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
+@StandaloneConfiguration
 public class SpringwolfKafkaBindingAutoConfiguration {
 
     @Bean

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.amqp;
+package io.github.springwolf.examples.sns;
 
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StandaloneTest {
@@ -25,7 +25,7 @@ public class StandaloneTest {
     @Test
     public void scanApplication() throws IOException {
         // given
-        String basePackage = "io.github.springwolf.examples.amqp";
+        String basePackage = "io.github.springwolf.examples.sns";
 
         List<String> profiles = List.of();
         ConfigurableEnvironment environment = SpringwolfConfigPropertiesLoader.loadEnvironment(profiles);
@@ -40,12 +40,11 @@ public class StandaloneTest {
 
         AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
         String actual = serializerService.toJsonString(asyncApi);
-        String actualPatched = actual.replace("localhost:5672", "amqp:5672");
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actualPatched);
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actual);
 
         // then
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        assertEquals(expected, actualPatched);
+        assertEquals(expected, actual);
     }
 }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.amqp;
+package io.github.springwolf.examples.jms;
 
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
@@ -25,7 +25,7 @@ public class StandaloneTest {
     @Test
     public void scanApplication() throws IOException {
         // given
-        String basePackage = "io.github.springwolf.examples.amqp";
+        String basePackage = "io.github.springwolf.examples.jms";
 
         List<String> profiles = List.of();
         ConfigurableEnvironment environment = SpringwolfConfigPropertiesLoader.loadEnvironment(profiles);
@@ -40,7 +40,7 @@ public class StandaloneTest {
 
         AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
         String actual = serializerService.toJsonString(asyncApi);
-        String actualPatched = actual.replace("localhost:5672", "amqp:5672");
+        String actualPatched = actual.replace("localhost:61616", "activemq:61616");
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actualPatched);
 
         // then

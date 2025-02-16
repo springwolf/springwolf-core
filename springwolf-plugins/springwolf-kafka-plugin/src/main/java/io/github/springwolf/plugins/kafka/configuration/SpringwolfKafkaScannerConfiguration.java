@@ -20,6 +20,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassS
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationClassLevelOperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.header.AsyncHeadersForKafkaBuilder;
 import lombok.val;
@@ -40,6 +41,7 @@ import static io.github.springwolf.plugins.kafka.configuration.properties.Spring
  * spring configuration defining the scanner beans for the kafka plugin
  */
 @Configuration(proxyBeanMethods = false)
+@StandaloneConfiguration
 public class SpringwolfKafkaScannerConfiguration {
 
     @Bean

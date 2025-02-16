@@ -2,6 +2,7 @@
 package io.github.springwolf.plugins.sns.configuration;
 
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.sns.configuration.properties.SpringwolfSnsConfigProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Import;
 @AutoConfiguration
 @Import({SpringwolfSnsProducerConfiguration.class})
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
+@StandaloneConfiguration
 public class SpringwolfSnsAutoConfiguration {
 
     @Bean

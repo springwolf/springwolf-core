@@ -24,8 +24,8 @@ public class StandaloneKafkaPlugin implements StandalonePlugin {
     public StandalonePluginResult load(StandalonePluginContext context) throws IOException {
         SpringwolfKafkaScannerConfiguration kafkaScannerAutoConfiguration = new SpringwolfKafkaScannerConfiguration();
 
-        SpringwolfKafkaConfigProperties springwolfKafkaConfigProperties = new SpringwolfConfigPropertiesLoader()
-                .loadConfigProperties(
+        SpringwolfKafkaConfigProperties springwolfKafkaConfigProperties =
+                SpringwolfConfigPropertiesLoader.loadConfigProperties(
                         context.getEnvironment(),
                         SpringwolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX,
                         SpringwolfKafkaConfigProperties.class);

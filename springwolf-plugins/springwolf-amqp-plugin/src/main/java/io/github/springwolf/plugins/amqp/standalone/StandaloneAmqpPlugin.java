@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.amqp.standalone;
 
 import io.github.springwolf.bindings.amqp.configuration.SpringwolfAmqpBindingAutoConfiguration;
@@ -21,8 +22,11 @@ public class StandaloneAmqpPlugin implements StandalonePlugin {
         SpringwolfAmqpScannerConfiguration amqpScannerAutoConfiguration = new SpringwolfAmqpScannerConfiguration();
 
         // TODO fix amqp beans
-        AmqpBindingFactory kafkaBindingFactory =
-                amqpScannerAutoConfiguration.amqpBindingFactory(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), context.getStringValueResolver());
+        AmqpBindingFactory kafkaBindingFactory = amqpScannerAutoConfiguration.amqpBindingFactory(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                context.getStringValueResolver());
         AsyncHeadersForAmqpBuilder asyncHeadersForKafkaBuilder =
                 amqpScannerAutoConfiguration.asyncHeadersForAmqpBuilder();
         ChannelsScanner simpleKafkaClassLevelListenerAnnotationChannelsScanner =
@@ -63,8 +67,7 @@ public class StandaloneAmqpPlugin implements StandalonePlugin {
         SpringwolfAmqpBindingAutoConfiguration springwolfKafkaBindingAutoConfiguration =
                 new SpringwolfAmqpBindingAutoConfiguration();
         AmqpOperationBindingProcessor kafkaOperationBindingProcessor =
-                springwolfKafkaBindingAutoConfiguration.amqpOperationBindingProcessor(
-                        context.getStringValueResolver());
+                springwolfKafkaBindingAutoConfiguration.amqpOperationBindingProcessor(context.getStringValueResolver());
         // TODO Why dont we pass context.getStringValueResolver() here?
         AmqpMessageBindingProcessor kafkaMessageBindingProcessor =
                 springwolfKafkaBindingAutoConfiguration.amqpMessageBindingProcessor();

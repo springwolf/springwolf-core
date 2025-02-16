@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.addons.json_schema.JsonSchemaCustomizer;
 import io.github.springwolf.addons.json_schema.JsonSchemaGenerator;
 import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
+import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@StandaloneConfiguration
 public class SpringwolfJsonSchemaAutoConfiguration {
 
     @Bean

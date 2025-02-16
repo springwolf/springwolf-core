@@ -16,10 +16,11 @@ public class StandaloneCloudStreamPlugin implements StandalonePlugin {
 
     @Override
     public StandalonePluginResult load(StandalonePluginContext context) {
-        SpringwolfCloudStreamAutoConfiguration cloudStreamAutoConfiguration = new SpringwolfCloudStreamAutoConfiguration();
+        SpringwolfCloudStreamAutoConfiguration cloudStreamAutoConfiguration =
+                new SpringwolfCloudStreamAutoConfiguration();
 
-
-        FunctionalChannelBeanBuilder functionalChannelBeanBuilder = cloudStreamAutoConfiguration.functionalChannelBeanBuilder(context.getTypeExtractor());
+        FunctionalChannelBeanBuilder functionalChannelBeanBuilder =
+                cloudStreamAutoConfiguration.functionalChannelBeanBuilder(context.getTypeExtractor());
 
         ChannelsScanner cloudStreamFunctionChannelScanner =
                 cloudStreamAutoConfiguration.cloudStreamFunctionChannelsScanner(
@@ -28,11 +29,11 @@ public class StandaloneCloudStreamPlugin implements StandalonePlugin {
                         context.getComponentClassScanner(),
                         context.getComponentsService(),
                         context.getPayloadService(),
-                        new BindingServiceProperties(), // TODO where to get org.springframework.cloud.stream.config.BindingServiceProperties from?
+                        new BindingServiceProperties(), // TODO where to get
+                        // org.springframework.cloud.stream.config.BindingServiceProperties from?
                         functionalChannelBeanBuilder,
                         Collections.emptyList(),
-                        Collections.emptyList()
-                );
+                        Collections.emptyList());
         OperationsScanner cloudStreamFunctionOperationScanner =
                 cloudStreamAutoConfiguration.cloudStreamFunctionOperationsScanner(
                         context.getAsyncApiDocketService(),
@@ -40,10 +41,9 @@ public class StandaloneCloudStreamPlugin implements StandalonePlugin {
                         context.getComponentClassScanner(),
                         context.getComponentsService(),
                         context.getPayloadService(),
-                        new BindingServiceProperties(), // TODO where to get org.springframework.cloud.stream.config.BindingServiceProperties from?
-                        functionalChannelBeanBuilder
-                );
-
+                        new BindingServiceProperties(), // TODO where to get
+                        // org.springframework.cloud.stream.config.BindingServiceProperties from?
+                        functionalChannelBeanBuilder);
 
         return StandalonePluginResult.builder()
                 .channelsScanner(cloudStreamFunctionChannelScanner)

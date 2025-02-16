@@ -29,8 +29,8 @@ public class StandaloneStompPlugin implements StandalonePlugin {
     public StandalonePluginResult load(StandalonePluginContext context) {
         SpringwolfStompScannerConfiguration stompScannerAutoConfiguration = new SpringwolfStompScannerConfiguration();
 
-        SpringwolfStompConfigProperties springwolfKafkaConfigProperties = new SpringwolfConfigPropertiesLoader()
-                .loadConfigProperties(
+        SpringwolfStompConfigProperties springwolfKafkaConfigProperties =
+                SpringwolfConfigPropertiesLoader.loadConfigProperties(
                         context.getEnvironment(),
                         SpringwolfStompConfigConstants.SPRINGWOLF_STOMP_CONFIG_PREFIX,
                         SpringwolfStompConfigProperties.class);
