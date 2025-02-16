@@ -46,6 +46,12 @@ public class StandaloneTest {
         // then
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        // TODO: debugging code. It appears, that either a cached? context is found or the property resolution is not
+        // correctly ordered (multiple sources)
+        System.out.println("spring bootstrap servers: " + environment.getProperty("spring.kafka.bootstrap-servers"));
+        System.out.println("spring cloudstream servers: "
+                + environment.getProperty(
+                        "pring.cloud.stream.binders.kafka.environment.spring.kafka.bootstrap-servers"));
         assertEquals(expected, actualPatched);
     }
 }

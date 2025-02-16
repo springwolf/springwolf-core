@@ -7,8 +7,11 @@ import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.core.standalone.StandaloneDIFactory;
 import io.github.springwolf.core.standalone.StandaloneFactory;
 import io.github.springwolf.core.standalone.common.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.examples.amqp.configuration.RabbitConfiguration;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +49,20 @@ public class StandaloneTest {
         // then
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        assertEquals(expected, actualPatched);
+
+        assertEquals(
+                removeDifferencesDueToAmqpSpringBeans(serializerService, expected), //
+                removeDifferencesDueToAmqpSpringBeans(serializerService, actualPatched));
+    }
+
+    /**
+     * In spring-amqp, queues can be configured via Spring beans, see {@link RabbitConfiguration}
+     *
+     * This is not supported of the standalone mode, therefore those changes are ignored
+     */
+    @SneakyThrows
+    String removeDifferencesDueToAmqpSpringBeans(AsyncApiSerializerService serializerService, String str) {
+        JsonNode node = JsonKeyRemover.removeKeys(str, List.of("components", "messages"));
+        return serializerService.toJsonString(node);
     }
 }

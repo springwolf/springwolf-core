@@ -38,7 +38,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
             ComponentClassScanner componentClassScanner,
             ComponentsService componentsService,
             PayloadService payloadService,
-            BindingServiceProperties cloudstreamBindingServiceProperties,
+            BindingServiceProperties bindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder,
             List<ChannelBindingProcessor> channelBindingProcessors,
             List<MessageBindingProcessor> messageBindingProcessors) {
@@ -48,7 +48,7 @@ public class SpringwolfCloudStreamAutoConfiguration {
                 componentClassScanner,
                 componentsService,
                 payloadService,
-                cloudstreamBindingServiceProperties,
+                bindingServiceProperties,
                 functionalChannelBeanBuilder,
                 channelBindingProcessors,
                 messageBindingProcessors);

@@ -7,6 +7,10 @@ import io.swagger.v3.core.converter.ModelConverter;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * replaced by StandaloneConfiguration
+ */
+@Deprecated
 public interface StandalonePlugin {
 
     default StandalonePluginResult load(StandalonePluginContext context) throws IOException {
