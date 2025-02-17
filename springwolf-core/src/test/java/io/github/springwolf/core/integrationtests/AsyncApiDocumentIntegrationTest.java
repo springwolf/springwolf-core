@@ -16,6 +16,7 @@ import io.github.springwolf.core.integrationtests.application.listener.ListenerA
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.publisher.PublisherApplication;
 import io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication;
+import io.github.springwolf.core.standalone.StandaloneConfigurationDiscoverer;
 import io.github.springwolf.core.standalone.StandaloneDIFactory;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -408,7 +409,7 @@ public class AsyncApiDocumentIntegrationTest {
     }
 
     private AsyncApiService createStandaloneAsyncApiService(ConfigurableEnvironment environment, String basePackage) {
-        List<Class<?>> configurations = StandaloneDIFactory.discover(SPRINGWOLF_PACKAGE, environment);
+        List<Class<?>> configurations = StandaloneConfigurationDiscoverer.discover(SPRINGWOLF_PACKAGE, environment);
 
         return new StandaloneDIFactory(basePackage, configurations, environment).getAsyncApiService();
     }
