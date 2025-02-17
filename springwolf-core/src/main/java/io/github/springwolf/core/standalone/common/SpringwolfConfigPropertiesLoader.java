@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.standalone.common;
 
+import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.handler.IgnoreErrorsBindHandler;
 import org.springframework.boot.env.OriginTrackedMapPropertySource;
@@ -20,9 +21,20 @@ import java.util.stream.Collectors;
 
 public class SpringwolfConfigPropertiesLoader {
 
-    public static ConfigurableEnvironment loadEnvironment(List<String> profiles) throws IOException {
+    public static ConfigurableEnvironment loadEnvironment(List<String> profiles) {
         StandardEnvironment environment = new StandardEnvironment();
+        if (!profiles.isEmpty()) {
+            environment.setActiveProfiles(profiles.toArray(new String[0]));
+        }
 
+        ConfigDataEnvironmentPostProcessor.applyTo(environment);
+
+        return environment;
+    }
+
+    // TODO: remove
+    public static ConfigurableEnvironment loadEnvironmentOutdated(List<String> profiles) throws IOException {
+        StandardEnvironment environment = new StandardEnvironment();
         profiles.forEach(profile -> {
             try {
                 loadYamlResource(environment, "application-" + profile + ".yaml");

@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * replaced by StandaloneConfiguration
+ * // TODO: remove
  */
 @Deprecated
 public interface StandalonePlugin {
