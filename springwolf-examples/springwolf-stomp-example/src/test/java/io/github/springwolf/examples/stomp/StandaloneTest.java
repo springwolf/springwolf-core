@@ -4,19 +4,15 @@ package io.github.springwolf.examples.stomp;
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.springwolf.core.standalone.StandaloneConfigurationDiscoverer;
-import io.github.springwolf.core.standalone.StandaloneDIFactory;
-import io.github.springwolf.core.standalone.StandaloneEnvironmentLoader;
+import io.github.springwolf.core.standalone.DefaultStandaloneFactory;
 import io.github.springwolf.core.standalone.StandaloneFactory;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,11 +23,7 @@ public class StandaloneTest {
     public void scanApplication() throws IOException {
         // given
         String basePackage = "io.github.springwolf.examples.stomp";
-
-        List<String> profiles = List.of();
-        ConfigurableEnvironment environment = StandaloneEnvironmentLoader.loadEnvironment(profiles);
-        List<Class<?>> configurations = StandaloneConfigurationDiscoverer.discover(environment);
-        StandaloneFactory standaloneFactory = new StandaloneDIFactory(basePackage, configurations, environment);
+        StandaloneFactory standaloneFactory = new DefaultStandaloneFactory(basePackage);
 
         // when
         AsyncAPI asyncApi = standaloneFactory.getAsyncApiService().getAsyncAPI();

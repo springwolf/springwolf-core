@@ -4,14 +4,11 @@ package io.github.springwolf.examples.amqp;
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.springwolf.core.standalone.StandaloneConfigurationDiscoverer;
-import io.github.springwolf.core.standalone.StandaloneDIFactory;
-import io.github.springwolf.core.standalone.StandaloneEnvironmentLoader;
+import io.github.springwolf.core.standalone.DefaultStandaloneFactory;
 import io.github.springwolf.core.standalone.StandaloneFactory;
 import io.github.springwolf.examples.amqp.configuration.RabbitConfiguration;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
@@ -30,11 +27,7 @@ public class StandaloneTest {
     public void scanApplication() throws IOException {
         // given
         String basePackage = "io.github.springwolf.examples.amqp";
-
-        List<String> profiles = List.of();
-        ConfigurableEnvironment environment = StandaloneEnvironmentLoader.loadEnvironment(profiles);
-        List<Class<?>> configurations = StandaloneConfigurationDiscoverer.discover(environment);
-        StandaloneFactory standaloneFactory = new StandaloneDIFactory(basePackage, configurations, environment);
+        StandaloneFactory standaloneFactory = new DefaultStandaloneFactory(basePackage);
 
         // when
         AsyncAPI asyncApi = standaloneFactory.getAsyncApiService().getAsyncAPI();

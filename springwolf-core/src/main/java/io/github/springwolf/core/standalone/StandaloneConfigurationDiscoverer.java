@@ -10,11 +10,11 @@ import org.springframework.core.type.filter.TypeFilter;
 import java.util.List;
 
 public class StandaloneConfigurationDiscoverer {
-    public static List<Class<?>> discover(ConfigurableEnvironment environment) {
-        return discover(SpringwolfConfigConstants.SPRINGWOLF_PACKAGE, environment);
+    public static List<Class<?>> scan(ConfigurableEnvironment environment) {
+        return scan(SpringwolfConfigConstants.SPRINGWOLF_PACKAGE, environment);
     }
 
-    public static List<Class<?>> discover(String scanPackage, ConfigurableEnvironment environment) {
+    public static List<Class<?>> scan(String scanPackage, ConfigurableEnvironment environment) {
         final TypeFilter filter = new AnnotationTypeFilter(StandaloneConfiguration.class);
         return ClassScannerUtil.getClasses(scanPackage, filter, environment);
     }

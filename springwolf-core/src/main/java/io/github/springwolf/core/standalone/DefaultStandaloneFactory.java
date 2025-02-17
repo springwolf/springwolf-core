@@ -11,20 +11,21 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import java.util.List;
 
 @Slf4j
-public class StandaloneDIFactory implements StandaloneFactory {
+public class DefaultStandaloneFactory implements StandaloneFactory {
     private final AnnotationConfigApplicationContext diContext = new AnnotationConfigApplicationContext();
 
-    public StandaloneDIFactory(String applicationBasePackage) {
-        this(
-                applicationBasePackage,
-                StandaloneConfigurationDiscoverer.discover(StandaloneEnvironmentLoader.loadEnvironment(List.of())),
-                StandaloneEnvironmentLoader.loadEnvironment(List.of()));
+    public DefaultStandaloneFactory(String applicationBasePackage) {
+        this(applicationBasePackage, StandaloneEnvironmentLoader.load());
     }
 
-    public StandaloneDIFactory(
+    public DefaultStandaloneFactory(String applicationBasePackage, ConfigurableEnvironment environment) {
+        this(applicationBasePackage, environment, StandaloneConfigurationDiscoverer.scan(environment));
+    }
+
+    public DefaultStandaloneFactory(
             String applicationBasePackage,
-            List<Class<?>> standaloneConfigurations,
-            ConfigurableEnvironment environment) {
+            ConfigurableEnvironment environment,
+            List<Class<?>> standaloneConfigurations) {
         standaloneConfigurations.forEach(diContext::register);
         ConfigurationPropertiesBindingPostProcessor.register(diContext); // populate ConfigurationProperties beans
         diContext.setEnvironment(environment);

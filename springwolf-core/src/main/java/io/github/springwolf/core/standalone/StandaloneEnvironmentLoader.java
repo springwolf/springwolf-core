@@ -8,7 +8,11 @@ import org.springframework.core.env.StandardEnvironment;
 import java.util.List;
 
 public class StandaloneEnvironmentLoader {
-    public static ConfigurableEnvironment loadEnvironment(List<String> profiles) {
+    public static ConfigurableEnvironment load() {
+        return load(List.of());
+    }
+
+    public static ConfigurableEnvironment load(List<String> profiles) {
         StandardEnvironment environment = new StandardEnvironment();
         if (!profiles.isEmpty()) {
             environment.setActiveProfiles(profiles.toArray(new String[0]));
