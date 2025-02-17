@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.standalone;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.annotations.ClassScannerUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.core.standalone.bean.StandaloneStringValueResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -33,16 +31,9 @@ public class StandaloneDIFactory implements StandaloneFactory {
             String applicationBasePackage,
             List<Class<?>> standaloneConfigurations,
             ConfigurableEnvironment environment) {
-        diContext.setEnvironment(environment);
-
-        // populate ConfigurationProperties beans
-        ConfigurationPropertiesBindingPostProcessor.register(diContext);
-
-        // custom beans replacing spring default implementations
-        diContext.register(ObjectMapper.class);
-        diContext.register(StandaloneStringValueResolver.class);
-
         standaloneConfigurations.forEach(diContext::register);
+        ConfigurationPropertiesBindingPostProcessor.register(diContext); // populate ConfigurationProperties beans
+        diContext.setEnvironment(environment);
         diContext.refresh();
 
         // overwrite scanning package
