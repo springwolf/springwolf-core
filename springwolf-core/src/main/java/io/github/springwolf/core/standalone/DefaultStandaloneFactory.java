@@ -39,7 +39,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Operat
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
-import io.github.springwolf.core.configuration.SpringwolfAutoConfiguration;
+import io.github.springwolf.core.configuration.SpringwolfCoreConfiguration;
 import io.github.springwolf.core.configuration.SpringwolfScannerConfiguration;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
@@ -73,7 +73,7 @@ public class DefaultStandaloneFactory implements StandaloneFactory {
         properties.getDocket().setBasePackage(basePackage);
 
         // TODO: can this autoConfiguration be analysed and the beans instanciated via custom dependency injection?
-        SpringwolfAutoConfiguration autoConfiguration = new SpringwolfAutoConfiguration();
+        SpringwolfCoreConfiguration autoConfiguration = new SpringwolfCoreConfiguration();
         SpringwolfScannerConfiguration scannerAutoConfiguration = new SpringwolfScannerConfiguration();
 
         AsyncApiDocketService asyncApiDocketService = autoConfiguration.asyncApiDocketService(properties);
@@ -284,7 +284,7 @@ public class DefaultStandaloneFactory implements StandaloneFactory {
     }
 
     private static List<SchemasPostProcessor> createSchemaPostProcessors(
-            SpringwolfAutoConfiguration autoConfiguration, SpringwolfConfigProperties properties) {
+            SpringwolfCoreConfiguration autoConfiguration, SpringwolfConfigProperties properties) {
         SchemaWalker jsonSchemaWalker = autoConfiguration.jsonSchemaWalker();
         ExampleXmlValueSerializer exampleXmlValueSerializer = autoConfiguration.exampleXmlValueSerializer();
         SchemaWalker xmlSchemaWalker = autoConfiguration.xmlSchemaWalker(exampleXmlValueSerializer);

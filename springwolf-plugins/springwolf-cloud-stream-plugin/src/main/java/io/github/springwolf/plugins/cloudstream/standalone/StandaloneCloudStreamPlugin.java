@@ -7,7 +7,7 @@ import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
 import io.github.springwolf.core.standalone.plugin.StandalonePluginContext;
 import io.github.springwolf.core.standalone.plugin.StandalonePluginResult;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
-import io.github.springwolf.plugins.cloudstream.configuration.SpringwolfCloudStreamAutoConfiguration;
+import io.github.springwolf.plugins.cloudstream.configuration.SpringwolfCloudStreamConfiguration;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
 import java.util.Collections;
@@ -16,8 +16,7 @@ public class StandaloneCloudStreamPlugin implements StandalonePlugin {
 
     @Override
     public StandalonePluginResult load(StandalonePluginContext context) {
-        SpringwolfCloudStreamAutoConfiguration cloudStreamAutoConfiguration =
-                new SpringwolfCloudStreamAutoConfiguration();
+        SpringwolfCloudStreamConfiguration cloudStreamAutoConfiguration = new SpringwolfCloudStreamConfiguration();
 
         FunctionalChannelBeanBuilder functionalChannelBeanBuilder =
                 cloudStreamAutoConfiguration.functionalChannelBeanBuilder(context.getTypeExtractor());

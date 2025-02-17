@@ -43,34 +43,19 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.swagger.v3.core.converter.ModelConverter;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
 
-/**
- * Spring Boot auto-configuration which loads all spring-beans for springwolf core module.
- * <p>
- * To disable springwolf support, set the environment property {@code springwolf.enabled=false}.
- */
-@AutoConfiguration
-@Import({SpringwolfWebConfiguration.class, SpringwolfScannerConfiguration.class})
-@ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
+@Configuration(proxyBeanMethods = false)
 @StandaloneConfiguration
 public class SpringwolfCoreConfiguration {
-
-    @Bean
-    public SpringwolfConfigProperties springwolfConfigProperties() {
-        return new SpringwolfConfigProperties();
-    }
 
     @Bean
     @ConditionalOnMissingBean

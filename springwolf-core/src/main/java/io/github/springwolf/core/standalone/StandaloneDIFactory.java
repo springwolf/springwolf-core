@@ -45,9 +45,6 @@ public class StandaloneDIFactory implements StandaloneFactory {
         standaloneConfigurations.forEach(diContext::register);
         diContext.refresh();
 
-        // TODO: somethimes the context has too many beans, as if imports annotations are followed when they shouldn't
-        log.warn("TODO: remove: Context size {}, with context {}", diContext.getBeanDefinitionCount(), diContext);
-
         // overwrite scanning package
         diContext.getBean(SpringwolfConfigProperties.class).getDocket().setBasePackage(applicationBasePackage);
     }
