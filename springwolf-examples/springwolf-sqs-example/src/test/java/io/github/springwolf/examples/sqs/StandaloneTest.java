@@ -6,7 +6,7 @@ import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.core.standalone.StandaloneDIFactory;
 import io.github.springwolf.core.standalone.StandaloneFactory;
-import io.github.springwolf.core.standalone.common.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.core.standalone.common.SpringwolfEnvironmentLoader;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -28,7 +28,7 @@ public class StandaloneTest {
         String basePackage = "io.github.springwolf.examples.sqs";
 
         List<String> profiles = List.of();
-        ConfigurableEnvironment environment = SpringwolfConfigPropertiesLoader.loadEnvironment(profiles);
+        ConfigurableEnvironment environment = SpringwolfEnvironmentLoader.loadEnvironment(profiles);
         List<Class<?>> configurations = StandaloneDIFactory.discover(environment);
         StandaloneFactory standaloneFactory = new StandaloneDIFactory(basePackage, configurations, environment);
 

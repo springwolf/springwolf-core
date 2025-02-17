@@ -45,7 +45,7 @@ import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.standalone.bean.StandaloneStringValueResolver;
-import io.github.springwolf.core.standalone.common.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.core.standalone.common.SpringwolfEnvironmentLoader;
 import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
 import io.github.springwolf.core.standalone.plugin.StandalonePluginContext;
 import io.github.springwolf.core.standalone.plugin.StandalonePluginResult;
@@ -64,7 +64,7 @@ public class DefaultStandaloneFactory implements StandaloneFactory {
 
         stringValueResolver.setEmbeddedValueResolver(new StandaloneStringValueResolver(environment));
 
-        SpringwolfConfigProperties properties = new SpringwolfConfigPropertiesLoader()
+        SpringwolfConfigProperties properties = new SpringwolfEnvironmentLoader()
                 .loadConfigProperties(
                         environment,
                         SpringwolfConfigConstants.SPRINGWOLF_CONFIG_PREFIX,

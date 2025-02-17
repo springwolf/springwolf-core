@@ -6,7 +6,7 @@ import io.github.springwolf.bindings.kafka.scanners.messages.KafkaMessageBinding
 import io.github.springwolf.bindings.kafka.scanners.operations.KafkaOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
-import io.github.springwolf.core.standalone.common.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.core.standalone.common.SpringwolfEnvironmentLoader;
 import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
 import io.github.springwolf.core.standalone.plugin.StandalonePluginContext;
 import io.github.springwolf.core.standalone.plugin.StandalonePluginResult;
@@ -25,7 +25,7 @@ public class StandaloneKafkaPlugin implements StandalonePlugin {
         SpringwolfKafkaScannerConfiguration kafkaScannerAutoConfiguration = new SpringwolfKafkaScannerConfiguration();
 
         SpringwolfKafkaConfigProperties springwolfKafkaConfigProperties =
-                SpringwolfConfigPropertiesLoader.loadConfigProperties(
+                SpringwolfEnvironmentLoader.loadConfigProperties(
                         context.getEnvironment(),
                         SpringwolfKafkaConfigConstants.SPRINGWOLF_KAFKA_CONFIG_PREFIX,
                         SpringwolfKafkaConfigProperties.class);

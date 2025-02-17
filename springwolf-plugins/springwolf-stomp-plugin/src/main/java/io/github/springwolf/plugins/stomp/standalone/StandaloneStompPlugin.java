@@ -7,7 +7,7 @@ import io.github.springwolf.bindings.stomp.scanners.operations.StompOperationBin
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
-import io.github.springwolf.core.standalone.common.SpringwolfConfigPropertiesLoader;
+import io.github.springwolf.core.standalone.common.SpringwolfEnvironmentLoader;
 import io.github.springwolf.core.standalone.plugin.StandalonePlugin;
 import io.github.springwolf.core.standalone.plugin.StandalonePluginContext;
 import io.github.springwolf.core.standalone.plugin.StandalonePluginResult;
@@ -30,7 +30,7 @@ public class StandaloneStompPlugin implements StandalonePlugin {
         SpringwolfStompScannerConfiguration stompScannerAutoConfiguration = new SpringwolfStompScannerConfiguration();
 
         SpringwolfStompConfigProperties springwolfKafkaConfigProperties =
-                SpringwolfConfigPropertiesLoader.loadConfigProperties(
+                SpringwolfEnvironmentLoader.loadConfigProperties(
                         context.getEnvironment(),
                         SpringwolfStompConfigConstants.SPRINGWOLF_STOMP_CONFIG_PREFIX,
                         SpringwolfStompConfigProperties.class);
