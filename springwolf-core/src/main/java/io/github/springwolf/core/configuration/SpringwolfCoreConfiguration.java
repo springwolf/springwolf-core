@@ -65,7 +65,7 @@ import java.util.List;
 @Import({SpringwolfWebConfiguration.class, SpringwolfScannerConfiguration.class})
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
 @StandaloneConfiguration
-public class SpringwolfAutoConfiguration {
+public class SpringwolfCoreConfiguration {
 
     @Bean
     public SpringwolfConfigProperties springwolfConfigProperties() {
