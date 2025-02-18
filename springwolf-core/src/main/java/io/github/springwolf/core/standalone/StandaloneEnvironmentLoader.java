@@ -7,6 +7,9 @@ import org.springframework.core.env.StandardEnvironment;
 
 import java.util.List;
 
+/**
+ * Loads a standalone environment using spring mechanisms including env variables, properties and profiles.
+ */
 public class StandaloneEnvironmentLoader {
     public static ConfigurableEnvironment load() {
         return load(List.of());

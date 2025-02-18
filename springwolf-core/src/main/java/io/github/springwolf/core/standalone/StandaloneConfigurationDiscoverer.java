@@ -9,6 +9,9 @@ import org.springframework.core.type.filter.TypeFilter;
 
 import java.util.List;
 
+/**
+ * Discovers classes annotated with {@link StandaloneConfiguration}.
+ */
 public class StandaloneConfigurationDiscoverer {
     public static List<Class<?>> scan(ConfigurableEnvironment environment) {
         return scan(SpringwolfConfigConstants.SPRINGWOLF_PACKAGE, environment);
