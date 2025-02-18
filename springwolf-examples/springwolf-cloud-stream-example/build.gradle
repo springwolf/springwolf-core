@@ -39,7 +39,6 @@ dependencies {
     testImplementation libs.spring.test
 
     testImplementation libs.spring.beans
-    testImplementation libs.spring.core
     testImplementation libs.spring.web
     testImplementation libs.spring.kafka.test
 

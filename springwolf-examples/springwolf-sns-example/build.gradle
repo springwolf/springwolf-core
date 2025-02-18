@@ -40,7 +40,6 @@ dependencies {
 
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.beans
-    testImplementation libs.spring.core
     testImplementation libs.spring.web
     testImplementation libs.spring.test
 
