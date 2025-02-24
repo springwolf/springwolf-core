@@ -201,6 +201,177 @@
           "title": "VehicleBase",
           "type": "object"
         }
+      },
+      "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleElectricPayloadDto": {
+        "type": "object",
+        "description": "Electric vehicle implementation of VehicleBase",
+        "examples": [
+          {
+            "batteryCapacity": 0,
+            "chargeTime": 0,
+            "enginePower": {
+              "hp": 0,
+              "torque": 0
+            },
+            "powerSource": "string",
+            "topSpeed": 0,
+            "vehicleType": "string"
+          }
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "batteryCapacity": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "chargeTime": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "allOf": [
+            {
+              "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
+              "oneOf": [
+                { },
+                {
+                  "allOf": [
+                    { },
+                    {
+                      "properties": {
+                        "fuelCapacity": {
+                          "format": "int32",
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ],
+                  "description": "Gasoline vehicle implementation of VehicleBase",
+                  "type": "object"
+                }
+              ],
+              "properties": {
+                "enginePower": {
+                  "properties": {
+                    "hp": { },
+                    "torque": { }
+                  },
+                  "title": "EnginePower",
+                  "type": "object"
+                },
+                "powerSource": {
+                  "type": "string"
+                },
+                "topSpeed": { },
+                "vehicleType": { }
+              },
+              "title": "VehicleBase",
+              "type": "object"
+            },
+            {
+              "properties": {
+                "batteryCapacity": { },
+                "chargeTime": { }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "Electric vehicle implementation of VehicleBase",
+          "type": "object"
+        }
+      },
+      "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleGasolinePayloadDto": {
+        "type": "object",
+        "description": "Gasoline vehicle implementation of VehicleBase",
+        "examples": [
+          {
+            "enginePower": {
+              "hp": 0,
+              "torque": 0
+            },
+            "fuelCapacity": 0,
+            "powerSource": "string",
+            "topSpeed": 0,
+            "vehicleType": "string"
+          }
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "fuelCapacity": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "allOf": [
+            {
+              "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
+              "oneOf": [
+                {
+                  "allOf": [
+                    { },
+                    {
+                      "properties": {
+                        "batteryCapacity": { },
+                        "chargeTime": {
+                          "format": "int32",
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ],
+                  "description": "Electric vehicle implementation of VehicleBase",
+                  "type": "object"
+                },
+                { }
+              ],
+              "properties": {
+                "enginePower": {
+                  "properties": {
+                    "hp": { },
+                    "torque": { }
+                  },
+                  "title": "EnginePower",
+                  "type": "object"
+                },
+                "powerSource": {
+                  "type": "string"
+                },
+                "topSpeed": { },
+                "vehicleType": { }
+              },
+              "title": "VehicleBase",
+              "type": "object"
+            },
+            {
+              "properties": {
+                "fuelCapacity": { }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "Gasoline vehicle implementation of VehicleBase",
+          "type": "object"
+        }
       }
     },
     "messages": {

@@ -8,6 +8,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
@@ -211,6 +212,40 @@ class GroupingServiceTest {
 
         // then
         assertThat(grouped).isEqualTo(fullApi);
+    }
+
+    @Test
+    void shouldResolveReferencedSchemas1FromSchema4() {
+        SchemaObject schema4 = SchemaObject.builder()
+                .title("Schema4")
+                .oneOf(List.of(ComponentSchema.of(MessageReference.toSchema(schema1.getTitle()))))
+                .build();
+        MessageObject message = MessageObject.builder()
+                .messageId("messageId1")
+                .payload(MessagePayload.of(MultiFormatSchema.builder()
+                        .schema(MessageReference.toSchema(schema4.getTitle()))
+                        .build()))
+                .build();
+
+        AsyncAPI api = AsyncAPI.builder()
+                .channels(Map.of())
+                .operations(Map.of())
+                .components(Components.builder()
+                        .messages(Map.of(message.getMessageId(), message))
+                        .schemas(Map.of(schema1.getTitle(), schema1, schema4.getTitle(), schema4))
+                        .build())
+                .build();
+
+        AsyncApiGroup messageFilterGroup = AsyncApiGroup.builder()
+                .messageNamesToKeep(List.of(Pattern.compile("message.*")))
+                .build();
+
+        // when
+        AsyncAPI grouped = groupingService.groupAPI(api, messageFilterGroup);
+
+        // then
+        assertThat(grouped.getComponents().getSchemas()).containsKey(schema1.getTitle());
+        assertThat(grouped.getComponents().getSchemas()).containsKey(schema4.getTitle());
     }
 
     @Nested

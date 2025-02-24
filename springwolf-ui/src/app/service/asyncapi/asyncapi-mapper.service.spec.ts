@@ -17,33 +17,40 @@ describe("AsyncApiMapperService", () => {
     service = new AsyncApiMapperService(notificationService);
   });
 
-  for (const [plugin, testData] of Object.entries(exampleSchemas)) {
-    it(
-      "should be able to parse example AsyncApi.json without errors - " +
-        plugin +
-        " example",
-      () => {
-        service.toAsyncApi(testData.value);
+  const parser = new Parser();
+  for (const [plugin, pluginSchema] of Object.entries(exampleSchemas)) {
+    const pluginSchemaGroups = {
+      ...pluginSchema.groups,
+      default: pluginSchema.value,
+    };
 
-        expect(notificationService.showError).not.toHaveBeenCalled();
-        expect(notificationService.showWarning).not.toHaveBeenCalled();
-      }
-    );
-  }
+    for (const [group, schema] of Object.entries(pluginSchemaGroups)) {
+      it(
+        "should be able to parse example AsyncApi.json without errors - " +
+          plugin +
+          " example and group " +
+          group,
+        () => {
+          service.toAsyncApi(schema);
 
-  for (const [plugin, testData] of Object.entries(exampleSchemas)) {
-    const parser = new Parser();
-    it(
-      "should be a valid AsyncApi schema - " + plugin + " example",
-      async () => {
-        const diagnostics = await parser.validate(
-          JSON.stringify(testData.value)
-        );
+          expect(notificationService.showError).not.toHaveBeenCalled();
+          expect(notificationService.showWarning).not.toHaveBeenCalled();
+        }
+      );
 
-        // In case you are debugging, copy the asyncapi.json to AsyncApi Studio as it displays better error messages.
-        expect(diagnostics.map((el) => el.message)).toHaveLength(0);
-        expect(diagnostics).toHaveLength(0);
-      }
-    );
+      it(
+        "should be a valid AsyncApi schema - " +
+          plugin +
+          " example and group " +
+          group,
+        async () => {
+          const diagnostics = await parser.validate(JSON.stringify(schema));
+
+          // In case you are debugging, copy the asyncapi.json to AsyncApi Studio as it displays better error messages.
+          expect(diagnostics.map((el) => el.message)).toHaveLength(0);
+          expect(diagnostics).toHaveLength(0);
+        }
+      );
+    }
   }
 });
