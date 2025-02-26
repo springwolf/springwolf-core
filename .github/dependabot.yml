@@ -28,3 +28,10 @@ updates:
         patterns:
           - "@angular/*"
           - "@angular-devkit/*"
+
+  - package-ecosystem: "docker-compose"
+    directories:
+      - "/springwolf-examples/**"
+    rebase-strategy: "disabled"
+    schedule:
+      interval: "weekly"
