@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @AllArgsConstructor
 public class GroupingService {
@@ -187,19 +188,31 @@ public class GroupingService {
                 .forEach(schemaEntry -> {
                     markingContext.markedComponentSchemaIds.add(schemaEntry.getKey());
 
-                    if (schemaEntry.getValue().getProperties() != null) {
-                        Set<String> nestedSchemas = findUnmarkedNestedSchemas(markingContext, schemaEntry.getValue());
-                        if (!nestedSchemas.isEmpty()) {
-                            markSchemas(fullAsyncApi, markingContext, nestedSchemas);
-                        }
+                    Set<String> nestedSchemas = findUnmarkedNestedSchemas(markingContext, schemaEntry.getValue());
+                    if (!nestedSchemas.isEmpty()) {
+                        markSchemas(fullAsyncApi, markingContext, nestedSchemas);
                     }
                 });
     }
 
     private static Set<String> findUnmarkedNestedSchemas(MarkingContext markingContext, SchemaObject schema) {
-        return schema.getProperties().values().stream()
-                .filter(el -> el instanceof ComponentSchema)
-                .map(el -> (ComponentSchema) el)
+        final Stream<ComponentSchema> propertySchemas;
+        if (schema.getProperties() != null) {
+            propertySchemas = schema.getProperties().values().stream()
+                    .filter(el -> el instanceof ComponentSchema)
+                    .map(el -> (ComponentSchema) el);
+        } else {
+            propertySchemas = Stream.empty();
+        }
+
+        Stream<ComponentSchema> referencedSchemas = Stream.of(schema.getAllOf(), schema.getAnyOf(), schema.getOneOf())
+                .filter(Objects::nonNull)
+                .flatMap(List::stream);
+
+        Stream<ComponentSchema> referencedSchemaElements =
+                Stream.of(schema.getNot(), schema.getItems()).filter(Objects::nonNull);
+
+        return Stream.concat(propertySchemas, Stream.concat(referencedSchemas, referencedSchemaElements))
                 .map(ComponentSchema::getReference)
                 .filter(Objects::nonNull)
                 .map(MessageReference::getRef)
