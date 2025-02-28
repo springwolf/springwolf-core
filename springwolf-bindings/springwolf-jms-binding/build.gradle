@@ -24,6 +24,7 @@ dependencies {
 
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
+    testRuntimeOnly libs.junit.plattform.launcher
     testRuntimeOnly libs.slf4j.simple
 }
 
