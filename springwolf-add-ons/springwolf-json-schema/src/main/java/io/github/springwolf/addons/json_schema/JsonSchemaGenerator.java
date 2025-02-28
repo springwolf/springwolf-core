@@ -17,7 +17,7 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 public class JsonSchemaGenerator {
-    private final ObjectMapper objectMapper;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public Object fromSchema(SchemaObject schema, Map<String, SchemaObject> definitions)
             throws JsonProcessingException {

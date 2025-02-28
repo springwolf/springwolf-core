@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JsonSchemaGeneratorTest {
     private final ObjectMapper mapper = Json.mapper();
     private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
-    private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(mapper);
+    private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator();
 
     @ParameterizedTest
     @MethodSource
