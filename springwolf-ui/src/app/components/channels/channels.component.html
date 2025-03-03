@@ -5,10 +5,10 @@
   <h3>{{ channel.name }}</h3>
 
   <div class="row" *ngIf="isShowBindings">
-    <div class="width-6/12 width-12/12-s">
+    <div class="width-6-of-12 width-12-of-12-s">
       <h6>Channel Binding</h6>
     </div>
-    <div class="width-6/12 width-12/12-s">
+    <div class="width-6-of-12 width-12-of-12-s">
       <div *ngIf="channel.bindings">
         <app-prism-editor
           code="{{ JSON.stringify(channel.bindings, null, 2) }}"
