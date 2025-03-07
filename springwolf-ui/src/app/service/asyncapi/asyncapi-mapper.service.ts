@@ -599,7 +599,7 @@ export class AsyncApiMapperService {
           if (property.refName === schema.name) {
             schema.usedBy.push({
               name: otherSchema.title,
-              anchorUrl: otherSchema.refAnchorUrl!!,
+              anchorUrl: otherSchema.anchorUrl,
               type: "schema",
             });
           }
@@ -607,7 +607,7 @@ export class AsyncApiMapperService {
         if (otherSchema.items?.refName === schema.name) {
           schema.usedBy.push({
             name: otherSchema.title,
-            anchorUrl: otherSchema.refAnchorUrl!!,
+            anchorUrl: otherSchema.anchorUrl,
             type: "schema",
           });
         }
