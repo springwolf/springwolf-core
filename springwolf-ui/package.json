@@ -43,6 +43,9 @@
     "jest-preset-angular": "^14.5.3",
     "typescript": "^5.8.2"
   },
+  "overrides": {
+    "jsdom": "^26.0.0"
+  },
   "jest-junit": {
     "ancestorSeparator": " › ",
     "outputDirectory": "build/test-results/test",

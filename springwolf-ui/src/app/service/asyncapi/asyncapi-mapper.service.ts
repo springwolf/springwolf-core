@@ -119,10 +119,12 @@ export class AsyncApiMapperService {
     for (let channelId in channels) {
       this.parsingErrorBoundary("channel " + channelId, () => {
         const channel = channels[channelId];
+        const anchorIdentifier =
+          "channel-" + this.toSafeAnchorIdentifier(channelId);
         mappedChannels[channelId] = {
           name: channel.address,
-          anchorIdentifier: "channel-" + channelId,
-          anchorUrl: AsyncApiMapperService.BASE_URL + "channel-" + channelId,
+          anchorIdentifier,
+          anchorUrl: AsyncApiMapperService.BASE_URL + anchorIdentifier,
           operations: [],
           bindings: channel.bindings || {},
         };
@@ -234,7 +236,7 @@ export class AsyncApiMapperService {
       CHANNEL_ANCHOR_PREFIX +
       [
         mappedOperation.protocol,
-        channelName,
+        this.toSafeAnchorIdentifier(channelName),
         mappedOperation.operationType,
         mappedOperation.message.title,
       ].join("-");
@@ -468,7 +470,7 @@ export class AsyncApiMapperService {
       name: schemaName,
       title: this.resolveTitleFromName(schemaName) || "undefined-title",
       usedBy: [],
-      anchorIdentifier: schemaName,
+      anchorIdentifier: this.toSafeAnchorIdentifier(schemaName),
       anchorUrl: AsyncApiMapperService.BASE_URL + schemaName,
       description: schema.description,
       deprecated: schema.deprecated,
@@ -543,7 +545,7 @@ export class AsyncApiMapperService {
       name: schemaName,
       title: this.resolveTitleFromName(schemaName),
       usedBy: [],
-      anchorIdentifier: schemaName,
+      anchorIdentifier: this.toSafeAnchorIdentifier(schemaName),
       anchorUrl: AsyncApiMapperService.BASE_URL + schemaName,
 
       // type == ref
@@ -611,6 +613,10 @@ export class AsyncApiMapperService {
         }
       });
     });
+  }
+
+  private toSafeAnchorIdentifier(name: string): string {
+    return name.replaceAll(/\$/g, "§");
   }
 
   private parsingErrorBoundary<T>(path: string, f: () => T): T | undefined {

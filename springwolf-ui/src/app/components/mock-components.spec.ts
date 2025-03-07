@@ -47,8 +47,3 @@ export class MockPrismEditorComponent {
 export class MockAppSchemaNewComponent {
   schema = input.required<Schema>();
 }
-
-@Component({ selector: "mat-icon", template: "" })
-export class MockMatIcon {
-  svgIcon = input.required<string>();
-}

@@ -1,6 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <div class="row">
-  <div class="width-12/12 width-12/12-s">
+  <div class="width-12-of-12 width-12-of-12-s">
     <div class="table margin-vertical-1em">
       <div class="table-row">
         <span>Channel</span>
@@ -60,10 +60,10 @@
 </div>
 
 <div class="row" *ngIf="isShowBindings">
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6-of-12 width-12-of-12-s">
     <h6>Operation Binding</h6>
   </div>
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6-of-12 width-12-of-12-s">
     <div *ngIf="operation().protocol">
       <app-prism-editor
         *ngIf="operationBindingExampleString"
@@ -76,10 +76,10 @@
 </div>
 
 <div class="row" *ngIf="isShowBindings">
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6-of-12 width-12-of-12-s">
     <h6>Message Binding</h6>
   </div>
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6-of-12 width-12-of-12-s">
     <div>
       <app-prism-editor
         *ngIf="messageBindingExampleString"
@@ -93,7 +93,7 @@
 </div>
 
 <div class="row" *ngIf="isShowHeaders">
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6-of-12 width-12-of-12-s">
     <h6>Headers</h6>
     <mat-chip-set>
       <a [href]="operation().message.headers.anchorUrl">
@@ -106,13 +106,13 @@
 
     <app-schema *ngIf="headers" [schema]="headers"></app-schema>
   </div>
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6-of-12 width-12-of-12-s">
     <app-prism-editor [(code)]="headersExample.value" language="json" />
   </div>
 </div>
 
 <div class="row">
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6-of-12 width-12-of-12-s">
     <h6>Payload</h6>
     <mat-chip-set>
       <a [href]="operation().message.payload.anchorUrl">
@@ -126,7 +126,7 @@
     <app-schema *ngIf="defaultSchema" [schema]="defaultSchema"></app-schema>
   </div>
 
-  <div class="width-6/12 width-12/12-s">
+  <div class="width-6-of-12 width-12-of-12-s">
     <app-prism-editor
       [(code)]="defaultExample.value"
       [language]="exampleContentType()"

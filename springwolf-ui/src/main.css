@@ -98,121 +98,121 @@ a {
   grid-template-columns: repeat(12, 1fr);
   grid-gap: 1em;
 }
-.width-1\/12 {
+.width-1-of-12 {
   grid-column: span 1;
 }
 
-.width-2\/12 {
+.width-2-of-12 {
   grid-column: span 2;
 }
 
-.width-3\/12 {
+.width-3-of-12 {
   grid-column: span 3;
 }
 
-.width-4\/12 {
+.width-4-of-12 {
   grid-column: span 4;
 }
 
-.width-5\/12 {
+.width-5-of-12 {
   grid-column: span 5;
 }
 
-.width-6\/12 {
+.width-6-of-12 {
   grid-column: span 6;
 }
 
-.width-7\/12 {
+.width-7-of-12 {
   grid-column: span 7;
 }
 
-.width-8\/12 {
+.width-8-of-12 {
   grid-column: span 8;
 }
 
-.width-9\/12 {
+.width-9-of-12 {
   grid-column: span 9;
 }
 
-.width-10\/12 {
+.width-10-of-12 {
   grid-column: span 10;
 }
 
-.width-11\/12 {
+.width-11-of-12 {
   grid-column: span 11;
 }
 
-.width-12\/12 {
+.width-12-of-12 {
   grid-column: span 12;
 }
 
-.width-1\/12\-s {
+.width-1-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 1;
   }
 }
 
-.width-2\/12\-s {
+.width-2-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 2;
   }
 }
 
-.width-3\/12\-s {
+.width-3-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 3;
   }
 }
 
-.width-4\/12\-s {
+.width-4-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 4;
   }
 }
 
-.width-5\/12\-s {
+.width-5-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 5;
   }
 }
 
-.width-6\/12\-s {
+.width-6-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 6;
   }
 }
 
-.width-7\/12\-s {
+.width-7-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 7;
   }
 }
 
-.width-8\/12\-s {
+.width-8-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 8;
   }
 }
 
-.width-9\/12\-s {
+.width-9-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 9;
   }
 }
 
-.width-10\/12\-s {
+.width-10-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 10;
   }
 }
 
-.width-11\/12\-s {
+.width-11-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 11;
   }
 }
 
-.width-12\/12\-s {
+.width-12-of-12-s {
   @media (max-width: 64em) {
     grid-column: span 12;
   }

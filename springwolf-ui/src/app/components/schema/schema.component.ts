@@ -8,7 +8,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatListModule } from "@angular/material/list";
 import { MatSelectModule } from "@angular/material/select";
 import { MatIconModule } from "@angular/material/icon";
-import { CommonModule, KeyValuePipe, NgTemplateOutlet } from "@angular/common";
+import { CommonModule } from "@angular/common";
 
 @Component({
   selector: "app-schema",
