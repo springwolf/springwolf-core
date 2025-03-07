@@ -83,6 +83,7 @@ spotless {
 
   format 'json', {
     target 'src/**/*.json'
+    targetExclude '**/*.actual.json'
 
     prettier()
       .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
