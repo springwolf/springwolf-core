@@ -12,6 +12,7 @@ import { provideMarkdown } from "ngx-markdown";
 import { AssetService, IAssetService } from "./service/asset.service";
 import { AsyncApiService } from "./service/asyncapi/asyncapi.service";
 import { AsyncApiMapperService } from "./service/asyncapi/asyncapi-mapper.service";
+import { AsyncApiValidatorService } from "./service/asyncapi/validator/asyncapi-validator.service";
 import {
   INotificationService,
   NotificationService,
@@ -34,6 +35,7 @@ export const appConfig: ApplicationConfig = {
     { provide: IAssetService, useClass: AssetService },
     AsyncApiService,
     AsyncApiMapperService,
+    AsyncApiValidatorService,
     { provide: INotificationService, useClass: NotificationService },
     PublisherService,
     { provide: IUiService, useClass: UiService },

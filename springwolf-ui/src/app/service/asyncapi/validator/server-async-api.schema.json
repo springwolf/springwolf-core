@@ -1,0 +1,448 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/ServerAsyncApi",
+  "definitions": {
+    "ServerAsyncApi": {
+      "type": "object",
+      "properties": {
+        "asyncapi": {
+          "type": "string"
+        },
+        "info": {
+          "$ref": "#/definitions/ServerAsyncApiInfo"
+        },
+        "defaultContentType": {
+          "type": "string"
+        },
+        "servers": {
+          "$ref": "#/definitions/ServerServers"
+        },
+        "channels": {
+          "$ref": "#/definitions/ServerChannels"
+        },
+        "operations": {
+          "$ref": "#/definitions/ServerOperations"
+        },
+        "components": {
+          "$ref": "#/definitions/ServerComponents"
+        }
+      },
+      "required": [
+        "asyncapi",
+        "info",
+        "defaultContentType",
+        "servers",
+        "channels",
+        "operations",
+        "components"
+      ],
+      "additionalProperties": false
+    },
+    "ServerAsyncApiInfo": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": {}
+        },
+        "license": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": {}
+        },
+        "termsOfService": {
+          "type": "string"
+        }
+      },
+      "required": ["title"],
+      "additionalProperties": {}
+    },
+    "ServerServers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["host", "protocol"],
+        "additionalProperties": false
+      }
+    },
+    "ServerChannels": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ServerChannel"
+      }
+    },
+    "ServerChannel": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "messages": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "$ref": {
+                "type": "string"
+              }
+            },
+            "required": ["$ref"],
+            "additionalProperties": false
+          }
+        },
+        "servers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "$ref": {
+                "type": "string"
+              }
+            },
+            "required": ["$ref"],
+            "additionalProperties": false
+          }
+        },
+        "bindings": {
+          "$ref": "#/definitions/ServerBindings"
+        }
+      },
+      "required": ["address"],
+      "additionalProperties": false
+    },
+    "ServerBindings": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ServerBinding"
+      }
+    },
+    "ServerBinding": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/ServerBinding"
+          },
+          {}
+        ]
+      }
+    },
+    "ServerOperations": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ServerOperation"
+      }
+    },
+    "ServerOperation": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "object",
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          },
+          "required": ["$ref"],
+          "additionalProperties": false
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "$ref": {
+                "type": "string"
+              }
+            },
+            "required": ["$ref"],
+            "additionalProperties": false
+          }
+        },
+        "reply": {
+          "$ref": "#/definitions/ServerOperationReply"
+        },
+        "bindings": {
+          "$ref": "#/definitions/ServerBindings"
+        }
+      },
+      "required": ["action", "channel", "messages"],
+      "additionalProperties": false
+    },
+    "ServerOperationReply": {
+      "type": "object",
+      "properties": {
+        "channel": {
+          "type": "object",
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          },
+          "required": ["$ref"],
+          "additionalProperties": false
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "$ref": {
+                "type": "string"
+              }
+            },
+            "required": ["$ref"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["channel", "messages"],
+      "additionalProperties": false
+    },
+    "ServerComponents": {
+      "type": "object",
+      "properties": {
+        "schemas": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ServerAsyncApiSchema"
+          }
+        },
+        "messages": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ServerAsyncApiMessage"
+          }
+        }
+      },
+      "required": ["schemas", "messages"],
+      "additionalProperties": false
+    },
+    "ServerAsyncApiSchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "deprecated": {
+          "type": "boolean"
+        },
+        "enum": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "examples": {
+          "type": "array",
+          "items": {}
+        },
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "not": {
+          "$ref": "#/definitions/ServerAsyncApiSchemaOrRef"
+        },
+        "allOf": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ServerAsyncApiSchemaOrRef"
+          }
+        },
+        "anyOf": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ServerAsyncApiSchemaOrRef"
+          }
+        },
+        "oneOf": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ServerAsyncApiSchemaOrRef"
+          }
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ServerAsyncApiSchemaOrRef"
+          }
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "items": {
+          "$ref": "#/definitions/ServerAsyncApiSchemaOrRef"
+        },
+        "minItems": {
+          "type": "number"
+        },
+        "maxItems": {
+          "type": "number"
+        },
+        "uniqueItems": {
+          "type": "boolean"
+        },
+        "minLength": {
+          "type": "number"
+        },
+        "maxLength": {
+          "type": "number"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        },
+        "exclusiveMinimum": {
+          "type": "number"
+        },
+        "exclusiveMaximum": {
+          "type": "number"
+        },
+        "multipleOf": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ServerAsyncApiSchemaOrRef": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ServerAsyncApiSchema"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          },
+          "required": ["$ref"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ServerAsyncApiMessage": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "contentType": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "schemaFormat": {
+              "type": "string"
+            },
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "$ref": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["$ref"],
+                  "additionalProperties": false
+                },
+                {
+                  "$ref": "#/definitions/ServerAsyncApiSchema"
+                }
+              ]
+            }
+          },
+          "required": ["schemaFormat", "schema"],
+          "additionalProperties": false
+        },
+        "headers": {
+          "type": "object",
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          },
+          "required": ["$ref"],
+          "additionalProperties": false
+        },
+        "bindings": {
+          "$ref": "#/definitions/ServerBindings"
+        }
+      },
+      "required": ["name", "title", "payload", "headers"],
+      "additionalProperties": false
+    }
+  }
+}
