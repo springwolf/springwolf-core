@@ -111,6 +111,7 @@ More details in the documentation.
 - [DGARNE - Public Service of Wallonia (BE)](https://agriculture.wallonie.be/accueil)
 - [LVM Versicherung](https://www.lvm.de/privatkunden/)
 - [OTTO](https://www.otto.de)
+- [OTTO Payments](https://www.ottogroup.com/en/careers/kgen/ottopayments.php)
 - [Teambank](https://www.teambank.de)
 
 Comment in [this PR](https://github.com/springwolf/springwolf-core/issues/342) to add your company and spread the word
