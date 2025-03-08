@@ -41,6 +41,10 @@ dependencies {
     testImplementation libs.spring.beans
     testImplementation libs.spring.web
     testImplementation libs.spring.kafka.test
+
+    testImplementation libs.jackson.core
+    permitTestUnusedDeclared libs.jackson.core
+
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter
 

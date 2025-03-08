@@ -8,6 +8,8 @@ plugins {
 }
 
 dependencies {
+    api project(":springwolf-core")
+
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.context
 

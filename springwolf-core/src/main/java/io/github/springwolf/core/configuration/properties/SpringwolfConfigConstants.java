@@ -2,6 +2,8 @@
 package io.github.springwolf.core.configuration.properties;
 
 public class SpringwolfConfigConstants {
+    public static final String SPRINGWOLF_PACKAGE = "io.github.springwolf";
+
     public static final String ENABLED = ".enabled";
 
     public static final String SCANNER = ".scanner";
