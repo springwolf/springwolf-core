@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components.examples.walkers;
 
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -334,7 +334,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     private Optional<Schema<?>> resolveSchemaFromRef(Schema schema, Map<String, Schema> definitions) {
         String ref = schema.get$ref();
         if (ref != null) {
-            String schemaName = MessageReference.extractRefName(ref);
+            String schemaName = ReferenceUtil.getLastSegment(ref);
             Schema<?> resolvedSchema = definitions.get(schemaName);
             if (resolvedSchema == null) {
                 throw new ExampleGeneratingException("Missing schema during example generation: " + schemaName);

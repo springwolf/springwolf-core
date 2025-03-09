@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components.postprocessors;
 
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springframework.util.StringUtils;
 
@@ -45,7 +45,7 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
 
     private void processRefSchema(Schema schema, Deque<Schema> queue, Map<String, Schema> definitions) {
         if (schema.get$ref() != null) {
-            String schemaName = MessageReference.extractRefName(schema.get$ref());
+            String schemaName = ReferenceUtil.getLastSegment(schema.get$ref());
             Schema refedSchema = definitions.get(schemaName);
             if (refedSchema != null) {
                 queue.add(refedSchema);

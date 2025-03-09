@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.schemas;
 
 import com.fasterxml.jackson.databind.JavaType;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
@@ -107,13 +108,20 @@ public class SwaggerSchemaService {
         processSchemaAnnotation(payloadSchema, type);
     }
 
+    /**
+     * When (springwolf common) model converters are used,
+     * the native schema is {@param payloadSchema} and the target, converted to schema is part of {@param schemas}.
+     *
+     * This method will remove the native and puts the target, converted schema in place.
+     */
     private void processCommonModelConverters(Schema payloadSchema, Map<String, Schema> schemas) {
         schemas.values().stream()
                 .filter(schema -> schema.getType() == null)
                 .filter(schema -> schema.get$ref() != null)
+                .toList()
                 .forEach(schema -> {
                     String targetSchemaName = schema.getName();
-                    String sourceSchemaName = StringUtils.substringAfterLast(schema.get$ref(), "/");
+                    String sourceSchemaName = ReferenceUtil.getLastSegment(schema.get$ref());
 
                     Schema<?> actualSchema = schemas.get(sourceSchemaName);
 
@@ -121,14 +129,14 @@ public class SwaggerSchemaService {
                         schemas.put(targetSchemaName, actualSchema);
                         schemas.remove(sourceSchemaName);
 
-                        adaptPayloadSchema(payloadSchema, targetSchemaName, sourceSchemaName);
+                        updatePayloadSchemaRef(payloadSchema, targetSchemaName, sourceSchemaName);
                     }
                 });
     }
 
-    private void adaptPayloadSchema(Schema schema, String targetSchemaName, String sourceSchemaName) {
+    private void updatePayloadSchemaRef(Schema schema, String targetSchemaName, String sourceSchemaName) {
         if (schema != null && schema.get$ref() != null) {
-            String refTypeName = StringUtils.substringAfterLast(schema.get$ref(), "/");
+            String refTypeName = ReferenceUtil.getLastSegment(schema.get$ref());
             if (refTypeName.equals(sourceSchemaName)) {
                 schema.$ref(RefUtils.constructRef(targetSchemaName));
             }
