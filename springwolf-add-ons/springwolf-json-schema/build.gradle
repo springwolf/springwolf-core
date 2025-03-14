@@ -17,8 +17,6 @@ dependencies {
     testImplementation libs.swagger.core.jakarta
     testImplementation libs.swagger.models.jakarta
 
-    implementation libs.commons.lang3
-
     implementation libs.slf4j.api
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
