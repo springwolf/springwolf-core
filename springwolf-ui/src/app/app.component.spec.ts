@@ -6,11 +6,16 @@ import { MatIconTestingModule } from "@angular/material/icon/testing";
 
 describe("AppComponent", () => {
   test("should render", async () => {
+    // given
+    jest.spyOn(console, "info").mockImplementation(() => {});
+
+    // when
     await render(AppComponent, {
       providers: appConfig.providers,
       imports: [MatIconTestingModule],
     });
 
+    // then
     await waitFor(() => {
       expect(
         screen.getAllByText("Springwolf example project", { exact: false })
