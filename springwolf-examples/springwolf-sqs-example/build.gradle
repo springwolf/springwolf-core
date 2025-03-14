@@ -36,6 +36,11 @@ dependencies {
     implementation libs.spring.boot
     implementation libs.spring.context
 
+    testImplementation libs.assertj.core
+
+    testImplementation libs.jackson.core
+    permitTestUsedUndeclared libs.jackson.core
+
     testImplementation libs.mockito.core
 
     testImplementation libs.spring.boot.test
