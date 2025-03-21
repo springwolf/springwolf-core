@@ -22,8 +22,7 @@ public class StandaloneTest {
     @Test
     public void asyncApiStandaloneArtifactTest() throws IOException {
         // given
-        String basePackage = "io.github.springwolf.examples.sqs";
-        StandaloneFactory standaloneFactory = new DefaultStandaloneFactory(basePackage);
+        StandaloneFactory standaloneFactory = new DefaultStandaloneFactory();
 
         // when
         AsyncAPI asyncApi = standaloneFactory.getAsyncApiService().getAsyncAPI();

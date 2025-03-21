@@ -21,6 +21,10 @@ import java.util.List;
 public class DefaultStandaloneFactory implements StandaloneFactory {
     private final AnnotationConfigApplicationContext diContext = new AnnotationConfigApplicationContext();
 
+    public DefaultStandaloneFactory() {
+        this(StandaloneEnvironmentLoader.load().getProperty("springwolf.docket.base-package"));
+    }
+
     public DefaultStandaloneFactory(String applicationBasePackage) {
         this(applicationBasePackage, StandaloneEnvironmentLoader.load());
     }

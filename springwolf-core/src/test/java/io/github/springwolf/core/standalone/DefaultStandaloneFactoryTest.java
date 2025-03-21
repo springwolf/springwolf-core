@@ -17,6 +17,17 @@ class DefaultStandaloneFactoryTest {
     private String applicationPackageName = TestApplication.class.getPackageName();
 
     @Test
+    void shouldCreateStandaloneFactoryForBasicApplicationWithBasePackeFromProperties() {
+        // when
+        DefaultStandaloneFactory factory = new DefaultStandaloneFactory();
+
+        // then
+        assertThat(factory.getAsyncApiService().getAsyncAPI()).isNotNull();
+        assertThat(factory.getAsyncApiService().getAsyncAPI().getInfo().getTitle())
+                .isEqualTo("Springwolf-core");
+    }
+
+    @Test
     void shouldCreateStandaloneFactoryForBasicApplication() {
         // when
         DefaultStandaloneFactory factory = new DefaultStandaloneFactory(TestApplication.class.getPackageName());
@@ -53,5 +64,16 @@ class DefaultStandaloneFactoryTest {
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NoSuchBeanDefinitionException.class);
         }
+    }
+
+    @Test
+    void shouldThrowWhenNoBasePackageConfigured() {
+        // when
+        DefaultStandaloneFactory factory = new DefaultStandaloneFactory();
+
+        // then
+        assertThat(factory.getAsyncApiService().getAsyncAPI()).isNotNull();
+        assertThat(factory.getAsyncApiService().getAsyncAPI().getInfo().getTitle())
+                .isEqualTo("Springwolf-core");
     }
 }
