@@ -1,5 +1,5 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ListWrapper" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest.ListWrapper" : {
     "type" : "string",
     "properties" : {
       "empty" : {

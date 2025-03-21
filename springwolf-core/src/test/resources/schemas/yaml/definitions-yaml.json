@@ -1,10 +1,10 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$CompositeFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest.CompositeFoo" : {
     "title" : "CompositeFoo",
     "type" : "string",
     "properties" : {
       "f" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SimpleFoo"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest.SimpleFoo"
       },
       "s" : {
         "type" : "string"
@@ -12,7 +12,7 @@
     },
     "examples" : [ "f:\n  b: true\n  s: string\ns: string\n" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$FooWithEnum" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest.FooWithEnum" : {
     "title" : "FooWithEnum",
     "type" : "string",
     "properties" : {
@@ -26,7 +26,7 @@
     },
     "examples" : [ "b: BAR1\ns: string\n" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SimpleFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest.SimpleFoo" : {
     "title" : "SimpleFoo",
     "type" : "string",
     "properties" : {

@@ -100,8 +100,8 @@
     "protobuf-topic": {
       "address": "protobuf-topic",
       "messages": {
-        "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+        "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
         }
       },
       "bindings": {
@@ -113,8 +113,8 @@
     "string-topic": {
       "address": "string-topic",
       "messages": {
-        "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
-          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope"
+        "io.github.springwolf.examples.kafka.consumers.StringConsumer.StringEnvelope": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.consumers.StringConsumer.StringEnvelope"
         },
         "java.lang.String": {
           "$ref": "#/components/messages/java.lang.String"
@@ -517,16 +517,16 @@
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
-              "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+              "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
             ],
             "examples": [
-              "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+              "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
             ]
           }
         },
         "examples": [
           {
-            "__TypeId__": "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+            "__TypeId__": "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
           }
         ],
         "x-json-schema": {
@@ -535,7 +535,7 @@
             "__TypeId__": {
               "description": "Spring Type Id Header",
               "enum": [
-                "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+                "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
               ],
               "type": "string"
             }
@@ -789,7 +789,7 @@
           "type": "object"
         }
       },
-      "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
+      "io.github.springwolf.examples.kafka.consumers.StringConsumer.StringEnvelope": {
         "type": "string",
         "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
         "maxLength": 100,
@@ -890,7 +890,7 @@
           "type": "object"
         }
       },
-      "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
+      "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message": {
         "title": "Message",
         "type": "object",
         "properties": {
@@ -1659,14 +1659,14 @@
           }
         }
       },
-      "io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope": {
+      "io.github.springwolf.examples.kafka.consumers.StringConsumer.StringEnvelope": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotUsed"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.consumers.StringConsumer.StringEnvelope"
           }
         },
         "name": "StringPayload",
@@ -1695,17 +1695,17 @@
           }
         }
       },
-      "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message": {
+      "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message": {
         "headers": {
           "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-Message"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
           "schema": {
-            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
           }
         },
-        "name": "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message",
+        "name": "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message",
         "title": "Message",
         "bindings": {
           "kafka": {
@@ -2055,7 +2055,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/protobuf-topic/messages/io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto$Message"
+          "$ref": "#/channels/protobuf-topic/messages/io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
         }
       ]
     },
@@ -2073,7 +2073,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/string-topic/messages/io.github.springwolf.examples.kafka.consumers.StringConsumer$StringEnvelope"
+          "$ref": "#/channels/string-topic/messages/io.github.springwolf.examples.kafka.consumers.StringConsumer.StringEnvelope"
         },
         {
           "$ref": "#/channels/string-topic/messages/java.lang.String"

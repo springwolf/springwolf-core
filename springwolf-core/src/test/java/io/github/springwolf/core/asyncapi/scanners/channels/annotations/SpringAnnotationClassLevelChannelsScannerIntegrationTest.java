@@ -173,8 +173,8 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .build());
 
             MessageObject message = MessageObject.builder()
-                    .messageId(SimpleFoo.class.getName())
-                    .name(SimpleFoo.class.getName())
+                    .messageId(SimpleFoo.class.getName().replace("$", "."))
+                    .name(SimpleFoo.class.getName().replace("$", "."))
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
                     .headers(MessageHeaders.of(
@@ -216,7 +216,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .build());
 
             MessageObject fooMessage = MessageObject.builder()
-                    .name(SimpleFoo.class.getName())
+                    .name(SimpleFoo.class.getName().replace("$", "."))
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(simpleFooPayload)
                     .headers(MessageHeaders.of(
@@ -229,7 +229,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .build());
 
             MessageObject barMessage = MessageObject.builder()
-                    .name(String.class.getName())
+                    .name(String.class.getName().replace("$", "."))
                     .title(String.class.getSimpleName())
                     .payload(stringPayload)
                     .headers(MessageHeaders.of(

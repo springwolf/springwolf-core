@@ -1,18 +1,18 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$ArrayFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.ArrayFoo" : {
     "title" : "ArrayFoo",
     "type" : "string",
     "properties" : {
       "flist" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SimpleFoo"
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.SimpleFoo"
         }
       }
     },
     "examples" : [ "<ArrayFoo><flist><SimpleFoo><b>true</b><s>string</s></SimpleFoo></flist></ArrayFoo>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SimpleFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.SimpleFoo" : {
     "title" : "SimpleFoo",
     "type" : "string",
     "properties" : {

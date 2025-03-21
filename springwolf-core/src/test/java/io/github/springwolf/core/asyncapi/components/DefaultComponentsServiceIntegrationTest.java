@@ -38,7 +38,7 @@ class DefaultComponentsServiceIntegrationTest {
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(this.getClass().getName() + "$StringFoo");
+            SchemaObject objectFoo = schemas.get(StringFoo.class.getName().replace("$", "."));
 
             assertThat(objectFoo)
                     .isEqualTo(SchemaObject.builder()
@@ -65,7 +65,7 @@ class DefaultComponentsServiceIntegrationTest {
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(this.getClass().getName() + "$ArrayFoo");
+            SchemaObject objectFoo = schemas.get(ArrayFoo.class.getName().replace("$", "."));
 
             assertThat(objectFoo)
                     .isEqualTo(SchemaObject.builder()
@@ -93,7 +93,7 @@ class DefaultComponentsServiceIntegrationTest {
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(this.getClass().getName() + "$RefFoo");
+            SchemaObject objectFoo = schemas.get(RefFoo.class.getName().replace("$", "."));
 
             assertThat(objectFoo)
                     .isEqualTo(SchemaObject.builder()
@@ -125,7 +125,7 @@ class DefaultComponentsServiceIntegrationTest {
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(this.getClass().getName() + "$NumberFoo");
+            SchemaObject objectFoo = schemas.get(NumberFoo.class.getName().replace("$", "."));
 
             assertThat(objectFoo)
                     .isEqualTo(SchemaObject.builder()
@@ -150,7 +150,7 @@ class DefaultComponentsServiceIntegrationTest {
 
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(this.getClass().getName() + "$NotSupportedFoo");
+            SchemaObject objectFoo = schemas.get(NotSupportedFoo.class.getName().replace("$", "."));
 
             assertThat(objectFoo)
                     .isEqualTo(SchemaObject.builder()
@@ -245,7 +245,7 @@ class DefaultComponentsServiceIntegrationTest {
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
 
-            SchemaObject schema = schemas.get(this.getClass().getName() + "$StringEnvelop");
+            SchemaObject schema = schemas.get(StringEnvelop.class.getName().replace("$", "."));
             assertThat(schema)
                     .isEqualTo(SchemaObject.builder()
                             .type(SchemaType.STRING)
@@ -263,8 +263,9 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(schemas).hasSize(1);
 
             // fallback to EnvelopWithMultipleAsyncApiPayloadAnnotations, because it has multiple AsyncApiPayload
-            SchemaObject schema =
-                    schemas.get(this.getClass().getName() + "$EnvelopWithMultipleAsyncApiPayloadAnnotations");
+            SchemaObject schema = schemas.get(EnvelopWithMultipleAsyncApiPayloadAnnotations.class
+                    .getName()
+                    .replace("$", "."));
             assertThat(schema)
                     .isEqualTo(SchemaObject.builder()
                             .type(SchemaType.OBJECT)

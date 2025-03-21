@@ -116,9 +116,13 @@ class SwaggerSchemaServiceTest {
         SwaggerSchemaService.ExtractedSchemas schema =
                 schemaService.resolveSchema(ModelConverterNativeClass.class, "content-type-not-relevant");
 
-        assertThat(schema.rootSchema().getReference().getRef()).contains(ModelConverterNativeClass.class.getName());
-        assertThat(schema.referencedSchemas()).hasSize(1).containsKey(ModelConverterNativeClass.class.getName());
-        assertThat(schema.referencedSchemas().get(ModelConverterNativeClass.class.getName()))
+        assertThat(schema.rootSchema().getReference().getRef())
+                .contains(ModelConverterNativeClass.class.getName().replace("$", "."));
+        assertThat(schema.referencedSchemas())
+                .hasSize(1)
+                .containsKey(ModelConverterNativeClass.class.getName().replace("$", "."));
+        assertThat(schema.referencedSchemas()
+                        .get(ModelConverterNativeClass.class.getName().replace("$", ".")))
                 .satisfies((el) -> assertThat(el.getType()).isEqualTo(SchemaType.OBJECT))
                 .satisfies((el) -> assertThat(el.getProperties()).containsOnlyKeys("actual"));
     }
@@ -169,7 +173,7 @@ class SwaggerSchemaServiceTest {
                 io.swagger.v3.oas.models.media.Schema<?> schema = proceedWithChain(type, context, chain);
 
                 if (isNativeType && schema != null && rawClass != null) {
-                    schema.name(rawClass.getName());
+                    schema.name(rawClass.getName().replace("$", "."));
                 }
 
                 return schema;

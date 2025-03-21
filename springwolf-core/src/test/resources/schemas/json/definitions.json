@@ -1,10 +1,10 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$CompositeFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.CompositeFoo" : {
     "title" : "CompositeFoo",
     "type" : "object",
     "properties" : {
       "f" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$SimpleFoo"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.SimpleFoo"
       },
       "s" : {
         "type" : "string"
@@ -18,7 +18,7 @@
       "s" : "string"
     } ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$FooWithEnum" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.FooWithEnum" : {
     "title" : "FooWithEnum",
     "type" : "object",
     "properties" : {
@@ -35,7 +35,7 @@
       "s" : "string"
     } ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$SimpleFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.SimpleFoo" : {
     "title" : "SimpleFoo",
     "type" : "object",
     "properties" : {

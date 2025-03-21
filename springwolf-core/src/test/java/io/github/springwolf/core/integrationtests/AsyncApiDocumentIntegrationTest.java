@@ -58,7 +58,7 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getChannels().get("listener-channel").getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(asyncAPI.getChannels().get("listener-class-channel").getMessages())
                     .containsOnlyKeys("java.lang.Integer");
             assertThat(asyncAPI.getOperations())
@@ -72,14 +72,14 @@ public class AsyncApiDocumentIntegrationTest {
                     .containsOnlyKeys(
                             "java.lang.String",
                             "java.lang.Integer",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
                             "java.lang.String",
                             "java.lang.Integer",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Bar",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Bar",
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
 
             MessageObject stringMessage =
                     (MessageObject) asyncAPI.getComponents().getMessages().get("java.lang.String");
@@ -91,14 +91,14 @@ public class AsyncApiDocumentIntegrationTest {
 
             MessageObject fooMessage = (MessageObject) asyncAPI.getComponents()
                     .getMessages()
-                    .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                    .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(fooMessage.getPayload().getMultiFormatSchema().getSchema())
                     .isInstanceOf(MessageReference.class);
             MessageReference fooRefMessage = (MessageReference)
                     fooMessage.getPayload().getMultiFormatSchema().getSchema();
             assertThat(fooRefMessage.getRef())
                     .isEqualTo(
-                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
         }
 
         @Test
@@ -141,7 +141,7 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getChannels().get("publisher-channel").getMessages())
                     .containsOnlyKeys(
                             "java.lang.String",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(asyncAPI.getChannels().get("publisher-class-channel").getMessages())
                     .containsOnlyKeys("java.lang.Integer");
             assertThat(asyncAPI.getOperations())
@@ -155,14 +155,14 @@ public class AsyncApiDocumentIntegrationTest {
                     .containsOnlyKeys(
                             "java.lang.String",
                             "java.lang.Integer",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
                             "java.lang.String",
                             "java.lang.Integer",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Bar",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Bar",
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
 
             MessageObject stringMessage =
                     (MessageObject) asyncAPI.getComponents().getMessages().get("java.lang.String");
@@ -174,14 +174,14 @@ public class AsyncApiDocumentIntegrationTest {
 
             MessageObject fooMessage = (MessageObject) asyncAPI.getComponents()
                     .getMessages()
-                    .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                    .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(fooMessage.getPayload().getMultiFormatSchema().getSchema())
                     .isInstanceOf(MessageReference.class);
             MessageReference fooRefMessage = (MessageReference)
                     fooMessage.getPayload().getMultiFormatSchema().getSchema();
             assertThat(fooRefMessage.getRef())
                     .isEqualTo(
-                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
         }
 
         @Test
@@ -253,45 +253,45 @@ public class AsyncApiDocumentIntegrationTest {
             Map<String, Message> messages = asyncAPI.getComponents().getMessages();
             assertThat(messages)
                     .containsOnlyKeys(
-                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Payload");
+                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload");
             Map<String, SchemaObject> schemas = asyncAPI.getComponents().getSchemas();
             assertThat(schemas)
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
-                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Payload",
-                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet",
-                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat",
-                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Dog");
+                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload",
+                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet",
+                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Cat",
+                            "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Dog");
 
             assertThat(schemas.get(
-                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet")
                             .getDiscriminator())
                     .isEqualTo("type");
             assertThat(schemas.get(
-                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Cat")
                             .getAllOf()
                             .get(0)
                             .getReference()
                             .getRef())
                     .isEqualTo(
-                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet");
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet");
             assertThat(schemas.get(
-                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Cat")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Cat")
                             .getAllOf()
                             .get(1)
                             .getSchema()
                             .getProperties())
                     .containsOnlyKeys("catSpecificField");
             assertThat(schemas.get(
-                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Dog")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Dog")
                             .getAllOf()
                             .get(0)
                             .getReference()
                             .getRef())
                     .isEqualTo(
-                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Pet");
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet");
             assertThat(schemas.get(
-                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication$Dog")
+                                    "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Dog")
                             .getAllOf()
                             .get(1)
                             .getSchema()
@@ -315,9 +315,9 @@ public class AsyncApiDocumentIntegrationTest {
         void enumAsRefIsHandled() {
             // given
             String myEnumRootSchemaName =
-                    "io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication$Schemas$MyEnumRoot";
+                    "io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication.Schemas.MyEnumRoot";
             String myEnumObjectSchemaName =
-                    "io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication$Schemas$MyEnumObject";
+                    "io.github.springwolf.core.integrationtests.application.schema.SchemaEnumAsRefApplication.Schemas.MyEnumObject";
 
             // when
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
@@ -361,28 +361,28 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(asyncAPI.getChannels().keySet()).containsExactlyInAnyOrder("listener-channel");
             assertThat(asyncAPI.getChannels().get("listener-channel").getMessages())
                     .containsOnlyKeys(
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(asyncAPI.getOperations())
                     .containsOnlyKeys("listener-channel_receive_listen3", "listener-channel_receive_listen4");
             assertThat(asyncAPI.getComponents().getMessages())
                     .containsOnlyKeys(
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(asyncAPI.getComponents().getSchemas())
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Bar",
-                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Bar",
+                            "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
 
             MessageObject fooMessage = (MessageObject) asyncAPI.getComponents()
                     .getMessages()
-                    .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                    .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(fooMessage.getPayload().getMultiFormatSchema().getSchema())
                     .isInstanceOf(MessageReference.class);
             MessageReference fooRefMessage = (MessageReference)
                     fooMessage.getPayload().getMultiFormatSchema().getSchema();
             assertThat(fooRefMessage.getRef())
                     .isEqualTo(
-                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication$Foo");
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
         }
 
         @Test
