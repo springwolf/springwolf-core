@@ -24,7 +24,7 @@ public class ProtobufStandaloneConfiguration {
         protobufObjectMapper.registerModule(new ProtobufModule(
                 ProtobufJacksonConfig.builder().acceptLiteralFieldnames(true).build()));
         protobufObjectMapper.registerModule(new ProtobufPropertiesModule());
-        protobufModelResolver = new ObjectMapperConfiguration().modelResolver(protobufObjectMapper);
+        protobufModelResolver = new ProtobufConfiguration().modelResolver(protobufObjectMapper);
     }
 
     @Bean

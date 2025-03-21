@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 @Configuration
-public class ObjectMapperConfiguration implements Jackson2ObjectMapperBuilderCustomizer {
+public class ProtobufConfiguration implements Jackson2ObjectMapperBuilderCustomizer {
     @Override
     public void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
         jacksonObjectMapperBuilder.modules(
