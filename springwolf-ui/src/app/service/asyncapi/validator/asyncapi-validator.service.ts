@@ -13,10 +13,13 @@ export class AsyncApiValidatorService {
   constructor(private notificationService: INotificationService) {}
 
   public validate(item: ServerAsyncApi) {
+    // copy the item so that the original specification is not changed by ajv
+    const itemCopy = JSON.parse(JSON.stringify(item));
+
     // configure strict mode
     this.ajv.opts.removeAdditional = false;
     const validateStrict = this.ajv.compile(expectedSchema);
-    const isValidInStrictMode = validateStrict(item);
+    const isValidInStrictMode = validateStrict(itemCopy);
     if (!isValidInStrictMode) {
       this._logToConsole &&
         console.info(
@@ -30,7 +33,7 @@ export class AsyncApiValidatorService {
     this.ajv.opts.removeAdditional = true;
 
     const validateLenient = this.ajv.compile(expectedSchema);
-    const isValidInLenientMode = validateLenient(item);
+    const isValidInLenientMode = validateLenient(itemCopy);
     if (!isValidInLenientMode) {
       this.notificationService.showError(
         "Validation error while parsing AsyncAPI file in Springwolf format (lenient mode), see console logs for details."
