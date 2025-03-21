@@ -150,8 +150,8 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .build());
 
             MessageObject message = MessageObject.builder()
-                    .messageId(SimpleFoo.class.getName())
-                    .name(SimpleFoo.class.getName())
+                    .messageId(SimpleFoo.class.getName().replace("$", "."))
+                    .name(SimpleFoo.class.getName().replace("$", "."))
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
                     .headers(MessageHeaders.of(
@@ -194,8 +194,8 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .build());
 
             MessageObject messageSimpleFoo = MessageObject.builder()
-                    .messageId(SimpleFoo.class.getName())
-                    .name(SimpleFoo.class.getName())
+                    .messageId(SimpleFoo.class.getName().replace("$", "."))
+                    .name(SimpleFoo.class.getName().replace("$", "."))
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(simpleFooPayload)
                     .headers(MessageHeaders.of(
@@ -203,8 +203,8 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
             MessageObject messageString = MessageObject.builder()
-                    .messageId(String.class.getName())
-                    .name(String.class.getName())
+                    .messageId(String.class.getName().replace("$", "."))
+                    .name(String.class.getName().replace("$", "."))
                     .title(String.class.getSimpleName())
                     .payload(stringPayload)
                     .headers(MessageHeaders.of(
@@ -253,8 +253,8 @@ class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
                     .build());
 
             MessageObject message = MessageObject.builder()
-                    .messageId(SimpleFoo.class.getName())
-                    .name(SimpleFoo.class.getName())
+                    .messageId(SimpleFoo.class.getName().replace("$", "."))
+                    .name(SimpleFoo.class.getName().replace("$", "."))
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
                     .headers(MessageHeaders.of(

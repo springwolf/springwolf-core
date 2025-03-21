@@ -1,10 +1,10 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$CompositeFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.CompositeFoo" : {
     "title" : "CompositeFoo",
     "type" : "string",
     "properties" : {
       "f" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SimpleFoo"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.SimpleFoo"
       },
       "s" : {
         "type" : "string"
@@ -12,7 +12,7 @@
     },
     "examples" : [ "<CompositeFoo><f><b>true</b><s>string</s></f><s>string</s></CompositeFoo>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$FooWithEnum" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.FooWithEnum" : {
     "title" : "FooWithEnum",
     "type" : "string",
     "properties" : {
@@ -26,7 +26,7 @@
     },
     "examples" : [ "<FooWithEnum><b>BAR1</b><s>string</s></FooWithEnum>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$SimpleFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.SimpleFoo" : {
     "title" : "SimpleFoo",
     "type" : "string",
     "properties" : {

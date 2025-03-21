@@ -1,28 +1,28 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$ClassA" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.XmlSchemaName.ClassA" : {
     "title" : "ClassA",
     "type" : "string",
     "properties" : {
       "classB" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$ClassB"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.XmlSchemaName.ClassB"
       },
       "reference" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$Reference"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.XmlSchemaName.Reference"
       }
     },
     "examples" : [ "<ClassA><ClassB><Reference/></ClassB><Reference/></ClassA>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$ClassB" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.XmlSchemaName.ClassB" : {
     "title" : "ClassB",
     "type" : "string",
     "properties" : {
       "reference" : {
-        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$Reference"
+        "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.XmlSchemaName.Reference"
       }
     },
     "examples" : [ "<ClassB><Reference/></ClassB>" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest$XmlSchemaName$Reference" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.XmlSchemaName.Reference" : {
     "title" : "Reference",
     "type" : "string",
     "examples" : [ "<Reference/>" ]

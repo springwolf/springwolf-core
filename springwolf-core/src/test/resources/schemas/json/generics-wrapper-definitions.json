@@ -1,5 +1,5 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$ListWrapper" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.ListWrapper" : {
     "type" : "array",
     "properties" : {
       "empty" : {

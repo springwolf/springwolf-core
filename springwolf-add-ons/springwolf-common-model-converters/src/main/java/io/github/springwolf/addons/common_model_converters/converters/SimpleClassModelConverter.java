@@ -39,7 +39,7 @@ public class SimpleClassModelConverter implements ModelConverter {
         Schema<?> schema = proceedWithChain(type, context, chain);
 
         if (isNativeType && schema != null && rawClass != null) {
-            schema.name(rawClass.getName());
+            schema.name(rawClass.getName().replace("$", "."));
         }
 
         return schema;

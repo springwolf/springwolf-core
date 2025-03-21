@@ -282,8 +282,8 @@ class DefaultJsonComponentsServiceIntegrationTest {
             Map<String, SchemaObject> schemas = componentsService.getSchemas();
             assertThat(schemas)
                     .containsOnlyKeys(
-                            this.getClass().getName() + "$CriteriaMessage",
-                            this.getClass().getName() + "$LegacyCriteriaMessage");
+                            CriteriaMessage.class.getName().replace("$", "."),
+                            LegacyCriteriaMessage.class.getName().replace("$", "."));
         }
 
         @Getter

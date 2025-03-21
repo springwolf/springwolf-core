@@ -1,12 +1,12 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$ArrayFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.ArrayFoo" : {
     "title" : "ArrayFoo",
     "type" : "object",
     "properties" : {
       "flist" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$SimpleFoo"
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.SimpleFoo"
         }
       }
     },
@@ -17,7 +17,7 @@
       } ]
     } ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest$SimpleFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.SimpleFoo" : {
     "title" : "SimpleFoo",
     "type" : "object",
     "properties" : {

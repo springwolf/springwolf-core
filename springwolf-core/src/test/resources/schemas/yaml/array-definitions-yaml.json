@@ -1,18 +1,18 @@
 {
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$ArrayFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest.ArrayFoo" : {
     "title" : "ArrayFoo",
     "type" : "string",
     "properties" : {
       "flist" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SimpleFoo"
+          "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest.SimpleFoo"
         }
       }
     },
     "examples" : [ "flist:\n- b: true\n  s: string\n" ]
   },
-  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest$SimpleFoo" : {
+  "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest.SimpleFoo" : {
     "title" : "SimpleFoo",
     "type" : "string",
     "properties" : {
