@@ -3,8 +3,8 @@ import { ServerBindings } from "./bindings.model";
 import { ServerAsyncApiSchema } from "./schema.model";
 
 export interface ServerAsyncApiMessage {
-  name: string;
-  title: string;
+  name?: string;
+  title?: string;
   description?: string;
   contentType?: string;
   payload: {
@@ -15,6 +15,6 @@ export interface ServerAsyncApiMessage {
         }
       | ServerAsyncApiSchema;
   };
-  headers: { $ref: string };
+  headers?: { $ref: string };
   bindings?: ServerBindings;
 }

@@ -43,6 +43,8 @@ export class ChannelOperationComponent implements OnInit {
   channelName = input.required<string>();
   operation = input.required<Operation>();
 
+  initSchema = initSchema; // accessible for template
+
   defaultSchema: Schema = initSchema;
   defaultExample: Example = initExample;
   originalDefaultExample: Example = this.defaultExample;
@@ -87,9 +89,14 @@ export class ChannelOperationComponent implements OnInit {
         this.originalDefaultExample = this.defaultExample;
       }
 
-      const headersSchemaIdentifier = this.operation().message.headers.name;
-      this.headers = schemas.get(headersSchemaIdentifier)!!;
-      this.originalHeadersExample = this.headers.example || noExample;
+      const headersSchema = this.operation().message.headers;
+      if (headersSchema) {
+        this.headers = schemas.get(headersSchema?.name)!!;
+      } else {
+        this.headers = initSchema;
+      }
+      this.headersExample = this.headers.example || noExample;
+      this.originalHeadersExample = this.headersExample;
 
       this.operationBindingExampleString = new Example(
         this.operation().bindings[this.operation().protocol]
@@ -159,14 +166,14 @@ export class ChannelOperationComponent implements OnInit {
         headers === ""
           ? {}
           : wrapException(
-              "Unable to convert headers to JSON object (nor is empty)",
+              "Unable to convert headers to JSON object (or is empty)",
               () => JSON.parse(headers || "")
             );
       const bindingsJson =
         bindings === ""
           ? {}
           : wrapException(
-              "Unable to convert bindings to JSON object (nor is empty)",
+              "Unable to convert bindings to JSON object (or is empty)",
               () => JSON.parse(bindings || "")
             );
 

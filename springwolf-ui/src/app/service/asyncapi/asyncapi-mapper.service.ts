@@ -6,7 +6,7 @@ import {
   CHANNEL_ANCHOR_PREFIX,
   ChannelOperation,
 } from "../../models/channel.model";
-import { Schema } from "../../models/schema.model";
+import { Schema, SchemaRef } from "../../models/schema.model";
 import { Injectable } from "@angular/core";
 import { Example } from "../../models/example.model";
 import { Info } from "../../models/info.model";
@@ -264,29 +264,24 @@ export class AsyncApiMapperService {
           "message of channel " + channelName,
           () => {
             const messageId = this.resolveRefId(operationMessage.$ref);
+            const messageNameFallback = this.resolveTitleFromName(messageId);
             const channelMessage = channel.messages!![messageId];
             const channelMessageId = this.resolveRefId(channelMessage.$ref);
             const message = messages[channelMessageId];
 
             this.verifyBindings(message.bindings, "message " + message.name);
 
-            const headerName = this.resolveRefId(message.headers.$ref);
             const mappedMessage: Message = {
-              name: message.name,
-              title: message.title,
+              name: message.name || messageNameFallback,
+              title: message.title || messageNameFallback,
               description: message.description,
               contentType: message.contentType || defaultContentType,
               payload: this.mapPayload(
-                message.name,
+                message.name || messageNameFallback,
                 message.payload.schema,
                 schemas
               ),
-              headers: {
-                ts_type: "ref",
-                name: headerName,
-                title: headerName,
-                anchorUrl: AsyncApiMapperService.BASE_URL + headerName,
-              },
+              headers: this.mapHeaders(message.headers),
               bindings: this.mapServerAsyncApiMessageBindings(message.bindings),
               rawBindings: message.bindings || {},
             };
@@ -295,6 +290,22 @@ export class AsyncApiMapperService {
         );
       })
       .filter((el) => el !== undefined);
+  }
+
+  private mapHeaders(
+    headers: { $ref: string } | undefined
+  ): SchemaRef | undefined {
+    if (headers === undefined) {
+      return undefined;
+    }
+
+    const headerName = this.resolveRefId(headers.$ref);
+    return {
+      ts_type: "ref",
+      name: headerName,
+      title: headerName,
+      anchorUrl: AsyncApiMapperService.BASE_URL + headerName,
+    };
   }
 
   private mapPayload(
@@ -584,7 +595,9 @@ export class AsyncApiMapperService {
               type: "channel",
             });
           }
-          if (channelOperation.operation.message.headers.name === schema.name) {
+          if (
+            channelOperation.operation.message.headers?.name === schema.name
+          ) {
             schema.usedBy.push({
               name: channelOperation.name,
               anchorUrl: channelOperation.anchorUrl!!,

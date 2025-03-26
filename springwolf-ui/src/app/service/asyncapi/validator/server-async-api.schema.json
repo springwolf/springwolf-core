@@ -81,7 +81,9 @@
           "type": "string"
         }
       },
-      "required": ["title"],
+      "required": [
+        "title"
+      ],
       "additionalProperties": {}
     },
     "ServerServers": {
@@ -99,7 +101,10 @@
             "type": "string"
           }
         },
-        "required": ["host", "protocol"],
+        "required": [
+          "host",
+          "protocol"
+        ],
         "additionalProperties": false
       }
     },
@@ -127,7 +132,9 @@
                 "type": "string"
               }
             },
-            "required": ["$ref"],
+            "required": [
+              "$ref"
+            ],
             "additionalProperties": false
           }
         },
@@ -140,7 +147,9 @@
                 "type": "string"
               }
             },
-            "required": ["$ref"],
+            "required": [
+              "$ref"
+            ],
             "additionalProperties": false
           }
         },
@@ -148,7 +157,9 @@
           "$ref": "#/definitions/ServerBindings"
         }
       },
-      "required": ["address"],
+      "required": [
+        "address"
+      ],
       "additionalProperties": false
     },
     "ServerBindings": {
@@ -193,7 +204,9 @@
               "type": "string"
             }
           },
-          "required": ["$ref"],
+          "required": [
+            "$ref"
+          ],
           "additionalProperties": false
         },
         "messages": {
@@ -205,7 +218,9 @@
                 "type": "string"
               }
             },
-            "required": ["$ref"],
+            "required": [
+              "$ref"
+            ],
             "additionalProperties": false
           }
         },
@@ -216,7 +231,11 @@
           "$ref": "#/definitions/ServerBindings"
         }
       },
-      "required": ["action", "channel", "messages"],
+      "required": [
+        "action",
+        "channel",
+        "messages"
+      ],
       "additionalProperties": false
     },
     "ServerOperationReply": {
@@ -229,7 +248,9 @@
               "type": "string"
             }
           },
-          "required": ["$ref"],
+          "required": [
+            "$ref"
+          ],
           "additionalProperties": false
         },
         "messages": {
@@ -241,12 +262,17 @@
                 "type": "string"
               }
             },
-            "required": ["$ref"],
+            "required": [
+              "$ref"
+            ],
             "additionalProperties": false
           }
         }
       },
-      "required": ["channel", "messages"],
+      "required": [
+        "channel",
+        "messages"
+      ],
       "additionalProperties": false
     },
     "ServerComponents": {
@@ -265,7 +291,10 @@
           }
         }
       },
-      "required": ["schemas", "messages"],
+      "required": [
+        "schemas",
+        "messages"
+      ],
       "additionalProperties": false
     },
     "ServerAsyncApiSchema": {
@@ -380,7 +409,9 @@
               "type": "string"
             }
           },
-          "required": ["$ref"],
+          "required": [
+            "$ref"
+          ],
           "additionalProperties": false
         }
       ]
@@ -415,7 +446,9 @@
                       "type": "string"
                     }
                   },
-                  "required": ["$ref"],
+                  "required": [
+                    "$ref"
+                  ],
                   "additionalProperties": false
                 },
                 {
@@ -424,7 +457,10 @@
               ]
             }
           },
-          "required": ["schemaFormat", "schema"],
+          "required": [
+            "schemaFormat",
+            "schema"
+          ],
           "additionalProperties": false
         },
         "headers": {
@@ -434,14 +470,18 @@
               "type": "string"
             }
           },
-          "required": ["$ref"],
+          "required": [
+            "$ref"
+          ],
           "additionalProperties": false
         },
         "bindings": {
           "$ref": "#/definitions/ServerBindings"
         }
       },
-      "required": ["name", "title", "payload", "headers"],
+      "required": [
+        "payload"
+      ],
       "additionalProperties": false
     }
   }
