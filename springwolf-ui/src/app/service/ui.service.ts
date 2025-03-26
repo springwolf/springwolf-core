@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, shareReplay } from "rxjs";
+import { BehaviorSubject, Observable, shareReplay, catchError, of } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { ServerUiConfig } from "./asyncapi/models/ui.model";
 import { EndpointService } from "./endpoint.service";
@@ -25,6 +25,13 @@ export class UiService extends IUiService {
   private _getGroup = new BehaviorSubject<string>(IUiService.DEFAULT_GROUP);
   readonly isGroup$ = this._getGroup.asObservable();
 
+  private fallbackConfig: ServerUiConfig = {
+    initialConfig: {
+      showBindings: IUiService.DEFAULT_SHOW_BINDINGS,
+      showHeaders: IUiService.DEFAULT_SHOW_HEADERS,
+    },
+    groups: [],
+  };
   private _isShowBindings = new BehaviorSubject<boolean>(
     IUiService.DEFAULT_SHOW_BINDINGS
   );
@@ -42,7 +49,10 @@ export class UiService extends IUiService {
 
     this.uiConfig = this.http
       .get<ServerUiConfig>(EndpointService.uiConfig)
-      .pipe(shareReplay());
+      .pipe(
+        catchError(() => of(this.fallbackConfig)),
+        shareReplay()
+      );
     this.uiConfig.subscribe((serverUiConfig: ServerUiConfig) => {
       this.toggleIsShowBindings(serverUiConfig.initialConfig.showBindings);
       this.toggleIsShowHeaders(serverUiConfig.initialConfig.showHeaders);

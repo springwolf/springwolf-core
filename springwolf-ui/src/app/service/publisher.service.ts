@@ -12,11 +12,11 @@ export class PublisherService {
   canPublish(protocol: string): Observable<boolean> {
     if (this.publishable[protocol] === undefined) {
       this.publishable[protocol] = this.http
-        .get<undefined>(EndpointService.getPublishEndpoint(protocol), {
+        .get<unknown>(EndpointService.getPublishEndpoint(protocol), {
           observe: "response",
         })
         .pipe(
-          map((response: any) => response.status === 200),
+          map((response) => response.status === 200),
           share()
         );
     }

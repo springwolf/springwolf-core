@@ -28,7 +28,7 @@ export class MockServer implements InMemoryDbService {
           this.mockData.groups === undefined ||
           this.mockData.groups[group] === undefined
         ) {
-          return { status: STATUS.NOT_FOUND, body: {} };
+          return { status: STATUS.NOT_FOUND, body: undefined };
         }
         return {
           status: STATUS.OK,
@@ -40,6 +40,9 @@ export class MockServer implements InMemoryDbService {
         return { status: STATUS.OK, body: {} };
       });
     } else if (reqInfo.req.url.endsWith("/ui-config")) {
+      if (!this.mockData.uiConfig) {
+        return { status: STATUS.NOT_FOUND, body: undefined };
+      }
       return reqInfo.utils.createResponse$(() => {
         return {
           status: STATUS.OK,
