@@ -28,7 +28,9 @@
                 {{{linkEl}}&#x200B;}
               </a>
               @for (childTag of child.tags; track childTag) {
-              <span class="badge {{ childTag }}-badge">{{ childTag }}</span>
+              <span class="badge {{ childTag.type }}-badge">{{
+                childTag.value
+              }}</span>
               }
             </span>
 
@@ -48,8 +50,8 @@
                   </a>
 
                   @for (subChildTag of subchild.tags; track subChildTag) {
-                  <span class="badge {{ subChildTag }}-badge">{{
-                    subChildTag
+                  <span class="badge {{ subChildTag.type }}-badge">{{
+                    subChildTag.value
                   }}</span>
 
                   }

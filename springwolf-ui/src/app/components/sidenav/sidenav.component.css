@@ -30,22 +30,16 @@ a {
   padding: 0 0.2em;
   margin: 0.2em 0.3em auto 0.3em;
 }
-.sidenav .badge.send-badge {
+.sidenav .badge.operation-send-badge {
   color: var(--springwolf-badge-color-send);
   background-color: var(--springwolf-badge-color-background-send);
 }
 
-.sidenav .badge.receive-badge {
+.sidenav .badge.operation-receive-badge {
   color: var(--springwolf-badge-color-receive);
   background-color: var(--springwolf-badge-color-background-receive);
 }
-.sidenav .badge.amqp-badge,
-.sidenav .badge.cloudstream-badge,
-.sidenav .badge.kafka-badge,
-.sidenav .badge.jms-badge,
-.sidenav .badge.sqs-badge,
-.sidenav .badge.sns-badge,
-.sidenav .badge.stomp-badge {
+.sidenav .badge.protocol-badge {
   color: var(--springwolf-badge-color-protocol);
   background-color: var(--springwolf-badge-color-background-protocol);
 }

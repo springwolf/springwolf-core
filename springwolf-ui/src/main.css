@@ -42,6 +42,9 @@ a {
 .gap-16 {
   gap: 16px;
 }
+.height-fix-content {
+  height: fit-content;
+}
 .space-between {
   justify-content: space-between;
 }
