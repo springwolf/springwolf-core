@@ -57,7 +57,7 @@ kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-co
 lombok = "org.projectlombok:lombok:1.18.36"
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "org-mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "org-mockito" }
-moneta = "org.javamoney:moneta:1.4.4"
+moneta = "org.javamoney:moneta:1.4.5"
 money-api = "javax.money:money-api:1.1"
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
