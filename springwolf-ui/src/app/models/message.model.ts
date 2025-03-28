@@ -9,7 +9,7 @@ export interface Message {
   contentType: string;
   /** Schemas of primitive types are inlined, others referenced */
   payload: SchemaRef | Schema;
-  headers: SchemaRef;
+  headers?: SchemaRef;
   bindings: Map<string, Binding>;
   rawBindings: { [protocol: string]: object };
 }

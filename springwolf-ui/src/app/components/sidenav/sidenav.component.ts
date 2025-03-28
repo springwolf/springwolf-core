@@ -21,7 +21,10 @@ interface NavigationEntry {
   href: string | undefined;
   selected?: boolean;
   collapsed?: boolean;
-  tags?: string[];
+  tags?: {
+    type: string;
+    value: string;
+  }[];
   children?: NavigationEntry[];
 }
 
@@ -62,7 +65,9 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         href:
           AsyncApiMapperService.BASE_URL +
           asyncapi.servers.get(key)!.anchorIdentifier,
-        tags: [asyncapi.servers.get(key)!.protocol],
+        tags: [
+          { type: "protocol", value: asyncapi.servers.get(key)!.protocol },
+        ],
       }));
       newNavigation.push({
         name: ["Servers"],
@@ -82,7 +87,12 @@ export class SidenavComponent implements OnInit, AfterViewInit {
           return {
             name: this.splitForWordBreaking(operation.operation.message.title),
             href: AsyncApiMapperService.BASE_URL + operation.anchorIdentifier,
-            tags: [operation.operation.operationType],
+            tags: [
+              {
+                type: "operation-" + operation.operation.operationType,
+                value: operation.operation.operationType,
+              },
+            ],
           };
         });
         const tags = children

@@ -441,7 +441,7 @@
           "$ref": "#/definitions/ServerBindings"
         }
       },
-      "required": ["name", "title", "payload", "headers"],
+      "required": ["payload"],
       "additionalProperties": false
     }
   }
