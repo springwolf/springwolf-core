@@ -21,6 +21,7 @@ public class StandaloneEnvironmentLoader {
             environment.setActiveProfiles(profiles.toArray(new String[0]));
         }
 
+        // Load properties from application.properties
         ConfigDataEnvironmentPostProcessor.applyTo(environment);
 
         return environment;

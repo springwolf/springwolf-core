@@ -4,11 +4,11 @@ package io.github.springwolf.core.standalone;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 
 /**
- * Factory to create a Springwolf instance and {@link io.github.springwolf.asyncapi.v3.model.AsyncAPI}
- * for standalone usage without runtime Spring context.
+ * Standalone application instance to access {@link io.github.springwolf.asyncapi.v3.model.AsyncAPI}
+ * without runtime Spring context.
  * <p>
  * Allows Springwolf usage at build time, for example in unit test.
  */
-public interface StandaloneFactory {
+public interface StandaloneApplication {
     AsyncApiService getAsyncApiService();
 }

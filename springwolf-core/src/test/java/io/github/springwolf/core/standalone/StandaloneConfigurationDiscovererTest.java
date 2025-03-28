@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.standalone;
 
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.StandardEnvironment;
@@ -15,9 +16,11 @@ class StandaloneConfigurationDiscovererTest {
     @Test
     void shouldFindAllCoreStandaloneConfigurations() {
         // when
-        List<String> classes = StandaloneConfigurationDiscoverer.scan(environment).stream()
-                .map(Class::getName)
-                .toList();
+        List<String> classes =
+                StandaloneConfigurationDiscoverer.scan(SpringwolfConfigConstants.SPRINGWOLF_PACKAGE, environment)
+                        .stream()
+                        .map(Class::getName)
+                        .toList();
 
         // then
         assertThat(classes)

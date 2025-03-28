@@ -15,6 +15,10 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 public abstract class ClassScannerUtil {
+    /**
+     * Get classes from basePackages that match the filter
+     * @param basePackages comma separated list of packages
+     */
     public static List<Class<?>> getClasses(String basePackages, TypeFilter filter, Environment environment) {
         ClassPathScanningCandidateComponentProvider provider =
                 new ClassPathScanningCandidateComponentProvider(false, environment);

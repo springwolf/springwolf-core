@@ -4,8 +4,8 @@ package io.github.springwolf.examples.jms;
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.springwolf.core.standalone.DefaultStandaloneFactory;
-import io.github.springwolf.core.standalone.StandaloneFactory;
+import io.github.springwolf.core.standalone.DefaultStandaloneApplication;
+import io.github.springwolf.core.standalone.StandaloneApplication;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -22,10 +22,11 @@ public class StandaloneTest {
     @Test
     public void asyncApiStandaloneArtifactTest() throws IOException {
         // given
-        StandaloneFactory standaloneFactory = new DefaultStandaloneFactory();
+        StandaloneApplication standaloneApplication =
+                DefaultStandaloneApplication.builder().buildAndStart();
 
         // when
-        AsyncAPI asyncApi = standaloneFactory.getAsyncApiService().getAsyncAPI();
+        AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
 
         // then
         assertThat(asyncApi).isNotNull();
