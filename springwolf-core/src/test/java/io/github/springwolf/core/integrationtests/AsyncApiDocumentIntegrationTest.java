@@ -406,10 +406,10 @@ public class AsyncApiDocumentIntegrationTest {
     }
 
     private AsyncApiService createStandaloneAsyncApiService(ConfigurableEnvironment environment, String basePackage) {
-        return DefaultStandaloneApplication.builder()
+        DefaultStandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
                 .addScanPackage(basePackage)
                 .setEnvironment(environment)
-                .buildAndStart()
-                .getAsyncApiService();
+                .buildAndStart();
+        return standaloneApplication.getAsyncApiService();
     }
 }

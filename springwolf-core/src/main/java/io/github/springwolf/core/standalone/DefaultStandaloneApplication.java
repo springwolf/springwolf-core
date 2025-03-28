@@ -56,7 +56,7 @@ public class DefaultStandaloneApplication implements StandaloneApplication {
      * Custom configuration classes or beans in custom packages can be added using {@link Builder#addScanPackage(String)},
      * for example to override beans or to add a {@link io.github.springwolf.core.asyncapi.AsyncApiCustomizer}
      */
-    @NoArgsConstructor
+    @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
     public static class Builder {
 
         @Nullable
