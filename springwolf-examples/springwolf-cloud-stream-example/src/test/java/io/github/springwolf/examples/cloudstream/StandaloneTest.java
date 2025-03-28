@@ -33,7 +33,7 @@ public class StandaloneTest {
     }
 
     @Test
-    public void scanApplication() throws IOException {
+    public void asyncApiStandaloneArtifactTest() throws IOException {
         // given
         String basePackage = "io.github.springwolf.examples.cloudstream";
         StandaloneFactory standaloneFactory = new DefaultStandaloneFactory(basePackage);

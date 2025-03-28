@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class StandaloneTest {
 
     @Test
-    public void scanApplication() throws IOException {
+    public void asyncApiStandaloneArtifactTest() throws IOException {
         // given
         String basePackage = "io.github.springwolf.examples.kafka";
         StandaloneFactory standaloneFactory = new DefaultStandaloneFactory(basePackage);
