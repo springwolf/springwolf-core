@@ -15,16 +15,17 @@ import { CommonModule, Location } from "@angular/common";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatIconModule } from "@angular/material/icon";
 
+interface NavigationEntryTag {
+  type: string;
+  value: string;
+}
 interface NavigationEntry {
   name: string[];
   icon?: string;
   href: string | undefined;
   selected?: boolean;
   collapsed?: boolean;
-  tags?: {
-    type: string;
-    value: string;
-  }[];
+  tags?: NavigationEntryTag[];
   children?: NavigationEntry[];
 }
 
@@ -102,7 +103,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         const channel = {
           name: this.splitForWordBreaking(value.name),
           href: AsyncApiMapperService.BASE_URL + value.anchorIdentifier,
-          tags: Array.from(new Set(tags)).sort(),
+          tags: this.filterAndSort(tags, "value"),
           children: children,
         };
 
@@ -134,6 +135,20 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     // Split by set of characters, but keep separators
     return text.split(/(?<=[.,_/\-])/);
   };
+
+  private filterAndSort<A>(arr: A[], key: keyof A): A[] {
+    const seen = new Set<string>();
+    const uniqueArr = arr.filter((item) => {
+      const serializedItem = JSON.stringify(item);
+      return seen.has(serializedItem) ? false : seen.add(serializedItem);
+    });
+
+    return uniqueArr.sort((a, b) => {
+      if (a[key] < b[key]) return -1;
+      if (a[key] > b[key]) return 1;
+      return 0;
+    });
+  }
 
   ngAfterViewInit() {
     this.scrollableElement.nativeElement.addEventListener(
