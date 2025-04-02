@@ -318,6 +318,97 @@ class FunctionalChannelBeanBuilderTest {
                 public void accept(KStream<Void, String> voidStringKStream) {}
             }
         }
+
+        @Nested
+        class InheritanceTypes {
+
+            @Test
+            void testBiConsumerChildBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "biConsumerChildBean");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data)
+                        .containsExactly(new FunctionalChannelBeanData(
+                                "biConsumerChildBean", method, String.class, CONSUMER, "biConsumerChildBean-in-0"));
+            }
+
+            @Test
+            void testBiConsumerChildChildBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "biConsumerChildChildBean");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data)
+                        .containsExactly(new FunctionalChannelBeanData(
+                                "biConsumerChildChildBean",
+                                method,
+                                String.class,
+                                CONSUMER,
+                                "biConsumerChildChildBean-in-0"));
+            }
+
+            @Test
+            void testConsumerChildClassBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "consumerChildClassBean");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data)
+                        .containsExactly(new FunctionalChannelBeanData(
+                                "consumerChildClassBean",
+                                method,
+                                String.class,
+                                CONSUMER,
+                                "consumerChildClassBean-in-0"));
+            }
+
+            @Test
+            void testConsumerChildChildClassBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "consumerChildChildClassBean");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data)
+                        .containsExactly(new FunctionalChannelBeanData(
+                                "consumerChildChildClassBean",
+                                method,
+                                String.class,
+                                CONSUMER,
+                                "consumerChildChildClassBean-in-0"));
+            }
+
+            interface BiConsumerChild extends BiConsumer<String, String> {}
+
+            interface BiConsumerChildChild extends BiConsumerChild {}
+
+            static class ConsumerChildClass implements Consumer<String> {
+                @Override
+                public void accept(final String s) {}
+            }
+
+            static class ConsumerChildChildClass extends ConsumerChildClass {}
+
+            @Bean
+            private BiConsumerChild biConsumerChildBean() {
+                return (input, headers) -> System.out.println(input);
+            }
+
+            @Bean
+            private BiConsumerChildChild biConsumerChildChildBean() {
+                return (input, headers) -> System.out.println(input);
+            }
+
+            @Bean
+            private ConsumerChildClass consumerChildClassBean() {
+                return new ConsumerChildClass();
+            }
+
+            @Bean
+            private ConsumerChildChildClass consumerChildChildClassBean() {
+                return new ConsumerChildChildClass();
+            }
+        }
     }
 
     private static Method getMethod(Class<?> clazz, String methodName) throws NoSuchMethodException {
