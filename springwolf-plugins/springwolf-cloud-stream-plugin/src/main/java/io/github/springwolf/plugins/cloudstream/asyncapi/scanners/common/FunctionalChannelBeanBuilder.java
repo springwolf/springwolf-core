@@ -3,6 +3,7 @@ package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common;
 
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ResolvableType;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
@@ -16,7 +17,6 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
@@ -27,25 +27,41 @@ public class FunctionalChannelBeanBuilder {
         Class<?> type = getRawType(element);
 
         if (Consumer.class.isAssignableFrom(type) || BiConsumer.class.isAssignableFrom(type)) {
-            Type payloadType = getTypeGenerics(element).get(0);
+            List<Type> typeGenerics = getTypeGenerics(element);
+            if (typeGenerics.isEmpty()) {
+                return Collections.emptySet();
+            }
+            Type payloadType = typeGenerics.get(0);
             return Set.of(ofConsumer(element, payloadType));
         }
 
         if (Supplier.class.isAssignableFrom(type)) {
-            Type payloadType = getTypeGenerics(element).get(0);
+            List<Type> typeGenerics = getTypeGenerics(element);
+            if (typeGenerics.isEmpty()) {
+                return Collections.emptySet();
+            }
+            Type payloadType = typeGenerics.get(0);
             return Set.of(ofSupplier(element, payloadType));
         }
 
         if (Function.class.isAssignableFrom(type)) {
-            Type inputType = getTypeGenerics(element).get(0);
-            Type outputType = getTypeGenerics(element).get(1);
+            List<Type> typeGenerics = getTypeGenerics(element);
+            if (typeGenerics.size() != 2) {
+                return Collections.emptySet();
+            }
+            Type inputType = typeGenerics.get(0);
+            Type outputType = typeGenerics.get(1);
 
             return Set.of(ofConsumer(element, inputType), ofSupplier(element, outputType));
         }
 
         if (BiFunction.class.isAssignableFrom(type)) {
-            Type inputType = getTypeGenerics(element).get(0);
-            Type outputType = getTypeGenerics(element).get(2);
+            List<Type> typeGenerics = getTypeGenerics(element);
+            if (typeGenerics.size() != 3) {
+                return Collections.emptySet();
+            }
+            Type inputType = typeGenerics.get(0);
+            Type outputType = typeGenerics.get(2);
 
             return Set.of(ofConsumer(element, inputType), ofSupplier(element, outputType));
         }
@@ -97,32 +113,45 @@ public class FunctionalChannelBeanBuilder {
 
     private List<Type> getTypeGenerics(AnnotatedElement element) {
         if (element instanceof Method m) {
-            ParameterizedType genericReturnType = (ParameterizedType) m.getGenericReturnType();
-            return getTypeGenerics(genericReturnType);
+            Type returnType = getMethodReturnType(m);
+            if (returnType instanceof ParameterizedType) {
+                return getTypeGenerics(((ParameterizedType) returnType));
+            } else {
+                return Collections.emptyList();
+            }
         }
 
         if (element instanceof Class<?> c) {
-            return getTypeGenerics(c);
+            ResolvableType resolvableType = ResolvableType.forClass(c);
+            Type type = getParameterizedType(resolvableType);
+            if (type instanceof ParameterizedType) {
+                return getTypeGenerics((ParameterizedType) type);
+            } else {
+                return Collections.emptyList();
+            }
         }
 
         throw new IllegalArgumentException("Must be a Method or Class");
     }
 
-    private List<Type> getTypeGenerics(Class<?> c) {
-        Predicate<Class<?>> isConsumerPredicate = Consumer.class::isAssignableFrom;
-        Predicate<Class<?>> isSupplierPredicate = Supplier.class::isAssignableFrom;
-        Predicate<Class<?>> isFunctionPredicate = Function.class::isAssignableFrom;
-        Predicate<Class<?>> hasFunctionalInterfacePredicate =
-                isConsumerPredicate.or(isSupplierPredicate).or(isFunctionPredicate);
+    private Type getMethodReturnType(Method m) {
+        ResolvableType resolvableType = ResolvableType.forMethodReturnType(m);
+        return getParameterizedType(resolvableType);
+    }
 
-        return Arrays.stream(c.getGenericInterfaces())
-                .filter(type -> type instanceof ParameterizedType)
-                .map(type -> (ParameterizedType) type)
-                .filter(type -> type.getRawType() instanceof Class<?>)
-                .filter(type -> hasFunctionalInterfacePredicate.test((Class<?>) type.getRawType()))
-                .map(this::getTypeGenerics)
-                .findFirst()
-                .orElse(Collections.emptyList());
+    private Type getParameterizedType(ResolvableType resolvableType) {
+        if (Consumer.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
+            return resolvableType.as(Consumer.class).getType();
+        } else if (BiConsumer.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
+            return resolvableType.as(BiConsumer.class).getType();
+        } else if (Supplier.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
+            return resolvableType.as(Supplier.class).getType();
+        } else if (Function.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
+            return resolvableType.as(Function.class).getType();
+        } else if (BiFunction.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
+            return resolvableType.as(BiFunction.class).getType();
+        }
+        throw new IllegalArgumentException("Illegal type: " + resolvableType.getRawClass());
     }
 
     private List<Type> getTypeGenerics(ParameterizedType parameterizedType) {
