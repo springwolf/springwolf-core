@@ -334,6 +334,42 @@ class FunctionalChannelBeanBuilderTest {
             }
 
             @Test
+            void testBiConsumerRawChildBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "biConsumerRawChildBean");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data).isEmpty();
+            }
+
+            @Test
+            void testSupplierRawChildBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "supplierRawChild");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data).isEmpty();
+            }
+
+            @Test
+            void testFunctionRawChildBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "functionRawChild");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data).isEmpty();
+            }
+
+            @Test
+            void testBiFunctionRawChildBean() throws NoSuchMethodException {
+                Method method = getMethod(this.getClass(), "biFunctionRawChild");
+
+                Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
+
+                Assertions.assertThat(data).isEmpty();
+            }
+
+            @Test
             void testBiConsumerChildChildBean() throws NoSuchMethodException {
                 Method method = getMethod(this.getClass(), "biConsumerChildChildBean");
 
@@ -380,6 +416,14 @@ class FunctionalChannelBeanBuilderTest {
 
             interface BiConsumerChild extends BiConsumer<String, String> {}
 
+            interface BiConsumerRawChild extends BiConsumer {}
+
+            interface SupplierRawChild extends Supplier {}
+
+            interface FunctionRawChild extends Function {}
+
+            interface BiFunctionRawChild extends BiFunction {}
+
             interface BiConsumerChildChild extends BiConsumerChild {}
 
             static class ConsumerChildClass implements Consumer<String> {
@@ -392,6 +436,26 @@ class FunctionalChannelBeanBuilderTest {
             @Bean
             private BiConsumerChild biConsumerChildBean() {
                 return (input, headers) -> System.out.println(input);
+            }
+
+            @Bean
+            private BiConsumerRawChild biConsumerRawChildBean() {
+                return (input, headers) -> System.out.println(input);
+            }
+
+            @Bean
+            private SupplierRawChild supplierRawChild() {
+                return () -> null;
+            }
+
+            @Bean
+            private FunctionRawChild functionRawChild() {
+                return (input) -> null;
+            }
+
+            @Bean
+            private BiFunctionRawChild biFunctionRawChild() {
+                return (input, headers) -> null;
             }
 
             @Bean
