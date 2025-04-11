@@ -4,12 +4,12 @@ package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.apache.kafka.streams.kstream.KStream;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
@@ -22,6 +22,9 @@ import java.util.function.Supplier;
 
 import static io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanData.BeanType.CONSUMER;
 import static io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanData.BeanType.SUPPLIER;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
 class FunctionalChannelBeanBuilderTest {
     private final SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
@@ -39,7 +42,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data).isEmpty();
+                assertThat(data).isEmpty();
             }
 
             @Bean
@@ -56,7 +59,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "consumerBean", method, String.class, CONSUMER, "consumerBean-in-0"));
             }
@@ -75,7 +78,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "biConsumerBean", method, String.class, CONSUMER, "biConsumerBean-in-0"));
             }
@@ -94,7 +97,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "supplierBean", method, String.class, SUPPLIER, "supplierBean-out-0"));
             }
@@ -113,7 +116,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactlyInAnyOrder(
                                 new FunctionalChannelBeanData(
                                         "functionBean", method, String.class, CONSUMER, "functionBean-in-0"),
@@ -135,7 +138,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactlyInAnyOrder(
                                 new FunctionalChannelBeanData(
                                         "biFunctionBean", method, String.class, CONSUMER, "biFunctionBean-in-0"),
@@ -159,7 +162,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "consumerBeanWithGenericPayload",
                                 method,
@@ -184,7 +187,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "kafkaStreamsConsumerBean", method, String.class, CONSUMER, methodName + "-in-0"));
             }
@@ -207,7 +210,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
 
-                Assertions.assertThat(data).isEmpty();
+                assertThat(data).isEmpty();
             }
 
             private static class TestClass {}
@@ -221,7 +224,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "TestClass", testClass, String.class, CONSUMER, "testClass-in-0"));
             }
@@ -240,7 +243,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "TestClass", testClass, String.class, SUPPLIER, "testClass-out-0"));
             }
@@ -262,7 +265,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactlyInAnyOrder(
                                 new FunctionalChannelBeanData(
                                         "TestClass", testClass, String.class, CONSUMER, "testClass-in-0"),
@@ -287,7 +290,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "TestClass", testClass, String.class, CONSUMER, "testClass-in-0"));
             }
@@ -308,7 +311,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "TestClass", testClass, String.class, CONSUMER, "testClass-in-0"));
             }
@@ -328,7 +331,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "biConsumerChildBean", method, String.class, CONSUMER, "biConsumerChildBean-in-0"));
             }
@@ -339,7 +342,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data).isEmpty();
+                assertThat(data).isEmpty();
             }
 
             @Test
@@ -348,7 +351,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data).isEmpty();
+                assertThat(data).isEmpty();
             }
 
             @Test
@@ -357,7 +360,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data).isEmpty();
+                assertThat(data).isEmpty();
             }
 
             @Test
@@ -366,7 +369,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data).isEmpty();
+                assertThat(data).isEmpty();
             }
 
             @Test
@@ -375,7 +378,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "biConsumerChildChildBean",
                                 method,
@@ -390,7 +393,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "consumerChildClassBean",
                                 method,
@@ -405,7 +408,7 @@ class FunctionalChannelBeanBuilderTest {
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
 
-                Assertions.assertThat(data)
+                assertThat(data)
                         .containsExactly(new FunctionalChannelBeanData(
                                 "consumerChildChildClassBean",
                                 method,
@@ -472,6 +475,23 @@ class FunctionalChannelBeanBuilderTest {
             private ConsumerChildChildClass consumerChildChildClassBean() {
                 return new ConsumerChildChildClass();
             }
+        }
+    }
+
+    @Nested
+    class ErrorCases {
+
+        @Test
+        void elementsOtherThanMethodOrClassThrowException() {
+            // given
+            AnnotatedType annotatedType = mock(AnnotatedType.class);
+
+            // when
+            assertThatThrownBy(() -> {
+                        functionalChannelBeanBuilder.build(annotatedType);
+                    })
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Must be a Method or Class");
         }
     }
 
