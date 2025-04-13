@@ -28,6 +28,7 @@ var bindings = [
 ]
 var plugins = [
         'springwolf-amqp',
+        'springwolf-asb',
         'springwolf-cloud-stream',
         'springwolf-jms',
         'springwolf-kafka',

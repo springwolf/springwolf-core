@@ -7,11 +7,11 @@ io-awspring-cloud = "3.3.0"
 io-confluent = "7.9.0"
 io-swagger-core-v3 = "2.2.30"
 jackson-core = "2.18.3"
-kotlin =  "2.1.20"
+kotlin = "2.1.20"
 node-plugin = "7.1.0"
 nodeVersion = "22.12.0"
 npm = "10.9.0"
-openapi-gradle =  "1.9.0"
+openapi-gradle = "1.9.0"
 org-junit-jupiter = "5.12.1"
 org-junit-plattform = "1.12.1"
 org-mockito = "5.17.0"
@@ -24,10 +24,13 @@ spotless = "7.0.3"
 spring-boot-plugin = "3.4.4"
 spring-cloud = "2024.0.1" # not managed by spring-boot-dependencies
 spring-cloud-stream = "4.2.1" # not managed by spring-boot-dependencies
-
+azure-messaging-servicebus = "7.17.10"
+azure-service-bus-starter="5.20.1"
 [libraries]
 activemq-broker = { module = "org.apache.activemq:activemq-broker", version.ref = "activemq" }
 amqp-client = "com.rabbitmq:amqp-client:5.25.0"
+azure-messaging-service-bus = { module = "com.azure:azure-messaging-servicebus", version.ref = "azure-messaging-servicebus" }
+azure-service-bus-starter = {module = "com.azure.spring:spring-cloud-azure-starter-servicebus", version.ref = "azure-service-bus-starter"}
 assertj-core = "org.assertj:assertj-core:3.27.3"
 avro = "org.apache.avro:avro:1.12.0"
 awaitility = "org.awaitility:awaitility:4.3.0"

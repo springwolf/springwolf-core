@@ -4,6 +4,7 @@ include(
         'springwolf-asyncapi',
         'springwolf-core',
         'springwolf-plugins:springwolf-amqp-plugin',
+        'springwolf-plugins:springwolf-asb-plugin',
         'springwolf-plugins:springwolf-cloud-stream-plugin',
         'springwolf-plugins:springwolf-jms-plugin',
         'springwolf-plugins:springwolf-kafka-plugin',
@@ -12,6 +13,7 @@ include(
         'springwolf-plugins:springwolf-stomp-plugin',
         'springwolf-examples:e2e',
         'springwolf-examples:springwolf-amqp-example',
+        'springwolf-examples:springwolf-asb-example',
         'springwolf-examples:springwolf-cloud-stream-example',
         'springwolf-examples:springwolf-jms-example',
         'springwolf-examples:springwolf-kafka-example',
@@ -33,6 +35,7 @@ include(
 )
 
 project(':springwolf-plugins:springwolf-amqp-plugin').name = 'springwolf-amqp'
+project(':springwolf-plugins:springwolf-asb-plugin').name = 'springwolf-asb'
 project(':springwolf-plugins:springwolf-cloud-stream-plugin').name = 'springwolf-cloud-stream'
 project(':springwolf-plugins:springwolf-jms-plugin').name = 'springwolf-jms'
 project(':springwolf-plugins:springwolf-kafka-plugin').name = 'springwolf-kafka'
