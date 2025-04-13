@@ -1,0 +1,72 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'java-library'
+
+    alias libs.plugins.spring.boot
+//    alias libs.plugins.cutterslade.analyze
+}
+
+dependencies {
+    api project(":springwolf-core")
+    api project(":springwolf-asyncapi")
+    api project(":springwolf-bindings:springwolf-amqp-binding")
+//    permitUnusedDeclared project(":springwolf-bindings:springwolf-amqp-binding")
+
+    implementation libs.slf4j.api
+
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation libs.spring.context
+    implementation libs.spring.core
+    implementation libs.spring.web
+    implementation libs.spring.boot
+    implementation libs.spring.boot.autoconfigure
+    implementation libs.azure.messaging.service.bus
+
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
+
+    implementation libs.jakarta.annotation.api
+
+    annotationProcessor libs.spring.boot.configuration.processor
+
+    testAnnotationProcessor libs.lombok
+
+    testImplementation libs.assertj.core
+
+    testImplementation libs.mockito.core
+    testImplementation libs.jackson.databind
+
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.beans
+    testImplementation libs.spring.test
+
+    testAnnotationProcessor libs.lombok
+
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter
+    testRuntimeOnly libs.junit.plattform.launcher
+}
+
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+bootJar.enabled = false
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'springwolf-asb'
+                description = 'Automated JSON API documentation for AMQP (Azure Service Bus) Listeners built with Spring'
+            }
+        }
+    }
+}

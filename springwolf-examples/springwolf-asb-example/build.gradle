@@ -1,0 +1,35 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'java'
+
+    alias libs.plugins.spring.boot
+//    alias libs.plugins.cutterslade.analyze
+
+    alias libs.plugins.docker.spring.boot
+}
+
+dependencies {
+    implementation project(":springwolf-core")
+    implementation project(":springwolf-plugins:springwolf-asb")
+//    permitUnusedDeclared project(":springwolf-plugins:springwolf-asb")
+
+//    annotationProcessor project(":springwolf-plugins:springwolf-amqp")
+    runtimeOnly project(":springwolf-ui")
+
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
+
+    runtimeOnly libs.spring.boot.starter.web
+
+    implementation libs.azure.service.bus.starter
+
+    implementation libs.slf4j.api
+    implementation libs.swagger.annotations.jakarta
+
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation libs.spring.boot.autoconfigure
+    implementation libs.spring.boot
+    implementation libs.spring.context
+}
+
