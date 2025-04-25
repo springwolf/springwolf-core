@@ -338,8 +338,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             Schema<?> resolvedSchema = definitions.get(schemaName);
             if (resolvedSchema == null) {
                 throw new ExampleGeneratingException(
-                    String.format("Missing schema (name = %s) during example generation", schemaName)
-                );
+                        String.format("Missing schema (name = %s) during example generation", schemaName));
             }
             return Optional.of(resolvedSchema);
         }
