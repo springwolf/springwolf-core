@@ -11,7 +11,7 @@ The following list describe the steps necessary to release a new version.
    5. SNS: https://sns.demo.springwolf.dev/
    6. SQS: https://sqs.demo.springwolf.dev/
    7. STOMP (WebSocket): https://stomp.demo.springwolf.dev/
-3. Update `all-contributors` in [README.md](README.md)
+3. Update `all-contributors` in [README.md](README.md#-contributors)
 4. Create a new branch `release/1.<minor-version-number>.X`, remove the `-SNAPHSOT` postfix in `.env`, commit & push
 5. Run GitHub `Publish releases` pipeline from the newly created release branch
 6. Update the version number in `.env` for next snapshot on branch `master`, commit & push

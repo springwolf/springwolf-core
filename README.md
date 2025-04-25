@@ -228,6 +228,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 To add yourself as a contributor, install the [all-contributors CLI](https://allcontributors.org/docs/en/cli/installation) and run:
-1. `all-contributors check` 
-2. `all-contributors add <username> code`
-3. `all-contributors generate`
+1. `npx all-contributors-cli check` 
+2. `npx all-contributors-cli add <username> code`
+3. `npx all-contributors-cli generate`
