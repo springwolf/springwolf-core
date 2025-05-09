@@ -2,9 +2,6 @@
 package io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common;
 
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ResolvableType;
 
@@ -30,10 +27,10 @@ public class FunctionalChannelBeanBuilder {
     public Set<FunctionalChannelBeanData> build(AnnotatedElement element) {
         final AnnotatedClassOrMethod annotatedClassOrMethod = getAnnotatedClassOrMethodOrThrow(element, typeExtractor);
 
-        Class<?> type = annotatedClassOrMethod.getRawType();
+        Class<?> type = annotatedClassOrMethod.rawType();
 
         if (Consumer.class.isAssignableFrom(type) || BiConsumer.class.isAssignableFrom(type)) {
-            List<Type> typeGenerics = annotatedClassOrMethod.getTypeGenerics();
+            List<Type> typeGenerics = annotatedClassOrMethod.typeGenerics();
             if (typeGenerics.isEmpty()) {
                 return Collections.emptySet();
             }
@@ -42,7 +39,7 @@ public class FunctionalChannelBeanBuilder {
         }
 
         if (Supplier.class.isAssignableFrom(type)) {
-            List<Type> typeGenerics = annotatedClassOrMethod.getTypeGenerics();
+            List<Type> typeGenerics = annotatedClassOrMethod.typeGenerics();
             if (typeGenerics.isEmpty()) {
                 return Collections.emptySet();
             }
@@ -51,7 +48,7 @@ public class FunctionalChannelBeanBuilder {
         }
 
         if (Function.class.isAssignableFrom(type)) {
-            List<Type> typeGenerics = annotatedClassOrMethod.getTypeGenerics();
+            List<Type> typeGenerics = annotatedClassOrMethod.typeGenerics();
             if (typeGenerics.size() != 2) {
                 return Collections.emptySet();
             }
@@ -63,7 +60,7 @@ public class FunctionalChannelBeanBuilder {
         }
 
         if (BiFunction.class.isAssignableFrom(type)) {
-            List<Type> typeGenerics = annotatedClassOrMethod.getTypeGenerics();
+            List<Type> typeGenerics = annotatedClassOrMethod.typeGenerics();
             if (typeGenerics.size() != 3) {
                 return Collections.emptySet();
             }
@@ -81,9 +78,7 @@ public class FunctionalChannelBeanBuilder {
             AnnotatedElement annotatedElement, TypeExtractor typeExtractor) {
         if (annotatedElement instanceof Method m) {
             return AnnotatedClassOrMethod.forMethod(annotatedElement, m, typeExtractor);
-        }
-
-        if (annotatedElement instanceof Class<?> c) {
+        } else if (annotatedElement instanceof Class<?> c) {
             return AnnotatedClassOrMethod.forClass(annotatedElement, c, typeExtractor);
         }
 
@@ -92,7 +87,7 @@ public class FunctionalChannelBeanBuilder {
 
     private static FunctionalChannelBeanData ofConsumer(
             AnnotatedClassOrMethod annotatedClassOrMethod, Type payloadType) {
-        String name = annotatedClassOrMethod.getName();
+        String name = annotatedClassOrMethod.name();
         String cloudStreamBinding = firstCharToLowerCase(name) + "-in-0";
         return new FunctionalChannelBeanData(
                 name,
@@ -104,7 +99,7 @@ public class FunctionalChannelBeanBuilder {
 
     private static FunctionalChannelBeanData ofSupplier(
             AnnotatedClassOrMethod annotatedClassOrMethod, Type payloadType) {
-        String name = annotatedClassOrMethod.getName();
+        String name = annotatedClassOrMethod.name();
         String cloudStreamBinding = firstCharToLowerCase(name) + "-out-0";
         return new FunctionalChannelBeanData(
                 name,
@@ -118,14 +113,8 @@ public class FunctionalChannelBeanBuilder {
         return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 
-    @Getter
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    private static class AnnotatedClassOrMethod {
-
-        private final AnnotatedElement annotatedElement;
-        private final String name;
-        private final Class<?> rawType;
-        private final List<Type> typeGenerics;
+    private record AnnotatedClassOrMethod(
+            AnnotatedElement annotatedElement, String name, Class<?> rawType, List<Type> typeGenerics) {
 
         public static AnnotatedClassOrMethod forClass(
                 AnnotatedElement element, Class<?> clazz, TypeExtractor typeExtractor) {
@@ -168,17 +157,22 @@ public class FunctionalChannelBeanBuilder {
 
         private static Optional<Type> getParameterizedType(ResolvableType resolvableType) {
 
-            if (Consumer.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
-                return Optional.of(resolvableType.as(Consumer.class).getType());
-            } else if (BiConsumer.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
-                return Optional.of(resolvableType.as(BiConsumer.class).getType());
-            } else if (Supplier.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
-                return Optional.of(resolvableType.as(Supplier.class).getType());
-            } else if (Function.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
-                return Optional.of(resolvableType.as(Function.class).getType());
-            } else if (BiFunction.class.isAssignableFrom(resolvableType.resolve(Object.class))) {
-                return Optional.of(resolvableType.as(BiFunction.class).getType());
+            Class<?> resolvedClass = resolvableType.resolve();
+
+            if (resolvedClass != null) {
+                if (Consumer.class.isAssignableFrom(resolvedClass)) {
+                    return Optional.of(resolvableType.as(Consumer.class).getType());
+                } else if (BiConsumer.class.isAssignableFrom(resolvedClass)) {
+                    return Optional.of(resolvableType.as(BiConsumer.class).getType());
+                } else if (Supplier.class.isAssignableFrom(resolvedClass)) {
+                    return Optional.of(resolvableType.as(Supplier.class).getType());
+                } else if (Function.class.isAssignableFrom(resolvedClass)) {
+                    return Optional.of(resolvableType.as(Function.class).getType());
+                } else if (BiFunction.class.isAssignableFrom(resolvedClass)) {
+                    return Optional.of(resolvableType.as(BiFunction.class).getType());
+                }
             }
+
             return Optional.empty();
         }
 
