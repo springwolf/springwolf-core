@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +24,7 @@ public class SwaggerSchemaUtil {
 
     public ComponentSchema mapSchemaOrRef(Schema schema) {
         if (schema.get$ref() != null) {
-            return ComponentSchema.of(new MessageReference(schema.get$ref()));
+            return ComponentSchema.of(new SchemaReference(schema.get$ref()));
         }
         return ComponentSchema.of(mapSchema(schema));
     }

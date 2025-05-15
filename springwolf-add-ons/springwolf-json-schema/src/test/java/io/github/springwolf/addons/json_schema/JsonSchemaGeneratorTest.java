@@ -9,6 +9,7 @@ import com.networknt.schema.SpecVersionDetector;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.swagger.v3.core.util.Json;
@@ -52,10 +53,10 @@ class JsonSchemaGeneratorTest {
         // ref cycle ping -> pingField -> pong -> pongField -> ping (repeat)
         SchemaObject pingSchema = new SchemaObject();
         pingSchema.setType(SchemaType.OBJECT);
-        pingSchema.setProperties(Map.of("pingfield", ComponentSchema.of(MessageReference.toSchema("PongSchema"))));
+        pingSchema.setProperties(Map.of("pingfield", ComponentSchema.of(SchemaReference.fromSchema("PongSchema"))));
         SchemaObject pongSchema = new SchemaObject();
         pongSchema.setType(SchemaType.OBJECT);
-        pongSchema.setProperties(Map.of("pongField", ComponentSchema.of(MessageReference.toSchema("PingSchema"))));
+        pongSchema.setProperties(Map.of("pongField", ComponentSchema.of(SchemaReference.fromSchema("PingSchema"))));
 
         SchemaObject stringSchema = new SchemaObject();
         stringSchema.setType(SchemaType.STRING);

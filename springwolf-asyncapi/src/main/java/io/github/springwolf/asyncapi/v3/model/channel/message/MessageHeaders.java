@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.springwolf.asyncapi.v3.jackson.model.channel.message.MessageHeadersSerializer;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -16,7 +17,7 @@ import lombok.ToString;
 public class MessageHeaders {
     private MultiFormatSchema multiFormatSchema;
     private SchemaObject schema;
-    private MessageReference reference;
+    private SchemaReference reference;
 
     private MessageHeaders(MultiFormatSchema multiFormatSchema) {
         this.multiFormatSchema = multiFormatSchema;
@@ -26,7 +27,7 @@ public class MessageHeaders {
         this.schema = schema;
     }
 
-    private MessageHeaders(MessageReference reference) {
+    private MessageHeaders(SchemaReference reference) {
         this.reference = reference;
     }
 
@@ -38,7 +39,7 @@ public class MessageHeaders {
         return new MessageHeaders(schema);
     }
 
-    public static MessageHeaders of(MessageReference reference) {
+    public static MessageHeaders of(SchemaReference reference) {
         return new MessageHeaders(reference);
     }
 }

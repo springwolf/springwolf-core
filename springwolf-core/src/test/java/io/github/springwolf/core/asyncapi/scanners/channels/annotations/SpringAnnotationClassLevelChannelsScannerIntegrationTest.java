@@ -178,7 +178,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                            SchemaReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
@@ -220,7 +220,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(simpleFooPayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                            SchemaReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
@@ -233,7 +233,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .title(String.class.getSimpleName())
                     .payload(stringPayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                            SchemaReference.fromSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 

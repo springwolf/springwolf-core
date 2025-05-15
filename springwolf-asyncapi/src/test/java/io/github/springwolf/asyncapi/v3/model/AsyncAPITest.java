@@ -99,7 +99,7 @@ class AsyncAPITest {
                 .traits(List.of(MessageTrait.builder()
                         .ref("#/components/messageTraits/commonHeaders")
                         .build()))
-                .payload(MessagePayload.of(MessageReference.toSchema("lightMeasuredPayload")))
+                .payload(MessagePayload.of(SchemaReference.fromSchema("lightMeasuredPayload")))
                 .build();
 
         var turnOnOffMessage = MessageObject.builder()
@@ -110,7 +110,7 @@ class AsyncAPITest {
                 .traits(List.of(MessageTrait.builder()
                         .ref("#/components/messageTraits/commonHeaders")
                         .build()))
-                .payload(MessagePayload.of(MessageReference.toSchema("turnOnOffPayload")))
+                .payload(MessagePayload.of(SchemaReference.fromSchema("turnOnOffPayload")))
                 .build();
 
         var dimLightMessage = MessageObject.builder()
@@ -121,7 +121,7 @@ class AsyncAPITest {
                 .traits(List.of(MessageTrait.builder()
                         .ref("#/components/messageTraits/commonHeaders")
                         .build()))
-                .payload(MessagePayload.of(MessageReference.toSchema("dimLightPayload")))
+                .payload(MessagePayload.of(SchemaReference.fromSchema("dimLightPayload")))
                 .build();
 
         AsyncAPI asyncAPI = AsyncAPI.builder()

@@ -3,9 +3,9 @@ package io.github.springwolf.asyncapi.v3.model.components;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.springwolf.asyncapi.v3.jackson.model.channel.message.ComponentSchemaSerializer;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -17,7 +17,7 @@ import lombok.ToString;
 public class ComponentSchema {
     private MultiFormatSchema multiFormatSchema;
     private SchemaObject schema;
-    private MessageReference reference;
+    private SchemaReference reference;
 
     private ComponentSchema(MultiFormatSchema multiFormatSchema) {
         this.multiFormatSchema = multiFormatSchema;
@@ -27,7 +27,7 @@ public class ComponentSchema {
         this.schema = schema;
     }
 
-    private ComponentSchema(MessageReference reference) {
+    private ComponentSchema(SchemaReference reference) {
         this.reference = reference;
     }
 
@@ -39,7 +39,7 @@ public class ComponentSchema {
         return new ComponentSchema(schema);
     }
 
-    public static ComponentSchema of(MessageReference reference) {
+    public static ComponentSchema of(SchemaReference reference) {
         return new ComponentSchema(reference);
     }
 }

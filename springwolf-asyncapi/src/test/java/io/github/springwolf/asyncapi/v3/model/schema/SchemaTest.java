@@ -3,7 +3,6 @@ package io.github.springwolf.asyncapi.v3.model.schema;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import org.junit.jupiter.api.Test;
 
@@ -96,7 +95,7 @@ class SchemaTest {
     void shouldSerializeModelMapping() throws JsonProcessingException {
         var schema = SchemaObject.builder()
                 .type(SchemaType.OBJECT)
-                .additionalProperties(ComponentSchema.of(MessageReference.toSchema("ComplexModel")))
+                .additionalProperties(ComponentSchema.of(SchemaReference.fromSchema("ComplexModel")))
                 .build();
 
         var example =
@@ -203,7 +202,7 @@ class SchemaTest {
                         "ExtendedErrorModel",
                         SchemaObject.builder()
                                 .allOf(List.of(
-                                        ComponentSchema.of(MessageReference.toSchema("ErrorModel")),
+                                        ComponentSchema.of(SchemaReference.fromSchema("ErrorModel")),
                                         ComponentSchema.of(SchemaObject.builder()
                                                 .type(SchemaType.OBJECT)
                                                 .required(List.of("rootCause"))
@@ -285,7 +284,7 @@ class SchemaTest {
                                 .description(
                                         "A representation of a cat. Note that `Cat` will be used as the discriminator value.")
                                 .allOf(List.of(
-                                        ComponentSchema.of(MessageReference.toSchema("Pet")),
+                                        ComponentSchema.of(SchemaReference.fromSchema("Pet")),
                                         ComponentSchema.of(SchemaObject.builder()
                                                 .type(SchemaType.OBJECT)
                                                 .properties(Map.of(
@@ -308,7 +307,7 @@ class SchemaTest {
                                 .description(
                                         "A representation of a dog. Note that `Dog` will be used as the discriminator value.")
                                 .allOf(List.of(
-                                        ComponentSchema.of(MessageReference.toSchema("Pet")),
+                                        ComponentSchema.of(SchemaReference.fromSchema("Pet")),
                                         ComponentSchema.of(SchemaObject.builder()
                                                 .type(SchemaType.OBJECT)
                                                 .properties(Map.of(
@@ -327,7 +326,7 @@ class SchemaTest {
                                 .description(
                                         "A representation of an Australian walking stick. Note that `StickBug` will be used as the discriminator value.")
                                 .allOf(List.of(
-                                        ComponentSchema.of(MessageReference.toSchema("Pet")),
+                                        ComponentSchema.of(SchemaReference.fromSchema("Pet")),
                                         ComponentSchema.of(SchemaObject.builder()
                                                 .type(SchemaType.OBJECT)
                                                 .properties(Map.of(

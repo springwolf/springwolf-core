@@ -15,6 +15,7 @@ import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -162,7 +163,7 @@ public class GroupingService {
                 .map(MessageObject::getHeaders)
                 .filter(Objects::nonNull)
                 .map(MessageHeaders::getReference)
-                .map(MessageReference::getRef)
+                .map(SchemaReference::getRef)
                 .map(ReferenceUtil::getLastSegment)
                 .forEach(schemaIds::add);
     }
@@ -215,7 +216,7 @@ public class GroupingService {
         return Stream.concat(propertySchemas, Stream.concat(referencedSchemas, referencedSchemaElements))
                 .map(ComponentSchema::getReference)
                 .filter(Objects::nonNull)
-                .map(MessageReference::getRef)
+                .map(SchemaReference::getRef)
                 .map(ReferenceUtil::getLastSegment)
                 .filter(schemaId -> !markingContext.markedComponentSchemaIds.contains(schemaId))
                 .collect(Collectors.toSet());

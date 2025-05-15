@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.payload;
 
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import jakarta.annotation.Nullable;
 
 /**
@@ -29,6 +29,6 @@ public record PayloadSchemaObject(String name, String simpleSchemaName, @Nullabl
                 return schema().getMultiFormatSchema();
             }
         }
-        return MessageReference.toSchema(name());
+        return SchemaReference.fromSchema(name());
     }
 }
