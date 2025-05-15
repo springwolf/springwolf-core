@@ -4,6 +4,8 @@ package io.github.springwolf.plugins.sqs.producer;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,8 +31,10 @@ class SpringwolfSqsProducerTest {
     @Test
     void send_defaultExchangeAndChannelNameAsRoutingKey() {
         Map<String, Object> payload = new HashMap<>();
-        springwolfSqsProducer.send("channel-name", payload);
+        Message<?> message = MessageBuilder.withPayload(payload).build();
 
-        verify(template).send(eq("channel-name"), same(payload));
+        springwolfSqsProducer.send("channel-name", message);
+
+        verify(template).send(eq("channel-name"), same(message));
     }
 }
