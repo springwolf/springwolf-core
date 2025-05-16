@@ -35,6 +35,7 @@ dependencies {
     implementation libs.spring.boot.autoconfigure
     implementation libs.spring.boot
     implementation libs.spring.context
+    implementation libs.spring.messaging
 
     testImplementation libs.assertj.core
 
