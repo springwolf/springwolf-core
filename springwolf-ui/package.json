@@ -24,7 +24,7 @@
     "@angular/router": "^19.2.8",
     "ajv": "^8.17.1",
     "ngx-markdown": "^19.1.1",
-    "prism-code-editor": "^3.4.0",
+    "prism-code-editor": "^4.0.0",
     "rxjs": "^7.8.2",
     "tslib": "^2.8.1",
     "zone.js": "~0.15.0"
@@ -41,7 +41,7 @@
     "esbuild": "^0.25.4",
     "jest": "^29.7.0",
     "jest-junit": "^16.0.0",
-    "jest-preset-angular": "^14.5.3",
+    "jest-preset-angular": "^14.5.5",
     "ts-json-schema-generator": "^2.4.0",
     "typescript": "^5.8.3"
   },
