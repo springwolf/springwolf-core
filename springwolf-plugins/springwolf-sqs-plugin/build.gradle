@@ -24,6 +24,7 @@ dependencies {
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.context
+    implementation libs.spring.messaging
     implementation libs.spring.core
     implementation libs.spring.web
     implementation libs.spring.boot
