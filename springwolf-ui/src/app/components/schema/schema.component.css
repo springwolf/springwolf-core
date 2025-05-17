@@ -11,8 +11,8 @@
   overflow: auto;
 }
 
-.example {
-  word-break: break-word;
+.property-title {
+  min-width: fit-content;
 }
 
 .attribute {
@@ -21,4 +21,16 @@
   margin: 0 0.2em 0.2em 0;
   padding: 0.1em 0.2em 0.1em 0.2em;
   border-radius: 4px;
+}
+
+.value-box {
+  margin: 1px 6px 1px 0;
+  background-color: #eeeeee;
+  border: 1px dashed grey;
+  color: dimgrey;
+  border-radius: 4px;
+  padding: 0 2px;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  width: fit-content;
 }
