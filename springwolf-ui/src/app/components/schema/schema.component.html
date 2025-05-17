@@ -84,14 +84,21 @@
     <span class="property-title"><i>Example:</i></span>
     &nbsp;
     <span class="value-box">
-      <div class="text-console" *ngFor="let line of value.example.value.split('\n')">{{ line }}</div>
+      <div
+        class="text-console"
+        *ngFor="let line of value.example.value.split('\n')"
+      >
+        {{ line }}
+      </div>
     </span>
   </div>
 
   <div class="flex" *ngIf="value.enum && value.enum.length > 0">
     <span class="property-title"><i>Allowed values:</i></span>
     &nbsp;
-    <span class="text-console value-box" *ngFor="let enumValue of value.enum">{{ enumValue }}</span>
+    <span class="text-console value-box" *ngFor="let enumValue of value.enum">{{
+      enumValue
+    }}</span>
   </div>
 
   <!-- attributes -->
