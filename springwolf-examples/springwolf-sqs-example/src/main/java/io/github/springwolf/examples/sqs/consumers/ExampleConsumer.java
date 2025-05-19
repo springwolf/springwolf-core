@@ -7,7 +7,11 @@ import io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto;
 import io.github.springwolf.examples.sqs.producers.AnotherProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.Headers;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -16,8 +20,8 @@ public class ExampleConsumer {
     private final AnotherProducer anotherProducer;
 
     @SqsListener("example-queue")
-    public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in example-queue: {}", payload.toString());
+    public void receiveExamplePayload(@Payload ExamplePayloadDto payload, @Headers Map<String, Object> headers) {
+        log.info("Received new message in example-queue: {}, with headers: {}", payload.toString(), headers);
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);

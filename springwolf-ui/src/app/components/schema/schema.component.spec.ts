@@ -23,6 +23,7 @@ describe("SchemaNewComponent", () => {
           title: "String",
           type: "string",
           example: new Example("example value"),
+          enum: ["enum value1", "enum value2"],
         },
       },
     });
@@ -34,5 +35,10 @@ describe("SchemaNewComponent", () => {
 
   it("should render primitive string example", async () => {
     expect(screen.getByText(/example value/i)).toBeTruthy();
+  });
+
+  it("should render enum values", async () => {
+    expect(screen.getByText(/enum value1/i)).toBeTruthy();
+    expect(screen.getByText(/enum value2/i)).toBeTruthy();
   });
 });

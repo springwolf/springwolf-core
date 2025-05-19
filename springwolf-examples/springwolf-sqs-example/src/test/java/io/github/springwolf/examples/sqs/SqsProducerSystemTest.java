@@ -6,8 +6,13 @@ import io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto;
 import io.github.springwolf.plugins.sqs.producer.SpringwolfSqsProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -16,8 +21,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static io.github.springwolf.examples.sqs.dtos.ExamplePayloadDto.ExampleEnum.FOO1;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
@@ -40,6 +49,9 @@ public class SqsProducerSystemTest {
     @MockitoSpyBean
     ExampleConsumer exampleConsumer;
 
+    @Captor
+    ArgumentCaptor<Map<String, Object>> headersCaptor;
+
     @Container
     public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
@@ -57,10 +69,22 @@ public class SqsProducerSystemTest {
         payload.setSomeLong(5);
         payload.setSomeEnum(FOO1);
 
+        MessageHeaders headers =
+                new MessageHeaders(Map.of("some-header", "some-header-value", "structured-header", List.of(42, 3.14)));
+
+        Message<ExamplePayloadDto> message = MessageBuilder.createMessage(payload, headers);
+
         // when
-        springwolfSqsProducer.send("example-queue", payload);
+        springwolfSqsProducer.send("example-queue", message);
 
         // then
-        verify(exampleConsumer, timeout(10000)).receiveExamplePayload(payload);
+        verify(exampleConsumer, timeout(10000)).receiveExamplePayload(eq(payload), headersCaptor.capture());
+
+        Map<String, Object> capturedHeaders = headersCaptor.getValue();
+
+        assertThat(capturedHeaders)
+                .containsAllEntriesOf(Map.of(
+                        "some-header", "some-header-value",
+                        "structured-header", "[42, 3.14]"));
     }
 }

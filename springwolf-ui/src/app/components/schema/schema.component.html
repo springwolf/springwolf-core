@@ -80,18 +80,26 @@
     <markdown [data]="value.description"></markdown>
   </div>
 
-  <span class="example" *ngIf="value.example">
-    <i>Example:</i>
+  <div class="flex" *ngIf="value.example">
+    <span class="property-title"><i>Example:</i></span>
     &nbsp;
-    <span *ngIf="!value.enum" class="text-console">
-      {{ value.example.value }}
+    <span class="value-box">
+      <div
+        class="text-console"
+        *ngFor="let line of value.example.value.split('\n')"
+      >
+        {{ line }}
+      </div>
     </span>
-    <mat-select *ngIf="value.enum" placeholder="Enum">
-      <mat-option *ngFor="let enumValue of value.enum" [value]="enumValue">
-        {{ enumValue }}
-      </mat-option>
-    </mat-select>
-  </span>
+  </div>
+
+  <div class="flex" *ngIf="value.enum && value.enum.length > 0">
+    <span class="property-title"><i>Allowed values:</i></span>
+    &nbsp;
+    <span class="text-console value-box" *ngFor="let enumValue of value.enum">{{
+      enumValue
+    }}</span>
+  </div>
 
   <!-- attributes -->
   <span class="flex flex-wrap">

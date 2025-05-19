@@ -3,6 +3,7 @@ package io.github.springwolf.plugins.sqs.producer;
 
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.Message;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +21,9 @@ public class SpringwolfSqsProducer {
         return template.isPresent();
     }
 
-    public void send(String channelName, Object payload) {
+    public void send(String channelName, Message<?> message) {
         if (template.isPresent()) {
-            template.get().send(channelName, payload);
+            template.get().send(channelName, message);
         } else {
             log.warn("SQS producer is not configured");
         }
