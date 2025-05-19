@@ -29,6 +29,6 @@ public record PayloadSchemaObject(String name, String simpleSchemaName, @Nullabl
                 return schema().getMultiFormatSchema();
             }
         }
-        return SchemaReference.fromSchema(name());
+        return SchemaReference.toSchema(name());
     }
 }

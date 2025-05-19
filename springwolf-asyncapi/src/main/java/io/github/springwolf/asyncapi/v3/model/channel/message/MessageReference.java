@@ -45,5 +45,4 @@ public class MessageReference implements Message, Reference {
     public static MessageReference toChannelMessage(String channelId, String messageId) {
         return new MessageReference("#/channels/" + channelId + "/messages/" + messageId);
     }
-
 }

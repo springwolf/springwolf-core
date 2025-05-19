@@ -51,7 +51,7 @@ public class AsyncAnnotationMessageService {
                 .title(payloadSchema.title())
                 .description(getDescription(operationData, payloadSchema))
                 .payload(messagePayload)
-                .headers(MessageHeaders.of(SchemaReference.fromSchema(headerSchemaName)))
+                .headers(MessageHeaders.of(SchemaReference.toSchema(headerSchemaName)))
                 .bindings(messageBinding);
         // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher
         // priority so if we find them, we need to override the default values.

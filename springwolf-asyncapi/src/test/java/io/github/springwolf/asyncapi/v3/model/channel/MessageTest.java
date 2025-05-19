@@ -53,8 +53,8 @@ class MessageTest {
                 .payload(MessagePayload.of(SchemaObject.builder()
                         .type(SchemaType.OBJECT)
                         .properties(Map.of(
-                                "user", SchemaReference.fromSchema("userCreate"),
-                                "signup", SchemaReference.fromSchema("signup")))
+                                "user", SchemaReference.toSchema("userCreate"),
+                                "signup", SchemaReference.toSchema("signup")))
                         .build()))
                 .correlationId(CorrelationID.builder()
                         .description("Default Correlation ID")

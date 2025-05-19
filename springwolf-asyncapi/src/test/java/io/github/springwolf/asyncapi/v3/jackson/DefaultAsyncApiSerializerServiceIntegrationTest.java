@@ -66,7 +66,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .name("io.github.springwolf.core.ExamplePayload")
                 .title("Example Payload")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema("ExamplePayload"))
+                        .schema(SchemaReference.toSchema("ExamplePayload"))
                         .build()))
                 .bindings(Map.of(
                         "kafka",

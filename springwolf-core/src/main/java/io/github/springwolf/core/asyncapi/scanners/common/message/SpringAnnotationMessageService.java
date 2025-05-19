@@ -44,7 +44,7 @@ public class SpringAnnotationMessageService<MethodAnnotation extends Annotation>
                 .title(payloadSchema.title())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(SchemaReference.fromSchema(headerModelName)))
+                .headers(MessageHeaders.of(SchemaReference.toSchema(headerModelName)))
                 .bindings(messageBinding)
                 .build();
 

@@ -41,9 +41,9 @@ class GroupingServiceTest {
     private final MessageObject message1 = MessageObject.builder()
             .messageId("messageId1")
             .payload(MessagePayload.of(MultiFormatSchema.builder()
-                    .schema(SchemaReference.fromSchema(schema1.getTitle()))
+                    .schema(SchemaReference.toSchema(schema1.getTitle()))
                     .build()))
-            .headers(MessageHeaders.of(SchemaReference.fromSchema(header1Schema.getTitle())))
+            .headers(MessageHeaders.of(SchemaReference.toSchema(header1Schema.getTitle())))
             .build();
     private final MessageObject message2 = MessageObject.builder()
             .messageId("messageId2")
@@ -52,7 +52,7 @@ class GroupingServiceTest {
     private final MessageObject message3 = MessageObject.builder()
             .messageId("messageId3")
             .payload(MessagePayload.of(MultiFormatSchema.builder()
-                    .schema(SchemaReference.fromSchema(schema3.getTitle()))
+                    .schema(SchemaReference.toSchema(schema3.getTitle()))
                     .build()))
             .build();
 
@@ -219,12 +219,12 @@ class GroupingServiceTest {
     void shouldResolveReferencedSchemas1FromSchema4() {
         SchemaObject schema4 = SchemaObject.builder()
                 .title("Schema4")
-                .oneOf(List.of(ComponentSchema.of(SchemaReference.fromSchema(schema1.getTitle()))))
+                .oneOf(List.of(ComponentSchema.of(SchemaReference.toSchema(schema1.getTitle()))))
                 .build();
         MessageObject message = MessageObject.builder()
                 .messageId("messageId1")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaReference.fromSchema(schema4.getTitle()))
+                        .schema(SchemaReference.toSchema(schema4.getTitle()))
                         .build()))
                 .build();
 

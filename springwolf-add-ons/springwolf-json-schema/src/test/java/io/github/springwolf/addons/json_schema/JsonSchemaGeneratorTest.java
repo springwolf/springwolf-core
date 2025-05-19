@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersionDetector;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
@@ -53,10 +52,10 @@ class JsonSchemaGeneratorTest {
         // ref cycle ping -> pingField -> pong -> pongField -> ping (repeat)
         SchemaObject pingSchema = new SchemaObject();
         pingSchema.setType(SchemaType.OBJECT);
-        pingSchema.setProperties(Map.of("pingfield", ComponentSchema.of(SchemaReference.fromSchema("PongSchema"))));
+        pingSchema.setProperties(Map.of("pingfield", ComponentSchema.of(SchemaReference.toSchema("PongSchema"))));
         SchemaObject pongSchema = new SchemaObject();
         pongSchema.setType(SchemaType.OBJECT);
-        pongSchema.setProperties(Map.of("pongField", ComponentSchema.of(SchemaReference.fromSchema("PingSchema"))));
+        pongSchema.setProperties(Map.of("pongField", ComponentSchema.of(SchemaReference.toSchema("PingSchema"))));
 
         SchemaObject stringSchema = new SchemaObject();
         stringSchema.setType(SchemaType.STRING);

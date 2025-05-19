@@ -2,7 +2,6 @@
 package io.github.springwolf.core.asyncapi.schemas;
 
 import io.github.springwolf.asyncapi.v3.model.ExternalDocumentation;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;

@@ -75,7 +75,7 @@ public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation>
                 .title(payloadSchema.title())
                 .description(null)
                 .payload(payload)
-                .headers(MessageHeaders.of(SchemaReference.fromSchema(headerSchemaName)))
+                .headers(MessageHeaders.of(SchemaReference.toSchema(headerSchemaName)))
                 .bindings(messageBinding)
                 .build();
 
