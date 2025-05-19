@@ -174,9 +174,9 @@ public class GroupingService {
                 .map(MessagePayload::getMultiFormatSchema)
                 .filter(Objects::nonNull)
                 .map(MultiFormatSchema::getSchema)
-                .filter(el -> el instanceof MessageReference) // skip inline schema
-                .map(el -> (MessageReference) el)
-                .map(MessageReference::getRef)
+                .filter(el -> el instanceof SchemaReference) // skip inline schema
+                .map(el -> (SchemaReference) el)
+                .map(SchemaReference::getRef)
                 .map(ReferenceUtil::getLastSegment)
                 .forEach(schemaIds::add);
     }

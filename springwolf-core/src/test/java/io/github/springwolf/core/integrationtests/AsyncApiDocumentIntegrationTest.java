@@ -6,8 +6,8 @@ import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
@@ -93,10 +93,10 @@ public class AsyncApiDocumentIntegrationTest {
                     .getMessages()
                     .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(fooMessage.getPayload().getMultiFormatSchema().getSchema())
-                    .isInstanceOf(MessageReference.class);
-            MessageReference fooRefMessage = (MessageReference)
+                    .isInstanceOf(SchemaReference.class);
+            SchemaReference fooSchemaRef = (SchemaReference)
                     fooMessage.getPayload().getMultiFormatSchema().getSchema();
-            assertThat(fooRefMessage.getRef())
+            assertThat(fooSchemaRef.getRef())
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
         }
@@ -176,10 +176,10 @@ public class AsyncApiDocumentIntegrationTest {
                     .getMessages()
                     .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(fooMessage.getPayload().getMultiFormatSchema().getSchema())
-                    .isInstanceOf(MessageReference.class);
-            MessageReference fooRefMessage = (MessageReference)
+                    .isInstanceOf(SchemaReference.class);
+            SchemaReference fooSchemaRef = (SchemaReference)
                     fooMessage.getPayload().getMultiFormatSchema().getSchema();
-            assertThat(fooRefMessage.getRef())
+            assertThat(fooSchemaRef.getRef())
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
         }
@@ -377,10 +377,10 @@ public class AsyncApiDocumentIntegrationTest {
                     .getMessages()
                     .get("io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
             assertThat(fooMessage.getPayload().getMultiFormatSchema().getSchema())
-                    .isInstanceOf(MessageReference.class);
-            MessageReference fooRefMessage = (MessageReference)
+                    .isInstanceOf(SchemaReference.class);
+            SchemaReference fooSchemaRef = (SchemaReference)
                     fooMessage.getPayload().getMultiFormatSchema().getSchema();
-            assertThat(fooRefMessage.getRef())
+            assertThat(fooSchemaRef.getRef())
                     .isEqualTo(
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo");
         }
