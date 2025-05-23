@@ -130,8 +130,8 @@ Add the following to the `repositories` closure in `build.gradle`:
 repositories {
     // ...
     maven {
-        url "https://central.sonatype.com/content/repositories/snapshots" // build.gradle
-        // url = uri("https://central.sonatype.com/content/repositories/snapshots") // build.gradle.kts
+        url "https://central.sonatype.com/repository/maven-snapshots/" // build.gradle
+        // url = uri("https://central.sonatype.com/repository/maven-snapshots/") // build.gradle.kts
     }
 }
 ```
@@ -144,7 +144,7 @@ Or add the `repository` to your `pom.xml` if you are using maven:
     <repository>
         <id>oss-sonatype</id>
         <name>oss-sonatype</name>
-        <url>https://central.sonatype.com/content/repositories/snapshots</url>
+        <url>https://central.sonatype.com/repository/maven-snapshots/</url>
         <snapshots>
             <enabled>true</enabled>
         </snapshots>
