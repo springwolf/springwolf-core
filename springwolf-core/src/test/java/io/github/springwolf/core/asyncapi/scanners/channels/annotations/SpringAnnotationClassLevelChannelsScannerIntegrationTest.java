@@ -169,7 +169,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
 
             // then
             MessagePayload payload = MessagePayload.of(MultiFormatSchema.builder()
-                    .schema(SchemaReference.fromSchema(SimpleFoo.class.getSimpleName()))
+                    .schema(SchemaReference.toSchema(SimpleFoo.class.getSimpleName()))
                     .build());
 
             MessageObject message = MessageObject.builder()
@@ -178,7 +178,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(payload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                            SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
@@ -212,7 +212,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
 
             // Then the returned collection contains the channel with message set to oneOf
             MessagePayload simpleFooPayload = MessagePayload.of(MultiFormatSchema.builder()
-                    .schema(SchemaReference.fromSchema(SimpleFoo.class.getSimpleName()))
+                    .schema(SchemaReference.toSchema(SimpleFoo.class.getSimpleName()))
                     .build());
 
             MessageObject fooMessage = MessageObject.builder()
@@ -220,12 +220,12 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .title(SimpleFoo.class.getSimpleName())
                     .payload(simpleFooPayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                            SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 
             MessagePayload stringPayload = MessagePayload.of(MultiFormatSchema.builder()
-                    .schema(SchemaReference.fromSchema(String.class.getSimpleName()))
+                    .schema(SchemaReference.toSchema(String.class.getSimpleName()))
                     .build());
 
             MessageObject barMessage = MessageObject.builder()
@@ -233,7 +233,7 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                     .title(String.class.getSimpleName())
                     .payload(stringPayload)
                     .headers(MessageHeaders.of(
-                            MessageReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
+                            SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
                     .bindings(TestBindingFactory.defaultMessageBinding)
                     .build();
 

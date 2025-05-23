@@ -5,9 +5,9 @@ import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
@@ -51,7 +51,7 @@ public class AsyncAnnotationMessageService {
                 .title(payloadSchema.title())
                 .description(getDescription(operationData, payloadSchema))
                 .payload(messagePayload)
-                .headers(MessageHeaders.of(MessageReference.toSchema(headerSchemaName)))
+                .headers(MessageHeaders.of(SchemaReference.toSchema(headerSchemaName)))
                 .bindings(messageBinding);
         // Retrieve the Message information obtained from the @AsyncMessage annotation. These values have higher
         // priority so if we find them, we need to override the default values.

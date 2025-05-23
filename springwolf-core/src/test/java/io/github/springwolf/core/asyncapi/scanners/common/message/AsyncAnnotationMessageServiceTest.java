@@ -4,8 +4,8 @@ package io.github.springwolf.core.asyncapi.scanners.common.message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageHeaders;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
@@ -70,7 +70,7 @@ class AsyncAnnotationMessageServiceTest {
                         .name("full.name")
                         .title("name")
                         .description(null)
-                        .headers(MessageHeaders.of(MessageReference.toSchema("headerSchemaName")))
+                        .headers(MessageHeaders.of(SchemaReference.toSchema("headerSchemaName")))
                         .payload(MessagePayload.of(MultiFormatSchema.builder()
                                 .schema(payloadSchema.payload())
                                 .build()))

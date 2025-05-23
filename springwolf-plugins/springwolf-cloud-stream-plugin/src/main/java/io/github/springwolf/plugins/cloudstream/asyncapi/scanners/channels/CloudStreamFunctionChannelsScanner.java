@@ -12,6 +12,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
@@ -88,7 +89,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
         String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
-        MessageHeaders messageHeaders = MessageHeaders.of(MessageReference.toSchema(headerModelName));
+        MessageHeaders messageHeaders = MessageHeaders.of(SchemaReference.toSchema(headerModelName));
 
         Map<String, MessageBinding> messageBinding = buildMessageBinding(beanData.annotatedElement());
         MessageObject message = MessageObject.builder()

@@ -13,6 +13,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
@@ -85,7 +86,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
         String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
-        MessageHeaders messageHeaders = MessageHeaders.of(MessageReference.toSchema(headerModelName));
+        MessageHeaders messageHeaders = MessageHeaders.of(SchemaReference.toSchema(headerModelName));
 
         MessageObject message = MessageObject.builder()
                 .name(payloadSchema.name())

@@ -99,7 +99,7 @@ class AsyncAPITest {
                 .traits(List.of(MessageTrait.builder()
                         .ref("#/components/messageTraits/commonHeaders")
                         .build()))
-                .payload(MessagePayload.of(MessageReference.toSchema("lightMeasuredPayload")))
+                .payload(MessagePayload.of(SchemaReference.toSchema("lightMeasuredPayload")))
                 .build();
 
         var turnOnOffMessage = MessageObject.builder()
@@ -110,7 +110,7 @@ class AsyncAPITest {
                 .traits(List.of(MessageTrait.builder()
                         .ref("#/components/messageTraits/commonHeaders")
                         .build()))
-                .payload(MessagePayload.of(MessageReference.toSchema("turnOnOffPayload")))
+                .payload(MessagePayload.of(SchemaReference.toSchema("turnOnOffPayload")))
                 .build();
 
         var dimLightMessage = MessageObject.builder()
@@ -121,7 +121,7 @@ class AsyncAPITest {
                 .traits(List.of(MessageTrait.builder()
                         .ref("#/components/messageTraits/commonHeaders")
                         .build()))
-                .payload(MessagePayload.of(MessageReference.toSchema("dimLightPayload")))
+                .payload(MessagePayload.of(SchemaReference.toSchema("dimLightPayload")))
                 .build();
 
         AsyncAPI asyncAPI = AsyncAPI.builder()
@@ -294,7 +294,7 @@ class AsyncAPITest {
                                                         .description("Light intensity measured in lumens.")
                                                         .build(),
                                                 "sentAt",
-                                                SchemaReference.fromSchema("sentAt")))
+                                                SchemaReference.toSchema("sentAt")))
                                         .build(),
                                 "turnOnOffPayload",
                                 SchemaObject.builder()
@@ -307,7 +307,7 @@ class AsyncAPITest {
                                                         .description("Whether to turn on or off the light.")
                                                         .build(),
                                                 "sentAt",
-                                                SchemaReference.fromSchema("sentAt")))
+                                                SchemaReference.toSchema("sentAt")))
                                         .build(),
                                 "dimLightPayload",
                                 SchemaObject.builder()
@@ -322,7 +322,7 @@ class AsyncAPITest {
                                                         .maximum(new BigDecimal("100"))
                                                         .build(),
                                                 "sentAt",
-                                                SchemaReference.fromSchema("sentAt")))
+                                                SchemaReference.toSchema("sentAt")))
                                         .build(),
                                 "sentAt",
                                 SchemaObject.builder()

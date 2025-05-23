@@ -20,6 +20,7 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
@@ -65,7 +66,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .name("io.github.springwolf.core.ExamplePayload")
                 .title("Example Payload")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(MessageReference.toSchema("ExamplePayload"))
+                        .schema(SchemaReference.toSchema("ExamplePayload"))
                         .build()))
                 .bindings(Map.of(
                         "kafka",

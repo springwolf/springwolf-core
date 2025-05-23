@@ -24,7 +24,7 @@ public class SchemaReference implements Schema, Reference {
         return ref;
     }
 
-    public static SchemaReference fromSchema(String schemaName) {
+    public static SchemaReference toSchema(String schemaName) {
         return new SchemaReference("#/components/schemas/" + schemaName);
     }
 }
