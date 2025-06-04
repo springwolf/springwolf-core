@@ -6,8 +6,6 @@ import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.core.controller.dtos.MessageDto;
 import io.github.springwolf.plugins.sqs.producer.SpringwolfSqsProducer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,9 +29,6 @@ public class SpringwolfSqsController extends PublishingBaseController {
     @Override
     protected void publishMessage(String topic, MessageDto messageDto, Object payload) {
         log.debug("Publishing to sqs queue {}: {}", topic, messageDto);
-        Message<Object> message = MessageBuilder.withPayload(payload)
-                .copyHeaders(messageDto.getHeaders())
-                .build();
-        producer.send(topic, message);
+        producer.send(topic, messageDto.getHeaders(), payload);
     }
 }
