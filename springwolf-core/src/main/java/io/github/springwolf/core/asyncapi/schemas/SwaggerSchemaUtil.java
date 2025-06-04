@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Utils class providing services to map between Swagger schemas and AsyncApi schemas.
+ */
 @RequiredArgsConstructor
 public class SwaggerSchemaUtil {
 
@@ -21,6 +24,15 @@ public class SwaggerSchemaUtil {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    /**
+     * creates a {@link ComponentSchema} from the given Swagger schema. If the given Swagger schema represents a
+     * Reference, the resulting {@link ComponentSchema} will contain a corresponding {@link SchemaReference} to the
+     * referenced location. Otherwise, the given Swagger schema is converted to an AsnycApi {@link SchemaObject} and
+     * put into the resulting {@link ComponentSchema}
+     *
+     * @param schema the Swagger schema to convert
+     * @return ComponentSchema with either a {@link SchemaReference} or a {@link SchemaObject}.
+     */
     public ComponentSchema mapSchemaOrRef(Schema schema) {
         if (schema.get$ref() != null) {
             return ComponentSchema.of(new SchemaReference(schema.get$ref()));
@@ -28,6 +40,14 @@ public class SwaggerSchemaUtil {
         return ComponentSchema.of(mapSchema(schema));
     }
 
+    /**
+     * Converts the given Swagger schema to a AsnycApi {@link SchemaObject}. Properties are mapped recursively except
+     * as long as the child schemas are 'real' schems and not schema references. So this method performs a deep conversion
+     * of the entire Swagger schema.
+     *
+     * @param value the given Swagger schema instance
+     * @return the resulting AsnycApi SchemaObject
+     */
     public SchemaObject mapSchema(Schema value) {
         SchemaObject.SchemaObjectBuilder builder = SchemaObject.builder();
 
@@ -148,9 +168,19 @@ public class SwaggerSchemaUtil {
         return builder.build();
     }
 
+    /**
+     * transforms the given asyncApiSchema to a Swagger schema object.
+     * <p>Note</p>
+     * This method does not perform a 'deep' transformation, only the root attributes of asyncApiSchema
+     * are mapped to the Swagger schema. The properties of asyncApiSchema will not be mapped to the
+     * Swagger schema.
+     * @param asyncApiSchema
+     * @return
+     */
     public Schema mapToSwagger(SchemaObject asyncApiSchema) {
         Schema swaggerSchema = new Schema();
         swaggerSchema.setType(asyncApiSchema.getType());
+        swaggerSchema.setFormat(asyncApiSchema.getFormat());
         swaggerSchema.setDescription(asyncApiSchema.getDescription());
         swaggerSchema.setExamples(asyncApiSchema.getExamples());
         swaggerSchema.setEnum(asyncApiSchema.getEnumValues());

@@ -52,24 +52,45 @@ public class SwaggerSchemaService {
         this.properties = properties;
     }
 
-    public record ExtractedSchemas(ComponentSchema rootSchema, Map<String, SchemaObject> referencedSchemas) {}
+    public record ExtractedSchemas(ComponentSchema rootSchema, Map<String, ComponentSchema> referencedSchemas) {}
 
+    /**
+     * Invokes all postprocessors for the given schema (headers). As the {@link SchemasPostProcessor} interface processes
+     * *Swagger* schemas, this method converts the given {@link SchemaObject} to a Swagger schema, invokes all
+     * postprocessors and converts the result back to a {@link SchemaObject}
+     * <p>NOTE</p>
+     * The conversion between the AsnycApi {@link SchemaObject} and Swagger schema instance is not a 'full conversion'. Only
+     * root attributes of the schema an the first level of properties a converted. Providing {@link SchemaObject}s with deep
+     * property hierarchy will result in an corrupted result.
+     * <br/>
+     * A typical usecase for this method is postprocessing of header schemas, which have typically a simple structure.
+     *
+     * @param headers
+     * @return
+     */
     public SchemaObject extractSchema(SchemaObject headers) {
         String schemaName = headers.getTitle();
 
+        // create a swagger schema to invoke the postprocessors. Copy attributes vom headers to (Swagger) headerSchema
         ObjectSchema headerSchema = new ObjectSchema();
         headerSchema.setName(schemaName);
         headerSchema.setTitle(headers.getTitle());
         headerSchema.setDescription(headers.getDescription());
+
+        // transform properties of headers to a properties Map of Swagger schemas.
+        // (Only one level, no deep transformation, see SwaggerSchemaUtil#mapToSwagger)
+        //
         Map<String, Schema> properties = headers.getProperties().entrySet().stream()
                 .map((property) -> Map.entry(property.getKey(), (Schema<?>)
                         swaggerSchemaUtil.mapToSwagger((SchemaObject) property.getValue())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         headerSchema.setProperties(properties);
 
+        // call postprocessors
         Map<String, Schema> newSchemasToProcess = Map.of(schemaName, headerSchema);
         postProcessSchemas(newSchemasToProcess, new HashMap<>(newSchemasToProcess), DEFAULT_CONTENT_TYPE);
 
+        // convert Swagger schema back to an AsnycApi SchemaObject
         return swaggerSchemaUtil.mapSchema(headerSchema);
     }
 
@@ -96,10 +117,26 @@ public class SwaggerSchemaService {
             HashMap<String, Schema> processedSchemas = new HashMap<>(newSchemasToProcess);
             postProcessSchemas(newSchemasToProcess, processedSchemas, actualContentType);
 
-            return new ExtractedSchemas(
-                    swaggerSchemaUtil.mapSchemaOrRef(resolvedSchema.schema),
-                    swaggerSchemaUtil.mapSchemasMap(processedSchemas));
+            return createExtractedSchemas(resolvedSchema.schema, processedSchemas);
         }
+    }
+
+    /**
+     * creates an {@link ExtractedSchemas} return type for the given swagger root schema and swagger referenced schemas.
+     *
+     * @param rootSchema        Swagger root schema
+     * @param referencedSchemas all referenced swagger schemas
+     * @return
+     */
+    private ExtractedSchemas createExtractedSchemas(Schema rootSchema, Map<String, Schema> referencedSchemas) {
+        ComponentSchema rootComponentSchema = swaggerSchemaUtil.mapSchemaOrRef(rootSchema);
+        Map<String, SchemaObject> referencedSchemaObjects = swaggerSchemaUtil.mapSchemasMap(referencedSchemas);
+        Map<String, ComponentSchema> referencedComponentSchemas = new HashMap<>();
+        referencedSchemaObjects.forEach((schemaname, schemaobject) -> {
+            referencedComponentSchemas.put(schemaname, ComponentSchema.of(schemaobject));
+        });
+
+        return new ExtractedSchemas(rootComponentSchema, referencedComponentSchemas);
     }
 
     private void preProcessSchemas(Schema payloadSchema, Map<String, Schema> schemas, Type type) {
@@ -111,7 +148,7 @@ public class SwaggerSchemaService {
     /**
      * When (springwolf common) model converters are used,
      * the native schema is {@param payloadSchema} and the target, converted to schema is part of {@param schemas}.
-     *
+     * <p>
      * This method will remove the native and puts the target, converted schema in place.
      */
     private void processCommonModelConverters(Schema payloadSchema, Map<String, Schema> schemas) {

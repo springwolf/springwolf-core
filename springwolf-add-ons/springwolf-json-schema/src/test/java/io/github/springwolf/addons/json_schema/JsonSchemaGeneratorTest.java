@@ -60,11 +60,16 @@ class JsonSchemaGeneratorTest {
         SchemaObject stringSchema = new SchemaObject();
         stringSchema.setType(SchemaType.STRING);
 
-        Map<String, SchemaObject> definitions =
-                Map.of("StringRef", stringSchema, "PingSchema", pingSchema, "PongSchema", pongSchema);
+        Map<String, ComponentSchema> definitions = Map.of(
+                "StringRef",
+                ComponentSchema.of(stringSchema),
+                "PingSchema",
+                ComponentSchema.of(pingSchema),
+                "PongSchema",
+                ComponentSchema.of(pongSchema));
 
         // when
-        Object jsonSchema = jsonSchemaGenerator.fromSchema(actualSchema, definitions);
+        Object jsonSchema = jsonSchemaGenerator.fromSchema(ComponentSchema.of(actualSchema), definitions);
 
         // then
         String jsonSchemaString = mapper.writeValueAsString(jsonSchema);
