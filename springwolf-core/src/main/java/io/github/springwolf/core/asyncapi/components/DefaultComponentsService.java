@@ -29,7 +29,7 @@ public class DefaultComponentsService implements ComponentsService {
     private final SpringwolfConfigProperties springwolfConfigProperties;
 
     /**
-     * maps a schema name (key) to a map of collected {@link ComponentSchema}s for different schema formats.
+     * maps a schema name (key) to a detected corresponding {@link ComponentSchema}.
      */
     private final Map<String, ComponentSchema> schemas = new HashMap<>();
 
