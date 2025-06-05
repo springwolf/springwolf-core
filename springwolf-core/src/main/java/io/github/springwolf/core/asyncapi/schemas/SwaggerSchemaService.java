@@ -82,7 +82,7 @@ public class SwaggerSchemaService {
         //
         Map<String, Schema> properties = headers.getProperties().entrySet().stream()
                 .map((property) -> Map.entry(property.getKey(), (Schema<?>)
-                        swaggerSchemaUtil.mapToSwagger((SchemaObject) property.getValue())))
+                        swaggerSchemaUtil.mapToSwagger(property.getValue())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         headerSchema.setProperties(properties);
 

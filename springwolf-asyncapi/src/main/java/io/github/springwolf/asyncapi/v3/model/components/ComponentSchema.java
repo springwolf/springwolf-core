@@ -4,6 +4,7 @@ package io.github.springwolf.asyncapi.v3.model.components;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.springwolf.asyncapi.v3.jackson.model.channel.message.ComponentSchemaSerializer;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.Schema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import lombok.EqualsAndHashCode;
@@ -23,7 +24,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @JsonSerialize(using = ComponentSchemaSerializer.class)
-public class ComponentSchema {
+public class ComponentSchema implements Schema {
     private MultiFormatSchema multiFormatSchema;
     private SchemaObject schema;
     private SchemaReference reference;
