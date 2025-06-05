@@ -7,8 +7,12 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.swagger.v3.core.converter.ModelConverters;
 import lombok.val;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.handler.annotation.Header;
 
@@ -29,6 +33,20 @@ class HeaderClassExtractorIntegrationTest {
             "payloadSchemaName", String.class.getSimpleName(), ComponentSchema.of(new SchemaObject()));
     private final SchemaObject stringSchema =
             SchemaObject.builder().type(SchemaType.STRING).build();
+
+    private static final SchemaTitleModelConverter titleModelConverter = new SchemaTitleModelConverter();
+
+    @BeforeAll
+    public static void setupClass() {
+        // make sure hat SpringWolf SchemaTitleModelConverter is registered with ModelConverters static registry.
+        // this happens in Spring tests automatically but to run only this testclass, this is necessary:
+        ModelConverters.getInstance().addConverter(titleModelConverter);
+    }
+
+    @AfterAll
+    public static void tearDownClass() {
+        ModelConverters.getInstance().removeConverter(titleModelConverter);
+    }
 
     @Test
     void getNoDocumentedHeaders() throws NoSuchMethodException {
@@ -52,7 +70,7 @@ class HeaderClassExtractorIntegrationTest {
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();
-        expectedHeaders.getProperties().put("kafka_receivedMessageKey", stringSchema);
+        expectedHeaders.getProperties().put("kafka_receivedMessageKey", ComponentSchema.of(stringSchema));
 
         assertEquals(expectedHeaders, result);
     }
@@ -69,8 +87,8 @@ class HeaderClassExtractorIntegrationTest {
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();
-        expectedHeaders.getProperties().put("kafka_receivedMessageKey", stringSchema);
-        expectedHeaders.getProperties().put("non-exist", stringSchema);
+        expectedHeaders.getProperties().put("kafka_receivedMessageKey", ComponentSchema.of(stringSchema));
+        expectedHeaders.getProperties().put("non-exist", ComponentSchema.of(stringSchema));
 
         assertEquals(expectedHeaders, result);
     }
@@ -91,11 +109,11 @@ class HeaderClassExtractorIntegrationTest {
                 .getProperties()
                 .put(
                         "myHeader",
-                        SchemaObject.builder()
+                        ComponentSchema.of(SchemaObject.builder()
                                 .type(SchemaType.OBJECT)
                                 .title("MyHeader")
                                 .properties(Map.of("key", ComponentSchema.of(stringSchema)))
-                                .build());
+                                .build()));
 
         assertEquals(expectedHeaders, result);
     }

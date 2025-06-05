@@ -18,7 +18,6 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationReply;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationReplyAddress;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationTraits;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.security_scheme.SecurityScheme;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.asyncapi.v3.model.server.ServerVariable;
@@ -46,7 +45,7 @@ public class Components extends ExtendableObject {
      * be "application/vnd.aai.asyncapi+json;version=asyncapi" where the version is equal to the AsyncAPI Version String.
      */
     @JsonProperty(value = "schemas")
-    private Map<String, SchemaObject> schemas;
+    private Map<String, ComponentSchema> schemas;
 
     /**
      * An object to hold reusable Server Objects.
