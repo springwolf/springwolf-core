@@ -23,7 +23,7 @@ protobuf-plugin =  "0.9.5"
 spotless = "7.0.3"
 spring-boot-plugin = "3.5.0"
 spring-cloud = "2024.0.1" # not managed by spring-boot-dependencies
-spring-cloud-stream = "4.2.1" # not managed by spring-boot-dependencies
+spring-cloud-stream = "4.3.0" # not managed by spring-boot-dependencies
 
 [libraries]
 activemq-broker = { module = "org.apache.activemq:activemq-broker", version.ref = "activemq" }
