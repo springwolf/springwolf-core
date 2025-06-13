@@ -9,7 +9,7 @@ import { JsonComponent } from "../json/json.component";
 import { SchemaComponent } from "../schema/schema.component";
 import { MatIconModule } from "@angular/material/icon";
 import { NavigationTargetDirective } from "../sidenav/navigation.directive";
-import { CommonModule } from "@angular/common";
+
 
 @Component({
   selector: "app-schemas",
@@ -22,9 +22,8 @@ import { CommonModule } from "@angular/common";
     MatChipsModule,
     JsonComponent,
     SchemaComponent,
-    NavigationTargetDirective,
-    CommonModule,
-  ],
+    NavigationTargetDirective
+],
 })
 export class SchemasComponent implements OnInit {
   schemas: Schema[] = [];

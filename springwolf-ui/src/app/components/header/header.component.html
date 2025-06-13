@@ -5,14 +5,14 @@
       href="https://www.springwolf.dev"
       target="_blank"
       class="flex flex-column items-center"
-    >
+      >
       <img
         src="assets/springwolf-logo.png"
         class="logo"
         alt="Logo"
         height="1024"
         width="1024"
-      />
+        />
       Springwolf
     </a>
   </span>
@@ -23,24 +23,25 @@
       Settings
     </button>
     <mat-menu #settings="matMenu">
-      <button
-        mat-menu-item
-        [matMenuTriggerFor]="group"
-        *ngIf="0 < groups.length"
-        data-testid="settings-group-menu"
-      >
-        Group
-      </button>
+      @if (0 < groups.length) {
+        <button
+          mat-menu-item
+          [matMenuTriggerFor]="group"
+          data-testid="settings-group-menu"
+          >
+          Group
+        </button>
+      }
       <mat-menu #group="matMenu">
         @for (group of groups; track group) {
-        <button mat-menu-item (click)="changeGroup(group.value)">
-          <mat-icon>{{
-            isGroup == group.value
+          <button mat-menu-item (click)="changeGroup(group.value)">
+            <mat-icon>{{
+              isGroup == group.value
               ? "radio_button_checked"
               : "radio_button_unchecked"
-          }}</mat-icon>
-          {{ group.viewValue }}
-        </button>
+            }}</mat-icon>
+            {{ group.viewValue }}
+          </button>
         }
       </mat-menu>
 
@@ -48,7 +49,7 @@
         mat-menu-item
         (click)="toggleIsShowBindings()"
         data-testid="settings-bindings"
-      >
+        >
         <mat-icon>{{
           isShowBindings ? "check_box" : "check_box_outline_blank"
         }}</mat-icon>
@@ -58,7 +59,7 @@
         mat-menu-item
         (click)="toggleIsShowHeaders()"
         data-testid="settings-headers"
-      >
+        >
         <mat-icon>{{
           isShowHeaders ? "check_box" : "check_box_outline_blank"
         }}</mat-icon>
