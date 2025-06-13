@@ -6,7 +6,6 @@ import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.core.controller.dtos.MessageDto;
 import io.github.springwolf.plugins.sns.producer.SpringwolfSnsProducer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +29,6 @@ public class SpringwolfSnsController extends PublishingBaseController {
     @Override
     protected void publishMessage(String topic, MessageDto message, Object payload) {
         log.debug("Publishing to sns topic {}: {}", topic, message);
-        producer.send(topic, MessageBuilder.withPayload(payload).build());
+        producer.send(topic, message.getHeaders(), payload);
     }
 }
