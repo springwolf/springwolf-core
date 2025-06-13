@@ -9,9 +9,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   checks: write
-  id-token: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
