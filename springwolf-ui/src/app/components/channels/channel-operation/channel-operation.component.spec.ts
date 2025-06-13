@@ -37,7 +37,7 @@ describe("ChannelOperationComponent", () => {
         { provide: AsyncApiService, useValue: mockedAsyncApiService },
         { provide: PublisherService, useValue: {} },
       ],
-      componentInputs: {
+      inputs: {
         channelName: mockData.name,
         operation: mockData.operation,
       },

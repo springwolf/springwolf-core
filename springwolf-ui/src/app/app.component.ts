@@ -26,7 +26,7 @@ import { NavigationTargetDirective } from "./components/sidenav/navigation.direc
     ServersComponent,
     ChannelsComponent,
     SchemasComponent,
-    NavigationTargetDirective
-],
+    NavigationTargetDirective,
+  ],
 })
 export class AppComponent {}

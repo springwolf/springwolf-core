@@ -1,70 +1,66 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h2>Channels</h2>
-@for (channel of channels; track channel) {
-  <article appNavigationTarget [id]="channel.anchorIdentifier">
-    <h3>{{ channel.name }}</h3>
+@for (channel of channels(); track channel) {
+<article appNavigationTarget [id]="channel.anchorIdentifier">
+  <h3>{{ channel.name }}</h3>
 
-    @if (isShowBindings) {
-      <div class="row">
-        <div class="width-6-of-12 width-12-of-12-s">
-          <h6>Channel Binding</h6>
-        </div>
-        <div class="width-6-of-12 width-12-of-12-s">
-          @if (channel.bindings) {
-            <div>
-              <app-prism-editor
-                code="{{ JSON.stringify(channel.bindings, null, 2) }}"
-                language="json"
-                readonly="true"
-                />
-            </div>
-          }
-        </div>
+  @if (isShowBindings()) {
+  <div class="row">
+    <div class="width-6-of-12 width-12-of-12-s">
+      <h6>Channel Binding</h6>
+    </div>
+    <div class="width-6-of-12 width-12-of-12-s">
+      @if (channel.bindings) {
+      <div>
+        <app-prism-editor
+          code="{{ JSON.stringify(channel.bindings, null, 2) }}"
+          language="json"
+          readonly="true"
+        />
       </div>
-    }
-
-    @for (channelOperation of channel.operations; track channelOperation) {
-      <mat-card
-        appearance="outlined"
-        appNavigationTarget
-        [id]="channelOperation.anchorIdentifier"
-        >
-        <mat-card-header>
-          <mat-card-title [attr.data-testid]="channel.anchorIdentifier">
-            {{ channelOperation.operation.message.title }}
-          </mat-card-title>
-          <span class="flex gap-16 padding-horizontal-1em height-fix-content">
-            @if (channelOperation.operation.protocol) {
-              <span
-                class="badge protocol-badge"
-                >
-                {{ channelOperation.operation.protocol }}
-              </span>
-            }
-            <span
-              class="badge"
+      }
+    </div>
+  </div>
+  } @for (channelOperation of channel.operations; track channelOperation) {
+  <mat-card
+    appearance="outlined"
+    appNavigationTarget
+    [id]="channelOperation.anchorIdentifier"
+  >
+    <mat-card-header>
+      <mat-card-title [attr.data-testid]="channel.anchorIdentifier">
+        {{ channelOperation.operation.message.title }}
+      </mat-card-title>
+      <span class="flex gap-16 padding-horizontal-1em height-fix-content">
+        @if (channelOperation.operation.protocol) {
+        <span class="badge protocol-badge">
+          {{ channelOperation.operation.protocol }}
+        </span>
+        }
+        <span
+          class="badge"
           [ngClass]="{
             'send-badge': channelOperation.operation.operationType === 'send',
             'receive-badge':
               channelOperation.operation.operationType === 'receive'
           }"
-              >
-              {{ channelOperation.operation.operationType }}
-            </span>
-          </span>
-        </mat-card-header>
-        <mat-card-content>
-          <app-channel-operation
-            [channelName]="channel.name"
-            [operation]="channelOperation.operation"
-          ></app-channel-operation>
-        </mat-card-content>
-      </mat-card>
+        >
+          {{ channelOperation.operation.operationType }}
+        </span>
+      </span>
+    </mat-card-header>
+    <mat-card-content>
+      <app-channel-operation
+        [channelName]="channel.name"
+        [operation]="channelOperation.operation"
+      ></app-channel-operation>
+    </mat-card-content>
+  </mat-card>
 
-      @if (!$last) {
-        <br />
-        } } @if (!$last) {
-        <br />
-      }
-    </article>
+  @if (!$last) {
+  <br />
+  } } @if (!$last) {
+  <br />
   }
+</article>
+}
