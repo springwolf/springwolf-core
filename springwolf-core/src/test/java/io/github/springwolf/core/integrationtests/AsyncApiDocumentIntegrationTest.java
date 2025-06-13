@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
@@ -254,7 +255,7 @@ public class AsyncApiDocumentIntegrationTest {
             assertThat(messages)
                     .containsOnlyKeys(
                             "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload");
-            Map<String, SchemaObject> schemas = asyncAPI.getComponents().getSchemas();
+            Map<String, ComponentSchema> schemas = asyncAPI.getComponents().getSchemas();
             assertThat(schemas)
                     .containsOnlyKeys(
                             "HeadersNotDocumented",
@@ -265,10 +266,12 @@ public class AsyncApiDocumentIntegrationTest {
 
             assertThat(schemas.get(
                                     "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet")
+                            .getSchema()
                             .getDiscriminator())
                     .isEqualTo("type");
             assertThat(schemas.get(
                                     "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Cat")
+                            .getSchema()
                             .getAllOf()
                             .get(0)
                             .getReference()
@@ -277,6 +280,7 @@ public class AsyncApiDocumentIntegrationTest {
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet");
             assertThat(schemas.get(
                                     "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Cat")
+                            .getSchema()
                             .getAllOf()
                             .get(1)
                             .getSchema()
@@ -284,6 +288,7 @@ public class AsyncApiDocumentIntegrationTest {
                     .containsOnlyKeys("catSpecificField");
             assertThat(schemas.get(
                                     "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Dog")
+                            .getSchema()
                             .getAllOf()
                             .get(0)
                             .getReference()
@@ -292,6 +297,7 @@ public class AsyncApiDocumentIntegrationTest {
                             "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet");
             assertThat(schemas.get(
                                     "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Dog")
+                            .getSchema()
                             .getAllOf()
                             .get(1)
                             .getSchema()
@@ -325,12 +331,20 @@ public class AsyncApiDocumentIntegrationTest {
             // then
             Map<String, Message> messages = asyncAPI.getComponents().getMessages();
             assertThat(messages).containsOnlyKeys(myEnumRootSchemaName);
-            Map<String, SchemaObject> schemas = asyncAPI.getComponents().getSchemas();
+            Map<String, ComponentSchema> schemas = asyncAPI.getComponents().getSchemas();
             assertThat(schemas).containsOnlyKeys("HeadersNotDocumented", myEnumRootSchemaName, myEnumObjectSchemaName);
 
-            assertThat(schemas.get(myEnumRootSchemaName).getExamples().get(0).toString())
+            assertThat(schemas.get(myEnumRootSchemaName)
+                            .getSchema()
+                            .getExamples()
+                            .get(0)
+                            .toString())
                     .isEqualTo("{\"myEnumObjectField\":\"\\\"DOG\\\"\"}");
-            assertThat(schemas.get(myEnumObjectSchemaName).getExamples().get(0).toString())
+            assertThat(schemas.get(myEnumObjectSchemaName)
+                            .getSchema()
+                            .getExamples()
+                            .get(0)
+                            .toString())
                     .isEqualTo("\"DOG\"");
         }
     }

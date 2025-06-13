@@ -92,7 +92,7 @@ class GroupingServiceTest {
             .operations(Map.of("receive", receiveOperation))
             .components(Components.builder()
                     .messages(Map.of(message3.getMessageId(), message3))
-                    .schemas(Map.of(schema3.getTitle(), schema3))
+                    .schemas(Map.of(schema3.getTitle(), ComponentSchema.of(schema3)))
                     .build())
             .build();
     private final AsyncAPI fullApi = AsyncAPI.builder()
@@ -107,9 +107,9 @@ class GroupingServiceTest {
                             message3.getMessageId(),
                             message3))
                     .schemas(Map.of(
-                            schema1.getTitle(), schema1,
-                            header1Schema.getTitle(), header1Schema,
-                            schema3.getTitle(), schema3))
+                            schema1.getTitle(), ComponentSchema.of(schema1),
+                            header1Schema.getTitle(), ComponentSchema.of(header1Schema),
+                            schema3.getTitle(), ComponentSchema.of(schema3)))
                     .build())
             .build();
 
@@ -233,7 +233,9 @@ class GroupingServiceTest {
                 .operations(Map.of())
                 .components(Components.builder()
                         .messages(Map.of(message.getMessageId(), message))
-                        .schemas(Map.of(schema1.getTitle(), schema1, schema4.getTitle(), schema4))
+                        .schemas(Map.of(
+                                schema1.getTitle(), ComponentSchema.of(schema1),
+                                schema4.getTitle(), ComponentSchema.of(schema4)))
                         .build())
                 .build();
 
@@ -267,7 +269,8 @@ class GroupingServiceTest {
             assertThat(grouped.getChannels()).isEqualTo(Map.of(channel2.getChannelId(), channel2));
             assertThat(grouped.getOperations()).isEqualTo(Map.of("receive", receiveOperation));
             assertThat(grouped.getComponents().getMessages()).isEqualTo(Map.of(message3.getMessageId(), message3));
-            assertThat(grouped.getComponents().getSchemas()).isEqualTo(Map.of(schema3.getTitle(), schema3));
+            assertThat(grouped.getComponents().getSchemas())
+                    .isEqualTo(Map.of(schema3.getTitle(), ComponentSchema.of(schema3)));
         }
 
         @Test
@@ -290,7 +293,11 @@ class GroupingServiceTest {
                             message1.getMessageId(), message1,
                             message2.getMessageId(), message2));
             assertThat(grouped.getComponents().getSchemas())
-                    .isEqualTo(Map.of(schema1.getTitle(), schema1, header1Schema.getTitle(), header1Schema));
+                    .isEqualTo(Map.of(
+                            schema1.getTitle(),
+                            ComponentSchema.of(schema1),
+                            header1Schema.getTitle(),
+                            ComponentSchema.of(header1Schema)));
         }
     }
 
@@ -332,7 +339,8 @@ class GroupingServiceTest {
             assertThat(grouped.getChannels()).isEqualTo(Map.of(channel2.getChannelId(), channel2));
             assertThat(grouped.getOperations()).isEqualTo(Map.of("receive", receiveOperation));
             assertThat(grouped.getComponents().getMessages()).isEqualTo(Map.of(message3.getMessageId(), message3));
-            assertThat(grouped.getComponents().getSchemas()).isEqualTo(Map.of(schema3.getTitle(), schema3));
+            assertThat(grouped.getComponents().getSchemas())
+                    .isEqualTo(Map.of(schema3.getTitle(), ComponentSchema.of(schema3)));
         }
 
         @Test
@@ -355,7 +363,11 @@ class GroupingServiceTest {
                             message1.getMessageId(), message1,
                             message2.getMessageId(), message2));
             assertThat(grouped.getComponents().getSchemas())
-                    .isEqualTo(Map.of(schema1.getTitle(), schema1, header1Schema.getTitle(), header1Schema));
+                    .isEqualTo(Map.of(
+                            schema1.getTitle(),
+                            ComponentSchema.of(schema1),
+                            header1Schema.getTitle(),
+                            ComponentSchema.of(header1Schema)));
         }
     }
 
@@ -396,7 +408,8 @@ class GroupingServiceTest {
             assertThat(grouped.getChannels()).isEqualTo(Map.of(channel2.getChannelId(), channel2));
             assertThat(grouped.getOperations()).isEqualTo(Map.of("receive", receiveOperation));
             assertThat(grouped.getComponents().getMessages()).isEqualTo(Map.of(message3.getMessageId(), message3));
-            assertThat(grouped.getComponents().getSchemas()).isEqualTo(Map.of(schema3.getTitle(), schema3));
+            assertThat(grouped.getComponents().getSchemas())
+                    .isEqualTo(Map.of(schema3.getTitle(), ComponentSchema.of(schema3)));
         }
 
         @Test
@@ -435,7 +448,11 @@ class GroupingServiceTest {
             assertThat(grouped.getComponents().getMessages()).isEqualTo(Map.of(message1.getMessageId(), message1));
 
             assertThat(grouped.getComponents().getSchemas())
-                    .isEqualTo(Map.of(schema1.getTitle(), schema1, header1Schema.getTitle(), header1Schema));
+                    .isEqualTo(Map.of(
+                            schema1.getTitle(),
+                            ComponentSchema.of(schema1),
+                            header1Schema.getTitle(),
+                            ComponentSchema.of(header1Schema)));
         }
     }
 }

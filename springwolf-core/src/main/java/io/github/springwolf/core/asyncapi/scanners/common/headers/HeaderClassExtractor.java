@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
-import io.github.springwolf.asyncapi.v3.model.schema.Schema;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
@@ -35,17 +35,26 @@ public class HeaderClassExtractor {
                 String headerName = getHeaderAnnotationName(headerAnnotation);
 
                 SwaggerSchemaService.ExtractedSchemas extractedSchema = schemaService.extractSchema(argument.getType());
-                Schema schema = extractedSchema.rootSchema().getSchema();
-                if (schema == null && extractedSchema.referencedSchemas().size() == 1) {
-                    schema = extractedSchema
-                            .referencedSchemas()
-                            .values()
-                            .iterator()
-                            .next();
+                ComponentSchema rootComponentSchema = extractedSchema.rootSchema();
+
+                // to stay compatible with former versions.
+                // Only simple header schemas are supported, which are used inline and do not require to be registered
+                // in the components block.
+                ComponentSchema headerSchema = null;
+                if (rootComponentSchema.getSchema() != null) {
+                    headerSchema = rootComponentSchema;
+                } else {
+                    if (extractedSchema.referencedSchemas().size() == 1) {
+                        headerSchema = extractedSchema
+                                .referencedSchemas()
+                                .values()
+                                .iterator()
+                                .next();
+                    }
                 }
 
-                if (schema != null) {
-                    headers.getProperties().put(headerName, schema);
+                if (headerSchema != null) {
+                    headers.getProperties().put(headerName, headerSchema);
                 } else {
                     log.debug("Unable to extract schema for header {} in method {}", headerName, methodName);
                 }
