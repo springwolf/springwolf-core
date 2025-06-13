@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Component, input } from "@angular/core";
 
-
 @Component({
   selector: "app-schema-range",
   templateUrl: "./range.component.html",

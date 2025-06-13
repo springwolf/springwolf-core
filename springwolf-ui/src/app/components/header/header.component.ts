@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, signal } from "@angular/core";
 import { IUiService } from "../../service/ui.service";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { IAssetService } from "../../service/asset.service";
@@ -18,19 +18,14 @@ interface Group {
   selector: "app-header",
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.css"],
-  imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatIconModule
-],
+  imports: [MatToolbarModule, MatButtonModule, MatMenuModule, MatIconModule],
 })
 export class HeaderComponent implements OnInit {
-  groups: Group[] = [];
-  isGroup: string = IUiService.DEFAULT_GROUP;
-  isShowBindings: boolean = IUiService.DEFAULT_SHOW_BINDINGS;
-  isShowHeaders: boolean = IUiService.DEFAULT_SHOW_HEADERS;
-  title: string = "";
+  groups = signal<Group[]>([]);
+  isGroup = signal<string>(IUiService.DEFAULT_GROUP);
+  isShowBindings = signal<boolean>(IUiService.DEFAULT_SHOW_BINDINGS);
+  isShowHeaders = signal<boolean>(IUiService.DEFAULT_SHOW_HEADERS);
+  title = signal<string>("");
 
   constructor(
     private uiService: IUiService,
@@ -41,41 +36,41 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.assetService.load();
 
-    this.uiService.isShowBindings$.subscribe(
-      (value) => (this.isShowBindings = value)
+    this.uiService.isShowBindings$.subscribe((value) =>
+      this.isShowBindings.set(value)
     );
 
-    this.uiService.isShowHeaders$.subscribe(
-      (value) => (this.isShowHeaders = value)
+    this.uiService.isShowHeaders$.subscribe((value) =>
+      this.isShowHeaders.set(value)
     );
 
-    this.uiService.isGroup$.subscribe((value) => (this.isGroup = value));
+    this.uiService.isGroup$.subscribe((value) => this.isGroup.set(value));
     this.uiService.uiConfig.subscribe((value) => {
       if (value.groups.length > 0) {
         const groups = value.groups.map((group) => {
           return { value: group.name, viewValue: group.name };
         });
-        this.groups = [
+        this.groups.set([
           {
             value: IUiService.DEFAULT_GROUP,
             viewValue: IUiService.DEFAULT_GROUP,
           },
           ...groups,
-        ];
+        ]);
       }
     });
 
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
-      this.title = asyncapi.info.title;
+      this.title.set(asyncapi.info.title);
     });
   }
 
   toggleIsShowBindings() {
-    this.uiService.toggleIsShowBindings(!this.isShowBindings);
+    this.uiService.toggleIsShowBindings(!this.isShowBindings());
   }
 
   toggleIsShowHeaders() {
-    this.uiService.toggleIsShowHeaders(!this.isShowHeaders);
+    this.uiService.toggleIsShowHeaders(!this.isShowHeaders());
   }
 
   changeGroup(value: string) {

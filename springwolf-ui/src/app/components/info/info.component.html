@@ -1,57 +1,47 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h1>
-  {{ info.title }}
-  {{ info.version ? "v" + info.version : "" }}
+  {{ info().title }}
+  {{ info().version ? "v" + info().version : "" }}
 </h1>
 
 <p class="info-chips">
   <mat-chip>
     <mat-icon matChipAvatar fontIcon="download" />
-    @if (info?.asyncApiJson) {
-      <a
-        href="javascript:void(0);"
-        (click)="download()"
-        >
-        AsyncAPI JSON
-      </a>
+    @if (info().asyncApiJson) {
+    <a href="javascript:void(0);" (click)="download()">AsyncAPI JSON</a>
     }
   </mat-chip>
-  @if (info?.license?.name) {
-    <mat-chip>
-      <mat-icon matChipAvatar fontIcon="attribution" />
-      @if (info?.license?.url) {
-        <a
-          [href]="info.license.url"
-          target="_blank"
-          >
-          {{ info.license.name }}
-        </a>
-      } @else {
-        {{ info.license.name }}
-      }
-    </mat-chip>
-  }
 
-  @if (info?.contact?.url) {
-    <mat-chip>
-      <mat-icon matChipAvatar fontIcon="link" />
-      <a [href]="info.contact.url" target="_blank">
-        {{ info.contact.url }}
-      </a>
-    </mat-chip>
-  }
-  @if (info.contact.email) {
-    <mat-chip>
-      <mat-icon matChipAvatar fontIcon="email" />
-      <a [href]="info.contact.email.href" target="_blank">
-        {{ info.contact.email.name }}
-      </a>
-    </mat-chip>
+  @let license = info().license; @if (license?.name) {
+  <mat-chip>
+    <mat-icon matChipAvatar fontIcon="attribution" />
+    @if (license?.url) {
+    <a [href]="license.url" target="_blank">
+      {{ license.name }}
+    </a>
+    } @else {
+    {{ license.name }}
+    }
+  </mat-chip>
+  } @let contact = info().contact; @if (contact.url) {
+  <mat-chip>
+    <mat-icon matChipAvatar fontIcon="link" />
+    <a [href]="contact.url" target="_blank">
+      {{ contact.url }}
+    </a>
+  </mat-chip>
+  } @let email = info().contact.email; @if (email) {
+  <mat-chip>
+    <mat-icon matChipAvatar fontIcon="email" />
+    <a [href]="email.href" target="_blank">
+      {{ email.name }}
+    </a>
+  </mat-chip>
   }
 </p>
 
-@if (info?.description) {
-  <p>
-    <markdown [data]="info.description"></markdown>
-  </p>
+@if (info().description) {
+<p>
+  <markdown [data]="info().description"></markdown>
+</p>
 }

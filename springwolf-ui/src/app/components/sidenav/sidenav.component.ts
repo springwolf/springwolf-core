@@ -7,6 +7,7 @@ import {
   ElementRef,
   OnInit,
   QueryList,
+  signal,
   ViewChild,
 } from "@angular/core";
 import { NavigationTargetDirective } from "./navigation.directive";
@@ -24,7 +25,7 @@ interface NavigationEntry {
   icon?: string;
   href: string | undefined;
   selected?: boolean;
-  collapsed?: boolean;
+  expanded?: boolean;
   tags?: NavigationEntryTag[];
   children?: NavigationEntry[];
 }
@@ -40,7 +41,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
   @ContentChildren(NavigationTargetDirective, { descendants: true })
   navigationTargets!: QueryList<NavigationTargetDirective>;
 
-  navigation: NavigationEntry[] = [];
+  navigation = signal<NavigationEntry[]>([]);
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -125,7 +126,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
       });
       newNavigation.push(schemas);
 
-      this.navigation = newNavigation;
+      this.navigation.set(newNavigation);
 
       this.scrollToUrlLocation();
     });
@@ -179,13 +180,13 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         }
       });
 
-    this.navigation.forEach((link) => {
+    this.navigation().forEach((link) => {
       let childSelected = false;
       link.children?.forEach((child) => {
         let subChildSelected = false;
         child.children?.forEach((subChild) => {
           subChild.selected = currentAnchor == subChild.href;
-          subChild.collapsed = !subChild.selected;
+          subChild.expanded = subChild.selected;
 
           subChildSelected = subChildSelected || subChild.selected;
         });
@@ -193,17 +194,18 @@ export class SidenavComponent implements OnInit, AfterViewInit {
         childSelected = childSelected || child.selected;
 
         child.children?.forEach((subChild) => {
-          subChild.collapsed = !child.selected;
+          subChild.expanded = child.selected;
         });
       });
       link.selected = currentAnchor == link.href || childSelected;
 
       link.children?.forEach((child) => {
-        child.collapsed = !link.selected;
+        child.expanded = link.selected;
       });
 
-      link.collapsed = false;
+      link.expanded = true;
     });
+    this.navigation.set([...this.navigation()]); // trick to trigger change detection, improve later
   };
 
   private scrollToUrlLocation = () => {

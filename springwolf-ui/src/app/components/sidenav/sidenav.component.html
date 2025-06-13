@@ -1,77 +1,77 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened class="sidenav width-s-hide">
-    @for (link of navigation; track link) {
-      <ul
-        class="entry"
-        [ngClass]="{ selected: link.selected, collapsed: link.collapsed }"
-        >
-        <li>
-          <span>
-            @if (link.icon) {
-              <mat-icon fontIcon="{{ link.icon }}" />
-            }
-            <b>
-              <a [href]="link.href">
-                @for (linkEl of link.name; track $index) {{{linkEl}}&#x200B;}
-                </a>
-              </b>
+    @for (link of navigation(); track link) {
+    <ul
+      class="entry"
+      [ngClass]="{ selected: link.selected, expanded: link.expanded }"
+    >
+      <li>
+        <span>
+          @if (link.icon) {
+          <mat-icon fontIcon="{{ link.icon }}" />
+          }
+          <b>
+            <a [href]="link.href">
+              @for (linkEl of link.name; track $index) {{{linkEl}}&#x200B;}
+            </a>
+          </b>
+        </span>
+
+        <ul>
+          @for (child of link.children; track child) {
+          <li
+            class="entry"
+            [ngClass]="{ selected: child.selected, expanded: child.expanded }"
+          >
+            <span>
+              <a [href]="child.href">
+                @for (linkEl of child.name; track $index)
+                {{{linkEl}}&#x200B;}
+              </a>
+              @for (childTag of child.tags; track childTag) {
+              <span class="badge {{ childTag.type }}-badge">{{
+                childTag.value
+              }}</span>
+              }
             </span>
 
             <ul>
-              @for (child of link.children; track child) {
-                <li
-                  class="entry"
-                  [ngClass]="{ selected: child.selected, collapsed: child.collapsed }"
-                  >
-                  <span>
-                    <a [href]="child.href">
-                      @for (linkEl of child.name; track $index)
-                        {{{linkEl}}&#x200B;}
-                      </a>
-                      @for (childTag of child.tags; track childTag) {
-                        <span class="badge {{ childTag.type }}-badge">{{
-                          childTag.value
-                        }}</span>
-                      }
-                    </span>
-
-                    <ul>
-                      @for (subchild of child.children; track subchild) {
-                        <li
-                          class="entry"
+              @for (subchild of child.children; track subchild) {
+              <li
+                class="entry"
                 [ngClass]="{
                   selected: subchild.selected,
-                  collapsed: subchild.collapsed
+                  expanded: subchild.expanded
                 }"
-                          >
-                          <span>
-                            <a [href]="subchild.href">
-                              @for (linkEl of subchild.name; track $index)
-                                {{{linkEl}}&#x200B;}
-                              </a>
+              >
+                <span>
+                  <a [href]="subchild.href">
+                    @for (linkEl of subchild.name; track $index)
+                    {{{linkEl}}&#x200B;}
+                  </a>
 
-                              @for (subChildTag of subchild.tags; track subChildTag) {
-                                <span class="badge {{ subChildTag.type }}-badge">{{
-                                  subChildTag.value
-                                }}</span>
+                  @for (subChildTag of subchild.tags; track subChildTag) {
+                  <span class="badge {{ subChildTag.type }}-badge">{{
+                    subChildTag.value
+                  }}</span>
 
-                              }
-                            </span>
-                          </li>
-                        }
-                      </ul>
-                    </li>
                   }
-                </ul>
+                </span>
               </li>
+              }
             </ul>
+          </li>
           }
-        </mat-sidenav>
+        </ul>
+      </li>
+    </ul>
+    }
+  </mat-sidenav>
 
-        <mat-sidenav-content class="width-s-margin-reset">
-          <div #scrollableElement style="overflow-y: auto; height: 100%">
-            <ng-content></ng-content>
-          </div>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
+  <mat-sidenav-content class="width-s-margin-reset">
+    <div #scrollableElement style="overflow-y: auto; height: 100%">
+      <ng-content></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
