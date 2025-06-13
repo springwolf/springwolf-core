@@ -7,13 +7,13 @@ import { initInfo } from "../../service/mock/init-values";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
 import { MarkdownModule } from "ngx-markdown";
-import { CommonModule } from "@angular/common";
+
 
 @Component({
   selector: "app-info",
   templateUrl: "./info.component.html",
   styleUrls: ["./info.component.css"],
-  imports: [MatChipsModule, MatIconModule, MarkdownModule, CommonModule],
+  imports: [MatChipsModule, MatIconModule, MarkdownModule],
 })
 export class InfoComponent implements OnInit {
   asyncApiData: AsyncApi | undefined = undefined;

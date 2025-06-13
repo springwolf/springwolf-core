@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { IUiService } from "../../service/ui.service";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { IAssetService } from "../../service/asset.service";
-import { CommonModule } from "@angular/common";
+
 import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
@@ -22,9 +22,8 @@ interface Group {
     MatToolbarModule,
     MatButtonModule,
     MatMenuModule,
-    MatIconModule,
-    CommonModule,
-  ],
+    MatIconModule
+],
 })
 export class HeaderComponent implements OnInit {
   groups: Group[] = [];

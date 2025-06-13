@@ -15,7 +15,7 @@ import {
   noExample,
 } from "../../../service/mock/init-values";
 import { IUiService } from "../../../service/ui.service";
-import { CommonModule } from "@angular/common";
+
 import { MarkdownModule } from "ngx-markdown";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
@@ -29,15 +29,14 @@ import { MatButtonModule } from "@angular/material/button";
   templateUrl: "./channel-operation.component.html",
   styleUrls: ["./channel-operation.component.css"],
   imports: [
-    CommonModule,
     MarkdownModule,
     MatChipsModule,
     MatIconModule,
     PrismEditorComponent,
     SchemaComponent,
     ClipboardModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
 })
 export class ChannelOperationComponent implements OnInit {
   channelName = input.required<string>();
