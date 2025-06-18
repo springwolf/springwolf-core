@@ -172,7 +172,7 @@ public class SwaggerSchemaUtil {
     }
 
     /**
-     * expects an object representing an schema and tries to unwrap this schema, if it is an
+     * expects an object representing an schema and tries to unwrap this schema, if it is a
      * ComponentSchema or MultiFormatSchema. The method works recursive on unwrapped Objects.
      *
      * @param schema
