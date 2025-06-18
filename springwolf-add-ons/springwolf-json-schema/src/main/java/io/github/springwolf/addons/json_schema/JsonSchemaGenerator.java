@@ -167,15 +167,22 @@ public class JsonSchemaGenerator {
         return node;
     }
 
-
-    private ComponentSchema resolveSchemaRef(ComponentSchema componentSchema, Map<String, ComponentSchema> definitions) {
+    /**
+     * checks if the given componentSchema contains a schema reference and resolve the reference with the
+     * concrete {@link ComponentSchema} found in the given definitions map.
+     *
+     * @param componentSchema
+     * @param definitions
+     * @return the resolved schema reference or the given componentSchema instance.
+     */
+    private ComponentSchema resolveSchemaRef(
+            ComponentSchema componentSchema, Map<String, ComponentSchema> definitions) {
         if (componentSchema == null || componentSchema.getReference() == null) {
             return componentSchema;
         }
-        String schemaName = ReferenceUtil.getLastSegment(
-                componentSchema.getReference().getRef());
-        ComponentSchema cs = definitions.get(schemaName);
-        return cs;
+        String schemaName =
+                ReferenceUtil.getLastSegment(componentSchema.getReference().getRef());
+        return definitions.get(schemaName);
     }
 
     /**

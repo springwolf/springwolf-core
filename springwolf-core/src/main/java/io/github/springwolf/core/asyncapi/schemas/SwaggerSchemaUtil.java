@@ -178,23 +178,22 @@ public class SwaggerSchemaUtil {
      * @param schema
      * @return
      */
-    public Object unwrapSchema(Object schema){
-        if(schema instanceof ComponentSchema componentSchema){
+    public Object unwrapSchema(Object schema) {
+        if (schema instanceof ComponentSchema componentSchema) {
             Object unwrappedSchema = componentSchema.getSchema();
-            if (unwrappedSchema == null){
+            if (unwrappedSchema == null) {
                 unwrappedSchema = componentSchema.getReference();
             }
-            if(unwrappedSchema == null){
+            if (unwrappedSchema == null) {
                 unwrappedSchema = componentSchema.getMultiFormatSchema();
             }
             return unwrapSchema(unwrappedSchema);
         }
-        if (schema instanceof MultiFormatSchema multiFormatSchema){
+        if (schema instanceof MultiFormatSchema multiFormatSchema) {
             return unwrapSchema(multiFormatSchema.getSchema());
         }
         return schema;
     }
-
 
     /**
      * tries to transforms the given schema object to an Swagger Schema. 'schema' may be an asnycapi {@link SchemaObject}
@@ -214,16 +213,16 @@ public class SwaggerSchemaUtil {
      * @return the resulting Schema
      */
     @Nullable
-    public Schema<?> mapToSwagger(Object schema){
+    public Schema<?> mapToSwagger(Object schema) {
         // first unwrap ComponentSchema and MultiFormatSchema:
         Object unwrappedSchema = unwrapSchema(schema);
 
-        if (unwrappedSchema instanceof Schema<?> swaggerSchema){
+        if (unwrappedSchema instanceof Schema<?> swaggerSchema) {
             return swaggerSchema;
         }
 
         if (unwrappedSchema instanceof SchemaObject schemaObject) {
-           return mapSchemaObjectToSwagger(schemaObject);
+            return mapSchemaObjectToSwagger(schemaObject);
         }
         if (unwrappedSchema instanceof SchemaReference schemaReference) {
             return mapSchemaReferenceToSwagger(schemaReference);
@@ -243,7 +242,7 @@ public class SwaggerSchemaUtil {
     private Schema mapSchemaObjectToSwagger(SchemaObject asyncApiSchema) {
         Schema swaggerSchema = new Schema();
         swaggerSchema.setType(asyncApiSchema.getType());
-//        swaggerSchema.setFormat(asyncApiSchema.getFormat());
+        //        swaggerSchema.setFormat(asyncApiSchema.getFormat());
         swaggerSchema.setDescription(asyncApiSchema.getDescription());
         swaggerSchema.setExamples(asyncApiSchema.getExamples());
         swaggerSchema.setEnum(asyncApiSchema.getEnumValues());
@@ -253,7 +252,7 @@ public class SwaggerSchemaUtil {
 
     /**
      * transforms the given asyncapi {@link SchemaReference} to a Swagger Schema Object.
-
+     *
      * @param asyncApiSchemaReference
      * @return
      */
