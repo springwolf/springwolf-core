@@ -52,16 +52,16 @@ public class JsonSchemaGenerator {
         if (schema.getAnyOf() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
             for (ComponentSchema ofSchema : schema.getAnyOf()) {
-                //                SchemaObject schemaObject = getSchemaObject(ofSchema, definitions);
-                arrayNode.add(fromSchemaInternal(ofSchema, definitions, visited));
+                ComponentSchema resolvedSchemaObject = resolveSchemaRef(ofSchema, definitions);
+                arrayNode.add(fromSchemaInternal(resolvedSchemaObject, definitions, visited));
             }
             node.set("anyOf", arrayNode);
         }
         if (schema.getAllOf() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
             for (ComponentSchema allSchema : schema.getAllOf()) {
-                //                SchemaObject schemaObject = getSchemaObject(allSchema, definitions);
-                arrayNode.add(fromSchemaInternal(allSchema, definitions, visited));
+                ComponentSchema resolvedSchemaObject = resolveSchemaRef(allSchema, definitions);
+                arrayNode.add(fromSchemaInternal(resolvedSchemaObject, definitions, visited));
             }
             node.set("allOf", arrayNode);
         }
@@ -88,8 +88,8 @@ public class JsonSchemaGenerator {
             node.put("format", schema.getFormat());
         }
         if (schema.getItems() != null) {
-            //            SchemaObject schemaObject = getSchemaObject(schema.getItems(), definitions);
-            node.set("items", fromSchemaInternal(schema.getItems(), definitions, visited));
+            ComponentSchema resolvedSchemaObject = resolveSchemaRef(schema.getItems(), definitions);
+            node.set("items", fromSchemaInternal(resolvedSchemaObject, definitions, visited));
         }
         if (schema.getMaximum() != null) {
             node.put("maximum", schema.getMaximum());
@@ -113,14 +113,14 @@ public class JsonSchemaGenerator {
             node.put("multipleOf", schema.getMultipleOf());
         }
         if (schema.getNot() != null) {
-            //            SchemaObject schemaObject = getSchemaObject(schema.getNot(), definitions);
-            node.set("not", fromSchemaInternal(schema.getNot(), definitions, visited));
+            ComponentSchema resolvedSchemaObject = resolveSchemaRef(schema.getNot(), definitions);
+            node.set("not", fromSchemaInternal(resolvedSchemaObject, definitions, visited));
         }
         if (schema.getOneOf() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
             for (ComponentSchema ofSchema : schema.getOneOf()) {
-                //                SchemaObject schemaObject = getSchemaObject(ofSchema, definitions);
-                arrayNode.add(fromSchemaInternal(ofSchema, definitions, visited));
+                ComponentSchema resolvedSchemaObject = resolveSchemaRef(ofSchema, definitions);
+                arrayNode.add(fromSchemaInternal(resolvedSchemaObject, definitions, visited));
             }
             node.set("oneOf", arrayNode);
         }
@@ -165,6 +165,17 @@ public class JsonSchemaGenerator {
         }
 
         return node;
+    }
+
+
+    private ComponentSchema resolveSchemaRef(ComponentSchema componentSchema, Map<String, ComponentSchema> definitions) {
+        if (componentSchema == null || componentSchema.getReference() == null) {
+            return componentSchema;
+        }
+        String schemaName = ReferenceUtil.getLastSegment(
+                componentSchema.getReference().getRef());
+        ComponentSchema cs = definitions.get(schemaName);
+        return cs;
     }
 
     /**
