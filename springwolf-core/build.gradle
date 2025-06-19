@@ -82,3 +82,14 @@ publishing {
         }
     }
 }
+
+gradle.taskGraph.whenReady {taskGraph ->
+    println "Found task graph: " + taskGraph
+    println "Found " + taskGraph.allTasks.size() + " tasks."
+    taskGraph.allTasks.forEach { task ->
+        println task
+        task.dependsOn.forEach { dep ->
+            println "  - " + dep
+        }
+    }
+}
