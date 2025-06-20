@@ -14,9 +14,11 @@ import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
+import io.swagger.v3.oas.models.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
@@ -196,7 +198,53 @@ public class GroupingService {
                 });
     }
 
-    private static Set<String> findUnmarkedNestedSchemas(MarkingContext markingContext, SchemaObject schema) {
+    /**
+     * looks for nested schema refs inside the schema or multiformatschema objects of the given {@link ComponentSchema}, i.e.
+     * properties, allOf, anyOf, oneOf, not- and items references. Trys to deduce the schema id from the ref path and
+     * returns a Set of detected schema ids.
+     *
+     * @param markingContext the current {@link MarkingContext}
+     * @param componentSchema the {@link ComponentSchema} to analyze
+     * @return Set of schema ids representing nested schema refs
+     */
+    private static Set<String> findUnmarkedNestedSchemas(
+            MarkingContext markingContext, ComponentSchema componentSchema) {
+        // ComponentSchema can contain an AsnycApi SchemaObject instance or an MultiformatSchema, which in turn contains
+        // an schema.
+        if (componentSchema.getSchema() != null) {
+            return findUnmarkedNestedSchemasForAsyncAPISchema(markingContext, componentSchema.getSchema());
+        }
+        if (componentSchema.getMultiFormatSchema() != null) {
+            MultiFormatSchema multiFormatSchema = componentSchema.getMultiFormatSchema();
+
+            // Currently we support async_api and open_api format.
+            // The concrete schemaformat mediatype can contain json/yaml postfix, so we check wether the begin of the
+            // media type matches.
+            if (multiFormatSchema.getSchemaFormat().startsWith(SchemaFormat.ASYNCAPI_V3.toString())
+                    && multiFormatSchema.getSchema() instanceof SchemaObject schemaObject) {
+                return findUnmarkedNestedSchemasForAsyncAPISchema(markingContext, schemaObject);
+            }
+            if (multiFormatSchema.getSchemaFormat().startsWith(SchemaFormat.OPENAPI_V3.toString())
+                    && multiFormatSchema.getSchema() instanceof Schema openapiSchema) {
+                return findUnmarkedNestedSchemasForOpenAPISchema(markingContext, openapiSchema);
+            }
+        }
+
+        // directly stored SchemaReference Items are not considered here.
+        return Set.of();
+    }
+
+    /**
+     * looks for nested schema refs inside the given {@link SchemaObject}, i.e.
+     * properties, allOf, anyOf, oneOf, not- and items references. Trys to deduce the schema id from the ref path and
+     * returns a Set of detected schema ids.
+     *
+     * @param markingContext the current {@link MarkingContext}
+     * @param schema the {@link SchemaObject} to analyze
+     * @return Set of schema ids representing nested schema refs
+     */
+    private static Set<String> findUnmarkedNestedSchemasForAsyncAPISchema(
+            MarkingContext markingContext, SchemaObject schema) {
         final Stream<ComponentSchema> propertySchemas;
         if (schema.getProperties() != null) {
             propertySchemas = schema.getProperties().values().stream()
@@ -217,6 +265,35 @@ public class GroupingService {
                 .map(ComponentSchema::getReference)
                 .filter(Objects::nonNull)
                 .map(SchemaReference::getRef)
+                .map(ReferenceUtil::getLastSegment)
+                .filter(schemaId -> !markingContext.markedComponentSchemaIds.contains(schemaId))
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * looks for nested schema refs inside the given Swagger {@link Schema}, i.e.
+     * properties, allOf, anyOf, oneOf, not- and items references. Trys to deduce the schema id from the ref path and
+     * returns a Set of detected schema ids.
+     *
+     * @param markingContext the current {@link MarkingContext}
+     * @param openapiSchema the Swagger {@link Schema} to analyze
+     * @return Set of schema ids representing nested schema refs
+     */
+    private static Set<String> findUnmarkedNestedSchemasForOpenAPISchema(
+            MarkingContext markingContext, Schema<?> openapiSchema) {
+        Stream<Schema> propertySchemas = openapiSchema.getProperties().values().stream();
+
+        Stream<Schema> referencedSchemas = Stream.of(
+                        openapiSchema.getAllOf(), openapiSchema.getAnyOf(), openapiSchema.getOneOf())
+                .filter(Objects::nonNull)
+                .flatMap(List::stream);
+
+        Stream<Schema> referencedSchemaElements =
+                Stream.of(openapiSchema.getNot(), openapiSchema.getItems()).filter(Objects::nonNull);
+
+        return Stream.concat(propertySchemas, Stream.concat(referencedSchemas, referencedSchemaElements))
+                .map(Schema::get$ref)
+                .filter(Objects::nonNull)
                 .map(ReferenceUtil::getLastSegment)
                 .filter(schemaId -> !markingContext.markedComponentSchemaIds.contains(schemaId))
                 .collect(Collectors.toSet());
@@ -258,7 +335,7 @@ public class GroupingService {
                 .filter(entry -> markingContext.isComponentMessageMarked(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        Map<String, SchemaObject> schemas = fullAsyncApi.getComponents().getSchemas().entrySet().stream()
+        Map<String, ComponentSchema> schemas = fullAsyncApi.getComponents().getSchemas().entrySet().stream()
                 .filter(entry -> markingContext.isComponentSchemaMarked(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
