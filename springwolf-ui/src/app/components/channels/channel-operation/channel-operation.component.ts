@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, computed, input, OnInit } from "@angular/core";
+import { Component, computed, input, OnInit, signal } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { STATUS } from "angular-in-memory-web-api";
 import { Binding } from "../../../models/bindings.model";
@@ -15,7 +15,7 @@ import {
   noExample,
 } from "../../../service/mock/init-values";
 import { IUiService } from "../../../service/ui.service";
-import { CommonModule } from "@angular/common";
+
 import { MarkdownModule } from "ngx-markdown";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
@@ -29,7 +29,6 @@ import { MatButtonModule } from "@angular/material/button";
   templateUrl: "./channel-operation.component.html",
   styleUrls: ["./channel-operation.component.css"],
   imports: [
-    CommonModule,
     MarkdownModule,
     MatChipsModule,
     MatIconModule,
@@ -45,23 +44,23 @@ export class ChannelOperationComponent implements OnInit {
 
   initSchema = initSchema; // accessible for template
 
-  defaultSchema: Schema = initSchema;
-  defaultExample: Example = initExample;
-  originalDefaultExample: Example = this.defaultExample;
+  defaultSchema = signal<Schema>(initSchema);
+  defaultExample = signal<Example>(initExample);
+  originalDefaultExample = signal<Example>(initExample);
   exampleContentType = computed(
     () => this.operation().message.contentType.split("/").pop() || "json"
   );
 
-  headers: Schema = initSchema;
-  headersExample: Example = initExample;
-  originalHeadersExample: Example = this.headersExample;
+  headers = signal<Schema>(initSchema);
+  headersExample = initExample;
+  originalHeadersExample = signal<Example>(initExample);
 
   operationBindingExampleString?: string;
   messageBindingExampleString?: string;
 
-  isShowBindings: boolean = IUiService.DEFAULT_SHOW_BINDINGS;
-  isShowHeaders: boolean = IUiService.DEFAULT_SHOW_HEADERS;
-  canPublish: boolean = false;
+  isShowBindings = signal(IUiService.DEFAULT_SHOW_BINDINGS);
+  isShowHeaders = signal(IUiService.DEFAULT_SHOW_HEADERS);
+  canPublish = signal(false);
 
   constructor(
     private asyncApiService: AsyncApiService,
@@ -80,23 +79,23 @@ export class ChannelOperationComponent implements OnInit {
           payload.name.lastIndexOf("/") + 1
         );
         const schema = schemas.get(schemaIdentifier)!!;
-        this.defaultSchema = schema;
-        this.defaultExample = schema.example || noExample;
-        this.originalDefaultExample = this.defaultExample;
+        this.defaultSchema.set(schema);
+        this.defaultExample.set(schema.example || noExample);
+        this.originalDefaultExample.set(schema.example || noExample);
       } else {
-        this.defaultSchema = payload;
-        this.defaultExample = payload.example || noExample;
-        this.originalDefaultExample = this.defaultExample;
+        this.defaultSchema.set(payload);
+        this.defaultExample.set(payload.example || noExample);
+        this.originalDefaultExample.set(payload.example || noExample);
       }
 
       const headersSchema = this.operation().message.headers;
       if (headersSchema) {
-        this.headers = schemas.get(headersSchema?.name)!!;
+        this.headers.set(schemas.get(headersSchema?.name)!!);
       } else {
-        this.headers = initSchema;
+        this.headers.set(initSchema);
       }
-      this.headersExample = this.headers.example || noExample;
-      this.originalHeadersExample = this.headersExample;
+      this.headersExample = this.headers().example || noExample;
+      this.originalHeadersExample.set(this.headers().example || noExample);
 
       this.operationBindingExampleString = new Example(
         this.operation().bindings[this.operation().protocol]
@@ -110,15 +109,15 @@ export class ChannelOperationComponent implements OnInit {
       this.publisherService
         .canPublish(this.operation().protocol)
         .subscribe((response) => {
-          this.canPublish = response;
+          this.canPublish.set(response);
         });
     });
 
-    this.uiService.isShowBindings$.subscribe(
-      (value) => (this.isShowBindings = value)
+    this.uiService.isShowBindings$.subscribe((value) =>
+      this.isShowBindings.set(value)
     );
-    this.uiService.isShowHeaders$.subscribe(
-      (value) => (this.isShowHeaders = value)
+    this.uiService.isShowHeaders$.subscribe((value) =>
+      this.isShowHeaders.set(value)
     );
   }
 
@@ -152,12 +151,14 @@ export class ChannelOperationComponent implements OnInit {
   }
 
   reset(): void {
-    this.defaultExample = new Example(this.originalDefaultExample.rawValue);
-    this.headersExample = new Example(this.originalHeadersExample.rawValue);
+    this.defaultExample.set(
+      new Example(this.originalDefaultExample().rawValue)
+    );
+    this.headersExample = new Example(this.originalHeadersExample().rawValue);
   }
 
   publish(): void {
-    const example = this.defaultExample.value;
+    const example = this.defaultExample().value;
     const payloadType = this.operation().message.payload.name;
     const headers = this.headersExample.value;
     const bindings = this.messageBindingExampleString;

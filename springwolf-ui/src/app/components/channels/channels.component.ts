@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, signal } from "@angular/core";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
 import { Channel } from "../../models/channel.model";
 import { IUiService } from "../../service/ui.service";
 import { PrismEditorComponent } from "../code/prism-editor.component";
 import { CommonModule } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
-import { ChannelOperationComponent } from "./channel-main/channel-operation.component";
+import { ChannelOperationComponent } from "./channel-operation/channel-operation.component";
 import { NavigationTargetDirective } from "../sidenav/navigation.directive";
 
 @Component({
@@ -22,8 +22,8 @@ import { NavigationTargetDirective } from "../sidenav/navigation.directive";
   ],
 })
 export class ChannelsComponent implements OnInit {
-  channels: Channel[] = [];
-  isShowBindings: boolean = IUiService.DEFAULT_SHOW_BINDINGS;
+  channels = signal<Channel[]>([]);
+  isShowBindings = signal<boolean>(IUiService.DEFAULT_SHOW_BINDINGS);
   JSON = JSON;
 
   constructor(
@@ -33,11 +33,11 @@ export class ChannelsComponent implements OnInit {
 
   ngOnInit(): void {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
-      this.channels = asyncapi.channels;
+      this.channels.set(asyncapi.channels);
     });
 
-    this.uiService.isShowBindings$.subscribe(
-      (value) => (this.isShowBindings = value)
+    this.uiService.isShowBindings$.subscribe((value) =>
+      this.isShowBindings.set(value)
     );
   }
 }

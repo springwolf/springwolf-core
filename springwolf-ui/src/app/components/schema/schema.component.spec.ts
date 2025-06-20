@@ -7,10 +7,24 @@ import { JsonComponent } from "../json/json.component";
 import { render, screen } from "@testing-library/angular";
 import { MatDividerModule } from "@angular/material/divider";
 import { RangeComponent } from "./range/range.component";
+import { Schema } from "../../models/schema.model";
 
 describe("SchemaNewComponent", () => {
   beforeEach(async () => {
     const mockedSchemaRangeComponent = jest.fn();
+
+    const schema: Schema = {
+      ts_type: "object",
+      name: "ExampleSchema",
+      title: "String",
+      type: "string",
+      example: new Example("example value"),
+      enum: ["enum value1", "enum value2"],
+
+      anchorIdentifier: "anchor-example-schema",
+      anchorUrl: "#anchor-example-schema",
+      usedBy: [],
+    };
 
     await render(SchemaComponent, {
       declarations: [SchemaComponent, RangeComponent, JsonComponent],
@@ -18,13 +32,8 @@ describe("SchemaNewComponent", () => {
       providers: [
         { provide: RangeComponent, useValue: mockedSchemaRangeComponent },
       ],
-      componentInputs: {
-        schema: {
-          title: "String",
-          type: "string",
-          example: new Example("example value"),
-          enum: ["enum value1", "enum value2"],
-        },
+      inputs: {
+        schema: schema,
       },
     });
   });

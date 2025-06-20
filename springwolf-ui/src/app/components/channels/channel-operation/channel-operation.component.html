@@ -6,19 +6,23 @@
         <span>Channel</span>
         <span>{{ operation().channelName }}</span>
       </div>
-      <div *ngIf="operation().description" class="table-row">
+      @if (operation().description) {
+      <div class="table-row">
         <span>Operation description</span>
         <markdown [data]="operation().description"></markdown>
       </div>
-      <div *ngIf="operation().message.description" class="table-row">
+      } @if (operation().message.description) {
+      <div class="table-row">
         <span>Message description</span>
         <markdown [data]="operation().message.description"></markdown>
       </div>
-      <div *ngIf="operation().message.contentType" class="table-row">
+      } @if (operation().message.contentType) {
+      <div class="table-row">
         <span>Content-Type</span>
         <span class="text-console">{{ operation().message.contentType }}</span>
       </div>
-      <div *ngIf="operation().reply" class="table-row">
+      } @if (operation().reply) {
+      <div class="table-row">
         <span>Reply to</span>
         <span
           ><mat-chip-set>
@@ -40,6 +44,7 @@
           </mat-chip-set></span
         >
       </div>
+      }
       <div class="table-row">
         <span>Servers</span>
         <span>
@@ -59,60 +64,67 @@
   </div>
 </div>
 
-<div class="row" *ngIf="isShowBindings">
+@if (isShowBindings()) {
+<div class="row">
   <div class="width-6-of-12 width-12-of-12-s">
     <h6>Operation Binding</h6>
   </div>
   <div class="width-6-of-12 width-12-of-12-s">
-    <div *ngIf="operation().protocol">
+    @if (operation().protocol) {
+    <div>
+      @if (operationBindingExampleString) {
       <app-prism-editor
-        *ngIf="operationBindingExampleString"
         [(code)]="operationBindingExampleString"
         language="json"
         readonly="true"
       />
+      }
     </div>
+    }
   </div>
 </div>
-
-<div class="row" *ngIf="isShowBindings">
+} @if (isShowBindings()) {
+<div class="row">
   <div class="width-6-of-12 width-12-of-12-s">
     <h6>Message Binding</h6>
   </div>
   <div class="width-6-of-12 width-12-of-12-s">
     <div>
+      @if (messageBindingExampleString) {
       <app-prism-editor
-        *ngIf="messageBindingExampleString"
         [(code)]="messageBindingExampleString"
         language="json"
         readonly="true"
       />
-      <span *ngIf="!messageBindingExampleString"><i>none</i></span>
+      } @if (!messageBindingExampleString) {
+      <span><i>none</i></span>
+      }
     </div>
   </div>
 </div>
-
-<div class="row" *ngIf="isShowHeaders">
+} @if (isShowHeaders()) {
+<div class="row">
   <div class="width-6-of-12 width-12-of-12-s">
     <h6>Headers</h6>
     <mat-chip-set>
-      <a
-        [href]="headers.anchorUrl"
-        *ngIf="headers.anchorUrl !== initSchema.anchorUrl"
-      >
+      @if (headers().anchorUrl !== initSchema.anchorUrl) {
+      <a [href]="headers().anchorUrl">
         <mat-chip>
           <mat-icon matChipAvatar fontIcon="schema" />
-          {{ headers.title }}
+          {{ headers().title }}
         </mat-chip></a
       >
+      }
     </mat-chip-set>
-
-    <app-schema *ngIf="headers" [schema]="headers"></app-schema>
+    @if (headers()) {
+    <app-schema [schema]="headers()"></app-schema>
+    }
   </div>
   <div class="width-6-of-12 width-12-of-12-s">
     <app-prism-editor [(code)]="headersExample.value" language="json" />
   </div>
 </div>
+}
 
 <div class="row">
   <div class="width-6-of-12 width-12-of-12-s">
@@ -126,18 +138,20 @@
       >
     </mat-chip-set>
 
-    <app-schema *ngIf="defaultSchema" [schema]="defaultSchema"></app-schema>
+    @if (defaultSchema()) {
+    <app-schema [schema]="defaultSchema()"></app-schema>
+    }
   </div>
 
   <div class="width-6-of-12 width-12-of-12-s">
     <app-prism-editor
-      [(code)]="defaultExample.value"
+      [(code)]="defaultExample().value"
       [language]="exampleContentType()"
     />
 
     <div class="flex space-between">
       <div class="flex gap-8">
-        <button mat-raised-button [cdkCopyToClipboard]="defaultExample.value">
+        <button mat-raised-button [cdkCopyToClipboard]="defaultExample().value">
           <mat-icon fontIcon="content_copy" />
           Copy
         </button>

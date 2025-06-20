@@ -1,25 +1,27 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h2>Channels</h2>
-@for (channel of channels; track channel) {
+@for (channel of channels(); track channel) {
 <article appNavigationTarget [id]="channel.anchorIdentifier">
   <h3>{{ channel.name }}</h3>
 
-  <div class="row" *ngIf="isShowBindings">
+  @if (isShowBindings()) {
+  <div class="row">
     <div class="width-6-of-12 width-12-of-12-s">
       <h6>Channel Binding</h6>
     </div>
     <div class="width-6-of-12 width-12-of-12-s">
-      <div *ngIf="channel.bindings">
+      @if (channel.bindings) {
+      <div>
         <app-prism-editor
           code="{{ JSON.stringify(channel.bindings, null, 2) }}"
           language="json"
           readonly="true"
         />
       </div>
+      }
     </div>
   </div>
-
-  @for (channelOperation of channel.operations; track channelOperation) {
+  } @for (channelOperation of channel.operations; track channelOperation) {
   <mat-card
     appearance="outlined"
     appNavigationTarget
@@ -30,12 +32,11 @@
         {{ channelOperation.operation.message.title }}
       </mat-card-title>
       <span class="flex gap-16 padding-horizontal-1em height-fix-content">
-        <span
-          class="badge protocol-badge"
-          *ngIf="channelOperation.operation.protocol"
-        >
+        @if (channelOperation.operation.protocol) {
+        <span class="badge protocol-badge">
           {{ channelOperation.operation.protocol }}
         </span>
+        }
         <span
           class="badge"
           [ngClass]="{
