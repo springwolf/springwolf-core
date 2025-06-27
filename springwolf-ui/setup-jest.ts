@@ -1,3 +1,11 @@
-import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { getTestBed } from '@angular/core/testing';
+import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 
-setupZoneTestEnv();
+getTestBed().initTestEnvironment(BrowserTestingModule, platformBrowserTesting(), {});
+
+beforeEach(() => {
+  getTestBed().configureTestingModule({
+    providers: [provideZonelessChangeDetection()]
+  });
+});

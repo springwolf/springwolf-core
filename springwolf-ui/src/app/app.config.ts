@@ -1,5 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { ApplicationConfig, importProvidersFrom } from "@angular/core";
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideCheckNoChangesConfig,
+  provideZonelessChangeDetection,
+} from "@angular/core";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import {
   provideHttpClient,
@@ -22,7 +27,8 @@ import { IUiService, UiService } from "./service/ui.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
+    // provideCheckNoChangesConfig({exhaustive: true, interval: 1000}),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi()),
     environment.production

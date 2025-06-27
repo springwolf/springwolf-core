@@ -1,30 +1,27 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <div class="schema">
   <!--  Primitive types  -->
+  @if (schema().type !== 'object') {
   <ng-container
-    *ngIf="schema().type !== 'object'"
     [ngTemplateOutlet]="valueContent"
     [ngTemplateOutletContext]="{ value: schema() }"
   >
   </ng-container>
+  }
 
   <!--  Objects  -->
-  <mat-list *ngIf="Object.keys(schema().properties || {}).length > 0">
-    <mat-list-item
-      *ngFor="let property of schema().properties || {} | keyvalue"
-      lines="99"
-    >
+  @if (Object.keys(schema().properties || {}).length > 0) {
+  <mat-list>
+    @for (property of schema().properties || {} | keyvalue; track property) {
+    <mat-list-item lines="99">
       <mat-icon matListItemIcon>arrow_right</mat-icon>
-
       <span class="key" matListItemTitle>
         <b class="text-console">{{ property.key }}</b>
-        <span class="required" *ngIf="schema().required?.includes(property.key)"
-          >*</span
-        >
-        <span class="deprecated" *ngIf="property.value.deprecated"
-          >&nbsp;(deprecated)</span
-        >
-        &nbsp;
+        @if (schema().required?.includes(property.key)) {
+        <span class="required">*</span>
+        } @if (property.value.deprecated) {
+        <span class="deprecated">&nbsp;(deprecated)</span>
+        } &nbsp;
       </span>
       <ng-container
         matListItemLine
@@ -33,17 +30,24 @@
       >
       </ng-container>
     </mat-list-item>
+    }
   </mat-list>
+  }
 </div>
 
 <ng-template #valueContent let-value="value">
   <!-- primitive property -->
-  <span class="type text-console" *ngIf="value?.type != 'array'">
+  @if (value?.type != 'array') {
+  <span class="type text-console">
     {{ value.type }}
-    <span class="format" *ngIf="value.format">({{ value.format }})</span>
+    @if (value.format) {
+    <span class="format">({{ value.format }})</span>
+    }
   </span>
+  }
   <!-- ref to other class -->
-  <span class="type" *ngIf="value.refTitle">
+  @if (value.refTitle) {
+  <span class="type">
     <mat-chip-set>
       <a [href]="value.refAnchorUrl">
         <mat-chip>
@@ -53,11 +57,10 @@
       >
     </mat-chip-set>
   </span>
+  }
   <!-- array of refs -->
-  <span
-    class="type text-console"
-    *ngIf="value?.type == 'array' && value?.items?.refTitle"
-  >
+  @if (value?.type == 'array' && value?.items?.refTitle) {
+  <span class="type text-console">
     array
     <mat-chip-set>
       <a [href]="value.items.refAnchorUrl">
@@ -68,46 +71,40 @@
       >
     </mat-chip-set>
   </span>
+  }
   <!-- array of primitive -->
-  <span
-    class="type text-console"
-    *ngIf="value?.type == 'array' && !value?.items?.refTitle"
-  >
-    {{ value.items.type }}[]
-  </span>
-
-  <div class="description" *ngIf="value.description?.length > 0">
+  @if (value?.type == 'array' && !value?.items?.refTitle) {
+  <span class="type text-console"> {{ value.items.type }}[] </span>
+  } @if (value.description?.length > 0) {
+  <div class="description">
     <markdown [data]="value.description"></markdown>
   </div>
-
-  <div class="flex" *ngIf="value.example">
+  } @if (value.example) {
+  <div class="flex">
     <span class="property-title"><i>Example:</i></span>
     &nbsp;
     <span class="value-box">
-      <div
-        class="text-console"
-        *ngFor="let line of value.example.value.split('\n')"
-      >
+      @for (line of value.example.value.split('\n'); track line) {
+      <div class="text-console">
         {{ line }}
       </div>
+      }
     </span>
   </div>
-
-  <div class="flex" *ngIf="value.enum && value.enum.length > 0">
+  } @if (value.enum && value.enum.length > 0) {
+  <div class="flex">
     <span class="property-title"><i>Allowed values:</i></span>
-    &nbsp;
-    <span class="text-console value-box" *ngFor="let enumValue of value.enum">{{
-      enumValue
-    }}</span>
+    &nbsp; @for (enumValue of value.enum; track enumValue) {
+    <span class="text-console value-box">{{ enumValue }}</span>
+    }
   </div>
+  }
 
   <!-- attributes -->
   <span class="flex flex-wrap">
     <!-- array attributes -->
-    <span
-      *ngIf="value.minItems != null || value.maxItems != null"
-      class="attribute"
-    >
+    @if (value.minItems != null || value.maxItems != null) {
+    <span class="attribute">
       <app-schema-range
         [lowerBound]="value.minItems"
         [upperBound]="value.maxItems"
@@ -116,22 +113,23 @@
       />
       items
     </span>
-    <span *ngIf="value.uniqueItems != null" class="attribute">
+    } @if (value.uniqueItems != null) {
+    <span class="attribute">
       Unique items:
       {{ value.uniqueItems ? "yes" : "no" }}
     </span>
+    }
 
     <!-- primitive attributes -->
-    <span *ngIf="value.pattern" class="attribute">
+    @if (value.pattern) {
+    <span class="attribute">
       pattern:
       <span class="text-console">
         {{ value.pattern }}
       </span>
     </span>
-    <span
-      *ngIf="value.minLength != null || value.maxLength != null"
-      class="attribute"
-    >
+    } @if (value.minLength != null || value.maxLength != null) {
+    <span class="attribute">
       <app-schema-range
         [lowerBound]="value.minLength"
         [upperBound]="value.maxLength"
@@ -140,11 +138,8 @@
       />
       length
     </span>
-
-    <span
-      *ngIf="value.minimum != undefined || value.maximum != undefined"
-      class="attribute"
-    >
+    } @if (value.minimum != undefined || value.maximum != undefined) {
+    <span class="attribute">
       <app-schema-range
         [lowerBound]="value.minimum"
         [upperBound]="value.maximum"
@@ -153,9 +148,11 @@
       />
       value range
     </span>
-    <span *ngIf="value.multipleOf != undefined" class="attribute">
+    } @if (value.multipleOf != undefined) {
+    <span class="attribute">
       Multiple of
       {{ value.multipleOf }}
     </span>
+    }
   </span>
 </ng-template>

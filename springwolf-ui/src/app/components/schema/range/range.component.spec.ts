@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/angular";
 describe("SchemaRangeNewComponent", function () {
   it("should create the component", async () => {
     await render(RangeComponent, {
-      componentInputs: {
+      inputs: {
         lowerBound: 0.1,
         upperBound: 10,
         lowerBoundInclusive: false,
@@ -18,7 +18,7 @@ describe("SchemaRangeNewComponent", function () {
 
   it("should have `( 0.1 .. 10 )` as value", async () => {
     await render(RangeComponent, {
-      componentInputs: {
+      inputs: {
         lowerBound: 0.1,
         upperBound: 10,
         lowerBoundInclusive: false,
@@ -31,7 +31,7 @@ describe("SchemaRangeNewComponent", function () {
 
   it("should have `[ 0.1 .. 10 )` as value", async () => {
     await render(RangeComponent, {
-      componentInputs: {
+      inputs: {
         lowerBound: 0.1,
         upperBound: 10,
         lowerBoundInclusive: true,
@@ -44,7 +44,7 @@ describe("SchemaRangeNewComponent", function () {
 
   it("should have `( 0.1 .. 10 ]` as value", async () => {
     await render(RangeComponent, {
-      componentInputs: {
+      inputs: {
         lowerBound: 0.1,
         upperBound: 10,
         lowerBoundInclusive: false,
@@ -57,7 +57,7 @@ describe("SchemaRangeNewComponent", function () {
 
   it("should have `[ 0.1 .. 10 ]` as value", async () => {
     await render(RangeComponent, {
-      componentInputs: {
+      inputs: {
         lowerBound: 0.1,
         upperBound: 10,
       },
@@ -68,7 +68,7 @@ describe("SchemaRangeNewComponent", function () {
 
   it("should have `> 0.1` as value", async () => {
     await render(RangeComponent, {
-      componentInputs: {
+      inputs: {
         lowerBound: 0.1,
         lowerBoundInclusive: false,
       },
@@ -79,7 +79,7 @@ describe("SchemaRangeNewComponent", function () {
 
   it("should have `< 10` as value", async () => {
     await render(RangeComponent, {
-      componentInputs: {
+      inputs: {
         upperBound: 10,
         upperBoundInclusive: false,
       },
@@ -90,7 +90,7 @@ describe("SchemaRangeNewComponent", function () {
 
   it("should have `>= 0.1` as value", async () => {
     await render(RangeComponent, {
-      componentInputs: {
+      inputs: {
         lowerBound: 0.1,
       },
     });
@@ -100,7 +100,7 @@ describe("SchemaRangeNewComponent", function () {
 
   it("should have `<= 10` as value", async () => {
     await render(RangeComponent, {
-      componentInputs: {
+      inputs: {
         upperBound: 10,
       },
     });

@@ -1,14 +1,14 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <span>
-  <span *ngIf="lowerBound() != undefined && upperBound() == undefined">
-    {{ lowerBoundInclusive() ? ">=" : ">" }} {{ lowerBound() }}
-  </span>
-  <span *ngIf="lowerBound() == undefined && upperBound() != undefined">
-    {{ upperBoundInclusive() ? "<=" : "<" }} {{ upperBound() }}
-  </span>
-  <span *ngIf="lowerBound() != undefined && upperBound() != undefined"
+  @if (lowerBound() != undefined && upperBound() == undefined) {
+  <span> {{ lowerBoundInclusive() ? ">=" : ">" }} {{ lowerBound() }} </span>
+  } @if (lowerBound() == undefined && upperBound() != undefined) {
+  <span> {{ upperBoundInclusive() ? "<=" : "<" }} {{ upperBound() }} </span>
+  } @if (lowerBound() != undefined && upperBound() != undefined) {
+  <span
     >{{ lowerBoundInclusive() ? "[" : "(" }} {{ lowerBound() }}
     ..
     {{ upperBound() }} {{ upperBoundInclusive() ? "]" : ")" }}
   </span>
+  }
 </span>

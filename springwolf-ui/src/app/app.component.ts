@@ -9,7 +9,7 @@ import { ServersComponent } from "./components/servers/servers.component";
 import { ChannelsComponent } from "./components/channels/channels.component";
 import { SidenavComponent } from "./components/sidenav/sidenav.component";
 import { HeaderComponent } from "./components/header/header.component";
-import { CommonModule } from "@angular/common";
+
 import { NavigationTargetDirective } from "./components/sidenav/navigation.directive";
 
 @Component({
@@ -17,7 +17,6 @@ import { NavigationTargetDirective } from "./components/sidenav/navigation.direc
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
   imports: [
-    CommonModule,
     MaterialModule,
     FormsModule,
     MarkdownModule,
