@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='utf-8'>
-  <meta content='width=device-width, initial-scale=1, shrink-to-fit=no' name='viewport'>
-  <meta content='' name='description'>
-  <meta content='' name='author'>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <meta content="" name="description">
+  <meta content="" name="author">
 
   <title>Springwolf example project - STOMP</title>
-  <link rel='stylesheet' href='bootstrap.min.css' />
+  <link rel="stylesheet" href="bootstrap.min.css" />
 </head>
 <body>
 
-<script type='importmap'>
+<script type="importmap">
   {
     "imports": {
       "@stomp/stompjs": "https://ga.jspm.io/npm:@stomp/stompjs@7.0.0/esm6/index.js"
@@ -20,12 +20,12 @@
 </script>
 <script
   async
-  src='https://ga.jspm.io/npm:es-module-shims@1.5.1/dist/es-module-shims.js'
-  crossorigin='anonymous'
+  src="https://ga.jspm.io/npm:es-module-shims@1.5.1/dist/es-module-shims.js"
+  crossorigin="anonymous"
 ></script>
 
 
-<script type='module'>
+<script type="module">
     import { Client } from '@stomp/stompjs';
 
     var stompClient = null;
@@ -86,28 +86,28 @@
 
 
 <!-- Page Content -->
-<div class='container-fluid'>
+<div class="container-fluid">
   <h1>Springwolf STOMP demo</h1>
-  <h2 class='mt-5'>Username: <span id='username'></span></h2>
-  <div class='row'>
-    <div class='col-lg-12 text-center'>
-      <h1 class='mt-5'>Chat (via producer)</h1>
-      <textarea id='chat-message'>initial message send at startup</textarea>
-      <button onclick='sendMessage()'>send message</button>
+  <h2 class="mt-5">Username: <span id="username"></span></h2>
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <h1 class="mt-5">Chat (via producer)</h1>
+      <textarea id="chat-message">initial message send at startup</textarea>
+      <button onclick="sendMessage()">send message</button>
     </div>
   </div>
-  <div class='row'>
-    <div class='col-lg-4 text-center'>
-      <h3 class='mt-5'>/queue/another-queue (all messages)</h3>
-      <div class='card-header' id='server-comm'></div>
+  <div class="row">
+    <div class="col-lg-4 text-center">
+      <h3 class="mt-5">/queue/another-queue (all messages)</h3>
+      <div class="card-header" id="server-comm"></div>
     </div>
-    <div class='col-lg-4 text-center'>
-      <h3 class='mt-5'>/topic/sendto-response-queue (all messages)</h3>
-      <div class='card-header' id='server-comm-sendTo'></div>
+    <div class="col-lg-4 text-center">
+      <h3 class="mt-5">/topic/sendto-response-queue (all messages)</h3>
+      <div class="card-header" id="server-comm-sendTo"></div>
     </div>
-    <div class='col-lg-4 text-center'>
-      <h3 class='mt-5'>/user/queue/sendtouser-response-queue (your messages only)</h3>
-      <div class='card-header' id='server-comm-sendToUser'></div>
+    <div class="col-lg-4 text-center">
+      <h3 class="mt-5">/user/queue/sendtouser-response-queue (your messages only)</h3>
+      <div class="card-header" id="server-comm-sendToUser"></div>
     </div>
   </div>
 </div>
