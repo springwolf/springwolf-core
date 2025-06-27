@@ -1,0 +1,94 @@
+Found 40 tasks.
+task ':springwolf-asyncapi:compileJava'
+task ':springwolf-asyncapi:processResources'
+task ':springwolf-asyncapi:classes'
+  - main dirs
+  - compileJava
+  - processResources
+task ':springwolf-asyncapi:jar'
+task ':springwolf-core:compileJava'
+task ':springwolf-core:processResources'
+task ':springwolf-core:classes'
+  - main dirs
+  - compileJava
+  - processResources
+task ':springwolf-core:resolveMainClassName'
+task ':springwolf-core:bootJar'
+task ':springwolf-core:jar'
+task ':springwolf-core:javadoc'
+task ':springwolf-core:javadocJar'
+task ':springwolf-core:sourcesJar'
+task ':springwolf-core:assemble'
+  - org.gradle.api.internal.tasks.DefaultTaskDependency@6f9575b4
+  - provider(task 'javadocJar', class org.gradle.api.tasks.bundling.Jar)
+  - org.springframework.boot.gradle.plugin.SinglePublishedArtifact@6ea98f1e
+  - provider(task 'sourcesJar', class org.gradle.api.tasks.bundling.Jar)
+task ':springwolf-core:compileTestJava'
+task ':springwolf-core:processTestResources'
+task ':springwolf-core:testClasses'
+  - test dirs
+  - processTestResources
+  - compileTestJava
+task ':springwolf-core:resolveTestMainClassName'
+task ':springwolf-add-ons:springwolf-common-model-converters:compileJava'
+task ':springwolf-add-ons:springwolf-common-model-converters:processResources'
+task ':springwolf-add-ons:springwolf-common-model-converters:classes'
+  - compileJava
+  - main dirs
+  - processResources
+task ':springwolf-add-ons:springwolf-common-model-converters:jar'
+task ':springwolf-core:bootTestRun'
+task ':spotlessInternalRegisterDependencies'
+task ':springwolf-core:spotlessJava'
+  - task ':spotlessInternalRegisterDependencies'
+task ':springwolf-core:spotlessJavaApply'
+  - provider(task 'spotlessJava', class com.diffplug.gradle.spotless.SpotlessTaskImpl)
+task ':springwolf-core:spotlessKotlin'
+  - task ':spotlessInternalRegisterDependencies'
+task ':springwolf-core:spotlessKotlinApply'
+  - provider(task 'spotlessKotlin', class com.diffplug.gradle.spotless.SpotlessTaskImpl)
+task ':springwolf-core:spotlessApply'
+  - provider(task 'spotlessKotlinApply', class com.diffplug.gradle.spotless.SpotlessApply)
+  - provider(task 'spotlessJavaApply', class com.diffplug.gradle.spotless.SpotlessApply)
+task ':springwolf-core:integrationTest'
+  - task ':springwolf-core:spotlessApply'
+task ':springwolf-core:test'
+  - task ':springwolf-core:spotlessApply'
+task ':springwolf-core:unitTest'
+  - task ':springwolf-core:spotlessApply'
+task ':springwolf-core:analyzeClassesDependencies'
+  - processTestResources
+  - resolveTestMainClassName
+  - test
+  - provider(task 'jar', class org.gradle.api.tasks.bundling.Jar)
+  - classes
+  - unitTest
+  - compileJava
+  - jar
+  - integrationTest
+  - compileTestJava
+  - testClasses
+  - bootTestRun
+task ':springwolf-core:analyzeTestClassesDependencies'
+  - provider(task 'analyzeClassesDependencies', class ca.cutterslade.gradle.analyze.AnalyzeDependenciesTask)
+  - provider(task 'jar', class org.gradle.api.tasks.bundling.Jar)
+  - jar
+  - compileTestJava
+  - testClasses
+task ':springwolf-core:analyzeDependencies'
+  - provider(task 'analyzeClassesDependencies', class ca.cutterslade.gradle.analyze.AnalyzeDependenciesTask)
+  - provider(task 'analyzeTestClassesDependencies', class ca.cutterslade.gradle.analyze.AnalyzeDependenciesTask)
+task ':springwolf-core:spotlessJavaCheck'
+  - task ':springwolf-core:spotlessJava'
+task ':springwolf-core:spotlessKotlinCheck'
+  - task ':springwolf-core:spotlessKotlin'
+task ':springwolf-core:spotlessCheck'
+  - provider(task 'spotlessKotlinCheck', class com.diffplug.gradle.spotless.SpotlessCheck)
+  - provider(task 'spotlessJavaCheck', class com.diffplug.gradle.spotless.SpotlessCheck)
+task ':springwolf-core:check'
+  - provider(TestSuite 'test', interface org.gradle.api.plugins.jvm.JvmTestSuite)
+  - provider(task 'analyzeDependencies', class org.gradle.api.DefaultTask)
+  - provider(task 'spotlessCheck', class org.gradle.api.DefaultTask)
+task ':springwolf-core:build'
+  - check
+  - assemble
