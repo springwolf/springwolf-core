@@ -3,6 +3,9 @@ name: Update issue
 on:
   issues:
 
+permissions:
+  issues: write
+
 jobs:
   comment_when_issue_labeled_staged_for_release:
     runs-on: ubuntu-latest
