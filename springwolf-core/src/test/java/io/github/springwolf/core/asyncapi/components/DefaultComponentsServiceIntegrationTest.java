@@ -25,10 +25,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultComponentsServiceIntegrationTest {
     private final String CONTENT_TYPE_APPLICATION_JSON = "does-not-matter";
 
-    private final SwaggerSchemaService schemaService =
-            new SwaggerSchemaService(List.of(), List.of(), new SwaggerSchemaUtil(), new SpringwolfConfigProperties());
+    private final SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
 
-    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
+    private final SwaggerSchemaService schemaService =
+            new SwaggerSchemaService(List.of(), List.of(), new SwaggerSchemaUtil(), configProperties);
+
+    private final ComponentsService componentsService = new DefaultComponentsService(schemaService, configProperties);
 
     @Nested
     class AllSchemaFields {
@@ -36,11 +38,12 @@ class DefaultComponentsServiceIntegrationTest {
         void getStringSchemas() {
             componentsService.resolvePayloadSchema(StringFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            Map<String, ComponentSchema> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(StringFoo.class.getName().replace("$", "."));
+            ComponentSchema componentSchema =
+                    schemas.get(StringFoo.class.getName().replace("$", "."));
 
-            assertThat(objectFoo)
+            assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
                             .type(SchemaType.OBJECT)
@@ -63,11 +66,12 @@ class DefaultComponentsServiceIntegrationTest {
         void getArraySchemas() {
             componentsService.resolvePayloadSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            Map<String, ComponentSchema> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(ArrayFoo.class.getName().replace("$", "."));
+            ComponentSchema componentSchema =
+                    schemas.get(ArrayFoo.class.getName().replace("$", "."));
 
-            assertThat(objectFoo)
+            assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
                             .type(SchemaType.OBJECT)
@@ -91,11 +95,11 @@ class DefaultComponentsServiceIntegrationTest {
         void getRefSchemas() {
             componentsService.resolvePayloadSchema(RefFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            Map<String, ComponentSchema> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(RefFoo.class.getName().replace("$", "."));
+            ComponentSchema componentSchema = schemas.get(RefFoo.class.getName().replace("$", "."));
 
-            assertThat(objectFoo)
+            assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
                             .type(SchemaType.OBJECT)
@@ -123,11 +127,12 @@ class DefaultComponentsServiceIntegrationTest {
         void getNumberSchemas() {
             componentsService.resolvePayloadSchema(NumberFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            Map<String, ComponentSchema> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(NumberFoo.class.getName().replace("$", "."));
+            ComponentSchema componentSchema =
+                    schemas.get(NumberFoo.class.getName().replace("$", "."));
 
-            assertThat(objectFoo)
+            assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
                             .type(SchemaType.OBJECT)
@@ -148,11 +153,12 @@ class DefaultComponentsServiceIntegrationTest {
         void getNotSupportedSchemas() {
             componentsService.resolvePayloadSchema(NotSupportedFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            Map<String, ComponentSchema> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
-            SchemaObject objectFoo = schemas.get(NotSupportedFoo.class.getName().replace("$", "."));
+            ComponentSchema componentSchema =
+                    schemas.get(NotSupportedFoo.class.getName().replace("$", "."));
 
-            assertThat(objectFoo)
+            assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
                             .type(SchemaType.OBJECT)
@@ -242,11 +248,12 @@ class DefaultComponentsServiceIntegrationTest {
         void stringEnvelopTest() {
             componentsService.resolvePayloadSchema(StringEnvelop.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            Map<String, ComponentSchema> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
 
-            SchemaObject schema = schemas.get(StringEnvelop.class.getName().replace("$", "."));
-            assertThat(schema)
+            ComponentSchema componentSchema =
+                    schemas.get(StringEnvelop.class.getName().replace("$", "."));
+            assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .type(SchemaType.STRING)
                             .description("The payload in the envelop")
@@ -259,14 +266,14 @@ class DefaultComponentsServiceIntegrationTest {
             componentsService.resolvePayloadSchema(
                     EnvelopWithMultipleAsyncApiPayloadAnnotations.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            Map<String, ComponentSchema> schemas = componentsService.getSchemas();
             assertThat(schemas).hasSize(1);
 
             // fallback to EnvelopWithMultipleAsyncApiPayloadAnnotations, because it has multiple AsyncApiPayload
-            SchemaObject schema = schemas.get(EnvelopWithMultipleAsyncApiPayloadAnnotations.class
+            ComponentSchema componentSchema = schemas.get(EnvelopWithMultipleAsyncApiPayloadAnnotations.class
                     .getName()
                     .replace("$", "."));
-            assertThat(schema)
+            assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .type(SchemaType.OBJECT)
                             .title("EnvelopWithMultipleAsyncApiPayloadAnnotations")

@@ -21,6 +21,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Default Implementation of {@link SchemaWalker}. Service to build examples for schemas.
+ * @param <T>
+ * @param <R>
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {

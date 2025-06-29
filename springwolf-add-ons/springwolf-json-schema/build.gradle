@@ -13,6 +13,7 @@ dependencies {
 
     implementation libs.jackson.core
     implementation libs.jackson.databind
+    implementation libs.spring.core
 
     testImplementation libs.swagger.core.jakarta
     testImplementation libs.swagger.models.jakarta
