@@ -59,7 +59,7 @@ public class SwaggerSchemaService {
      * *Swagger* schemas, this method converts the given {@link SchemaObject} to a Swagger schema, invokes all
      * postprocessors and converts the result back to a {@link SchemaObject}
      * <p>NOTE</p>
-     * The conversion between the AsnycApi {@link SchemaObject} and Swagger schema instance is not a 'full conversion'. Only
+     * The conversion between the AsyncApi {@link SchemaObject} and Swagger schema instance is not a 'full conversion'. Only
      * root attributes of the schema an the first level of properties a converted. Providing {@link SchemaObject}s with deep
      * property hierarchy will result in an corrupted result.
      * <br/>

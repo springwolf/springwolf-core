@@ -158,7 +158,6 @@ public class JsonSchemaGenerator {
                 schema.getProperties().entrySet()) {
             Object value = propertySchemaSet.getValue();
             if (value instanceof ComponentSchema componentSchema) {
-                //            SchemaObject propertySchema = getSchemaObject(propertySchemaSet.getValue(), definitions);
                 ObjectNode propertySchemaMapped = fromSchemaInternal(componentSchema, definitions, visited);
                 node.set(propertySchemaSet.getKey(), propertySchemaMapped);
             }
