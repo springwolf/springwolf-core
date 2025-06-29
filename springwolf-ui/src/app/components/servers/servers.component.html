@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h2>Servers</h2>
 <div class="row">
-  @for (server of servers | keyvalue; track server) {
+  @for (server of servers() | keyvalue; track server) {
   <article
     appNavigationTarget
     [id]="server.value.anchorIdentifier"

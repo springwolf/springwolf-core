@@ -4,6 +4,11 @@ on:
     - cron: "48 9 * * 4"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

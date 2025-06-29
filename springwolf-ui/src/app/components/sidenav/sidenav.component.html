@@ -1,14 +1,16 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened class="sidenav width-s-hide">
-    @for (link of navigation; track link) {
+    @for (link of navigation(); track link) {
     <ul
       class="entry"
-      [ngClass]="{ selected: link.selected, collapsed: link.collapsed }"
+      [ngClass]="{ selected: link.selected, expanded: link.expanded }"
     >
       <li>
         <span>
-          <mat-icon *ngIf="link.icon" fontIcon="{{ link.icon }}" />
+          @if (link.icon) {
+          <mat-icon fontIcon="{{ link.icon }}" />
+          }
           <b>
             <a [href]="link.href">
               @for (linkEl of link.name; track $index) {{{linkEl}}&#x200B;}
@@ -20,7 +22,7 @@
           @for (child of link.children; track child) {
           <li
             class="entry"
-            [ngClass]="{ selected: child.selected, collapsed: child.collapsed }"
+            [ngClass]="{ selected: child.selected, expanded: child.expanded }"
           >
             <span>
               <a [href]="child.href">
@@ -40,7 +42,7 @@
                 class="entry"
                 [ngClass]="{
                   selected: subchild.selected,
-                  collapsed: subchild.collapsed
+                  expanded: subchild.expanded
                 }"
               >
                 <span>

@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, signal } from "@angular/core";
 import { AsyncApi } from "../../models/asyncapi.model";
 import { Info } from "../../models/info.model";
 import { AsyncApiService } from "../../service/asyncapi/asyncapi.service";
@@ -7,24 +7,23 @@ import { initInfo } from "../../service/mock/init-values";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
 import { MarkdownModule } from "ngx-markdown";
-import { CommonModule } from "@angular/common";
 
 @Component({
   selector: "app-info",
   templateUrl: "./info.component.html",
   styleUrls: ["./info.component.css"],
-  imports: [MatChipsModule, MatIconModule, MarkdownModule, CommonModule],
+  imports: [MatChipsModule, MatIconModule, MarkdownModule],
 })
 export class InfoComponent implements OnInit {
   asyncApiData: AsyncApi | undefined = undefined;
-  info: Info = initInfo;
+  info = signal<Info>(initInfo);
 
   constructor(private asyncApiService: AsyncApiService) {}
 
   ngOnInit(): void {
     this.asyncApiService.getAsyncApi().subscribe((asyncapi) => {
       this.asyncApiData = asyncapi;
-      this.info = asyncapi.info;
+      this.info.set(asyncapi.info);
     });
   }
 

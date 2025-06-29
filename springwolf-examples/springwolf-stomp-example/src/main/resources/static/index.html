@@ -11,65 +11,77 @@
 </head>
 <body>
 
-<script src="sockjs-0.3.4.js"></script>
-<script src="stomp.js"></script>
-<script type="text/javascript">
-  var stompClient = null;
+<script type="importmap">
+  {
+    "imports": {
+      "@stomp/stompjs": "https://ga.jspm.io/npm:@stomp/stompjs@7.0.0/esm6/index.js"
+    }
+  }
+</script>
+<script
+  async
+  src="https://ga.jspm.io/npm:es-module-shims@1.5.1/dist/es-module-shims.js"
+  crossorigin="anonymous"
+></script>
 
-  function connect() {
-    var socket = new SockJS("/myendpoint");
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function(frame) {
-      console.log("Connected: " + JSON.stringify(frame));
-      document.getElementById("username").innerText = frame.headers["user-name"];
 
-      stompClient.subscribe("/queue/another-queue", function(messageOutput) {
-        const data = JSON.parse(messageOutput.body);
-        showMessageOutput(data);
-      });
+<script type="module">
+    import { Client } from '@stomp/stompjs';
 
-      stompClient.subscribe("/topic/sendto-response-queue", function(messageOutput) {
-        const data = JSON.parse(messageOutput.body);
-        showSendToMessageOutput(data);
-      });
+    var stompClient = null;
 
-      stompClient.subscribe("/user/queue/sendtouser-response-queue", function(messageOutput) {
-        const data = JSON.parse(messageOutput.body);
-        showSendToUserMessageOutput(data);
-      });
+    stompClient = new Client({
+        brokerURL: 'ws://localhost:8080/myendpoint',
+        onConnect: (frame) => {
+            console.log('Connected: ' + JSON.stringify(frame));
+            document.getElementById('username').innerText = frame.headers['user-name'];
 
-      sendMessage();
-    }, function() {
-      setTimeout(() => {
-        connect();
-      }, 1000);
+            stompClient.subscribe('/queue/another-queue', function(messageOutput) {
+                const data = JSON.parse(messageOutput.body);
+                showMessageOutput(data);
+            });
+
+            stompClient.subscribe('/topic/sendto-response-queue', function(messageOutput) {
+                const data = JSON.parse(messageOutput.body);
+                showSendToMessageOutput(data);
+            });
+
+            stompClient.subscribe('/user/queue/sendtouser-response-queue', function(messageOutput) {
+                const data = JSON.parse(messageOutput.body);
+                showSendToUserMessageOutput(data);
+            });
+
+            sendMessage();
+        },
     });
-  }
 
-  function sendMessage() {
-    var message = document.getElementById("chat-message").value;
-    let body = JSON.stringify({ "someString": message, "someLong": Date.now(), "someEnum": "FOO1" });
+    function sendMessage() {
+        var message = document.getElementById('chat-message').value;
+        let body = JSON.stringify({ 'someString': message, 'someLong': Date.now(), 'someEnum': 'FOO1' });
 
-    stompClient.send("/app/queue/example-queue", {}, body);
-    stompClient.send("/app/queue/sendto-queue", {}, body);
-    stompClient.send("/app/queue/sendtouser-queue", {}, body);
-  }
+        stompClient.publish({ destination: '/app/queue/example-queue', body });
+        stompClient.publish({ destination: '/app/queue/sendto-queue', body });
+        stompClient.publish({ destination: '/app/queue/sendtouser-queue', body });
+    }
 
-  function showMessageOutput(messageOutput) {
-    console.log(messageOutput);
-    document.getElementById("server-comm").innerHTML += "<p>" + JSON.stringify(messageOutput) + "</p>";
-  }
+    window.sendMessage = sendMessage;
 
-  function showSendToMessageOutput(messageOutput) {
-    console.log(messageOutput);
-    document.getElementById("server-comm-sendTo").innerHTML += "<p>" + JSON.stringify(messageOutput) + "</p>";
-  }
-  function showSendToUserMessageOutput(messageOutput) {
-    console.log(messageOutput);
-    document.getElementById("server-comm-sendToUser").innerHTML += "<p>" + JSON.stringify(messageOutput) + "</p>";
-  }
+    function showMessageOutput(messageOutput) {
+        console.log(messageOutput);
+        document.getElementById('server-comm').innerHTML += '<p>' + JSON.stringify(messageOutput) + '</p>';
+    }
 
-  connect();
+    function showSendToMessageOutput(messageOutput) {
+        console.log(messageOutput);
+        document.getElementById('server-comm-sendTo').innerHTML += '<p>' + JSON.stringify(messageOutput) + '</p>';
+    }
+
+    function showSendToUserMessageOutput(messageOutput) {
+        console.log(messageOutput);
+        document.getElementById('server-comm-sendToUser').innerHTML += '<p>' + JSON.stringify(messageOutput) + '</p>';
+    }
+
+    stompClient.activate();
 </script>
 
 
