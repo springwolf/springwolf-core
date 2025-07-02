@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
@@ -48,13 +48,16 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
+    private final SpringwolfConfigProperties springwolfConfigProperties = new SpringwolfConfigProperties();
+
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
             List.of(new SchemaTitleModelConverter()),
             List.of(new ExampleGeneratorPostProcessor(
                     new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(new ExampleJsonValueGenerator()))))),
             new SwaggerSchemaUtil(),
-            new SpringwolfConfigProperties());
-    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
+            springwolfConfigProperties);
+    private final ComponentsService componentsService =
+            new DefaultComponentsService(schemaService, springwolfConfigProperties);
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
@@ -279,7 +282,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
         void registerSchemaWithoutStackOverflowException() {
             componentsService.resolvePayloadSchema(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            Map<String, SchemaObject> schemas = componentsService.getSchemas();
+            Map<String, ComponentSchema> schemas = componentsService.getSchemas();
             assertThat(schemas)
                     .containsOnlyKeys(
                             CriteriaMessage.class.getName().replace("$", "."),

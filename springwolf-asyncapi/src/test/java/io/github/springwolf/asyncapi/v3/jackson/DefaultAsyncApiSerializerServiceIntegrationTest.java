@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.jackson;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.github.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
@@ -12,6 +13,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.info.Contact;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
@@ -19,18 +21,24 @@ import io.github.springwolf.asyncapi.v3.model.info.License;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
-import org.junit.jupiter.api.Test;
+import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.StringSchema;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
@@ -38,7 +46,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
     private static final AsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
-    private AsyncAPI getAsyncAPITestObject() {
+    private AsyncAPI getAsyncAPITestObject(SchemaFormat schemaFormat) {
         Info info = Info.builder()
                 .title("AsyncAPI Sample App")
                 .version("1.0.1")
@@ -102,12 +110,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        SchemaObject examplePayloadSchema = new SchemaObject();
-        examplePayloadSchema.setType(SchemaType.OBJECT);
-        SchemaObject stringSchema = new SchemaObject();
-        stringSchema.setType(SchemaType.STRING);
-        examplePayloadSchema.setProperties(Map.of("s", stringSchema));
-        Map<String, SchemaObject> schemas = Map.of("ExamplePayload", examplePayloadSchema);
+        Map<String, ComponentSchema> schemas = createPayloadSchema(schemaFormat);
 
         AsyncAPI asyncapi = AsyncAPI.builder()
                 .info(info)
@@ -122,20 +125,55 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         return asyncapi;
     }
 
-    @Test
-    void AsyncAPI_should_map_to_a_valid_asyncapi_json() throws IOException {
-        var asyncapi = getAsyncAPITestObject();
+    private Map<String, ComponentSchema> createPayloadSchema(SchemaFormat schemaFormat) {
+        switch (schemaFormat) {
+            case DEFAULT: {
+                SchemaObject examplePayloadSchema = new SchemaObject();
+                examplePayloadSchema.setType(SchemaType.OBJECT);
+                SchemaObject stringSchema = new SchemaObject();
+                stringSchema.setType(SchemaType.STRING);
+                examplePayloadSchema.setProperties(Map.of("s", stringSchema));
+                return Map.of("ExamplePayload", ComponentSchema.of(examplePayloadSchema));
+            }
+            case OPENAPI_V3: {
+                ObjectSchema examplePayloadSchema = new ObjectSchema();
+                StringSchema stringSchema = new StringSchema();
+                examplePayloadSchema.setProperties(Map.of("s", stringSchema));
+                return Map.of(
+                        "ExamplePayload",
+                        ComponentSchema.of(new MultiFormatSchema(SchemaFormat.OPENAPI_V3.value, examplePayloadSchema)));
+            }
+            default: {
+                throw new IllegalArgumentException("Unsupported schema format: " + schemaFormat);
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("params")
+    void AsyncAPI_should_map_to_a_valid_asyncapi_json(SchemaFormat schemaFormat, String expectedFile)
+            throws IOException {
+        AsyncAPI asyncapi = getAsyncAPITestObject(schemaFormat);
         String actual = serializer.toJsonString(asyncapi);
-        InputStream s = this.getClass().getResourceAsStream("/v3/asyncapi/asyncapi.json");
+        InputStream s = this.getClass().getResourceAsStream(expectedFile + ".json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
         assertThatJson(actual).isEqualTo(expected);
     }
 
-    @Test
-    void AsyncAPI_should_map_to_a_valid_asyncapi_yaml() throws IOException {
-        var asyncapi = getAsyncAPITestObject();
+    @ParameterizedTest
+    @MethodSource("params")
+    void AsyncAPI_should_map_to_a_valid_asyncapi_yaml(SchemaFormat schemaFormat, String expectedFile)
+            throws IOException {
+        AsyncAPI asyncapi = getAsyncAPITestObject(schemaFormat);
         String actual = serializer.toJsonString(asyncapi);
-        var expected = ClasspathUtil.parseYamlFile("/v3/asyncapi/asyncapi.yaml");
+        JsonNode expected = ClasspathUtil.parseYamlFile(expectedFile + ".yaml");
         assertThatJson(actual).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> params() {
+        return Stream.of(
+                // types
+                Arguments.of(SchemaFormat.DEFAULT, "/v3/asyncapi/asyncapi"),
+                Arguments.of(SchemaFormat.OPENAPI_V3, "/v3/asyncapi/asyncapi-openapischema"));
     }
 }

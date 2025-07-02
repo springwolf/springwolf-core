@@ -115,8 +115,9 @@ public class SpringwolfCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ComponentsService componentsService(SwaggerSchemaService schemaService) {
-        return new DefaultComponentsService(schemaService);
+    public ComponentsService componentsService(
+            SwaggerSchemaService schemaService, SpringwolfConfigProperties springwolfConfigProperties) {
+        return new DefaultComponentsService(schemaService, springwolfConfigProperties);
     }
 
     @Bean

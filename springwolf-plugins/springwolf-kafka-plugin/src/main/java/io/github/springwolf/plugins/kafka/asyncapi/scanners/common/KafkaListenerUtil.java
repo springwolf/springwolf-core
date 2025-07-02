@@ -93,7 +93,7 @@ public class KafkaListenerUtil {
 
         Map<String, Object> properties = headerSchema.getProperties();
         if (properties != null && properties.containsKey(KafkaHeaders.RECEIVED_KEY)) {
-            kafkaMessageBinding.setKey((SchemaObject) properties.get(KafkaHeaders.RECEIVED_KEY));
+            kafkaMessageBinding.setKey((Schema) properties.get(KafkaHeaders.RECEIVED_KEY));
         }
 
         return Map.of("kafka", kafkaMessageBinding);

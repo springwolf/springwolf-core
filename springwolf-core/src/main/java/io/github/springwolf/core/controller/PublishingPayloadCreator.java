@@ -3,6 +3,7 @@ package io.github.springwolf.core.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
@@ -35,11 +36,12 @@ public class PublishingPayloadCreator {
             return new Result(null, Optional.empty());
         }
 
-        Map<String, SchemaObject> knownSchemas = componentsService.getSchemas();
+        Map<String, ComponentSchema> knownSchemas = componentsService.getSchemas();
         Set<String> knownSchemaNames = knownSchemas.keySet();
-        for (Map.Entry<String, SchemaObject> schemaEntry : knownSchemas.entrySet()) {
+        for (Map.Entry<String, ComponentSchema> schemaEntry : knownSchemas.entrySet()) {
             String schemaName = schemaEntry.getKey();
-            SchemaObject schema = schemaEntry.getValue();
+            ComponentSchema componentSchema = schemaEntry.getValue();
+            SchemaObject schema = componentSchema.getSchema();
 
             // security: match against user input, but always use our controlled data from the DefaultSchemaService
             if (schemaName != null && schemaName.equals(messagePayloadType)) {

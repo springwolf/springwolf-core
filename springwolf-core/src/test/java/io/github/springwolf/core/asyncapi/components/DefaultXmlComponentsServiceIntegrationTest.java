@@ -47,13 +47,16 @@ class DefaultXmlComponentsServiceIntegrationTest {
 
     private static final PrettyPrinter printer =
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+
+    private final SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
+
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
             List.of(new SchemaTitleModelConverter()),
             List.of(new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(
                     new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer())))))),
             new SwaggerSchemaUtil(),
-            new SpringwolfConfigProperties());
-    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
+            configProperties);
+    private final ComponentsService componentsService = new DefaultComponentsService(schemaService, configProperties);
 
     @Test
     void getSchemas() throws IOException {
