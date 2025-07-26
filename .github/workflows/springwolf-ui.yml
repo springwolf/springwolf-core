@@ -53,6 +53,32 @@ jobs:
       - name: Build
         run: ./gradlew -p ${{ env.project }} build
 
+
+  publish:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    if: github.ref == 'refs/heads/master'
+    needs: [build]
+    permissions:
+      contents: write
+
+    env:
+      project: springwolf-ui
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Publish package
         if: github.ref == 'refs/heads/master'
         run: ./gradlew -p ${{ env.project }} publish
