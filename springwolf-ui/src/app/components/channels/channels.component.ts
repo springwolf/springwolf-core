@@ -8,6 +8,7 @@ import { CommonModule } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
 import { ChannelOperationComponent } from "./channel-operation/channel-operation.component";
 import { NavigationTargetDirective } from "../sidenav/navigation.directive";
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: "app-channels",
@@ -19,6 +20,7 @@ import { NavigationTargetDirective } from "../sidenav/navigation.directive";
     MatCardModule,
     ChannelOperationComponent,
     NavigationTargetDirective,
+    MatIcon,
   ],
 })
 export class ChannelsComponent implements OnInit {
