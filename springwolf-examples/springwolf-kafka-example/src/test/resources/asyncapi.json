@@ -42,6 +42,11 @@
         "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
         }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
       }
     },
     "example-topic": {
@@ -82,6 +87,24 @@
         "javax.money.MonetaryAmount": {
           "$ref": "#/components/messages/javax.money.MonetaryAmount"
         }
+      },
+      "bindings": {
+        "kafka": {
+          "topic": "multi-payload-topic",
+          "partitions": 3,
+          "replicas": 1,
+          "topicConfiguration": {
+            "cleanup.policy": [
+              "compact",
+              "delete"
+            ],
+            "retention.ms": 86400000,
+            "retention.bytes": -1,
+            "delete.retention.ms": 86400000,
+            "max.message.bytes": 1048588
+          },
+          "bindingVersion": "0.5.0"
+        }
       }
     },
     "no-payload-used-topic": {
@@ -119,6 +142,11 @@
         "java.lang.String": {
           "$ref": "#/components/messages/java.lang.String"
         }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
       }
     },
     "topic-defined-via-asyncPublisher-annotation": {
@@ -132,7 +160,8 @@
         {
           "$ref": "#/servers/kafka-server"
         }
-      ]
+      ],
+      "bindings": { }
     },
     "vehicle-topic": {
       "address": "vehicle-topic",
@@ -153,6 +182,11 @@
         "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
         }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
       }
     },
     "yaml-topic": {
@@ -160,6 +194,11 @@
       "messages": {
         "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
+        }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
         }
       }
     }

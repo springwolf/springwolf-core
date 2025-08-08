@@ -132,7 +132,8 @@
         "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
         }
-      }
+      },
+      "bindings": { }
     },
     "example-topic-exchange_example-topic-routing-key": {
       "address": "example-topic-exchange_example-topic-routing-key",

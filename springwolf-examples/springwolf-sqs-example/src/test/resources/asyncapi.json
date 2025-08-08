@@ -29,6 +29,19 @@
         "io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.sqs.dtos.AnotherPayloadDto"
         }
+      },
+      "bindings": {
+        "sqs": {
+          "queue": {
+            "name": "another-queue",
+            "fifoQueue": true,
+            "deliveryDelay": 0,
+            "visibilityTimeout": 30,
+            "receiveMessageWaitTime": 0,
+            "messageRetentionPeriod": 345600
+          },
+          "bindingVersion": "0.2.0"
+        }
       }
     },
     "example-queue": {

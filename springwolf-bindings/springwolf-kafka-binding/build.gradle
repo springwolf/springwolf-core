@@ -16,6 +16,8 @@ dependencies {
     implementation libs.spring.core
     implementation libs.spring.boot.autoconfigure
 
+    implementation libs.commons.lang3
+
     implementation libs.jakarta.annotation.api
 
     compileOnly libs.lombok

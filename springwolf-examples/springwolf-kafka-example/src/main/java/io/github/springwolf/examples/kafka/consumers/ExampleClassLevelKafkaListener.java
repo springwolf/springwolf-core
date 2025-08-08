@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka.consumers;
 
+import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncChannelBinding;
+import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncChannelBinding.KafkaChannelTopicConfiguration.CleanupPolicy;
 import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
@@ -57,6 +59,17 @@ public class ExampleClassLevelKafkaListener {
                                                         description = "Spring Type Id Header",
                                                         value = "javax.money.MonetaryAmount"),
                                             })))
+    @KafkaAsyncChannelBinding(
+            topic = TOPIC,
+            partitions = 3,
+            replicas = 1,
+            topicConfiguration =
+                    @KafkaAsyncChannelBinding.KafkaChannelTopicConfiguration(
+                            cleanup = {CleanupPolicy.COMPACT, CleanupPolicy.DELETE},
+                            retentionMs = 86400000L,
+                            retentionBytes = -1L,
+                            deleteRetentionMs = 86400000L,
+                            maxMessageBytes = 1048588))
     @KafkaAsyncOperationBinding(
             clientId = "foo-clientId",
             groupId = "#{'foo-groupId'}",

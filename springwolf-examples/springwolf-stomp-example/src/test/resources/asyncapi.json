@@ -29,7 +29,8 @@
         "io.github.springwolf.examples.stomp.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.stomp.dtos.AnotherPayloadDto"
         }
-      }
+      },
+      "bindings": { }
     },
     "_app_queue_example-queue": {
       "address": "/app/queue/example-queue",
