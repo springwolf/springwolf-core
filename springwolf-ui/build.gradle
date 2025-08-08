@@ -9,6 +9,19 @@ node {
   download = true
 }
 
+tasks.register('npm_run_start', NpmTask) {
+  dependsOn npmInstall, spotlessCheck
+
+  args = ['start']
+
+  inputs.files fileTree("src")
+  inputs.file 'angular.json'
+  inputs.file 'package.json'
+  inputs.file 'package-lock.json'
+
+  outputs.dir 'build'
+}
+
 tasks.register('npm_run_build', NpmTask) {
   dependsOn npmInstall, spotlessCheck
 
