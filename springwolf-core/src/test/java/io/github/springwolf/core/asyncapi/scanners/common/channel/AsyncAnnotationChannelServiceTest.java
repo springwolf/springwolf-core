@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.channel;
 
+import io.github.springwolf.asyncapi.v3.bindings.EmptyChannelBinding;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -10,6 +11,8 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
@@ -26,6 +29,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -59,6 +63,8 @@ class AsyncAnnotationChannelServiceTest {
             mock(AsyncAnnotationMessageService.class);
     private final AsyncAnnotationOperationService<TestListener> asyncAnnotationOperationService =
             mock(AsyncAnnotationOperationService.class);
+    private final ChannelBindingProcessor channelBindingProcessor = mock(ChannelBindingProcessor.class);
+    private final List<ChannelBindingProcessor> channelBindingProcessors = List.of(channelBindingProcessor);
     private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
 
@@ -66,6 +72,7 @@ class AsyncAnnotationChannelServiceTest {
             asyncAnnotationProvider,
             asyncAnnotationOperationService,
             asyncAnnotationMessageService,
+            channelBindingProcessors,
             stringValueResolver,
             asyncApiDocketService);
 
@@ -74,6 +81,9 @@ class AsyncAnnotationChannelServiceTest {
         doAnswer(invocation -> invocation.getArgument(0))
                 .when(stringValueResolver)
                 .resolveStringValue(any());
+
+        when(channelBindingProcessor.process(any()))
+                .thenReturn(Optional.of(new ProcessedChannelBinding("test-binding", new EmptyChannelBinding())));
     }
 
     @Test
@@ -96,6 +106,7 @@ class AsyncAnnotationChannelServiceTest {
                         .channelId(CHANNEL_ID)
                         .address(CHANNEL)
                         .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
+                        .bindings(Map.of("test-binding", new EmptyChannelBinding()))
                         .build());
     }
 
@@ -131,6 +142,7 @@ class AsyncAnnotationChannelServiceTest {
                             .address(CHANNEL)
                             .servers(List.of(ServerReference.fromServer("server1")))
                             .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
+                            .bindings(Map.of("test-binding", new EmptyChannelBinding()))
                             .build());
         }
 

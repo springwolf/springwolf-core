@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.bindings.processor;
 
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyChannelBinding;
+import io.github.springwolf.core.asyncapi.annotations.AsyncChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
@@ -40,5 +41,6 @@ public class TestChannelBindingProcessor implements ChannelBindingProcessor {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(value = {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
     @Inherited
+    @AsyncChannelBinding
     public @interface TestChannelBinding {}
 }

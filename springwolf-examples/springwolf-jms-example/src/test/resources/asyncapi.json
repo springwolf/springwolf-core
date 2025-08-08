@@ -29,6 +29,11 @@
         "io.github.springwolf.examples.jms.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.jms.dtos.AnotherPayloadDto"
         }
+      },
+      "bindings": {
+        "jms": {
+          "bindingVersion": "0.0.1"
+        }
       }
     },
     "example-queue": {

@@ -9,6 +9,7 @@ import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScannerAdapter;
@@ -79,6 +80,7 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             AsyncApiDocketService asyncApiDocketService,
             AsyncAnnotationMessageService asyncAnnotationMessageService,
+            List<ChannelBindingProcessor> channelBindingProcessors,
             List<OperationBindingProcessor> operationBindingProcessors,
             StringValueResolverProxy stringValueResolver) {
         AsyncAnnotationOperationService<AsyncListener> asyncAnnotationOperationService =
@@ -91,6 +93,7 @@ public class SpringwolfScannerConfiguration {
                 asyncAnnotationProvider,
                 asyncAnnotationOperationService,
                 asyncAnnotationMessageService,
+                channelBindingProcessors,
                 stringValueResolver,
                 asyncApiDocketService);
         val strategy =
@@ -111,6 +114,7 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             AsyncApiDocketService asyncApiDocketService,
             AsyncAnnotationMessageService asyncAnnotationMessageService,
+            List<ChannelBindingProcessor> channelBindingProcessors,
             List<OperationBindingProcessor> operationBindingProcessors,
             StringValueResolverProxy stringValueResolver) {
         AsyncAnnotationOperationService<AsyncListener> asyncAnnotationOperationService =
@@ -123,6 +127,7 @@ public class SpringwolfScannerConfiguration {
                 asyncAnnotationProvider,
                 asyncAnnotationOperationService,
                 asyncAnnotationMessageService,
+                channelBindingProcessors,
                 stringValueResolver,
                 asyncApiDocketService);
         val strategy =
@@ -197,6 +202,7 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             AsyncApiDocketService asyncApiDocketService,
             AsyncAnnotationMessageService asyncAnnotationMessageService,
+            List<ChannelBindingProcessor> channelBindingProcessors,
             List<OperationBindingProcessor> operationBindingProcessors,
             StringValueResolverProxy stringValueResolver) {
         AsyncAnnotationOperationService<AsyncPublisher> asyncAnnotationOperationService =
@@ -209,6 +215,7 @@ public class SpringwolfScannerConfiguration {
                 asyncAnnotationProvider,
                 asyncAnnotationOperationService,
                 asyncAnnotationMessageService,
+                channelBindingProcessors,
                 stringValueResolver,
                 asyncApiDocketService);
         val strategy =
@@ -229,6 +236,7 @@ public class SpringwolfScannerConfiguration {
             SpringwolfClassScanner springwolfClassScanner,
             AsyncApiDocketService asyncApiDocketService,
             AsyncAnnotationMessageService asyncAnnotationMessageService,
+            List<ChannelBindingProcessor> channelBindingProcessors,
             List<OperationBindingProcessor> operationBindingProcessors,
             StringValueResolverProxy stringValueResolver) {
         AsyncAnnotationOperationService<AsyncPublisher> asyncAnnotationOperationService =
@@ -241,6 +249,7 @@ public class SpringwolfScannerConfiguration {
                 asyncAnnotationProvider,
                 asyncAnnotationOperationService,
                 asyncAnnotationMessageService,
+                channelBindingProcessors,
                 stringValueResolver,
                 asyncApiDocketService);
         val strategy =

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.bindings.kafka.configuration;
 
+import io.github.springwolf.bindings.kafka.scanners.channels.KafkaChannelBindingProcessor;
 import io.github.springwolf.bindings.kafka.scanners.messages.KafkaMessageBindingProcessor;
 import io.github.springwolf.bindings.kafka.scanners.operations.KafkaOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
@@ -20,6 +21,13 @@ import org.springframework.util.StringValueResolver;
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
 @StandaloneConfiguration
 public class SpringwolfKafkaBindingAutoConfiguration {
+
+    @Bean
+    @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)
+    @ConditionalOnMissingBean
+    public KafkaChannelBindingProcessor kafkaChannelBindingProcessor(StringValueResolver stringValueResolver) {
+        return new KafkaChannelBindingProcessor(stringValueResolver);
+    }
 
     @Bean
     @Order(value = BindingProcessorPriority.PROTOCOL_BINDING)

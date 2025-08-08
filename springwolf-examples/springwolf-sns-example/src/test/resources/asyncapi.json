@@ -29,7 +29,8 @@
         "io.github.springwolf.examples.sns.dtos.AnotherPayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.sns.dtos.AnotherPayloadDto"
         }
-      }
+      },
+      "bindings": { }
     },
     "example-topic": {
       "address": "example-topic",
@@ -37,7 +38,8 @@
         "io.github.springwolf.examples.sns.dtos.ExamplePayloadDto": {
           "$ref": "#/components/messages/io.github.springwolf.examples.sns.dtos.ExamplePayloadDto"
         }
-      }
+      },
+      "bindings": { }
     }
   },
   "components": {
