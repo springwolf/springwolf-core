@@ -42,7 +42,7 @@
     "jest-junit": "^16.0.0",
     "jest-preset-angular": "^14.6.1",
     "ts-json-schema-generator": "^2.4.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "overrides": {
     "jsdom": "^26.0.0"
