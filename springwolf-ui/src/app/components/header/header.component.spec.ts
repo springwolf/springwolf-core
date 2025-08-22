@@ -71,7 +71,7 @@ describe("HeaderComponent", () => {
     fireEvent.click(checkBox);
 
     // then toggleIsShowBindings is called
-    expect(mockedUiService.toggleIsShowBindings).toBeCalled();
+    expect(mockedUiService.toggleIsShowBindings).toHaveBeenCalled();
   });
 
   it("should trigger show headers when clicked in settings menu", () => {
@@ -87,6 +87,6 @@ describe("HeaderComponent", () => {
     fireEvent.click(checkBox);
 
     // then toggleIsShowHeaders is called
-    expect(mockedUiService.toggleIsShowHeaders).toBeCalled();
+    expect(mockedUiService.toggleIsShowHeaders).toHaveBeenCalled();
   });
 });
