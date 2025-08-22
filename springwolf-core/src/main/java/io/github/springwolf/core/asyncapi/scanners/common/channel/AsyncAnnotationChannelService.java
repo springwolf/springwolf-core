@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.channel;
 
+import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -9,6 +10,7 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
+import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
@@ -30,6 +32,7 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
     private final AsyncAnnotationProvider<Annotation> asyncAnnotationProvider;
     private final AsyncAnnotationOperationService<Annotation> asyncAnnotationOperationService;
     private final AsyncAnnotationMessageService asyncAnnotationMessageService;
+    private final List<ChannelBindingProcessor> channelBindingProcessors;
     private final StringValueResolver stringValueResolver;
     private final AsyncApiDocketService asyncApiDocketService;
 
@@ -52,11 +55,14 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
         String channelId = ReferenceUtil.toValidId(channelName);
         MessageObject message =
                 asyncAnnotationMessageService.buildMessage(operationAnnotation, methodAndAnnotation.method());
+        Map<String, ChannelBinding> channelBindings = AsyncAnnotationUtil.processChannelBindingFromAnnotation(
+                methodAndAnnotation.method(), channelBindingProcessors);
 
         ChannelObject channel = channelBuilder
                 .channelId(channelId)
                 .address(channelName)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
+                .bindings(channelBindings)
                 .build();
         return channel;
     }

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.channels;
 
+import io.github.springwolf.asyncapi.v3.bindings.EmptyChannelBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
@@ -16,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ChannelMergerTest {
 
     @Test
-    void shouldNotMergeDifferentchannelIds() {
+    void shouldNotMergeDifferentChannelIds() {
         // given
         String channelId1 = "channel1";
         String channelId2 = "channel2";
@@ -34,7 +35,7 @@ class ChannelMergerTest {
     }
 
     @Test
-    void shouldMergeEqualchannelIdsIntoOneChannel() {
+    void shouldMergeEqualChannelIdsIntoOneChannel() {
         // given
         String channelId = "channel";
         ChannelObject publisherChannel =
@@ -136,5 +137,49 @@ class ChannelMergerTest {
             assertThat(it.getMessages()).hasSize(1);
             assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages);
         });
+    }
+
+    @Test
+    void shouldHandleMissingChannelBindings() {
+        // given
+        String channelId = "channel";
+        ChannelObject publisherChannel1 =
+                ChannelObject.builder().channelId(channelId).bindings(null).build();
+        ChannelObject publisherChannel2 = ChannelObject.builder()
+                .channelId(channelId)
+                .bindings(Map.of("binding2", new EmptyChannelBinding()))
+                .build();
+
+        // when
+        Map<String, ChannelObject> mergedChannels =
+                ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2));
+
+        // then
+        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> assertThat(it.getBindings())
+                .hasSize(1)
+                .containsKeys("binding2"));
+    }
+
+    @Test
+    void shouldMergeChannelBindings() {
+        // given
+        String channelId = "channel";
+        ChannelObject publisherChannel1 = ChannelObject.builder()
+                .channelId(channelId)
+                .bindings(Map.of("binding1", new EmptyChannelBinding()))
+                .build();
+        ChannelObject publisherChannel2 = ChannelObject.builder()
+                .channelId(channelId)
+                .bindings(Map.of("binding2", new EmptyChannelBinding()))
+                .build();
+
+        // when
+        Map<String, ChannelObject> mergedChannels =
+                ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2));
+
+        // then
+        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> assertThat(it.getBindings())
+                .hasSize(2)
+                .containsKeys("binding1", "binding2"));
     }
 }
