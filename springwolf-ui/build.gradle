@@ -14,7 +14,9 @@ tasks.register('npm_run_build', NpmTask) {
 
   args = ['run', 'build']
 
-  inputs.files fileTree("src")
+  inputs.files(fileTree("src") {
+    exclude '**/*.actual.json'
+  })
   inputs.file 'angular.json'
   inputs.file 'package.json'
   inputs.file 'package-lock.json'
@@ -28,7 +30,9 @@ tasks.register('npm_run_test', NpmTask) {
 
   args = ['run', 'test']
 
-  inputs.files fileTree("src")
+  inputs.files(fileTree("src") {
+    exclude '**/*.actual.json'
+  })
   inputs.file 'angular.json'
   inputs.file 'package.json'
   inputs.file 'package-lock.json'
