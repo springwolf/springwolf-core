@@ -2,7 +2,7 @@
 <h2>Channels</h2>
 @for (channel of channels(); track channel) {
 <article appNavigationTarget [id]="channel.anchorIdentifier">
-  <h3>{{ channel.name }}</h3>
+  <h3><mat-icon fontIcon="swap_vert" /> {{ channel.name }}</h3>
 
   @if (isShowBindings()) {
   <div class="row">
