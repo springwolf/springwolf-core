@@ -20,16 +20,16 @@ After starting the application, visit: `localhost:8080/springwolf/asyncapi-ui.ht
 
 __**Note: Check out our [contribution guidelines](../CONTRIBUTING.md) before starting.**__
 
-1. Run `npm i`
-2. Run `npm start`
+1. Run dependencies `npm i` (`../gradlew npmInstall`)
+2. Run development server `npm start` (`../gradlew npmStart`)
+3. Test `npm run test` (`../gradlew npm_run_test`)
+4. Update with `npm run update` (`../gradlew npm_run_update`)
+
+Note: While npm and nodejs are used, they are managed by the gradle plugin. See commands in brackets in case you do not have a matching node version installed.
 
 ### Mock Data
 
 In development mode, the application renders content based on mock data referenced in `src/app/service/mock`.
-
-### Running tests
-
-Run `npm test`
 
 ### Code Formatting
 
