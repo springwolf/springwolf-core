@@ -63,7 +63,7 @@ public class KafkaChannelBindingProcessor extends AbstractChannelBindingProcesso
         }
 
         KafkaChannelTopicConfiguration buildTopicConfiguration = topicConfiguration.build();
-        if (KafkaChannelTopicConfiguration.builder().build().equals(buildTopicConfiguration)) {
+        if (EMPTY_TOPIC_CONFIGURATION.equals(buildTopicConfiguration)) {
             return null;
         }
         return buildTopicConfiguration;
