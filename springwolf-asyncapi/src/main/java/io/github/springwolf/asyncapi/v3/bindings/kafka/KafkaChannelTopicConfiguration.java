@@ -34,7 +34,7 @@ public class KafkaChannelTopicConfiguration {
      */
     @Min(value = -1, message = "retention.ms must be greater or equals to -1")
     @JsonProperty("retention.ms")
-    private Integer retentionMs;
+    private Long retentionMs;
 
     /**
      * The <a href="https://kafka.apache.org/documentation/#topicconfigs_retention.bytes">retention.bytes</a>
@@ -42,7 +42,7 @@ public class KafkaChannelTopicConfiguration {
      */
     @Min(value = -1, message = "retention.bytes must be greater or equals to -1")
     @JsonProperty("retention.bytes")
-    private Integer retentionBytes;
+    private Long retentionBytes;
 
     /**
      * The <a href="https://kafka.apache.org/documentation/#topicconfigs_delete.retention.ms">delete.retention.ms</a>
@@ -50,7 +50,7 @@ public class KafkaChannelTopicConfiguration {
      */
     @PositiveOrZero
     @JsonProperty("delete.retention.ms")
-    private Integer deleteRetentionMs;
+    private Long deleteRetentionMs;
 
     /**
      * The <a href="https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes">max.message.bytes</a>

@@ -87,9 +87,9 @@ class KafkaBindingTest {
                                                         .cleanupPolicy(List.of(
                                                                 KafkaChannelTopicCleanupPolicy.DELETE,
                                                                 KafkaChannelTopicCleanupPolicy.COMPACT))
-                                                        .retentionMs(604800000)
-                                                        .retentionBytes(1000000000)
-                                                        .deleteRetentionMs(86400000)
+                                                        .retentionMs(604800000L)
+                                                        .retentionBytes(1000000000L)
+                                                        .deleteRetentionMs(86400000L)
                                                         .maxMessageBytes(1048588)
                                                         .build())
                                                 .build()))
@@ -111,9 +111,9 @@ class KafkaBindingTest {
                 KafkaChannelTopicConfiguration.builder()
                         .cleanupPolicy(
                                 List.of(KafkaChannelTopicCleanupPolicy.DELETE, KafkaChannelTopicCleanupPolicy.COMPACT))
-                        .retentionMs(604800000)
-                        .retentionBytes(1000000000)
-                        .deleteRetentionMs(86400000)
+                        .retentionMs(604800000L)
+                        .retentionBytes(1000000000L)
+                        .deleteRetentionMs(86400000L)
                         .maxMessageBytes(1048588)
                         .confluentKeySchemaValidation(true)
                         .confluentKeySubjectNameStrategy("TopicNameStrategy")

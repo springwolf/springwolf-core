@@ -10,6 +10,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
+import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestAbstractChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestAbstractOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.processor.TestMessageBindingProcessor;
@@ -281,8 +282,30 @@ class AsyncAnnotationUtilTest {
         assertEquals(Maps.newHashMap(TestChannelBindingProcessor.TYPE, TestChannelBindingProcessor.BINDING), bindings);
     }
 
+    @Test
+    void processAbstractChannelBindingFromAnnotation() throws NoSuchMethodException {
+        // given
+        Method m =
+                ClassWithAbstractChannelBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
+
+        // when
+        Map<String, ChannelBinding> bindings = AsyncAnnotationUtil.processChannelBindingFromAnnotation(
+                m, Collections.singletonList(new TestAbstractChannelBindingProcessor(stringValueResolver)));
+
+        // then
+        assertEquals(
+                Maps.newHashMap(TestAbstractChannelBindingProcessor.TYPE, TestAbstractChannelBindingProcessor.BINDING),
+                bindings);
+    }
+
     private static class ClassWithChannelBindingProcessor {
         @TestChannelBindingProcessor.TestChannelBinding()
+        private void methodWithAnnotation(String payload) {}
+    }
+
+    private static class ClassWithAbstractChannelBindingProcessor {
+        @AsyncListener(operation = @AsyncOperation(channelName = "${test.property.test-channel}"))
+        @TestAbstractChannelBindingProcessor.TestChannelBinding()
         private void methodWithAnnotation(String payload) {}
     }
 
