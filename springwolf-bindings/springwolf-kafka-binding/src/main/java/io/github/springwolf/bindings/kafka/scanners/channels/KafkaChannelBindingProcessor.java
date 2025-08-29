@@ -14,6 +14,9 @@ import java.util.Arrays;
 
 public class KafkaChannelBindingProcessor extends AbstractChannelBindingProcessor<KafkaAsyncChannelBinding> {
 
+    private static final KafkaChannelTopicConfiguration EMPTY_TOPIC_CONFIGURATION =
+            KafkaChannelTopicConfiguration.builder().build();
+
     public KafkaChannelBindingProcessor(StringValueResolver stringValueResolver) {
         super(stringValueResolver);
     }
