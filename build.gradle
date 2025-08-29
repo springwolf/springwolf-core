@@ -28,11 +28,11 @@ var bindings = [
 ]
 var plugins = [
         'springwolf-amqp',
-        'springwolf-cloud-stream',
+//        'springwolf-cloud-stream',
         'springwolf-jms',
         'springwolf-kafka',
-        'springwolf-sns',
-        'springwolf-sqs',
+//        'springwolf-sns',
+//        'springwolf-sqs',
         'springwolf-stomp'
 ]
 
