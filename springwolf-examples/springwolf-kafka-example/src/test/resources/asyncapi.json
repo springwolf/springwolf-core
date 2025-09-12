@@ -483,8 +483,8 @@
           "type": "object"
         }
       },
-      "SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105": {
-        "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105",
+      "SpringKafkaDefaultHeaders-ExamplePayloadDto-859447461": {
+        "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-859447461",
         "type": "object",
         "properties": {
           "__TypeId__": {
@@ -544,7 +544,7 @@
               "type": "object"
             }
           },
-          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105",
+          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-859447461",
           "type": "object"
         }
       },
@@ -995,6 +995,13 @@
             "examples": [
               "bar"
             ]
+          },
+          "nullableField": {
+            "types": [
+              "string",
+              "null"
+            ],
+            "description": "This field can be null"
           }
         },
         "description": "Another payload model",
@@ -1005,7 +1012,8 @@
               "someLong": 5,
               "someString": "some string value"
             },
-            "foo": "bar"
+            "foo": "bar",
+            "nullableField": "string"
           }
         ],
         "required": [
@@ -1049,6 +1057,9 @@
               "description": "Foo field",
               "maxLength": 100,
               "type": "string"
+            },
+            "nullableField": {
+              "description": "This field can be null"
             }
           },
           "required": [
@@ -1772,7 +1783,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105"
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-859447461"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",

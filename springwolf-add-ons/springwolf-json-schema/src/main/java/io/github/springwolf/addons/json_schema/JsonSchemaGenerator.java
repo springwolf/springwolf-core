@@ -74,7 +74,7 @@ public class JsonSchemaGenerator {
         if (schema.getEnumValues() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
             for (Object property : schema.getEnumValues()) {
-                arrayNode.add(property.toString());
+                arrayNode.add(property == null ? null : property.toString());
             }
             node.set("enum", arrayNode);
         }
@@ -142,6 +142,11 @@ public class JsonSchemaGenerator {
         }
         if (schema.getType() != null) {
             node.put("type", schema.getType());
+        }
+        if (schema.getTypes() != null) {
+            ArrayNode arrayNode = objectMapper.createArrayNode();
+            schema.getTypes().forEach(arrayNode::add);
+            node.set("types", arrayNode);
         }
         if (schema.getUniqueItems() != null) {
             node.put("uniqueItems", schema.getUniqueItems());

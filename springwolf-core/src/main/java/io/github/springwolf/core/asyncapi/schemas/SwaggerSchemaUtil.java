@@ -11,8 +11,11 @@ import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -67,7 +70,10 @@ public class SwaggerSchemaUtil {
 
         builder.title(value.getTitle());
 
-        builder.type(value.getType());
+        boolean isNullable = Boolean.TRUE.equals(value.getNullable());
+        if (value.getEnum() == null || value.getEnum().isEmpty()) {
+            assignType(value, builder, isNullable);
+        }
 
         Map<String, Schema> properties = value.getProperties();
         if (properties != null) {
@@ -105,7 +111,15 @@ public class SwaggerSchemaUtil {
 
         List<Object> anEnum = value.getEnum();
         if (anEnum != null) {
-            builder.enumValues(anEnum.stream().map(Object::toString).toList());
+            List<String> enumStringValues =
+                    anEnum.stream().map(Object::toString).collect(Collectors.toCollection(ArrayList::new));
+            if (isNullable) {
+                enumStringValues.add(null);
+            }
+            if (!isNullable) {
+                builder.type(value.getType()); // type is optional for enums, for nullable types it is incorrect
+            }
+            builder.enumValues(enumStringValues);
         }
 
         Object example = value.getExample();
@@ -169,6 +183,26 @@ public class SwaggerSchemaUtil {
         builder.maxItems(value.getMaxItems());
 
         return builder.build();
+    }
+
+    private static void assignType(Schema value, SchemaObject.SchemaObjectBuilder builder, boolean isNullable) {
+        Set<String> types = value.getTypes() == null ? new HashSet<>() : new HashSet<String>(value.getTypes());
+        if (!types.contains(value.getType())) {
+            // contradicting types; prefer type for backward compatibility
+            builder.type(value.getType());
+            return;
+        }
+
+        types.add(value.getType());
+
+        if (isNullable) {
+            types.add("null");
+        }
+        if (types.size() > 1) {
+            builder.types(types);
+        } else {
+            builder.type(value.getType());
+        }
     }
 
     /**
