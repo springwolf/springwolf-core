@@ -12,7 +12,7 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -50,7 +50,7 @@ public class SqsProducerSystemTest {
     ArgumentCaptor<Map<String, Object>> headersCaptor;
 
     @Container
-    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+    public static ComposeContainer environment = new ComposeContainer(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(LOCALSTACK_NAME)
             .withLogConsumer(LOCALSTACK_NAME, l -> Arrays.stream(

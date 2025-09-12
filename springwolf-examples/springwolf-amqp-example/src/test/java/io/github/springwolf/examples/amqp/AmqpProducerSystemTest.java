@@ -19,7 +19,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -57,7 +57,7 @@ public class AmqpProducerSystemTest {
     ExampleConsumer exampleConsumer;
 
     @Container
-    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+    public static ComposeContainer environment = new ComposeContainer(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(AMQP_NAME)
             .withExposedService(AMQP_NAME, 5672)
