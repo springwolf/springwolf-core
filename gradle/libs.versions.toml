@@ -54,7 +54,7 @@ kafka-streams = "org.apache.kafka:kafka-streams:8.0.0-ce"
 kafka-protobuf-serializer = { module = "io.confluent:kafka-protobuf-serializer", version.ref = "io-confluent" }
 kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:2.2.10"
 kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.9.0"
-lombok = "org.projectlombok:lombok:1.18.38"
+lombok = "org.projectlombok:lombok:1.18.40"
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "org-mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "org-mockito" }
 moneta = "org.javamoney:moneta:1.4.5"
