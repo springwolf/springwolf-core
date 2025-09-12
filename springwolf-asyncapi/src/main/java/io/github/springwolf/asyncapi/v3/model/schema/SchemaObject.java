@@ -15,6 +15,7 @@ import lombok.ToString;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The Schema Object allows the definition of input and output data types. These types can be objects, but also
@@ -60,6 +61,9 @@ public class SchemaObject extends ExtendableObject implements Schema {
 
     @JsonProperty(value = "type")
     private String type;
+
+    @JsonProperty(value = "types")
+    private Set<String> types;
 
     @JsonProperty(value = "properties")
     private Map<String, Object> properties;
