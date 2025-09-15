@@ -3,7 +3,6 @@ package io.github.springwolf.core.asyncapi.components.postprocessors;
 
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.swagger.v3.oas.models.media.Schema;
-import org.apache.commons.lang3.Strings;
 import org.springframework.util.StringUtils;
 
 import java.util.Deque;
@@ -60,8 +59,8 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
             Schema schemaPropertySchema = properties.getOrDefault(SCHEMA_PROPERTY, null);
             Schema specificDataPropertySchema = properties.getOrDefault(SPECIFIC_DATA_PROPERTY, null);
             if (schemaPropertySchema != null && specificDataPropertySchema != null) {
-                if (Strings.CI.endsWith(schemaPropertySchema.get$ref(), SCHEMA_REF)
-                        && Strings.CI.endsWith(specificDataPropertySchema.get$ref(), SPECIFIC_DAT_REF)) {
+                if (StringUtils.endsWithIgnoreCase(schemaPropertySchema.get$ref(), SCHEMA_REF)
+                        && StringUtils.endsWithIgnoreCase(specificDataPropertySchema.get$ref(), SPECIFIC_DAT_REF)) {
                     properties.remove(SCHEMA_PROPERTY);
                     properties.remove(SPECIFIC_DATA_PROPERTY);
                 }
