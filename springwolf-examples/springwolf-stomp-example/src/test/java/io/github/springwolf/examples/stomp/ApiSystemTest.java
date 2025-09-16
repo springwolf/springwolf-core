@@ -4,7 +4,7 @@ package io.github.springwolf.examples.stomp;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -25,11 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Testcontainers // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ApiSystemTest {
     private static final RestTemplate restTemplate = new RestTemplate();
-    private static final String APP_NAME = "app_1";
+    private static final String APP_NAME = "app";
     private static final int APP_PORT = 8080;
 
     @Container
-    public static DockerComposeContainer<?> environment = new DockerComposeContainer<>(new File("docker-compose.yml"))
+    public static ComposeContainer environment = new ComposeContainer(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withExposedService(APP_NAME, APP_PORT)
             .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
