@@ -2,6 +2,7 @@
 package io.github.springwolf.asyncapi.v3.model.schema;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.springwolf.asyncapi.v3.model.ExtendableObject;
 import io.github.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
@@ -59,11 +60,9 @@ public class SchemaObject extends ExtendableObject implements Schema {
     @JsonProperty(value = "title")
     private String title;
 
+    @JsonSerialize(using = SchemaType.Serializer.class)
     @JsonProperty(value = "type")
-    private String type;
-
-    @JsonProperty(value = "types")
-    private Set<String> types;
+    private Set<String> type;
 
     @JsonProperty(value = "properties")
     private Map<String, Object> properties;
@@ -143,4 +142,21 @@ public class SchemaObject extends ExtendableObject implements Schema {
 
     @JsonProperty(value = "maxItems")
     private Integer maxItems;
+
+    public void setType(String type) {
+        this.type = Set.of(type);
+    }
+
+    public static class SchemaObjectBuilder {
+
+        public SchemaObjectBuilder type(Set<String> type) {
+            this.type = type;
+            return this;
+        }
+
+        public SchemaObjectBuilder type(String type) {
+            this.type = Set.of(type);
+            return this;
+        }
+    }
 }

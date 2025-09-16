@@ -141,12 +141,13 @@ public class JsonSchemaGenerator {
             node.put("title", schema.getTitle());
         }
         if (schema.getType() != null) {
-            node.put("type", schema.getType());
-        }
-        if (schema.getTypes() != null) {
-            ArrayNode arrayNode = objectMapper.createArrayNode();
-            schema.getTypes().forEach(arrayNode::add);
-            node.set("types", arrayNode);
+            if (schema.getType().size() == 1) {
+                node.put("type", schema.getType().iterator().next());
+            } else if (schema.getType().size() > 1) {
+                ArrayNode arrayNode = objectMapper.createArrayNode();
+                schema.getType().forEach(arrayNode::add);
+                node.set("type", arrayNode);
+            }
         }
         if (schema.getUniqueItems() != null) {
             node.put("uniqueItems", schema.getUniqueItems());

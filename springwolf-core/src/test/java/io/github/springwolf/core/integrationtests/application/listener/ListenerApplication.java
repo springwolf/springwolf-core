@@ -39,7 +39,7 @@ public class ListenerApplication {
     public record Bar(String aFieldInBarRecord) {}
 
     @AsyncListener(operation = @AsyncOperation(channelName = "listener-class-channel"))
-    static class ClassListener {
+    public static class ClassListener {
         public void listen(Integer payload) {}
     }
 }
