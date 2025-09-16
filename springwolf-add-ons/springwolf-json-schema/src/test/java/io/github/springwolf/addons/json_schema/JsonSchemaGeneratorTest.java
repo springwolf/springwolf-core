@@ -166,7 +166,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"types\":[\"string\",\"null\"],\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"type\":[\"string\",\"null\"],\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
                         (Supplier<Schema>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setNullable(true);

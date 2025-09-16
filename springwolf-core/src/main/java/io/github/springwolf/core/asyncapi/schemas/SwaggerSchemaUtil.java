@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -198,11 +199,8 @@ public class SwaggerSchemaUtil {
         if (isNullable) {
             types.add("null");
         }
-        if (types.size() > 1) {
-            builder.types(types);
-        } else {
-            builder.type(value.getType());
-        }
+
+        builder.type(types);
     }
 
     /**
@@ -275,7 +273,12 @@ public class SwaggerSchemaUtil {
      */
     private Schema mapSchemaObjectToSwagger(SchemaObject asyncApiSchema) {
         Schema swaggerSchema = new Schema();
-        swaggerSchema.setType(asyncApiSchema.getType());
+        if (asyncApiSchema.getType() != null) {
+            swaggerSchema.setType(asyncApiSchema.getType().stream()
+                    .filter(type -> !type.equals(SchemaType.NULL))
+                    .findFirst()
+                    .orElse(null));
+        }
         //        swaggerSchema.setFormat(asyncApiSchema.getFormat());
         swaggerSchema.setDescription(asyncApiSchema.getDescription());
         swaggerSchema.setExamples(asyncApiSchema.getExamples());
