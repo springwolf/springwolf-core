@@ -29,7 +29,7 @@ export interface Schema {
   enum?: string[];
   example?: Example;
 
-  type?: string;
+  type?: string | string[];
   format?: string;
   // type == ref
   refAnchorUrl?: string;
