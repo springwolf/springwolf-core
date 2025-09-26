@@ -83,8 +83,8 @@ public class AnnotationScannerUtil {
         return Objects.isNull(AnnotationUtil.findFirstAnnotation(Hidden.class, element));
     }
 
-    private static final Set<String> typicalJavaMethods =
-            Set.of("clone", "equals", "finalize", "getClass", "hashCode", "notify", "notifyAll", "toString", "wait");
+    private static final Set<String> typicalJavaMethods = Set.of(
+            "clone", "equals", "finalize", "getClass", "hashCode", "notify", "notifyAll", "toString", "wait", "wait0");
 
     private static boolean isNotTypicalJavaMethod(Method method) {
         return !typicalJavaMethods.contains(method.getName());

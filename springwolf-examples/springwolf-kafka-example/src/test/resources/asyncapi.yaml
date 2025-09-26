@@ -680,6 +680,11 @@ components:
           maxLength: 100
           examples:
             - bar
+        nullableField:
+          type:
+            - string
+            - "null"
+          description: This field can be null
       description: Another payload model
       examples:
         - example:
@@ -687,6 +692,7 @@ components:
             someLong: 5
             someString: some string value
           foo: bar
+          nullableField: string
       required:
         - example
       x-json-schema:
@@ -734,6 +740,11 @@ components:
             description: Foo field
             maxLength: 100
             type: string
+          nullableField:
+            description: This field can be null
+            type:
+              - string
+              - "null"
         required:
           - example
         title: AnotherPayloadDto

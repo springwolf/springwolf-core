@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.annotation;
 
+import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
+import io.github.springwolf.core.integrationtests.application.listener.ListenerApplication;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -70,6 +72,19 @@ class AnnotationScannerUtilTest {
                     .toList();
 
             assertThat(methods).isEmpty();
+        }
+
+        @Test
+        void dontFindObjectWait0() {
+            List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
+                            ListenerApplication.ClassListener.class,
+                            AsyncListener.class,
+                            AllMethods.class,
+                            (c, m) -> m.stream().map(MethodAndAnnotation::method))
+                    .toList();
+
+            assertThat(methods).hasSize(1);
+            assertThat(methods.get(0).getName()).isEqualTo("listen");
         }
 
         @ClassAnnotation

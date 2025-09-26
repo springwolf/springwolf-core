@@ -995,6 +995,13 @@
             "examples": [
               "bar"
             ]
+          },
+          "nullableField": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "This field can be null"
           }
         },
         "description": "Another payload model",
@@ -1005,7 +1012,8 @@
               "someLong": 5,
               "someString": "some string value"
             },
-            "foo": "bar"
+            "foo": "bar",
+            "nullableField": "string"
           }
         ],
         "required": [
@@ -1049,6 +1057,13 @@
               "description": "Foo field",
               "maxLength": 100,
               "type": "string"
+            },
+            "nullableField": {
+              "description": "This field can be null",
+              "type": [
+                "string",
+                "null"
+              ]
             }
           },
           "required": [
