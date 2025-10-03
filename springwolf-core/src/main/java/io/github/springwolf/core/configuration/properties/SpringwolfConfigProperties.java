@@ -106,7 +106,8 @@ public class SpringwolfConfigProperties {
     @Getter
     @Setter
     public static class Path {
-        private String base = "/springwolf";
+        public static String DEFAULT_BASE = "/springwolf";
+        private String base = DEFAULT_BASE;
         private String docs = "/docs";
     }
 
