@@ -3,7 +3,7 @@
   "info": {
     "title": "Springwolf example project - SNS",
     "version": "1.0.0",
-    "description": "Springwolf example project to demonstrate springwolfs abilities",
+    "description": "Springwolf [example project](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-sns-example) to demonstrate springwolfs abilities, including **markdown** support for descriptions.",
     "termsOfService": "http://asyncapi.org/terms",
     "contact": {
       "name": "springwolf",
