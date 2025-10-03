@@ -22,6 +22,8 @@ class SpringwolfSnsProducerTest {
     private SpringwolfSnsProducer springwolfSnsProducer;
 
     private SnsTemplate template;
+
+    @SuppressWarnings("unchecked")
     private final ArgumentCaptor<Message<Object>> messageCaptor = ArgumentCaptor.forClass(Message.class);
 
     @BeforeEach
