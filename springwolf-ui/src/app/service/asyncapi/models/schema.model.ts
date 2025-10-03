@@ -6,7 +6,7 @@ export interface ServerAsyncApiSchema {
   description?: string;
   deprecated?: boolean;
 
-  enum?: string[];
+  enum?: (string | null)[];
   examples?: any[];
 
   type?: string | string[];

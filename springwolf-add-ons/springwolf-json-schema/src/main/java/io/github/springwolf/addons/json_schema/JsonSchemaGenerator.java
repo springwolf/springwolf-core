@@ -74,7 +74,7 @@ public class JsonSchemaGenerator {
         if (schema.getEnumValues() != null) {
             ArrayNode arrayNode = objectMapper.createArrayNode();
             for (Object property : schema.getEnumValues()) {
-                arrayNode.add(property.toString());
+                arrayNode.add(property == null ? null : property.toString());
             }
             node.set("enum", arrayNode);
         }

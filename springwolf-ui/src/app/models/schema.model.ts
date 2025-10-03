@@ -26,7 +26,7 @@ export interface Schema {
   description?: string;
   deprecated?: boolean;
 
-  enum?: string[];
+  enum?: (string | null)[];
   example?: Example;
 
   type?: string | string[];

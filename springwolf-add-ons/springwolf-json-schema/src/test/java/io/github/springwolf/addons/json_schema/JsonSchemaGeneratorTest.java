@@ -143,7 +143,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of( // uses OpenAPI 3.1 for enum + null
-                        "{\"enum\":[\"test\",\"value2\",\"null\"],\"type\":[\"string\",\"null\"],\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"enum\":[\"test\",\"value2\",null],\"type\":[\"string\",\"null\"],\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
                         (Supplier<Schema>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setEnum(List.of("test", "value2"));

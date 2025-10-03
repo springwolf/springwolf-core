@@ -113,7 +113,7 @@ public class SwaggerSchemaUtil {
             List<String> enumStringValues =
                     anEnum.stream().map(Object::toString).collect(Collectors.toCollection(ArrayList::new));
             if (isNullable) {
-                enumStringValues.add(SchemaType.NULL);
+                enumStringValues.add(null);
             }
             builder.enumValues(enumStringValues);
         }
