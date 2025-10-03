@@ -72,9 +72,7 @@ public class SwaggerSchemaUtil {
         builder.title(value.getTitle());
 
         boolean isNullable = Boolean.TRUE.equals(value.getNullable());
-        if (value.getEnum() == null || value.getEnum().isEmpty()) {
-            assignType(value, builder, isNullable);
-        }
+        assignType(value, builder, isNullable);
 
         Map<String, Schema> properties = value.getProperties();
         if (properties != null) {
@@ -110,15 +108,12 @@ public class SwaggerSchemaUtil {
         builder.minLength(value.getMinLength());
         builder.maxLength(value.getMaxLength());
 
-        List<Object> anEnum = value.getEnum();
+        List<?> anEnum = value.getEnum();
         if (anEnum != null) {
             List<String> enumStringValues =
                     anEnum.stream().map(Object::toString).collect(Collectors.toCollection(ArrayList::new));
             if (isNullable) {
-                enumStringValues.add(null);
-            }
-            if (!isNullable) {
-                builder.type(value.getType()); // type is optional for enums, for nullable types it is incorrect
+                enumStringValues.add(SchemaType.NULL);
             }
             builder.enumValues(enumStringValues);
         }
@@ -190,11 +185,10 @@ public class SwaggerSchemaUtil {
         Set<String> types = value.getTypes() == null ? new HashSet<>() : new HashSet<String>(value.getTypes());
         if (!types.contains(value.getType())) {
             // contradicting types; prefer type for backward compatibility
+            // maintainer note: remove condition in next major release
             builder.type(value.getType());
             return;
         }
-
-        types.add(value.getType());
 
         if (isNullable) {
             types.add("null");
@@ -278,6 +272,7 @@ public class SwaggerSchemaUtil {
                     .filter(type -> !type.equals(SchemaType.NULL))
                     .findFirst()
                     .orElse(null));
+            swaggerSchema.setTypes(asyncApiSchema.getType());
         }
         //        swaggerSchema.setFormat(asyncApiSchema.getFormat());
         swaggerSchema.setDescription(asyncApiSchema.getDescription());
