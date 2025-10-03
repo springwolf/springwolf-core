@@ -16,7 +16,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
  * JUnit5 extension to start the localstack testcontainers once
  * and keep it running until all test classes have been completed.
  */
-public class SqsTestContainerExtension implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
+public class SqsTestContainerExtension implements BeforeAllCallback, AutoCloseable {
 
     private static volatile boolean started = false;
 
@@ -45,7 +45,7 @@ public class SqsTestContainerExtension implements BeforeAllCallback, ExtensionCo
     }
 
     @Override
-    public void close() throws Throwable {
+    public void close() {
         localStack.stop();
     }
 

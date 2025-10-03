@@ -22,6 +22,8 @@ class SpringwolfSqsProducerTest {
     private SpringwolfSqsProducer springwolfSqsProducer;
 
     private SqsTemplate template;
+
+    @SuppressWarnings("unchecked")
     private final ArgumentCaptor<Message<Object>> messageCaptor = ArgumentCaptor.forClass(Message.class);
 
     @BeforeEach
