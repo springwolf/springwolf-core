@@ -18,9 +18,6 @@ public class AnotherPayloadDto {
     @Schema(description = "Foo field", example = "bar", maxLength = 100, requiredMode = NOT_REQUIRED)
     private String foo;
 
-    @Schema(description = "This field can be null", nullable = true)
-    private String nullableField;
-
     @Schema(description = "Example field", requiredMode = REQUIRED)
     private ExamplePayloadDto example;
 }

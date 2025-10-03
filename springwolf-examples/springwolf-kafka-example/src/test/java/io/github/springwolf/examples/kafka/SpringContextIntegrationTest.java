@@ -48,6 +48,7 @@ public class SpringContextIntegrationTest {
                             "avro-topic",
                             "example-topic",
                             "integer-topic",
+                            "nullable-topic",
                             "multi-payload-topic",
                             "no-payload-used-topic",
                             "protobuf-topic",
