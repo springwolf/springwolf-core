@@ -117,7 +117,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
         String expected = loadDefinition("/schemas/json/generics-wrapper-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     private String loadDefinition(String path, String content) throws IOException {

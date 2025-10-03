@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -58,7 +58,7 @@ class AsyncAnnotationUtilTest {
                 headers.getProperties().containsKey("headerResolved"),
                 headers.getProperties() + " does not contain key 'headerResolved'");
         SchemaObject headerResolved = (SchemaObject) headers.getProperties().get("headerResolved");
-        assertEquals("string", headerResolved.getType());
+        assertThat(headerResolved.getType()).containsExactly("string");
         assertEquals("valueResolved", headerResolved.getExamples().get(0));
         assertEquals("descriptionResolved", headerResolved.getDescription());
 
@@ -67,7 +67,7 @@ class AsyncAnnotationUtilTest {
                 headers.getProperties() + " does not contain key 'headerWithoutValueResolved'");
         SchemaObject headerWithoutValueResolved =
                 (SchemaObject) headers.getProperties().get("headerWithoutValueResolved");
-        assertEquals("string", headerWithoutValueResolved.getType());
+        assertThat(headerWithoutValueResolved.getType()).containsExactly("string");
         assertTrue(headerWithoutValueResolved.getExamples().isEmpty());
         assertTrue(headerWithoutValueResolved.getEnumValues().isEmpty());
         assertEquals("descriptionResolved", headerWithoutValueResolved.getDescription());

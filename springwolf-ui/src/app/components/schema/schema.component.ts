@@ -26,5 +26,6 @@ import { CommonModule } from "@angular/common";
 })
 export class SchemaComponent {
   schema = input.required<Schema>();
+  Array = Array;
   protected readonly Object = Object;
 }

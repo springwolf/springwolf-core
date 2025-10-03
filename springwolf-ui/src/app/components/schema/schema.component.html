@@ -39,8 +39,13 @@
   <!-- primitive property -->
   @if (value?.type != 'array') {
   <span class="type text-console">
+    @if (Array.isArray(value.type)) {
+    <span class="type text-console">
+      {{ value.type.join(", ") }}
+    </span>
+    } @else {
     {{ value.type }}
-    @if (value.format) {
+    } @if (value.format) {
     <span class="format">({{ value.format }})</span>
     }
   </span>
@@ -95,7 +100,7 @@
   <div class="flex">
     <span class="property-title"><i>Allowed values:</i></span>
     &nbsp; @for (enumValue of value.enum; track enumValue) {
-    <span class="text-console value-box">{{ enumValue }}</span>
+    <span class="text-console value-box">{{ enumValue || "null" }}</span>
     }
   </div>
   }

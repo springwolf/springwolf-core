@@ -26,10 +26,10 @@ export interface Schema {
   description?: string;
   deprecated?: boolean;
 
-  enum?: string[];
+  enum?: (string | null)[];
   example?: Example;
 
-  type?: string;
+  type?: string | string[];
   format?: string;
   // type == ref
   refAnchorUrl?: string;

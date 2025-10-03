@@ -88,7 +88,7 @@ public class AsyncApiDocumentIntegrationTest {
                     .isInstanceOf(SchemaObject.class);
             SchemaObject inlineStringSchema = (SchemaObject)
                     stringMessage.getPayload().getMultiFormatSchema().getSchema();
-            assertThat(inlineStringSchema.getType()).isEqualTo("string");
+            assertThat(inlineStringSchema.getType()).containsExactly("string");
 
             MessageObject fooMessage = (MessageObject) asyncAPI.getComponents()
                     .getMessages()
@@ -171,7 +171,7 @@ public class AsyncApiDocumentIntegrationTest {
                     .isInstanceOf(SchemaObject.class);
             SchemaObject inlineStringSchema = (SchemaObject)
                     stringMessage.getPayload().getMultiFormatSchema().getSchema();
-            assertThat(inlineStringSchema.getType()).isEqualTo("string");
+            assertThat(inlineStringSchema.getType()).containsExactly("string");
 
             MessageObject fooMessage = (MessageObject) asyncAPI.getComponents()
                     .getMessages()
