@@ -17,6 +17,7 @@ import { CommonModule } from "@angular/common";
 import { PrismEditorComponent } from "../code/prism-editor.component";
 import { MatCardModule } from "@angular/material/card";
 import { NavigationTargetDirective } from "../sidenav/navigation.directive";
+import { MatIconModule } from "@angular/material/icon";
 
 describe("ChannelsNewComponent", () => {
   beforeEach(async () => {
@@ -31,6 +32,7 @@ describe("ChannelsNewComponent", () => {
         CommonModule,
         MatCardModule,
         NavigationTargetDirective,
+        MatIconModule,
       ],
       providers: [
         { provide: IUiService, useValue: mockedUiService },
