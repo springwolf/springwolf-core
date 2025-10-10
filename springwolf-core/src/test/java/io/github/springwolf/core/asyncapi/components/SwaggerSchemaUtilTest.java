@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -539,7 +540,7 @@ class SwaggerSchemaUtilTest {
         void mapNullableEnum() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setEnumValues(List.of("enum1", "enum2", "null"));
+            schema.setEnumValues(Stream.of("enum1", "enum2", null).toList());
             schema.setTypes(Set.of(SchemaType.STRING, SchemaType.NULL)); // nullable
 
             // when
@@ -547,6 +548,7 @@ class SwaggerSchemaUtilTest {
 
             // then
             assertThat(componentSchema.getEnum()).isEqualTo(schema.getEnumValues());
+            assertThat(componentSchema.getTypes()).isEqualTo(schema.getType());
         }
 
         @Test
