@@ -14,7 +14,7 @@ services:
       - kafka
 
   kafka:
-    image: confluentinc/cp-kafka:8.0.1
+    image: confluentinc/cp-kafka:8.0.2
     ports:
       - "9092:9092" # plaintext - no authentication
       - "9093:9093" # sasl
