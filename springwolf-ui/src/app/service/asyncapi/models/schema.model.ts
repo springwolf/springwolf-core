@@ -6,10 +6,10 @@ export interface ServerAsyncApiSchema {
   description?: string;
   deprecated?: boolean;
 
-  enum?: string[];
+  enum?: (string | null)[];
   examples?: any[];
 
-  type?: string;
+  type?: string | string[];
   format?: string;
   // type == ref
   not?: ServerAsyncApiSchemaOrRef;

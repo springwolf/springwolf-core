@@ -120,6 +120,19 @@
         }
       }
     },
+    "nullable-topic": {
+      "address": "nullable-topic",
+      "messages": {
+        "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
+        }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      }
+    },
     "protobuf-topic": {
       "address": "protobuf-topic",
       "messages": {
@@ -650,6 +663,41 @@
             }
           },
           "title": "SpringKafkaDefaultHeaders-PayloadNotUsed",
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-RequiredAndNullablePayloadDto": {
+        "title": "SpringKafkaDefaultHeaders-RequiredAndNullablePayloadDto",
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "enum": [
+              "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
+            ],
+            "examples": [
+              "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Spring Type Id Header",
+              "enum": [
+                "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
+              ],
+              "type": "string"
+            }
+          },
+          "title": "SpringKafkaDefaultHeaders-RequiredAndNullablePayloadDto",
           "type": "object"
         }
       },
@@ -1219,6 +1267,108 @@
             }
           },
           "title": "NestedPayloadDto",
+          "type": "object"
+        }
+      },
+      "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto": {
+        "title": "RequiredAndNullablePayloadDto",
+        "type": "object",
+        "properties": {
+          "enumField": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Follows OpenAPI 3.1 spec",
+            "enum": [
+              "COMPLEX1",
+              "COMPLEX2",
+              null
+            ]
+          },
+          "notRequiredField": {
+            "type": "string",
+            "description": "This field can be skipped, but value cannot be null"
+          },
+          "requiredAndNullableField": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "This field can be skipped, or value can be null or present"
+          },
+          "requiredButNullableField": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "This field must be present, but value can be null"
+          },
+          "requiredField": {
+            "type": "string",
+            "description": "This field must be present, and value cannot be null"
+          }
+        },
+        "description": "Another payload model",
+        "examples": [
+          {
+            "enumField": "COMPLEX1",
+            "notRequiredField": "string",
+            "requiredAndNullableField": "string",
+            "requiredButNullableField": "string",
+            "requiredField": "string"
+          }
+        ],
+        "required": [
+          "enumField",
+          "requiredButNullableField",
+          "requiredField"
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "description": "Another payload model",
+          "properties": {
+            "enumField": {
+              "description": "Follows OpenAPI 3.1 spec",
+              "enum": [
+                "COMPLEX1",
+                "COMPLEX2",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "notRequiredField": {
+              "description": "This field can be skipped, but value cannot be null",
+              "type": "string"
+            },
+            "requiredAndNullableField": {
+              "description": "This field can be skipped, or value can be null or present",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "requiredButNullableField": {
+              "description": "This field must be present, but value can be null",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "requiredField": {
+              "description": "This field must be present, and value cannot be null",
+              "type": "string"
+            }
+          },
+          "required": [
+            "enumField",
+            "requiredButNullableField",
+            "requiredField"
+          ],
+          "title": "RequiredAndNullablePayloadDto",
           "type": "object"
         }
       },
@@ -1813,6 +1963,24 @@
           }
         }
       },
+      "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-RequiredAndNullablePayloadDto"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
+          }
+        },
+        "name": "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto",
+        "title": "RequiredAndNullablePayloadDto",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
+      },
       "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -2079,6 +2247,22 @@
       "messages": [
         {
           "$ref": "#/channels/no-payload-used-topic/messages/PayloadNotUsed"
+        }
+      ]
+    },
+    "nullable-topic_receive_receiveNullablePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/nullable-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/nullable-topic/messages/io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
         }
       ]
     },

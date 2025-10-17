@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,7 +49,7 @@ class SwaggerSchemaUtilTest {
             ComponentSchema componentSchema = swaggerSchemaUtil.mapSchemaOrRef(schema);
 
             // then
-            assertThat(componentSchema.getSchema().getType()).isEqualTo(schema.getType());
+            assertThat(componentSchema.getSchema().getType()).containsExactly(SchemaType.STRING);
         }
     }
 
@@ -106,7 +108,7 @@ class SwaggerSchemaUtilTest {
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat(componentSchema.getType()).isEqualTo(schema.getType());
+            assertThat(componentSchema.getType()).containsExactly(schema.getType());
         }
 
         @Test
@@ -124,7 +126,7 @@ class SwaggerSchemaUtilTest {
             assertThat(((ComponentSchema) componentSchema.getProperties().get("property"))
                             .getSchema()
                             .getType())
-                    .isEqualTo(property.getType());
+                    .containsExactly(property.getType());
         }
 
         @Test
@@ -330,7 +332,7 @@ class SwaggerSchemaUtilTest {
 
             // then
             assertThat(componentSchema.getAdditionalProperties().getSchema().getType())
-                    .isEqualTo(additionalProperties.getType());
+                    .containsExactly(additionalProperties.getType());
         }
 
         @Test
@@ -374,7 +376,7 @@ class SwaggerSchemaUtilTest {
 
             // then
             assertThat((componentSchema.getAllOf().get(0).getSchema()).getType())
-                    .isEqualTo(allOf.getType());
+                    .containsExactly(allOf.getType());
         }
 
         @Test
@@ -390,7 +392,7 @@ class SwaggerSchemaUtilTest {
 
             // then
             assertThat((componentSchema.getOneOf().get(0).getSchema()).getType())
-                    .isEqualTo(oneOf.getType());
+                    .containsExactly(oneOf.getType());
         }
 
         @Test
@@ -406,7 +408,7 @@ class SwaggerSchemaUtilTest {
 
             // then
             assertThat((componentSchema.getAnyOf().get(0).getSchema()).getType())
-                    .isEqualTo(anyOf.getType());
+                    .containsExactly(anyOf.getType());
         }
 
         @Test
@@ -434,7 +436,7 @@ class SwaggerSchemaUtilTest {
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat((componentSchema.getNot().getSchema()).getType()).isEqualTo(not.getType());
+            assertThat((componentSchema.getNot().getSchema()).getType()).containsExactly(not.getType());
         }
 
         @Test
@@ -450,7 +452,7 @@ class SwaggerSchemaUtilTest {
             SchemaObject componentSchema = swaggerSchemaUtil.mapSchema(schema);
 
             // then
-            assertThat((componentSchema.getItems().getSchema()).getType()).isEqualTo(item.getType());
+            assertThat((componentSchema.getItems().getSchema()).getType()).containsExactly(item.getType());
         }
 
         @Test
@@ -535,6 +537,21 @@ class SwaggerSchemaUtilTest {
         }
 
         @Test
+        void mapNullableEnum() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setEnumValues(Stream.of("enum1", "enum2", null).toList());
+            schema.setTypes(Set.of(SchemaType.STRING, SchemaType.NULL)); // nullable
+
+            // when
+            Schema componentSchema = swaggerSchemaUtil.mapToSwagger(schema);
+
+            // then
+            assertThat(componentSchema.getEnum()).isEqualTo(schema.getEnumValues());
+            assertThat(componentSchema.getTypes()).isEqualTo(schema.getType());
+        }
+
+        @Test
         void mapType() {
             // given
             SchemaObject schema = new SchemaObject();
@@ -544,7 +561,7 @@ class SwaggerSchemaUtilTest {
             Schema componentSchema = swaggerSchemaUtil.mapToSwagger(schema);
 
             // then
-            assertThat(componentSchema.getType()).isEqualTo(schema.getType());
+            assertThat(componentSchema.getType()).isEqualTo(SchemaType.STRING);
         }
     }
 }

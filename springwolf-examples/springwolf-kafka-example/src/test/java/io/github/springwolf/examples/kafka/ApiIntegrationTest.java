@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
         classes = {SpringwolfKafkaExampleApplication.class},
@@ -37,7 +37,7 @@ class ApiIntegrationTest {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-        assertEquals(expected, actualPatched);
+        assertThat(actualPatched).isEqualTo(expected);
     }
 
     @Test
@@ -51,7 +51,7 @@ class ApiIntegrationTest {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.yaml");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-        assertEquals(expected, actualPatched);
+        assertThat(actualPatched).isEqualTo(expected);
     }
 
     @Test
@@ -65,7 +65,7 @@ class ApiIntegrationTest {
         InputStream s = this.getClass().getResourceAsStream("/groups/vehicles.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-        assertEquals(expected, actualPatched);
+        assertThat(actualPatched).isEqualTo(expected);
     }
 
     @Test
@@ -77,6 +77,6 @@ class ApiIntegrationTest {
         InputStream s = this.getClass().getResourceAsStream("/ui-config.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 }
