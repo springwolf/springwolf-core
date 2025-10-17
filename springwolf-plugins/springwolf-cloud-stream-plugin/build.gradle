@@ -7,8 +7,6 @@ plugins {
     alias libs.plugins.cutterslade.analyze
 }
 
-ext['springCloudVersion'] = "2022.0.1"
-
 dependencies {
     api project(":springwolf-asyncapi")
     api project(":springwolf-core")
@@ -16,8 +14,6 @@ dependencies {
     implementation libs.slf4j.api
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation platform(libs.spring.cloud.dependencies)
-    implementation platform(libs.spring.cloud.aws.dependencies)
     implementation libs.spring.context
     implementation libs.spring.cloud.stream
     implementation libs.spring.boot.autoconfigure

@@ -26,8 +26,6 @@ dependencies {
     implementation libs.slf4j.api
     implementation libs.swagger.annotations.jakarta
 
-    runtimeOnly platform(libs.spring.cloud.aws.dependencies)
-    implementation platform(libs.spring.cloud.aws.dependencies)
     implementation libs.spring.cloud.aws.sqs
     runtimeOnly libs.spring.cloud.aws.starter.sqs
 

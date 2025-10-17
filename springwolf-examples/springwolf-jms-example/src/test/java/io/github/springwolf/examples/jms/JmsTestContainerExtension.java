@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
  * JUnit5 extension to start the localstack testcontainers once
  * and keep it running until all test classes have been completed.
  */
-public class JmsTestContainerExtension implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
+public class JmsTestContainerExtension implements BeforeAllCallback, AutoCloseable {
 
     private static volatile boolean started = false;
 

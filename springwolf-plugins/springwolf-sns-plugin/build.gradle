@@ -15,8 +15,6 @@ dependencies {
     implementation libs.jakarta.annotation.api
     implementation libs.slf4j.api
 
-    runtimeOnly platform(libs.spring.cloud.aws.dependencies)
-    implementation platform(libs.spring.cloud.aws.dependencies)
     implementation libs.spring.cloud.aws.sns
     runtimeOnly libs.spring.cloud.aws.starter.sns
 
