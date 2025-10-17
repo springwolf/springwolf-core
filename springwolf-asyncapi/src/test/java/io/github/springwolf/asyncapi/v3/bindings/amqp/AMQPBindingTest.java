@@ -10,7 +10,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ class AMQPBindingTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeAMQPChannelBindingQueue() throws IOException {
+    void shouldSerializeAMQPChannelBindingQueue() throws Exception {
 
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
@@ -49,7 +48,7 @@ class AMQPBindingTest {
     }
 
     @Test
-    void shouldSerializeAMQPChannelBindingRouting() throws IOException {
+    void shouldSerializeAMQPChannelBindingRouting() throws Exception {
 
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
@@ -78,7 +77,7 @@ class AMQPBindingTest {
     }
 
     @Test
-    void shouldSerializeAMQPOperationBinding() throws IOException {
+    void shouldSerializeAMQPOperationBinding() throws Exception {
 
         var asyncapi = AsyncAPI.builder()
                 .operations(Map.of(
@@ -111,7 +110,7 @@ class AMQPBindingTest {
     }
 
     @Test
-    void shouldSerializeAMQPMessageBinding() throws IOException {
+    void shouldSerializeAMQPMessageBinding() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "userSignup",

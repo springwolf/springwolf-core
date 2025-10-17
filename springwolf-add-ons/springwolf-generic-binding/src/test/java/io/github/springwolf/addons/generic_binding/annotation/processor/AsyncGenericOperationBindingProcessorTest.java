@@ -6,7 +6,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.operations.Processed
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Arrays;
@@ -23,7 +23,7 @@ class AsyncGenericOperationBindingProcessorTest {
             new AsyncGenericOperationBindingProcessor(stringValueResolver);
 
     @Test
-    void testClassWithoutAnnotation() {
+    void classWithoutAnnotation() {
         // when
         List<ProcessedOperationBinding> result = getProcessedOperationBindings(ClassWithoutAnnotation.class);
 
@@ -32,7 +32,7 @@ class AsyncGenericOperationBindingProcessorTest {
     }
 
     @Test
-    void testClassWithAnnotationHasABinding() {
+    void classWithAnnotationHasABinding() {
         // when
         List<ProcessedOperationBinding> result = getProcessedOperationBindings(ClassWithAnnotation.class);
 
@@ -130,7 +130,7 @@ class AsyncGenericOperationBindingProcessorTest {
             assertThat(result).isEqualTo(Map.of("key", List.of("value1", "value2", "value3 is long")));
         }
 
-        @CsvSource(value = {"asdf[sdf]", "[sdf][sdf]", "[sd[sdf]]", "[kdkd]dkkd", "[kdkd"})
+        @ValueSource(strings = {"asdf[sdf]", "[sdf][sdf]", "[sd[sdf]]", "[kdkd]dkkd", "[kdkd"})
         @ParameterizedTest
         void arrayParsingShouldBeIgnored(String value) {
             // given

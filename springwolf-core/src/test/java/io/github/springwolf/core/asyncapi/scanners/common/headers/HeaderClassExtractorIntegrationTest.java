@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class HeaderClassExtractorIntegrationTest {
 
@@ -37,29 +37,29 @@ class HeaderClassExtractorIntegrationTest {
     private static final SchemaTitleModelConverter titleModelConverter = new SchemaTitleModelConverter();
 
     @BeforeAll
-    public static void setupClass() {
+    static void setupClass() {
         // make sure hat SpringWolf SchemaTitleModelConverter is registered with ModelConverters static registry.
         // this happens in Spring tests automatically but to run only this testclass, this is necessary:
         ModelConverters.getInstance().addConverter(titleModelConverter);
     }
 
     @AfterAll
-    public static void tearDownClass() {
+    static void tearDownClass() {
         ModelConverters.getInstance().removeConverter(titleModelConverter);
     }
 
     @Test
-    void getNoDocumentedHeaders() throws NoSuchMethodException {
+    void getNoDocumentedHeaders() throws Exception {
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
         val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
-        assertEquals(AsyncHeadersNotDocumented.NOT_DOCUMENTED, result);
+        assertThat(result).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
     }
 
     @Test
-    void getHeaderWithSingleHeaderAnnotation() throws NoSuchMethodException {
+    void getHeaderWithSingleHeaderAnnotation() throws Exception {
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithSingleHeaderAnnotation", String.class);
         val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
@@ -72,11 +72,11 @@ class HeaderClassExtractorIntegrationTest {
                 .build();
         expectedHeaders.getProperties().put("kafka_receivedMessageKey", ComponentSchema.of(stringSchema));
 
-        assertEquals(expectedHeaders, result);
+        assertThat(result).isEqualTo(expectedHeaders);
     }
 
     @Test
-    void getHeaderWithMultipleHeaderAnnotation() throws NoSuchMethodException {
+    void getHeaderWithMultipleHeaderAnnotation() throws Exception {
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithMultipleHeaderAnnotation", String.class, String.class);
         val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
@@ -90,11 +90,11 @@ class HeaderClassExtractorIntegrationTest {
         expectedHeaders.getProperties().put("kafka_receivedMessageKey", ComponentSchema.of(stringSchema));
         expectedHeaders.getProperties().put("non-exist", ComponentSchema.of(stringSchema));
 
-        assertEquals(expectedHeaders, result);
+        assertThat(result).isEqualTo(expectedHeaders);
     }
 
     @Test
-    void getHeaderWithObjectHeaderAnnotation() throws NoSuchMethodException {
+    void getHeaderWithObjectHeaderAnnotation() throws Exception {
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithObjectHeaderAnnotation", TestClass.MyHeader.class);
         val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
@@ -115,18 +115,18 @@ class HeaderClassExtractorIntegrationTest {
                                 .properties(Map.of("key", ComponentSchema.of(stringSchema)))
                                 .build()));
 
-        assertEquals(expectedHeaders, result);
+        assertThat(result).isEqualTo(expectedHeaders);
     }
 
     @Test
-    void getHeaderWithNestedHeaderAnnotation() throws NoSuchMethodException {
+    void getHeaderWithNestedHeaderAnnotation() throws Exception {
         // when
         Method m = TestClass.class.getDeclaredMethod(
                 "consumeWithNestedObjectHeaderAnnotation", TestClass.MyNestedHeader.class);
         val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
-        assertEquals(AsyncHeadersNotDocumented.NOT_DOCUMENTED, result); // currently not supported
+        assertThat(result).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED); // currently not supported
     }
 
     public static class TestClass {

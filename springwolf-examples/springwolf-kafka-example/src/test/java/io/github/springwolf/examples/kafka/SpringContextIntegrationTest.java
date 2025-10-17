@@ -10,7 +10,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SpringContextIntegrationTest {
 
@@ -34,14 +33,14 @@ public class SpringContextIntegrationTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        void testContextWithApplicationProperties() {
-            assertNotNull(context);
+        void contextWithApplicationProperties() {
+            assertThat(context).isNotNull();
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
         }
 
         @Test
-        void testAllChannelsAreFound() {
+        void allChannelsAreFound() {
             assertThat(asyncApiService.getAsyncAPI().getChannels().keySet())
                     .containsExactlyInAnyOrder(
                             "another-topic",
@@ -76,7 +75,7 @@ public class SpringContextIntegrationTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        void testNoChannelsAreFound() {
+        void noChannelsAreFound() {
             assertThat(asyncApiService.getAsyncAPI().getChannels()).isEmpty();
         }
     }

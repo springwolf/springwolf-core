@@ -39,7 +39,7 @@ class PayloadAsyncOperationServiceTest {
     }
 
     @Test
-    public void shouldUsePayloadFromAsyncOperationAnnotation() {
+    void shouldUsePayloadFromAsyncOperationAnnotation() {
         // given
         AsyncMessage asyncMessage = mock(AsyncMessage.class);
         when(asyncMessage.contentType()).thenReturn("application/json");
@@ -63,7 +63,7 @@ class PayloadAsyncOperationServiceTest {
     }
 
     @Test
-    public void shouldExtractPayloadFromMethodWithAnnotation() {
+    void shouldExtractPayloadFromMethodWithAnnotation() {
         // given
         AsyncMessage asyncMessage = mock(AsyncMessage.class);
         when(asyncMessage.contentType()).thenReturn("application/json");
@@ -90,7 +90,7 @@ class PayloadAsyncOperationServiceTest {
     }
 
     @Test
-    public void shouldReturnPayloadNotUsed() {
+    void shouldReturnPayloadNotUsed() {
         // given
         AsyncMessage asyncMessage = mock(AsyncMessage.class);
         when(asyncMessage.contentType()).thenReturn("application/json");

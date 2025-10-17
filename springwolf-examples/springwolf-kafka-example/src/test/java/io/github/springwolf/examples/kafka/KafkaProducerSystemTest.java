@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +63,7 @@ public class KafkaProducerSystemTest {
     }
 
     @Test
-    void producerCanUseSpringwolfConfigurationToSendMessage() throws JsonProcessingException {
+    void producerCanUseSpringwolfConfigurationToSendMessage() throws Exception {
         // given
         HttpHeaders headers = new HttpHeaders();
         headers.put("Content-Type", List.of("application/json"));
@@ -102,7 +101,7 @@ public class KafkaProducerSystemTest {
     @DisabledIf(
             value = "withoutSchemaRegistry",
             disabledReason = "because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
-    void producerCanUseSpringwolfConfigurationToSendAvroMessage() throws JsonProcessingException {
+    void producerCanUseSpringwolfConfigurationToSendAvroMessage() throws Exception {
         // given
         HttpHeaders headers = new HttpHeaders();
         headers.put("Content-Type", List.of("application/json"));

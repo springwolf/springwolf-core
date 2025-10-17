@@ -37,7 +37,7 @@ class DefaultAsyncApiServiceTest {
     private AsyncApiGroupService groupService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         asyncApiDocketService = mock(AsyncApiDocketService.class);
         channelsService = mock(ChannelsService.class);
         operationsService = mock(OperationsService.class);

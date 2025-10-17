@@ -17,7 +17,7 @@ import org.springframework.util.StringValueResolver;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,7 +37,7 @@ class SqsListenerUtilTest {
             String channelName = SqsListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
-            assertEquals("queue-1", channelName);
+            assertThat(channelName).isEqualTo("queue-1");
         }
 
         @Test
@@ -58,9 +58,9 @@ class SqsListenerUtilTest {
                             .build())
                     .build();
 
-            assertEquals(1, channelBinding.size());
-            assertEquals(Sets.newTreeSet("sqs"), channelBinding.keySet());
-            assertEquals(expectedChannel, channelBinding.get("sqs"));
+            assertThat(channelBinding.size()).isEqualTo(1);
+            assertThat(channelBinding.keySet()).isEqualTo(Sets.newTreeSet("sqs"));
+            assertThat(channelBinding.get("sqs")).isEqualTo(expectedChannel);
         }
 
         @Test
@@ -81,9 +81,9 @@ class SqsListenerUtilTest {
                             .build()))
                     .build();
 
-            assertEquals(1, operationBinding.size());
-            assertEquals(Sets.newTreeSet("sqs"), operationBinding.keySet());
-            assertEquals(expectedOperation, operationBinding.get("sqs"));
+            assertThat(operationBinding.size()).isEqualTo(1);
+            assertThat(operationBinding.keySet()).isEqualTo(Sets.newTreeSet("sqs"));
+            assertThat(operationBinding.get("sqs")).isEqualTo(expectedOperation);
         }
 
         @Test
@@ -92,9 +92,9 @@ class SqsListenerUtilTest {
             Map<String, MessageBinding> messageBinding = SqsListenerUtil.buildMessageBinding();
 
             // then
-            assertEquals(1, messageBinding.size());
-            assertEquals(Sets.newTreeSet("sqs"), messageBinding.keySet());
-            assertEquals(new SQSMessageBinding(), messageBinding.get("sqs"));
+            assertThat(messageBinding.size()).isEqualTo(1);
+            assertThat(messageBinding.keySet()).isEqualTo(Sets.newTreeSet("sqs"));
+            assertThat(messageBinding.get("sqs")).isEqualTo(new SQSMessageBinding());
         }
 
         private static class ClassWithFullSqsListenerConfiguration {

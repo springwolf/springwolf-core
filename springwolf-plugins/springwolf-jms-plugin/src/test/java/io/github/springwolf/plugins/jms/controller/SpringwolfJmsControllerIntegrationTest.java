@@ -103,13 +103,13 @@ class SpringwolfJmsControllerIntegrationTest {
     @Nested
     class CanPublish {
         @Test
-        void testControllerShouldReturnOkWhenPublishingIsEnabled() throws Exception {
+        void controllerShouldReturnOkWhenPublishingIsEnabled() throws Exception {
             mvc.perform(get("/springwolf/jms/publish").contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is2xxSuccessful());
         }
 
         @Test
-        void testControllerShouldReturnNotFoundWhenPublishingIsDisabled() throws Exception {
+        void controllerShouldReturnNotFoundWhenPublishingIsDisabled() throws Exception {
             when(springwolfJmsProducer.isEnabled()).thenReturn(false);
 
             mvc.perform(get("/springwolf/jms/publish").contentType(MediaType.APPLICATION_JSON))
@@ -118,7 +118,7 @@ class SpringwolfJmsControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldReturnBadRequestIfPayloadIsEmpty() throws Exception {
+    void controllerShouldReturnBadRequestIfPayloadIsEmpty() throws Exception {
         String content =
                 """
                             {
@@ -135,7 +135,7 @@ class SpringwolfJmsControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldAcceptIfPayloadIsNotSet() throws Exception {
+    void controllerShouldAcceptIfPayloadIsNotSet() throws Exception {
         String content =
                 """
                             {
@@ -151,7 +151,7 @@ class SpringwolfJmsControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldReturnNotFoundIfNoJmsProducerIsEnabled() throws Exception {
+    void controllerShouldReturnNotFoundIfNoJmsProducerIsEnabled() throws Exception {
         when(springwolfJmsProducer.isEnabled()).thenReturn(false);
 
         String content =
@@ -168,7 +168,7 @@ class SpringwolfJmsControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldCallJmsProducerIfOnlyPayloadIsSend() throws Exception {
+    void controllerShouldCallJmsProducerIfOnlyPayloadIsSend() throws Exception {
         when(springwolfJmsProducer.isEnabled()).thenReturn(true);
 
         String content =
@@ -192,7 +192,7 @@ class SpringwolfJmsControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldCallJmsProducerIfPayloadAndHeadersAreSend() throws Exception {
+    void controllerShouldCallJmsProducerIfPayloadAndHeadersAreSend() throws Exception {
         when(springwolfJmsProducer.isEnabled()).thenReturn(true);
 
         String content =

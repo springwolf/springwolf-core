@@ -5,7 +5,6 @@ import io.github.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ class ServerVariableTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeServerVariable() throws IOException {
+    void shouldSerializeServerVariable() throws Exception {
         Server serverVariable = Server.builder()
                 .host("rabbitmq.in.mycompany.com:5672")
                 .pathname("/{env}")

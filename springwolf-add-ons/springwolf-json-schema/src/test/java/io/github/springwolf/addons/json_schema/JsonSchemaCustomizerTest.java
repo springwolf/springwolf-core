@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.addons.json_schema;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.components.Components;
@@ -29,7 +28,7 @@ class JsonSchemaCustomizerTest {
     }
 
     @Test
-    public void handleEmptySchemaTest() {
+    void handleEmptySchemaTest() {
         // given
         AsyncAPI asyncAPI = createAsyncApi();
 
@@ -41,7 +40,7 @@ class JsonSchemaCustomizerTest {
     }
 
     @Test
-    public void shouldAddJsonSchemaExtensionTest() throws JsonProcessingException {
+    void shouldAddJsonSchemaExtensionTest() throws Exception {
         // given
         AsyncAPI asyncAPI = createAsyncApi();
         SchemaObject schemaObject = new SchemaObject();

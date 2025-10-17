@@ -33,7 +33,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -151,8 +150,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("params")
-    void AsyncAPI_should_map_to_a_valid_asyncapi_json(SchemaFormat schemaFormat, String expectedFile)
-            throws IOException {
+    void AsyncAPI_should_map_to_a_valid_asyncapi_json(SchemaFormat schemaFormat, String expectedFile) throws Exception {
         AsyncAPI asyncapi = getAsyncAPITestObject(schemaFormat);
         String actual = serializer.toJsonString(asyncapi);
         InputStream s = this.getClass().getResourceAsStream(expectedFile + ".json");
@@ -162,8 +160,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("params")
-    void AsyncAPI_should_map_to_a_valid_asyncapi_yaml(SchemaFormat schemaFormat, String expectedFile)
-            throws IOException {
+    void AsyncAPI_should_map_to_a_valid_asyncapi_yaml(SchemaFormat schemaFormat, String expectedFile) throws Exception {
         AsyncAPI asyncapi = getAsyncAPITestObject(schemaFormat);
         String actual = serializer.toJsonString(asyncapi);
         JsonNode expected = ClasspathUtil.parseYamlFile(expectedFile + ".yaml");

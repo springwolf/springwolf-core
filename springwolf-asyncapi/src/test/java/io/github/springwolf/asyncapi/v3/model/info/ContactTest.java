@@ -5,15 +5,13 @@ import io.github.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 class ContactTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeContact() throws IOException {
+    void shouldSerializeContact() throws Exception {
         Contact contact = Contact.builder()
                 .name("API Support")
                 .url("https://www.example.com/support")

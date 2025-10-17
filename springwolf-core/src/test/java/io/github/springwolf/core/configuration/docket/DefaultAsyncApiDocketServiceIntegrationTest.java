@@ -35,7 +35,7 @@ class DefaultAsyncApiDocketServiceIntegrationTest {
     private DefaultAsyncApiDocketService asyncApiDocketService;
 
     @Test
-    void testDocketContentShouldBeLoadedFromProperties() {
+    void docketContentShouldBeLoadedFromProperties() {
         AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
         assertThat(docket).isNotNull();
         assertThat(docket.getInfo().getTitle()).isEqualTo("Info title was loaded from spring properties");

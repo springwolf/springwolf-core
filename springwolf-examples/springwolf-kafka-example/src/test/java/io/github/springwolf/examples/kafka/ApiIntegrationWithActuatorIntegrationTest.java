@@ -8,11 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
         classes = {SpringwolfKafkaExampleApplication.class},
@@ -33,7 +32,7 @@ public class ApiIntegrationWithActuatorIntegrationTest {
     public String bootstrapServers;
 
     @Test
-    void asyncApiResourceArtifactTest() throws IOException {
+    void asyncApiResourceArtifactTest() throws Exception {
         String url = "http://localhost:" + managementPort + "/actuator/springwolf";
         String actual = restTemplate.getForObject(url, String.class);
 
@@ -44,6 +43,6 @@ public class ApiIntegrationWithActuatorIntegrationTest {
                 .replace("kafka:29092", bootstrapServers)
                 .trim();
 
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 }

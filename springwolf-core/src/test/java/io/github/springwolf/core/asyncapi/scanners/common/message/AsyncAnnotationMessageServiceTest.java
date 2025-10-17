@@ -55,7 +55,7 @@ class AsyncAnnotationMessageServiceTest {
     }
 
     @Test
-    void buildMessage() throws NoSuchMethodException {
+    void buildMessage() throws Exception {
         // given
         Method method = ClassWithAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncOperation operationData = method.getAnnotation(TestListener.class).operation();
@@ -81,7 +81,7 @@ class AsyncAnnotationMessageServiceTest {
     @Nested
     class Description {
         @Test
-        public void testAsyncOperationDescription() throws NoSuchMethodException {
+        void asyncOperationDescription() throws Exception {
             // given
             Method method =
                     ClassWithAsyncOperationDescription.class.getDeclaredMethod("methodWithAnnotation", String.class);
@@ -96,7 +96,7 @@ class AsyncAnnotationMessageServiceTest {
         }
 
         @Test
-        public void testAsyncMessageDescription() throws NoSuchMethodException {
+        void asyncMessageDescription() throws Exception {
             // given
             Method method =
                     ClassWithAsyncMessageDescription.class.getDeclaredMethod("methodWithAnnotation", String.class);
@@ -111,7 +111,7 @@ class AsyncAnnotationMessageServiceTest {
         }
 
         @Test
-        public void testSchemaDescription() throws NoSuchMethodException {
+        void schemaDescription() throws Exception {
             // given
             Method method = ClassWithSchemaDescription.class.getDeclaredMethod("methodWithAnnotation", Foo.class);
             AsyncOperation operationData =

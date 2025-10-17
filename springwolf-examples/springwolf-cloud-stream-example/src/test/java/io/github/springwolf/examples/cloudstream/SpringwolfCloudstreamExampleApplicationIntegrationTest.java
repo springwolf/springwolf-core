@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
         classes = {SpringwolfCloudstreamExampleApplication.class},
@@ -21,7 +21,7 @@ class SpringwolfCloudstreamExampleApplicationIntegrationTest {
     private ApplicationContext context;
 
     @Test
-    void testContext() {
-        assertNotNull(context);
+    void context() {
+        assertThat(context).isNotNull();
     }
 }

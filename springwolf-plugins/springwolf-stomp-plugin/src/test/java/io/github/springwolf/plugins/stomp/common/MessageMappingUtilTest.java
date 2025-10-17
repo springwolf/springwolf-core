@@ -16,14 +16,14 @@ import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class MessageMappingUtilTest {
 
     @Nested
-    public class ChannelName {
+    class ChannelName {
         @Test
         void fromTopics() {
             // given
@@ -38,7 +38,7 @@ class MessageMappingUtilTest {
             String channelName = MessageMappingUtil.getChannelName(annotation, stringValueResolver);
 
             // then
-            assertEquals("topic-1", channelName);
+            assertThat(channelName).isEqualTo("topic-1");
         }
     }
 
@@ -48,8 +48,8 @@ class MessageMappingUtilTest {
         Map<String, ChannelBinding> channelBinding = MessageMappingUtil.buildChannelBinding();
 
         // then
-        assertEquals(1, channelBinding.size());
-        assertEquals(new StompChannelBinding(), channelBinding.get("stomp"));
+        assertThat(channelBinding.size()).isEqualTo(1);
+        assertThat(channelBinding.get("stomp")).isEqualTo(new StompChannelBinding());
     }
 
     @Test
@@ -63,8 +63,8 @@ class MessageMappingUtilTest {
                 MessageMappingUtil.buildOperationBinding(annotation, stringValueResolver);
 
         // then
-        assertEquals(1, operationBinding.size());
-        assertEquals(new StompOperationBinding(), operationBinding.get("stomp"));
+        assertThat(operationBinding.size()).isEqualTo(1);
+        assertThat(operationBinding.get("stomp")).isEqualTo(new StompOperationBinding());
     }
 
     @Test
@@ -73,7 +73,7 @@ class MessageMappingUtilTest {
         Map<String, MessageBinding> messageBinding = MessageMappingUtil.buildMessageBinding();
 
         // then
-        assertEquals(1, messageBinding.size());
-        assertEquals(new StompMessageBinding(), messageBinding.get("stomp"));
+        assertThat(messageBinding.size()).isEqualTo(1);
+        assertThat(messageBinding.get("stomp")).isEqualTo(new StompMessageBinding());
     }
 }

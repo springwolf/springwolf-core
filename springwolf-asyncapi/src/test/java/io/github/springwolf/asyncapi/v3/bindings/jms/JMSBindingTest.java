@@ -12,7 +12,6 @@ import io.github.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ class JMSBindingTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeJMSChannel() throws IOException {
+    void shouldSerializeJMSChannel() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "user.signup",
@@ -47,7 +46,7 @@ class JMSBindingTest {
 
     // FIXME: See https://github.com/asyncapi/bindings/issues/232
     @Test
-    void shouldSerializeJMSServerBinding() throws IOException {
+    void shouldSerializeJMSServerBinding() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .servers(Map.of(
                         "production",
@@ -76,7 +75,7 @@ class JMSBindingTest {
 
     @Test
     @Disabled("https://github.com/asyncapi/bindings/issues/232 is even more broken")
-    void shouldSerializeJMSMessageBinding() throws IOException {
+    void shouldSerializeJMSMessageBinding() throws Exception {
         var message = Map.of(
                 "message",
                 MessageObject.builder()

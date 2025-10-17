@@ -28,10 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -41,7 +37,7 @@ class AsyncAnnotationUtilTest {
 
     @ParameterizedTest
     @ValueSource(classes = {ClassWithOperationBindingProcessor.class, ClassWithAbstractOperationBindingProcessor.class})
-    void getAsyncHeaders(Class<?> classWithOperationBindingProcessor) throws NoSuchMethodException {
+    void getAsyncHeaders(Class<?> classWithOperationBindingProcessor) throws Exception {
         // given
         Method m = classWithOperationBindingProcessor.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
@@ -53,29 +49,29 @@ class AsyncAnnotationUtilTest {
         SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
 
         // then
-        assertEquals("TestSchema", headers.getTitle());
-        assertEquals("header-descriptionResolved", headers.getDescription());
-        assertTrue(
-                headers.getProperties().containsKey("headerResolved"),
-                headers.getProperties() + " does not contain key 'headerResolved'");
+        assertThat(headers.getTitle()).isEqualTo("TestSchema");
+        assertThat(headers.getDescription()).isEqualTo("header-descriptionResolved");
+        assertThat(headers.getProperties().containsKey("headerResolved"))
+                .as(headers.getProperties() + " does not contain key 'headerResolved'")
+                .isTrue();
         SchemaObject headerResolved = (SchemaObject) headers.getProperties().get("headerResolved");
         assertThat(headerResolved.getType()).containsExactly("string");
-        assertEquals("valueResolved", headerResolved.getExamples().get(0));
-        assertEquals("descriptionResolved", headerResolved.getDescription());
+        assertThat(headerResolved.getExamples().get(0)).isEqualTo("valueResolved");
+        assertThat(headerResolved.getDescription()).isEqualTo("descriptionResolved");
 
-        assertTrue(
-                headers.getProperties().containsKey("headerWithoutValueResolved"),
-                headers.getProperties() + " does not contain key 'headerWithoutValueResolved'");
+        assertThat(headers.getProperties().containsKey("headerWithoutValueResolved"))
+                .as(headers.getProperties() + " does not contain key 'headerWithoutValueResolved'")
+                .isTrue();
         SchemaObject headerWithoutValueResolved =
                 (SchemaObject) headers.getProperties().get("headerWithoutValueResolved");
         assertThat(headerWithoutValueResolved.getType()).containsExactly("string");
-        assertNull(headerWithoutValueResolved.getExamples());
-        assertNull(headerWithoutValueResolved.getEnumValues());
-        assertEquals("descriptionResolved", headerWithoutValueResolved.getDescription());
+        assertThat(headerWithoutValueResolved.getExamples()).isNull();
+        assertThat(headerWithoutValueResolved.getEnumValues()).isNull();
+        assertThat(headerWithoutValueResolved.getDescription()).isEqualTo("descriptionResolved");
     }
 
     @Test
-    void getAsyncHeadersWithEmptyHeaders() throws NoSuchMethodException {
+    void getAsyncHeadersWithEmptyHeaders() throws Exception {
         // given
         Method m = ClassWithHeaders.class.getDeclaredMethod("emptyHeaders", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
@@ -92,7 +88,7 @@ class AsyncAnnotationUtilTest {
     }
 
     @Test
-    void getAsyncHeadersWithoutSchemaName() throws NoSuchMethodException {
+    void getAsyncHeadersWithoutSchemaName() throws Exception {
         // given
         Method m = ClassWithHeaders.class.getDeclaredMethod("withoutSchemaName", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
@@ -122,7 +118,7 @@ class AsyncAnnotationUtilTest {
     }
 
     @Test
-    void getAsyncHeadersWithoutValue() throws NoSuchMethodException {
+    void getAsyncHeadersWithoutValue() throws Exception {
         // given
         Method m = ClassWithHeaders.class.getDeclaredMethod("withoutValue", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
@@ -152,7 +148,7 @@ class AsyncAnnotationUtilTest {
     }
 
     @Test
-    void generatedHeaderSchemaNameShouldBeUnique() throws NoSuchMethodException {
+    void generatedHeaderSchemaNameShouldBeUnique() throws Exception {
         // given
         Method m1 = ClassWithHeaders.class.getDeclaredMethod("withoutSchemaName", String.class);
         AsyncOperation operation1 = m1.getAnnotation(AsyncListener.class).operation();
@@ -173,7 +169,7 @@ class AsyncAnnotationUtilTest {
     }
 
     @Test
-    void processOperationBindingFromAnnotation() throws NoSuchMethodException {
+    void processOperationBindingFromAnnotation() throws Exception {
         // given
         Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
 
@@ -182,12 +178,12 @@ class AsyncAnnotationUtilTest {
                 m, Collections.singletonList(new TestOperationBindingProcessor()));
 
         // then
-        assertEquals(
-                Maps.newHashMap(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING), bindings);
+        assertThat(bindings)
+                .isEqualTo(Maps.newHashMap(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING));
     }
 
     @Test
-    void processMultipleOperationBindingFromAnnotation() throws NoSuchMethodException {
+    void processMultipleOperationBindingFromAnnotation() throws Exception {
         // given
         Method m = ClassWithMultipleOperationBindingProcessors.class.getDeclaredMethod(
                 "methodWithAnnotation", String.class);
@@ -200,16 +196,15 @@ class AsyncAnnotationUtilTest {
                         new TestAbstractOperationBindingProcessor(stringValueResolver)));
 
         // then
-        assertEquals(
-                Maps.newHashMap(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING), bindings);
-        assertNotEquals(
-                Maps.newHashMap(
-                        TestAbstractOperationBindingProcessor.TYPE, TestAbstractOperationBindingProcessor.BINDING),
-                bindings);
+        assertThat(bindings)
+                .isEqualTo(Maps.newHashMap(TestOperationBindingProcessor.TYPE, TestOperationBindingProcessor.BINDING));
+        assertThat(bindings)
+                .isNotEqualTo(Maps.newHashMap(
+                        TestAbstractOperationBindingProcessor.TYPE, TestAbstractOperationBindingProcessor.BINDING));
     }
 
     @Test
-    void processMessageBindingFromAnnotation() throws NoSuchMethodException {
+    void processMessageBindingFromAnnotation() throws Exception {
         // given
         Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
 
@@ -218,11 +213,12 @@ class AsyncAnnotationUtilTest {
                 m, Collections.singletonList(new TestMessageBindingProcessor()));
 
         // then
-        assertEquals(Maps.newHashMap(TestMessageBindingProcessor.TYPE, TestMessageBindingProcessor.BINDING), bindings);
+        assertThat(bindings)
+                .isEqualTo(Maps.newHashMap(TestMessageBindingProcessor.TYPE, TestMessageBindingProcessor.BINDING));
     }
 
     @Test
-    void processMultipleMessageBindingFromAnnotation() throws NoSuchMethodException {
+    void processMultipleMessageBindingFromAnnotation() throws Exception {
         // given
         Method m = ClassWithMultipleOperationBindingProcessors.class.getDeclaredMethod(
                 "methodWithAnnotation", String.class);
@@ -232,13 +228,13 @@ class AsyncAnnotationUtilTest {
                 AsyncAnnotationUtil.processMessageBindingFromAnnotation(m, List.of(new TestMessageBindingProcessor()));
 
         // then
-        assertEquals(Maps.newHashMap(TestMessageBindingProcessor.TYPE, TestMessageBindingProcessor.BINDING), bindings);
+        assertThat(bindings)
+                .isEqualTo(Maps.newHashMap(TestMessageBindingProcessor.TYPE, TestMessageBindingProcessor.BINDING));
     }
 
     @ParameterizedTest
     @ValueSource(classes = {ClassWithOperationBindingProcessor.class, ClassWithAbstractOperationBindingProcessor.class})
-    void processMessageFromAnnotationWithoutAsyncMessage(Class<?> classWithOperationBindingProcessor)
-            throws NoSuchMethodException {
+    void processMessageFromAnnotationWithoutAsyncMessage(Class<?> classWithOperationBindingProcessor) throws Exception {
         // given
         Method method = classWithOperationBindingProcessor.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncMessage message =
@@ -254,13 +250,12 @@ class AsyncAnnotationUtilTest {
 
         // then
         var expectedMessage = MessageObject.builder().build();
-        assertEquals(expectedMessage, actual.build());
+        assertThat(actual.build()).isEqualTo(expectedMessage);
     }
 
     @ParameterizedTest
     @ValueSource(classes = {ClassWithOperationBindingProcessor.class, ClassWithAbstractOperationBindingProcessor.class})
-    void processMessageFromAnnotationWithAsyncMessage(Class<?> classWithOperationBindingProcessor)
-            throws NoSuchMethodException {
+    void processMessageFromAnnotationWithAsyncMessage(Class<?> classWithOperationBindingProcessor) throws Exception {
         // given
         Method method =
                 classWithOperationBindingProcessor.getDeclaredMethod("methodWithAsyncMessageAnnotation", String.class);
@@ -283,11 +278,11 @@ class AsyncAnnotationUtilTest {
                 .title("Message Title")
                 .contentType("application/json")
                 .build();
-        assertEquals(expectedMessage, actual.build());
+        assertThat(actual.build()).isEqualTo(expectedMessage);
     }
 
     @Test
-    void getServers() throws NoSuchMethodException {
+    void getServers() throws Exception {
         Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
 
@@ -297,11 +292,11 @@ class AsyncAnnotationUtilTest {
         when(stringValueResolver.resolveStringValue("${test.property.server1}")).thenReturn("server1");
 
         List<String> servers = AsyncAnnotationUtil.getServers(operation, stringValueResolver);
-        assertEquals(List.of("server1"), servers);
+        assertThat(servers).isEqualTo(List.of("server1"));
     }
 
     @Test
-    void processChannelBindingFromAnnotation() throws NoSuchMethodException {
+    void processChannelBindingFromAnnotation() throws Exception {
         // given
         Method m = ClassWithChannelBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
 
@@ -310,11 +305,12 @@ class AsyncAnnotationUtilTest {
                 m, Collections.singletonList(new TestChannelBindingProcessor()));
 
         // then
-        assertEquals(Maps.newHashMap(TestChannelBindingProcessor.TYPE, TestChannelBindingProcessor.BINDING), bindings);
+        assertThat(bindings)
+                .isEqualTo(Maps.newHashMap(TestChannelBindingProcessor.TYPE, TestChannelBindingProcessor.BINDING));
     }
 
     @Test
-    void processAbstractChannelBindingFromAnnotation() throws NoSuchMethodException {
+    void processAbstractChannelBindingFromAnnotation() throws Exception {
         // given
         Method m =
                 ClassWithAbstractChannelBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
@@ -324,9 +320,9 @@ class AsyncAnnotationUtilTest {
                 m, Collections.singletonList(new TestAbstractChannelBindingProcessor(stringValueResolver)));
 
         // then
-        assertEquals(
-                Maps.newHashMap(TestAbstractChannelBindingProcessor.TYPE, TestAbstractChannelBindingProcessor.BINDING),
-                bindings);
+        assertThat(bindings)
+                .isEqualTo(Maps.newHashMap(
+                        TestAbstractChannelBindingProcessor.TYPE, TestAbstractChannelBindingProcessor.BINDING));
     }
 
     private static class ClassWithChannelBindingProcessor {

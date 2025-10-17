@@ -16,14 +16,14 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 class AnnotationUtilTest {
 
     @Nested
     class FindAnnotationOrThrow {
         @Test
-        void findNoAnnotationTest() throws NoSuchMethodException {
+        void findNoAnnotationTest() throws Exception {
             Method method = TestClass.class.getMethod("notAnnotatedMethod");
 
             // when
@@ -37,7 +37,7 @@ class AnnotationUtilTest {
         }
 
         @Test
-        void findAnnotationTest() throws NoSuchMethodException {
+        void findAnnotationTest() throws Exception {
             Method method = TestClass.class.getMethod("annotatedMethod");
 
             // when
@@ -49,7 +49,7 @@ class AnnotationUtilTest {
         }
 
         @Test
-        void findAnnotationRepeatedTest() throws NoSuchMethodException {
+        void findAnnotationRepeatedTest() throws Exception {
             Method method = TestClass.class.getMethod("annotatedMethodRepeated");
 
             // when
@@ -61,7 +61,7 @@ class AnnotationUtilTest {
         }
 
         @Test
-        void findMetaAnnotationTest() throws NoSuchMethodException {
+        void findMetaAnnotationTest() throws Exception {
             Method method = TestClass.class.getMethod("annotatedMethodWithMetaAnnotation");
 
             // when
@@ -76,7 +76,7 @@ class AnnotationUtilTest {
     @Nested
     class FindAnnotation {
         @Test
-        void findNoAnnotationTest() throws NoSuchMethodException {
+        void findNoAnnotationTest() throws Exception {
             Method method = TestClass.class.getMethod("notAnnotatedMethod");
 
             // when
@@ -88,7 +88,7 @@ class AnnotationUtilTest {
         }
 
         @Test
-        void findAnnotationTest() throws NoSuchMethodException {
+        void findAnnotationTest() throws Exception {
             Method method = TestClass.class.getMethod("annotatedMethod");
 
             // when
@@ -100,7 +100,7 @@ class AnnotationUtilTest {
         }
 
         @Test
-        void findAnnotationRepeatedTest() throws NoSuchMethodException {
+        void findAnnotationRepeatedTest() throws Exception {
             Method method = TestClass.class.getMethod("annotatedMethodRepeated");
 
             // when
@@ -112,7 +112,7 @@ class AnnotationUtilTest {
         }
 
         @Test
-        void findMetaAnnotationTest() throws NoSuchMethodException {
+        void findMetaAnnotationTest() throws Exception {
             Method method = TestClass.class.getMethod("annotatedMethodWithMetaAnnotation");
 
             // when
@@ -127,7 +127,7 @@ class AnnotationUtilTest {
     @Nested
     class FindAnnotations {
         @Test
-        void findNoAnnotationTest() throws NoSuchMethodException {
+        void findNoAnnotationTest() throws Exception {
             Method method = TestClass.class.getMethod("notAnnotatedMethod");
 
             // when
@@ -139,7 +139,7 @@ class AnnotationUtilTest {
         }
 
         @Test
-        void findAnnotationTest() throws NoSuchMethodException {
+        void findAnnotationTest() throws Exception {
             Method method = TestClass.class.getMethod("annotatedMethod");
 
             // when
@@ -152,7 +152,7 @@ class AnnotationUtilTest {
         }
 
         @Test
-        void findAnnotationRepeatedTest() throws NoSuchMethodException {
+        void findAnnotationRepeatedTest() throws Exception {
             Method method = TestClass.class.getMethod("annotatedMethodRepeated");
 
             // when
@@ -166,7 +166,7 @@ class AnnotationUtilTest {
         }
 
         @Test
-        void findMetaAnnotationTest() throws NoSuchMethodException {
+        void findMetaAnnotationTest() throws Exception {
             Method method = TestClass.class.getMethod("annotatedMethodWithMetaAnnotation");
 
             // when
@@ -182,7 +182,7 @@ class AnnotationUtilTest {
         class ImplementingInterface {
             @ParameterizedTest
             @ValueSource(classes = {ClassImplementingInterface.class, ClassImplementingInterfaceWithAnnotation.class})
-            void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) throws NoSuchMethodException {
+            void scan_componentHasOnlyDeclaredMethods(Class<?> clazz) throws Exception {
                 Method method = clazz.getMethod("methodFromInterface", String.class);
 
                 // when
@@ -220,7 +220,7 @@ class AnnotationUtilTest {
         @Nested
         class AbstractClass {
             @Test
-            void scan() throws NoSuchMethodException {
+            void scan() throws Exception {
                 Method method = ClassExtendsFromAbstractWithListenerAnnotation.class.getMethod(
                         "methodWithAnnotation", String.class);
 

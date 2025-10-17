@@ -10,16 +10,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class AnnotationScannerUtilTest {
 
     @Nested
     class FindAnnotatedMethodsWithClassAnnotation {
         @Test
-        void getRelevantMethods() throws NoSuchMethodException {
+        void getRelevantMethods() throws Exception {
             List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
                             ClassWithMethodAnnotation.class,
                             ClassAnnotation.class,
@@ -33,7 +31,7 @@ class AnnotationScannerUtilTest {
         }
 
         @Test
-        void getAllMethods() throws NoSuchMethodException {
+        void getAllMethods() throws Exception {
             List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
                             ClassWithMethodAnnotation.class,
                             ClassAnnotation.class,
@@ -100,17 +98,20 @@ class AnnotationScannerUtilTest {
     class IsClassRelevant {
         @Test
         void classWithAnnotationIsRelevant() {
-            assertTrue(AnnotationScannerUtil.isClassRelevant(ClassWithAnnotation.class, ClassAnnotation.class));
+            assertThat(AnnotationScannerUtil.isClassRelevant(ClassWithAnnotation.class, ClassAnnotation.class))
+                    .isTrue();
         }
 
         @Test
         void classWithoutAnnotationIsNotRelevant() {
-            assertFalse(AnnotationScannerUtil.isClassRelevant(ClassWithoutAnnotation.class, ClassAnnotation.class));
+            assertThat(AnnotationScannerUtil.isClassRelevant(ClassWithoutAnnotation.class, ClassAnnotation.class))
+                    .isFalse();
         }
 
         @Test
         void hiddenClassIsNotRelevant() {
-            assertFalse(AnnotationScannerUtil.isClassRelevant(HiddenTestClass.class, ClassAnnotation.class));
+            assertThat(AnnotationScannerUtil.isClassRelevant(HiddenTestClass.class, ClassAnnotation.class))
+                    .isFalse();
         }
 
         @ClassAnnotation
@@ -127,7 +128,7 @@ class AnnotationScannerUtilTest {
     class FindAnnotatedMethods {
 
         @Test
-        void getRelevantMethods() throws NoSuchMethodException {
+        void getRelevantMethods() throws Exception {
             List<MethodAndAnnotation<MethodAnnotation>> methods = AnnotationScannerUtil.findAnnotatedMethods(
                             ClassWithMethodAnnotation.class, MethodAnnotation.class)
                     .toList();
@@ -139,7 +140,7 @@ class AnnotationScannerUtilTest {
         }
 
         @Test
-        void getAllMethods() throws NoSuchMethodException {
+        void getAllMethods() throws Exception {
             List<MethodAndAnnotation<AllMethods>> methods = AnnotationScannerUtil.findAnnotatedMethods(
                             ClassWithMethodAnnotation.class, AllMethods.class)
                     .toList();

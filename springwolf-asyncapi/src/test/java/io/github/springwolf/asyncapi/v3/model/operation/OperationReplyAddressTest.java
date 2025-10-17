@@ -5,15 +5,13 @@ import io.github.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 class OperationReplyAddressTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeOperationReplyAddress() throws IOException {
+    void shouldSerializeOperationReplyAddress() throws Exception {
         var operationReplyAddress = OperationReplyAddress.builder()
                 .description("Consumer inbox")
                 .location("$message.header#/replyTo")

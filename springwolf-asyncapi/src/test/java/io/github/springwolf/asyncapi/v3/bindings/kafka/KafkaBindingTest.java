@@ -13,7 +13,6 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ class KafkaBindingTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeKafkaServerBinding() throws IOException {
+    void shouldSerializeKafkaServerBinding() throws Exception {
         var servers = Map.of(
                 "servers",
                 Map.of(
@@ -43,7 +42,7 @@ class KafkaBindingTest {
     }
 
     @Test
-    void shouldSerializeKafkaOperationBinding() throws IOException {
+    void shouldSerializeKafkaOperationBinding() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .operations(Map.of(
                         "userSignup",
@@ -72,7 +71,7 @@ class KafkaBindingTest {
     }
 
     @Test
-    void shouldSerializeKafkaChannel() throws IOException {
+    void shouldSerializeKafkaChannel() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "user-signedup",
@@ -104,7 +103,7 @@ class KafkaBindingTest {
     }
 
     @Test
-    void shouldSerializeKafkaTopic() throws IOException {
+    void shouldSerializeKafkaTopic() throws Exception {
 
         var topic = Map.of(
                 "topicConfiguration",
@@ -127,7 +126,7 @@ class KafkaBindingTest {
     }
 
     @Test
-    void shouldSerializeKafkaMessage() throws IOException {
+    void shouldSerializeKafkaMessage() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "test",

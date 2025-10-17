@@ -12,7 +12,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ class ChannelObjectTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeChannelObject() throws IOException {
+    void shouldSerializeChannelObject() throws Exception {
         ChannelObject channelObject = ChannelObject.builder()
                 .address("users.{userId}")
                 .title("Users channel")

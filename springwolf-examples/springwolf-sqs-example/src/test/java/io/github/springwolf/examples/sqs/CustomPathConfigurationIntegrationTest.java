@@ -12,7 +12,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
         classes = {SpringwolfSqsExampleApplication.class},
@@ -35,7 +35,7 @@ class CustomPathConfigurationIntegrationTest {
         String url = "/my-custom/springwolf/endpoint/test/apispec";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -43,7 +43,7 @@ class CustomPathConfigurationIntegrationTest {
         String url = "/my-custom/springwolf/endpoint/test/sqs/publish";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -51,6 +51,6 @@ class CustomPathConfigurationIntegrationTest {
         String url = "/my-custom/springwolf/endpoint/test/asyncapi-ui.html";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }

@@ -44,7 +44,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultYamlComponentsServiceIntegrationTest {
 
@@ -69,7 +68,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @Test
-    void getSchemas() throws IOException {
+    void getSchemas() throws Exception {
         componentsService.resolvePayloadSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_YAML);
         componentsService.resolvePayloadSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_YAML);
 
@@ -77,51 +76,51 @@ class DefaultYamlComponentsServiceIntegrationTest {
         String expected = loadDefinitions("/schemas/yaml/definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getDocumentedDefinitions() throws IOException {
+    void getDocumentedDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/documented-definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getArrayDefinitions() throws IOException {
+    void getArrayDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/array-definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getComplexDefinitions() throws IOException {
+    void getComplexDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/complex-definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getListWrapperDefinitions() throws IOException {
+    void getListWrapperDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_YAML);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/generics-wrapper-definitions-yaml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     private String loadDefinitions(String path, String content) throws IOException {
@@ -237,14 +236,14 @@ class DefaultYamlComponentsServiceIntegrationTest {
     @Nested
     class SchemaWithOneOf {
         @Test
-        void testSchemaWithOneOf() throws IOException {
+        void schemaWithOneOf() throws Exception {
             componentsService.resolvePayloadSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_YAML);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinitions("/schemas/yaml/annotation-definitions-yaml.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
-            assertEquals(expected, actualDefinitions);
+            assertThat(actualDefinitions).isEqualTo(expected);
         }
 
         @Data
@@ -316,7 +315,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
     @Nested
     class JsonTypeTest {
         @Test
-        void getJsonTypeDefinitions() throws IOException {
+        void getJsonTypeDefinitions() throws Exception {
             componentsService.resolvePayloadSchema(
                     JsonTypeTest.JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_YAML);
 
@@ -324,7 +323,7 @@ class DefaultYamlComponentsServiceIntegrationTest {
             String expected = loadDefinitions("/schemas/yaml/json-type-definitions-yaml.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
-            assertEquals(expected, actualDefinitions);
+            assertThat(actualDefinitions).isEqualTo(expected);
         }
 
         @Schema(description = "Json Type Info Payload Dto model")

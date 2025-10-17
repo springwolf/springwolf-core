@@ -10,7 +10,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.security_scheme.SecurityScheme;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ class OperationTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeOperation() throws IOException {
+    void shouldSerializeOperation() throws Exception {
         MessageReference userSignedUpReply = MessageReference.toComponentMessage("userSignedUpReply");
         var operation = Operation.builder()
                 .title("User sign up")

@@ -21,7 +21,7 @@ import static org.assertj.core.util.Maps.newHashMap;
 class DefaultAsyncApiDocketServiceTest {
 
     @Test
-    void testServiceShouldMapAllPropertiesToTheDocket() {
+    void serviceShouldMapAllPropertiesToTheDocket() {
         // given
         ConfigDocket configDocket = new ConfigDocket();
         configDocket.setBasePackage("test-base-package");

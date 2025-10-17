@@ -28,7 +28,7 @@ class SendToUserCustomizerTest {
     private SendToUserCustomizer sendToCustomizer = new SendToUserCustomizer(bindingFactory, payloadService);
 
     @Test
-    void customize() throws NoSuchMethodException {
+    void customize() throws Exception {
         // given
         Operation operation = new Operation();
         when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_ID);

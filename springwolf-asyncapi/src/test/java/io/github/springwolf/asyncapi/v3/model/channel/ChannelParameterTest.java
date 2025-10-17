@@ -5,7 +5,6 @@ import io.github.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -14,7 +13,7 @@ class ChannelParameterTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeChannelParameter() throws IOException {
+    void shouldSerializeChannelParameter() throws Exception {
         var channel = ChannelObject.builder()
                 .address("user/{userId}/signedup")
                 .parameters(Map.of(

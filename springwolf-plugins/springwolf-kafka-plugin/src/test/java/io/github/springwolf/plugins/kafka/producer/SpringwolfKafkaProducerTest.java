@@ -48,7 +48,7 @@ class SpringwolfKafkaProducerTest {
     }
 
     @Test
-    void testSpringwolfKafkaProducerIsNotEnabledWhenThereIsNoKafkaTemplateConfigured() {
+    void springwolfKafkaProducerIsNotEnabledWhenThereIsNoKafkaTemplateConfigured() {
         SpringwolfKafkaTemplateProvider kafkaTemplateMock = mock();
         when(kafkaTemplateMock.isPresent()).thenReturn(false);
 
@@ -59,7 +59,7 @@ class SpringwolfKafkaProducerTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void testSendingKafkaMessageWithoutHeaders() {
+    void sendingKafkaMessageWithoutHeaders() {
         // given
         when(kafkaTemplateProvider.get(any())).thenReturn(Optional.of(kafkaTemplate));
 
@@ -88,7 +88,7 @@ class SpringwolfKafkaProducerTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void testSendingKafkaMessageWithHeaders() {
+    void sendingKafkaMessageWithHeaders() {
         // given
         when(kafkaTemplateProvider.get(any())).thenReturn(Optional.of(kafkaTemplate));
 

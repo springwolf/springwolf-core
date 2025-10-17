@@ -15,7 +15,7 @@ import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,7 +35,7 @@ class JmsListenerUtilTest {
             String channelName = JmsListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
-            assertEquals("queue-1", channelName);
+            assertThat(channelName).isEqualTo("queue-1");
         }
 
         @Test
@@ -49,9 +49,9 @@ class JmsListenerUtilTest {
                     JmsListenerUtil.buildChannelBinding(annotation, stringValueResolver);
 
             // then
-            assertEquals(1, channelBinding.size());
-            assertEquals(Sets.newTreeSet("jms"), channelBinding.keySet());
-            assertEquals(new JMSChannelBinding(), channelBinding.get("jms"));
+            assertThat(channelBinding.size()).isEqualTo(1);
+            assertThat(channelBinding.keySet()).isEqualTo(Sets.newTreeSet("jms"));
+            assertThat(channelBinding.get("jms")).isEqualTo(new JMSChannelBinding());
         }
 
         @Test
@@ -65,9 +65,9 @@ class JmsListenerUtilTest {
                     JmsListenerUtil.buildOperationBinding(annotation, stringValueResolver);
 
             // then
-            assertEquals(1, operationBinding.size());
-            assertEquals(Sets.newTreeSet("jms"), operationBinding.keySet());
-            assertEquals(new JMSOperationBinding(), operationBinding.get("jms"));
+            assertThat(operationBinding.size()).isEqualTo(1);
+            assertThat(operationBinding.keySet()).isEqualTo(Sets.newTreeSet("jms"));
+            assertThat(operationBinding.get("jms")).isEqualTo(new JMSOperationBinding());
         }
 
         @Test
@@ -76,9 +76,9 @@ class JmsListenerUtilTest {
             Map<String, MessageBinding> messageBinding = JmsListenerUtil.buildMessageBinding();
 
             // then
-            assertEquals(1, messageBinding.size());
-            assertEquals(Sets.newTreeSet("jms"), messageBinding.keySet());
-            assertEquals(new JMSMessageBinding(), messageBinding.get("jms"));
+            assertThat(messageBinding.size()).isEqualTo(1);
+            assertThat(messageBinding.keySet()).isEqualTo(Sets.newTreeSet("jms"));
+            assertThat(messageBinding.get("jms")).isEqualTo(new JMSMessageBinding());
         }
 
         private static class ClassWithFullJmsListenerConfiguration {

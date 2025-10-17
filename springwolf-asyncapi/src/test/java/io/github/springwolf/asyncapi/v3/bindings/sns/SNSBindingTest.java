@@ -8,7 +8,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ class SNSBindingTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeSNSChannel() throws IOException {
+    void shouldSerializeSNSChannel() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "user-signedup",
@@ -47,7 +46,7 @@ class SNSBindingTest {
 
     @Test
     @Disabled("The Spec Binding example needs to be reviewed, doesn't match specification")
-    void shouldSerializeSNSSendMessageOperation() throws IOException {
+    void shouldSerializeSNSSendMessageOperation() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "user-signedup",

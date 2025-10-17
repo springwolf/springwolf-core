@@ -11,7 +11,6 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonNode;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -19,12 +18,11 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StandaloneTest {
+class StandaloneTest {
 
     @Test
-    public void asyncApiStandaloneArtifactTest() throws IOException {
+    void asyncApiStandaloneArtifactTest() throws Exception {
         // given
         StandaloneApplication standaloneApplication =
                 DefaultStandaloneApplication.builder().buildAndStart();
@@ -44,9 +42,8 @@ public class StandaloneTest {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-        assertEquals(
-                removeDifferencesDueToAmqpSpringBeans(serializerService, expected), //
-                removeDifferencesDueToAmqpSpringBeans(serializerService, actualPatched));
+        assertThat(removeDifferencesDueToAmqpSpringBeans(serializerService, actualPatched))
+                .isEqualTo(removeDifferencesDueToAmqpSpringBeans(serializerService, expected));
     }
 
     /**

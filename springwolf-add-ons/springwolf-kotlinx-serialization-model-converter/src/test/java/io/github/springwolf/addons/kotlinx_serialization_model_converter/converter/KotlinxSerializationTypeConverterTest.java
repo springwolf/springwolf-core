@@ -12,8 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +29,7 @@ class KotlinxSerializationTypeConverterTest {
     }
 
     @Test
-    void validateGeneratedJson() throws IOException {
+    void validateGeneratedJson() throws Exception {
         final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter();
         final ModelConverters converters = new ModelConverters();
         converters.addConverter(modelConverter);
@@ -43,7 +41,7 @@ class KotlinxSerializationTypeConverterTest {
     }
 
     @Test
-    void validateGeneratedFqnJson() throws IOException {
+    void validateGeneratedFqnJson() throws Exception {
         final KotlinxSerializationModelConverter modelConverter = new KotlinxSerializationModelConverter(true);
         final ModelConverters converters = new ModelConverters();
         converters.addConverter(modelConverter);
@@ -57,7 +55,7 @@ class KotlinxSerializationTypeConverterTest {
     @Nested
     class TestListProperty {
         @Test
-        void testClassWithListProperty() {
+        void classWithListProperty() {
             var result = modelConverters.readAll(new AnnotatedType(ClassWithListProperty.class));
             Schema<?> schema = result.get(ClassWithListProperty.class.getSimpleName());
 
@@ -70,7 +68,7 @@ class KotlinxSerializationTypeConverterTest {
         }
 
         @Test
-        void testClassWithCollectionProperty() {
+        void classWithCollectionProperty() {
             var result = modelConverters.readAll(new AnnotatedType(ClassWithCollectionProperty.class));
             Schema<?> schema = result.get(ClassWithCollectionProperty.class.getSimpleName());
 
@@ -86,7 +84,7 @@ class KotlinxSerializationTypeConverterTest {
     @Nested
     class TestSetProperty {
         @Test
-        void testClassWithSetProperty() {
+        void classWithSetProperty() {
             var result = modelConverters.readAll(new AnnotatedType(ClassWithSetProperty.class));
             Schema<?> schema = result.get(ClassWithSetProperty.class.getSimpleName());
 
@@ -103,7 +101,7 @@ class KotlinxSerializationTypeConverterTest {
     @Nested
     class TestEnumProperty {
         @Test
-        void testClassWithEnumProperty() {
+        void classWithEnumProperty() {
             var result = modelConverters.readAll(new AnnotatedType(ClassWithEnumProperty.class));
             Schema<?> schema = result.get(ClassWithEnumProperty.class.getSimpleName());
 
@@ -120,7 +118,7 @@ class KotlinxSerializationTypeConverterTest {
     @Nested
     class TestNestedClass {
         @Test
-        void testClassWithNestedProperty() {
+        void classWithNestedProperty() {
             var result = modelConverters.readAll(new AnnotatedType(ClassWithNestedProperty.class));
             Schema<?> schema = result.get(ClassWithNestedProperty.class.getSimpleName());
 
@@ -140,7 +138,7 @@ class KotlinxSerializationTypeConverterTest {
     @Nested
     class TestSealedClass {
         @Test
-        void testSealedClassSerialization() {
+        void sealedClassSerialization() {
             var result = modelConverters.readAll(new AnnotatedType(ClassWithPolymorphism.class));
             assertThat(result).hasSize(3);
             assertThat(result.get(Dog.class.getSimpleName())).isNotNull();

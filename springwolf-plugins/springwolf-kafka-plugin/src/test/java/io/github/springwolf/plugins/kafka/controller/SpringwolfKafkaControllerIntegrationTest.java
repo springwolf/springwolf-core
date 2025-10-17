@@ -103,13 +103,13 @@ class SpringwolfKafkaControllerIntegrationTest {
     @Nested
     class CanPublish {
         @Test
-        void testControllerShouldReturnOkWhenPublishingIsEnabled() throws Exception {
+        void controllerShouldReturnOkWhenPublishingIsEnabled() throws Exception {
             mvc.perform(get("/springwolf/kafka/publish").contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is2xxSuccessful());
         }
 
         @Test
-        void testControllerShouldReturnNotFoundWhenPublishingIsDisabled() throws Exception {
+        void controllerShouldReturnNotFoundWhenPublishingIsDisabled() throws Exception {
             when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
 
             mvc.perform(get("/springwolf/kafka/publish").contentType(MediaType.APPLICATION_JSON))
@@ -118,7 +118,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldReturnBadRequestIfPayloadIsEmpty() throws Exception {
+    void controllerShouldReturnBadRequestIfPayloadIsEmpty() throws Exception {
         String content =
                 """
                             {
@@ -135,7 +135,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldAcceptIfPayloadIsNotSet() throws Exception {
+    void controllerShouldAcceptIfPayloadIsNotSet() throws Exception {
         String content =
                 """
                             {
@@ -151,7 +151,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldReturnNotFoundIfNoKafkaProducerIsEnabled() throws Exception {
+    void controllerShouldReturnNotFoundIfNoKafkaProducerIsEnabled() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
 
         String content =
@@ -168,7 +168,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldCallKafkaProducerIfOnlyPayloadIsSend() throws Exception {
+    void controllerShouldCallKafkaProducerIfOnlyPayloadIsSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content =
@@ -192,7 +192,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAreSend() throws Exception {
+    void controllerShouldCallKafkaProducerIfPayloadAndHeadersAreSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content =
@@ -221,7 +221,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     }
 
     @Test
-    void testControllerShouldCallKafkaProducerIfPayloadAndHeadersAndBindingsAreSend() throws Exception {
+    void controllerShouldCallKafkaProducerIfPayloadAndHeadersAndBindingsAreSend() throws Exception {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
         String content =

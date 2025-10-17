@@ -15,7 +15,7 @@ class AmqpMessageBindingProcessorTest {
     private final AmqpMessageBindingProcessor processor = new AmqpMessageBindingProcessor();
 
     @Test
-    void processTest() throws NoSuchMethodException {
+    void processTest() throws Exception {
         Method method = AmqpMessageBindingProcessorTest.class.getMethod("methodWithAnnotation");
 
         ProcessedMessageBinding binding = processor.process(method).get();
@@ -25,7 +25,7 @@ class AmqpMessageBindingProcessorTest {
     }
 
     @Test
-    void processWithoutAnnotationTest() throws NoSuchMethodException {
+    void processWithoutAnnotationTest() throws Exception {
         Method method = AmqpMessageBindingProcessorTest.class.getMethod("methodWithoutAnnotation");
 
         Optional<ProcessedMessageBinding> binding = processor.process(method);

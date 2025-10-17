@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.model.schema;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ class SchemaTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializePrimitiveSample() throws JsonProcessingException {
+    void shouldSerializePrimitiveSample() throws Exception {
         var schema =
                 SchemaObject.builder().type(SchemaType.STRING).format("email").build();
 
@@ -31,7 +30,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeSimpleModel() throws JsonProcessingException {
+    void shouldSerializeSimpleModel() throws Exception {
         var schema = SchemaObject.builder()
                 .type(SchemaType.OBJECT)
                 .required(List.of("name"))
@@ -72,7 +71,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeStringToStringMapping() throws JsonProcessingException {
+    void shouldSerializeStringToStringMapping() throws Exception {
         var schema = SchemaObject.builder()
                 .type(SchemaType.OBJECT)
                 .additionalProperties(ComponentSchema.of(
@@ -92,7 +91,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelMapping() throws JsonProcessingException {
+    void shouldSerializeModelMapping() throws Exception {
         var schema = SchemaObject.builder()
                 .type(SchemaType.OBJECT)
                 .additionalProperties(ComponentSchema.of(SchemaReference.toSchema("ComplexModel")))
@@ -111,7 +110,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelWithExample() throws JsonProcessingException {
+    void shouldSerializeModelWithExample() throws Exception {
         var schema = SchemaObject.builder()
                 .type(SchemaType.OBJECT)
                 .properties(Map.of(
@@ -153,7 +152,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelWithBooleans() throws JsonProcessingException {
+    void shouldSerializeModelWithBooleans() throws Exception {
         var schema = SchemaObject.builder()
                 .type(SchemaType.OBJECT)
                 .properties(Map.of(
@@ -179,7 +178,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelsWithComposition() throws JsonProcessingException {
+    void shouldSerializeModelsWithComposition() throws Exception {
         var schemas = Map.of(
                 "schemas",
                 Map.of(
@@ -260,7 +259,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelsWithPolimorphismSupport() throws JsonProcessingException {
+    void shouldSerializeModelsWithPolimorphismSupport() throws Exception {
         var schemas = Map.of(
                 "schemas",
                 Map.of(

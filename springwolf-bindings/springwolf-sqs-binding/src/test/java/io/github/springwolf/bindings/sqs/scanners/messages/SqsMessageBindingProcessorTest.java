@@ -15,7 +15,7 @@ class SqsMessageBindingProcessorTest {
     private final SqsMessageBindingProcessor processor = new SqsMessageBindingProcessor();
 
     @Test
-    void processTest() throws NoSuchMethodException {
+    void processTest() throws Exception {
         Method method = SqsMessageBindingProcessorTest.class.getMethod("methodWithAnnotation");
 
         ProcessedMessageBinding binding = processor.process(method).get();
@@ -25,7 +25,7 @@ class SqsMessageBindingProcessorTest {
     }
 
     @Test
-    void processWithoutAnnotationTest() throws NoSuchMethodException {
+    void processWithoutAnnotationTest() throws Exception {
         Method method = SqsMessageBindingProcessorTest.class.getMethod("methodWithoutAnnotation");
 
         Optional<ProcessedMessageBinding> binding = processor.process(method);

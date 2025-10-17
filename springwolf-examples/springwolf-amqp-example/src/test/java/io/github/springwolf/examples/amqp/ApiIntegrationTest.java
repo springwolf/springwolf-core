@@ -8,13 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
         classes = {SpringwolfAmqpExampleApplication.class},
@@ -32,7 +31,7 @@ class ApiIntegrationTest {
     public String amqpPort;
 
     @Test
-    void asyncApiResourceJsonArtifactTest() throws IOException {
+    void asyncApiResourceJsonArtifactTest() throws Exception {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         String actualPatched = actual.replace(amqpHost + ":" + amqpPort, "amqp:5672");
@@ -44,11 +43,11 @@ class ApiIntegrationTest {
             expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
         }
 
-        assertEquals(expected, actualPatched);
+        assertThat(actualPatched).isEqualTo(expected);
     }
 
     @Test
-    void asyncApiResourceYamlArtifactTest() throws IOException {
+    void asyncApiResourceYamlArtifactTest() throws Exception {
         String url = "/springwolf/docs.yaml";
         String actual = restTemplate.getForObject(url, String.class);
         String actualPatched = actual.replace(amqpHost + ":" + amqpPort, "amqp:5672");
@@ -60,6 +59,6 @@ class ApiIntegrationTest {
             expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim() + "\n";
         }
 
-        assertEquals(expected, actualPatched);
+        assertThat(actualPatched).isEqualTo(expected);
     }
 }

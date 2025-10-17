@@ -17,7 +17,7 @@ class PayloadServiceTest {
     private PayloadService payloadService = new PayloadService(componentsService, properties);
 
     @Test
-    public void shouldExtractSchemaForInteger() {
+    void shouldExtractSchemaForInteger() {
         // given
         when(properties.getDocket()).thenReturn(docket);
         when(docket.getDefaultContentType()).thenReturn("application/json");

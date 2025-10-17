@@ -15,7 +15,7 @@ class StompMessageBindingProcessorTest {
     private final StompMessageBindingProcessor processor = new StompMessageBindingProcessor();
 
     @Test
-    void processTest() throws NoSuchMethodException {
+    void processTest() throws Exception {
         Method method = StompMessageBindingProcessorTest.class.getMethod("methodWithAnnotation");
 
         ProcessedMessageBinding binding = processor.process(method).get();
@@ -25,7 +25,7 @@ class StompMessageBindingProcessorTest {
     }
 
     @Test
-    void processWithoutAnnotationTest() throws NoSuchMethodException {
+    void processWithoutAnnotationTest() throws Exception {
         Method method = StompMessageBindingProcessorTest.class.getMethod("methodWithoutAnnotation");
 
         Optional<ProcessedMessageBinding> binding = processor.process(method);

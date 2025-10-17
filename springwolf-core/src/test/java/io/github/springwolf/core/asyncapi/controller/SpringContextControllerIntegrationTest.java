@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.springwolf.core.configuration.SpringwolfWebConfiguration;
 import io.github.springwolf.core.controller.ActuatorAsyncApiController;
 import io.github.springwolf.core.controller.AsyncApiController;
@@ -18,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SpringContextControllerIntegrationTest {
 
@@ -38,8 +36,8 @@ public class SpringContextControllerIntegrationTest {
         private Optional<ActuatorAsyncApiController> actuatorAsyncApiController;
 
         @Test
-        void testContextWithApplicationProperties() throws JsonProcessingException {
-            assertNotNull(context);
+        void contextWithApplicationProperties() throws Exception {
+            assertThat(context).isNotNull();
 
             assertThat(asyncApiController).isPresent();
             assertThat(actuatorAsyncApiController).isNotPresent();
@@ -66,8 +64,8 @@ public class SpringContextControllerIntegrationTest {
         private Optional<ActuatorAsyncApiController> actuatorAsyncApiController;
 
         @Test
-        void testContextWithApplicationProperties() throws JsonProcessingException {
-            assertNotNull(context);
+        void contextWithApplicationProperties() throws Exception {
+            assertThat(context).isNotNull();
 
             assertThat(asyncApiController).isNotPresent();
             assertThat(actuatorAsyncApiController).isPresent();

@@ -73,4 +73,5 @@ docker {
 
 test {
     dependsOn dockerBuildImage
+    useJUnitPlatform()
 }

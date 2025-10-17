@@ -7,7 +7,6 @@ import io.github.springwolf.asyncapi.v3.model.security_scheme.oauth2.OAuthFlows;
 import io.github.springwolf.asyncapi.v3.model.security_scheme.oauth2.flows.ImplicitOAuthFlow;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ class SecuritySchemeTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeUserPassword() throws IOException {
+    void shouldSerializeUserPassword() throws Exception {
         var securityScheme =
                 SecurityScheme.builder().type(SecurityType.USER_PASSWORD).build();
 
@@ -26,7 +25,7 @@ class SecuritySchemeTest {
     }
 
     @Test
-    void shouldSerializeApiKey() throws IOException {
+    void shouldSerializeApiKey() throws Exception {
         var securityScheme = ApiKeySecurityScheme.apiKeyBuilder()
                 .in(ApiKeySecurityScheme.ApiKeyLocation.USER)
                 .build();
@@ -36,7 +35,7 @@ class SecuritySchemeTest {
     }
 
     @Test
-    void shouldSerializeX509() throws IOException {
+    void shouldSerializeX509() throws Exception {
         var securityScheme = SecurityScheme.builder().type(SecurityType.X509).build();
 
         String example = ClasspathUtil.readAsString("/v3/model/security_scheme/x509.json");
@@ -44,7 +43,7 @@ class SecuritySchemeTest {
     }
 
     @Test
-    void shouldSerializeSymmetricEncryption() throws IOException {
+    void shouldSerializeSymmetricEncryption() throws Exception {
         var securityScheme =
                 SecurityScheme.builder().type(SecurityType.SYMMETRIC_ENCRYPTION).build();
 
@@ -53,7 +52,7 @@ class SecuritySchemeTest {
     }
 
     @Test
-    void shouldSerializeHttpBasic() throws IOException {
+    void shouldSerializeHttpBasic() throws Exception {
         var securityScheme = HttpSecurityScheme.httpBuilder().scheme("basic").build();
 
         String example = ClasspathUtil.readAsString("/v3/model/security_scheme/http-basic.json");
@@ -61,7 +60,7 @@ class SecuritySchemeTest {
     }
 
     @Test
-    void shouldSerializeHttpBearer() throws IOException {
+    void shouldSerializeHttpBearer() throws Exception {
         var securityScheme = HttpSecurityScheme.httpBuilder()
                 .scheme("bearer")
                 .bearerFormat("JWT")
@@ -72,7 +71,7 @@ class SecuritySchemeTest {
     }
 
     @Test
-    void shouldSerializeHttpApiKey() throws IOException {
+    void shouldSerializeHttpApiKey() throws Exception {
         var securityScheme = HttpApiKeySecurityScheme.httpApiKeyBuilder()
                 .name("api_key")
                 .in(HttpApiKeySecurityScheme.HttpApiKeyLocation.HEADER)
@@ -83,7 +82,7 @@ class SecuritySchemeTest {
     }
 
     @Test
-    void shouldSerializeOAuth2() throws IOException {
+    void shouldSerializeOAuth2() throws Exception {
         var securityScheme = OAuth2SecurityScheme.oAuth2Builder()
                 .flows(OAuthFlows.builder()
                         .implicit(ImplicitOAuthFlow.implicitBuilder()
@@ -101,7 +100,7 @@ class SecuritySchemeTest {
     }
 
     @Test
-    void shouldSerializeScramSha512() throws IOException {
+    void shouldSerializeScramSha512() throws Exception {
         var securityScheme =
                 SecurityScheme.builder().type(SecurityType.SCRAM_SHA512).build();
 

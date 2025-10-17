@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MonetaryAmountConverterTest {
 
@@ -19,7 +17,7 @@ class MonetaryAmountConverterTest {
     private final ModelConverters converters = new ModelConverters();
 
     @Test
-    void testMonetaryAmountConverter() {
+    void monetaryAmountConverter() {
         // given
         converters.addConverter(modelsConverter);
 
@@ -28,24 +26,24 @@ class MonetaryAmountConverterTest {
 
         // then
         final Schema model = models.get("MonetaryAmount");
-        assertNotNull(model);
+        assertThat(model).isNotNull();
 
-        assertEquals(2, model.getProperties().size());
+        assertThat(model.getProperties().size()).isEqualTo(2);
 
         final Schema amountProperty = (Schema) model.getProperties().get("amount");
-        assertNotNull(amountProperty);
+        assertThat(amountProperty).isNotNull();
 
         final Schema currencyProperty = (Schema) model.getProperties().get("currency");
-        assertNotNull(currencyProperty);
+        assertThat(currencyProperty).isNotNull();
 
         final Schema missingProperty = (Schema) model.getProperties().get("missing");
-        assertNull(missingProperty);
+        assertThat(missingProperty).isNull();
 
         // then
         final Schema originalModel = models.get("javax.money.MonetaryAmount");
-        assertNotNull(originalModel);
+        assertThat(originalModel).isNotNull();
 
-        assertNull(originalModel.getType());
-        assertEquals("#/components/schemas/MonetaryAmount", originalModel.get$ref());
+        assertThat(originalModel.getType()).isNull();
+        assertThat(originalModel.get$ref()).isEqualTo("#/components/schemas/MonetaryAmount");
     }
 }
