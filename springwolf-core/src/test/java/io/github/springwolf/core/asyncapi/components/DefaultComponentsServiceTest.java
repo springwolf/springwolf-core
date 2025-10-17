@@ -16,9 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultComponentsServiceTest {
@@ -39,7 +37,7 @@ class DefaultComponentsServiceTest {
     }
 
     @Test
-    void getMessages() throws IOException {
+    void getMessages() throws Exception {
         componentsService.registerMessage(
                 MessageObject.builder().name("messageName1").build());
         componentsService.registerMessage(
@@ -59,6 +57,6 @@ class DefaultComponentsServiceTest {
                         .stripIndent();
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 }

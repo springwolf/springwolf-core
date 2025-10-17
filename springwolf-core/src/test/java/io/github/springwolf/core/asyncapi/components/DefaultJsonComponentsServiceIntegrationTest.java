@@ -42,7 +42,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultJsonComponentsServiceIntegrationTest {
 
@@ -65,7 +64,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
 
     @Test
-    void getSchemas() throws IOException {
+    void getSchemas() throws Exception {
         componentsService.resolvePayloadSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_JSON);
         componentsService.resolvePayloadSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_JSON);
 
@@ -73,44 +72,44 @@ class DefaultJsonComponentsServiceIntegrationTest {
         String expected = loadDefinition("/schemas/json/definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getDocumentedDefinitions() throws IOException {
+    void getDocumentedDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/documented-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getArrayDefinitions() throws IOException {
+    void getArrayDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/array-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getComplexDefinitions() throws IOException {
+    void getComplexDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/complex-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getListWrapperDefinitions() throws IOException {
+    void getListWrapperDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
@@ -233,14 +232,14 @@ class DefaultJsonComponentsServiceIntegrationTest {
     @Nested
     class SchemaWithOneOf {
         @Test
-        void testSchemaWithOneOf() throws IOException {
+        void schemaWithOneOf() throws Exception {
             componentsService.resolvePayloadSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/json/annotation-definitions.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
-            assertEquals(expected, actualDefinitions);
+            assertThat(actualDefinitions).isEqualTo(expected);
         }
 
         @Data
@@ -312,14 +311,14 @@ class DefaultJsonComponentsServiceIntegrationTest {
     @Nested
     class JsonTypeTest {
         @Test
-        void getJsonTypeDefinitions() throws IOException {
+        void getJsonTypeDefinitions() throws Exception {
             componentsService.resolvePayloadSchema(JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_JSON);
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/json/json-type-definitions.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
-            assertEquals(expected, actualDefinitions);
+            assertThat(actualDefinitions).isEqualTo(expected);
         }
 
         @Schema(description = "Json Type Info Payload Dto model")

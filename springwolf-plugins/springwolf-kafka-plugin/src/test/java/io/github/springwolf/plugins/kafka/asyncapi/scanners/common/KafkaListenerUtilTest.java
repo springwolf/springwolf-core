@@ -19,14 +19,14 @@ import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class KafkaListenerUtilTest {
 
     @Nested
-    public class ChannelName {
+    class ChannelName {
         @Test
         void fromTopics() {
             // given
@@ -41,7 +41,7 @@ class KafkaListenerUtilTest {
             String channelName = KafkaListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
-            assertEquals("topic-1", channelName);
+            assertThat(channelName).isEqualTo("topic-1");
         }
 
         @Test
@@ -58,7 +58,7 @@ class KafkaListenerUtilTest {
             String channelName = KafkaListenerUtil.getChannelName(annotation, stringValueResolver);
 
             // then
-            assertEquals("topic-1", channelName);
+            assertThat(channelName).isEqualTo("topic-1");
         }
     }
 
@@ -68,9 +68,9 @@ class KafkaListenerUtilTest {
         Map<String, ChannelBinding> channelBinding = KafkaListenerUtil.buildChannelBinding();
 
         // then
-        assertEquals(1, channelBinding.size());
-        assertEquals(Sets.newTreeSet("kafka"), channelBinding.keySet());
-        assertEquals(new KafkaChannelBinding(), channelBinding.get("kafka"));
+        assertThat(channelBinding.size()).isEqualTo(1);
+        assertThat(channelBinding.keySet()).isEqualTo(Sets.newTreeSet("kafka"));
+        assertThat(channelBinding.get("kafka")).isEqualTo(new KafkaChannelBinding());
     }
 
     @Test
@@ -87,13 +87,13 @@ class KafkaListenerUtilTest {
                 KafkaListenerUtil.buildOperationBinding(annotation, stringValueResolver);
 
         // then
-        assertEquals(1, operationBinding.size());
-        assertEquals(Sets.newTreeSet("kafka"), operationBinding.keySet());
+        assertThat(operationBinding.size()).isEqualTo(1);
+        assertThat(operationBinding.keySet()).isEqualTo(Sets.newTreeSet("kafka"));
 
         KafkaOperationBinding expectedOperationBinding = KafkaOperationBinding.builder()
                 .groupId(KafkaListenerUtil.buildKafkaGroupIdSchema("group-id"))
                 .build();
-        assertEquals(expectedOperationBinding, operationBinding.get("kafka"));
+        assertThat(operationBinding.get("kafka")).isEqualTo(expectedOperationBinding);
     }
 
     @Nested
@@ -104,9 +104,9 @@ class KafkaListenerUtilTest {
             Map<String, MessageBinding> messageBinding = KafkaListenerUtil.buildMessageBinding(new SchemaObject());
 
             // then
-            assertEquals(1, messageBinding.size());
-            assertEquals(Sets.newTreeSet("kafka"), messageBinding.keySet());
-            assertEquals(new KafkaMessageBinding(), messageBinding.get("kafka"));
+            assertThat(messageBinding.size()).isEqualTo(1);
+            assertThat(messageBinding.keySet()).isEqualTo(Sets.newTreeSet("kafka"));
+            assertThat(messageBinding.get("kafka")).isEqualTo(new KafkaMessageBinding());
         }
 
         @Test
@@ -121,9 +121,10 @@ class KafkaListenerUtilTest {
             Map<String, MessageBinding> messageBinding = KafkaListenerUtil.buildMessageBinding(headerSchema);
 
             // then
-            assertEquals(1, messageBinding.size());
-            assertEquals(Sets.newTreeSet("kafka"), messageBinding.keySet());
-            assertEquals(KafkaMessageBinding.builder().key(keySchema).build(), messageBinding.get("kafka"));
+            assertThat(messageBinding.size()).isEqualTo(1);
+            assertThat(messageBinding.keySet()).isEqualTo(Sets.newTreeSet("kafka"));
+            assertThat(messageBinding.get("kafka"))
+                    .isEqualTo(KafkaMessageBinding.builder().key(keySchema).build());
         }
     }
 }

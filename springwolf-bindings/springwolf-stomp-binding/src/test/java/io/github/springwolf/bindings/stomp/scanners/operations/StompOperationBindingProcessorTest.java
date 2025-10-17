@@ -15,7 +15,7 @@ class StompOperationBindingProcessorTest {
     private final StompOperationBindingProcessor processor = new StompOperationBindingProcessor(stringValueResolver);
 
     @Test
-    void mapToOperationBindingTest() throws NoSuchMethodException {
+    void mapToOperationBindingTest() throws Exception {
         StompAsyncOperationBinding annotation = StompOperationBindingProcessorTest.class
                 .getMethod("methodWithAnnotation")
                 .getAnnotation(StompAsyncOperationBinding.class);

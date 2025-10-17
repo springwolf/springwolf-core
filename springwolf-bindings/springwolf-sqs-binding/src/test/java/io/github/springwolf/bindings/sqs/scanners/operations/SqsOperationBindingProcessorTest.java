@@ -19,7 +19,7 @@ class SqsOperationBindingProcessorTest {
     private final SqsOperationBindingProcessor processor = new SqsOperationBindingProcessor(stringValueResolver);
 
     @Test
-    void mapToOperationBindingTest() throws NoSuchMethodException {
+    void mapToOperationBindingTest() throws Exception {
         SqsAsyncOperationBinding annotation = SqsOperationBindingProcessorTest.class
                 .getMethod("methodWithAnnotation")
                 .getAnnotation(SqsAsyncOperationBinding.class);

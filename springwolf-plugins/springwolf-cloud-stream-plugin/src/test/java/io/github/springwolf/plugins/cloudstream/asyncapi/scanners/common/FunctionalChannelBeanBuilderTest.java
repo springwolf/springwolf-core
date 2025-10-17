@@ -37,7 +37,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class NotAFunctionalBean {
             @Test
-            void testNotAFunctionalChannelBean() throws NoSuchMethodException {
+            void testNotAFunctionalChannelBean() throws Exception {
                 Method method = getMethod(this.getClass(), "notAFunctionalChannelBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -54,7 +54,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class ConsumerBean {
             @Test
-            void testConsumerBean() throws NoSuchMethodException {
+            void testConsumerBean() throws Exception {
                 Method method = getMethod(this.getClass(), "consumerBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -73,7 +73,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class BiConsumerBean {
             @Test
-            void testBiConsumerBean() throws NoSuchMethodException {
+            void testBiConsumerBean() throws Exception {
                 Method method = getMethod(this.getClass(), "biConsumerBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -92,7 +92,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class SupplierBean {
             @Test
-            void testSupplierBean() throws NoSuchMethodException {
+            void testSupplierBean() throws Exception {
                 Method method = getMethod(this.getClass(), "supplierBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -111,7 +111,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class FunctionBean {
             @Test
-            void testFunctionBean() throws NoSuchMethodException {
+            void testFunctionBean() throws Exception {
                 Method method = getMethod(this.getClass(), "functionBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -133,7 +133,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class BiFunctionBean {
             @Test
-            void testBiFunctionBean() throws NoSuchMethodException {
+            void testBiFunctionBean() throws Exception {
                 Method method = getMethod(this.getClass(), "biFunctionBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -156,7 +156,7 @@ class FunctionalChannelBeanBuilderTest {
         class ConsumerBeanWithGenericPayload {
 
             @Test
-            void testConsumerBeanWithGenericPayload() throws NoSuchMethodException {
+            void testConsumerBeanWithGenericPayload() throws Exception {
                 String methodName = "consumerBeanWithGenericPayload";
                 Method method = getMethod(this.getClass(), methodName);
 
@@ -181,7 +181,7 @@ class FunctionalChannelBeanBuilderTest {
         class KStreamBean {
 
             @Test
-            void testKafkaStreamsConsumerBean() throws NoSuchMethodException {
+            void testKafkaStreamsConsumerBean() throws Exception {
                 String methodName = "kafkaStreamsConsumerBean";
                 Method method = getMethod(this.getClass(), methodName);
 
@@ -205,7 +205,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class NotAFunctionalClass {
             @Test
-            void testNotAFunctionalChannelBean() {
+            void notAFunctionalChannelBean() {
                 Class<?> testClass = getClassObject(this.getClass(), "TestClass");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
@@ -219,7 +219,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class ConsumerClass {
             @Test
-            void testConsumerClass() {
+            void consumerClass() {
                 Class<?> testClass = getClassObject(this.getClass(), "TestClass");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
@@ -238,7 +238,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class SupplierClass {
             @Test
-            void testSupplierClass() {
+            void supplierClass() {
                 Class<?> testClass = getClassObject(this.getClass(), "TestClass");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
@@ -260,7 +260,7 @@ class FunctionalChannelBeanBuilderTest {
         @Nested
         class FunctionClass {
             @Test
-            void testFunctionClass() {
+            void functionClass() {
                 Class<?> testClass = getClassObject(this.getClass(), "TestClass");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
@@ -285,7 +285,7 @@ class FunctionalChannelBeanBuilderTest {
         class ConsumerClassWithGenericPayload {
 
             @Test
-            void testConsumerClassWithGenericPayload() {
+            void consumerClassWithGenericPayload() {
                 Class<?> testClass = getClassObject(this.getClass(), "TestClass");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
@@ -306,7 +306,7 @@ class FunctionalChannelBeanBuilderTest {
         class KStreamClass {
 
             @Test
-            void testKafkaStreamsConsumerClass() {
+            void kafkaStreamsConsumerClass() {
                 Class<?> testClass = getClassObject(this.getClass(), "TestClass");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(testClass);
@@ -326,7 +326,7 @@ class FunctionalChannelBeanBuilderTest {
         class InheritanceTypes {
 
             @Test
-            void testBiConsumerChildBean() throws NoSuchMethodException {
+            void testBiConsumerChildBean() throws Exception {
                 Method method = getMethod(this.getClass(), "biConsumerChildBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -337,7 +337,7 @@ class FunctionalChannelBeanBuilderTest {
             }
 
             @Test
-            void testBiConsumerRawChildBean() throws NoSuchMethodException {
+            void testBiConsumerRawChildBean() throws Exception {
                 Method method = getMethod(this.getClass(), "biConsumerRawChildBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -346,7 +346,7 @@ class FunctionalChannelBeanBuilderTest {
             }
 
             @Test
-            void testSupplierRawChildBean() throws NoSuchMethodException {
+            void supplierRawChildBean() throws Exception {
                 Method method = getMethod(this.getClass(), "supplierRawChild");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -355,7 +355,7 @@ class FunctionalChannelBeanBuilderTest {
             }
 
             @Test
-            void testFunctionRawChildBean() throws NoSuchMethodException {
+            void functionRawChildBean() throws Exception {
                 Method method = getMethod(this.getClass(), "functionRawChild");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -364,7 +364,7 @@ class FunctionalChannelBeanBuilderTest {
             }
 
             @Test
-            void testBiFunctionRawChildBean() throws NoSuchMethodException {
+            void biFunctionRawChildBean() throws Exception {
                 Method method = getMethod(this.getClass(), "biFunctionRawChild");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -373,7 +373,7 @@ class FunctionalChannelBeanBuilderTest {
             }
 
             @Test
-            void testBiConsumerChildChildBean() throws NoSuchMethodException {
+            void testBiConsumerChildChildBean() throws Exception {
                 Method method = getMethod(this.getClass(), "biConsumerChildChildBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -388,7 +388,7 @@ class FunctionalChannelBeanBuilderTest {
             }
 
             @Test
-            void testConsumerChildClassBean() throws NoSuchMethodException {
+            void testConsumerChildClassBean() throws Exception {
                 Method method = getMethod(this.getClass(), "consumerChildClassBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);
@@ -403,7 +403,7 @@ class FunctionalChannelBeanBuilderTest {
             }
 
             @Test
-            void testConsumerChildChildClassBean() throws NoSuchMethodException {
+            void testConsumerChildChildClassBean() throws Exception {
                 Method method = getMethod(this.getClass(), "consumerChildChildClassBean");
 
                 Set<FunctionalChannelBeanData> data = functionalChannelBeanBuilder.build(method);

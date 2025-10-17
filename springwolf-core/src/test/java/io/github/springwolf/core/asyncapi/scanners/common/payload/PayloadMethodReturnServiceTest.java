@@ -33,7 +33,7 @@ class PayloadMethodReturnServiceTest {
     }
 
     @Test
-    public void shouldExtractPayloadFromMethod() {
+    void shouldExtractPayloadFromMethod() {
         // given
         when(properties.getDocket()).thenReturn(docket);
         when(docket.getDefaultContentType()).thenReturn("application/json");

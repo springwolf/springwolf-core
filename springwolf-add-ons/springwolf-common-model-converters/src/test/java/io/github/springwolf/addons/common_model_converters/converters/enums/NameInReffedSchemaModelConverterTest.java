@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class NameInReffedSchemaModelConverterTest {
 
@@ -17,7 +16,7 @@ class NameInReffedSchemaModelConverterTest {
     private final ModelConverters converters = new ModelConverters();
 
     @Test
-    void testNameIsAddedToReffedSchema() {
+    void nameIsAddedToReffedSchema() {
         // given
         converters.addConverter(modelsConverter);
 
@@ -25,18 +24,18 @@ class NameInReffedSchemaModelConverterTest {
         final Map<String, Schema> models = converters.readAll(MyRootObject.class);
 
         // then
-        assertNotNull(models);
-        assertEquals(2, models.size());
+        assertThat(models).isNotNull();
+        assertThat(models.size()).isEqualTo(2);
         Schema myRootObject = models.get("MyRootObject");
-        assertNotNull(myRootObject);
-        assertEquals("MyRootObject", myRootObject.getName());
+        assertThat(myRootObject).isNotNull();
+        assertThat(myRootObject.getName()).isEqualTo("MyRootObject");
         Schema myEnumObjectField = (Schema) myRootObject.getProperties().get("myEnumObjectField");
-        assertEquals("myEnumObjectField", myEnumObjectField.getName());
-        assertEquals("#/components/schemas/MyEnumObject", myEnumObjectField.get$ref());
+        assertThat(myEnumObjectField.getName()).isEqualTo("myEnumObjectField");
+        assertThat(myEnumObjectField.get$ref()).isEqualTo("#/components/schemas/MyEnumObject");
 
         Schema myEnumObject = models.get("MyEnumObject");
-        assertNotNull(myEnumObject);
-        assertEquals("MyEnumObject", myEnumObject.getName());
+        assertThat(myEnumObject).isNotNull();
+        assertThat(myEnumObject.getName()).isEqualTo("MyEnumObject");
     }
 
     @io.swagger.v3.oas.annotations.media.Schema(enumAsRef = true)

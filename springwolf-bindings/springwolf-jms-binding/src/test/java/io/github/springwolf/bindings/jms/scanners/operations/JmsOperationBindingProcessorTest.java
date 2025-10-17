@@ -15,7 +15,7 @@ class JmsOperationBindingProcessorTest {
     private final JmsOperationBindingProcessor processor = new JmsOperationBindingProcessor(stringValueResolver);
 
     @Test
-    void mapToOperationBindingTest() throws NoSuchMethodException {
+    void mapToOperationBindingTest() throws Exception {
         JmsAsyncOperationBinding annotation = JmsOperationBindingProcessorTest.class
                 .getMethod("methodWithAnnotation")
                 .getAnnotation(JmsAsyncOperationBinding.class);

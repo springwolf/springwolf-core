@@ -71,7 +71,7 @@ class DefaultAsyncApiServiceIntegrationTest {
     private AsyncApiService asyncApiService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         when(channelsService.findChannels())
                 .thenReturn(Map.of(
                         "consumer-topic",

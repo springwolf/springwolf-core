@@ -10,7 +10,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @MinimalIntegrationTestContextConfiguration
@@ -22,8 +21,8 @@ class SpringContextIntegrationTest {
     private AsyncApiService asyncApiService;
 
     @Test
-    void testContextWithApplicationProperties() {
-        assertNotNull(context);
+    void contextWithApplicationProperties() {
+        assertThat(context).isNotNull();
 
         assertThat(asyncApiService.getAsyncAPI()).isNotNull();
         assertThat(asyncApiService.getAsyncAPI().getInfo().getTitle())

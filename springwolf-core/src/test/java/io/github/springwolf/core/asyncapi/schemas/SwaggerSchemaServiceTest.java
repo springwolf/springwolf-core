@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +73,7 @@ class SwaggerSchemaServiceTest {
     }
 
     @Test
-    void getDefinitionWithoutFqnClassName() throws IOException {
+    void getDefinitionWithoutFqnClassName() throws Exception {
         // given
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setUseFqn(false);

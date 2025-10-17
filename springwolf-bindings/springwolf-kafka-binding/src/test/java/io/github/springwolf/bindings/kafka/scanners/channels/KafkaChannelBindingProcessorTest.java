@@ -22,7 +22,7 @@ class KafkaChannelBindingProcessorTest {
     private final KafkaChannelBindingProcessor processor = new KafkaChannelBindingProcessor(stringValueResolver);
 
     @Test
-    void processTest() throws NoSuchMethodException {
+    void processTest() throws Exception {
         Method method = KafkaChannelBindingProcessorTest.class.getMethod("methodWithAnnotation");
 
         ProcessedChannelBinding binding = processor.process(method).get();
@@ -32,7 +32,7 @@ class KafkaChannelBindingProcessorTest {
     }
 
     @Test
-    void processWithoutAnnotationTest() throws NoSuchMethodException {
+    void processWithoutAnnotationTest() throws Exception {
         Method method = KafkaChannelBindingProcessorTest.class.getMethod("methodWithoutAnnotation");
 
         Optional<ProcessedChannelBinding> binding = processor.process(method);
@@ -41,7 +41,7 @@ class KafkaChannelBindingProcessorTest {
     }
 
     @Test
-    void processTestWithFullConfiguration() throws NoSuchMethodException {
+    void processTestWithFullConfiguration() throws Exception {
         when(stringValueResolver.resolveStringValue("test-topic")).thenReturn("resolved-test-topic");
 
         Method method = KafkaChannelBindingProcessorTest.class.getMethod("methodWithFullConfiguration");

@@ -32,7 +32,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadType() throws NoSuchMethodException {
+    void getPayloadType() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithString", String.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -41,7 +41,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithMessageOfInterfaces() throws NoSuchMethodException {
+    void getPayloadTypeWithMessageOfInterfaces() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfGenericClasses", Message.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -54,7 +54,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithInterface() throws NoSuchMethodException {
+    void getPayloadTypeWithInterface() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithGenericClass", Collection.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -67,7 +67,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithMessageOfListOfString() throws NoSuchMethodException {
+    void getPayloadTypeWithMessageOfListOfString() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfListOfString", Message.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -76,7 +76,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithMessageOfListOfCustomPair() throws NoSuchMethodException {
+    void getPayloadTypeWithMessageOfListOfCustomPair() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfCustomPair", Message.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -86,7 +86,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithMessageOfString() throws NoSuchMethodException {
+    void getPayloadTypeWithMessageOfString() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithMessageOfString", Message.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -95,7 +95,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithCustomMessageExtendsInterface() throws NoSuchMethodException {
+    void getPayloadTypeWithCustomMessageExtendsInterface() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessageExtendsInterface", List.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -104,7 +104,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithCustomMessagePairExtendsInterface() throws NoSuchMethodException {
+    void getPayloadTypeWithCustomMessagePairExtendsInterface() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessagePairExtendsInterface", List.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -114,7 +114,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithCustomMessageSuperInterface() throws NoSuchMethodException {
+    void getPayloadTypeWithCustomMessageSuperInterface() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessageSuperInterface", List.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -123,7 +123,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithCustomMessagePairSuperInterface() throws NoSuchMethodException {
+    void getPayloadTypeWithCustomMessagePairSuperInterface() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomMessagePairSuperInterface", List.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -133,7 +133,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithPrimitive() throws NoSuchMethodException {
+    void getPayloadTypeWithPrimitive() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithPrimitive", int.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -142,7 +142,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithPrimitiveArray() throws NoSuchMethodException {
+    void getPayloadTypeWithPrimitiveArray() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithPrimitiveArray", int[].class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -151,7 +151,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithListOfPrimitiveArray() throws NoSuchMethodException {
+    void getPayloadTypeWithListOfPrimitiveArray() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCollectionOfPrimitiveArray", List.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));
@@ -160,7 +160,7 @@ class TypeExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithCustomType() throws NoSuchMethodException {
+    void getPayloadTypeWithCustomType() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithCustomType", TestClass.MyType.class);
 
         Type result = typeExtractor.extractActualType(extractFrom(m));

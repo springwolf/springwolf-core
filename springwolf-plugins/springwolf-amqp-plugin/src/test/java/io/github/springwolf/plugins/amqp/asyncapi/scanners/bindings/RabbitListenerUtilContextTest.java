@@ -11,23 +11,22 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Nested
 class RabbitListenerUtilContextTest {
     @Test
-    void testEmptyContext() {
+    void emptyContext() {
         // when
         RabbitListenerUtilContext context = RabbitListenerUtilContext.create(List.of(), List.of(), List.of());
 
         // then
-        assertEquals(Map.of(), context.queueMap());
-        assertEquals(Map.of(), context.exchangeMap());
-        assertEquals(Map.of(), context.bindingMap());
+        assertThat(context.queueMap()).isEqualTo(Map.of());
+        assertThat(context.exchangeMap()).isEqualTo(Map.of());
+        assertThat(context.bindingMap()).isEqualTo(Map.of());
     }
 
     @Test
-    void testWithSingleTopic() {
+    void withSingleTopic() {
         org.springframework.amqp.core.Queue queue =
                 new org.springframework.amqp.core.Queue("queue-1", false, true, true);
         TopicExchange exchange = new TopicExchange("exchange-name", false, true);
@@ -38,13 +37,13 @@ class RabbitListenerUtilContextTest {
                 RabbitListenerUtilContext.create(List.of(queue), List.of(exchange), List.of(binding));
 
         // then
-        assertEquals(Map.of("queue-1", queue), context.queueMap());
-        assertEquals(Map.of("exchange-name", exchange), context.exchangeMap());
-        assertEquals(Map.of("queue-1", binding), context.bindingMap());
+        assertThat(context.queueMap()).isEqualTo(Map.of("queue-1", queue));
+        assertThat(context.exchangeMap()).isEqualTo(Map.of("exchange-name", exchange));
+        assertThat(context.bindingMap()).isEqualTo(Map.of("queue-1", binding));
     }
 
     @Test
-    void testWithMultipleBeansForOneTopic() {
+    void withMultipleBeansForOneTopic() {
         org.springframework.amqp.core.Queue queueBean =
                 new org.springframework.amqp.core.Queue("queue-1", false, true, true);
         TopicExchange exchangeBean = new TopicExchange("exchange-name", false, true);

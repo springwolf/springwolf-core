@@ -87,7 +87,7 @@ class AsyncAnnotationChannelServiceTest {
     }
 
     @Test
-    void scan() throws NoSuchMethodException {
+    void scan() throws Exception {
         // given
         Method method = ClassWithListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
         MethodAndAnnotation<TestListener> methodAndAnnotation =
@@ -113,7 +113,7 @@ class AsyncAnnotationChannelServiceTest {
     @Nested
     class Server {
         @Test
-        void scan() throws NoSuchMethodException {
+        void scan() throws Exception {
             // given
             Method method =
                     ClassWithListenerAnnotationWithServer.class.getDeclaredMethod("methodWithAnnotation", String.class);
@@ -147,7 +147,7 @@ class AsyncAnnotationChannelServiceTest {
         }
 
         @Test
-        void scanInvalid() throws NoSuchMethodException {
+        void scanInvalid() throws Exception {
             // given
             Method method = ClassWithListenerAnnotationWithInvalidServer.class.getDeclaredMethod(
                     "methodWithAnnotation", String.class);

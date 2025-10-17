@@ -81,8 +81,10 @@ allprojects {
             licenseHeader("// SPDX-License-Identifier: Apache-2.0", "package|import|public")
 
             importOrder('', 'javax', 'java', '\\#')
-            replaceRegex("Remove wildcard imports", "import( static)?\\s+[^*\\s]+\\*;(\\r\\n|\\r|\\n)", "\$2")
+
             removeUnusedImports()
+            forbidWildcardImports()
+            forbidRegex("ForbidJunitAssertions", ".*org.junit.jupiter.api.Assertions.*", "Replace Junit assertions with AssertJ assertThat()")
 
             trimTrailingWhitespace()
             endWithNewline()

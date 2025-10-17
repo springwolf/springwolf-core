@@ -114,14 +114,14 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     private Map<String, ChannelBinding> channelBinding = Map.of("kafka", new EmptyChannelBinding());
 
     @Test
-    void testNoBindings() {
+    void noBindings() {
         when(bindingServiceProperties.getBindings()).thenReturn(Collections.emptyMap());
         Map<String, ChannelObject> channels = channelsScanner.scan();
         assertThat(channels).isEmpty();
     }
 
     @Test
-    void testConsumerBinding() {
+    void consumerBinding() {
         // Given a binding "spring.cloud.stream.bindings.testConsumer-in-0.destination=test-consumer-input-topic"
         BindingProperties testConsumerInBinding = new BindingProperties();
         String topicName = "test-consumer-input-topic";
@@ -167,7 +167,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     }
 
     @Test
-    void testBiConsumerBinding() {
+    void biConsumerBinding() {
         // Given a binding "spring.cloud.stream.bindings.testBiConsumer-in-0.destination=test-consumer-input-topic"
         BindingProperties testBiConsumerInBinding = new BindingProperties();
         String topicName = "test-biconsumer-input-topic";
@@ -213,7 +213,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     }
 
     @Test
-    void testSupplierBinding() {
+    void supplierBinding() {
         // Given a binding "spring.cloud.stream.bindings.testSupplier-out-0.destination=test-supplier-output-topic"
         BindingProperties testSupplierOutBinding = new BindingProperties();
         String topicName = "test-supplier-output-topic";
@@ -260,7 +260,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     }
 
     @Test
-    void testFunctionBinding() {
+    void functionBinding() {
         // Given a binding "spring.cloud.stream.bindings.testFunction-in-0.destination=test-in-topic"
         // And a binding "spring.cloud.stream.bindings.testFunction-out-0.destination=test-output-topic"
         String inputTopicName = "test-in-topic";
@@ -344,7 +344,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     }
 
     @Test
-    void testBiFunctionBinding() {
+    void biFunctionBinding() {
         // Given a binding "spring.cloud.stream.bindings.testFunction-in-0.destination=test-in-topic"
         // And a binding "spring.cloud.stream.bindings.testFunction-out-0.destination=test-output-topic"
         String inputTopicName = "test-in-topic";
@@ -428,7 +428,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     }
 
     @Test
-    void testKStreamFunctionBinding() {
+    void kStreamFunctionBinding() {
         // Given a binding "spring.cloud.stream.bindings.kStreamTestFunction-in-0.destination=test-in-topic"
         // And a binding "spring.cloud.stream.bindings.kStreamTestFunction-out-0.destination=test-output-topic"
         String inputTopicName = "test-in-topic";
@@ -517,7 +517,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     }
 
     @Test
-    void testFunctionBindingWithSameTopicName() {
+    void functionBindingWithSameTopicName() {
         // Given a binding "spring.cloud.stream.bindings.testFunction-in-0.destination=test-topic"
         // And a binding "spring.cloud.stream.bindings.testFunction-out-0.destination=test-topic"
         String topicName = "test-topic";

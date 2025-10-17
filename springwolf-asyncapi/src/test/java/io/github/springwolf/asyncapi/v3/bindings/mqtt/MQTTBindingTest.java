@@ -9,7 +9,6 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -19,7 +18,7 @@ class MQTTBindingTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeMQTTServerExample1() throws IOException {
+    void shouldSerializeMQTTServerExample1() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .servers(Map.of(
                         "production",
@@ -50,7 +49,7 @@ class MQTTBindingTest {
     }
 
     @Test
-    void shouldSerializeMQTTServerExample2() throws IOException {
+    void shouldSerializeMQTTServerExample2() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .servers(Map.of(
                         "production",

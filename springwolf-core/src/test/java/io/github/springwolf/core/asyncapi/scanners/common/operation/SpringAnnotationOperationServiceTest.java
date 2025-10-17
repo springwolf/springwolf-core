@@ -47,7 +47,7 @@ class SpringAnnotationOperationServiceTest {
     }
 
     @Test
-    void scan_componentHasTestListenerMethods() throws NoSuchMethodException {
+    void scan_componentHasTestListenerMethods() throws Exception {
         // given
         Method method = ClassWithTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
         MethodAndAnnotation<TestMethodListener> methodAndAnnotation =

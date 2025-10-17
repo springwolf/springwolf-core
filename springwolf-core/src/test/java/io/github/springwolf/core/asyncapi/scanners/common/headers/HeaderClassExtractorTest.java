@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,19 +37,19 @@ class HeaderClassExtractorTest {
     private static final SchemaTitleModelConverter titleModelConverter = new SchemaTitleModelConverter();
 
     @BeforeAll
-    public static void setupClass() {
+    static void setupClass() {
         // make sure hat SpringWolf SchemaTitleModelConverter is registered with ModelConverters static registry.
         // this happens in Spring tests automatically but to run only this testclass, this is necessary:
         ModelConverters.getInstance().addConverter(titleModelConverter);
     }
 
     @AfterAll
-    public static void tearDownClass() {
+    static void tearDownClass() {
         ModelConverters.getInstance().removeConverter(titleModelConverter);
     }
 
     @Test
-    void getNoDocumentedHeaders() throws NoSuchMethodException {
+    void getNoDocumentedHeaders() throws Exception {
         // given
         when(schemaService.extractSchema(String.class))
                 .thenReturn(new SwaggerSchemaService.ExtractedSchemas(stringSwaggerSchema, Map.of()));
@@ -59,11 +59,11 @@ class HeaderClassExtractorTest {
         val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
-        assertEquals(AsyncHeadersNotDocumented.NOT_DOCUMENTED, result);
+        assertThat(result).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
     }
 
     @Test
-    void getHeaderWithSingleHeaderAnnotation() throws NoSuchMethodException {
+    void getHeaderWithSingleHeaderAnnotation() throws Exception {
         // given
         when(schemaService.extractSchema(String.class))
                 .thenReturn(new SwaggerSchemaService.ExtractedSchemas(stringSwaggerSchema, Map.of()));
@@ -80,11 +80,11 @@ class HeaderClassExtractorTest {
                 .build();
         expectedHeaders.getProperties().put("kafka_receivedMessageKey", ComponentSchema.of(stringSchema));
 
-        assertEquals(expectedHeaders, result);
+        assertThat(result).isEqualTo(expectedHeaders);
     }
 
     @Test
-    void getHeaderWithMultipleHeaderAnnotation() throws NoSuchMethodException {
+    void getHeaderWithMultipleHeaderAnnotation() throws Exception {
         // given
         when(schemaService.extractSchema(String.class))
                 .thenReturn(new SwaggerSchemaService.ExtractedSchemas(stringSwaggerSchema, Map.of()));
@@ -102,7 +102,7 @@ class HeaderClassExtractorTest {
         expectedHeaders.getProperties().put("kafka_receivedMessageKey", ComponentSchema.of(stringSchema));
         expectedHeaders.getProperties().put("non-exist", ComponentSchema.of(stringSchema));
 
-        assertEquals(expectedHeaders, result);
+        assertThat(result).isEqualTo(expectedHeaders);
     }
 
     public static class TestClass {

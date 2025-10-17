@@ -9,13 +9,12 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
         classes = {SpringwolfSqsExampleApplication.class},
@@ -32,7 +31,7 @@ class ApiIntegrationTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    void asyncApiResourceArtifactTest() throws IOException {
+    void asyncApiResourceArtifactTest() throws Exception {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actual);
@@ -40,6 +39,6 @@ class ApiIntegrationTest {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 }

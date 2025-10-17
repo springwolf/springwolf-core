@@ -11,7 +11,6 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SpringContextIntegrationTest {
 
@@ -37,8 +36,8 @@ public class SpringContextIntegrationTest {
         private AsyncApiService asyncApiService;
 
         @Test
-        void testContextWithApplicationProperties() {
-            assertNotNull(context);
+        void contextWithApplicationProperties() {
+            assertThat(context).isNotNull();
 
             assertThat(asyncApiService.getAsyncAPI()).isNotNull();
         }

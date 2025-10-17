@@ -8,7 +8,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ class PulsarBindingTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializePulsarServer() throws IOException {
+    void shouldSerializePulsarServer() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .servers(Map.of(
                         "production",
@@ -39,7 +38,7 @@ class PulsarBindingTest {
     }
 
     @Test
-    void shouldSerializePulsarChannel() throws IOException {
+    void shouldSerializePulsarChannel() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "user-signedup",

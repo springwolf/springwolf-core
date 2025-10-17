@@ -30,7 +30,7 @@ class AmqpOperationBindingProcessorTest {
     @Nested
     class EmptyAnnotation {
         @Test
-        void mapToOperationBindingTest() throws NoSuchMethodException {
+        void mapToOperationBindingTest() throws Exception {
             AmqpAsyncOperationBinding annotation = EmptyAnnotation.class
                     .getMethod("methodWithAnnotation")
                     .getAnnotation(AmqpAsyncOperationBinding.class);
@@ -57,7 +57,7 @@ class AmqpOperationBindingProcessorTest {
     @Nested
     class AllFieldsSetInAnnotation {
         @Test
-        void mapToOperationBindingTest() throws NoSuchMethodException {
+        void mapToOperationBindingTest() throws Exception {
             AmqpAsyncOperationBinding annotation = AllFieldsSetInAnnotation.class
                     .getMethod("methodWithAnnotation")
                     .getAnnotation(AmqpAsyncOperationBinding.class);

@@ -14,7 +14,6 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ class MessageTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeMessage() throws IOException {
+    void shouldSerializeMessage() throws Exception {
         MessageObject message = MessageObject.builder()
                 .name("UserSignup")
                 .title("User signup")

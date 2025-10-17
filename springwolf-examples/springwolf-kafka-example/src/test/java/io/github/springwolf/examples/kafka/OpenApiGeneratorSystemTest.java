@@ -4,11 +4,10 @@ package io.github.springwolf.examples.kafka;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * This test is strongly coupled with the configuration of the springdoc openapi plugin in build.gradle
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class OpenApiGeneratorSystemTest {
 
     @Test
-    void asyncApiResourceArtifactTest() throws IOException {
+    void asyncApiResourceArtifactTest() throws Exception {
         InputStream expectedStream = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = IOUtils.toString(expectedStream, StandardCharsets.UTF_8);
 
@@ -34,6 +33,6 @@ class OpenApiGeneratorSystemTest {
                         "kafka:29092"); // When running with EmbeddedKafka, localhost is used as hostname
 
         // openapi generator uses a different formatter, therefore removing spaces and newlines during comparison
-        assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
+        assertThat(actual.replaceAll("\\s", "")).isEqualTo(expected.replaceAll("\\s", ""));
     }
 }

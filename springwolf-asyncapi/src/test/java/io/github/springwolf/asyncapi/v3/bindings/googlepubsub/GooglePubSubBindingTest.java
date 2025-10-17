@@ -11,7 +11,6 @@ import io.github.springwolf.asyncapi.v3.model.components.Components;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ class GooglePubSubBindingTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeGooglePubSubMessage() throws IOException {
+    void shouldSerializeGooglePubSubMessage() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .components(Components.builder()
                         .messages(Map.of(
@@ -84,7 +83,7 @@ class GooglePubSubBindingTest {
     }
 
     @Test
-    void shouldSerializeGooglePubSubChannel() throws IOException {
+    void shouldSerializeGooglePubSubChannel() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "topic-avro-schema",

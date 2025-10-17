@@ -17,8 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,13 +43,13 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(null, result.payload());
-        assertEquals(Optional.empty(), result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isNull();
+        assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
-    void shouldResolveBooleanPayload() throws JsonProcessingException {
+    void shouldResolveBooleanPayload() throws Exception {
         // given
         String payloadType = Boolean.class.getName();
         String payload = "true";
@@ -68,13 +67,13 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(payloadTyped, result.payload());
-        assertEquals(Optional.empty(), result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
-    void shouldResolveIntegerPayload() throws JsonProcessingException {
+    void shouldResolveIntegerPayload() throws Exception {
         // given
         String payloadType = Integer.class.getName();
         String payload = "12345678";
@@ -92,13 +91,13 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(payloadTyped, result.payload());
-        assertEquals(Optional.empty(), result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
-    void shouldResolveLongPayload() throws JsonProcessingException {
+    void shouldResolveLongPayload() throws Exception {
         // given
         String payloadType = Long.class.getName();
         String payload = Long.valueOf(Long.MAX_VALUE).toString();
@@ -116,13 +115,13 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(payloadTyped, result.payload());
-        assertEquals(Optional.empty(), result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
-    void shouldResolveFloatPayload() throws JsonProcessingException {
+    void shouldResolveFloatPayload() throws Exception {
         // given
         String payloadType = Float.class.getName();
         String payload = "12345678.123";
@@ -140,13 +139,13 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(payloadTyped, result.payload());
-        assertEquals(Optional.empty(), result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
-    void shouldResolveDoublePayload() throws JsonProcessingException {
+    void shouldResolveDoublePayload() throws Exception {
         // given
         String payloadType = Double.class.getName();
         String payload = Double.valueOf(Double.MAX_VALUE).toString();
@@ -164,13 +163,13 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(payloadTyped, result.payload());
-        assertEquals(Optional.empty(), result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
-    void shouldResolveObjectPayload() throws JsonProcessingException {
+    void shouldResolveObjectPayload() throws Exception {
         // given
         String payloadType = ObjectClass.class.getName();
         String payload = "{\"value\":\"test\"}";
@@ -188,13 +187,13 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(payloadTyped, result.payload());
-        assertEquals(Optional.empty(), result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
-    void shouldResolveStringPayload() throws JsonProcessingException {
+    void shouldResolveStringPayload() throws Exception {
         // given
         String payloadType = String.class.getName();
         String payload = "\"test\"";
@@ -212,9 +211,9 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(payloadTyped, result.payload());
-        assertEquals(Optional.empty(), result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
@@ -234,14 +233,14 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(null, result.payload());
-        assertEquals(
-                Optional.of("Unable to create payload MyUnknownClass from data: " + payload), result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isNull();
+        assertThat(result.errorMessage())
+                .isEqualTo(Optional.of("Unable to create payload MyUnknownClass from data: " + payload));
     }
 
     @Test
-    void shouldReturnEmptyPayloadForInvalidJson() throws JsonProcessingException {
+    void shouldReturnEmptyPayloadForInvalidJson() throws Exception {
         // given
         String payloadType = ObjectClass.class.getName();
         String payload = "---invalid-json---";
@@ -259,13 +258,12 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(null, result.payload());
-        assertEquals(
-                Optional.of(
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isNull();
+        assertThat(result.errorMessage())
+                .isEqualTo(Optional.of(
                         "Unable to create payload io.github.springwolf.core.controller.PublishingPayloadCreatorTest$ObjectClass from data: "
-                                + payload),
-                result.errorMessage());
+                                + payload));
     }
 
     @Test
@@ -285,13 +283,12 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(null, result.payload());
-        assertEquals(
-                Optional.of(
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isNull();
+        assertThat(result.errorMessage())
+                .isEqualTo(Optional.of(
                         "Unable to create payload io.github.springwolf.core.controller.PublishingPayloadCreatorTest$ObjectClass from data: "
-                                + payload),
-                result.errorMessage());
+                                + payload));
     }
 
     @Test
@@ -305,11 +302,11 @@ class PublishingPayloadCreatorTest {
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
-        assertNotNull(result);
-        assertEquals(null, result.payload());
-        assertEquals(
-                Optional.of("Specified payloadType java.lang.String is not a registered springwolf schema."),
-                result.errorMessage());
+        assertThat(result).isNotNull();
+        assertThat(result.payload()).isNull();
+        assertThat(result.errorMessage())
+                .isEqualTo(
+                        Optional.of("Specified payloadType java.lang.String is not a registered springwolf schema."));
     }
 
     record ObjectClass(String value) {}

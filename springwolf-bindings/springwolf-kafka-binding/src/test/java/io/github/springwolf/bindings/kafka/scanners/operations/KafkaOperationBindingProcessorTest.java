@@ -15,7 +15,7 @@ class KafkaOperationBindingProcessorTest {
     private final KafkaOperationBindingProcessor processor = new KafkaOperationBindingProcessor(stringValueResolver);
 
     @Test
-    void mapToOperationBindingTest() throws NoSuchMethodException {
+    void mapToOperationBindingTest() throws Exception {
         KafkaAsyncOperationBinding annotation = KafkaOperationBindingProcessorTest.class
                 .getMethod("methodWithAnnotation")
                 .getAnnotation(KafkaAsyncOperationBinding.class);

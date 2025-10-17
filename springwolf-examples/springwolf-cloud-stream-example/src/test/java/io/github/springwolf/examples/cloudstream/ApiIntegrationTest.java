@@ -9,13 +9,12 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.TestPropertySource;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
         classes = {SpringwolfCloudstreamExampleApplication.class},
@@ -31,7 +30,7 @@ public class ApiIntegrationTest {
     public String bootstrapServers;
 
     @Test
-    void asyncApiResourceArtifactTest() throws IOException {
+    void asyncApiResourceArtifactTest() throws Exception {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         // When running with EmbeddedKafka, the kafka bootstrap server does run on random ports
@@ -41,6 +40,6 @@ public class ApiIntegrationTest {
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-        assertEquals(expected, actualPatched);
+        assertThat(actualPatched).isEqualTo(expected);
     }
 }

@@ -6,7 +6,6 @@ import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService
 import io.github.springwolf.asyncapi.v3.model.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -15,7 +14,7 @@ class ServerTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeServer() throws IOException {
+    void shouldSerializeServer() throws Exception {
         Server server = Server.builder()
                 .host("localhost:5672")
                 .description("Development AMQP broker.")

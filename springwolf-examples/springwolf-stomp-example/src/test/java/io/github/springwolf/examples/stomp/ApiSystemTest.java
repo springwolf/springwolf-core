@@ -10,12 +10,11 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * While the assertion of this test is identical to ApiIntegrationTests,
@@ -44,13 +43,13 @@ public class ApiSystemTest {
     }
 
     @Test
-    void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws IOException {
+    void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws Exception {
         String url = baseUrl() + "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 }

@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class HeaderSchemaObjectMergerTest {
 
@@ -22,9 +22,8 @@ class HeaderSchemaObjectMergerTest {
         SchemaObject merged = HeaderSchemaObjectMerger.merge(initial);
 
         // then
-        assertEquals(
-                merged,
-                SchemaObject.builder().properties(Map.of("key1", "value1")).build());
+        assertThat(SchemaObject.builder().properties(Map.of("key1", "value1")).build())
+                .isEqualTo(merged);
     }
 
     @Test
@@ -41,9 +40,8 @@ class HeaderSchemaObjectMergerTest {
                 SchemaObject.builder().properties(Collections.emptyMap()).build());
 
         // then
-        assertEquals(
-                merged,
-                SchemaObject.builder().properties(Map.of("key1", "value1")).build());
+        assertThat(SchemaObject.builder().properties(Map.of("key1", "value1")).build())
+                .isEqualTo(merged);
     }
 
     @Test
@@ -73,12 +71,12 @@ class HeaderSchemaObjectMergerTest {
         SchemaObject merged = HeaderSchemaObjectMerger.merge(initial, schema1, schema2);
 
         // then
-        assertEquals(merged.getTitle(), "initial-title-1820791802");
-        assertEquals(merged.getDescription(), "this-is-initial");
-        assertEquals(merged.getProperties().size(), 3);
-        assertEquals(merged.getProperties().get("key1"), "value1");
-        assertEquals(merged.getProperties().get("key2"), "value2");
-        assertEquals(merged.getProperties().get("key3"), "value3");
+        assertThat(merged.getTitle()).isEqualTo("initial-title-1820791802");
+        assertThat(merged.getDescription()).isEqualTo("this-is-initial");
+        assertThat(merged.getProperties().size()).isEqualTo(3);
+        assertThat(merged.getProperties().get("key1")).isEqualTo("value1");
+        assertThat(merged.getProperties().get("key2")).isEqualTo("value2");
+        assertThat(merged.getProperties().get("key3")).isEqualTo("value3");
     }
 
     @Test
@@ -102,9 +100,9 @@ class HeaderSchemaObjectMergerTest {
         SchemaObject merged = HeaderSchemaObjectMerger.merge(initial, schema1, schema2);
 
         // then
-        assertEquals(merged.getTitle(), "Headers-824725166");
-        assertEquals(merged.getDescription(), "this-is-schema1");
-        assertEquals(merged.getProperties().size(), 1);
-        assertEquals(merged.getProperties().get("key2"), "value2");
+        assertThat(merged.getTitle()).isEqualTo("Headers-824725166");
+        assertThat(merged.getDescription()).isEqualTo("this-is-schema1");
+        assertThat(merged.getProperties().size()).isEqualTo(1);
+        assertThat(merged.getProperties().get("key2")).isEqualTo("value2");
     }
 }

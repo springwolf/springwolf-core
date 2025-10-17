@@ -20,7 +20,7 @@ class SnsOperationBindingProcessorTest {
     private final SnsOperationBindingProcessor processor = new SnsOperationBindingProcessor(stringValueResolver);
 
     @Test
-    void mapToOperationBindingTest() throws NoSuchMethodException {
+    void mapToOperationBindingTest() throws Exception {
         SnsAsyncOperationBinding annotation = SnsOperationBindingProcessorTest.class
                 .getMethod("methodWithAnnotation")
                 .getAnnotation(SnsAsyncOperationBinding.class);

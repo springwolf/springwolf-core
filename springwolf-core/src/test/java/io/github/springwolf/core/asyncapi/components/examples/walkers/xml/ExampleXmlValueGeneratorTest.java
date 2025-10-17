@@ -10,7 +10,6 @@ import org.w3c.dom.Node;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ExampleXmlValueGeneratorTest {
     private final DefaultExampleXmlValueSerializer serializer = new DefaultExampleXmlValueSerializer();
@@ -113,6 +112,6 @@ class ExampleXmlValueGeneratorTest {
         Node result = generator.createRaw("<xml>example</xml>");
 
         // then
-        assertNotNull(result);
+        assertThat(result).isNotNull();
     }
 }

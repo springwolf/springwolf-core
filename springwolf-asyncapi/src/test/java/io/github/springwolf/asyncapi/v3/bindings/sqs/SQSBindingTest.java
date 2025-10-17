@@ -8,7 +8,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -18,7 +17,7 @@ class SQSBindingTest {
 
     @Test
     @Disabled("Binding example is not updated to AsyncAPI v3")
-    void shouldSerializeSQSConsumer() throws IOException {
+    void shouldSerializeSQSConsumer() throws Exception {
         var asyncapi = AsyncAPI.builder()
                 .channels(Map.of(
                         "user-signedup",

@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith({SnsTestContainerExtension.class})
@@ -23,7 +23,7 @@ class SpringwolfSnsExampleApplicationIntegrationTest {
     private ApplicationContext context;
 
     @Test
-    void testContext() {
-        assertNotNull(context);
+    void context() {
+        assertThat(context).isNotNull();
     }
 }

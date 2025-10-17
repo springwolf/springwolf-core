@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 class PayloadExtractorTest {
 
@@ -18,7 +18,7 @@ class PayloadExtractorTest {
             new PayloadExtractor(new TypeExtractor(new SpringwolfConfigProperties()));
 
     @Test
-    void getPayloadType() throws NoSuchMethodException {
+    void getPayloadType() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithString", String.class);
 
         Optional<Type> result = extractor.extractFrom(m);
@@ -27,7 +27,7 @@ class PayloadExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithPayloadAnnotation() throws NoSuchMethodException {
+    void getPayloadTypeWithPayloadAnnotation() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithPayloadAnnotation", String.class, Integer.class);
 
         Optional<Type> result = extractor.extractFrom(m);
@@ -36,12 +36,12 @@ class PayloadExtractorTest {
     }
 
     @Test
-    void getPayloadTypeWithoutPayloadAnnotation() throws NoSuchMethodException {
+    void getPayloadTypeWithoutPayloadAnnotation() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutPayloadAnnotation", String.class, Integer.class);
 
         try {
             extractor.extractFrom(m);
-            fail();
+            fail("");
         } catch (Exception ex) {
             assertThat(ex).isInstanceOf(IllegalArgumentException.class);
             assertThat(ex).hasMessageContaining("@Payload");
@@ -49,7 +49,7 @@ class PayloadExtractorTest {
     }
 
     @Test
-    void getNoPayload() throws NoSuchMethodException {
+    void getNoPayload() throws Exception {
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutPayload");
 
         Optional<Type> result = extractor.extractFrom(m);

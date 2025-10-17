@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.integrationtests;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
@@ -214,7 +213,7 @@ public class AsyncApiDocumentIntegrationTest {
         private AsyncApiSerializerService asyncApiSerializerService;
 
         @Test
-        void allClassesHaveSimpleNameNotFullQualifiedTest() throws JsonProcessingException {
+        void allClassesHaveSimpleNameNotFullQualifiedTest() throws Exception {
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
             assertThat(asyncAPI).isNotNull();
             String serialized = asyncApiSerializerService.toJsonString(asyncAPI);

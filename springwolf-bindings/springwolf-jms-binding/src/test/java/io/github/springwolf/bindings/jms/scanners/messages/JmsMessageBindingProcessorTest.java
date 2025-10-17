@@ -15,7 +15,7 @@ class JmsMessageBindingProcessorTest {
     private final JmsMessageBindingProcessor processor = new JmsMessageBindingProcessor();
 
     @Test
-    void processTest() throws NoSuchMethodException {
+    void processTest() throws Exception {
         Method method = JmsMessageBindingProcessorTest.class.getMethod("methodWithAnnotation");
 
         ProcessedMessageBinding binding = processor.process(method).get();
@@ -25,7 +25,7 @@ class JmsMessageBindingProcessorTest {
     }
 
     @Test
-    void processWithoutAnnotationTest() throws NoSuchMethodException {
+    void processWithoutAnnotationTest() throws Exception {
         Method method = JmsMessageBindingProcessorTest.class.getMethod("methodWithoutAnnotation");
 
         Optional<ProcessedMessageBinding> binding = processor.process(method);

@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultXmlComponentsServiceIntegrationTest {
 
@@ -59,7 +59,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService, configProperties);
 
     @Test
-    void getSchemas() throws IOException {
+    void getSchemas() throws Exception {
         componentsService.resolvePayloadSchema(CompositeFoo.class, "text/xml");
         componentsService.resolvePayloadSchema(FooWithEnum.class, "text/xml");
 
@@ -67,44 +67,44 @@ class DefaultXmlComponentsServiceIntegrationTest {
         String expected = loadDefinition("/schemas/xml/definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getDocumentedDefinitions() throws IOException {
+    void getDocumentedDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(DocumentedSimpleFoo.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/documented-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getArrayDefinitions() throws IOException {
+    void getArrayDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ArrayFoo.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/array-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getComplexDefinitions() throws IOException {
+    void getComplexDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ComplexFoo.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/complex-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getComplexDefinitionsWithAttributes() throws IOException {
+    void getComplexDefinitionsWithAttributes() throws Exception {
         componentsService.resolvePayloadSchema(ComplexAttributesFoo.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
@@ -112,18 +112,18 @@ class DefaultXmlComponentsServiceIntegrationTest {
                 loadDefinition("/schemas/xml/complex-definitions-with-attributes-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
-    void getListWrapperDefinitions() throws IOException {
+    void getListWrapperDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ListWrapper.class, "text/xml");
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/generics-wrapper-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
-        assertEquals(expected, actualDefinitions);
+        assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     private String loadDefinition(String path, String content) throws IOException {
@@ -249,14 +249,14 @@ class DefaultXmlComponentsServiceIntegrationTest {
     @Nested
     class SchemaWithOneOf {
         @Test
-        void testSchemaWithOneOf() throws IOException {
+        void schemaWithOneOf() throws Exception {
             componentsService.resolvePayloadSchema(SchemaAnnotationFoo.class, "text/xml");
 
             String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/xml/annotation-definitions-xml.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
-            assertEquals(expected, actualDefinitions);
+            assertThat(actualDefinitions).isEqualTo(expected);
         }
 
         @Data
@@ -348,7 +348,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
     @Nested
     class XmlSchemaName {
         @Test
-        void testSchemasWithSharedProperty() throws IOException {
+        void schemasWithSharedProperty() throws Exception {
             componentsService.resolvePayloadSchema(XmlSchemaName.ClassB.class, "text/xml");
             componentsService.resolvePayloadSchema(XmlSchemaName.ClassA.class, "text/xml");
 
@@ -356,7 +356,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
             String expected = loadDefinition("/schemas/xml/schema-with-shared-property.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
-            assertEquals(expected, actualDefinitions);
+            assertThat(actualDefinitions).isEqualTo(expected);
         }
 
         @Data

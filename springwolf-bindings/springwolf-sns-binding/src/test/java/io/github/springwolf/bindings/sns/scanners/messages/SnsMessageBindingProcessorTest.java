@@ -16,7 +16,7 @@ class SnsMessageBindingProcessorTest {
     private final SnsMessageBindingProcessor processor = new SnsMessageBindingProcessor();
 
     @Test
-    void processTest() throws NoSuchMethodException {
+    void processTest() throws Exception {
         Method method = SnsMessageBindingProcessorTest.class.getMethod("methodWithAnnotation");
 
         ProcessedMessageBinding binding = processor.process(method).get();
@@ -26,7 +26,7 @@ class SnsMessageBindingProcessorTest {
     }
 
     @Test
-    void processWithoutAnnotationTest() throws NoSuchMethodException {
+    void processWithoutAnnotationTest() throws Exception {
         Method method = SnsMessageBindingProcessorTest.class.getMethod("methodWithoutAnnotation");
 
         Optional<ProcessedMessageBinding> binding = processor.process(method);

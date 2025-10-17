@@ -16,7 +16,7 @@ public class GooglePubSubMessageBindingProcessorTest {
     private final GooglePubSubMessageBindingProcessor processor = new GooglePubSubMessageBindingProcessor();
 
     @Test
-    void processTest() throws NoSuchMethodException {
+    void processTest() throws Exception {
         // given
         Method method = GooglePubSubMessageBindingProcessorTest.class.getMethod("methodWithAnnotation");
 
@@ -31,7 +31,7 @@ public class GooglePubSubMessageBindingProcessorTest {
     }
 
     @Test
-    void processWithoutAnnotationTest() throws NoSuchMethodException {
+    void processWithoutAnnotationTest() throws Exception {
         // given
         Method method = GooglePubSubChannelBindingProcessorTest.class.getMethod("methodWithoutAnnotation");
 

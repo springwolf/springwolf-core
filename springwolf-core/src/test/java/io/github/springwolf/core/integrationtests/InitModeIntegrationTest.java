@@ -14,8 +14,8 @@ import org.springframework.test.context.TestPropertySource;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests the possible init modes (failfast, background)

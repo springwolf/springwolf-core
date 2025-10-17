@@ -27,7 +27,6 @@ import io.github.springwolf.asyncapi.v3.model.security_scheme.SecurityType;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,7 @@ class AsyncAPITest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldCreateSimpleAsyncAPI() throws IOException {
+    void shouldCreateSimpleAsyncAPI() throws Exception {
         var userSignUpMessage = MessageObject.builder()
                 .messageId("UserSignedUp")
                 .payload(MessagePayload.of(SchemaObject.builder()
@@ -90,7 +89,7 @@ class AsyncAPITest {
     }
 
     @Test
-    void shouldCreateStreetlightsKafkaAsyncAPI() throws IOException {
+    void shouldCreateStreetlightsKafkaAsyncAPI() throws Exception {
         var lightMeasuredMessage = MessageObject.builder()
                 .messageId("lightMeasured")
                 .name("lightMeasured")

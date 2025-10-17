@@ -5,15 +5,13 @@ import io.github.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 class CorrelationIDTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeCorrelationID() throws IOException {
+    void shouldSerializeCorrelationID() throws Exception {
         CorrelationID correlationId = CorrelationID.builder()
                 .description("Default Correlation ID")
                 .location("$message.header#/correlationId")

@@ -7,7 +7,6 @@ import io.github.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.springwolf.asyncapi.v3.model.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -16,7 +15,7 @@ class InfoTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializeInfo() throws IOException {
+    void shouldSerializeInfo() throws Exception {
         Info info = Info.builder()
                 .title("AsyncAPI Sample App")
                 .version("1.0.1")

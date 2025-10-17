@@ -24,7 +24,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +40,7 @@ class JsonSchemaGeneratorTest {
 
     @ParameterizedTest
     @MethodSource
-    public void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema)
-            throws IOException {
+    void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema) throws Exception {
         // given
         SchemaObject actualSchema = swaggerSchemaUtil.mapSchema(asyncApiSchema.get());
 
