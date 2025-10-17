@@ -11,7 +11,7 @@ services:
       - kafka
 
   kafka:
-    image: confluentinc/cp-kafka:8.0.1
+    image: confluentinc/cp-kafka:8.0.2
     ports:
       - "9095:9095" # plaintext - no authentication (port 9095 avoids conflict with kafka plugin)
     volumes:
