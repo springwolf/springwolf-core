@@ -30,6 +30,7 @@ import java.util.Map;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -68,8 +69,8 @@ class AsyncAnnotationUtilTest {
         SchemaObject headerWithoutValueResolved =
                 (SchemaObject) headers.getProperties().get("headerWithoutValueResolved");
         assertEquals("string", headerWithoutValueResolved.getType());
-        assertTrue(headerWithoutValueResolved.getExamples().isEmpty());
-        assertTrue(headerWithoutValueResolved.getEnumValues().isEmpty());
+        assertNull(headerWithoutValueResolved.getExamples());
+        assertNull(headerWithoutValueResolved.getEnumValues());
         assertEquals("descriptionResolved", headerWithoutValueResolved.getDescription());
     }
 
@@ -116,6 +117,36 @@ class AsyncAnnotationUtilTest {
                                         .description("descriptionResolved")
                                         .enumValues(List.of("valueResolved"))
                                         .examples(List.of("valueResolved"))
+                                        .build()))
+                        .build());
+    }
+
+    @Test
+    void getAsyncHeadersWithoutValue() throws NoSuchMethodException {
+        // given
+        Method m = ClassWithHeaders.class.getDeclaredMethod("withoutValue", String.class);
+        AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
+
+        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+        when(stringValueResolver.resolveStringValue(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
+
+        // when
+        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
+
+        // then
+        assertThat(headers)
+                .isEqualTo(SchemaObject.builder()
+                        .type(SchemaType.OBJECT)
+                        .title("Headers-472917891")
+                        .properties(Map.of(
+                                "headerResolved",
+                                SchemaObject.builder()
+                                        .type(SchemaType.STRING)
+                                        .title("headerResolved")
+                                        .description("descriptionResolved")
+                                        .enumValues(null)
+                                        .examples(null)
                                         .build()))
                         .build());
     }
@@ -423,6 +454,20 @@ class AsyncAnnotationUtilTest {
                                                 })))
         @TestOperationBindingProcessor.TestOperationBinding()
         private void withoutSchemaName(String payload) {}
+
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                headers =
+                                        @AsyncOperation.Headers(
+                                                values = {
+                                                    @AsyncOperation.Headers.Header(
+                                                            name = "header",
+                                                            description = "description")
+                                                })))
+        @TestOperationBindingProcessor.TestOperationBinding()
+        private void withoutValue(String payload) {}
 
         @AsyncListener(
                 operation =
