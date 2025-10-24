@@ -39,10 +39,14 @@ jobs:
       GH_ISSUE_NUMBER: ${{ github.event.issue.number }}
       GH_REPO: ${{ github.repository }}
     steps:
+      - name: Fetch latest release version
+        run: |
+          LATEST_VERSION=$(gh release view --repo "$GH_REPO" --json tagName -q .tagName)
+          echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
       - name: Comment on issue
         run: |
           cat << EOF | gh issue comment ${{ env.GH_ISSUE_NUMBER }} -F -
-          The change is available in the latest release. 🎉
+          The change is available in the latest release ($LATEST_VERSION). 🎉
 
           Thank you for the report/contribution and making Springwolf better!
           EOF
