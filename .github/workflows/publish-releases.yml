@@ -13,6 +13,10 @@ concurrency:
 jobs:
   publish-release:
     runs-on: ubuntu-latest
+
+    env:
+      LOGGING_LEVEL_IO_GITHUB_SPRINGWOLF: INFO
+
     steps:
       - uses: actions/checkout@v5
 

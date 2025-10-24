@@ -30,6 +30,7 @@ jobs:
     env:
       plugin: springwolf-plugins/springwolf-${{ matrix.plugin }}-plugin
       example: springwolf-examples/springwolf-${{ matrix.plugin }}-example
+      LOGGING_LEVEL_IO_GITHUB_SPRINGWOLF: INFO
 
     steps:
       - uses: actions/checkout@v5
