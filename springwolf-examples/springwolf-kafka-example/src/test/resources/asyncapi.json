@@ -1309,7 +1309,7 @@
             "description": "This field must be present, and value cannot be null"
           }
         },
-        "description": "Another payload model",
+        "description": "Demonstrate required and nullable. Note, @Schema is only descriptive without nullability check",
         "examples": [
           {
             "enumField": "COMPLEX1",
@@ -1326,7 +1326,7 @@
         ],
         "x-json-schema": {
           "$schema": "https://json-schema.org/draft-04/schema#",
-          "description": "Another payload model",
+          "description": "Demonstrate required and nullable. Note, @Schema is only descriptive without nullability check",
           "properties": {
             "enumField": {
               "description": "Follows OpenAPI 3.1 spec",
