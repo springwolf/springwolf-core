@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
-@Schema(description = "Another payload model")
+@Schema(description = "Demonstrate required and nullable. Note, @Schema is only descriptive without nullability check")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
