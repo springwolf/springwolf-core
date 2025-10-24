@@ -52,7 +52,7 @@ kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version
 kafka-clients = "org.apache.kafka:kafka-clients:8.1.0-ce"
 kafka-streams = "org.apache.kafka:kafka-streams:8.1.0-ce"
 kafka-protobuf-serializer = { module = "io.confluent:kafka-protobuf-serializer", version.ref = "io-confluent" }
-kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:2.2.20"
+kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:2.2.21"
 kotlinx-serialization-core-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.9.0"
 lombok = "org.projectlombok:lombok:1.18.42"
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "org-mockito" }
