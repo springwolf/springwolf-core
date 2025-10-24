@@ -11,7 +11,7 @@ services:
       - activemq
 
   activemq:
-    image: apache/activemq-artemis:2.42.0-alpine
+    image: apache/activemq-artemis:2.43.0-alpine
     environment:
       EXTRA_ARGS: --http-host 0.0.0.0 --relax-jolokia --nio
       ARTEMIS_USER: artemis
