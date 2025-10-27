@@ -73,7 +73,7 @@ jobs:
         run: ./gradlew -p springwolf-examples/e2e npm_run_test
         env:
           SPRINGWOLF_EXAMPLE: ${{ matrix.plugin }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: test-plugin-${{ matrix.plugin }}-playwright
