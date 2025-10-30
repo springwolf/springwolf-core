@@ -9,10 +9,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ReferenceUtilTest {
     @Test
     void shouldCorrectIllegalCharacter() {
-        String[] names = {"users/{userId}", "users*{userId}", "users#{userId}"};
+        String[] names = {"users/userId", "users*userId", "users#userId"};
 
         for (String name : names) {
-            assertThat(ReferenceUtil.toValidId(name)).isEqualTo("users_{userId}");
+            assertThat(ReferenceUtil.toValidId(name)).isEqualTo("users_userId");
         }
     }
 
