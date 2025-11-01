@@ -1,35 +1,32 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.model;
 
-public class ReferenceUtil {
-    private static final String FORBIDDEN_ID_CHARACTER = "[#*/]";
+import java.util.Set;
+import java.util.stream.Collectors;
 
-    // Keeps valid characters, valid percent-encoded sequences,and changes forbidden to "_"
+public class ReferenceUtil {
+    /**
+     * Allowed characters in RFC 3986, section 3.5 fragments (used for AsyncAPI $ref values)
+     * Excluding '~' and '/', since they have a special meaning JSON Pointer (RFC 6901)
+     */
+    private static final Set<Character> ALLOWED_CHARACTERS =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._!$&'()+,;=:@?%"
+                    .chars()
+                    .mapToObj(c -> (char) c)
+                    .collect(Collectors.toSet());
+
     public static String toValidId(String name) {
         StringBuilder sb = new StringBuilder();
 
-        int i = 0;
-        while (i < name.length()) {
-            char c = name.charAt(i);
-            if (FORBIDDEN_ID_CHARACTER.indexOf(c) >= 0) {
-                sb.append("_");
-                i++;
-            } else if (c == '%'
-                    && i + 2 < name.length()
-                    && isHexDigit(name.charAt(i + 1))
-                    && isHexDigit(name.charAt(i + 2))) {
+        for (char c : name.toCharArray()) {
+            if (ALLOWED_CHARACTERS.contains(c)) {
                 sb.append(c);
-                i += 3;
             } else {
-                sb.append(c);
-                i++;
+                sb.append("_");
             }
         }
-        return sb.toString();
-    }
 
-    private static boolean isHexDigit(char c) {
-        return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
+        return sb.toString();
     }
 
     public static String getLastSegment(String ref) {
