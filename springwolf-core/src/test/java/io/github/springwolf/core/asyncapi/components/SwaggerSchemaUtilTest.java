@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.components;
 
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
@@ -26,6 +27,48 @@ class SwaggerSchemaUtilTest {
 
     @Nested
     class MapSchemaOrRef {
+
+        @Test
+        void mapToOpenApiV3Schema() {
+            // given
+            ObjectSchema schema = new ObjectSchema();
+            schema.setType(SchemaType.STRING);
+            ExternalDocumentation externalDocs = new ExternalDocumentation();
+            externalDocs.setDescription("description");
+            externalDocs.setUrl("url");
+            schema.setExternalDocs(externalDocs);
+
+            // when
+            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchemaOrRef(schema, SchemaFormat.OPENAPI_V3);
+
+            // then
+            // componentSchema should contain a MultiFormatSchema with the original openapi schema
+            MultiFormatSchema multiFormatSchema = componentSchema.getMultiFormatSchema();
+            assertThat(multiFormatSchema).isNotNull();
+            assertThat(multiFormatSchema.getSchema()).isSameAs(schema);
+            assertThat(multiFormatSchema.getSchemaFormat()).isEqualTo(SchemaFormat.OPENAPI_V3.value);
+        }
+
+        @Test
+        void mapToOpenApiV31Schema() {
+            // given
+            ObjectSchema schema = new ObjectSchema();
+            schema.setType(SchemaType.STRING);
+            ExternalDocumentation externalDocs = new ExternalDocumentation();
+            externalDocs.setDescription("description");
+            externalDocs.setUrl("url");
+            schema.setExternalDocs(externalDocs);
+
+            // when
+            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchemaOrRef(schema, SchemaFormat.OPENAPI_V3_1);
+
+            // then
+            // componentSchema should contain a MultiFormatSchema with the original openapi schema
+            MultiFormatSchema multiFormatSchema = componentSchema.getMultiFormatSchema();
+            assertThat(multiFormatSchema).isNotNull();
+            assertThat(multiFormatSchema.getSchema()).isSameAs(schema);
+            assertThat(multiFormatSchema.getSchemaFormat()).isEqualTo(SchemaFormat.OPENAPI_V3_1.value);
+        }
 
         @Test
         void mapReference() {
@@ -56,6 +99,49 @@ class SwaggerSchemaUtilTest {
 
     @Nested
     class MapSchema {
+
+        @Test
+        void mapToOpenApiV3Schema() {
+            // given
+            ObjectSchema schema = new ObjectSchema();
+            schema.setType(SchemaType.STRING);
+            ExternalDocumentation externalDocs = new ExternalDocumentation();
+            externalDocs.setDescription("description");
+            externalDocs.setUrl("url");
+            schema.setExternalDocs(externalDocs);
+
+            // when
+            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, SchemaFormat.OPENAPI_V3);
+
+            // then
+            // componentSchema should contain a MultiFormatSchema with the original openapi schema
+            MultiFormatSchema multiFormatSchema = componentSchema.getMultiFormatSchema();
+            assertThat(multiFormatSchema).isNotNull();
+            assertThat(multiFormatSchema.getSchema()).isSameAs(schema);
+            assertThat(multiFormatSchema.getSchemaFormat()).isEqualTo(SchemaFormat.OPENAPI_V3.value);
+        }
+
+        @Test
+        void mapToOpenApiV31Schema() {
+            // given
+            ObjectSchema schema = new ObjectSchema();
+            schema.setType(SchemaType.STRING);
+            ExternalDocumentation externalDocs = new ExternalDocumentation();
+            externalDocs.setDescription("description");
+            externalDocs.setUrl("url");
+            schema.setExternalDocs(externalDocs);
+
+            // when
+            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, SchemaFormat.OPENAPI_V3_1);
+
+            // then
+            // componentSchema should contain a MultiFormatSchema with the original openapi schema
+            MultiFormatSchema multiFormatSchema = componentSchema.getMultiFormatSchema();
+            assertThat(multiFormatSchema).isNotNull();
+            assertThat(multiFormatSchema.getSchema()).isSameAs(schema);
+            assertThat(multiFormatSchema.getSchemaFormat()).isEqualTo(SchemaFormat.OPENAPI_V3_1.value);
+        }
+
         @Test
         void mapExternalDocs() {
             // given

@@ -203,7 +203,7 @@ public class GroupingService {
      * properties, allOf, anyOf, oneOf, not- and items references. Trys to deduce the schema id from the ref path and
      * returns a Set of detected schema ids.
      *
-     * @param markingContext the current {@link MarkingContext}
+     * @param markingContext  the current {@link MarkingContext}
      * @param componentSchema the {@link ComponentSchema} to analyze
      * @return Set of schema ids representing nested schema refs
      */
@@ -217,14 +217,16 @@ public class GroupingService {
         if (componentSchema.getMultiFormatSchema() != null) {
             MultiFormatSchema multiFormatSchema = componentSchema.getMultiFormatSchema();
 
-            // Currently we support async_api and open_api format.
+            // Currently we support async_api and open_api v3 and v3.1 format.
             // The concrete schemaformat mediatype can contain json/yaml postfix, so we check wether the begin of the
             // media type matches.
-            if (multiFormatSchema.getSchemaFormat().startsWith(SchemaFormat.ASYNCAPI_V3.toString())
+            String schemaFormat = multiFormatSchema.getSchemaFormat();
+            if (schemaFormat.startsWith(SchemaFormat.ASYNCAPI_V3.toString())
                     && multiFormatSchema.getSchema() instanceof SchemaObject schemaObject) {
                 return findUnmarkedNestedSchemasForAsyncAPISchema(markingContext, schemaObject);
             }
-            if (multiFormatSchema.getSchemaFormat().startsWith(SchemaFormat.OPENAPI_V3.toString())
+            if ((schemaFormat.startsWith(SchemaFormat.OPENAPI_V3.toString())
+                            || schemaFormat.startsWith(SchemaFormat.OPENAPI_V3_1.toString()))
                     && multiFormatSchema.getSchema() instanceof Schema openapiSchema) {
                 return findUnmarkedNestedSchemasForOpenAPISchema(markingContext, openapiSchema);
             }
@@ -240,7 +242,7 @@ public class GroupingService {
      * returns a Set of detected schema ids.
      *
      * @param markingContext the current {@link MarkingContext}
-     * @param schema the {@link SchemaObject} to analyze
+     * @param schema         the {@link SchemaObject} to analyze
      * @return Set of schema ids representing nested schema refs
      */
     private static Set<String> findUnmarkedNestedSchemasForAsyncAPISchema(
@@ -276,7 +278,7 @@ public class GroupingService {
      * returns a Set of detected schema ids.
      *
      * @param markingContext the current {@link MarkingContext}
-     * @param openapiSchema the Swagger {@link Schema} to analyze
+     * @param openapiSchema  the Swagger {@link Schema} to analyze
      * @return Set of schema ids representing nested schema refs
      */
     private static Set<String> findUnmarkedNestedSchemasForOpenAPISchema(

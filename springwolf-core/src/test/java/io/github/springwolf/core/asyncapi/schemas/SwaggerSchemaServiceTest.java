@@ -67,7 +67,7 @@ class SwaggerSchemaServiceTest {
     @Test
     void classWithSchemaAnnotationWithOpenapiSchemaformat() {
         ComponentSchema schema = schemaService
-                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3)
+                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.OPENAPI_V3)
                 .rootSchema();
 
         assertThat(schema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
@@ -106,7 +106,7 @@ class SwaggerSchemaServiceTest {
 
     @Test
     void postProcessorsAreCalledWithOpenapiSchemaformat() {
-        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type", SchemaFormat.ASYNCAPI_V3);
+        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type", SchemaFormat.OPENAPI_V3);
 
         verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
         verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
