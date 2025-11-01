@@ -85,7 +85,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
         MessagePayload payload = MessagePayload.of(
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
-        String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+        String headerModelName = componentsService.registerSimpleSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
         MessageHeaders messageHeaders = MessageHeaders.of(SchemaReference.toSchema(headerModelName));
 
         MessageObject message = MessageObject.builder()

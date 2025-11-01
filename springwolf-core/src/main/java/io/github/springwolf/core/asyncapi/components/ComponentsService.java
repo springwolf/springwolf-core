@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import jakarta.annotation.Nullable;
 
@@ -33,7 +34,7 @@ public interface ComponentsService {
      *
      * @param type        Type to resolve a schema from
      * @param contentType Runtime ContentType of Schema
-     * @return the root schema for the given type.
+     * @return a {@link SchemaReference} referencing the root schema, or null if no schema could be resolved.
      */
     @Nullable
     ComponentSchema resolvePayloadSchema(Type type, String contentType);
@@ -43,7 +44,7 @@ public interface ComponentsService {
      * @param headers the schema to register, typically a header schema
      * @return the title attribute of the given schema
      */
-    String registerSchema(SchemaObject headers);
+    String registerSimpleSchema(SchemaObject headers);
 
     /**
      * Provides a map of all registered messages.

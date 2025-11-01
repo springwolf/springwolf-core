@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersionDetector;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
@@ -42,7 +43,7 @@ class JsonSchemaGeneratorTest {
     @MethodSource
     void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema) throws Exception {
         // given
-        SchemaObject actualSchema = swaggerSchemaUtil.mapSchema(asyncApiSchema.get());
+        ComponentSchema actualSchema = swaggerSchemaUtil.mapSchema(asyncApiSchema.get(), SchemaFormat.ASYNCAPI_V3);
 
         // when
         verifyValidJsonSchema(expectedJsonSchema);
@@ -67,7 +68,7 @@ class JsonSchemaGeneratorTest {
                 ComponentSchema.of(pongSchema));
 
         // when
-        Object jsonSchema = jsonSchemaGenerator.fromSchema(ComponentSchema.of(actualSchema), definitions);
+        Object jsonSchema = jsonSchemaGenerator.fromSchema(actualSchema, definitions);
 
         // then
         String jsonSchemaString = mapper.writeValueAsString(jsonSchema);

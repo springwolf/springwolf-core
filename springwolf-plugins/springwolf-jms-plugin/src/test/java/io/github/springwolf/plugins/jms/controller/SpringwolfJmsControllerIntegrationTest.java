@@ -94,7 +94,7 @@ class SpringwolfJmsControllerIntegrationTest {
     void setup() {
         when(springwolfJmsProducer.isEnabled()).thenReturn(true);
 
-        componentsService.registerSchema(SchemaObject.builder()
+        componentsService.registerSimpleSchema(SchemaObject.builder()
                 .title(PayloadDto.class.getName())
                 .properties(new HashMap<>())
                 .build());

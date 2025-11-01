@@ -37,7 +37,7 @@ public class AsyncAnnotationMessageService {
         PayloadSchemaObject payloadSchema = payloadAsyncOperationService.extractSchema(operationData, method);
 
         SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, stringValueResolver);
-        String headerSchemaName = this.componentsService.registerSchema(headerSchema);
+        String headerSchemaName = this.componentsService.registerSimpleSchema(headerSchema);
 
         Map<String, MessageBinding> messageBinding =
                 AsyncAnnotationUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);

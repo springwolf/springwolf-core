@@ -94,7 +94,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     void setup() {
         when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
 
-        componentsService.registerSchema(SchemaObject.builder()
+        componentsService.registerSimpleSchema(SchemaObject.builder()
                 .title(PayloadDto.class.getName())
                 .properties(new HashMap<>())
                 .build());

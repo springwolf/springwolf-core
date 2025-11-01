@@ -111,6 +111,6 @@ class PayloadAsyncOperationServiceTest {
         SchemaObject schema = result.schema().getSchema();
         assertThat(schema.getTitle()).isEqualTo("PayloadNotUsed");
         assertThat(schema.getDescription()).isEqualTo("No payload specified");
-        verify(componentsService).registerSchema(PAYLOAD_NOT_USED.schema().getSchema());
+        verify(componentsService).registerSimpleSchema(PAYLOAD_NOT_USED.schema().getSchema());
     }
 }

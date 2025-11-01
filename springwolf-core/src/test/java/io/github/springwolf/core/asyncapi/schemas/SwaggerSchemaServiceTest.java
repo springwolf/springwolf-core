@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -57,7 +58,7 @@ class SwaggerSchemaServiceTest {
     @Test
     void classWithSchemaAnnotationWithAsyncapiSchemaformat() {
         ComponentSchema schema = schemaService
-                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant")
+                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3)
                 .rootSchema();
 
         assertThat(schema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
@@ -66,7 +67,7 @@ class SwaggerSchemaServiceTest {
     @Test
     void classWithSchemaAnnotationWithOpenapiSchemaformat() {
         ComponentSchema schema = schemaService
-                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant")
+                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3)
                 .rootSchema();
 
         assertThat(schema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
@@ -85,7 +86,7 @@ class SwaggerSchemaServiceTest {
         Class<?> clazz =
                 OneFieldFooWithoutFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
         Map<String, ComponentSchema> schemas = schemaServiceWithFqn
-                .resolveSchema(clazz, "content-type-not-relevant")
+                .resolveSchema(clazz, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3)
                 .referencedSchemas();
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemas);
 
@@ -97,7 +98,7 @@ class SwaggerSchemaServiceTest {
 
     @Test
     void postProcessorsAreCalledWithAsyncapiSchemaformat() {
-        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type");
+        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type", SchemaFormat.ASYNCAPI_V3);
 
         verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
         verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
@@ -105,7 +106,7 @@ class SwaggerSchemaServiceTest {
 
     @Test
     void postProcessorsAreCalledWithOpenapiSchemaformat() {
-        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type");
+        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type", SchemaFormat.ASYNCAPI_V3);
 
         verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
         verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
@@ -121,15 +122,16 @@ class SwaggerSchemaServiceTest {
                 .when(schemasPostProcessor)
                 .process(any(), any(), any());
 
-        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
+        schemaService.resolveSchema(
+                ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3);
 
         verifyNoInteractions(schemasPostProcessor2);
     }
 
     @Test
     void modelConvertersRefsAreResolved() {
-        SwaggerSchemaService.ExtractedSchemas schema =
-                schemaService.resolveSchema(ModelConverterNativeClass.class, "content-type-not-relevant");
+        SwaggerSchemaService.ExtractedSchemas schema = schemaService.resolveSchema(
+                ModelConverterNativeClass.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3);
 
         assertThat(schema.rootSchema().getReference().getRef())
                 .contains(ModelConverterNativeClass.class.getName().replace("$", "."));

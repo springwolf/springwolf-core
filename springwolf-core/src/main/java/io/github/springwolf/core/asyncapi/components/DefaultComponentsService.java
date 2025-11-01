@@ -5,10 +5,11 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
@@ -22,11 +23,10 @@ import java.util.Map;
  * in the resulting AsyncApi object.
  */
 @Slf4j
-@AllArgsConstructor
 public class DefaultComponentsService implements ComponentsService {
 
     private final SwaggerSchemaService schemaService;
-    private final SpringwolfConfigProperties springwolfConfigProperties;
+    private final SchemaFormat payloadSchemaFormat;
 
     /**
      * maps a schema name (key) to a detected corresponding {@link ComponentSchema}.
@@ -34,6 +34,15 @@ public class DefaultComponentsService implements ComponentsService {
     private final Map<String, ComponentSchema> schemas = new HashMap<>();
 
     private final Map<String, Message> messages = new HashMap<>();
+
+    public DefaultComponentsService(
+            SwaggerSchemaService schemaService, SpringwolfConfigProperties springwolfConfigProperties) {
+        this.schemaService = schemaService;
+
+        PayloadSchemaFormat payloadSchemaFormat =
+                springwolfConfigProperties.getDocket().getPayloadSchemaFormat();
+        this.payloadSchemaFormat = payloadSchemaFormat.getSchemaFormat();
+    }
 
     /**
      * Provides a map of all registered schemas.
@@ -51,12 +60,13 @@ public class DefaultComponentsService implements ComponentsService {
      *
      * @param type        Type to resolve a schema from
      * @param contentType Runtime ContentType of Schema
-     * @return the root schema for the given type.
+     * @return the root schema for the given type
      */
     @Override
     public ComponentSchema resolvePayloadSchema(Type type, String contentType) {
 
-        SwaggerSchemaService.ExtractedSchemas payload = schemaService.resolveSchema(type, contentType);
+        SwaggerSchemaService.ExtractedSchemas payload =
+                schemaService.resolveSchema(type, contentType, payloadSchemaFormat);
         payload.referencedSchemas().forEach(schemas::putIfAbsent);
         return payload.rootSchema();
     }
@@ -67,17 +77,17 @@ public class DefaultComponentsService implements ComponentsService {
      * Use only with schemas with max. one level of properties. Providing {@link SchemaObject}s with deep
      * property hierarchy will result in an corrupted result.
      * <br/>
-     * A typical usecase for this method is  registering of header schemas, which have typically a simple structure.
+     * A typical usecase for this method is registering of header schemas, which have typically a simple structure.
      *
      * @param headers the schema to register, typically a header schema
      * @return the title attribute of the given schema
      */
     @Override
-    public String registerSchema(SchemaObject headers) {
+    public String registerSimpleSchema(SchemaObject headers) {
         log.debug("Registering schema for {}", headers.getTitle());
 
-        SchemaObject headerSchema = schemaService.extractSchema(headers);
-        this.schemas.putIfAbsent(headers.getTitle(), ComponentSchema.of(headerSchema));
+        ComponentSchema processedSchema = schemaService.postProcessSimpleSchema(headers);
+        this.schemas.putIfAbsent(headers.getTitle(), processedSchema);
 
         return headers.getTitle();
     }
