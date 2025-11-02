@@ -65,14 +65,8 @@ public class RabbitListenerUtil {
     }
 
     public static String getChannelId(RabbitListener annotation, StringValueResolver stringValueResolver) {
-        Stream<String> annotationBindingChannelIds = Arrays.stream(annotation.bindings())
-                .flatMap(binding -> channelIdFromAnnotationBindings(
-                                binding.exchange().name(), binding.key())
-                        .map(stringValueResolver::resolveStringValue));
-
-        Stream<String> stream =
-                Stream.concat(streamQueueNames(annotation).map(ReferenceUtil::toValidId), annotationBindingChannelIds);
-        return resolveFirstValue(stream, stringValueResolver, "channel id");
+        String channelName = getChannelName(annotation, stringValueResolver);
+        return ReferenceUtil.toValidId(channelName);
     }
 
     private static String getQueueName(RabbitListener annotation, StringValueResolver resolver) {
@@ -91,10 +85,6 @@ public class RabbitListenerUtil {
             return Stream.of(exchangeName);
         }
         return keys.stream().map(key -> String.join("_", exchangeName, key));
-    }
-
-    private static Stream<String> channelIdFromAnnotationBindings(String exchangeName, String[] keys) {
-        return channelNameFromAnnotationBindings(exchangeName, keys).map(ReferenceUtil::toValidId);
     }
 
     /**
@@ -211,14 +201,14 @@ public class RabbitListenerUtil {
     }
 
     public static List<ChannelObject> buildChannelObject(Binding binding) {
-        String exchangeId = channelIdFromAnnotationBindings(
+        String exchangeName = channelNameFromAnnotationBindings(
                         binding.getExchange(), List.of(binding.getRoutingKey()).toArray(String[]::new))
                 .findFirst()
                 .get();
         return List.of(
                 // exchange
                 ChannelObject.builder()
-                        .channelId(exchangeId)
+                        .channelId(ReferenceUtil.toValidId(exchangeName))
                         .address(binding.getRoutingKey())
                         .bindings(Map.of(
                                 BINDING_NAME,

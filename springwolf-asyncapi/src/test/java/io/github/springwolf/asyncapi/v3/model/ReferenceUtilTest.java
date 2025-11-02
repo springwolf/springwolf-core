@@ -3,15 +3,18 @@ package io.github.springwolf.asyncapi.v3.model;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ReferenceUtilTest {
-    @Test
-    void shouldCorrectIllegalCharacter() {
-        String name = "users/{userId}";
+    @ParameterizedTest
+    @CsvSource(value = {"users/userId", "users~userId", "users*userId", "users#userId"})
+    void shouldReplaceIllegalCharacter(String name) {
+        String result = ReferenceUtil.toValidId(name);
 
-        assertThat(ReferenceUtil.toValidId(name)).isEqualTo("users_{userId}");
+        assertThat(result).isEqualTo("users_userId");
     }
 
     @Nested
