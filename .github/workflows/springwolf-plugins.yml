@@ -62,7 +62,7 @@ jobs:
         run: ./gradlew -p ${{ env.example }} build
 
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v5
+        uses: mikepenz/action-junit-report@v6
         if: success() || failure()
         with:
           check_name: test-plugin-${{ matrix.plugin }}-junit
