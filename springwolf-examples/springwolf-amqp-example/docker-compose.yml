@@ -11,7 +11,7 @@ services:
       - amqp
 
   amqp:
-    image: rabbitmq:4.1-management-alpine
+    image: rabbitmq:4.2-management-alpine
     ports:
       # AMQP protocol port
       - '5672:5672'
