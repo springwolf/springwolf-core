@@ -11,7 +11,7 @@ services:
       - localstack
 
   localstack:
-    image: localstack/localstack:4.9.2
+    image: localstack/localstack:4.10.0
     environment:
       - DEBUG=${DEBUG-}
       - AWS_REGION=eu-central-1
@@ -23,7 +23,7 @@ services:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
   localstack_setup:
-    image: localstack/localstack:4.9.2
+    image: localstack/localstack:4.10.0
     links:
       - localstack
     depends_on:
