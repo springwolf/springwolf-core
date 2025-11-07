@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
@@ -28,6 +29,7 @@ public class PolymorphicPayloadApplication {
                 @JsonSubTypes.Type(value = Dog.class, name = "dog"),
                 @JsonSubTypes.Type(value = Cat.class, name = "cat"),
             })
+    @Schema(oneOf = {Dog.class, Cat.class})
     public interface Pet {
         String getType();
     }
