@@ -55,7 +55,7 @@ public class PayloadService {
     public PayloadSchemaObject useUnusedPayload() {
         ComponentSchema schema = PAYLOAD_NOT_USED.schema();
         if (schema != null && schema.getSchema() != null) {
-            this.componentsService.registerSimpleSchema(schema.getSchema());
+            this.componentsService.registerSchema(schema.getSchema());
         }
         return PAYLOAD_NOT_USED;
     }

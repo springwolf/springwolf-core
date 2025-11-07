@@ -48,7 +48,7 @@ class AsyncAnnotationMessageServiceTest {
                 .when(stringValueResolver)
                 .resolveStringValue(any());
 
-        when(componentsService.registerSimpleSchema(any())).thenReturn("headerSchemaName");
+        when(componentsService.registerSchema(any())).thenReturn("headerSchemaName");
         when(messageBindingProcessor.process(any())).thenReturn(Optional.empty());
 
         when(payloadAsyncOperationService.extractSchema(any(), any())).thenReturn(payloadSchema);

@@ -49,4 +49,11 @@ public class MultiFormatSchema extends ExtendableObject {
      */
     @JsonProperty(value = "schema")
     private Object schema;
+
+    public static MultiFormatSchema of(Object schema) {
+        // if payloadSchema.payload is already an instance of MultiFormatSchema, do not wrap again.
+        return (schema instanceof MultiFormatSchema mfs)
+                ? mfs
+                : MultiFormatSchema.builder().schema(schema).build();
+    }
 }

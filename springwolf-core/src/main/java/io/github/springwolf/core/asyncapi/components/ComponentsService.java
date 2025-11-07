@@ -41,10 +41,10 @@ public interface ComponentsService {
 
     /**
      * registers the given schema with this {@link ComponentsService}
-     * @param headers the schema to register, typically a header schema
+     * @param schemaWithoutRef the schema to register, typically a header schema
      * @return the title attribute of the given schema
      */
-    String registerSimpleSchema(SchemaObject headers);
+    String registerSchema(SchemaObject schemaWithoutRef);
 
     /**
      * Provides a map of all registered messages.

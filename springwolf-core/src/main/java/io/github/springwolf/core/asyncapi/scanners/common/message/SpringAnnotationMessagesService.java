@@ -62,7 +62,7 @@ public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation>
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
         SchemaObject headers = headerClassExtractor.extractHeader(method, payloadSchema);
         SchemaObject mergedHeaderSchema = HeaderSchemaObjectMerger.merge(headerSchema, headers);
-        String headerSchemaName = componentsService.registerSimpleSchema(mergedHeaderSchema);
+        String headerSchemaName = componentsService.registerSchema(mergedHeaderSchema);
 
         Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(classAnnotation, headerSchema);
 

@@ -37,17 +37,13 @@ public class AsyncAnnotationMessageService {
         PayloadSchemaObject payloadSchema = payloadAsyncOperationService.extractSchema(operationData, method);
 
         SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, stringValueResolver);
-        String headerSchemaName = this.componentsService.registerSimpleSchema(headerSchema);
+        String headerSchemaName = this.componentsService.registerSchema(headerSchema);
 
         Map<String, MessageBinding> messageBinding =
                 AsyncAnnotationUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
 
-        // if payloadSchema.payload is already an instance of MultiFormatSchema, do not wrap again.
-        MultiFormatSchema multiFormatSchema = (payloadSchema.payload() instanceof MultiFormatSchema mfs)
-                ? mfs
-                : MultiFormatSchema.builder().schema(payloadSchema.payload()).build();
-
-        var messagePayload = MessagePayload.of(multiFormatSchema);
+        MultiFormatSchema multiFormatSchema = MultiFormatSchema.of(payloadSchema.payload());
+        MessagePayload messagePayload = MessagePayload.of(multiFormatSchema);
 
         var builder = MessageObject.builder()
                 .messageId(payloadSchema.name())

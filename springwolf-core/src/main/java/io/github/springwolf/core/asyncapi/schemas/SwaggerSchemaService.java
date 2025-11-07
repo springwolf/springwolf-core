@@ -64,27 +64,27 @@ public class SwaggerSchemaService {
      * postprocessors and converts the result back to a {@link SchemaObject}
      * <p>NOTE</p>
      * The conversion between the AsyncApi {@link SchemaObject} and Swagger schema instance is not a 'full conversion'. Only
-     * root attributes of the schema an the first level of properties a converted. Providing {@link SchemaObject}s with deep
-     * property hierarchy will result in an corrupted result.
+     * root attributes of the schema and the first level of properties are converted. Providing {@link SchemaObject}s with deep
+     * property hierarchy will result in a corrupted result.
      * <br/>
      * A typical usecase for this method is postprocessing of header schemas, which have typically a simple structure.
      *
-     * @param headers
+     * @param schemaWithoutRef
      * @return
      */
-    public ComponentSchema postProcessSimpleSchema(SchemaObject headers) {
-        String schemaName = headers.getTitle();
+    public ComponentSchema postProcessSchemaWithoutRef(SchemaObject schemaWithoutRef) {
+        String schemaName = schemaWithoutRef.getTitle();
 
         // create a swagger schema to invoke the postprocessors. Copy attributes vom headers to (Swagger) headerSchema
         ObjectSchema headerSchema = new ObjectSchema();
         headerSchema.setName(schemaName);
-        headerSchema.setTitle(headers.getTitle());
-        headerSchema.setDescription(headers.getDescription());
+        headerSchema.setTitle(schemaWithoutRef.getTitle());
+        headerSchema.setDescription(schemaWithoutRef.getDescription());
 
         // transform properties of headers to a properties Map of Swagger schemas.
         // (Only one level, no deep transformation, see SwaggerSchemaUtil#mapToSwagger)
         //
-        Map<String, Schema> properties = headers.getProperties().entrySet().stream()
+        Map<String, Schema> properties = schemaWithoutRef.getProperties().entrySet().stream()
                 .map((property) ->
                         Map.entry(property.getKey(), (Schema<?>) swaggerSchemaUtil.mapToSwagger(property.getValue())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
