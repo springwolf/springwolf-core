@@ -45,6 +45,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -68,6 +69,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },

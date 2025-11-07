@@ -268,6 +268,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -278,6 +279,7 @@
             ]
           },
           "ce_id": {
+            "title": "ce_id",
             "type": "string",
             "description": "CloudEvent Id Header",
             "enum": [
@@ -288,6 +290,7 @@
             ]
           },
           "ce_source": {
+            "title": "ce_source",
             "type": "string",
             "description": "CloudEvent Source Header",
             "enum": [
@@ -298,6 +301,7 @@
             ]
           },
           "ce_specversion": {
+            "title": "ce_specversion",
             "type": "string",
             "description": "CloudEvent Spec Version Header",
             "enum": [
@@ -308,6 +312,7 @@
             ]
           },
           "ce_subject": {
+            "title": "ce_subject",
             "type": "string",
             "description": "CloudEvent Subject Header",
             "enum": [
@@ -318,6 +323,7 @@
             ]
           },
           "ce_time": {
+            "title": "ce_time",
             "type": "string",
             "description": "CloudEvent Time Header",
             "enum": [
@@ -328,6 +334,7 @@
             ]
           },
           "ce_type": {
+            "title": "ce_type",
             "type": "string",
             "description": "CloudEvent Payload Type Header",
             "enum": [
@@ -338,6 +345,7 @@
             ]
           },
           "content-type": {
+            "title": "content-type",
             "type": "string",
             "description": "CloudEvent Content-Type Header",
             "enum": [
@@ -370,6 +378,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.NestedPayloadDto"
               ],
+              "title": "__TypeId__",
               "type": "string"
             },
             "ce_id": {
@@ -377,6 +386,7 @@
               "enum": [
                 "2c60089e-6f39-459d-8ced-2d6df7e4c03a"
               ],
+              "title": "ce_id",
               "type": "string"
             },
             "ce_source": {
@@ -384,6 +394,7 @@
               "enum": [
                 "http://localhost"
               ],
+              "title": "ce_source",
               "type": "string"
             },
             "ce_specversion": {
@@ -391,6 +402,7 @@
               "enum": [
                 "1.0"
               ],
+              "title": "ce_specversion",
               "type": "string"
             },
             "ce_subject": {
@@ -398,6 +410,7 @@
               "enum": [
                 "Springwolf example project - Kafka"
               ],
+              "title": "ce_subject",
               "type": "string"
             },
             "ce_time": {
@@ -405,6 +418,7 @@
               "enum": [
                 "2023-10-28 20:01:23+00:00"
               ],
+              "title": "ce_time",
               "type": "string"
             },
             "ce_type": {
@@ -412,6 +426,7 @@
               "enum": [
                 "NestedPayloadDto.v1"
               ],
+              "title": "ce_type",
               "type": "string"
             },
             "content-type": {
@@ -419,6 +434,7 @@
               "enum": [
                 "application/json"
               ],
+              "title": "content-type",
               "type": "string"
             }
           },
@@ -431,6 +447,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -454,6 +471,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -466,6 +484,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -489,6 +508,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -501,6 +521,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -523,6 +544,7 @@
             ]
           },
           "kafka_recordMetadata": {
+            "title": "ConsumerRecordMetadata",
             "type": "object",
             "examples": [
               { }
@@ -531,10 +553,10 @@
         },
         "examples": [
           {
+            "ConsumerRecordMetadata": { },
             "__TypeId__": "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto",
             "kafka_offset": 0,
-            "kafka_receivedMessageKey": "string",
-            "kafka_recordMetadata": { }
+            "kafka_receivedMessageKey": "string"
           }
         ],
         "x-json-schema": {
@@ -545,6 +567,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
               ],
+              "title": "__TypeId__",
               "type": "string"
             },
             "kafka_offset": {
@@ -554,6 +577,7 @@
               "type": "string"
             },
             "kafka_recordMetadata": {
+              "title": "ConsumerRecordMetadata",
               "type": "object"
             }
           },
@@ -566,6 +590,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -589,6 +614,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -601,6 +627,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -624,6 +651,7 @@
               "enum": [
                 "javax.money.MonetaryAmount"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -636,6 +664,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -659,6 +688,7 @@
               "enum": [
                 "PayloadNotUsed"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -671,6 +701,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -694,6 +725,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -706,6 +738,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -729,6 +762,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -741,6 +775,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -764,6 +799,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -776,6 +812,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -799,6 +836,7 @@
               "enum": [
                 "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -811,6 +849,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -834,6 +873,7 @@
               "enum": [
                 "java.lang.Integer"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
@@ -846,6 +886,7 @@
         "type": "object",
         "properties": {
           "__TypeId__": {
+            "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
             "enum": [
@@ -869,6 +910,7 @@
               "enum": [
                 "java.lang.String"
               ],
+              "title": "__TypeId__",
               "type": "string"
             }
           },
