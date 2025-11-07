@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.oas.models.media.Schema;
@@ -250,7 +251,7 @@ public class SwaggerSchemaMapper {
      * @param schema Object representing an schema.
      * @return the resulting Schema
      */
-    @Nullable
+    @Nullable // TODO: why nullable?
     public Schema<?> mapToSwagger(Object schema) {
         // first unwrap ComponentSchema and MultiFormatSchema:
         Object unwrappedSchema = unwrapSchema(schema);
@@ -279,7 +280,10 @@ public class SwaggerSchemaMapper {
      * @return
      */
     private Schema mapSchemaObjectToSwagger(SchemaObject asyncApiSchema) {
-        Schema swaggerSchema = new Schema();
+        Schema swaggerSchema = new ObjectSchema();
+        swaggerSchema.setName(asyncApiSchema.getTitle());
+        swaggerSchema.setTitle(asyncApiSchema.getTitle());
+
         if (asyncApiSchema.getType() != null) {
             swaggerSchema.setType(asyncApiSchema.getType().stream()
                     .filter(type -> !type.equals(SchemaType.NULL))
@@ -291,6 +295,13 @@ public class SwaggerSchemaMapper {
         swaggerSchema.setDescription(asyncApiSchema.getDescription());
         swaggerSchema.setExamples(asyncApiSchema.getExamples());
         swaggerSchema.setEnum(asyncApiSchema.getEnumValues());
+
+        if (asyncApiSchema.getProperties() != null) {
+            Map<String, Schema> properties = asyncApiSchema.getProperties().entrySet().stream()
+                    .map((property) -> Map.entry(property.getKey(), (Schema<?>) mapToSwagger(property.getValue())))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            swaggerSchema.setProperties(properties);
+        }
 
         return swaggerSchema;
     }
