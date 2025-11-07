@@ -162,7 +162,9 @@ public class SchemaObject extends ExtendableObject implements Schema {
         }
 
         public SchemaObjectBuilder type(String type) {
-            this.type = Set.of(type);
+            if (type != null) {
+                this.type = Set.of(type);
+            }
             return this;
         }
     }
