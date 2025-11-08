@@ -11,7 +11,6 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -205,7 +204,7 @@ public class SwaggerSchemaUtil {
      * @param schema
      * @return
      */
-    public Object unwrapSchema(Object schema) {
+    private Object unwrapSchema(Object schema) {
         if (schema instanceof ComponentSchema componentSchema) {
             Object unwrappedSchema = componentSchema.getSchema();
             if (unwrappedSchema == null) {
@@ -239,7 +238,6 @@ public class SwaggerSchemaUtil {
      * @param schema Object representing an schema.
      * @return the resulting Schema
      */
-    @Nullable // TODO: why nullable?
     public Schema<?> mapToSwagger(Object schema) {
         // first unwrap ComponentSchema and MultiFormatSchema:
         Object unwrappedSchema = unwrapSchema(schema);
@@ -247,13 +245,13 @@ public class SwaggerSchemaUtil {
         if (unwrappedSchema instanceof Schema<?> swaggerSchema) {
             return swaggerSchema;
         }
-
         if (unwrappedSchema instanceof SchemaObject schemaObject) {
             return mapSchemaObjectToSwagger(schemaObject);
         }
         if (unwrappedSchema instanceof SchemaReference schemaReference) {
             return mapSchemaReferenceToSwagger(schemaReference);
         }
+
         throw new RuntimeException("Could not convert '" + schema + "' to a Swagger Schema");
     }
 
@@ -261,10 +259,9 @@ public class SwaggerSchemaUtil {
      * transforms the given asyncApiSchema {@link SchemaObject} to a Swagger schema object.
      * <p>Note</p>
      * This method does not perform a 'deep' transformation, only the root attributes of asyncApiSchema
-     * are mapped to the Swagger schema. The properties of asyncApiSchema will not be mapped to the
-     * Swagger schema.
+     * are mapped to the Swagger schema (best effort).
      * @param asyncApiSchema
-     * @return
+     * @return swagger Schema
      */
     private Schema mapSchemaObjectToSwagger(SchemaObject asyncApiSchema) {
         Schema swaggerSchema = new ObjectSchema();
