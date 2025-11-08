@@ -272,7 +272,8 @@
               ],
               "examples": [
                 "io.github.springwolf.examples.kafka.dtos.NestedPayloadDto"
-              ]
+              ],
+              "title": "__TypeId__"
             },
             "ce_id": {
               "type": "string",
@@ -282,7 +283,8 @@
               ],
               "examples": [
                 "2c60089e-6f39-459d-8ced-2d6df7e4c03a"
-              ]
+              ],
+              "title": "ce_id"
             },
             "ce_source": {
               "type": "string",
@@ -292,7 +294,8 @@
               ],
               "examples": [
                 "http://localhost"
-              ]
+              ],
+              "title": "ce_source"
             },
             "ce_specversion": {
               "type": "string",
@@ -302,7 +305,8 @@
               ],
               "examples": [
                 "1.0"
-              ]
+              ],
+              "title": "ce_specversion"
             },
             "ce_subject": {
               "type": "string",
@@ -312,7 +316,8 @@
               ],
               "examples": [
                 "Springwolf example project - Kafka"
-              ]
+              ],
+              "title": "ce_subject"
             },
             "ce_time": {
               "type": "string",
@@ -322,7 +327,8 @@
               ],
               "examples": [
                 "2023-10-28 20:01:23+00:00"
-              ]
+              ],
+              "title": "ce_time"
             },
             "ce_type": {
               "type": "string",
@@ -332,7 +338,8 @@
               ],
               "examples": [
                 "NestedPayloadDto.v1"
-              ]
+              ],
+              "title": "ce_type"
             },
             "content-type": {
               "type": "string",
@@ -342,7 +349,8 @@
               ],
               "examples": [
                 "application/json"
-              ]
+              ],
+              "title": "content-type"
             }
           },
           "title": "SpringDefaultHeaderAndCloudEvent"
@@ -364,7 +372,8 @@
               ],
               "examples": [
                 "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-AnotherPayloadAvroDto"
@@ -386,7 +395,8 @@
               ],
               "examples": [
                 "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-AnotherPayloadDto"
@@ -403,12 +413,14 @@
           "properties": {
             "__TypeId__": {
               "type": "string",
-              "description": "Type ID"
+              "description": "Type ID",
+              "title": "__TypeId__"
             },
             "my_uuid_field": {
               "type": "string",
               "format": "uuid",
-              "description": "Event identifier"
+              "description": "Event identifier",
+              "title": "my_uuid_field"
             }
           },
           "title": "SpringKafkaDefaultHeaders-AnotherTopic"
@@ -433,7 +445,8 @@
               ],
               "examples": [
                 "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
-              ]
+              ],
+              "title": "__TypeId__"
             },
             "kafka_offset": {
               "type": "integer",
@@ -468,7 +481,8 @@
               ],
               "examples": [
                 "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-Message"
@@ -490,7 +504,8 @@
               ],
               "examples": [
                 "javax.money.MonetaryAmount"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-MonetaryAmount"
@@ -512,7 +527,8 @@
               ],
               "examples": [
                 "PayloadNotUsed"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-PayloadNotUsed"
@@ -534,7 +550,8 @@
               ],
               "examples": [
                 "io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-RequiredAndNullablePayloadDto"
@@ -556,7 +573,8 @@
               ],
               "examples": [
                 "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-VehicleBase"
@@ -578,7 +596,8 @@
               ],
               "examples": [
                 "io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-XmlPayloadDto"
@@ -600,7 +619,8 @@
               ],
               "examples": [
                 "io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-YamlPayloadDto"
@@ -622,7 +642,8 @@
               ],
               "examples": [
                 "java.lang.Integer"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-integer"
@@ -644,7 +665,8 @@
               ],
               "examples": [
                 "java.lang.String"
-              ]
+              ],
+              "title": "__TypeId__"
             }
           },
           "title": "SpringKafkaDefaultHeaders-string"

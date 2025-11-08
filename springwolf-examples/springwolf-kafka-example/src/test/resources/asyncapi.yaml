@@ -364,9 +364,11 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Type ID
         my_uuid_field:
+          title: my_uuid_field
           type: string
           description: Event identifier
           format: uuid
@@ -378,10 +380,12 @@ components:
         properties:
           __TypeId__:
             description: Type ID
+            title: __TypeId__
             type: string
           my_uuid_field:
             description: Event identifier
             format: uuid
+            title: my_uuid_field
             type: string
         title: SpringKafkaDefaultHeaders-AnotherTopic
         type: object

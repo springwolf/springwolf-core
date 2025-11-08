@@ -57,7 +57,7 @@ public class SwaggerSchemaService {
      * @return
      */
     public ComponentSchema postProcessSchemaWithoutRef(SchemaObject schemaWithoutRef) {
-        Schema headerSchema = swaggerSchemaUtil.mapToSwagger(schemaWithoutRef);
+        Schema headerSchema = swaggerSchemaMapper.mapToSwagger(schemaWithoutRef);
 
         // call postprocessors
         Map<String, Schema> newSchemasToProcess = Map.of(headerSchema.getName(), headerSchema);
