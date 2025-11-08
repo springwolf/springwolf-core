@@ -582,6 +582,21 @@ class SwaggerSchemaUtilTest {
         }
 
         @Test
+        void mapFormat() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setType(SchemaType.STRING);
+            schema.setFormat("email");
+
+            // when
+            Schema result = swaggerSchemaUtil.mapToSwagger(schema);
+
+            // then
+            assertThat(result.getType()).isEqualTo(SchemaType.STRING);
+            assertThat(result.getFormat()).isEqualTo("email");
+        }
+
+        @Test
         void mapProperties() {
             // given
             SchemaObject property = new SchemaObject();

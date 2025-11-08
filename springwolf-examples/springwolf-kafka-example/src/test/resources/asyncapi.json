@@ -533,6 +533,7 @@
           },
           "kafka_offset": {
             "type": "integer",
+            "format": "int32",
             "examples": [
               0
             ]
@@ -571,6 +572,7 @@
               "type": "string"
             },
             "kafka_offset": {
+              "format": "int32",
               "type": "integer"
             },
             "kafka_receivedMessageKey": {

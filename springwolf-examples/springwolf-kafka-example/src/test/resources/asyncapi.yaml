@@ -373,6 +373,7 @@ components:
             - io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
         kafka_offset:
           type: integer
+          format: int32
           examples:
             - 0
         kafka_receivedMessageKey:
@@ -399,6 +400,7 @@ components:
             title: __TypeId__
             type: string
           kafka_offset:
+            format: int32
             type: integer
           kafka_receivedMessageKey:
             type: string
