@@ -43,6 +43,7 @@ Contributing follows mostly the following steps:
    - Add/Adapt tests as necessary
 4. Run the tests
    - Run tests locally via `./gradlew test` (includes `unitTest` and `integrationTest` targets, which executes faster)
+   - In case there are expected changes to the generated asyncapi artifacts, run `./gradlew test updateAsyncApiJson` to update them using the current (actual) files
 5. Run the code formatter
    - We use the palantir code style and disallow wildcard imports
    - Run `./gradlew spotlessApply` to fix most things automatically

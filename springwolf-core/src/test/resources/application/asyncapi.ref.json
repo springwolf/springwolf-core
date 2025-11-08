@@ -1,0 +1,98 @@
+{
+  "asyncapi": "3.0.0",
+  "id": "urn:io:github:springwolf:example",
+  "info": {
+    "title": "Info title was loaded from spring properties",
+    "version": "1.0.0",
+    "description": "Springwolf core integration test",
+    "x-generator": "springwolf"
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "test-protocol": {
+      "host": "some-server:1234",
+      "protocol": "test"
+    }
+  },
+  "channels": {
+    "enum-channel": {
+      "address": "enum-channel",
+      "messages": {
+        "io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication.Schemas.MyEnumRoot": {
+          "$ref": "#/components/messages/io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication.Schemas.MyEnumRoot"
+        }
+      },
+      "bindings": { }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HeadersNotDocumented": {
+        "title": "HeadersNotDocumented",
+        "type": "object",
+        "properties": { },
+        "description": "There can be headers, but they are not explicitly documented.",
+        "examples": [
+          { }
+        ]
+      },
+      "io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication.Schemas.MyEnumObject": {
+        "title": "MyEnumObject",
+        "type": "string",
+        "enum": [
+          "DOG",
+          "CAT"
+        ],
+        "examples": [
+          "\"DOG\""
+        ]
+      },
+      "io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication.Schemas.MyEnumRoot": {
+        "title": "MyEnumRoot",
+        "type": "object",
+        "properties": {
+          "myEnumObjectField": {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication.Schemas.MyEnumObject"
+          }
+        },
+        "examples": [
+          {
+            "myEnumObjectField": "\"DOG\""
+          }
+        ]
+      }
+    },
+    "messages": {
+      "io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication.Schemas.MyEnumRoot": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication.Schemas.MyEnumRoot"
+          }
+        },
+        "name": "io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication.Schemas.MyEnumRoot",
+        "title": "MyEnumRoot",
+        "bindings": { }
+      }
+    }
+  },
+  "operations": {
+    "enum-channel_receive_listen": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/enum-channel"
+      },
+      "title": "enum-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/enum-channel/messages/io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication.Schemas.MyEnumRoot"
+        }
+      ]
+    }
+  }
+}
