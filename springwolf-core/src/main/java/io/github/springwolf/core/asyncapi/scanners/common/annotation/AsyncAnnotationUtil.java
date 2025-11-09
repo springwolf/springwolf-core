@@ -66,6 +66,12 @@ public class AsyncAnnotationUtil {
 
                     SchemaObject property = new SchemaObject();
                     property.setType(SchemaType.STRING);
+
+                    String format = getFormat(headersValues, stringValueResolver);
+                    if (StringUtils.hasText(format)) {
+                        property.setFormat(format);
+                    }
+
                     property.setTitle(propertyName);
                     property.setDescription(getDescription(headersValues, stringValueResolver));
                     List<String> values = getHeaderValues(headersValues, stringValueResolver);
@@ -95,6 +101,17 @@ public class AsyncAnnotationUtil {
                 .map(AsyncOperation.Headers.Header::description)
                 .map(stringValueResolver::resolveStringValue)
                 .filter(StringUtils::hasText)
+                .sorted()
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static String getFormat(
+            List<AsyncOperation.Headers.Header> value, StringValueResolver stringValueResolver) {
+        return value.stream()
+                .map(AsyncOperation.Headers.Header::format)
+                .filter(StringUtils::hasText)
+                .map(stringValueResolver::resolveStringValue)
                 .sorted()
                 .findFirst()
                 .orElse(null);
