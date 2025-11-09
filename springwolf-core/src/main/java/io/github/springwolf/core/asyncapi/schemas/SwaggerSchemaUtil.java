@@ -62,8 +62,8 @@ public class SwaggerSchemaUtil {
      */
     public ComponentSchema mapSchema(Schema swaggerSchema, SchemaFormat schemaFormat) {
         return switch (schemaFormat) {
-            case OPENAPI_V3, OPENAPI_V3_1 -> ComponentSchema.of(
-                    new MultiFormatSchema(schemaFormat.value, swaggerSchema));
+            case OPENAPI_V3, OPENAPI_V3_1 ->
+                ComponentSchema.of(new MultiFormatSchema(schemaFormat.value, swaggerSchema));
             case ASYNCAPI_V3 -> ComponentSchema.of(mapSwaggerSchemaToAsyncApiSchema(swaggerSchema));
             default -> throw new IllegalArgumentException("SchemaFormat " + schemaFormat + " is not supported");
         };

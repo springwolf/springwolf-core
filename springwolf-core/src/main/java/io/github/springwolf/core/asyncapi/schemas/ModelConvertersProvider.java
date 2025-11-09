@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.schemas;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
@@ -20,7 +21,6 @@ public class ModelConvertersProvider implements InitializingBean {
     private ModelConverters converter_openapi30;
     private ModelConverters converter_openapi31;
 
-
     /**
      * provides the appropriate {@link ModelConverters} for the given {@link SchemaFormat}.
      *
@@ -36,7 +36,6 @@ public class ModelConvertersProvider implements InitializingBean {
         };
     }
 
-
     /**
      * initializes instance variables after all constructor properties are set.
      */
@@ -47,5 +46,4 @@ public class ModelConvertersProvider implements InitializingBean {
         externalModelConverters.forEach(converter_openapi30::addConverter);
         externalModelConverters.forEach(converter_openapi31::addConverter);
     }
-
 }
