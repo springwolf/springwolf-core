@@ -69,7 +69,7 @@ class AsyncAnnotationUtilTest {
         assertThat(headerWithoutValueResolved.getExamples()).isNull();
         assertThat(headerWithoutValueResolved.getEnumValues()).isNull();
         assertThat(headerWithoutValueResolved.getDescription()).isEqualTo("descriptionResolved");
-        assertThat(headerWithoutValueResolved.getFormat()).isNull();
+        assertThat(headerWithoutValueResolved.getFormat()).isEqualTo("Resolved");
     }
 
     @Test
@@ -113,6 +113,7 @@ class AsyncAnnotationUtilTest {
                                         .type(SchemaType.STRING)
                                         .title("headerResolved")
                                         .description("descriptionResolved")
+                                        .format("Resolved")
                                         .enumValues(List.of("valueResolved"))
                                         .examples(List.of("valueResolved"))
                                         .build()))
@@ -143,6 +144,7 @@ class AsyncAnnotationUtilTest {
                                         .type(SchemaType.STRING)
                                         .title("headerResolved")
                                         .description("descriptionResolved")
+                                        .format("Resolved")
                                         .enumValues(null)
                                         .examples(null)
                                         .build()))
