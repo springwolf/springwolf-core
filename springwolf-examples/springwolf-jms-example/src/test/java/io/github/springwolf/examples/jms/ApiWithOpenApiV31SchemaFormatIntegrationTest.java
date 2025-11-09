@@ -34,7 +34,7 @@ public class ApiWithOpenApiV31SchemaFormatIntegrationTest {
         String url = "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
         String actualPatched = actual.replace("localhost:61616", "activemq:61616");
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actualPatched);
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.openapiv31.actual.json"), actualPatched);
 
         InputStream s = this.getClass().getResourceAsStream("/asyncapi.openapiv31.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();

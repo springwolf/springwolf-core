@@ -19,6 +19,7 @@ import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.core.util.RefUtils;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,26 +36,14 @@ import java.util.stream.Collectors;
 import static io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE;
 
 @Slf4j
+@RequiredArgsConstructor
 public class SwaggerSchemaService {
-    private final ModelConverters converter_openapi30 = ModelConverters.getInstance(false);
-    private final ModelConverters converter_openapi31 = ModelConverters.getInstance(true);
 
     private final List<SchemasPostProcessor> schemaPostProcessors;
     private final SwaggerSchemaUtil swaggerSchemaUtil;
     private final SpringwolfConfigProperties properties;
+    private final ModelConvertersProvider modelConvertersProvider;
 
-    public SwaggerSchemaService(
-            List<ModelConverter> externalModelConverters,
-            List<SchemasPostProcessor> schemaPostProcessors,
-            SwaggerSchemaUtil swaggerSchemaUtil,
-            SpringwolfConfigProperties properties) {
-
-        externalModelConverters.forEach(converter_openapi30::addConverter);
-        externalModelConverters.forEach(converter_openapi31::addConverter);
-        this.schemaPostProcessors = schemaPostProcessors;
-        this.swaggerSchemaUtil = swaggerSchemaUtil;
-        this.properties = properties;
-    }
 
     public record ExtractedSchemas(ComponentSchema rootSchema, Map<String, ComponentSchema> referencedSchemas) {}
 
@@ -116,13 +105,7 @@ public class SwaggerSchemaService {
                 StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
 
         // use swagger to resolve type to a swagger ResolvedSchema Object.
-        ModelConverters converterToUse =
-                switch (schemaFormat) {
-                    case ASYNCAPI_V3 -> converter_openapi30;
-                    case OPENAPI_V3 -> converter_openapi30;
-                    case OPENAPI_V3_1 -> converter_openapi31;
-                    default -> throw new IllegalArgumentException("SchemaFormat not supported: " + schemaFormat);
-                };
+        ModelConverters converterToUse = modelConvertersProvider.getModelConverterForSchemaFormat(schemaFormat);
 
         ResolvedSchema resolvedSchema = runWithFqnSetting(
                 (unused) -> converterToUse.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true)));

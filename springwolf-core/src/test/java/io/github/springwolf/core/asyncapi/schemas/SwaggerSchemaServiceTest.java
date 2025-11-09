@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.schemas;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -51,26 +52,54 @@ class SwaggerSchemaServiceTest {
         schemaService = new SwaggerSchemaService(
                 List.of(new ModelConverterNativeClass.Converter()),
                 List.of(schemasPostProcessor, schemasPostProcessor2),
-                new SwaggerSchemaUtil(),
+                new SwaggerSchemaMapper(),
                 new SpringwolfConfigProperties());
     }
 
     @Test
-    void classWithSchemaAnnotationWithAsyncapiSchemaformat() {
-        ComponentSchema schema = schemaService
-                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3)
-                .rootSchema();
+    void classWithSchemaAnnotationWithAsyncapiSchemaformat() throws JsonProcessingException {
+        SwaggerSchemaService.ExtractedSchemas extractedSchemas = schemaService.resolveSchema(
+                ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3);
 
-        assertThat(schema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
+        assertThat(extractedSchemas.referencedSchemas()).hasSize(1);
+        ComponentSchema modelSchema = extractedSchemas.referencedSchemas().get("DifferentName");
+        assertThat(modelSchema.getSchema()).isNotNull(); // we expect an asyncapi schema
+        assertThat(modelSchema.getMultiFormatSchema()).isNull();
+
+        ComponentSchema rootSchema = extractedSchemas.rootSchema();
+        assertThat(rootSchema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
     }
 
     @Test
-    void classWithSchemaAnnotationWithOpenapiSchemaformat() {
-        ComponentSchema schema = schemaService
-                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.OPENAPI_V3)
-                .rootSchema();
+    void classWithSchemaAnnotationWithOpenapiSchema30format() {
+        SwaggerSchemaService.ExtractedSchemas extractedSchemas = schemaService.resolveSchema(
+                ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.OPENAPI_V3);
 
-        assertThat(schema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
+        assertThat(extractedSchemas.referencedSchemas()).hasSize(1);
+        ComponentSchema modelSchema = extractedSchemas.referencedSchemas().get("DifferentName");
+        // we expect modelSchema to contain a multiformat schema with schemaformat openapi-v3
+        assertThat(modelSchema.getMultiFormatSchema()).isNotNull();
+        assertThat(modelSchema.getMultiFormatSchema().getSchemaFormat()).isEqualTo(SchemaFormat.OPENAPI_V3.value);
+        assertThat(modelSchema.getSchema()).isNull();
+
+        ComponentSchema rootSchema = extractedSchemas.rootSchema();
+        assertThat(rootSchema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
+    }
+
+    @Test
+    void classWithSchemaAnnotationWithOpenapiSchema31format() {
+        SwaggerSchemaService.ExtractedSchemas extractedSchemas = schemaService.resolveSchema(
+                ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.OPENAPI_V3_1);
+
+        assertThat(extractedSchemas.referencedSchemas()).hasSize(1);
+        ComponentSchema modelSchema = extractedSchemas.referencedSchemas().get("DifferentName");
+        // we expect modelSchema to contain a multiformat schema with schemaformat openapi-v3.1
+        assertThat(modelSchema.getMultiFormatSchema()).isNotNull();
+        assertThat(modelSchema.getMultiFormatSchema().getSchemaFormat()).isEqualTo(SchemaFormat.OPENAPI_V3_1.value);
+        assertThat(modelSchema.getSchema()).isNull();
+
+        ComponentSchema rootSchema = extractedSchemas.rootSchema();
+        assertThat(rootSchema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
     }
 
     @Test
@@ -80,7 +109,7 @@ class SwaggerSchemaServiceTest {
         properties.setUseFqn(false);
 
         SwaggerSchemaService schemaServiceWithFqn =
-                new SwaggerSchemaService(List.of(), List.of(), new SwaggerSchemaUtil(), properties);
+                new SwaggerSchemaService(List.of(), List.of(), new SwaggerSchemaMapper(), properties);
 
         // when
         Class<?> clazz =
