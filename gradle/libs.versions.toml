@@ -1,7 +1,7 @@
 [versions]
 activemq = "6.1.8"
 cutterslade-analyze = "1.10.0"
-docker-spring-boot = "9.4.0"
+docker-spring-boot = "10.0.0"
 gradle-nexus-publish-plugin = "2.0.0"
 io-awspring-cloud = "3.4.0"
 io-confluent = "8.1.0"
