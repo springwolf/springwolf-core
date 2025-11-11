@@ -4,8 +4,6 @@ package io.github.springwolf.core.asyncapi.schemas;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
 
@@ -13,13 +11,17 @@ import java.util.List;
  * Provides fully prepared {@link io.swagger.v3.core.converter.ModelConverters} for openapi v3 and v3.1
  * requirements.
  */
-@RequiredArgsConstructor
-public class ModelConvertersProvider implements InitializingBean {
+public class ModelConvertersProvider {
 
-    private final List<ModelConverter> externalModelConverters;
+    private final ModelConverters converter_openapi30;
+    private final ModelConverters converter_openapi31;
 
-    private ModelConverters converter_openapi30;
-    private ModelConverters converter_openapi31;
+    public ModelConvertersProvider(List<ModelConverter> externalModelConverters) {
+        converter_openapi30 = new ModelConverters(false);
+        converter_openapi31 = new ModelConverters(true);
+        externalModelConverters.forEach(converter_openapi30::addConverter);
+        externalModelConverters.forEach(converter_openapi31::addConverter);
+    }
 
     /**
      * provides the appropriate {@link ModelConverters} for the given {@link SchemaFormat}.
@@ -34,16 +36,5 @@ public class ModelConvertersProvider implements InitializingBean {
             case OPENAPI_V3_1 -> converter_openapi31;
             default -> throw new IllegalArgumentException("SchemaFormat not supported: " + schemaFormat);
         };
-    }
-
-    /**
-     * initializes instance variables after all constructor properties are set.
-     */
-    @Override
-    public void afterPropertiesSet() {
-        converter_openapi30 = new ModelConverters(false);
-        converter_openapi31 = new ModelConverters(true);
-        externalModelConverters.forEach(converter_openapi30::addConverter);
-        externalModelConverters.forEach(converter_openapi31::addConverter);
     }
 }

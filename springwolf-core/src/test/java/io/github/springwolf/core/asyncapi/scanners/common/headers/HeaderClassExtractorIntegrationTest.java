@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
+import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
@@ -12,7 +13,6 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.swagger.v3.core.converter.ModelConverters;
 import lombok.val;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.handler.annotation.Header;
 
@@ -25,8 +25,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class HeaderClassExtractorIntegrationTest {
 
-    private final SwaggerSchemaService schemaService =
-            new SwaggerSchemaService(List.of(), List.of(), new SwaggerSchemaUtil(), new SpringwolfConfigProperties());
+    private static final SchemaTitleModelConverter titleModelConverter = new SchemaTitleModelConverter();
+
+    private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
+            List.of(),
+            new SwaggerSchemaUtil(),
+            new SpringwolfConfigProperties(),
+            new ModelConvertersProvider(List.of(titleModelConverter)));
     private final HeaderClassExtractor headerClassExtractor = new HeaderClassExtractor(schemaService);
 
     private final PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject(
@@ -34,14 +39,12 @@ class HeaderClassExtractorIntegrationTest {
     private final SchemaObject stringSchema =
             SchemaObject.builder().type(SchemaType.STRING).build();
 
-    private static final SchemaTitleModelConverter titleModelConverter = new SchemaTitleModelConverter();
-
-    @BeforeAll
-    static void setupClass() {
-        // make sure hat SpringWolf SchemaTitleModelConverter is registered with ModelConverters static registry.
-        // this happens in Spring tests automatically but to run only this testclass, this is necessary:
-        ModelConverters.getInstance().addConverter(titleModelConverter);
-    }
+    //    @BeforeAll
+    //    static void setupClass() {
+    //        // make sure hat SpringWolf SchemaTitleModelConverter is registered with ModelConverters static registry.
+    //        // this happens in Spring tests automatically but to run only this testclass, this is necessary:
+    //        ModelConverters.getInstance().addConverter(titleModelConverter);
+    //    }
 
     @AfterAll
     static void tearDownClass() {

@@ -50,10 +50,10 @@ class SwaggerSchemaServiceTest {
     @BeforeEach
     void setUp() {
         schemaService = new SwaggerSchemaService(
-                List.of(new ModelConverterNativeClass.Converter()),
                 List.of(schemasPostProcessor, schemasPostProcessor2),
-                new SwaggerSchemaMapper(),
-                new SpringwolfConfigProperties());
+                new SwaggerSchemaUtil(),
+                new SpringwolfConfigProperties(),
+                new ModelConvertersProvider(List.of(new ModelConverterNativeClass.Converter())));
     }
 
     @Test
@@ -108,8 +108,8 @@ class SwaggerSchemaServiceTest {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setUseFqn(false);
 
-        SwaggerSchemaService schemaServiceWithFqn =
-                new SwaggerSchemaService(List.of(), List.of(), new SwaggerSchemaMapper(), properties);
+        SwaggerSchemaService schemaServiceWithFqn = new SwaggerSchemaService(
+                List.of(), new SwaggerSchemaUtil(), properties, new ModelConvertersProvider(List.of()));
 
         // when
         Class<?> clazz =
