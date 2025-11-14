@@ -7,11 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersionDetector;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -43,7 +43,8 @@ class JsonSchemaGeneratorTest {
     @MethodSource
     void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema) throws Exception {
         // given
-        ComponentSchema actualSchema = swaggerSchemaUtil.mapSchema(asyncApiSchema.get(), SchemaFormat.ASYNCAPI_V3);
+        ComponentSchema actualSchema =
+                swaggerSchemaUtil.mapSchema(asyncApiSchema.get(), PayloadSchemaFormat.ASYNCAPI_V3);
 
         // when
         verifyValidJsonSchema(expectedJsonSchema);

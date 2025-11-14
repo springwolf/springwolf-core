@@ -5,9 +5,9 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,8 +56,8 @@ public class DefaultComponentsService implements ComponentsService {
      */
     @Override
     public ComponentSchema resolvePayloadSchema(Type type, String contentType) {
-        SchemaFormat payloadSchemaFormat =
-                springwolfConfigProperties.getDocket().getPayloadSchemaFormat().getSchemaFormat();
+        PayloadSchemaFormat payloadSchemaFormat =
+                springwolfConfigProperties.getDocket().getPayloadSchemaFormat();
         SwaggerSchemaService.ExtractedSchemas payload =
                 schemaService.resolveSchema(type, contentType, payloadSchemaFormat);
         payload.referencedSchemas().forEach(schemas::putIfAbsent);

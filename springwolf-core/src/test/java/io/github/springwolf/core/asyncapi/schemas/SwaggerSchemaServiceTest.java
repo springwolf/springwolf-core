@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.schemas;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -12,6 +11,7 @@ import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -57,9 +57,9 @@ class SwaggerSchemaServiceTest {
     }
 
     @Test
-    void classWithSchemaAnnotationWithAsyncapiSchemaformat() throws JsonProcessingException {
+    void classWithSchemaAnnotationWithAsyncapiSchemaformat() {
         SwaggerSchemaService.ExtractedSchemas extractedSchemas = schemaService.resolveSchema(
-                ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3);
+                ClassWithSchemaAnnotation.class, "content-type-not-relevant", PayloadSchemaFormat.ASYNCAPI_V3);
 
         assertThat(extractedSchemas.referencedSchemas()).hasSize(1);
         ComponentSchema modelSchema = extractedSchemas.referencedSchemas().get("DifferentName");
@@ -73,7 +73,7 @@ class SwaggerSchemaServiceTest {
     @Test
     void classWithSchemaAnnotationWithOpenapiSchema30format() {
         SwaggerSchemaService.ExtractedSchemas extractedSchemas = schemaService.resolveSchema(
-                ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.OPENAPI_V3);
+                ClassWithSchemaAnnotation.class, "content-type-not-relevant", PayloadSchemaFormat.OPENAPI_V3);
 
         assertThat(extractedSchemas.referencedSchemas()).hasSize(1);
         ComponentSchema modelSchema = extractedSchemas.referencedSchemas().get("DifferentName");
@@ -89,7 +89,7 @@ class SwaggerSchemaServiceTest {
     @Test
     void classWithSchemaAnnotationWithOpenapiSchema31format() {
         SwaggerSchemaService.ExtractedSchemas extractedSchemas = schemaService.resolveSchema(
-                ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.OPENAPI_V3_1);
+                ClassWithSchemaAnnotation.class, "content-type-not-relevant", PayloadSchemaFormat.OPENAPI_V3_1);
 
         assertThat(extractedSchemas.referencedSchemas()).hasSize(1);
         ComponentSchema modelSchema = extractedSchemas.referencedSchemas().get("DifferentName");
@@ -115,7 +115,7 @@ class SwaggerSchemaServiceTest {
         Class<?> clazz =
                 OneFieldFooWithoutFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
         Map<String, ComponentSchema> schemas = schemaServiceWithFqn
-                .resolveSchema(clazz, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3)
+                .resolveSchema(clazz, "content-type-not-relevant", PayloadSchemaFormat.ASYNCAPI_V3)
                 .referencedSchemas();
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemas);
 
@@ -127,7 +127,8 @@ class SwaggerSchemaServiceTest {
 
     @Test
     void postProcessorsAreCalledWithAsyncapiSchemaformat() {
-        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type", SchemaFormat.ASYNCAPI_V3);
+        schemaService.resolveSchema(
+                ClassWithSchemaAnnotation.class, "some-content-type", PayloadSchemaFormat.ASYNCAPI_V3);
 
         verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
         verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
@@ -135,7 +136,8 @@ class SwaggerSchemaServiceTest {
 
     @Test
     void postProcessorsAreCalledWithOpenapiSchemaformat() {
-        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type", SchemaFormat.OPENAPI_V3);
+        schemaService.resolveSchema(
+                ClassWithSchemaAnnotation.class, "some-content-type", PayloadSchemaFormat.OPENAPI_V3);
 
         verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
         verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
@@ -152,7 +154,7 @@ class SwaggerSchemaServiceTest {
                 .process(any(), any(), any());
 
         schemaService.resolveSchema(
-                ClassWithSchemaAnnotation.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3);
+                ClassWithSchemaAnnotation.class, "content-type-not-relevant", PayloadSchemaFormat.ASYNCAPI_V3);
 
         verifyNoInteractions(schemasPostProcessor2);
     }
@@ -160,7 +162,7 @@ class SwaggerSchemaServiceTest {
     @Test
     void modelConvertersRefsAreResolved() {
         SwaggerSchemaService.ExtractedSchemas schema = schemaService.resolveSchema(
-                ModelConverterNativeClass.class, "content-type-not-relevant", SchemaFormat.ASYNCAPI_V3);
+                ModelConverterNativeClass.class, "content-type-not-relevant", PayloadSchemaFormat.ASYNCAPI_V3);
 
         assertThat(schema.rootSchema().getReference().getRef())
                 .contains(ModelConverterNativeClass.class.getName().replace("$", "."));

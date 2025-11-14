@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.schemas;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 
@@ -29,12 +30,10 @@ public class ModelConvertersProvider {
      * @param schemaFormat the schemaFormat that shall be generated.
      * @return the appropriate {@link ModelConverters} or {@link IllegalArgumentException} if the given format is not supported.
      */
-    public ModelConverters getModelConverterForSchemaFormat(SchemaFormat schemaFormat) {
+    public ModelConverters getModelConverterForSchemaFormat(PayloadSchemaFormat schemaFormat) {
         return switch (schemaFormat) {
-            case ASYNCAPI_V3 -> converter_openapi30;
-            case OPENAPI_V3 -> converter_openapi30;
+            case ASYNCAPI_V3, OPENAPI_V3 -> converter_openapi30;
             case OPENAPI_V3_1 -> converter_openapi31;
-            default -> throw new IllegalArgumentException("SchemaFormat not supported: " + schemaFormat);
         };
     }
 }

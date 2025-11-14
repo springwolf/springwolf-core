@@ -4,10 +4,10 @@ package io.github.springwolf.core.asyncapi.schemas;
 import io.github.springwolf.asyncapi.v3.model.ExternalDocumentation;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
-import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SwaggerSchemaUtil {
 
-    public Map<String, ComponentSchema> mapSchemasMap(Map<String, Schema> schemaMap, SchemaFormat schemaFormat) {
+    public Map<String, ComponentSchema> mapSchemasMap(Map<String, Schema> schemaMap, PayloadSchemaFormat schemaFormat) {
         return schemaMap.entrySet().stream()
                 .map(entry -> Map.entry(entry.getKey(), mapSchema(entry.getValue(), schemaFormat)))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -37,15 +37,15 @@ public class SwaggerSchemaUtil {
      * referenced location. Otherwise, the given Swagger schema is converted to an AsnycApi {@link SchemaObject} and
      * put into the resulting {@link ComponentSchema}
      *
-     * @param swaggerSchema the Swagger schema to convert
-     * @param schemaFormat the schema format of the resulting schema
+     * @param swaggerSchema       the Swagger schema to convert
+     * @param payloadSchemaFormat the schema format of the resulting schema
      * @return ComponentSchema with either a {@link SchemaReference} or a {@link SchemaObject}.
      */
-    public ComponentSchema mapSchemaOrRef(Schema swaggerSchema, SchemaFormat schemaFormat) {
+    public ComponentSchema mapSchemaOrRef(Schema swaggerSchema, PayloadSchemaFormat payloadSchemaFormat) {
         if (swaggerSchema.get$ref() != null) {
             return ComponentSchema.of(new SchemaReference(swaggerSchema.get$ref()));
         }
-        return mapSchema(swaggerSchema, schemaFormat);
+        return mapSchema(swaggerSchema, payloadSchemaFormat);
     }
 
     /**
@@ -56,16 +56,16 @@ public class SwaggerSchemaUtil {
      * as long as the child schemas are 'real' schemas and not schema references. So this method performs a deep conversion
      * of the entire Swagger schema.
      *
-     * @param swaggerSchema the given Swagger schema instance
      * @param
+     * @param swaggerSchema       the given Swagger schema instance
+     * @param payloadSchemaFormat
      * @return the resulting AsnycApi SchemaObject
      */
-    public ComponentSchema mapSchema(Schema swaggerSchema, SchemaFormat schemaFormat) {
-        return switch (schemaFormat) {
+    public ComponentSchema mapSchema(Schema swaggerSchema, PayloadSchemaFormat payloadSchemaFormat) {
+        return switch (payloadSchemaFormat) {
             case OPENAPI_V3, OPENAPI_V3_1 -> ComponentSchema.of(
-                    new MultiFormatSchema(schemaFormat.value, swaggerSchema));
+                    new MultiFormatSchema(payloadSchemaFormat.getSchemaFormat().value, swaggerSchema));
             case ASYNCAPI_V3 -> ComponentSchema.of(mapSwaggerSchemaToAsyncApiSchema(swaggerSchema));
-            default -> throw new IllegalArgumentException("SchemaFormat " + schemaFormat + " is not supported");
         };
     }
 
@@ -98,7 +98,8 @@ public class SwaggerSchemaUtil {
         Map<String, Schema> properties = swaggerSchema.getProperties();
         if (properties != null) {
             Map<String, Object> propertiesMapped = properties.entrySet().stream()
-                    .map(entry -> Map.entry(entry.getKey(), mapSchemaOrRef(entry.getValue(), SchemaFormat.ASYNCAPI_V3)))
+                    .map(entry -> Map.entry(
+                            entry.getKey(), mapSchemaOrRef(entry.getValue(), PayloadSchemaFormat.ASYNCAPI_V3)))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             builder.properties(propertiesMapped);
@@ -150,7 +151,8 @@ public class SwaggerSchemaUtil {
 
         Object additionalProperties = swaggerSchema.getAdditionalProperties();
         if (additionalProperties instanceof Schema) {
-            builder.additionalProperties(mapSchemaOrRef((Schema<?>) additionalProperties, SchemaFormat.ASYNCAPI_V3));
+            builder.additionalProperties(
+                    mapSchemaOrRef((Schema<?>) additionalProperties, PayloadSchemaFormat.ASYNCAPI_V3));
         }
 
         builder.required(swaggerSchema.getRequired());
@@ -162,21 +164,21 @@ public class SwaggerSchemaUtil {
         List<Schema> allOf = swaggerSchema.getAllOf();
         if (allOf != null) {
             builder.allOf(allOf.stream()
-                    .map(schema -> mapSchemaOrRef(schema, SchemaFormat.ASYNCAPI_V3))
+                    .map(schema -> mapSchemaOrRef(schema, PayloadSchemaFormat.ASYNCAPI_V3))
                     .collect(Collectors.toList()));
         }
 
         List<Schema> oneOf = swaggerSchema.getOneOf();
         if (oneOf != null) {
             builder.oneOf(oneOf.stream()
-                    .map(schema -> mapSchemaOrRef(schema, SchemaFormat.ASYNCAPI_V3))
+                    .map(schema -> mapSchemaOrRef(schema, PayloadSchemaFormat.ASYNCAPI_V3))
                     .collect(Collectors.toList()));
         }
 
         List<Schema> anyOf = swaggerSchema.getAnyOf();
         if (anyOf != null) {
             builder.anyOf(anyOf.stream()
-                    .map(schema -> mapSchemaOrRef(schema, SchemaFormat.ASYNCAPI_V3))
+                    .map(schema -> mapSchemaOrRef(schema, PayloadSchemaFormat.ASYNCAPI_V3))
                     .collect(Collectors.toList()));
         }
 
@@ -184,12 +186,12 @@ public class SwaggerSchemaUtil {
 
         Schema not = swaggerSchema.getNot();
         if (not != null) {
-            builder.not(mapSchemaOrRef(not, SchemaFormat.ASYNCAPI_V3));
+            builder.not(mapSchemaOrRef(not, PayloadSchemaFormat.ASYNCAPI_V3));
         }
 
         Schema items = swaggerSchema.getItems();
         if (items != null && "array".equals(swaggerSchema.getType())) {
-            builder.items(mapSchemaOrRef(items, SchemaFormat.ASYNCAPI_V3));
+            builder.items(mapSchemaOrRef(items, PayloadSchemaFormat.ASYNCAPI_V3));
         }
         builder.uniqueItems(swaggerSchema.getUniqueItems());
 
@@ -248,8 +250,8 @@ public class SwaggerSchemaUtil {
      *     <li>a {@link SchemaReference} which is converted to a Swagger Schema with a $ref reference</li>
      *     <li>a {@link MultiFormatSchema}. In this case, these Mediatypes are supported:
      *          <ul>
-     *              <li>{@link SchemaFormat#ASYNCAPI_V3}</li>
-     *              <li>{@link SchemaFormat#OPENAPI_V3}</li>
+     *              <li>{@link PayloadSchemaFormat#ASYNCAPI_V3}</li>
+     *              <li>{@link PayloadSchemaFormat#OPENAPI_V3}</li>
      *          </ul>
      *       </li>
      * </ul>
