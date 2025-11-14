@@ -1,0 +1,219 @@
+{
+  "asyncapi": "3.0.0",
+  "id": "urn:io:github:springwolf:example",
+  "info": {
+    "title": "Info title was loaded from spring properties",
+    "version": "1.0.0",
+    "description": "Springwolf core integration test",
+    "x-generator": "springwolf"
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "test-protocol": {
+      "host": "some-server:1234",
+      "protocol": "test"
+    }
+  },
+  "channels": {
+    "listener-channel": {
+      "address": "listener-channel",
+      "messages": {
+        "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo": {
+          "$ref": "#/components/messages/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo"
+        },
+        "java.lang.String": {
+          "$ref": "#/components/messages/java.lang.String"
+        }
+      },
+      "bindings": { }
+    },
+    "listener-class-channel": {
+      "address": "listener-class-channel",
+      "messages": {
+        "java.lang.Integer": {
+          "$ref": "#/components/messages/java.lang.Integer"
+        }
+      },
+      "bindings": { }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HeadersNotDocumented": {
+        "title": "HeadersNotDocumented",
+        "type": "object",
+        "properties": { },
+        "description": "There can be headers, but they are not explicitly documented.",
+        "examples": [
+          { }
+        ]
+      },
+      "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Bar": {
+        "title": "Bar",
+        "type": "object",
+        "properties": {
+          "aFieldInBarRecord": {
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "aFieldInBarRecord": "string"
+          }
+        ]
+      },
+      "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo": {
+        "title": "Foo",
+        "type": "object",
+        "properties": {
+          "aFieldInFooRecord": {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Bar"
+          }
+        },
+        "examples": [
+          {
+            "aFieldInFooRecord": {
+              "aFieldInBarRecord": "string"
+            }
+          }
+        ]
+      },
+      "java.lang.Integer": {
+        "type": "integer",
+        "format": "int32",
+        "examples": [
+          0
+        ]
+      },
+      "java.lang.String": {
+        "type": "string",
+        "examples": [
+          "\"string\""
+        ]
+      }
+    },
+    "messages": {
+      "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo"
+          }
+        },
+        "name": "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo",
+        "title": "Foo",
+        "bindings": { }
+      },
+      "java.lang.Integer": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "type": "integer",
+            "format": "int32",
+            "examples": [
+              0
+            ]
+          }
+        },
+        "name": "java.lang.Integer",
+        "title": "integer",
+        "bindings": { }
+      },
+      "java.lang.String": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "type": "string",
+            "examples": [
+              "\"string\""
+            ]
+          }
+        },
+        "name": "java.lang.String",
+        "title": "string",
+        "bindings": { }
+      }
+    }
+  },
+  "operations": {
+    "listener-channel_receive_listen": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/java.lang.String"
+        }
+      ]
+    },
+    "listener-channel_receive_listen2": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/java.lang.String"
+        }
+      ]
+    },
+    "listener-channel_receive_listen3": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo"
+        }
+      ]
+    },
+    "listener-channel_receive_listen4": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo"
+        }
+      ]
+    },
+    "listener-class-channel_receive_listen": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-class-channel"
+      },
+      "title": "listener-class-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-class-channel/messages/java.lang.Integer"
+        }
+      ]
+    }
+  }
+}

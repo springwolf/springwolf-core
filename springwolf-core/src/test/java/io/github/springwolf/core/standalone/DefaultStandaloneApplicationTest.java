@@ -62,7 +62,7 @@ class DefaultStandaloneApplicationTest {
                         .getAsyncAPI()
                         .getInfo()
                         .getTitle())
-                .isEqualTo("Springwolf-core-properties");
+                .isEqualTo("Springwolf-core-standalone");
     }
 
     @Test

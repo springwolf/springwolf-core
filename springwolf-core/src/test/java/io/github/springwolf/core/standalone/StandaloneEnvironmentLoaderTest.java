@@ -27,6 +27,6 @@ class StandaloneEnvironmentLoaderTest {
 
         // then
         assertThat(environment.getActiveProfiles()).containsExactly("standalone");
-        assertThat(environment.getProperty("spring.application.name")).isEqualTo("Springwolf-core-properties");
+        assertThat(environment.getProperty("spring.application.name")).isEqualTo("Springwolf-core-standalone");
     }
 }
