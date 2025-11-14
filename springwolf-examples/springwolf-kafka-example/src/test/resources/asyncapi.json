@@ -496,6 +496,43 @@
           "type": "object"
         }
       },
+      "SpringKafkaDefaultHeaders-AnotherTopic": {
+        "title": "SpringKafkaDefaultHeaders-AnotherTopic",
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "type": "string",
+            "description": "Type ID"
+          },
+          "my_uuid_field": {
+            "type": "string",
+            "description": "Event identifier",
+            "format": "uuid"
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "string",
+            "my_uuid_field": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "properties": {
+            "__TypeId__": {
+              "description": "Type ID",
+              "type": "string"
+            },
+            "my_uuid_field": {
+              "description": "Event identifier",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          "title": "SpringKafkaDefaultHeaders-AnotherTopic",
+          "type": "object"
+        }
+      },
       "SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105": {
         "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105",
         "type": "object",
@@ -512,6 +549,7 @@
           },
           "kafka_offset": {
             "type": "integer",
+            "format": "int32",
             "examples": [
               0
             ]
@@ -548,6 +586,7 @@
               "type": "string"
             },
             "kafka_offset": {
+              "format": "int32",
               "type": "integer"
             },
             "kafka_receivedMessageKey": {
@@ -1904,7 +1943,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-AnotherPayloadDto"
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-AnotherTopic"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
@@ -1914,11 +1953,7 @@
         },
         "name": "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
-        "bindings": {
-          "kafka": {
-            "bindingVersion": "0.5.0"
-          }
-        }
+        "bindings": { }
       },
       "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
         "headers": {
@@ -2126,6 +2161,20 @@
           "bindingVersion": "0.5.0"
         }
       },
+      "messages": [
+        {
+          "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "another-topic_send_sendMessage": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/another-topic"
+      },
+      "title": "another-topic_send",
+      "description": "Auto-generated description",
+      "bindings": { },
       "messages": [
         {
           "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"

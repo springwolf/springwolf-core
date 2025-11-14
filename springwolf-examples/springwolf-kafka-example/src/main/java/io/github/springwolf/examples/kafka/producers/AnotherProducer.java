@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
+
 @Component
 public class AnotherProducer {
 
@@ -24,17 +26,12 @@ public class AnotherProducer {
                                             schemaName = "SpringKafkaDefaultHeaders-AnotherTopic",
                                             values = {
                                                 @AsyncOperation.Headers.Header(
-                                                        name = "kafka_messageKey",
-                                                        description = "Message key",
-                                                        format = "string"),
+                                                        name = DEFAULT_CLASSID_FIELD_NAME,
+                                                        description = "Type ID"),
                                                 @AsyncOperation.Headers.Header(
-                                                        name = "__TypeId__",
-                                                        description = "Type ID",
-                                                        format = "string"),
-                                                @AsyncOperation.Headers.Header(
-                                                        name = "my_key",
-                                                        description = "my_key",
-                                                        format = "int32")
+                                                        name = "my_uuid_field",
+                                                        description = "Event identifier",
+                                                        format = "uuid")
                                             })))
     public void sendMessage(AnotherPayloadDto msg) {
         kafkaTemplate.send(KafkaConfiguration.PRODUCER_TOPIC, msg);
