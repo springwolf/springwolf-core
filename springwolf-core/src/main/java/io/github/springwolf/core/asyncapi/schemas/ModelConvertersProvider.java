@@ -30,7 +30,7 @@ public class ModelConvertersProvider {
      * @param schemaFormat the schemaFormat that shall be generated.
      * @return the appropriate {@link ModelConverters} or {@link IllegalArgumentException} if the given format is not supported.
      */
-    public ModelConverters getModelConverterForSchemaFormat(PayloadSchemaFormat schemaFormat) {
+    public ModelConverters getModelConverterFor(PayloadSchemaFormat schemaFormat) {
         return switch (schemaFormat) {
             case ASYNCAPI_V3, OPENAPI_V3 -> converter_openapi30;
             case OPENAPI_V3_1 -> converter_openapi31;

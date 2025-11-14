@@ -103,7 +103,7 @@ public class SwaggerSchemaService {
                 StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
 
         // use swagger to resolve type to a swagger ResolvedSchema Object.
-        ModelConverters converterToUse = modelConvertersProvider.getModelConverterForSchemaFormat(payloadSchemaFormat);
+        ModelConverters converterToUse = modelConvertersProvider.getModelConverterFor(payloadSchemaFormat);
 
         ResolvedSchema resolvedSchema = runWithFqnSetting(
                 (unused) -> converterToUse.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true)));

@@ -39,13 +39,6 @@ class HeaderClassExtractorIntegrationTest {
     private final SchemaObject stringSchema =
             SchemaObject.builder().type(SchemaType.STRING).build();
 
-    //    @BeforeAll
-    //    static void setupClass() {
-    //        // make sure hat SpringWolf SchemaTitleModelConverter is registered with ModelConverters static registry.
-    //        // this happens in Spring tests automatically but to run only this testclass, this is necessary:
-    //        ModelConverters.getInstance().addConverter(titleModelConverter);
-    //    }
-
     @AfterAll
     static void tearDownClass() {
         ModelConverters.getInstance().removeConverter(titleModelConverter);
