@@ -55,6 +55,22 @@ public @interface AsyncOperation {
             String description() default "";
 
             String value() default "";
+
+            /**
+             * The format of the header value according to AsyncAPI specification.
+             * <p>
+             * Common formats include:
+             * <ul>
+             *   <li>"int32" - 32-bit signed integer</li>
+             *   <li>"int64" - 64-bit signed integer</li>
+             *   <li>"date" - RFC 3339 date</li>
+             *   <li>"date-time" - RFC 3339 date-time</li>
+             * </ul>
+             *
+             * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#dataTypeFormat">AsyncAPI Data Type Format</a>
+             * @return the format string, empty by default
+             */
+            String format() default "";
         }
     }
 }

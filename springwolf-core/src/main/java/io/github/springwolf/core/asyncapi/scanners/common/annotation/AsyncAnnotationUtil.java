@@ -66,8 +66,10 @@ public class AsyncAnnotationUtil {
 
                     SchemaObject property = new SchemaObject();
                     property.setType(SchemaType.STRING);
+
                     property.setTitle(propertyName);
                     property.setDescription(getDescription(headersValues, stringValueResolver));
+                    property.setFormat(getFormat(headersValues, stringValueResolver));
                     List<String> values = getHeaderValues(headersValues, stringValueResolver);
                     if (!values.isEmpty()) {
                         property.setExamples(new ArrayList<>(values));
@@ -84,7 +86,7 @@ public class AsyncAnnotationUtil {
         return value.stream()
                 .map(AsyncOperation.Headers.Header::value)
                 .filter(StringUtils::hasText)
-                .map(stringValueResolver::resolveStringValue)
+                .flatMap(text -> Optional.ofNullable(stringValueResolver.resolveStringValue(text)).stream())
                 .sorted()
                 .toList();
     }
@@ -93,8 +95,19 @@ public class AsyncAnnotationUtil {
             List<AsyncOperation.Headers.Header> value, StringValueResolver stringValueResolver) {
         return value.stream()
                 .map(AsyncOperation.Headers.Header::description)
-                .map(stringValueResolver::resolveStringValue)
                 .filter(StringUtils::hasText)
+                .flatMap(text -> Optional.ofNullable(stringValueResolver.resolveStringValue(text)).stream())
+                .sorted()
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static String getFormat(
+            List<AsyncOperation.Headers.Header> value, StringValueResolver stringValueResolver) {
+        return value.stream()
+                .map(AsyncOperation.Headers.Header::format)
+                .filter(StringUtils::hasText)
+                .flatMap(text -> Optional.ofNullable(stringValueResolver.resolveStringValue(text)).stream())
                 .sorted()
                 .findFirst()
                 .orElse(null);
