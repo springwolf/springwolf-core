@@ -1953,7 +1953,11 @@
         },
         "name": "io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto",
         "title": "AnotherPayloadDto",
-        "bindings": { }
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
       },
       "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
         "headers": {
@@ -2174,7 +2178,11 @@
       },
       "title": "another-topic_send",
       "description": "Auto-generated description",
-      "bindings": { },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      },
       "messages": [
         {
           "$ref": "#/channels/another-topic/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka.producers;
 
+import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
 import io.github.springwolf.examples.kafka.configuration.KafkaConfiguration;
@@ -33,6 +34,7 @@ public class AnotherProducer {
                                                         description = "Event identifier",
                                                         format = "uuid")
                                             })))
+    @KafkaAsyncOperationBinding
     public void sendMessage(AnotherPayloadDto msg) {
         kafkaTemplate.send(KafkaConfiguration.PRODUCER_TOPIC, msg);
     }

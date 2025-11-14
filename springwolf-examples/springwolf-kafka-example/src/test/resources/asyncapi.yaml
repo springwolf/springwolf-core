@@ -1402,7 +1402,9 @@ components:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
       name: io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
       title: AnotherPayloadDto
-      bindings: {}
+      bindings:
+        kafka:
+          bindingVersion: 0.5.0
     io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105"
@@ -1550,7 +1552,9 @@ operations:
       $ref: "#/channels/another-topic"
     title: another-topic_send
     description: Auto-generated description
-    bindings: {}
+    bindings:
+      kafka:
+        bindingVersion: 0.5.0
     messages:
       - $ref: "#/channels/another-topic/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
   avro-topic_receive_receiveExampleAvroPayload:
