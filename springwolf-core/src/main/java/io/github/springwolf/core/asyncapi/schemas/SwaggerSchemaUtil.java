@@ -297,7 +297,7 @@ public class SwaggerSchemaUtil {
                     .orElse(null));
             swaggerSchema.setTypes(asyncApiSchema.getType());
         }
-        //        swaggerSchema.setFormat(asyncApiSchema.getFormat());
+        swaggerSchema.setFormat(asyncApiSchema.getFormat());
         swaggerSchema.setDescription(asyncApiSchema.getDescription());
         swaggerSchema.setExamples(asyncApiSchema.getExamples());
         swaggerSchema.setEnum(asyncApiSchema.getEnumValues());

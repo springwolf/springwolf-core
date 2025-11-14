@@ -12,21 +12,28 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class SpringwolfAmqpProducer {
 
     private final AsyncApiService asyncApiService;
-    private final Optional<RabbitTemplate> rabbitTemplate;
+    private final Map<String, RabbitTemplate> rabbitTemplateRegistry;
 
     public boolean isEnabled() {
-        return rabbitTemplate.isPresent();
+        return !rabbitTemplateRegistry.isEmpty();
     }
 
     public SpringwolfAmqpProducer(AsyncApiService asyncApiService, List<RabbitTemplate> rabbitTemplates) {
         this.asyncApiService = asyncApiService;
-        this.rabbitTemplate = rabbitTemplates.isEmpty() ? Optional.empty() : Optional.of(rabbitTemplates.get(0));
+        this.rabbitTemplateRegistry = buildRabbitTemplateRegistry(rabbitTemplates);
+    }
+
+    private Map<String, RabbitTemplate> buildRabbitTemplateRegistry(List<RabbitTemplate> templates) {
+        return templates.stream()
+                .collect(Collectors.toMap(RabbitTemplate::getRoutingKey, rabbitTemplate -> rabbitTemplate));
     }
 
     public void send(String channelName, Object payload) {
@@ -44,6 +51,7 @@ public class SpringwolfAmqpProducer {
             routingKey = channelName;
         }
 
+        Optional<RabbitTemplate> rabbitTemplate = getRabbitTemplate(routingKey);
         if (rabbitTemplate.isPresent()) {
             rabbitTemplate.get().convertAndSend(exchange, routingKey, payload);
         } else {
@@ -78,5 +86,10 @@ public class SpringwolfAmqpProducer {
         }
 
         return routingKey;
+    }
+
+    private Optional<RabbitTemplate> getRabbitTemplate(String routingKey) {
+        return Optional.ofNullable(rabbitTemplateRegistry.get(routingKey))
+                .or(() -> rabbitTemplateRegistry.values().stream().findFirst());
     }
 }

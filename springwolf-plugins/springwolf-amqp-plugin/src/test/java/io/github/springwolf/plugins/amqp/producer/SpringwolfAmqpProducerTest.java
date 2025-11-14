@@ -19,9 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -113,5 +115,85 @@ class SpringwolfAmqpProducerTest {
         springwolfAmqpProducer.send("channel-name", payload);
 
         verify(rabbitTemplate).convertAndSend(eq("exchange-name"), eq("routing-key"), same(payload));
+    }
+
+    @Test
+    void send_usesRabbitTemplateMatchingRoutingKey() {
+        RabbitTemplate template1 = mock(RabbitTemplate.class);
+        RabbitTemplate template2 = mock(RabbitTemplate.class);
+        when(template1.getRoutingKey()).thenReturn("any-key");
+        when(template2.getRoutingKey()).thenReturn("routing-key");
+
+        springwolfAmqpProducer = new SpringwolfAmqpProducer(asyncApiService, List.of(template1, template2));
+
+        AMQPChannelExchangeProperties properties = new AMQPChannelExchangeProperties();
+        properties.setName("exchange-name");
+        ChannelObject channelItem = ChannelObject.builder()
+                .bindings(Map.of(
+                        "amqp",
+                        AMQPChannelBinding.builder().exchange(properties).build()))
+                .build();
+        Map<String, ChannelObject> channels = Map.of("channel-name", channelItem);
+        Operation operation = Operation.builder()
+                .bindings(Map.of(
+                        "amqp",
+                        AMQPOperationBinding.builder()
+                                .cc(List.of("routing-key"))
+                                .build()))
+                .build();
+        Map<String, Operation> operations = Map.of("amqp", operation);
+
+        AsyncAPI asyncAPI = AsyncAPI.builder()
+                .info(new Info())
+                .channels(channels)
+                .operations(operations)
+                .build();
+        when(asyncApiService.getAsyncAPI()).thenReturn(asyncAPI);
+
+        Map<String, Object> payload = new HashMap<>();
+        springwolfAmqpProducer.send("channel-name", payload);
+
+        verify(template1, never()).convertAndSend(anyString(), anyString(), same(payload));
+        verify(template2).convertAndSend(eq("exchange-name"), eq("routing-key"), same(payload));
+    }
+
+    @Test
+    void send_fallsBackToFirstTemplateWhenNoMatch() {
+        RabbitTemplate template1 = mock(RabbitTemplate.class);
+        RabbitTemplate template2 = mock(RabbitTemplate.class);
+        when(template1.getRoutingKey()).thenReturn("key-1");
+        when(template2.getRoutingKey()).thenReturn("key-2");
+
+        springwolfAmqpProducer = new SpringwolfAmqpProducer(asyncApiService, List.of(template1, template2));
+
+        AMQPChannelExchangeProperties properties = new AMQPChannelExchangeProperties();
+        properties.setName("exchange-name");
+        ChannelObject channelItem = ChannelObject.builder()
+                .bindings(Map.of(
+                        "amqp",
+                        AMQPChannelBinding.builder().exchange(properties).build()))
+                .build();
+        Map<String, ChannelObject> channels = Map.of("channel-name", channelItem);
+        Operation operation = Operation.builder()
+                .bindings(Map.of(
+                        "amqp",
+                        AMQPOperationBinding.builder()
+                                .cc(List.of("routing-key"))
+                                .build()))
+                .build();
+        Map<String, Operation> operations = Map.of("amqp", operation);
+
+        AsyncAPI asyncAPI = AsyncAPI.builder()
+                .info(new Info())
+                .channels(channels)
+                .operations(operations)
+                .build();
+        when(asyncApiService.getAsyncAPI()).thenReturn(asyncAPI);
+
+        Map<String, Object> payload = new HashMap<>();
+        springwolfAmqpProducer.send("channel-name", payload);
+
+        verify(template1).convertAndSend(eq("exchange-name"), eq("routing-key"), same(payload));
+        verify(template2, never()).convertAndSend(anyString(), anyString(), same(payload));
     }
 }
