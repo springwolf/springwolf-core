@@ -35,15 +35,17 @@ import static org.mockito.Mockito.when;
 class AsyncAnnotationUtilTest {
     StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
+    {
+        when(stringValueResolver.resolveStringValue(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
+    }
+
     @ParameterizedTest
     @ValueSource(classes = {ClassWithOperationBindingProcessor.class, ClassWithAbstractOperationBindingProcessor.class})
     void getAsyncHeaders(Class<?> classWithOperationBindingProcessor) throws Exception {
         // given
         Method m = classWithOperationBindingProcessor.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
-
-        when(stringValueResolver.resolveStringValue(any()))
-                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
         SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
@@ -69,7 +71,7 @@ class AsyncAnnotationUtilTest {
         assertThat(headerWithoutValueResolved.getExamples()).isNull();
         assertThat(headerWithoutValueResolved.getEnumValues()).isNull();
         assertThat(headerWithoutValueResolved.getDescription()).isEqualTo("descriptionResolved");
-        assertThat(headerWithoutValueResolved.getFormat()).isEqualTo("Resolved");
+        assertThat(headerWithoutValueResolved.getFormat()).isNull();
     }
 
     @Test
@@ -77,10 +79,6 @@ class AsyncAnnotationUtilTest {
         // given
         Method m = ClassWithHeaders.class.getDeclaredMethod("emptyHeaders", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
-
-        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
-        when(stringValueResolver.resolveStringValue(any()))
-                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
         SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
@@ -94,10 +92,6 @@ class AsyncAnnotationUtilTest {
         // given
         Method m = ClassWithHeaders.class.getDeclaredMethod("withoutSchemaName", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
-
-        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
-        when(stringValueResolver.resolveStringValue(any()))
-                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
         SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
@@ -113,7 +107,7 @@ class AsyncAnnotationUtilTest {
                                         .type(SchemaType.STRING)
                                         .title("headerResolved")
                                         .description("descriptionResolved")
-                                        .format("Resolved")
+                                        .format(null)
                                         .enumValues(List.of("valueResolved"))
                                         .examples(List.of("valueResolved"))
                                         .build()))
@@ -125,10 +119,6 @@ class AsyncAnnotationUtilTest {
         // given
         Method m = ClassWithHeaders.class.getDeclaredMethod("withoutValue", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
-
-        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
-        when(stringValueResolver.resolveStringValue(any()))
-                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
         SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
@@ -144,7 +134,7 @@ class AsyncAnnotationUtilTest {
                                         .type(SchemaType.STRING)
                                         .title("headerResolved")
                                         .description("descriptionResolved")
-                                        .format("Resolved")
+                                        .format(null)
                                         .enumValues(null)
                                         .examples(null)
                                         .build()))
@@ -156,10 +146,6 @@ class AsyncAnnotationUtilTest {
         // given
         Method m = ClassWithHeaders.class.getDeclaredMethod("withFormat", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
-
-        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
-        when(stringValueResolver.resolveStringValue(any()))
-                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
         SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
@@ -185,18 +171,14 @@ class AsyncAnnotationUtilTest {
     @Test
     void getAsyncHeadersWithEmptyFormat() throws Exception {
         // given
-        Method m = ClassWithHeaders.class.getDeclaredMethod("withEmptyFormat", String.class);
+        Method m = ClassWithHeaders.class.getDeclaredMethod("withoutFormat", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
-
-        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
-        when(stringValueResolver.resolveStringValue(any()))
-                .thenAnswer(invocation -> invocation.getArgument(0).toString());
 
         // when
         SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
 
         // then
-        SchemaObject headerProperty = (SchemaObject) headers.getProperties().get("header");
+        SchemaObject headerProperty = (SchemaObject) headers.getProperties().get("headerResolved");
         assertThat(headerProperty.getFormat()).isNull();
     }
 
@@ -208,10 +190,6 @@ class AsyncAnnotationUtilTest {
 
         Method m2 = ClassWithHeaders.class.getDeclaredMethod("differentHeadersWithoutSchemaName", String.class);
         AsyncOperation operation2 = m2.getAnnotation(AsyncListener.class).operation();
-
-        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
-        when(stringValueResolver.resolveStringValue(any()))
-                .thenAnswer(invocation -> invocation.getArgument(0).toString() + "Resolved");
 
         // when
         SchemaObject headers1 = AsyncAnnotationUtil.getAsyncHeaders(operation1, stringValueResolver);
@@ -338,8 +316,6 @@ class AsyncAnnotationUtilTest {
     void getServers() throws Exception {
         Method m = ClassWithOperationBindingProcessor.class.getDeclaredMethod("methodWithAnnotation", String.class);
         AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
-
-        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
 
         // when
         when(stringValueResolver.resolveStringValue("${test.property.server1}")).thenReturn("server1");
@@ -544,11 +520,10 @@ class AsyncAnnotationUtilTest {
                                                 values = {
                                                     @AsyncOperation.Headers.Header(
                                                             name = "header",
-                                                            description = "description",
-                                                            format = "")
+                                                            description = "description")
                                                 })))
         @TestOperationBindingProcessor.TestOperationBinding()
-        private void withEmptyFormat(String payload) {}
+        private void withoutFormat(String payload) {}
 
         @AsyncListener(
                 operation =
