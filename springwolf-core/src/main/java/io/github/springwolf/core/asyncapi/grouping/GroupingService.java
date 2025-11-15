@@ -284,9 +284,9 @@ public class GroupingService {
     private static Set<String> findUnmarkedNestedSchemasForOpenAPISchema(
             MarkingContext markingContext, Schema<?> openapiSchema) {
         final Stream<Schema> propertySchemas;
-        if(openapiSchema.getProperties() != null) {
+        if (openapiSchema.getProperties() != null) {
             propertySchemas = openapiSchema.getProperties().values().stream();
-        }else {
+        } else {
             propertySchemas = Stream.empty();
         }
 
