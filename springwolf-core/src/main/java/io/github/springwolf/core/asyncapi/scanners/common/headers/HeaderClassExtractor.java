@@ -34,7 +34,8 @@ public class HeaderClassExtractor {
                 Header headerAnnotation = argument.getAnnotation(Header.class);
                 String headerName = getHeaderAnnotationName(headerAnnotation);
 
-                SwaggerSchemaService.ExtractedSchemas extractedSchema = schemaService.extractSchema(argument.getType());
+                SwaggerSchemaService.ExtractedSchemas extractedSchema =
+                        schemaService.postProcessSimpleSchema(argument.getType());
                 ComponentSchema rootComponentSchema = extractedSchema.rootSchema();
 
                 // to stay compatible with former versions.

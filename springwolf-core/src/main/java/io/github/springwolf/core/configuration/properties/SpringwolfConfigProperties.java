@@ -141,6 +141,8 @@ public class SpringwolfConfigProperties {
          */
         private String defaultContentType = DEFAULT_CONTENT_TYPE;
 
+        private PayloadSchemaFormat payloadSchemaFormat = PayloadSchemaFormat.ASYNCAPI_V3;
+
         @Nullable
         private Map<String, Server> servers;
 

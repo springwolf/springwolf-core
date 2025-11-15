@@ -11,6 +11,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -42,7 +43,8 @@ class JsonSchemaGeneratorTest {
     @MethodSource
     void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema) throws Exception {
         // given
-        SchemaObject actualSchema = swaggerSchemaUtil.mapSchema(asyncApiSchema.get());
+        ComponentSchema actualSchema =
+                swaggerSchemaUtil.mapSchema(asyncApiSchema.get(), PayloadSchemaFormat.ASYNCAPI_V3);
 
         // when
         verifyValidJsonSchema(expectedJsonSchema);
@@ -67,7 +69,7 @@ class JsonSchemaGeneratorTest {
                 ComponentSchema.of(pongSchema));
 
         // when
-        Object jsonSchema = jsonSchemaGenerator.fromSchema(ComponentSchema.of(actualSchema), definitions);
+        Object jsonSchema = jsonSchemaGenerator.fromSchema(actualSchema, definitions);
 
         // then
         String jsonSchemaString = mapper.writeValueAsString(jsonSchema);

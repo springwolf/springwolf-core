@@ -30,6 +30,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
+import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
@@ -82,7 +83,8 @@ import static org.mockito.Mockito.when;
             CloudStreamFunctionChannelsScanner.class,
             CloudStreamFunctionOperationsScanner.class,
             FunctionalChannelBeanBuilder.class,
-            SpringwolfConfigProperties.class
+            SpringwolfConfigProperties.class,
+            ModelConvertersProvider.class
         })
 @TestPropertySource(
         properties = {

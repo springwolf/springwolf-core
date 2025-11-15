@@ -12,6 +12,7 @@ public enum SchemaFormat {
     ASYNCAPI_V3_JSON("application/vnd.aai.asyncapi+json;version=" + AsyncAPI.ASYNCAPI_DEFAULT_VERSION),
     ASYNCAPI_V3_YAML("application/vnd.aai.asyncapi+yaml;version=" + AsyncAPI.ASYNCAPI_DEFAULT_VERSION),
     OPENAPI_V3("application/vnd.oai.openapi;version=3.0.0"),
+    OPENAPI_V3_1("application/vnd.oai.openapi;version=3.1.0"),
     OPENAPI_V3_JSON("application/vnd.oai.openapi+json;version=3.0.0"),
     OPENAPI_V3_YAML("application/vnd.oai.openapi+yaml;version=3.0.0"),
     JSON_SCHEMA_JSON("application/schema+json;version=draft-07"),

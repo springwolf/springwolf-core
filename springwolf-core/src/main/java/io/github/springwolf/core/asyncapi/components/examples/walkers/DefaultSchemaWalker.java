@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
@@ -175,7 +176,14 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             return composedSchemaExample;
         }
 
-        String type = schema.getType();
+        // schema may be an openapi v3 or v3.1 schema. While v3 uses an simple 'type' field, v3.1 supports a set of
+        // types, for example ["string", "null"].
+
+        String type = getTypeForExampleValue(schema);
+        if (type == null) {
+            return Optional.empty();
+        }
+
         return switch (type) {
             case "array" -> buildArrayExample(schema, definitions, visited);
             case "boolean" -> exampleValueGenerator.createBooleanExample(DEFAULT_BOOLEAN_EXAMPLE, schema);
@@ -233,6 +241,33 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             }
         }
         return null;
+    }
+
+    /**
+     * looks in schemas openapi-v3 'type' and openapi-v3.1 'types' fields to
+     * find the best candidate to use as an example value.
+     *
+     * @param schema
+     * @return the type to use for example values, or null if no suitable type was found.
+     */
+    @Nullable
+    String getTypeForExampleValue(Schema schema) {
+        // if the single type field is present, it has precedence over the types field
+        if (schema.getType() != null) {
+            return schema.getType();
+        }
+
+        Set<String> types = schema.getTypes();
+
+        if (types == null || types.isEmpty()) {
+            return null;
+        }
+
+        return types.stream()
+                .filter(t -> !"null".equals(t))
+                .sorted() // sort types to be deterministic
+                .findFirst()
+                .orElse(null);
     }
 
     private Optional<T> buildFromComposedSchema(

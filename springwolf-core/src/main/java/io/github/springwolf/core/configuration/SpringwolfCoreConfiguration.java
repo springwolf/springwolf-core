@@ -38,6 +38,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.Paylo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
+import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
@@ -123,12 +124,18 @@ public class SpringwolfCoreConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public SwaggerSchemaService schemasService(
-            List<ModelConverter> modelConverters,
             List<SchemasPostProcessor> schemaPostProcessors,
             SwaggerSchemaUtil swaggerSchemaUtil,
-            SpringwolfConfigProperties springwolfConfigProperties) {
+            SpringwolfConfigProperties springwolfConfigProperties,
+            ModelConvertersProvider modelConvertersProvider) {
         return new SwaggerSchemaService(
-                modelConverters, schemaPostProcessors, swaggerSchemaUtil, springwolfConfigProperties);
+                schemaPostProcessors, swaggerSchemaUtil, springwolfConfigProperties, modelConvertersProvider);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ModelConvertersProvider modelConvertersProvider(List<ModelConverter> modelConverters) {
+        return new ModelConvertersProvider(modelConverters);
     }
 
     @Bean

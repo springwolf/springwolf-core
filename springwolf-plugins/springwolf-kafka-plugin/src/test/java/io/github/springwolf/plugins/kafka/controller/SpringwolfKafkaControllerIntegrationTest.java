@@ -11,6 +11,7 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.json.Examp
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
+import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
@@ -63,6 +64,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
             SpringwolfConfigProperties.class,
+            ModelConvertersProvider.class
         })
 @TestPropertySource(
         properties = {

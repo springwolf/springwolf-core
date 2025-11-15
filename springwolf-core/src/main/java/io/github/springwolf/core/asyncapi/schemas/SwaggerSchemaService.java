@@ -7,9 +7,9 @@ import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.jackson.TypeNameResolver;
@@ -18,6 +18,7 @@ import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.core.util.RefUtils;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,23 +35,13 @@ import java.util.stream.Collectors;
 import static io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE;
 
 @Slf4j
+@RequiredArgsConstructor
 public class SwaggerSchemaService {
-    private final ModelConverters converter = ModelConverters.getInstance();
+
     private final List<SchemasPostProcessor> schemaPostProcessors;
     private final SwaggerSchemaUtil swaggerSchemaUtil;
     private final SpringwolfConfigProperties properties;
-
-    public SwaggerSchemaService(
-            List<ModelConverter> externalModelConverters,
-            List<SchemasPostProcessor> schemaPostProcessors,
-            SwaggerSchemaUtil swaggerSchemaUtil,
-            SpringwolfConfigProperties properties) {
-
-        externalModelConverters.forEach(converter::addConverter);
-        this.schemaPostProcessors = schemaPostProcessors;
-        this.swaggerSchemaUtil = swaggerSchemaUtil;
-        this.properties = properties;
-    }
+    private final ModelConvertersProvider modelConvertersProvider;
 
     public record ExtractedSchemas(ComponentSchema rootSchema, Map<String, ComponentSchema> referencedSchemas) {}
 
@@ -60,27 +51,27 @@ public class SwaggerSchemaService {
      * postprocessors and converts the result back to a {@link SchemaObject}
      * <p>NOTE</p>
      * The conversion between the AsyncApi {@link SchemaObject} and Swagger schema instance is not a 'full conversion'. Only
-     * root attributes of the schema an the first level of properties a converted. Providing {@link SchemaObject}s with deep
-     * property hierarchy will result in an corrupted result.
+     * root attributes of the schema and the first level of properties are converted. Providing {@link SchemaObject}s with deep
+     * property hierarchy will result in a corrupted result.
      * <br/>
      * A typical usecase for this method is postprocessing of header schemas, which have typically a simple structure.
      *
-     * @param headers
+     * @param schemaWithoutRef
      * @return
      */
-    public SchemaObject extractSchema(SchemaObject headers) {
-        String schemaName = headers.getTitle();
+    public ComponentSchema postProcessSchemaWithoutRef(SchemaObject schemaWithoutRef) {
+        String schemaName = schemaWithoutRef.getTitle();
 
         // create a swagger schema to invoke the postprocessors. Copy attributes vom headers to (Swagger) headerSchema
         ObjectSchema headerSchema = new ObjectSchema();
         headerSchema.setName(schemaName);
-        headerSchema.setTitle(headers.getTitle());
-        headerSchema.setDescription(headers.getDescription());
+        headerSchema.setTitle(schemaWithoutRef.getTitle());
+        headerSchema.setDescription(schemaWithoutRef.getDescription());
 
         // transform properties of headers to a properties Map of Swagger schemas.
         // (Only one level, no deep transformation, see SwaggerSchemaUtil#mapToSwagger)
         //
-        Map<String, Schema> properties = headers.getProperties().entrySet().stream()
+        Map<String, Schema> properties = schemaWithoutRef.getProperties().entrySet().stream()
                 .map((property) ->
                         Map.entry(property.getKey(), (Schema<?>) swaggerSchemaUtil.mapToSwagger(property.getValue())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -90,25 +81,40 @@ public class SwaggerSchemaService {
         Map<String, Schema> newSchemasToProcess = Map.of(schemaName, headerSchema);
         postProcessSchemas(newSchemasToProcess, new HashMap<>(newSchemasToProcess), DEFAULT_CONTENT_TYPE);
 
-        // convert Swagger schema back to an AsnycApi SchemaObject
-        return swaggerSchemaUtil.mapSchema(headerSchema);
+        // convert Swagger schema back to an AsyncApi SchemaObject
+        return swaggerSchemaUtil.mapSchema(headerSchema, PayloadSchemaFormat.ASYNCAPI_V3);
     }
 
-    public ExtractedSchemas extractSchema(Class<?> type) {
-        return this.resolveSchema(type, "");
+    public ExtractedSchemas postProcessSimpleSchema(Class<?> type) {
+        return this.resolveSchema(type, "", PayloadSchemaFormat.ASYNCAPI_V3);
     }
 
-    public ExtractedSchemas resolveSchema(Type type, String contentType) {
+    /**
+     * creates a {@link ExtractedSchemas} from the given type. The resulting ExtractedSchemas will contain the root
+     * schema (which is always a schema ref) and a List of conrecte schemas referenced from the root schema.
+     *
+     * @param type
+     * @param contentType
+     * @param payloadSchemaFormat SchemaFormat to use
+     * @return
+     */
+    public ExtractedSchemas resolveSchema(Type type, String contentType, PayloadSchemaFormat payloadSchemaFormat) {
         String actualContentType =
                 StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
+
+        // use swagger to resolve type to a swagger ResolvedSchema Object.
+        ModelConverters converterToUse = modelConvertersProvider.getModelConverterFor(payloadSchemaFormat);
+
         ResolvedSchema resolvedSchema = runWithFqnSetting(
-                (unused) -> converter.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true)));
+                (unused) -> converterToUse.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true)));
 
         if (resolvedSchema == null) {
             // defaulting to stringSchema when resolvedSchema is null
-            SchemaObject payloadSchema = swaggerSchemaUtil.mapSchema(
-                    PrimitiveType.fromType(String.class).createProperty());
-            return new ExtractedSchemas(ComponentSchema.of(payloadSchema), Map.of());
+            Schema<?> stringPropertySchema =
+                    PrimitiveType.fromType(String.class).createProperty();
+            ComponentSchema stringComponentSchema =
+                    swaggerSchemaUtil.mapSchema(stringPropertySchema, payloadSchemaFormat);
+            return new ExtractedSchemas(stringComponentSchema, Map.of());
         } else {
             Map<String, Schema> newSchemasToProcess = new LinkedHashMap<>(resolvedSchema.referencedSchemas);
             newSchemasToProcess.putIfAbsent(getNameFromType(type), resolvedSchema.schema);
@@ -117,7 +123,7 @@ public class SwaggerSchemaService {
             HashMap<String, Schema> processedSchemas = new HashMap<>(newSchemasToProcess);
             postProcessSchemas(newSchemasToProcess, processedSchemas, actualContentType);
 
-            return createExtractedSchemas(resolvedSchema.schema, processedSchemas);
+            return createExtractedSchemas(resolvedSchema.schema, processedSchemas, payloadSchemaFormat);
         }
     }
 
@@ -126,15 +132,14 @@ public class SwaggerSchemaService {
      *
      * @param rootSchema        Swagger root schema
      * @param referencedSchemas all referenced swagger schemas
+     * @param payloadSchemaFormat      the schema-format of the schemas inside the resulting ExtractedSchemas
      * @return
      */
-    private ExtractedSchemas createExtractedSchemas(Schema rootSchema, Map<String, Schema> referencedSchemas) {
-        ComponentSchema rootComponentSchema = swaggerSchemaUtil.mapSchemaOrRef(rootSchema);
-        Map<String, SchemaObject> referencedSchemaObjects = swaggerSchemaUtil.mapSchemasMap(referencedSchemas);
-        Map<String, ComponentSchema> referencedComponentSchemas = new HashMap<>();
-        referencedSchemaObjects.forEach((schemaname, schemaobject) -> {
-            referencedComponentSchemas.put(schemaname, ComponentSchema.of(schemaobject));
-        });
+    private ExtractedSchemas createExtractedSchemas(
+            Schema rootSchema, Map<String, Schema> referencedSchemas, PayloadSchemaFormat payloadSchemaFormat) {
+        ComponentSchema rootComponentSchema = swaggerSchemaUtil.mapSchemaOrRef(rootSchema, payloadSchemaFormat);
+        Map<String, ComponentSchema> referencedComponentSchemas =
+                swaggerSchemaUtil.mapSchemasMap(referencedSchemas, payloadSchemaFormat);
 
         return new ExtractedSchemas(rootComponentSchema, referencedComponentSchemas);
     }

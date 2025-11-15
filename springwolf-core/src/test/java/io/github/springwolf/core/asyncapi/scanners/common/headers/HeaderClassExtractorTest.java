@@ -51,7 +51,7 @@ class HeaderClassExtractorTest {
     @Test
     void getNoDocumentedHeaders() throws Exception {
         // given
-        when(schemaService.extractSchema(String.class))
+        when(schemaService.postProcessSimpleSchema(String.class))
                 .thenReturn(new SwaggerSchemaService.ExtractedSchemas(stringSwaggerSchema, Map.of()));
 
         // when
@@ -65,7 +65,7 @@ class HeaderClassExtractorTest {
     @Test
     void getHeaderWithSingleHeaderAnnotation() throws Exception {
         // given
-        when(schemaService.extractSchema(String.class))
+        when(schemaService.postProcessSimpleSchema(String.class))
                 .thenReturn(new SwaggerSchemaService.ExtractedSchemas(stringSwaggerSchema, Map.of()));
 
         // when
@@ -86,7 +86,7 @@ class HeaderClassExtractorTest {
     @Test
     void getHeaderWithMultipleHeaderAnnotation() throws Exception {
         // given
-        when(schemaService.extractSchema(String.class))
+        when(schemaService.postProcessSimpleSchema(String.class))
                 .thenReturn(new SwaggerSchemaService.ExtractedSchemas(stringSwaggerSchema, Map.of()));
 
         // when
