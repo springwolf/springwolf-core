@@ -155,6 +155,30 @@ class AnnotationScannerUtilTest {
                             ClassWithMethodAnnotation.class.getDeclaredMethod("hiddenAnnotatedMethod"), null));
         }
 
+        @Test
+        void methodsWithTypicalNamesButDifferentSignaturesAreNotIgnored() throws Exception {
+            List<MethodAndAnnotation<MethodAnnotation>> methods = AnnotationScannerUtil.findAnnotatedMethods(
+                            ClassWithTypicalJavaMethodNames.class, MethodAnnotation.class)
+                    .toList();
+
+            Method equalsWithCustomSignature =
+                    ClassWithTypicalJavaMethodNames.class.getDeclaredMethod("equals", String.class);
+            Method equalsWithObjectSignature =
+                    ClassWithTypicalJavaMethodNames.class.getDeclaredMethod("equals", Object.class);
+            Method waitWithCustomSignature =
+                    ClassWithTypicalJavaMethodNames.class.getDeclaredMethod("wait", String.class);
+
+            assertThat(methods)
+                    .hasSize(2)
+                    .contains(new MethodAndAnnotation<>(
+                            equalsWithCustomSignature, equalsWithCustomSignature.getAnnotation(MethodAnnotation.class)))
+                    .contains(new MethodAndAnnotation<>(
+                            waitWithCustomSignature, waitWithCustomSignature.getAnnotation(MethodAnnotation.class)))
+                    .doesNotContain(new MethodAndAnnotation<>(
+                            equalsWithObjectSignature,
+                            equalsWithObjectSignature.getAnnotation(MethodAnnotation.class)));
+        }
+
         class ClassWithMethodAnnotation {
             @MethodAnnotation
             void annotatedMethod() {}
@@ -164,6 +188,21 @@ class AnnotationScannerUtilTest {
             @MethodAnnotation
             @Hidden
             void hiddenAnnotatedMethod() {}
+        }
+
+        class ClassWithTypicalJavaMethodNames {
+
+            @MethodAnnotation
+            public void wait(String str) {}
+
+            @MethodAnnotation
+            public void equals(String str) {}
+
+            @Override
+            @MethodAnnotation
+            public boolean equals(Object obj) {
+                return super.equals(obj);
+            }
         }
     }
 

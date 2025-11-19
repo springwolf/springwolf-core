@@ -83,10 +83,13 @@ public class AnnotationScannerUtil {
         return Objects.isNull(AnnotationUtil.findFirstAnnotation(Hidden.class, element));
     }
 
-    private static final Set<String> typicalJavaMethods =
-            Set.of("clone", "equals", "finalize", "getClass", "hashCode", "notify", "notifyAll", "toString", "wait");
-
     private static boolean isNotTypicalJavaMethod(Method method) {
-        return !typicalJavaMethods.contains(method.getName());
+        return !isDeclaredOnObject(method);
+    }
+
+    private static boolean isDeclaredOnObject(Method method) {
+        return Arrays.stream(Object.class.getDeclaredMethods())
+                .anyMatch(objectMethod -> objectMethod.getName().equals(method.getName())
+                        && Arrays.equals(objectMethod.getParameterTypes(), method.getParameterTypes()));
     }
 }
