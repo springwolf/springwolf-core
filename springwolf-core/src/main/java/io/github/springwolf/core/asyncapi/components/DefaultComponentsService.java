@@ -26,7 +26,6 @@ import java.util.Map;
 public class DefaultComponentsService implements ComponentsService {
 
     private final SwaggerSchemaService schemaService;
-    private final SpringwolfConfigProperties springwolfConfigProperties;
 
     /**
      * maps a schema name (key) to a detected corresponding {@link ComponentSchema}.
@@ -51,11 +50,10 @@ public class DefaultComponentsService implements ComponentsService {
      *
      * @param type        Type to resolve a schema from
      * @param contentType Runtime ContentType of Schema
-     * @return the root schema for the given type.
+     * @return the root schema for the given type
      */
     @Override
     public ComponentSchema resolvePayloadSchema(Type type, String contentType) {
-
         SwaggerSchemaService.ExtractedSchemas payload = schemaService.resolveSchema(type, contentType);
         payload.referencedSchemas().forEach(schemas::putIfAbsent);
         return payload.rootSchema();
@@ -65,21 +63,21 @@ public class DefaultComponentsService implements ComponentsService {
      * registers the given schema with this {@link ComponentsService}.
      * <p>NOTE</p>
      * Use only with schemas with max. one level of properties. Providing {@link SchemaObject}s with deep
-     * property hierarchy will result in an corrupted result.
+     * property hierarchy will result in a corrupted result.
      * <br/>
-     * A typical usecase for this method is  registering of header schemas, which have typically a simple structure.
+     * A typical usecase for this method is registering of header schemas, which have typically a simple structure.
      *
-     * @param headers the schema to register, typically a header schema
+     * @param schemaWithoutRef the schema to register, typically a header schema
      * @return the title attribute of the given schema
      */
     @Override
-    public String registerSchema(SchemaObject headers) {
-        log.debug("Registering schema for {}", headers.getTitle());
+    public String registerSchema(SchemaObject schemaWithoutRef) {
+        log.debug("Registering schema for {}", schemaWithoutRef.getTitle());
 
-        SchemaObject headerSchema = schemaService.extractSchema(headers);
-        this.schemas.putIfAbsent(headers.getTitle(), ComponentSchema.of(headerSchema));
+        ComponentSchema processedSchema = schemaService.postProcessSchemaWithoutRef(schemaWithoutRef);
+        this.schemas.putIfAbsent(schemaWithoutRef.getTitle(), processedSchema);
 
-        return headers.getTitle();
+        return schemaWithoutRef.getTitle();
     }
 
     /**

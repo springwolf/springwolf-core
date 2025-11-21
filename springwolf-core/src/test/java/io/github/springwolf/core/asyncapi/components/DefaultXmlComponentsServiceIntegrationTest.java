@@ -11,8 +11,9 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSch
 import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.DefaultExampleXmlValueSerializer;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.ExampleXmlValueGenerator;
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
+import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.fixtures.ClasspathUtil;
@@ -51,12 +52,12 @@ class DefaultXmlComponentsServiceIntegrationTest {
     private final SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
 
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
-            List.of(new SchemaTitleModelConverter()),
+            configProperties,
             List.of(new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(
                     new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer())))))),
-            new SwaggerSchemaUtil(),
-            configProperties);
-    private final ComponentsService componentsService = new DefaultComponentsService(schemaService, configProperties);
+            new SwaggerSchemaMapper(configProperties),
+            new ModelConvertersProvider(configProperties, List.of(new SchemaTitleModelConverter())));
+    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
 
     @Test
     void getSchemas() throws Exception {

@@ -47,29 +47,26 @@ class SwaggerSchemaServiceTest {
 
     @BeforeEach
     void setUp() {
+        SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
         schemaService = new SwaggerSchemaService(
-                List.of(new ModelConverterNativeClass.Converter()),
+                configProperties,
                 List.of(schemasPostProcessor, schemasPostProcessor2),
-                new SwaggerSchemaUtil(),
-                new SpringwolfConfigProperties());
+                new SwaggerSchemaMapper(configProperties),
+                new ModelConvertersProvider(configProperties, List.of(new ModelConverterNativeClass.Converter())));
     }
 
     @Test
     void classWithSchemaAnnotationWithAsyncapiSchemaformat() {
-        ComponentSchema schema = schemaService
-                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant")
-                .rootSchema();
+        SwaggerSchemaService.ExtractedSchemas extractedSchemas =
+                schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
 
-        assertThat(schema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
-    }
+        assertThat(extractedSchemas.referencedSchemas()).hasSize(1);
+        ComponentSchema modelSchema = extractedSchemas.referencedSchemas().get("DifferentName");
+        assertThat(modelSchema.getSchema()).isNotNull(); // we expect an asyncapi schema
+        assertThat(modelSchema.getMultiFormatSchema()).isNull();
 
-    @Test
-    void classWithSchemaAnnotationWithOpenapiSchemaformat() {
-        ComponentSchema schema = schemaService
-                .resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant")
-                .rootSchema();
-
-        assertThat(schema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
+        ComponentSchema rootSchema = extractedSchemas.rootSchema();
+        assertThat(rootSchema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
     }
 
     @Test
@@ -78,8 +75,11 @@ class SwaggerSchemaServiceTest {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setUseFqn(false);
 
-        SwaggerSchemaService schemaServiceWithFqn =
-                new SwaggerSchemaService(List.of(), List.of(), new SwaggerSchemaUtil(), properties);
+        SwaggerSchemaService schemaServiceWithFqn = new SwaggerSchemaService(
+                properties,
+                List.of(),
+                new SwaggerSchemaMapper(properties),
+                new ModelConvertersProvider(properties, List.of()));
 
         // when
         Class<?> clazz =

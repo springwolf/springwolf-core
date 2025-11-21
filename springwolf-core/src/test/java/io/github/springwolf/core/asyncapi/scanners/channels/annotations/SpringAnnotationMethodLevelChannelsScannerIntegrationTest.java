@@ -29,8 +29,9 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodS
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
+import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Data;
@@ -62,7 +63,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             SpringAnnotationMethodLevelChannelsScannerIntegrationTest.TestBindingFactory.class,
             DefaultComponentsService.class,
             SwaggerSchemaService.class,
-            SwaggerSchemaUtil.class,
+            SwaggerSchemaMapper.class,
             PayloadMethodParameterService.class,
             PayloadAsyncOperationService.class,
             PayloadService.class,
@@ -73,6 +74,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
             SpringwolfConfigProperties.class,
+            ModelConvertersProvider.class
         })
 class SpringAnnotationMethodLevelChannelsScannerIntegrationTest {
     @Autowired

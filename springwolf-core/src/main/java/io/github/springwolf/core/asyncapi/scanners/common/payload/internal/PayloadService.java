@@ -36,6 +36,14 @@ public class PayloadService {
         return buildSchema(contentType, payloadType);
     }
 
+    /**
+     * creates a {@link PayloadSchemaObject} from the given type and content type. Registers the created schema objects
+     * with this {@link ComponentsService}.
+     *
+     * @param contentType
+     * @param payloadType
+     * @return
+     */
     public PayloadSchemaObject buildSchema(String contentType, Type payloadType) {
         String schemaName = componentsService.getSchemaName(payloadType);
         String simpleSchemaName = componentsService.getSimpleSchemaName(payloadType);

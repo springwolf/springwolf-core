@@ -42,8 +42,8 @@ public class AsyncAnnotationMessageService {
         Map<String, MessageBinding> messageBinding =
                 AsyncAnnotationUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
 
-        var messagePayload = MessagePayload.of(
-                MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
+        MultiFormatSchema multiFormatSchema = MultiFormatSchema.of(payloadSchema.payload());
+        MessagePayload messagePayload = MessagePayload.of(multiFormatSchema);
 
         var builder = MessageObject.builder()
                 .messageId(payloadSchema.name())
