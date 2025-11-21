@@ -1,0 +1,217 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Springwolf-core",
+    "version": "1.0.0",
+    "description": "Springwolf core integration test",
+    "x-generator": "springwolf"
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "test-protocol": {
+      "host": "some-property-server:1234",
+      "protocol": "property-protocol"
+    }
+  },
+  "channels": {
+    "listener-channel": {
+      "address": "listener-channel",
+      "messages": {
+        "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo": {
+          "$ref": "#/components/messages/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo"
+        },
+        "java.lang.String": {
+          "$ref": "#/components/messages/java.lang.String"
+        }
+      },
+      "bindings": { }
+    },
+    "listener-class-channel": {
+      "address": "listener-class-channel",
+      "messages": {
+        "java.lang.Integer": {
+          "$ref": "#/components/messages/java.lang.Integer"
+        }
+      },
+      "bindings": { }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HeadersNotDocumented": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.0.0",
+        "schema": {
+          "type": "object",
+          "description": "There can be headers, but they are not explicitly documented.",
+          "example": { },
+          "properties": { },
+          "title": "HeadersNotDocumented"
+        }
+      },
+      "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Bar": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.0.0",
+        "schema": {
+          "example": {
+            "aFieldInBarRecord": "string"
+          },
+          "properties": {
+            "aFieldInBarRecord": {
+              "type": "string"
+            }
+          },
+          "title": "Bar"
+        }
+      },
+      "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.0.0",
+        "schema": {
+          "example": {
+            "aFieldInFooRecord": {
+              "aFieldInBarRecord": "string"
+            }
+          },
+          "properties": {
+            "aFieldInFooRecord": {
+              "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Bar"
+            }
+          },
+          "title": "Foo"
+        }
+      },
+      "java.lang.Integer": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.0.0",
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 0
+        }
+      },
+      "java.lang.String": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.0.0",
+        "schema": {
+          "type": "string",
+          "example": "\"string\""
+        }
+      }
+    },
+    "messages": {
+      "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo"
+          }
+        },
+        "name": "io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo",
+        "title": "Foo",
+        "bindings": { }
+      },
+      "java.lang.Integer": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.oai.openapi;version=3.0.0",
+          "schema": {
+            "type": "integer",
+            "format": "int32",
+            "example": 0
+          }
+        },
+        "name": "java.lang.Integer",
+        "title": "integer",
+        "bindings": { }
+      },
+      "java.lang.String": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.oai.openapi;version=3.0.0",
+          "schema": {
+            "type": "string",
+            "example": "\"string\""
+          }
+        },
+        "name": "java.lang.String",
+        "title": "string",
+        "bindings": { }
+      }
+    }
+  },
+  "operations": {
+    "listener-channel_receive_listen": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/java.lang.String"
+        }
+      ]
+    },
+    "listener-channel_receive_listen2": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/java.lang.String"
+        }
+      ]
+    },
+    "listener-channel_receive_listen3": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo"
+        }
+      ]
+    },
+    "listener-channel_receive_listen4": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/io.github.springwolf.core.integrationtests.application.listener.ListenerApplication.Foo"
+        }
+      ]
+    },
+    "listener-class-channel_receive_listen": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-class-channel"
+      },
+      "title": "listener-class-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-class-channel/messages/java.lang.Integer"
+        }
+      ]
+    }
+  }
+}
