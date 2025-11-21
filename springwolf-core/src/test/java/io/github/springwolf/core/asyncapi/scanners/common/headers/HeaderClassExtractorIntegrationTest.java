@@ -6,8 +6,8 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -27,11 +27,13 @@ class HeaderClassExtractorIntegrationTest {
 
     private static final SchemaTitleModelConverter titleModelConverter = new SchemaTitleModelConverter();
 
+    private final SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
+
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
+            configProperties,
             List.of(),
-            new SwaggerSchemaUtil(),
-            new SpringwolfConfigProperties(),
-            new ModelConvertersProvider(List.of(titleModelConverter)));
+            new SwaggerSchemaMapper(configProperties),
+            new ModelConvertersProvider(configProperties, List.of(titleModelConverter)));
     private final HeaderClassExtractor headerClassExtractor = new HeaderClassExtractor(schemaService);
 
     private final PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject(

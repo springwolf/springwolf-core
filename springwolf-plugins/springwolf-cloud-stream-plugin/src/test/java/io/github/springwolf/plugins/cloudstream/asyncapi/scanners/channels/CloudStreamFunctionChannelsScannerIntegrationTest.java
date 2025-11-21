@@ -32,7 +32,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.Paylo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
@@ -74,7 +74,7 @@ import static org.mockito.Mockito.when;
             SwaggerSchemaService.class,
             PayloadService.class,
             PayloadExtractor.class,
-            SwaggerSchemaUtil.class,
+            SwaggerSchemaMapper.class,
             TypeExtractor.class,
             DefaultSchemaWalker.class,
             SchemaWalkerProvider.class,

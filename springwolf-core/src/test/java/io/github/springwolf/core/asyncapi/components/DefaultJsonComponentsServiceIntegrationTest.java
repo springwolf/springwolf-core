@@ -15,8 +15,8 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSch
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
 import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.fixtures.ClasspathUtil;
@@ -51,13 +51,12 @@ class DefaultJsonComponentsServiceIntegrationTest {
     private final SpringwolfConfigProperties springwolfConfigProperties = new SpringwolfConfigProperties();
 
     private final SwaggerSchemaService schemaService = new SwaggerSchemaService(
+            springwolfConfigProperties,
             List.of(new ExampleGeneratorPostProcessor(
                     new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(new ExampleJsonValueGenerator()))))),
-            new SwaggerSchemaUtil(),
-            springwolfConfigProperties,
-            new ModelConvertersProvider(List.of(new SchemaTitleModelConverter())));
-    private final ComponentsService componentsService =
-            new DefaultComponentsService(schemaService, springwolfConfigProperties);
+            new SwaggerSchemaMapper(springwolfConfigProperties),
+            new ModelConvertersProvider(springwolfConfigProperties, List.of(new SchemaTitleModelConverter())));
+    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
 
     private static final ObjectMapper objectMapper =
             Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);

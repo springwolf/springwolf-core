@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.util.Json;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ class DefaultComponentsServiceTest {
 
     @BeforeEach
     void setUp() {
-        componentsService = new DefaultComponentsService(schemaService, new SpringwolfConfigProperties());
+        componentsService = new DefaultComponentsService(schemaService);
     }
 
     @Test

@@ -39,8 +39,8 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.Paylo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
 import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
@@ -110,32 +110,32 @@ public class SpringwolfCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SwaggerSchemaUtil swaggerSchemaUtil() {
-        return new SwaggerSchemaUtil();
+    public SwaggerSchemaMapper swaggerSchemaUtil(SpringwolfConfigProperties springwolfConfigProperties) {
+        return new SwaggerSchemaMapper(springwolfConfigProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ComponentsService componentsService(
-            SwaggerSchemaService schemaService, SpringwolfConfigProperties springwolfConfigProperties) {
-        return new DefaultComponentsService(schemaService, springwolfConfigProperties);
+    public ComponentsService componentsService(SwaggerSchemaService schemaService) {
+        return new DefaultComponentsService(schemaService);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public SwaggerSchemaService schemasService(
-            List<SchemasPostProcessor> schemaPostProcessors,
-            SwaggerSchemaUtil swaggerSchemaUtil,
             SpringwolfConfigProperties springwolfConfigProperties,
+            List<SchemasPostProcessor> schemaPostProcessors,
+            SwaggerSchemaMapper swaggerSchemaMapper,
             ModelConvertersProvider modelConvertersProvider) {
         return new SwaggerSchemaService(
-                schemaPostProcessors, swaggerSchemaUtil, springwolfConfigProperties, modelConvertersProvider);
+                springwolfConfigProperties, schemaPostProcessors, swaggerSchemaMapper, modelConvertersProvider);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ModelConvertersProvider modelConvertersProvider(List<ModelConverter> modelConverters) {
-        return new ModelConvertersProvider(modelConverters);
+    public ModelConvertersProvider modelConvertersProvider(
+            SpringwolfConfigProperties springwolfConfigProperties, List<ModelConverter> modelConverters) {
+        return new ModelConvertersProvider(springwolfConfigProperties, modelConverters);
     }
 
     @Bean

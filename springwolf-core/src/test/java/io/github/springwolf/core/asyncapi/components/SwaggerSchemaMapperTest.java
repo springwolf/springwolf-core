@@ -7,12 +7,14 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaFormat;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
 import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +25,18 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SwaggerSchemaUtilTest {
-    private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
+class SwaggerSchemaMapperTest {
+
+    private final SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
+    private final SwaggerSchemaMapper swaggerSchemaMapper = new SwaggerSchemaMapper(configProperties);
+
+    @AfterEach
+    void tearDown() {
+        configProperties
+                .getDocket()
+                .setPayloadSchemaFormat(
+                        new SpringwolfConfigProperties().getDocket().getPayloadSchemaFormat());
+    }
 
     @Nested
     class MapSchemaOrRef {
@@ -32,6 +44,8 @@ class SwaggerSchemaUtilTest {
         @Test
         void mapToOpenApiV3Schema() {
             // given
+            configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3);
+
             ObjectSchema schema = new ObjectSchema();
             schema.setType(SchemaType.STRING);
             ExternalDocumentation externalDocs = new ExternalDocumentation();
@@ -40,7 +54,7 @@ class SwaggerSchemaUtilTest {
             schema.setExternalDocs(externalDocs);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchemaOrRef(schema, PayloadSchemaFormat.OPENAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchemaOrRef(schema);
 
             // then
             // componentSchema should contain a MultiFormatSchema with the original openapi schema
@@ -53,6 +67,8 @@ class SwaggerSchemaUtilTest {
         @Test
         void mapToOpenApiV31Schema() {
             // given
+            configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3_1);
+
             ObjectSchema schema = new ObjectSchema();
             schema.setType(SchemaType.STRING);
             ExternalDocumentation externalDocs = new ExternalDocumentation();
@@ -61,8 +77,7 @@ class SwaggerSchemaUtilTest {
             schema.setExternalDocs(externalDocs);
 
             // when
-            ComponentSchema componentSchema =
-                    swaggerSchemaUtil.mapSchemaOrRef(schema, PayloadSchemaFormat.OPENAPI_V3_1);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchemaOrRef(schema);
 
             // then
             // componentSchema should contain a MultiFormatSchema with the original openapi schema
@@ -75,11 +90,13 @@ class SwaggerSchemaUtilTest {
         @Test
         void mapReference() {
             // given
+            configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3);
+
             ObjectSchema schema = new ObjectSchema();
             schema.set$ref("#/components/schemas/MySchema");
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchemaOrRef(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchemaOrRef(schema);
 
             // then
             assertThat(componentSchema.getReference()).isEqualTo(new SchemaReference("#/components/schemas/MySchema"));
@@ -92,7 +109,7 @@ class SwaggerSchemaUtilTest {
             schema.setType(SchemaType.STRING);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchemaOrRef(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchemaOrRef(schema);
 
             // then
             assertThat(componentSchema.getSchema().getType()).containsExactly(SchemaType.STRING);
@@ -105,6 +122,8 @@ class SwaggerSchemaUtilTest {
         @Test
         void mapToOpenApiV3Schema() {
             // given
+            configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3);
+
             ObjectSchema schema = new ObjectSchema();
             schema.setType(SchemaType.STRING);
             ExternalDocumentation externalDocs = new ExternalDocumentation();
@@ -113,7 +132,7 @@ class SwaggerSchemaUtilTest {
             schema.setExternalDocs(externalDocs);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.OPENAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // componentSchema should contain a MultiFormatSchema with the original openapi schema
@@ -126,6 +145,8 @@ class SwaggerSchemaUtilTest {
         @Test
         void mapToOpenApiV31Schema() {
             // given
+            configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3_1);
+
             ObjectSchema schema = new ObjectSchema();
             schema.setType(SchemaType.STRING);
             ExternalDocumentation externalDocs = new ExternalDocumentation();
@@ -134,7 +155,7 @@ class SwaggerSchemaUtilTest {
             schema.setExternalDocs(externalDocs);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.OPENAPI_V3_1);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // componentSchema should contain a MultiFormatSchema with the original openapi schema
@@ -154,7 +175,7 @@ class SwaggerSchemaUtilTest {
             schema.setExternalDocs(externalDocs);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getExternalDocs().getDescription())
@@ -169,10 +190,10 @@ class SwaggerSchemaUtilTest {
             schema.setDeprecated(true);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            assertThat(componentSchema.getSchema().getDeprecated()).isEqualTo(true);
+            assertThat(componentSchema.getSchema().getDeprecated()).isTrue();
         }
 
         @Test
@@ -182,7 +203,7 @@ class SwaggerSchemaUtilTest {
             schema.setTitle("title");
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getTitle()).isEqualTo(schema.getTitle());
@@ -195,7 +216,7 @@ class SwaggerSchemaUtilTest {
             schema.setType(SchemaType.STRING);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getType()).containsExactly(schema.getType());
@@ -210,7 +231,7 @@ class SwaggerSchemaUtilTest {
             schema.addProperty("property", property);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(((ComponentSchema)
@@ -227,7 +248,7 @@ class SwaggerSchemaUtilTest {
             schema.setDescription("description");
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getDescription()).isEqualTo(schema.getDescription());
@@ -240,7 +261,7 @@ class SwaggerSchemaUtilTest {
             schema.setFormat("format");
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getFormat()).isEqualTo(schema.getFormat());
@@ -253,7 +274,7 @@ class SwaggerSchemaUtilTest {
             schema.setPattern("pattern");
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getPattern()).isEqualTo(schema.getPattern());
@@ -267,7 +288,7 @@ class SwaggerSchemaUtilTest {
             schema.setExclusiveMinimum(true);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getExclusiveMinimum()).isEqualTo(schema.getMinimum());
@@ -281,7 +302,7 @@ class SwaggerSchemaUtilTest {
             schema.setExclusiveMinimumValue(BigDecimal.ONE);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getExclusiveMinimum()).isEqualTo(schema.getExclusiveMinimumValue());
@@ -296,7 +317,7 @@ class SwaggerSchemaUtilTest {
             schema.setExclusiveMaximum(true);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getExclusiveMaximum()).isEqualTo(schema.getMaximum());
@@ -310,7 +331,7 @@ class SwaggerSchemaUtilTest {
             schema.setExclusiveMaximumValue(BigDecimal.ONE);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getExclusiveMaximum()).isEqualTo(schema.getExclusiveMaximumValue());
@@ -324,7 +345,7 @@ class SwaggerSchemaUtilTest {
             schema.setMinimum(BigDecimal.ONE);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getMinimum()).isEqualTo(schema.getMinimum());
@@ -338,7 +359,7 @@ class SwaggerSchemaUtilTest {
             schema.setMaximum(BigDecimal.ONE);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getMaximum()).isEqualTo(schema.getMaximum());
@@ -352,7 +373,7 @@ class SwaggerSchemaUtilTest {
             schema.setMultipleOf(BigDecimal.ONE);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getMultipleOf()).isEqualTo(schema.getMultipleOf());
@@ -365,7 +386,7 @@ class SwaggerSchemaUtilTest {
             schema.setMinLength(1);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getMinLength()).isEqualTo(schema.getMinLength());
@@ -378,7 +399,7 @@ class SwaggerSchemaUtilTest {
             schema.setMaxLength(1);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getMaxLength()).isEqualTo(schema.getMaxLength());
@@ -391,7 +412,7 @@ class SwaggerSchemaUtilTest {
             schema.setEnum(List.of("enum1", "enum2"));
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getEnumValues()).isEqualTo(schema.getEnum());
@@ -404,7 +425,7 @@ class SwaggerSchemaUtilTest {
             schema.setExample("example");
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getExamples()).isEqualTo(List.of(schema.getExample()));
@@ -419,7 +440,7 @@ class SwaggerSchemaUtilTest {
             schema.setAdditionalProperties(additionalProperties);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema
@@ -437,7 +458,7 @@ class SwaggerSchemaUtilTest {
             schema.setRequired(List.of("required"));
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             assertThat(componentSchema.getSchema().getRequired()).isEqualTo(schema.getRequired());
@@ -452,7 +473,7 @@ class SwaggerSchemaUtilTest {
             schema.setDiscriminator(discriminator);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -470,7 +491,7 @@ class SwaggerSchemaUtilTest {
             schema.addAllOfItem(allOf);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -489,7 +510,7 @@ class SwaggerSchemaUtilTest {
             schema.addOneOfItem(oneOf);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -508,7 +529,7 @@ class SwaggerSchemaUtilTest {
             schema.addAnyOfItem(anyOf);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -524,7 +545,7 @@ class SwaggerSchemaUtilTest {
             schema.setConst("const");
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -541,7 +562,7 @@ class SwaggerSchemaUtilTest {
             schema.setNot(not);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -560,7 +581,7 @@ class SwaggerSchemaUtilTest {
             schema.setItems(item);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -576,7 +597,7 @@ class SwaggerSchemaUtilTest {
             schema.setUniqueItems(false);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -591,7 +612,7 @@ class SwaggerSchemaUtilTest {
             schema.setMinItems(1);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -606,7 +627,7 @@ class SwaggerSchemaUtilTest {
             schema.setMaxItems(10);
 
             // when
-            ComponentSchema componentSchema = swaggerSchemaUtil.mapSchema(schema, PayloadSchemaFormat.ASYNCAPI_V3);
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
             // ensure that componentSchema contains an AsnycApi SchemaObjekt.
@@ -624,7 +645,7 @@ class SwaggerSchemaUtilTest {
             schema.setDescription("description");
 
             // when
-            Schema<?> swaggerSchema = swaggerSchemaUtil.mapToSwagger(schema);
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
 
             // then
             assertThat(swaggerSchema.getDescription()).isEqualTo(schema.getDescription());
@@ -637,7 +658,7 @@ class SwaggerSchemaUtilTest {
             schema.setExamples(List.of("example1", "example2"));
 
             // when
-            Schema<?> swaggerSchema = swaggerSchemaUtil.mapToSwagger(schema);
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
 
             // then
             assertThat(swaggerSchema.getExamples()).isEqualTo(schema.getExamples());
@@ -650,7 +671,7 @@ class SwaggerSchemaUtilTest {
             schema.setEnumValues(List.of("enum1", "enum2"));
 
             // when
-            Schema<?> swaggerSchema = swaggerSchemaUtil.mapToSwagger(schema);
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
 
             // then
             assertThat(swaggerSchema.getEnum()).isEqualTo(schema.getEnumValues());
@@ -664,7 +685,7 @@ class SwaggerSchemaUtilTest {
             schema.setTypes(Set.of(SchemaType.STRING, SchemaType.NULL)); // nullable
 
             // when
-            Schema<?> swaggerSchema = swaggerSchemaUtil.mapToSwagger(schema);
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
 
             // then
             assertThat(swaggerSchema.getEnum()).isEqualTo(schema.getEnumValues());
@@ -678,7 +699,7 @@ class SwaggerSchemaUtilTest {
             schema.setType(SchemaType.STRING);
 
             // when
-            Schema<?> swaggerSchema = swaggerSchemaUtil.mapToSwagger(schema);
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
 
             // then
             assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING);

@@ -30,8 +30,8 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.Paylo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Data;
@@ -61,7 +61,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             SpringAnnotationClassLevelChannelsScannerIntegrationTest.TestBindingFactory.class,
             DefaultComponentsService.class,
             SwaggerSchemaService.class,
-            SwaggerSchemaUtil.class,
+            SwaggerSchemaMapper.class,
             PayloadMethodParameterService.class,
             PayloadAsyncOperationService.class,
             PayloadService.class,

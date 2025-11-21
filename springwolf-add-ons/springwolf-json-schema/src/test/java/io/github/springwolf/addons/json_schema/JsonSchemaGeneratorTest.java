@@ -10,8 +10,8 @@ import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
-import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -36,15 +36,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class JsonSchemaGeneratorTest {
     private final ObjectMapper mapper = Json.mapper();
-    private final SwaggerSchemaUtil swaggerSchemaUtil = new SwaggerSchemaUtil();
+    private final SwaggerSchemaMapper swaggerSchemaMapper = new SwaggerSchemaMapper(new SpringwolfConfigProperties());
     private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator();
 
     @ParameterizedTest
     @MethodSource
     void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema) throws Exception {
         // given
-        ComponentSchema actualSchema =
-                swaggerSchemaUtil.mapSchema(asyncApiSchema.get(), PayloadSchemaFormat.ASYNCAPI_V3);
+        ComponentSchema actualSchema = swaggerSchemaMapper.mapSchema(asyncApiSchema.get());
 
         // when
         verifyValidJsonSchema(expectedJsonSchema);

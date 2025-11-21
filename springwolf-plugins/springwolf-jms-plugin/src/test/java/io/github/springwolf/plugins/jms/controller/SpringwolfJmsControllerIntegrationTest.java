@@ -13,7 +13,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.Paylo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaUtil;
+import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.core.controller.dtos.MessageDto;
@@ -59,7 +59,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             DefaultComponentsService.class,
             SwaggerSchemaService.class,
             PayloadService.class,
-            SwaggerSchemaUtil.class,
+            SwaggerSchemaMapper.class,
             DefaultSchemaWalker.class,
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,

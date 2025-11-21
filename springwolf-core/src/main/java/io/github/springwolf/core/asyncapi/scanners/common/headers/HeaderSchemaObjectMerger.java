@@ -24,7 +24,6 @@ public class HeaderSchemaObjectMerger {
         SchemaObject.SchemaObjectBuilder headerSchemaBuilder =
                 SchemaObject.builder().type(SchemaType.OBJECT);
 
-        String title = initial.getTitle();
         String description = initial.getDescription();
         Map<String, Object> headerProperties = new HashMap<>(initial.getProperties());
 
