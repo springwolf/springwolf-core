@@ -163,20 +163,20 @@ class AnnotationScannerUtilTest {
 
             Method equalsWithCustomSignature =
                     ClassWithTypicalJavaMethodNames.class.getDeclaredMethod("equals", String.class);
-            Method equalsWithObjectSignature =
+            Method equalsWithObjectSignatureOverride =
                     ClassWithTypicalJavaMethodNames.class.getDeclaredMethod("equals", Object.class);
             Method waitWithCustomSignature =
                     ClassWithTypicalJavaMethodNames.class.getDeclaredMethod("wait", String.class);
 
             assertThat(methods)
-                    .hasSize(2)
+                    .hasSize(3)
                     .contains(new MethodAndAnnotation<>(
                             equalsWithCustomSignature, equalsWithCustomSignature.getAnnotation(MethodAnnotation.class)))
                     .contains(new MethodAndAnnotation<>(
                             waitWithCustomSignature, waitWithCustomSignature.getAnnotation(MethodAnnotation.class)))
-                    .doesNotContain(new MethodAndAnnotation<>(
-                            equalsWithObjectSignature,
-                            equalsWithObjectSignature.getAnnotation(MethodAnnotation.class)));
+                    .contains(new MethodAndAnnotation<>(
+                            equalsWithObjectSignatureOverride,
+                            equalsWithObjectSignatureOverride.getAnnotation(MethodAnnotation.class)));
         }
 
         class ClassWithMethodAnnotation {
