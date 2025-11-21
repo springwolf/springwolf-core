@@ -1,0 +1,199 @@
+{
+  "asyncapi": "3.0.0",
+  "id": "urn:io:github:springwolf:example",
+  "info": {
+    "title": "Info title was loaded from spring properties",
+    "version": "1.0.0",
+    "description": "Springwolf core integration test",
+    "x-generator": "springwolf"
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "test-protocol": {
+      "host": "some-server:1234",
+      "protocol": "test"
+    }
+  },
+  "channels": {
+    "listener-channel": {
+      "address": "listener-channel",
+      "messages": {
+        "Foo": {
+          "$ref": "#/components/messages/Foo"
+        },
+        "integer": {
+          "$ref": "#/components/messages/integer"
+        },
+        "string": {
+          "$ref": "#/components/messages/string"
+        }
+      },
+      "bindings": { }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Bar": {
+        "title": "Bar",
+        "type": "object",
+        "properties": {
+          "aFieldInBarRecord": {
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "aFieldInBarRecord": "string"
+          }
+        ]
+      },
+      "Foo": {
+        "title": "Foo",
+        "type": "object",
+        "properties": {
+          "aFieldInFooRecord": {
+            "$ref": "#/components/schemas/Bar"
+          }
+        },
+        "examples": [
+          {
+            "aFieldInFooRecord": {
+              "aFieldInBarRecord": "string"
+            }
+          }
+        ]
+      },
+      "HeadersNotDocumented": {
+        "title": "HeadersNotDocumented",
+        "type": "object",
+        "properties": { },
+        "description": "There can be headers, but they are not explicitly documented.",
+        "examples": [
+          { }
+        ]
+      },
+      "integer": {
+        "type": "integer",
+        "format": "int32",
+        "examples": [
+          0
+        ]
+      },
+      "string": {
+        "type": "string",
+        "examples": [
+          "\"string\""
+        ]
+      }
+    },
+    "messages": {
+      "Foo": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/Foo"
+          }
+        },
+        "name": "Foo",
+        "title": "Foo",
+        "bindings": { }
+      },
+      "integer": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "type": "integer",
+            "format": "int32",
+            "examples": [
+              0
+            ]
+          }
+        },
+        "name": "integer",
+        "title": "integer",
+        "bindings": { }
+      },
+      "string": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "type": "string",
+            "examples": [
+              "\"string\""
+            ]
+          }
+        },
+        "name": "string",
+        "title": "string",
+        "bindings": { }
+      }
+    }
+  },
+  "operations": {
+    "listener-channel_receive_listen": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/string"
+        }
+      ]
+    },
+    "listener-channel_receive_listen2": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/string"
+        }
+      ]
+    },
+    "listener-channel_receive_listen3": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/Foo"
+        }
+      ]
+    },
+    "listener-channel_receive_listen4": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/integer"
+        }
+      ]
+    }
+  }
+}

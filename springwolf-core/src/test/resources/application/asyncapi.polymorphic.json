@@ -1,0 +1,158 @@
+{
+  "asyncapi": "3.0.0",
+  "id": "urn:io:github:springwolf:example",
+  "info": {
+    "title": "Info title was loaded from spring properties",
+    "version": "1.0.0",
+    "description": "Springwolf core integration test",
+    "x-generator": "springwolf"
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "test-protocol": {
+      "host": "some-server:1234",
+      "protocol": "test"
+    }
+  },
+  "channels": {
+    "listener-channel": {
+      "address": "listener-channel",
+      "messages": {
+        "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload": {
+          "$ref": "#/components/messages/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload"
+        }
+      },
+      "bindings": { }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HeadersNotDocumented": {
+        "title": "HeadersNotDocumented",
+        "type": "object",
+        "properties": { },
+        "description": "There can be headers, but they are not explicitly documented.",
+        "examples": [
+          { }
+        ]
+      },
+      "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Cat": {
+        "type": "object",
+        "examples": [
+          {
+            "catSpecificField": "string",
+            "type": "string"
+          }
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "catSpecificField": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Dog": {
+        "type": "object",
+        "examples": [
+          {
+            "dogSpecificField": "string",
+            "type": "string"
+          }
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dogSpecificField": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload": {
+        "title": "Payload",
+        "type": "object",
+        "properties": {
+          "pet": {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet"
+          }
+        },
+        "examples": [
+          {
+            "pet": {
+              "dogSpecificField": "string",
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Pet": {
+        "discriminator": "type",
+        "title": "Pet",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "dogSpecificField": "string",
+            "type": "string"
+          }
+        ],
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Dog"
+          },
+          {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Cat"
+          }
+        ]
+      }
+    },
+    "messages": {
+      "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload"
+          }
+        },
+        "name": "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload",
+        "title": "Payload",
+        "bindings": { }
+      }
+    }
+  },
+  "operations": {
+    "listener-channel_receive_listen": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/listener-channel"
+      },
+      "title": "listener-channel_receive",
+      "description": "Auto-generated description",
+      "bindings": { },
+      "messages": [
+        {
+          "$ref": "#/channels/listener-channel/messages/io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Payload"
+        }
+      ]
+    }
+  }
+}
