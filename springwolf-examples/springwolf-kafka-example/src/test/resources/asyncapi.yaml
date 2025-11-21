@@ -182,6 +182,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -189,6 +190,7 @@ components:
           examples:
             - io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
         ce_id:
+          title: ce_id
           type: string
           description: CloudEvent Id Header
           enum:
@@ -196,6 +198,7 @@ components:
           examples:
             - 2c60089e-6f39-459d-8ced-2d6df7e4c03a
         ce_source:
+          title: ce_source
           type: string
           description: CloudEvent Source Header
           enum:
@@ -203,6 +206,7 @@ components:
           examples:
             - http://localhost
         ce_specversion:
+          title: ce_specversion
           type: string
           description: CloudEvent Spec Version Header
           enum:
@@ -210,6 +214,7 @@ components:
           examples:
             - "1.0"
         ce_subject:
+          title: ce_subject
           type: string
           description: CloudEvent Subject Header
           enum:
@@ -217,6 +222,7 @@ components:
           examples:
             - Springwolf example project - Kafka
         ce_time:
+          title: ce_time
           type: string
           description: CloudEvent Time Header
           enum:
@@ -224,6 +230,7 @@ components:
           examples:
             - 2023-10-28 20:01:23+00:00
         ce_type:
+          title: ce_type
           type: string
           description: CloudEvent Payload Type Header
           enum:
@@ -231,6 +238,7 @@ components:
           examples:
             - NestedPayloadDto.v1
         content-type:
+          title: content-type
           type: string
           description: CloudEvent Content-Type Header
           enum:
@@ -255,41 +263,49 @@ components:
             description: Spring Type Id Header
             enum:
               - io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
+            title: __TypeId__
             type: string
           ce_id:
             description: CloudEvent Id Header
             enum:
               - 2c60089e-6f39-459d-8ced-2d6df7e4c03a
+            title: ce_id
             type: string
           ce_source:
             description: CloudEvent Source Header
             enum:
               - http://localhost
+            title: ce_source
             type: string
           ce_specversion:
             description: CloudEvent Spec Version Header
             enum:
               - "1.0"
+            title: ce_specversion
             type: string
           ce_subject:
             description: CloudEvent Subject Header
             enum:
               - Springwolf example project - Kafka
+            title: ce_subject
             type: string
           ce_time:
             description: CloudEvent Time Header
             enum:
               - 2023-10-28 20:01:23+00:00
+            title: ce_time
             type: string
           ce_type:
             description: CloudEvent Payload Type Header
             enum:
               - NestedPayloadDto.v1
+            title: ce_type
             type: string
           content-type:
             description: CloudEvent Content-Type Header
             enum:
               - application/json
+            title: content-type
             type: string
         title: SpringDefaultHeaderAndCloudEvent
         type: object
@@ -298,6 +314,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -313,6 +330,7 @@ components:
             description: Spring Type Id Header
             enum:
               - io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-AnotherPayloadAvroDto
         type: object
@@ -321,6 +339,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -336,6 +355,7 @@ components:
             description: Spring Type Id Header
             enum:
               - io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-AnotherPayloadDto
         type: object
@@ -370,6 +390,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -386,14 +407,15 @@ components:
           examples:
             - '"string"'
         kafka_recordMetadata:
+          title: ConsumerRecordMetadata
           type: object
           examples:
             - {}
       examples:
-        - __TypeId__: io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
+        - ConsumerRecordMetadata: {}
+          __TypeId__: io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
           kafka_offset: 0
           kafka_receivedMessageKey: string
-          kafka_recordMetadata: {}
       x-json-schema:
         $schema: https://json-schema.org/draft-04/schema#
         properties:
@@ -401,6 +423,7 @@ components:
             description: Spring Type Id Header
             enum:
               - io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
+            title: __TypeId__
             type: string
           kafka_offset:
             format: int32
@@ -408,6 +431,7 @@ components:
           kafka_receivedMessageKey:
             type: string
           kafka_recordMetadata:
+            title: ConsumerRecordMetadata
             type: object
         title: SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105
         type: object
@@ -416,6 +440,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -431,6 +456,7 @@ components:
             description: Spring Type Id Header
             enum:
               - io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-Message
         type: object
@@ -439,6 +465,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -454,6 +481,7 @@ components:
             description: Spring Type Id Header
             enum:
               - javax.money.MonetaryAmount
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-MonetaryAmount
         type: object
@@ -462,6 +490,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -477,6 +506,7 @@ components:
             description: Spring Type Id Header
             enum:
               - PayloadNotUsed
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-PayloadNotUsed
         type: object
@@ -485,6 +515,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -500,6 +531,7 @@ components:
             description: Spring Type Id Header
             enum:
               - io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-RequiredAndNullablePayloadDto
         type: object
@@ -508,6 +540,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -523,6 +556,7 @@ components:
             description: Spring Type Id Header
             enum:
               - io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-VehicleBase
         type: object
@@ -531,6 +565,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -546,6 +581,7 @@ components:
             description: Spring Type Id Header
             enum:
               - io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-XmlPayloadDto
         type: object
@@ -554,6 +590,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -569,6 +606,7 @@ components:
             description: Spring Type Id Header
             enum:
               - io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-YamlPayloadDto
         type: object
@@ -577,6 +615,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -592,6 +631,7 @@ components:
             description: Spring Type Id Header
             enum:
               - java.lang.Integer
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-integer
         type: object
@@ -600,6 +640,7 @@ components:
       type: object
       properties:
         __TypeId__:
+          title: __TypeId__
           type: string
           description: Spring Type Id Header
           enum:
@@ -615,6 +656,7 @@ components:
             description: Spring Type Id Header
             enum:
               - java.lang.String
+            title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-string
         type: object

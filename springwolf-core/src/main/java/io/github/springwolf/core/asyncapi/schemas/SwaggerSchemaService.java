@@ -16,7 +16,6 @@ import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.core.util.RefUtils;
-import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +28,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE;
 
@@ -69,25 +67,10 @@ public class SwaggerSchemaService {
      * @return
      */
     public SchemaObject extractSchema(SchemaObject headers) {
-        String schemaName = headers.getTitle();
-
-        // create a swagger schema to invoke the postprocessors. Copy attributes vom headers to (Swagger) headerSchema
-        ObjectSchema headerSchema = new ObjectSchema();
-        headerSchema.setName(schemaName);
-        headerSchema.setTitle(headers.getTitle());
-        headerSchema.setDescription(headers.getDescription());
-
-        // transform properties of headers to a properties Map of Swagger schemas.
-        // (Only one level, no deep transformation, see SwaggerSchemaUtil#mapToSwagger)
-        //
-        Map<String, Schema> properties = headers.getProperties().entrySet().stream()
-                .map((property) ->
-                        Map.entry(property.getKey(), (Schema<?>) swaggerSchemaUtil.mapToSwagger(property.getValue())))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        headerSchema.setProperties(properties);
+        Schema headerSchema = swaggerSchemaUtil.mapToSwagger(headers);
 
         // call postprocessors
-        Map<String, Schema> newSchemasToProcess = Map.of(schemaName, headerSchema);
+        Map<String, Schema> newSchemasToProcess = Map.of(headerSchema.getName(), headerSchema);
         postProcessSchemas(newSchemasToProcess, new HashMap<>(newSchemasToProcess), DEFAULT_CONTENT_TYPE);
 
         // convert Swagger schema back to an AsnycApi SchemaObject
