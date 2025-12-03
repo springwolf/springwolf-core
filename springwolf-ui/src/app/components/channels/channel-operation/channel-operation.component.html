@@ -7,55 +7,60 @@
         <span>{{ operation().channelName }}</span>
       </div>
       @if (operation().description) {
-      <div class="table-row">
-        <span>Operation description</span>
-        <markdown [data]="operation().description"></markdown>
-      </div>
-      } @if (operation().message.description) {
-      <div class="table-row">
-        <span>Message description</span>
-        <markdown [data]="operation().message.description"></markdown>
-      </div>
-      } @if (operation().message.contentType) {
-      <div class="table-row">
-        <span>Content-Type</span>
-        <span class="text-console">{{ operation().message.contentType }}</span>
-      </div>
-      } @if (operation().reply) {
-      <div class="table-row">
-        <span>Reply to</span>
-        <span
-          ><mat-chip-set>
-            <a href="{{ operation().reply!.channelAnchorUrl }}">
-              <mat-chip>
-                <mat-icon matChipAvatar fontIcon="swap_vert" />
-                {{ operation().reply!.channelName }}
-              </mat-chip>
-            </a>
-          </mat-chip-set>
-          with
-          <mat-chip-set>
-            <a href="{{ operation().reply!.messageAnchorUrl }}">
-              <mat-chip>
-                <mat-icon matChipAvatar fontIcon="schema" />
-                {{ operation().reply!.messageName }}
-              </mat-chip>
-            </a>
-          </mat-chip-set></span
-        >
-      </div>
+        <div class="table-row">
+          <span>Operation description</span>
+          <markdown [data]="operation().description"></markdown>
+        </div>
+      }
+      @if (operation().message.description) {
+        <div class="table-row">
+          <span>Message description</span>
+          <markdown [data]="operation().message.description"></markdown>
+        </div>
+      }
+      @if (operation().message.contentType) {
+        <div class="table-row">
+          <span>Content-Type</span>
+          <span class="text-console">{{
+            operation().message.contentType
+          }}</span>
+        </div>
+      }
+      @if (operation().reply) {
+        <div class="table-row">
+          <span>Reply to</span>
+          <span
+            ><mat-chip-set>
+              <a href="{{ operation().reply!.channelAnchorUrl }}">
+                <mat-chip>
+                  <mat-icon matChipAvatar fontIcon="swap_vert" />
+                  {{ operation().reply!.channelName }}
+                </mat-chip>
+              </a>
+            </mat-chip-set>
+            with
+            <mat-chip-set>
+              <a href="{{ operation().reply!.messageAnchorUrl }}">
+                <mat-chip>
+                  <mat-icon matChipAvatar fontIcon="schema" />
+                  {{ operation().reply!.messageName }}
+                </mat-chip>
+              </a>
+            </mat-chip-set></span
+          >
+        </div>
       }
       <div class="table-row">
         <span>Servers</span>
         <span>
           <mat-chip-set>
             @for (server of operation().servers; track server) {
-            <a href="{{ server.anchorUrl }}">
-              <mat-chip>
-                <mat-icon matChipAvatar fontIcon="dns" />
-                {{ server.name }}
-              </mat-chip>
-            </a>
+              <a href="{{ server.anchorUrl }}">
+                <mat-chip>
+                  <mat-icon matChipAvatar fontIcon="dns" />
+                  {{ server.name }}
+                </mat-chip>
+              </a>
             }
           </mat-chip-set>
         </span>
@@ -65,65 +70,68 @@
 </div>
 
 @if (isShowBindings()) {
-<div class="row">
-  <div class="width-6-of-12 width-12-of-12-s">
-    <h6>Operation Binding</h6>
-  </div>
-  <div class="width-6-of-12 width-12-of-12-s">
-    @if (operation().protocol) {
-    <div>
-      @if (operationBindingExampleString) {
-      <app-prism-editor
-        [(code)]="operationBindingExampleString"
-        language="json"
-        readonly="true"
-      />
-      }
+  <div class="row">
+    <div class="width-6-of-12 width-12-of-12-s">
+      <h6>Operation Binding</h6>
     </div>
-    }
-  </div>
-</div>
-} @if (isShowBindings()) {
-<div class="row">
-  <div class="width-6-of-12 width-12-of-12-s">
-    <h6>Message Binding</h6>
-  </div>
-  <div class="width-6-of-12 width-12-of-12-s">
-    <div>
-      @if (messageBindingExampleString) {
-      <app-prism-editor
-        [(code)]="messageBindingExampleString"
-        language="json"
-        readonly="true"
-      />
-      } @if (!messageBindingExampleString) {
-      <span><i>none</i></span>
+    <div class="width-6-of-12 width-12-of-12-s">
+      @if (operation().protocol) {
+        <div>
+          @if (operationBindingExampleString) {
+            <app-prism-editor
+              [(code)]="operationBindingExampleString"
+              language="json"
+              readonly="true"
+            />
+          }
+        </div>
       }
     </div>
   </div>
-</div>
-} @if (isShowHeaders()) {
-<div class="row">
-  <div class="width-6-of-12 width-12-of-12-s">
-    <h6>Headers</h6>
-    <mat-chip-set>
-      @if (headers().anchorUrl !== initSchema.anchorUrl) {
-      <a [href]="headers().anchorUrl">
-        <mat-chip>
-          <mat-icon matChipAvatar fontIcon="schema" />
-          {{ headers().title }}
-        </mat-chip></a
-      >
+}
+@if (isShowBindings()) {
+  <div class="row">
+    <div class="width-6-of-12 width-12-of-12-s">
+      <h6>Message Binding</h6>
+    </div>
+    <div class="width-6-of-12 width-12-of-12-s">
+      <div>
+        @if (messageBindingExampleString) {
+          <app-prism-editor
+            [(code)]="messageBindingExampleString"
+            language="json"
+            readonly="true"
+          />
+        }
+        @if (!messageBindingExampleString) {
+          <span><i>none</i></span>
+        }
+      </div>
+    </div>
+  </div>
+}
+@if (isShowHeaders()) {
+  <div class="row">
+    <div class="width-6-of-12 width-12-of-12-s">
+      <h6>Headers</h6>
+      <mat-chip-set>
+        @if (headers().anchorUrl !== initSchema.anchorUrl) {
+          <a [href]="headers().anchorUrl">
+            <mat-chip>
+              <mat-icon matChipAvatar fontIcon="schema" />
+              {{ headers().title }}
+            </mat-chip></a
+          >
+        }
+      </mat-chip-set>
+      @if (headers()) {
+        <app-schema [schema]="headers()"></app-schema>
       }
-    </mat-chip-set>
-    @if (headers()) {
-    <app-schema [schema]="headers()"></app-schema>
-    }
+    </div>
+    <div class="width-6-of-12 width-12-of-12-s">
+      <app-prism-editor [(code)]="headersExample.value" language="json" />
+    </div>
   </div>
-  <div class="width-6-of-12 width-12-of-12-s">
-    <app-prism-editor [(code)]="headersExample.value" language="json" />
-  </div>
-</div>
 }
 
 <div class="row">
@@ -139,7 +147,7 @@
     </mat-chip-set>
 
     @if (defaultSchema()) {
-    <app-schema [schema]="defaultSchema()"></app-schema>
+      <app-schema [schema]="defaultSchema()"></app-schema>
     }
   </div>
 

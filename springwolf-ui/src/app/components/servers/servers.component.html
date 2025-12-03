@@ -2,36 +2,36 @@
 <h2>Servers</h2>
 <div class="row">
   @for (server of servers() | keyvalue; track server) {
-  <article
-    appNavigationTarget
-    [id]="server.value.anchorIdentifier"
-    class="width-6-of-12 width-12-of-12-s"
-  >
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <mat-card-title>
-          {{ server.key }}
-        </mat-card-title>
+    <article
+      appNavigationTarget
+      [id]="server.value.anchorIdentifier"
+      class="width-6-of-12 width-12-of-12-s"
+    >
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>
+            {{ server.key }}
+          </mat-card-title>
 
-        <span class="flex gap-16 padding-horizontal-1em height-fix-content">
-          <span class="badge protocol-badge">
-            {{ server.value.protocol }}
+          <span class="flex gap-16 padding-horizontal-1em height-fix-content">
+            <span class="badge protocol-badge">
+              {{ server.value.protocol }}
+            </span>
           </span>
-        </span>
-      </mat-card-header>
-      <mat-card-content>
-        <table>
-          <tbody>
-            <tr>
-              <td>Host</td>
-              <td class="text-console">
-                {{ server.value.host }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </mat-card-content>
-    </mat-card>
-  </article>
+        </mat-card-header>
+        <mat-card-content>
+          <table>
+            <tbody>
+              <tr>
+                <td>Host</td>
+                <td class="text-console">
+                  {{ server.value.host }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </article>
   }
 </div>

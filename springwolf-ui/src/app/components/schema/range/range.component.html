@@ -1,14 +1,16 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <span>
   @if (lowerBound() != undefined && upperBound() == undefined) {
-  <span> {{ lowerBoundInclusive() ? ">=" : ">" }} {{ lowerBound() }} </span>
-  } @if (lowerBound() == undefined && upperBound() != undefined) {
-  <span> {{ upperBoundInclusive() ? "<=" : "<" }} {{ upperBound() }} </span>
-  } @if (lowerBound() != undefined && upperBound() != undefined) {
-  <span
-    >{{ lowerBoundInclusive() ? "[" : "(" }} {{ lowerBound() }}
-    ..
-    {{ upperBound() }} {{ upperBoundInclusive() ? "]" : ")" }}
-  </span>
+    <span> {{ lowerBoundInclusive() ? ">=" : ">" }} {{ lowerBound() }} </span>
+  }
+  @if (lowerBound() == undefined && upperBound() != undefined) {
+    <span> {{ upperBoundInclusive() ? "<=" : "<" }} {{ upperBound() }} </span>
+  }
+  @if (lowerBound() != undefined && upperBound() != undefined) {
+    <span
+      >{{ lowerBoundInclusive() ? "[" : "(" }} {{ lowerBound() }}
+      ..
+      {{ upperBound() }} {{ upperBoundInclusive() ? "]" : ")" }}
+    </span>
   }
 </span>
