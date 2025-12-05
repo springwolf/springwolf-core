@@ -15,9 +15,9 @@ export class AssetService implements IAssetService {
   ) {}
 
   public load() {
-    this.iconRegistry.addSvgIcon(
-      "github",
-      this.sanitizer.bypassSecurityTrustResourceUrl("assets/github.svg")
-    );
+    // this.iconRegistry.addSvgIcon(
+    //   "github",
+    //   this.sanitizer.bypassSecurityTrustResourceUrl("assets/github.svg")
+    // );
   }
 }

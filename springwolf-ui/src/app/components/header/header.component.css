@@ -4,6 +4,12 @@
   width: 3em;
   display: block;
 }
+.github {
+  height: 2em;
+  width: 2em;
+  display: block;
+  filter: invert(100%);
+}
 
 :host ::ng-deep label,
 a {
