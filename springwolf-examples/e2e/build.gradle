@@ -6,6 +6,7 @@ plugins {
 node {
   version = libs.versions.nodeVersion
   npmVersion = libs.versions.npm
+  npmInstallCommand = 'ci'
   download = true
 }
 
