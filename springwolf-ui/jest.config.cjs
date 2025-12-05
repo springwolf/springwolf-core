@@ -1,6 +1,6 @@
 /** @type {import('jest').Config} */
 
-const esModules = ['@angular', 'jsonpath-plus', '@stoplight', 'nimma', 'prism-code-editor'];
+const esModules = ['@angular', 'jsonpath-plus', '@stoplight', 'nimma', 'ngx-markdown', 'marked', 'prism-code-editor'];
 
 const config = {
   preset: 'jest-preset-angular',
