@@ -223,6 +223,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/AlexElin"><img src="https://avatars.githubusercontent.com/u/13061803?v=4?s=100" width="100px;" alt="AlexElin"/><br /><sub><b>AlexElin</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=AlexElin" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/antoine-vaisset-pro"><img src="https://avatars.githubusercontent.com/u/75415866?v=4?s=100" width="100px;" alt="antoine VAISSET"/><br /><sub><b>antoine VAISSET</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=antoine-vaisset-pro" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Karlender"><img src="https://avatars.githubusercontent.com/u/50942345?v=4?s=100" width="100px;" alt="Karlender"/><br /><sub><b>Karlender</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=Karlender" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sge93"><img src="https://avatars.githubusercontent.com/u/102977668?v=4?s=100" width="100px;" alt="Steffen"/><br /><sub><b>Steffen</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=sge93" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
