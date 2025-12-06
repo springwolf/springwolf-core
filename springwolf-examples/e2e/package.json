@@ -6,13 +6,20 @@
   "scripts": {
     "start": "playwright test --ui",
     "test": "playwright test",
-    "postinstall": "npx playwright install --with-deps chromium"
+    "lint": "prettier --check \"(tests|util)/**/*.(js|ts|tsx|json|html|css)\"",
+    "lint:fix": "prettier --list-different --write \"(tests|util)/**/*.(js|ts|tsx|json|html|css)\"",
+    "install:deps": "npx playwright install --with-deps chromium"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.49.1",
-    "@types/node": "^22.10.2"
+    "@types/node": "^22.10.2",
+    "prettier": "^3.7.4"
+  },
+  "prettier": {
+    "singleQuote": false,
+    "trailingComma": "es5"
   }
 }

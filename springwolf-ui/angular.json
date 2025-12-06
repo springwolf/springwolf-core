@@ -88,7 +88,8 @@
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "packageManager": "pnpm"
   },
   "schematics": {
     "@schematics/angular:component": {

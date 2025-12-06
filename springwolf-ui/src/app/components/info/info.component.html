@@ -8,40 +8,45 @@
   <mat-chip>
     <mat-icon matChipAvatar fontIcon="download" />
     @if (info().asyncApiJson) {
-    <a href="javascript:void(0);" (click)="download()">AsyncAPI JSON</a>
+      <a href="javascript:void(0);" (click)="download()">AsyncAPI JSON</a>
     }
   </mat-chip>
 
-  @let license = info().license; @if (license?.name) {
-  <mat-chip>
-    <mat-icon matChipAvatar fontIcon="attribution" />
-    @if (license?.url) {
-    <a [href]="license.url" target="_blank">
-      {{ license.name }}
-    </a>
-    } @else {
-    {{ license.name }}
-    }
-  </mat-chip>
-  } @let contact = info().contact; @if (contact.url) {
-  <mat-chip>
-    <mat-icon matChipAvatar fontIcon="link" />
-    <a [href]="contact.url" target="_blank">
-      {{ contact.url }}
-    </a>
-  </mat-chip>
-  } @let email = info().contact.email; @if (email) {
-  <mat-chip>
-    <mat-icon matChipAvatar fontIcon="email" />
-    <a [href]="email.href" target="_blank">
-      {{ email.name }}
-    </a>
-  </mat-chip>
+  @let license = info().license;
+  @if (license?.name) {
+    <mat-chip>
+      <mat-icon matChipAvatar fontIcon="attribution" />
+      @if (license?.url) {
+        <a [href]="license.url" target="_blank">
+          {{ license.name }}
+        </a>
+      } @else {
+        {{ license.name }}
+      }
+    </mat-chip>
+  }
+  @let contact = info().contact;
+  @if (contact.url) {
+    <mat-chip>
+      <mat-icon matChipAvatar fontIcon="link" />
+      <a [href]="contact.url" target="_blank">
+        {{ contact.url }}
+      </a>
+    </mat-chip>
+  }
+  @let email = info().contact.email;
+  @if (email) {
+    <mat-chip>
+      <mat-icon matChipAvatar fontIcon="email" />
+      <a [href]="email.href" target="_blank">
+        {{ email.name }}
+      </a>
+    </mat-chip>
   }
 </p>
 
 @if (info().description) {
-<p>
-  <markdown [data]="info().description"></markdown>
-</p>
+  <p>
+    <markdown [data]="info().description"></markdown>
+  </p>
 }

@@ -1,163 +1,174 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <div class="schema">
   <!--  Primitive types  -->
-  @if (schema().type !== 'object') {
-  <ng-container
-    [ngTemplateOutlet]="valueContent"
-    [ngTemplateOutletContext]="{ value: schema() }"
-  >
-  </ng-container>
+  @if (schema().type !== "object") {
+    <ng-container
+      [ngTemplateOutlet]="valueContent"
+      [ngTemplateOutletContext]="{ value: schema() }"
+    >
+    </ng-container>
   }
 
   <!--  Objects  -->
   @if (Object.keys(schema().properties || {}).length > 0) {
-  <mat-list>
-    @for (property of schema().properties || {} | keyvalue; track property) {
-    <mat-list-item lines="99">
-      <mat-icon matListItemIcon>arrow_right</mat-icon>
-      <span class="key" matListItemTitle>
-        <b class="text-console">{{ property.key }}</b>
-        @if (schema().required?.includes(property.key)) {
-        <span class="required">*</span>
-        } @if (property.value.deprecated) {
-        <span class="deprecated">&nbsp;(deprecated)</span>
-        } &nbsp;
-      </span>
-      <ng-container
-        matListItemLine
-        [ngTemplateOutlet]="valueContent"
-        [ngTemplateOutletContext]="{ value: property.value }"
-      >
-      </ng-container>
-    </mat-list-item>
-    }
-  </mat-list>
+    <mat-list>
+      @for (property of schema().properties || {} | keyvalue; track property) {
+        <mat-list-item lines="99">
+          <mat-icon matListItemIcon>arrow_right</mat-icon>
+          <span class="key" matListItemTitle>
+            <b class="text-console">{{ property.key }}</b>
+            @if (schema().required?.includes(property.key)) {
+              <span class="required">*</span>
+            }
+            @if (property.value.deprecated) {
+              <span class="deprecated">&nbsp;(deprecated)</span>
+            }
+            &nbsp;
+          </span>
+          <ng-container
+            matListItemLine
+            [ngTemplateOutlet]="valueContent"
+            [ngTemplateOutletContext]="{ value: property.value }"
+          >
+          </ng-container>
+        </mat-list-item>
+      }
+    </mat-list>
   }
 </div>
 
 <ng-template #valueContent let-value="value">
   <!-- primitive property -->
-  @if (value?.type != 'array') {
-  <span class="type text-console">
-    @if (Array.isArray(value.type)) {
+  @if (value?.type != "array") {
     <span class="type text-console">
-      {{ value.type.join(", ") }}
+      @if (Array.isArray(value.type)) {
+        <span class="type text-console">
+          {{ value.type.join(", ") }}
+        </span>
+      } @else {
+        {{ value.type }}
+      }
+      @if (value.format) {
+        <span class="format">({{ value.format }})</span>
+      }
     </span>
-    } @else {
-    {{ value.type }}
-    } @if (value.format) {
-    <span class="format">({{ value.format }})</span>
-    }
-  </span>
   }
   <!-- ref to other class -->
   @if (value.refTitle) {
-  <span class="type">
-    <mat-chip-set>
-      <a [href]="value.refAnchorUrl">
-        <mat-chip>
-          <mat-icon matChipAvatar fontIcon="schema" />
-          {{ value.refTitle }}
-        </mat-chip></a
-      >
-    </mat-chip-set>
-  </span>
+    <span class="type">
+      <mat-chip-set>
+        <a [href]="value.refAnchorUrl">
+          <mat-chip>
+            <mat-icon matChipAvatar fontIcon="schema" />
+            {{ value.refTitle }}
+          </mat-chip></a
+        >
+      </mat-chip-set>
+    </span>
   }
   <!-- array of refs -->
-  @if (value?.type == 'array' && value?.items?.refTitle) {
-  <span class="type text-console">
-    array
-    <mat-chip-set>
-      <a [href]="value.items.refAnchorUrl">
-        <mat-chip>
-          <mat-icon matChipAvatar fontIcon="schema" />
-          {{ value.items.refTitle }}
-        </mat-chip></a
-      >
-    </mat-chip-set>
-  </span>
+  @if (value?.type == "array" && value?.items?.refTitle) {
+    <span class="type text-console">
+      array
+      <mat-chip-set>
+        <a [href]="value.items.refAnchorUrl">
+          <mat-chip>
+            <mat-icon matChipAvatar fontIcon="schema" />
+            {{ value.items.refTitle }}
+          </mat-chip></a
+        >
+      </mat-chip-set>
+    </span>
   }
   <!-- array of primitive -->
-  @if (value?.type == 'array' && !value?.items?.refTitle) {
-  <span class="type text-console"> {{ value.items.type }}[] </span>
-  } @if (value.description?.length > 0) {
-  <div class="description">
-    <markdown [data]="value.description"></markdown>
-  </div>
-  } @if (value.example) {
-  <div class="flex">
-    <span class="property-title"><i>Example:</i></span>
-    &nbsp;
-    <span class="value-box">
-      @for (line of value.example.value.split('\n'); track line) {
-      <div class="text-console">
-        {{ line }}
-      </div>
+  @if (value?.type == "array" && !value?.items?.refTitle) {
+    <span class="type text-console"> {{ value.items.type }}[] </span>
+  }
+  @if (value.description?.length > 0) {
+    <div class="description">
+      <markdown [data]="value.description"></markdown>
+    </div>
+  }
+  @if (value.example) {
+    <div class="flex">
+      <span class="property-title"><i>Example:</i></span>
+      &nbsp;
+      <span class="value-box">
+        @for (line of value.example.value.split("\n"); track line) {
+          <div class="text-console">
+            {{ line }}
+          </div>
+        }
+      </span>
+    </div>
+  }
+  @if (value.enum && value.enum.length > 0) {
+    <div class="flex">
+      <span class="property-title"><i>Allowed values:</i></span>
+      &nbsp;
+      @for (enumValue of value.enum; track enumValue) {
+        <span class="text-console value-box">{{ enumValue || "null" }}</span>
       }
-    </span>
-  </div>
-  } @if (value.enum && value.enum.length > 0) {
-  <div class="flex">
-    <span class="property-title"><i>Allowed values:</i></span>
-    &nbsp; @for (enumValue of value.enum; track enumValue) {
-    <span class="text-console value-box">{{ enumValue || "null" }}</span>
-    }
-  </div>
+    </div>
   }
 
   <!-- attributes -->
   <span class="flex flex-wrap">
     <!-- array attributes -->
     @if (value.minItems != null || value.maxItems != null) {
-    <span class="attribute">
-      <app-schema-range
-        [lowerBound]="value.minItems"
-        [upperBound]="value.maxItems"
-        lowerBoundInclusive="true"
-        upperBoundInclusive="true"
-      />
-      items
-    </span>
-    } @if (value.uniqueItems != null) {
-    <span class="attribute">
-      Unique items:
-      {{ value.uniqueItems ? "yes" : "no" }}
-    </span>
+      <span class="attribute">
+        <app-schema-range
+          [lowerBound]="value.minItems"
+          [upperBound]="value.maxItems"
+          lowerBoundInclusive="true"
+          upperBoundInclusive="true"
+        />
+        items
+      </span>
+    }
+    @if (value.uniqueItems != null) {
+      <span class="attribute">
+        Unique items:
+        {{ value.uniqueItems ? "yes" : "no" }}
+      </span>
     }
 
     <!-- primitive attributes -->
     @if (value.pattern) {
-    <span class="attribute">
-      pattern:
-      <span class="text-console">
-        {{ value.pattern }}
+      <span class="attribute">
+        pattern:
+        <span class="text-console">
+          {{ value.pattern }}
+        </span>
       </span>
-    </span>
-    } @if (value.minLength != null || value.maxLength != null) {
-    <span class="attribute">
-      <app-schema-range
-        [lowerBound]="value.minLength"
-        [upperBound]="value.maxLength"
-        lowerBoundInclusive="true"
-        upperBoundInclusive="true"
-      />
-      length
-    </span>
-    } @if (value.minimum != undefined || value.maximum != undefined) {
-    <span class="attribute">
-      <app-schema-range
-        [lowerBound]="value.minimum"
-        [upperBound]="value.maximum"
-        [lowerBoundInclusive]="!value.exclusiveMinimum"
-        [upperBoundInclusive]="!value.exclusiveMaximum"
-      />
-      value range
-    </span>
-    } @if (value.multipleOf != undefined) {
-    <span class="attribute">
-      Multiple of
-      {{ value.multipleOf }}
-    </span>
+    }
+    @if (value.minLength != null || value.maxLength != null) {
+      <span class="attribute">
+        <app-schema-range
+          [lowerBound]="value.minLength"
+          [upperBound]="value.maxLength"
+          lowerBoundInclusive="true"
+          upperBoundInclusive="true"
+        />
+        length
+      </span>
+    }
+    @if (value.minimum != undefined || value.maximum != undefined) {
+      <span class="attribute">
+        <app-schema-range
+          [lowerBound]="value.minimum"
+          [upperBound]="value.maximum"
+          [lowerBoundInclusive]="!value.exclusiveMinimum"
+          [upperBoundInclusive]="!value.exclusiveMaximum"
+        />
+        value range
+      </span>
+    }
+    @if (value.multipleOf != undefined) {
+      <span class="attribute">
+        Multiple of
+        {{ value.multipleOf }}
+      </span>
     }
   </span>
 </ng-template>

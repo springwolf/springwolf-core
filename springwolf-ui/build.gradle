@@ -5,58 +5,88 @@ plugins {
 
 node {
   version = libs.versions.nodeVersion
-  npmVersion = libs.versions.npm
-  npmInstallCommand = 'ci'
+  pnpmVersion = libs.versions.pnpm
   download = true
 }
 
-tasks.register('npm_run_start', NpmTask) {
-  dependsOn npmInstall, spotlessCheck
+tasks.register('pnpm_run_start', PnpmTask) {
+  group = "pnpm"
+  dependsOn pnpmInstall, spotlessCheck
 
   args = ['start']
 
   inputs.files fileTree("src")
   inputs.file 'angular.json'
   inputs.file 'package.json'
-  inputs.file 'package-lock.json'
+  inputs.file 'pnpm-lock.yaml'
 
   outputs.dir 'build'
 }
 
-tasks.register('npm_run_build', NpmTask) {
-  dependsOn npmInstall, spotlessCheck
+tasks.register('pnpm_run_build', PnpmTask) {
+  group = "pnpm"
+  dependsOn pnpmInstall, spotlessCheck
 
   args = ['run', 'build']
 
   inputs.files fileTree("src")
   inputs.file 'angular.json'
   inputs.file 'package.json'
-  inputs.file 'package-lock.json'
+  inputs.file 'pnpm-lock.yaml'
 
   outputs.dir 'build'
 }
-assemble.dependsOn('npm_run_build')
+assemble.dependsOn('pnpm_run_build')
 
-tasks.register('npm_run_test', NpmTask) {
-  dependsOn npmInstall
+tasks.register('pnpm_run_lint', PnpmTask) {
+  group = "pnpm"
+  dependsOn pnpmInstall
+
+  args = ['run', 'lint']
+
+  inputs.files fileTree("src")
+  inputs.file 'angular.json'
+  inputs.file 'package.json'
+  inputs.file 'pnpm-lock.yaml'
+  outputs.upToDateWhen { true }
+}
+tasks.register('pnpm_run_lint_fix', PnpmTask) {
+  group = "pnpm"
+  dependsOn pnpmInstall
+
+  args = ['run', 'lint:fix']
+
+  inputs.files fileTree("src")
+  inputs.file 'angular.json'
+  inputs.file 'package.json'
+  inputs.file 'pnpm-lock.yaml'
+  outputs.upToDateWhen { true }
+}
+
+tasks.register('pnpm_run_test', PnpmTask) {
+  group = "pnpm"
+  dependsOn pnpmInstall
 
   args = ['run', 'test']
 
   inputs.files fileTree("src")
   inputs.file 'angular.json'
   inputs.file 'package.json'
-  inputs.file 'package-lock.json'
+  inputs.file 'pnpm-lock.yaml'
   outputs.upToDateWhen { true }
 }
-test.dependsOn('npm_run_test')
+test.dependsOn('pnpm_run_test')
 
-tasks.register('buildPages', NpmTask) {
+tasks.register('buildPages', PnpmTask) {
+  group = "pnpm"
+  dependsOn pnpmInstall
+
   args = ['run', 'build_pages']
 
   inputs.files fileTree("src")
   inputs.file 'angular.json'
   inputs.file 'package.json'
-  inputs.file 'package-lock.json'
+  inputs.file 'pnpm-lock.yaml'
 
   doLast {
     copy {
@@ -68,7 +98,7 @@ tasks.register('buildPages', NpmTask) {
 }
 
 jar {
-  dependsOn 'npm_run_build'
+  dependsOn 'pnpm_run_build'
   metaInf { from 'dist/springwolf-ui' into 'resources/springwolf' }
 }
 
@@ -79,15 +109,8 @@ java {
 spotless {
   encoding 'UTF-8'
 
-  def npmExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/npm.cmd' : '/bin/npm'
-  def nodeExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/node.exe' : '/bin/node'
-
   format 'html', {
     target 'src/**/*.html'
-
-    prettier()
-      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
-      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
 
     licenseHeader("<!-- SPDX-License-Identifier: Apache-2.0 -->", "<[^!].*>")
 
@@ -99,20 +122,12 @@ spotless {
     target 'src/**/*.json'
     targetExclude '**/*.actual.json'
 
-    prettier()
-      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
-      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
-
     trimTrailingWhitespace()
     endWithNewline()
   }
 
   format 'styling', {
     target 'src/**/*.ts', 'src/**/*.js', 'src/**/*.css' // , 'src/**/*.scss' currently broken
-
-    prettier()
-      .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
-      .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
 
     licenseHeader("/* SPDX-License-Identifier: Apache-2.0 */", "import|export|.* \\{")
 
@@ -121,16 +136,19 @@ spotless {
   }
 }
 
-sourcesJar.dependsOn(npm_run_build)
+sourcesJar.dependsOn(pnpm_run_build)
 
+tasks.test.configure {
+  dependsOn('pnpm_run_test', 'pnpm_run_lint_fix')
+}
 tasks.named('spotlessStyling').configure {
-  it.dependsOn('nodeSetup', 'npmSetup')
+  it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
 }
 tasks.named('spotlessHtml').configure {
-  it.dependsOn('nodeSetup', 'npmSetup')
+  it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
 }
 tasks.named('spotlessJson').configure {
-  it.dependsOn('nodeSetup', 'npmSetup')
+  it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
 }
 
 publishing {
