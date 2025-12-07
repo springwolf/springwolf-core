@@ -3,7 +3,7 @@ name: springwolf-addons
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
   workflow_dispatch:
@@ -52,7 +52,7 @@ jobs:
         run: ./gradlew -p ${{ env.addon }} build
 
       - name: Publish package
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: ./gradlew -p ${{ env.addon }} publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true

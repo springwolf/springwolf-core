@@ -3,7 +3,7 @@ name: springwolf-core
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
   workflow_dispatch:
@@ -49,7 +49,7 @@ jobs:
           report_paths: '**/build/test-results/test/TEST-*.xml'
 
       - name: Publish package
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: ./gradlew -p springwolf-core publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true

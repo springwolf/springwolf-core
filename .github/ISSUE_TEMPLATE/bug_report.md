@@ -19,7 +19,7 @@ _A clear and concise description of what the bug is._
 If possible, an example or snippet that reproduces the bug.
 
 > Having a reproducible example highly reduces the time to resolution, allows others to participate, and avoids misunderstandings/communications cycles.
-You can support by adjusting one of the [springwolf examples](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples), so that it reproduces your scenario:
+You can support by adjusting one of the [springwolf examples](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples), so that it reproduces your scenario:
 > 1. Fork this repo (`springwolf-core`) in GitHub and `git clone` it
 > 2. Adjust classes, etc. in one of the `springwolf-examples`
 > 3. Push your local changes to a branch on your fork (`git commit`, `git push`)
