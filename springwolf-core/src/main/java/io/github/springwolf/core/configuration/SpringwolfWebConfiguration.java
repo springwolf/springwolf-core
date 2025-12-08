@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
@@ -17,6 +16,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import tools.jackson.databind.json.JsonMapper;
 
 import static io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED;
 
@@ -38,8 +38,8 @@ public class SpringwolfWebConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public PublishingPayloadCreator publishingPayloadCreator(
-            ComponentsService componentsService, ObjectMapper objectMapper) {
-        return new PublishingPayloadCreator(componentsService, objectMapper);
+            ComponentsService componentsService, JsonMapper jsonMapper) {
+        return new PublishingPayloadCreator(componentsService, jsonMapper);
     }
 
     @Bean

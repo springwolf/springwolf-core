@@ -121,8 +121,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
     private Element handlePropertyExample(PropertyExample<Node> propertyExample) throws ParserConfigurationException {
         final Node exampleValue = propertyExample.example();
-        if (exampleValue instanceof Element) {
-            return (Element) exampleValue;
+        if (exampleValue instanceof Element element) {
+            return element;
         } else if (exampleValue instanceof Text) {
             return wrapNode(propertyExample.name(), exampleValue);
         } else {
@@ -198,8 +198,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     public Node getExampleOrNull(Optional<String> fieldName, Schema schema, Object example) {
         String name = getCacheKey(schema);
 
-        if (example instanceof Node) {
-            return (Node) example;
+        if (example instanceof Node node) {
+            return node;
         }
 
         if (exampleCache.containsKey(name)) {

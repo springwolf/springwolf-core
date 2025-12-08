@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.jackson;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.springwolf.asyncapi.v3.ClasspathUtil;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaMessageBinding;
@@ -32,6 +31,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import tools.jackson.databind.JsonNode;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

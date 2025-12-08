@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components;
 
-import com.fasterxml.jackson.core.PrettyPrinter;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.DefaultExampleXmlValueSerializer;
@@ -17,7 +12,6 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.fixtures.ClasspathUtil;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import jakarta.xml.bind.annotation.XmlAttribute;
@@ -28,6 +22,11 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.PrettyPrinter;
+import tools.jackson.core.util.DefaultIndenter;
+import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -43,11 +42,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultXmlComponentsServiceIntegrationTest {
 
-    private static final ObjectMapper objectMapper =
-            Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
-
     private static final PrettyPrinter printer =
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+    private static final JsonMapper jsonMapper = JsonMapper.builder()
+            .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+            .defaultPrettyPrinter(printer)
+            .build();
 
     private final SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
 
@@ -64,7 +64,8 @@ class DefaultXmlComponentsServiceIntegrationTest {
         componentsService.resolvePayloadSchema(CompositeFoo.class, "text/xml");
         componentsService.resolvePayloadSchema(FooWithEnum.class, "text/xml");
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -75,7 +76,8 @@ class DefaultXmlComponentsServiceIntegrationTest {
     void getDocumentedDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(DocumentedSimpleFoo.class, "text/xml");
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/documented-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -86,7 +88,8 @@ class DefaultXmlComponentsServiceIntegrationTest {
     void getArrayDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ArrayFoo.class, "text/xml");
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/array-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -97,7 +100,8 @@ class DefaultXmlComponentsServiceIntegrationTest {
     void getComplexDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ComplexFoo.class, "text/xml");
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/complex-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -108,7 +112,8 @@ class DefaultXmlComponentsServiceIntegrationTest {
     void getComplexDefinitionsWithAttributes() throws Exception {
         componentsService.resolvePayloadSchema(ComplexAttributesFoo.class, "text/xml");
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected =
                 loadDefinition("/schemas/xml/complex-definitions-with-attributes-xml.json", actualDefinitions);
 
@@ -120,7 +125,8 @@ class DefaultXmlComponentsServiceIntegrationTest {
     void getListWrapperDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ListWrapper.class, "text/xml");
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/generics-wrapper-definitions-xml.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -253,7 +259,8 @@ class DefaultXmlComponentsServiceIntegrationTest {
         void schemaWithOneOf() throws Exception {
             componentsService.resolvePayloadSchema(SchemaAnnotationFoo.class, "text/xml");
 
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+            String actualDefinitions =
+                    jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/xml/annotation-definitions-xml.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
@@ -353,7 +360,8 @@ class DefaultXmlComponentsServiceIntegrationTest {
             componentsService.resolvePayloadSchema(XmlSchemaName.ClassB.class, "text/xml");
             componentsService.resolvePayloadSchema(XmlSchemaName.ClassA.class, "text/xml");
 
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+            String actualDefinitions =
+                    jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/xml/schema-with-shared-property.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);

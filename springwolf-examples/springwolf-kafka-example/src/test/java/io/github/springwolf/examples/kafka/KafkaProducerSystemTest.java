@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
 import org.awaitility.Awaitility;
@@ -16,6 +16,7 @@ import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.File;
 import java.util.Arrays;
@@ -59,7 +60,7 @@ public class KafkaProducerSystemTest {
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);
         int port = environment.getServicePort(APP_NAME, APP_PORT);
-        return String.format("http://%s:%d", host, port);
+        return "http://%s:%d".formatted(host, port);
     }
 
     @Test
@@ -71,7 +72,7 @@ public class KafkaProducerSystemTest {
         headers.put("kafka_receivedMessageKey", List.of("string"));
 
         ExamplePayloadDto payload = new ExamplePayloadDto("foo", 5, FOO1);
-        String payloadAsString = new ObjectMapper().writeValueAsString(payload).replaceAll("\"", "\\\\\"");
+        String payloadAsString = JsonMapper.builder().build().writeValueAsString(payload).replaceAll("\"", "\\\\\"");
         String message = "{\n" //
                 + "    \"bindings\": {},\n"
                 + "    \"headers\": {" //

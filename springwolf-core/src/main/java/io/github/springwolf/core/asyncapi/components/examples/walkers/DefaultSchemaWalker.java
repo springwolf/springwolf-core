@@ -294,8 +294,8 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         final Object additionalProperties = schema.getAdditionalProperties();
         if (properties != null) {
             exampleValue = buildFromObjectSchemaWithProperties(name, properties, definitions, visited);
-        } else if (schema instanceof MapSchema && additionalProperties instanceof Schema<?>) {
-            exampleValue = buildMapExample(name, (Schema) additionalProperties, definitions, visited);
+        } else if (schema instanceof MapSchema && additionalProperties instanceof Schema schema1) {
+            exampleValue = buildMapExample(name, schema1, definitions, visited);
         } else {
             exampleValue = exampleValueGenerator.createEmptyObjectExample();
         }
@@ -378,7 +378,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             Schema<?> resolvedSchema = definitions.get(schemaName);
             if (resolvedSchema == null) {
                 throw new ExampleGeneratingException(
-                        String.format("Missing schema (name = %s) during example generation", schemaName));
+                        "Missing schema (name = %s) during example generation".formatted(schemaName));
             }
             return Optional.of(resolvedSchema);
         }

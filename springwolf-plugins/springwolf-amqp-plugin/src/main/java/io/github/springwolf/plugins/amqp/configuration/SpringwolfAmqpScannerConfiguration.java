@@ -24,7 +24,6 @@ import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.AmqpBindingFactory;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.channels.RabbitQueueBeanScanner;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.common.headers.AsyncHeadersForAmqpBuilder;
-import lombok.val;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
@@ -86,13 +85,13 @@ public class SpringwolfAmqpScannerConfiguration {
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
-        val springAnnotationMessagesService = new SpringAnnotationMessagesService<>(
+        final var springAnnotationMessagesService = new SpringAnnotationMessagesService<>(
                 amqpBindingFactory,
                 asyncHeadersForAmqpBuilder,
                 payloadMethodParameterService,
                 headerClassExtractor,
                 componentsService);
-        val springAnnotationChannelService = new SpringAnnotationChannelService<>(amqpBindingFactory);
+        final var springAnnotationChannelService = new SpringAnnotationChannelService<>(amqpBindingFactory);
         SpringAnnotationClassLevelChannelsScanner<RabbitListener, RabbitHandler> strategy =
                 new SpringAnnotationClassLevelChannelsScanner<>(
                         RabbitListener.class,
@@ -118,7 +117,7 @@ public class SpringwolfAmqpScannerConfiguration {
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService,
             List<OperationCustomizer> operationCustomizers) {
-        val springAnnotationOperationsService = new SpringAnnotationOperationsService<>(
+        final var springAnnotationOperationsService = new SpringAnnotationOperationsService<>(
                 amqpBindingFactory,
                 new SpringAnnotationMessagesService<>(
                         amqpBindingFactory,
@@ -150,8 +149,8 @@ public class SpringwolfAmqpScannerConfiguration {
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
-        val springAnnotationChannelService = new SpringAnnotationChannelService<>(amqpBindingFactory);
-        val springAnnotationMessageService =
+        final var springAnnotationChannelService = new SpringAnnotationChannelService<>(amqpBindingFactory);
+        final var springAnnotationMessageService =
                 new SpringAnnotationMessageService<>(amqpBindingFactory, asyncHeadersForAmqpBuilder, componentsService);
         SpringAnnotationMethodLevelChannelsScanner<RabbitListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
@@ -179,7 +178,7 @@ public class SpringwolfAmqpScannerConfiguration {
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService,
             List<OperationCustomizer> operationCustomizers) {
-        val springAnnotationOperationService = new SpringAnnotationOperationService<>(
+        final var springAnnotationOperationService = new SpringAnnotationOperationService<>(
                 amqpBindingFactory,
                 new SpringAnnotationMessageService<>(
                         amqpBindingFactory, asyncHeadersForAmqpBuilder, componentsService));

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.model.components;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.springwolf.asyncapi.v3.jackson.model.channel.message.ComponentSchemaSerializer;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.Schema;
@@ -10,6 +9,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Container class representing a schema in the 'components' block of an AsnycApi document. Contains either

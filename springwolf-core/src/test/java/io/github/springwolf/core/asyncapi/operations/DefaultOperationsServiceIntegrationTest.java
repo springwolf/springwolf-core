@@ -6,18 +6,15 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(
+@SpringJUnitConfig(
         classes = {
             DefaultOperationsService.class,
             DefaultOperationsServiceIntegrationTest.SimpleOperationScanner.class,
