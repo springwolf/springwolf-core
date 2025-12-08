@@ -20,7 +20,7 @@ public class HeaderClassExtractor {
     private final SwaggerSchemaService schemaService;
 
     public SchemaObject extractHeader(Method method, PayloadSchemaObject payload) {
-        String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
+        String methodName = "%s::%s".formatted(method.getDeclaringClass().getSimpleName(), method.getName());
         log.debug("Extract header for {}", methodName);
 
         SchemaObject headers = SchemaObject.builder()

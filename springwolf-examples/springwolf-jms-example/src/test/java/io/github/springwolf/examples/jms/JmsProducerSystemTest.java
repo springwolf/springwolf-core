@@ -61,11 +61,8 @@ public class JmsProducerSystemTest {
 
     @DynamicPropertySource
     static void registerActiveMqBroker(DynamicPropertyRegistry registry) {
-        registry.add(
-                "spring.activemq.broker-url",
-                () -> String.format(
-                        "tcp://%s:%s",
-                        environment.getServiceHost(APP_JMS, 61616), environment.getServicePort(APP_JMS, 61616)));
+        registry.add("spring.activemq.broker-url", () -> "tcp://%s:%s"
+                .formatted(environment.getServiceHost(APP_JMS, 61616), environment.getServicePort(APP_JMS, 61616)));
     }
 
     @Test

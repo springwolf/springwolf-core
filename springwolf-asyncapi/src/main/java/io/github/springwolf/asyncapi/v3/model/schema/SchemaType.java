@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.model.schema;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
 import java.util.Collection;
 
 public class SchemaType {
@@ -19,12 +19,13 @@ public class SchemaType {
 
     private SchemaType() {}
 
-    public static class Serializer extends JsonSerializer<Object> {
+    public static class Serializer extends ValueSerializer<Object> {
 
         public Serializer() {}
 
         @Override
-        public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(Object value, JsonGenerator gen, SerializationContext serializers)
+                throws JacksonException {
             if (value == null) {
                 gen.writeNull();
                 return;

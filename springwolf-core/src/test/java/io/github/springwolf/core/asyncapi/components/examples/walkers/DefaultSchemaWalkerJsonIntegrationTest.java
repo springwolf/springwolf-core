@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components.examples.walkers;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -22,6 +19,8 @@ import io.swagger.v3.oas.models.media.UUIDSchema;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -36,7 +35,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     private final DefaultSchemaWalker<JsonNode, JsonNode> jsonSchemaWalker =
             new DefaultSchemaWalker<>(exampleJsonValueGenerator);
 
-    private final ObjectMapper jsonMapper = Json.mapper();
+    private static final JsonMapper jsonMapper = JsonMapper.builder().build();
 
     @Nested
     class CanHandle {
@@ -68,7 +67,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"string\"");
         }
@@ -95,7 +94,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("true");
         }
@@ -107,7 +106,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setDefault(Boolean.FALSE);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("false");
         }
@@ -119,7 +118,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setExample(Boolean.FALSE);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("false");
         }
@@ -130,7 +129,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("0");
         }
@@ -142,7 +141,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setDefault(Integer.parseInt("123"));
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("123");
         }
@@ -154,7 +153,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setExample(Integer.parseInt("123"));
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("123");
         }
@@ -166,7 +165,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setFormat("int64");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("0");
         }
@@ -178,7 +177,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setFormat("float");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("1.1");
         }
@@ -190,7 +189,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setFormat("double");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("1.1");
         }
@@ -202,7 +201,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setDefault(new BigDecimal("123.45"));
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("123.45");
         }
@@ -214,7 +213,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setExample(new BigDecimal("123.45"));
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("123.45");
         }
@@ -225,7 +224,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"string\"");
         }
@@ -237,7 +236,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setDefault("custom-example-value");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"custom-example-value\"");
         }
@@ -249,7 +248,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setExample("custom-example-value");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"custom-example-value\"");
         }
@@ -262,7 +261,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.addEnumItem("EnumItem2");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"EnumItem1\"");
         }
@@ -274,7 +273,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setFormat("byte");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"YmFzZTY0LWV4YW1wbGU=\"");
         }
@@ -285,7 +284,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString)
                     .isEqualTo(
@@ -298,7 +297,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"2015-07-20\"");
         }
@@ -309,7 +308,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"2015-07-20T15:49:04-07:00\"");
         }
@@ -320,7 +319,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"example@example.com\"");
         }
@@ -331,7 +330,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"string-password\"");
         }
@@ -342,7 +341,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"3fa85f64-5717-4562-b3fc-2c963f66afa6\"");
         }
@@ -354,7 +353,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setFormat("unknown");
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"unknown string schema format: unknown\"");
         }
@@ -371,7 +370,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setName(testInfo.getDisplayName());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("\"unknown schema type: test-schema\"");
         }
@@ -383,7 +382,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setItems(new StringSchema());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("[\"string\"]");
         }
@@ -402,7 +401,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setItems(itemSchema);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("[{\"b\":true,\"s\":\"string\"}]");
         }
@@ -415,7 +414,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.addProperty("b", new BooleanSchema());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("{\"b\":true,\"s\":\"string\"}");
         }
@@ -434,7 +433,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             nestedSchema.addProperty("s", new StringSchema());
             nestedSchema.addProperty("b", new BooleanSchema());
             JsonNode actual = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", nestedSchema));
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("{\"f\":{\"b\":true,\"s\":\"string\"},\"s\":\"string\"}");
         }
@@ -449,7 +448,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             compositeSchema.addProperty("anyOfField", propertySchema);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("{\"anyOfField\":\"string\"}");
         }
@@ -464,7 +463,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             compositeSchema.addProperty("oneOfField", propertySchema);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("{\"oneOfField\":\"string\"}");
         }
@@ -485,7 +484,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             compositeSchema.addProperty("allOfField", propertySchema);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("{\"allOfField\":{\"field1\":\"string\",\"field2\":1.1}}");
         }
@@ -499,7 +498,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             mapSchema.setAdditionalProperties(propertySchema);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(mapSchema, Map.of());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("{\"key\":\"string\"}");
         }
@@ -519,7 +518,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             mapSchema.setAdditionalProperties(arraySchema);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(mapSchema, Map.of());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString).isEqualTo("{\"key\":[{\"field1\":\"string\"}]}");
         }
@@ -531,7 +530,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema.setExample(new ClassWithToString());
 
             JsonNode actual = jsonSchemaWalker.fromSchema(schema, Map.of());
-            String actualString = jsonMapper.writeValueAsString(actual);
+            String actualString = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
 
             assertThat(actualString)
                     .isEqualTo("\"Text with special character /\\\\\\\"\\\\'\\\\b\\\\f\\\\t\\\\r\\\\n.\"");

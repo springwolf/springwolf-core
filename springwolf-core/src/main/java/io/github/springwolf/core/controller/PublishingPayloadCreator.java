@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
@@ -12,6 +10,8 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -27,7 +27,7 @@ import java.util.Set;
 public class PublishingPayloadCreator {
 
     private final ComponentsService componentsService;
-    private final ObjectMapper objectMapper;
+    private final JsonMapper jsonMapper;
 
     public Result createPayloadObject(MessageDto message) {
         String messageType = message.getType();
@@ -48,7 +48,7 @@ public class PublishingPayloadCreator {
                 try {
                     Object payload = resolveActualPayload(message, schema, schemaName);
                     return new Result(payload, Optional.empty());
-                } catch (ClassNotFoundException | JsonProcessingException | IllegalArgumentException ex) {
+                } catch (ClassNotFoundException | JacksonException | IllegalArgumentException ex) {
                     String errorMessage = MessageFormat.format(
                             "Unable to create payload {0} from data: {1}", schemaName, message.getPayload());
                     log.info(errorMessage, ex);
@@ -66,27 +66,27 @@ public class PublishingPayloadCreator {
     }
 
     private Object resolveActualPayload(MessageDto message, SchemaObject schema, String schemaName)
-            throws ClassNotFoundException, JsonProcessingException, IllegalArgumentException {
+            throws ClassNotFoundException, JacksonException, IllegalArgumentException {
         String firstNonNullType = schema.getType().stream()
                 .filter(type -> !type.equals(SchemaType.NULL))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Unsupported schema type: null"));
         switch (firstNonNullType) {
             case SchemaType.BOOLEAN -> {
-                return objectMapper.readValue(message.getPayload(), Boolean.class);
+                return jsonMapper.readValue(message.getPayload(), Boolean.class);
             }
             case SchemaType.INTEGER -> {
-                return objectMapper.readValue(message.getPayload(), Long.class);
+                return jsonMapper.readValue(message.getPayload(), Long.class);
             }
             case SchemaType.NUMBER -> {
-                return objectMapper.readValue(message.getPayload(), Double.class);
+                return jsonMapper.readValue(message.getPayload(), Double.class);
             }
             case SchemaType.OBJECT -> {
                 Class<?> payloadClass = Class.forName(schemaName);
-                return objectMapper.readValue(message.getPayload(), payloadClass);
+                return jsonMapper.readValue(message.getPayload(), payloadClass);
             }
             case SchemaType.STRING -> {
-                return objectMapper.readValue(message.getPayload(), String.class);
+                return jsonMapper.readValue(message.getPayload(), String.class);
             }
             default -> throw new IllegalArgumentException("Unsupported schema type: " + firstNonNullType);
         }

@@ -16,6 +16,7 @@ dependencies {
 
     implementation libs.jackson.core
     implementation libs.jackson.databind
+    implementation libs.jackson.dataformat.yaml
 
     implementation libs.slf4j.api
 

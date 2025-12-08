@@ -40,10 +40,8 @@ import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -57,8 +55,7 @@ import static io.github.springwolf.core.asyncapi.scanners.channels.annotations.S
 import static io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScannerIntegrationTest.TestBindingFactory.defaultMessageBinding;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(
+@SpringJUnitConfig(
         classes = {
             SpringAnnotationMethodLevelChannelsScannerIntegrationTest.TestBindingFactory.class,
             DefaultComponentsService.class,
