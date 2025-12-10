@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.controller.dtos;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -14,12 +19,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
-import tools.jackson.core.JsonParser;
-import tools.jackson.databind.DeserializationContext;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ValueDeserializer;
-import tools.jackson.databind.annotation.JsonDeserialize;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Data
@@ -43,14 +44,14 @@ public class MessageDto {
     @JsonSerialize(using = HeaderValueSerializer.class)
     public record HeaderValue(String stringValue) {}
 
-    public static class HeaderValueDeserializer extends ValueDeserializer<HeaderValue> {
+    public static class HeaderValueDeserializer extends JsonDeserializer<HeaderValue> {
         @Override
-        public HeaderValue deserialize(JsonParser p, DeserializationContext ctxt) {
-            JsonNode node = p.objectReadContext().readTree(p);
+        public HeaderValue deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+            JsonNode node = p.getCodec().readTree(p);
             if (node.isNumber()) {
                 return new HeaderValue(node.numberValue().toString());
-            } else if (node.isString()) {
-                return new HeaderValue(node.asString());
+            } else if (node.isTextual()) {
+                return new HeaderValue(node.textValue());
             }
             return new HeaderValue(node.toString());
         }

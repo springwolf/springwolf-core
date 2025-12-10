@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.dataformat.yaml.YAMLMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +20,7 @@ public final class ClasspathUtil {
 
     public static JsonNode parseYamlFile(String resourceName) throws IOException {
         try (InputStream inputStream = ClasspathUtil.class.getResourceAsStream(resourceName)) {
-            YAMLMapper yamlMapper = new DefaultAsyncApiSerializerService().getYamlMapper();
+            ObjectMapper yamlMapper = new DefaultAsyncApiSerializerService().getYamlMapper();
             return yamlMapper.readTree(inputStream);
         }
     }

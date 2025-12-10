@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
@@ -11,8 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Map;
 import java.util.Optional;
@@ -251,7 +251,8 @@ class PublishingPayloadCreatorTest {
                         type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.OBJECT).build())));
-        when(jsonMapper.readValue(payload, ObjectClass.class)).thenThrow(new JacksonException("invalid json") {});
+        when(jsonMapper.readValue(payload, ObjectClass.class))
+                .thenThrow(new JsonProcessingException("invalid json") {});
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);

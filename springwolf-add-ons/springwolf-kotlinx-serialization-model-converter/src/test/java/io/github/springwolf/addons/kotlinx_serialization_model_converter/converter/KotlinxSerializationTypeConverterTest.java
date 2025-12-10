@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.addons.kotlinx_serialization_model_converter.converter;
 
-import com.fasterxml.jackson.core.PrettyPrinter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.oas.models.media.Schema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -16,8 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class KotlinxSerializationTypeConverterTest {
 
-    private final PrettyPrinter printer = new DefaultPrettyPrinter();
-    JsonMapper jsonMapper = JsonMapper.builder().defaultPrettyPrinter(printer).build();
+    private static final ObjectMapper jsonMapper = ObjectMapperFactory.createJson31();
 
     private ModelConverters modelConverters;
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka;
 
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
 import org.awaitility.Awaitility;
@@ -16,7 +16,6 @@ import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.io.File;
 import java.util.Arrays;
@@ -72,7 +71,8 @@ public class KafkaProducerSystemTest {
         headers.put("kafka_receivedMessageKey", List.of("string"));
 
         ExamplePayloadDto payload = new ExamplePayloadDto("foo", 5, FOO1);
-        String payloadAsString = JsonMapper.builder().build().writeValueAsString(payload).replaceAll("\"", "\\\\\"");
+        String payloadAsString =
+                JsonMapper.builder().build().writeValueAsString(payload).replaceAll("\"", "\\\\\"");
         String message = "{\n" //
                 + "    \"bindings\": {},\n"
                 + "    \"headers\": {" //
