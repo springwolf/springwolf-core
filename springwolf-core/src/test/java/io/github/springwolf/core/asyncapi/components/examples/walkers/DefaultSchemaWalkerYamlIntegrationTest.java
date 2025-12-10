@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components.examples.walkers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.DefaultExampleYamlValueSerializer;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.ExampleYamlValueGenerator;
@@ -22,7 +23,6 @@ import io.swagger.v3.oas.models.media.UUIDSchema;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import tools.jackson.databind.JsonNode;
 
 import java.math.BigDecimal;
 import java.util.List;

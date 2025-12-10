@@ -1,22 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.jackson.model.channel.message;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
-import tools.jackson.core.JacksonException;
-import tools.jackson.core.JsonGenerator;
-import tools.jackson.databind.SerializationContext;
-import tools.jackson.databind.ValueSerializer;
 
-public class ComponentSchemaSerializer extends ValueSerializer<ComponentSchema> {
+import java.io.IOException;
+
+public class ComponentSchemaSerializer extends JsonSerializer<ComponentSchema> {
     @Override
-    public void serialize(ComponentSchema value, JsonGenerator gen, SerializationContext serializers)
-            throws JacksonException {
+    public void serialize(ComponentSchema value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         if (value.getReference() != null) {
-            gen.writePOJO(value.getReference());
+            gen.writeObject(value.getReference());
         } else if (value.getSchema() != null) {
-            gen.writePOJO(value.getSchema());
+            gen.writeObject(value.getSchema());
         } else {
-            gen.writePOJO(value.getMultiFormatSchema());
+            gen.writeObject(value.getMultiFormatSchema());
         }
     }
 }

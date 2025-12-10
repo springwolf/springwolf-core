@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
@@ -16,6 +16,7 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.fixtures.ClasspathUtil;
+import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
@@ -26,11 +27,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import tools.jackson.core.PrettyPrinter;
-import tools.jackson.core.util.DefaultIndenter;
-import tools.jackson.core.util.DefaultPrettyPrinter;
-import tools.jackson.databind.SerializationFeature;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -58,14 +54,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
             new ModelConvertersProvider(springwolfConfigProperties, List.of(new SchemaTitleModelConverter())));
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
 
-    private static final PrettyPrinter printer =
-            new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
-    private static final JsonMapper jsonMapper = JsonMapper.builder()
-            .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
-            .changeDefaultPropertyInclusion(handler ->
-                    JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT, JsonInclude.Include.NON_ABSENT))
-            .defaultPrettyPrinter(printer)
-            .build();
+    private static final JsonMapper jsonMapper = JsonMapperTestConfiguration.jsonMapper;
 
     @Test
     void getSchemas() throws Exception {

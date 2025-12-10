@@ -4,13 +4,13 @@ package io.github.springwolf.examples.sqs;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
-import org.testcontainers.localstack.LocalStackContainer;
+import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
-import static org.testcontainers.localstack.LocalStackContainer.Service.SQS;
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 /**
  * JUnit5 extension to start the localstack testcontainers once

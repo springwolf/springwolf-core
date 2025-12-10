@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.jackson;
 
-import tools.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JacksonException;
 
 public interface AsyncApiSerializerService {
 

@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.core.controller.dtos.MessageDto;
+import io.github.springwolf.plugins.jms.configuration.JsonMapperTestConfiguration;
 import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,10 +26,8 @@ import lombok.extern.jackson.Jacksonized;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -66,9 +65,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
             SpringwolfConfigProperties.class,
-            ModelConvertersProvider.class
+            ModelConvertersProvider.class,
+            JsonMapperTestConfiguration.class,
         })
-@ExtendWith(MockitoExtension.class)
 @TestPropertySource(
         properties = {
             "springwolf.docket.base-package=io.github.springwolf.plugins.jms",

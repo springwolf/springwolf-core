@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.controller.dtos;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.core.controller.dtos.MessageDto;
+import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
 import org.junit.jupiter.api.Test;
-import tools.jackson.databind.json.JsonMapper;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MessageDtoDeserializationTest {
-    private static final JsonMapper jsonMapper = JsonMapper.builder().build();
+    private static final JsonMapper jsonMapper = JsonMapperTestConfiguration.jsonMapper;
 
     @Test
     void canBeSerialized() throws Exception {
@@ -24,9 +25,7 @@ class MessageDtoDeserializationTest {
         assertThat(value.getHeaders())
                 .isEqualTo(singletonMap("some-header-key", new MessageDto.HeaderValue("some-header-value")));
         assertThat(value.getPayload())
-                .isEqualTo(jsonMapper
-                        .writerWithDefaultPrettyPrinter()
-                        .writeValueAsString(singletonMap("some-payload-key", "some-payload-value")));
+                .isEqualTo(jsonMapper.writeValueAsString(singletonMap("some-payload-key", "some-payload-value")));
         assertThat(value.getPayloadType()).isEqualTo("io.github.springwolf.core.controller.dtos.MessageDto");
     }
 }

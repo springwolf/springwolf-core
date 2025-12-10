@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.controller;
 
+import com.fasterxml.jackson.core.JacksonException;
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
@@ -10,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import tools.jackson.core.JacksonException;
 
 import java.util.Optional;
 

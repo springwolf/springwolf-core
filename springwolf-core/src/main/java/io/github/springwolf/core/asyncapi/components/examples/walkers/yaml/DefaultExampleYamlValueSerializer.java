@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components.examples.walkers.yaml;
 
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.dataformat.yaml.YAMLMapper;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.util.ObjectMapperFactory;
 
 public class DefaultExampleYamlValueSerializer implements ExampleYamlValueSerializer {
 
-    private final YAMLMapper yamlMapper = YAMLMapper.builder().build();
+    private final ObjectMapper yamlMapper = ObjectMapperFactory.createYaml31();
 
     @Override
     public String writeDocumentAsYamlString(JsonNode node) throws JacksonException {

@@ -6,7 +6,7 @@ gradle-nexus-publish-plugin = "2.0.0"
 io-awspring-cloud = "3.4.2"
 io-confluent = "8.1.1"
 io-swagger-core-v3 = "2.2.40"
-jackson-core = "3.0.0"
+jackson-core = "2.20.1"
 kotlin =  "2.2.21"
 node-plugin = "7.1.0"
 nodeVersion = "22.12.0"
@@ -33,9 +33,10 @@ avro = "org.apache.avro:avro:1.12.1"
 awaitility = "org.awaitility:awaitility:4.3.0"
 commons-lang3 = "org.apache.commons:commons-lang3:3.20.0"
 jackson-annotations = "com.fasterxml.jackson.core:jackson-annotations:2.20"
-jackson-core = { module = "tools.jackson.core:jackson-core", version.ref = "jackson-core" }
-jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson-core" }
-jackson-dataformat-yaml = { module = "tools.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-core" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-core" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-core" }
+jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-core" }
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson-core" }
 jackson-datatype-protobuf = "com.hubspot.jackson:jackson-datatype-protobuf:0.9.18"
 jakarta-annotation-api = "jakarta.annotation:jakarta.annotation-api:3.0.0"
 jakarta-jms-api = "jakarta.jms:jakarta.jms-api:3.1.0"

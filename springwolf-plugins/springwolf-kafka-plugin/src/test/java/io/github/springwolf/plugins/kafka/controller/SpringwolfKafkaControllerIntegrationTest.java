@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.core.controller.dtos.MessageDto;
+import io.github.springwolf.plugins.kafka.configuration.JsonMapperTestConfiguration;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -66,7 +67,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
             SpringwolfConfigProperties.class,
-            ModelConvertersProvider.class
+            ModelConvertersProvider.class,
+            JsonMapperTestConfiguration.class,
         })
 @ExtendWith(MockitoExtension.class)
 @TestPropertySource(
