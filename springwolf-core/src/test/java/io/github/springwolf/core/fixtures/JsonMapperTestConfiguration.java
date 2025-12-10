@@ -22,14 +22,16 @@ public class JsonMapperTestConfiguration {
     public static final JsonMapper jsonMapper = JsonMapper.builder()
             .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .serializationInclusion(JsonInclude.Include.NON_ABSENT)
+            .defaultPropertyInclusion(
+                    JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT, JsonInclude.Include.NON_ABSENT))
             .addModule(new JavaTimeModule())
             .defaultPrettyPrinter(printer)
             .build();
     public static final YAMLMapper yamlMapper = YAMLMapper.builder()
             .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .serializationInclusion(JsonInclude.Include.NON_ABSENT)
+            .defaultPropertyInclusion(
+                    JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT, JsonInclude.Include.NON_ABSENT))
             .addModule(new JavaTimeModule())
             .defaultPrettyPrinter(printer)
             // openapi 3.1

@@ -28,11 +28,12 @@ dependencies {
     annotationProcessor libs.lombok
     compileOnly libs.lombok
 
-    runtimeOnly libs.spring.boot.starter.web
+    runtimeOnly libs.spring.boot.starter.webmvc
 
     runtimeOnly platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.beans
+    implementation libs.spring.boot.jackson2
     implementation libs.spring.context
     implementation libs.spring.core
     implementation libs.spring.messaging
@@ -41,7 +42,7 @@ dependencies {
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
 
-    implementation libs.spring.kafka
+    implementation libs.spring.boot.kafka
 
     implementation libs.spring.security.config
     implementation libs.spring.security.web
@@ -72,6 +73,7 @@ dependencies {
     testImplementation libs.assertj.core
     testImplementation libs.awaitility
 
+    testImplementation libs.spring.boot.restclient.test
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.core
     testImplementation libs.spring.test

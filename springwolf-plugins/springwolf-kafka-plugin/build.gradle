@@ -29,7 +29,7 @@ dependencies {
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
 
-    implementation libs.spring.kafka
+    implementation libs.spring.boot.kafka
 
     annotationProcessor libs.lombok
     compileOnly libs.lombok
@@ -39,7 +39,6 @@ dependencies {
     testAnnotationProcessor libs.lombok
     testCompileOnly libs.lombok
 
-    testRuntimeOnly libs.spring.boot.starter.web
 
     testImplementation libs.jackson.annotations
     testImplementation libs.jackson.databind
@@ -47,6 +46,8 @@ dependencies {
     testImplementation libs.mockito.core
     testImplementation libs.mockito.junit.jupiter
 
+    testImplementation libs.spring.boot.starter.webmvc.test
+    testImplementation libs.spring.boot.kafka.test
     testImplementation libs.spring.boot.test.autoconfigure
     testImplementation libs.spring.boot.test
 

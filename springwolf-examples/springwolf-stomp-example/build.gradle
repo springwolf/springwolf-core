@@ -22,7 +22,6 @@ dependencies {
     compileOnly libs.lombok
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation libs.spring.jcl
     implementation libs.spring.web
     implementation libs.spring.websocket
 
@@ -38,6 +37,7 @@ dependencies {
     testImplementation libs.assertj.core
 
     testImplementation libs.spring.boot.test
+    testImplementation libs.spring.boot.restclient.test
     testImplementation libs.spring.beans
     testImplementation libs.spring.core
     testImplementation libs.spring.web

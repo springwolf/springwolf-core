@@ -18,17 +18,16 @@ dependencies {
     implementation libs.jackson.databind
     implementation libs.jackson.dataformat.yaml
 
-    implementation libs.slf4j.api
-
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
     compileOnly platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.boot
 
-    implementation libs.spring.web
+    implementation libs.spring.boot.starter.webmvc // TODO:
     implementation libs.spring.context
     implementation libs.spring.messaging
     implementation libs.spring.beans
+    implementation libs.spring.boot.jackson2
     implementation libs.spring.core
     implementation libs.spring.boot.autoconfigure
 
@@ -38,7 +37,7 @@ dependencies {
 
     implementation libs.commons.lang3
 
-    compileOnly libs.spring.boot.actuator
+    compileOnly libs.spring.boot.starter.actuator
     compileOnly libs.spring.webmvc
     compileOnly libs.lombok
 
@@ -59,7 +58,6 @@ dependencies {
     testImplementation libs.junit.jupiter.params
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.junit.plattform.launcher
-    testRuntimeOnly libs.slf4j.simple
 }
 
 jar {

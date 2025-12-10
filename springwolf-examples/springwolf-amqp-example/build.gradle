@@ -21,7 +21,7 @@ dependencies {
     annotationProcessor libs.lombok
     compileOnly libs.lombok
 
-    runtimeOnly libs.spring.boot.starter.web
+    runtimeOnly libs.spring.boot.starter.webmvc
 
     implementation libs.spring.rabbit
     implementation libs.amqp.client
@@ -32,6 +32,7 @@ dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.amqp
     implementation libs.spring.boot.autoconfigure
+    implementation libs.spring.boot.starter.amqp
     implementation libs.spring.boot
     implementation libs.spring.context
     implementation libs.spring.messaging
@@ -41,6 +42,7 @@ dependencies {
     testImplementation libs.mockito.core
 
     testImplementation libs.spring.boot.test
+    testImplementation libs.spring.boot.restclient.test
     testImplementation libs.spring.beans
     testImplementation libs.spring.web
     testImplementation libs.spring.test

@@ -28,7 +28,8 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
     //    @Getter
     //    private final JsonMapper jsonMapper = JsonMapper.builder()
     //            .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
-    //            .serializationInclusion(JsonInclude.Include.NON_ABSENT)
+    //            .defaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT,
+    // JsonInclude.Include.NON_ABSENT))
     //            .defaultPrettyPrinter(prettyPrinter)
     //            .build();
     //    /**
@@ -37,7 +38,8 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
     //    @Getter
     //    private final YAMLMapper yamlMapper = YAMLMapper.builder()
     //            .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
-    //            .serializationInclusion(JsonInclude.Include.NON_ABSENT)
+    //            .defaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT,
+    // JsonInclude.Include.NON_ABSENT))
     //            .defaultPrettyPrinter(prettyPrinter)
     //            .build();
 

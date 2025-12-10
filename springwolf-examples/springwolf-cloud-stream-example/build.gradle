@@ -26,8 +26,8 @@ dependencies {
     implementation libs.spring.boot.autoconfigure
     implementation libs.spring.boot
     implementation libs.spring.context
-    runtimeOnly libs.spring.boot.starter.web
     runtimeOnly libs.spring.boot.starter.actuator
+    runtimeOnly libs.spring.boot.starter.webmvc
     runtimeOnly libs.spring.cloud.starter.stream.kafka
 
     compileOnly libs.lombok
@@ -39,8 +39,9 @@ dependencies {
     testImplementation libs.spring.test
 
     testImplementation libs.spring.beans
+    testImplementation libs.spring.boot.kafka.test
+    testImplementation libs.spring.boot.restclient.test
     testImplementation libs.spring.web
-    testImplementation libs.spring.kafka.test
 
     testImplementation libs.jackson.core
     permitTestUnusedDeclared libs.jackson.core
